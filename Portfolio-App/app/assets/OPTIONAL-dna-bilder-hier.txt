@@ -1,0 +1,6 @@
+Optional: DNA-Strang-Bilder für Fallback (wenn nicht nur Inline-Bilder genutzt werden):
+
+  dna-strand-freisteller.webp
+  glowing-3d-dna-double-helix-600nw-2654806055.webp
+
+Ohne diese Dateien funktioniert das Portfolio trotzdem (eingebettete Bilder).

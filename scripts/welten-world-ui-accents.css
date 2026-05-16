@@ -1,0 +1,169 @@
+/* Welten-spezifische Hover-, FAQ- und Arbeitsweise-Farben (kein Nexora-Blau in PRO/FRE) */
+
+/* —— PROFESSIONAL (vertex) —— */
+body[data-world="vertex"] .btn:hover {
+  border-color: rgba(0, 0, 0, 0.28) !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12) !important;
+}
+body[data-world="vertex"] .btn-primary:hover {
+  background: #1a1a1a !important;
+  border-color: #1a1a1a !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+}
+body[data-world="vertex"] .dna-slide:hover {
+  border-color: rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}
+body[data-world="vertex"] .persona-tabs button:hover {
+  border-color: rgba(0, 0, 0, 0.22) !important;
+  color: #111 !important;
+}
+body[data-world="vertex"] .persona-tabs button.on {
+  background: #111 !important;
+  border-color: #111 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+body[data-world="vertex"] .dock-card:hover {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+body[data-world="vertex"] .faq-q:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+body[data-world="vertex"] .faq-item.is-open {
+  border-color: rgba(0, 0, 0, 0.18) !important;
+}
+body[data-world="vertex"] .faq-ico {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+body[data-world="vertex"] .faq-item.is-open .faq-ico {
+  background: #111 !important;
+  border-color: #111 !important;
+  color: #fff !important;
+}
+body[data-world="vertex"] .faq-panel {
+  border-top-color: rgba(0, 0, 0, 0.1) !important;
+  background: rgba(0, 0, 0, 0.02);
+}
+body[data-world="vertex"] .faq-panel-inner {
+  color: rgba(17, 17, 17, 0.78) !important;
+}
+body[data-world="vertex"] .welten-workstyle-pipeline .wp-n {
+  background: #0a0a0a !important;
+  color: #fff !important;
+  border: 1px solid #2a2a2a !important;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+body[data-world="vertex"] .wp-step:hover .wp-n,
+body[data-world="vertex"] .wp-n:hover {
+  background: #fff !important;
+  color: #050505 !important;
+  border-color: #fff !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* —— FREIRAUM —— */
+body[data-world="freiraum"] .btn:hover {
+  border-color: rgba(255, 209, 102, 0.55) !important;
+  box-shadow: 0 10px 28px rgba(255, 111, 174, 0.14) !important;
+}
+body[data-world="freiraum"] .btn-primary:hover {
+  border-color: rgba(255, 209, 102, 0.72) !important;
+  background: linear-gradient(135deg, rgba(255, 209, 102, 0.42), rgba(255, 111, 174, 0.32)) !important;
+}
+body[data-world="freiraum"] .dna-slide:hover {
+  border-color: rgba(255, 209, 102, 0.52) !important;
+  box-shadow: 0 0 22px rgba(255, 111, 174, 0.18) !important;
+}
+body[data-world="freiraum"] .persona-tabs button:hover {
+  border-color: rgba(255, 209, 102, 0.45) !important;
+  color: #fff8ef !important;
+}
+body[data-world="freiraum"] .persona-tabs button.on {
+  background: linear-gradient(135deg, #ffd166, #ff6fae) !important;
+  border-color: rgba(255, 209, 102, 0.7) !important;
+  color: #1a0a12 !important;
+}
+body[data-world="freiraum"] .dock-card:hover {
+  border-color: rgba(255, 209, 102, 0.4) !important;
+}
+body[data-world="freiraum"] .faq-q:hover {
+  background: rgba(255, 209, 102, 0.06);
+}
+body[data-world="freiraum"] .faq-item.is-open {
+  border-color: rgba(255, 209, 102, 0.38) !important;
+}
+body[data-world="freiraum"] .faq-ico {
+  border-color: rgba(255, 209, 102, 0.42) !important;
+}
+body[data-world="freiraum"] .faq-item.is-open .faq-ico {
+  background: linear-gradient(135deg, #ffd166, #ff6fae) !important;
+  border-color: rgba(255, 209, 102, 0.75) !important;
+  color: #1a0a12 !important;
+}
+body[data-world="freiraum"] .faq-panel {
+  border-top-color: rgba(255, 209, 102, 0.22) !important;
+  background: rgba(255, 209, 102, 0.05);
+}
+body[data-world="freiraum"] .faq-panel-inner {
+  color: rgba(255, 248, 239, 0.88) !important;
+}
+body[data-world="freiraum"] .welten-workstyle-pipeline {
+  gap: 20px;
+}
+body[data-world="freiraum"] .welten-workstyle-pipeline .wp-step {
+  --ws-tilt: 0deg;
+  animation: weltenFriWsBob 6.2s ease-in-out infinite;
+  gap: 16px;
+}
+body[data-world="freiraum"] .welten-workstyle-pipeline .wp-step:nth-child(1) { --ws-tilt: -0.85deg; animation-delay: 0s; }
+body[data-world="freiraum"] .welten-workstyle-pipeline .wp-step:nth-child(2) { --ws-tilt: 0.65deg; animation-delay: -1.15s; }
+body[data-world="freiraum"] .welten-workstyle-pipeline .wp-step:nth-child(3) { --ws-tilt: -0.5deg; animation-delay: -2.35s; }
+body[data-world="freiraum"] .welten-workstyle-pipeline .wp-step:nth-child(4) { --ws-tilt: 0.85deg; animation-delay: -3.55s; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-world="freiraum"] .welten-workstyle-pipeline .wp-step {
+    animation: none !important;
+  }
+}
+body[data-world="freiraum"] .welten-workstyle-pipeline .wp-n {
+  background: linear-gradient(145deg, rgba(255, 209, 102, 0.22), rgba(255, 48, 126, 0.12)) !important;
+  border: 1px solid rgba(255, 209, 102, 0.45) !important;
+  color: #fff !important;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+}
+body[data-world="freiraum"] .wp-step:hover .wp-n,
+body[data-world="freiraum"] .wp-n:hover {
+  background: #ffd166 !important;
+  color: #1a0a12 !important;
+  border-color: rgba(255, 209, 102, 0.95) !important;
+  box-shadow: 0 0 26px rgba(255, 209, 102, 0.48), 5px 5px 0 rgba(255, 48, 126, 0.45);
+  transform: scale(1.06);
+}
+
+/* —— NEXORA: FAQ-Antworten & Akzente —— */
+body[data-world="nexora"] .btn:hover {
+  border-color: rgba(142, 197, 255, 0.45) !important;
+}
+body[data-world="nexora"] .faq-q:hover {
+  background: rgba(0, 140, 255, 0.06);
+}
+body[data-world="nexora"] .faq-item.is-open {
+  border-color: rgba(142, 220, 255, 0.32) !important;
+}
+body[data-world="nexora"] .faq-ico {
+  border-color: rgba(142, 197, 255, 0.35) !important;
+}
+body[data-world="nexora"] .faq-item.is-open .faq-ico {
+  background: rgba(101, 217, 255, 0.22) !important;
+  border-color: rgba(126, 221, 255, 0.85) !important;
+  color: #e8f4ff !important;
+  box-shadow: 0 0 18px rgba(0, 194, 255, 0.25);
+}
+body[data-world="nexora"] .faq-panel {
+  border-top-color: rgba(142, 197, 255, 0.2) !important;
+  background: rgba(0, 140, 255, 0.06);
+}
+body[data-world="nexora"] .faq-panel-inner {
+  color: rgba(232, 238, 248, 0.88) !important;
+}

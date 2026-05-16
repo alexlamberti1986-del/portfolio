@@ -1,0 +1,44 @@
+{
+  "appId": "com.alexlamberti.portfolio",
+  "productName": "Alex Lamberti Portfolio",
+  "copyright": "Copyright © Alex Lamberti",
+  "directories": {
+    "output": "dist",
+    "buildResources": "build"
+  },
+  "files": [
+    "main.js",
+    "preload.js",
+    "app/**/*",
+    "!app/**/*.map"
+  ],
+  "asar": true,
+  "compression": "maximum",
+  "win": {
+    "target": [
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      },
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "artifactName": "AlexLamberti-Portfolio.${ext}"
+  },
+  "portable": {
+    "artifactName": "AlexLamberti-Portfolio-Portable.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "artifactName": "AlexLamberti-Portfolio-Setup.${ext}",
+    "shortcutName": "Alex Lamberti Portfolio",
+    "uninstallDisplayName": "Alex Lamberti Portfolio"
+  },
+  "mac": {
+    "target": ["dmg"],
+    "category": "public.app-category.graphics-design"
+  }
+}

@@ -1,0 +1,874 @@
+/* Kompetenzen & Expertise — skills charts (v2 readability) */
+
+.welten-skills-overview {
+  margin-top: clamp(2.25rem, 4.5vw, 3.25rem);
+  padding-top: clamp(1.5rem, 3vw, 2.25rem);
+  border-top: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+  max-width: 100%;
+  --sk-chart-term-size: clamp(0.74rem, 1.2vw, 0.82rem);
+  --sk-chart-term-line: 1.25;
+  font-family: inherit;
+}
+
+.welten-skills-overview__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.welten-skills-overview__subtitle {
+  margin: 0;
+  max-width: 52ch;
+  font-size: clamp(0.92rem, 1.6vw, 1.02rem);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.welten-skills-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2.2vw, 24px);
+  margin-top: clamp(1.35rem, 2.8vw, 2rem);
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .welten-skills-charts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .welten-skills-charts-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* —— Chart cards (uniform) —— */
+.welten-skills-chart-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: clamp(248px, 32vw, 290px);
+  padding: clamp(16px, 2.4vw, 22px);
+  overflow: hidden;
+}
+
+.welten-skills-chart-title {
+  margin: 0 0 0.75rem;
+  min-height: 2.45em;
+  font-size: clamp(0.9rem, 1.55vw, 1rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+
+.welten-skills-chart-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.welten-skills-chart-body > * {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* === Strategische Kompetenzen — feste Grössen (Desktop default ab 1440px) === */
+.welten-skills-chart-card[data-skills-chart="strategy"] {
+  --sk-strategy-point-r: 3.69;
+  overflow: visible;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-chart-body > * {
+  width: auto;
+  max-width: none;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-chart-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 253px;
+  min-height: 253px;
+  max-height: 253px;
+  margin-top: 16px;
+  padding: 0;
+  overflow: visible;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-wrap {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  max-width: none;
+  flex: 0 0 auto;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-svg {
+  width: 260px;
+  height: 260px;
+  max-width: none;
+  display: block;
+  overflow: visible;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-grid,
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-axis {
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-area {
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+  transform-origin: 80px 80px;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-edge {
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-point {
+  r: var(--sk-strategy-point-r);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.1;
+  fill: var(--sk-label, var(--text-muted));
+  font-family: inherit;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label tspan {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-value {
+  font-size: 8px;
+  font-weight: 500;
+  fill: var(--sk-label, var(--text-muted));
+  fill-opacity: 0.75;
+  font-family: inherit;
+}
+
+.welten-skills-overview.is-inview .welten-skills-chart-card {
+  animation: welten-skills-card-in 0.6s var(--ease, ease) both;
+}
+
+.welten-skills-overview.is-inview .welten-skills-chart-card:nth-child(2) { animation-delay: 0.04s; }
+.welten-skills-overview.is-inview .welten-skills-chart-card:nth-child(3) { animation-delay: 0.08s; }
+.welten-skills-overview.is-inview .welten-skills-chart-card:nth-child(4) { animation-delay: 0.12s; }
+.welten-skills-overview.is-inview .welten-skills-chart-card:nth-child(5) { animation-delay: 0.16s; }
+.welten-skills-overview.is-inview .welten-skills-chart-card:nth-child(6) { animation-delay: 0.2s; }
+
+@keyframes welten-skills-card-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* —— World theme tokens —— */
+body[data-world="nexora"] {
+  --sk-accent: #4cb7ff;
+  --sk-accent-2: #65d9ff;
+  --sk-accent-3: #8ec5ff;
+  --sk-accent-4: #2d8ee8;
+  --sk-track: rgba(142, 197, 255, 0.16);
+  --sk-label: rgba(232, 238, 248, 0.82);
+  --sk-value: #eaf4ff;
+  --sk-glow: 0 0 18px rgba(76, 183, 255, 0.28);
+  --sk-heat-1: rgba(76, 183, 255, 0.24);
+  --sk-heat-2: rgba(76, 183, 255, 0.44);
+  --sk-heat-3: rgba(101, 217, 255, 0.68);
+  --sk-heat-4: rgba(101, 217, 255, 0.82);
+  --sk-radar-grid: rgba(142, 197, 255, 0.45);
+  --sk-radar-axis: rgba(101, 217, 255, 0.62);
+  --sk-radar-fill: rgba(76, 183, 255, 0.28);
+  --sk-radar-stroke: #65d9ff;
+  --sk-radar-point-fill: #8ec5ff;
+  --sk-radar-point-stroke: #2d8ee8;
+}
+
+body[data-world="vertex"] {
+  --sk-accent: #5a5a5a;
+  --sk-accent-2: #8a8a8a;
+  --sk-accent-3: #3d3d3d;
+  --sk-accent-4: #1a1a1a;
+  --sk-track: rgba(0, 0, 0, 0.08);
+  --sk-label: rgba(0, 0, 0, 0.72);
+  --sk-value: #1a1a1a;
+  --sk-glow: none;
+  --sk-bar-gradient: linear-gradient(90deg, #d8d8d8 0%, #9a9a9a 38%, #5c5c5c 72%, #141414 100%);
+  --sk-vbar-gradient: linear-gradient(180deg, #e2e2e2 0%, #a8a8a8 32%, #6e6e6e 62%, #1a1a1a 100%);
+  --sk-ring-gradient: #4a4a4a;
+  --sk-heat-1: #e4e4e4;
+  --sk-heat-2: #a3a3a3;
+  --sk-heat-3: #2e2e2e;
+  --sk-radar-grid: rgba(0, 0, 0, 0.14);
+  --sk-radar-axis: rgba(0, 0, 0, 0.28);
+  --sk-radar-fill: rgba(0, 0, 0, 0.08);
+  --sk-radar-stroke: #3a3a3a;
+  --sk-radar-point-fill: #6e6e6e;
+  --sk-radar-point-stroke: #2a2a2a;
+}
+
+body[data-world="freiraum"] {
+  --sk-accent: #ffd166;
+  --sk-accent-2: #ff8bbd;
+  --sk-accent-3: #6ee7d9;
+  --sk-accent-4: #b86ce0;
+  --sk-track: rgba(255, 139, 189, 0.18);
+  --sk-label: rgba(255, 247, 236, 0.8);
+  --sk-value: #fff7ec;
+  --sk-glow: 0 6px 22px rgba(255, 139, 189, 0.2);
+  --sk-heat-1: rgba(255, 209, 102, 0.32);
+  --sk-heat-2: rgba(255, 139, 189, 0.42);
+  --sk-heat-3: rgba(110, 231, 217, 0.52);
+  --sk-heat-4: rgba(255, 139, 189, 0.58);
+  --sk-radar-grid: rgba(255, 209, 102, 0.38);
+  --sk-radar-axis: rgba(255, 139, 189, 0.5);
+  --sk-radar-fill: rgba(255, 209, 102, 0.24);
+  --sk-radar-stroke: #ff8bbd;
+  --sk-radar-point-fill: #6ee7d9;
+  --sk-radar-point-stroke: #ff8bbd;
+}
+
+body[data-world="vertex"] .welten-skills-hbar-label,
+body[data-world="vertex"] .welten-skills-donut-legend li,
+body[data-world="vertex"] .welten-skills-vbar-label,
+body[data-world="vertex"] .welten-skills-ring-label,
+body[data-world="vertex"] .welten-skills-heatmap-cat,
+body[data-world="vertex"] .welten-skills-heatmap-head span {
+  color: var(--sk-label);
+}
+
+body[data-world="vertex"] .welten-skills-hbar-val,
+body[data-world="vertex"] .welten-skills-vbar-pct {
+  color: var(--sk-value);
+}
+
+body[data-world="vertex"] .welten-skills-hbar-fill {
+  background: var(--sk-bar-gradient, linear-gradient(90deg, #d8d8d8, #9a9a9a, #5c5c5c, #141414));
+}
+
+body[data-world="vertex"] .welten-skills-vbar-fill {
+  background: var(--sk-vbar-gradient, linear-gradient(180deg, #e2e2e2, #a8a8a8, #6e6e6e, #1a1a1a));
+}
+
+body[data-world="vertex"] .welten-skills-ring-fg {
+  stroke: var(--sk-ring-gradient, #4a4a4a);
+}
+
+body[data-world="vertex"] .welten-skills-donut {
+  background: conic-gradient(
+    #d0d0d0 0 calc(var(--sk-s0, 0) * 1%),
+    #9a9a9a 0 calc((var(--sk-s0, 0) + var(--sk-s1, 0)) * 1%),
+    #6e6e6e 0 calc((var(--sk-s0, 0) + var(--sk-s1, 0) + var(--sk-s2, 0)) * 1%),
+    #2a2a2a 0 100%
+  ) !important;
+}
+
+body[data-world="nexora"] .welten-skills-chart-card:hover {
+  box-shadow: var(--sk-glow);
+}
+
+/* —— Horizontal bars —— */
+.welten-skills-hbars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.62rem;
+  max-width: 100%;
+}
+
+.welten-skills-hbar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.45rem 0.7rem;
+  font-size: var(--sk-chart-term-size);
+  line-height: var(--sk-chart-term-line);
+}
+
+.welten-skills-hbar-label {
+  color: var(--sk-label, var(--text-muted));
+  hyphens: none;
+}
+
+.welten-skills-hbar-val {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--sk-value, var(--ice, var(--text)));
+}
+
+.welten-skills-hbar-track {
+  grid-column: 1 / -1;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--sk-track);
+  overflow: hidden;
+}
+
+.welten-skills-hbar-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--sk-accent-4), var(--sk-accent));
+  width: 0;
+  transition: width 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.welten-skills-overview.is-inview .welten-skills-hbar-fill {
+  width: var(--sk-pct, 0%);
+}
+
+/* —— Donut —— */
+.welten-skills-donut-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 2vw, 18px);
+}
+
+.welten-skills-donut {
+  --sk-donut-size: min(128px, 34vw);
+  width: var(--sk-donut-size);
+  height: var(--sk-donut-size);
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: conic-gradient(
+    var(--sk-accent) 0 calc(var(--sk-s0, 0) * 1%),
+    var(--sk-accent-2) 0 calc((var(--sk-s0, 0) + var(--sk-s1, 0)) * 1%),
+    var(--sk-accent-3) 0 calc((var(--sk-s0, 0) + var(--sk-s1, 0) + var(--sk-s2, 0)) * 1%),
+    var(--sk-accent-4) 0 100%
+  );
+  -webkit-mask: radial-gradient(circle 58% transparent, #000 59%);
+  mask: radial-gradient(circle 58% transparent, #000 59%);
+}
+
+.welten-skills-donut-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1 1 110px;
+  min-width: 0;
+}
+
+.welten-skills-donut-legend li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: var(--sk-chart-term-size);
+  line-height: var(--sk-chart-term-line);
+  color: var(--sk-label, var(--text-muted));
+}
+
+.welten-skills-donut-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-top: 0.2em;
+  flex-shrink: 0;
+}
+
+/* —— Radar —— */
+.welten-skills-radar-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: min(100%, 300px);
+  margin: 0 auto;
+  padding: 0.25rem 0;
+}
+
+.welten-skills-radar-svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.welten-skills-radar-grid {
+  fill: none;
+  stroke: var(--sk-radar-grid);
+  stroke-width: 0.75;
+}
+
+.welten-skills-radar-axis {
+  stroke: var(--sk-radar-axis);
+  stroke-width: 0.65;
+}
+
+.welten-skills-radar-area {
+  fill: var(--sk-radar-fill);
+  stroke: var(--sk-radar-stroke);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transform-origin: 70px 70px;
+  transform: scale(0);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.welten-skills-overview.is-inview .welten-skills-radar-area {
+  transform: scale(1);
+}
+
+.welten-skills-radar-edge {
+  fill: none;
+  stroke: var(--sk-radar-stroke);
+  stroke-width: 1.05;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+.welten-skills-radar-point {
+  fill: var(--sk-radar-point-fill);
+  stroke: var(--sk-radar-point-stroke);
+  stroke-width: 0.75;
+  opacity: 0;
+  transition: opacity 0.45s ease 0.3s;
+}
+
+.welten-skills-overview.is-inview .welten-skills-radar-point {
+  opacity: 1;
+}
+
+/* SVG: font-size in viewBox units — scales proportionally with the chart */
+.welten-skills-radar-label {
+  font-size: 2.75px;
+  font-weight: 400;
+  font-family: inherit;
+  fill: var(--sk-label, var(--text-muted));
+  fill-opacity: 0.88;
+  letter-spacing: 0;
+}
+
+.welten-skills-radar-label tspan {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.welten-skills-radar-value {
+  font-size: 2.05px;
+  font-weight: 500;
+  fill: var(--sk-label, var(--text-muted));
+  fill-opacity: 0.55;
+  font-family: inherit;
+}
+
+/* —— Vertical bars —— */
+.welten-skills-vbars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(6px, 1.2vw, 12px);
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  --sk-vbar-h: 108px;
+}
+
+.welten-skills-vbar-col {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 56px;
+  display: grid;
+  grid-template-rows: auto var(--sk-vbar-h) minmax(1.25em, auto);
+  align-items: end;
+  justify-items: center;
+  gap: 0.35rem;
+}
+
+.welten-skills-vbar-pct {
+  font-size: clamp(0.68rem, 1.05vw, 0.78rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--sk-value, var(--ice, var(--text)));
+  text-align: center;
+  line-height: 1.15;
+  min-height: 1.15em;
+}
+
+.welten-skills-vbar-stack {
+  width: 100%;
+  height: var(--sk-vbar-h);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: var(--sk-track);
+  border-radius: 8px 8px 4px 4px;
+  padding: 0 3px;
+  box-sizing: border-box;
+}
+
+.welten-skills-vbar-fill {
+  width: 68%;
+  max-width: 28px;
+  min-width: 12px;
+  height: 0;
+  min-height: 0;
+  border-radius: 5px 5px 2px 2px;
+  background: linear-gradient(180deg, var(--sk-accent-2), var(--sk-accent));
+  transition: height 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.welten-skills-overview.is-inview .welten-skills-vbar-fill,
+.welten-skills-vbar-fill.sk-bar-ready {
+  height: var(--sk-vh, 0%);
+}
+
+.welten-skills-vbar-label-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  min-height: 1.25em;
+}
+
+.welten-skills-vbar-label {
+  font-size: var(--sk-chart-term-size);
+  font-family: inherit;
+  text-align: center;
+  line-height: 1.15;
+  color: var(--sk-label, var(--text-muted));
+  white-space: nowrap;
+  hyphens: none;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+/* —— Skill rings —— */
+.welten-skills-rings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.8vw, 16px);
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.welten-skills-ring-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.38rem;
+  text-align: center;
+  min-width: 0;
+}
+
+.welten-skills-ring-svg {
+  width: min(76px, 22vw);
+  height: auto;
+}
+
+.welten-skills-ring-bg {
+  fill: none;
+  stroke: var(--sk-track);
+  stroke-width: 5;
+}
+
+.welten-skills-ring-fg {
+  fill: none;
+  stroke: var(--sk-accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke-dasharray: 0 999;
+  transition: stroke-dasharray 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.welten-skills-overview.is-inview .welten-skills-ring-fg,
+.welten-skills-ring-fg.sk-ring-ready {
+  stroke-dasharray: var(--sk-ring-dash, 0 999);
+}
+
+.welten-skills-ring-pct {
+  font-size: 8px;
+  font-weight: 700;
+  fill: var(--sk-value, var(--ice, var(--text)));
+  font-variant-numeric: tabular-nums;
+}
+
+.welten-skills-ring-label {
+  font-size: var(--sk-chart-term-size);
+  font-family: inherit;
+  line-height: 1.15;
+  color: var(--sk-label, var(--text-muted));
+  white-space: nowrap;
+  hyphens: none;
+  word-break: keep-all;
+  letter-spacing: -0.01em;
+}
+
+.welten-skills-ring-item[data-ring-long="1"] .welten-skills-ring-label {
+  font-size: clamp(0.56rem, 0.92vw, 0.66rem);
+}
+
+/* —— Heatmap —— */
+.welten-skills-heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+  max-width: 100%;
+  font-size: clamp(0.68rem, 1.05vw, 0.76rem);
+}
+
+.welten-skills-heatmap-head,
+.welten-skills-heatmap-row {
+  display: grid;
+  grid-template-columns: minmax(52px, 0.88fr) repeat(3, minmax(0, 1fr));
+  column-gap: 10px;
+  row-gap: 7px;
+  align-items: center;
+  justify-items: center;
+}
+
+.welten-skills-heatmap-head {
+  margin-bottom: 2px;
+}
+
+.welten-skills-heatmap-head span,
+.welten-skills-heatmap-cat {
+  justify-self: start;
+  width: 100%;
+}
+
+.welten-skills-heatmap-head .welten-skills-heatmap-level {
+  justify-self: center;
+  width: 100%;
+  max-width: 40px;
+}
+
+.welten-skills-heatmap-row .welten-skills-heatmap-cell {
+  justify-self: center;
+  width: 100%;
+  max-width: 34px;
+}
+
+.welten-skills-heatmap-head span {
+  text-align: center;
+  color: var(--sk-label, var(--text-muted));
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.welten-skills-heatmap-level {
+  white-space: nowrap;
+  font-size: clamp(0.56rem, 0.9vw, 0.66rem);
+  letter-spacing: -0.015em;
+  hyphens: none;
+  overflow: visible;
+  text-overflow: clip;
+  text-align: center;
+}
+
+.welten-skills-heatmap-level:first-of-type {
+  letter-spacing: -0.025em;
+}
+
+.welten-skills-heatmap-cat {
+  color: var(--sk-label, var(--text-muted));
+  hyphens: none;
+  white-space: nowrap;
+  text-align: left;
+  font-size: var(--sk-chart-term-size);
+  font-family: inherit;
+  line-height: var(--sk-chart-term-line);
+}
+
+.welten-skills-heatmap-cell {
+  height: clamp(16px, 2.6vw, 24px);
+  max-height: 24px;
+  border-radius: 5px;
+  background: var(--sk-track);
+}
+
+.welten-skills-heatmap-cell.is-l1 { background: var(--sk-heat-1); }
+.welten-skills-heatmap-cell.is-l2 { background: var(--sk-heat-2); }
+.welten-skills-heatmap-cell.is-l3 {
+  background: var(--sk-heat-3);
+  box-shadow: var(--sk-glow);
+}
+
+body[data-world="nexora"] .welten-skills-heatmap-cell.is-l3 {
+  outline: 1px solid rgba(101, 217, 255, 0.35);
+}
+
+body[data-world="vertex"] .welten-skills-heatmap-cell.is-l3 {
+  outline: 1px solid rgba(0, 0, 0, 0.22);
+}
+
+/* Responsive tuning */
+/* Laptop 1024–1439px */
+@media (max-width: 1439px) and (min-width: 1024px) {
+  .welten-skills-chart-card[data-skills-chart="strategy"] {
+    --sk-strategy-point-r: 3.4;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-chart-body {
+    height: 223px;
+    min-height: 223px;
+    max-height: 223px;
+    margin-top: 12px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-wrap,
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-svg {
+    width: 235px;
+    height: 235px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label {
+    font-size: 9px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-value {
+    font-size: 7px;
+  }
+}
+
+/* Tablet 768–1023px */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .welten-skills-chart-card[data-skills-chart="strategy"] {
+    --sk-strategy-point-r: 3.43;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-chart-body {
+    height: 203px;
+    min-height: 203px;
+    max-height: 203px;
+    margin-top: 10px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-wrap,
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-svg {
+    width: 210px;
+    height: 210px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label {
+    font-size: 8px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-value {
+    font-size: 6.5px;
+  }
+}
+
+@media (max-width: 520px) {
+  .welten-skills-heatmap-head,
+  .welten-skills-heatmap-row {
+    grid-template-columns: minmax(44px, 0.82fr) repeat(3, minmax(0, 1fr));
+    column-gap: 6px;
+    row-gap: 6px;
+  }
+
+  .welten-skills-heatmap-level {
+    font-size: clamp(0.48rem, 2.2vw, 0.56rem);
+  }
+
+  .welten-skills-overview {
+    --sk-chart-term-size: clamp(0.68rem, 2.8vw, 0.78rem);
+  }
+
+  .welten-skills-heatmap-head .welten-skills-heatmap-level {
+    max-width: 34px;
+  }
+
+  .welten-skills-heatmap-row .welten-skills-heatmap-cell {
+    max-width: 28px;
+    height: clamp(14px, 2.4vw, 20px);
+  }
+
+  .welten-skills-vbars {
+    --sk-vbar-h: 96px;
+  }
+}
+
+@media (max-width: 390px) {
+  .welten-skills-chart-card {
+    min-height: 230px;
+  }
+
+  .welten-skills-overview {
+    --sk-chart-term-size: clamp(0.64rem, 2.6vw, 0.74rem);
+  }
+
+}
+
+/* Mobile unter 768px */
+@media (max-width: 767px) {
+  .welten-skills-chart-card[data-skills-chart="strategy"] {
+    --sk-strategy-point-r: 3.46;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-chart-body {
+    height: 183px;
+    min-height: 183px;
+    max-height: 183px;
+    margin-top: 10px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-wrap,
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-svg {
+    width: 185px;
+    height: 185px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label {
+    font-size: 7px;
+  }
+
+  .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-value {
+    font-size: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welten-skills-chart-card,
+  .welten-skills-hbar-fill,
+  .welten-skills-radar-area,
+  .welten-skills-radar-point,
+  .welten-skills-vbar-fill,
+  .welten-skills-ring-fg {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .welten-skills-overview.is-inview .welten-skills-radar-area {
+    transform: scale(1) !important;
+  }
+
+  .welten-skills-hbar-fill { width: var(--sk-pct, 0%) !important; }
+  .welten-skills-vbar-fill { height: var(--sk-vh, 0%) !important; }
+  .welten-skills-ring-fg { stroke-dasharray: var(--sk-ring-dash, 0 999) !important; }
+}

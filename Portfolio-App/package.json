@@ -1,0 +1,20 @@
+{
+  "name": "alex-lamberti-portfolio",
+  "version": "1.0.0",
+  "description": "Alex Lamberti – 3 Welten Portfolio (Desktop)",
+  "main": "main.js",
+  "author": "Alex Lamberti",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build": "electron-builder --win",
+    "build:portable": "electron-builder --win portable",
+    "build:all": "electron-builder --win nsis portable"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  }
+}

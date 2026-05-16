@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Alex Lamberti | Welten (NEXORA · PROFESSIONAL · FREIRAUM)</title>
+<style>
+* { cursor: default; }
+button, a, [role="button"] { cursor: pointer; }
+html, body { margin: 0; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; }
+:root { --bar-h: 56px; }
+.world-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 2147483647;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px;
+  padding: 10px 12px;
+  padding-top: calc(10px + env(safe-area-inset-top, 0px));
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+.world-bar button {
+  font: inherit; cursor: pointer;
+  padding: 10px 16px; border-radius: 999px;
+  border: 1px solid transparent;
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+.world-frame {
+  position: fixed; left: 0; right: 0; bottom: 0; top: var(--bar-h, 56px);
+  width: 100%; height: calc(100% - var(--bar-h, 56px));
+  border: 0; display: none;
+}
+.world-frame.is-active { display: block; }
+body[data-master-world="nexora"] { background: #050810; }
+body[data-master-world="nexora"] .world-bar {
+  background: rgba(5, 8, 16, 0.92);
+  border-bottom: 1px solid rgba(142, 197, 255, 0.15);
+  backdrop-filter: blur(12px);
+}
+body[data-master-world="nexora"] .world-bar button {
+  color: rgba(232, 238, 248, 0.78);
+  border-color: rgba(142, 197, 255, 0.22);
+  background: rgba(18, 32, 56, 0.55);
+}
+body[data-master-world="nexora"] .world-bar button.is-active {
+  color: #fff; border-color: #65d9ff;
+  background: rgba(0, 140, 255, 0.22);
+  box-shadow: 0 0 28px rgba(0, 194, 255, 0.22);
+}
+body[data-master-world="vertex"] { background: #f4f2ee; }
+body[data-master-world="vertex"] .world-bar {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+body[data-master-world="vertex"] .world-bar button {
+  color: rgba(17, 17, 17, 0.55);
+  border-radius: 0;
+  border-color: rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.65);
+}
+body[data-master-world="vertex"] .world-bar button.is-active {
+  color: #fff; background: #111; border-color: #111;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+body[data-master-world="freiraum"] { background: #1c1026; }
+body[data-master-world="freiraum"] .world-bar {
+  background: rgba(28, 16, 38, 0.94);
+  border-bottom: 1px solid rgba(255, 209, 102, 0.22);
+  backdrop-filter: blur(12px);
+}
+body[data-master-world="freiraum"] .world-bar button {
+  color: rgba(255, 248, 239, 0.75);
+  border-color: rgba(255, 209, 102, 0.28);
+  background: rgba(55, 24, 62, 0.45);
+}
+body[data-master-world="freiraum"] .world-bar button.is-active {
+  color: #24142f;
+  background: linear-gradient(135deg, #ffd166, #ff8bbd);
+  box-shadow: 0 10px 32px rgba(255, 111, 174, 0.22);
+}
+</style>
+</head>
+<body data-master-world="vertex">
+<div class="world-bar" role="group" aria-label="Designwelt wählen">
+  <button type="button" data-iframe="0" data-world-key="nexora">NEXORA</button>
+  <button type="button" class="is-active" data-iframe="1" data-world-key="vertex">PROFESSIONAL</button>
+  <button type="button" data-iframe="2" data-world-key="freiraum">FREIRAUM</button>
+</div>
+<iframe class="world-frame" title="NEXORA" data-lazy-src="NEXORA.html" src="about:blank"></iframe>
+<iframe class="world-frame is-active" title="PROFESSIONAL" src="PROFESSIONAL.html"></iframe>
+<iframe class="world-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
+<script>
+(function () {
+  var CHAPTERS = ["home","about","profile","values","strengths","projects","experience","workstyle","why","faq","contact"];
+  var sharedChapter = "home";
+  var bar = document.querySelector(".world-bar");
+  var frames = document.querySelectorAll(".world-frame");
+  function isOur(win) {
+    if (!win) return false;
+    for (var i = 0; i < frames.length; i++) {
+      try { if (frames[i].contentWindow === win) return true; } catch (e) {}
+    }
+    return false;
+  }
+  window.addEventListener("message", function (e) {
+    if (!e.data || e.data.type !== "portfolio-chapter") return;
+    if (!isOur(e.source)) return;
+    if (typeof e.data.chapter === "string" && CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;
+  });
+  function readChapter(f) {
+    try {
+      var d = f.contentDocument;
+      if (!d || !d.body) return null;
+      var b = d.body.getAttribute("data-current-slide");
+      if (b && CHAPTERS.indexOf(b) >= 0) return b;
+      var a = d.querySelector(".slide.active[data-slide]");
+      if (a) { var id = a.getAttribute("data-slide"); if (id && CHAPTERS.indexOf(id) >= 0) return id; }
+    } catch (err) {}
+    return null;
+  }
+  function applyChapter(f, id) {
+    var ch = CHAPTERS.indexOf(id) >= 0 ? id : "home";
+    try {
+      var d = f.contentDocument;
+      if (d) {
+        var link = d.querySelector('.menu-links a[data-go="' + ch + '"]');
+        if (link) { link.click(); return; }
+      }
+    } catch (e1) {}
+    if (f.contentWindow) {
+      [0, 60, 150, 320, 700].forEach(function (ms) {
+        setTimeout(function () {
+          try { f.contentWindow.postMessage({ type: "portfolio-go-chapter", chapter: ch }, "*"); } catch (e2) {}
+        }, ms);
+      });
+    }
+  }
+  function activeIdx() {
+    var idx = -1;
+    frames.forEach(function (f, j) { if (f.classList.contains("is-active")) idx = j; });
+    return idx;
+  }
+  function setMaster(i) {
+    var btn = bar.querySelector('button[data-iframe="' + i + '"]');
+    var key = btn && btn.getAttribute("data-world-key");
+    if (!key) key = i === 0 ? "nexora" : i === 1 ? "vertex" : "freiraum";
+    document.body.setAttribute("data-master-world", key);
+  }
+  function setActive(i) {
+    var keys = ["nexora", "vertex", "freiraum"];
+var prev = activeIdx();
+    if (prev >= 0) { var c = readChapter(frames[prev]); if (c) sharedChapter = c; }
+    frames.forEach(function (f, j) {
+      var show = j === i;
+      f.classList.toggle("is-active", show);
+      if (!show) return;
+      var lazy = f.getAttribute("data-lazy-src");
+      var blank = !f.src || f.src.indexOf("about:blank") !== -1;
+      if (lazy && blank) {
+        function onLoad() {
+          f.removeEventListener("load", onLoad);
+          applyChapter(f, sharedChapter);
+        }
+        f.addEventListener("load", onLoad);
+        f.src = lazy;
+      } else {
+        setTimeout(function () { applyChapter(f, sharedChapter); }, 80);
+      }
+    });
+    bar.querySelectorAll("button").forEach(function (b, j) { b.classList.toggle("is-active", j === i); });
+    setMaster(i);
+  }
+  bar.addEventListener("click", function (e) {
+    var btn = e.target.closest("button[data-iframe]");
+    if (!btn) return;
+    setActive(parseInt(btn.getAttribute("data-iframe"), 10));
+  });
+})();
+</script>
+</body>
+</html>

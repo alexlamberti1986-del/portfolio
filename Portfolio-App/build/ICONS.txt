@@ -1,0 +1,8 @@
+Place branding icons here for production builds:
+
+  icon.ico   — Windows (256×256 recommended, multi-size ICO)
+  icon.icns  — macOS
+
+Then add to electron-builder.json under win.icon and mac.icon.
+
+Until icons are added, Electron uses the default application icon.

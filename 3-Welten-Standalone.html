@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Alex Lamberti | 3 Welten (Standalone)</title>
+<style>
+  html, body { margin:0; height:100%; overflow:hidden; font-family:system-ui,-apple-system,sans-serif; }
+  :root { --bar-h: 56px; }
+  .world-bar { position:fixed; top:0; left:0; right:0; z-index:2147483647; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; padding:10px 12px; padding-top:calc(10px + env(safe-area-inset-top,0px)); transition:background .35s ease,border-color .35s ease; }
+  .world-bar button[data-world] { font:inherit; cursor:pointer; padding:10px 22px; border-radius:999px; border:1px solid transparent; transition:border-color .25s ease,background .25s ease,color .25s ease,box-shadow .25s ease; }
+  .world-bar button[data-world]:hover { transform:translateY(-1px); }
+  body[data-master-world="nexora"] .world-bar button[data-world]:hover { color:#fff; }
+  body[data-master-world="professional"] .world-bar button[data-world]:hover,
+  body[data-master-world="vertex"] .world-bar button[data-world]:hover { color:#111; }
+  body[data-master-world="freiraum"] .world-bar button[data-world]:hover { color:#fff8ef; }
+  .sound-toggle {
+    margin-left: 4px;
+    padding: 8px 14px !important;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    opacity: 0.92;
+    border-radius: 999px;
+  }
+  .sound-toggle.is-on { opacity: 1; }
+  body[data-master-world="nexora"] { background:#050810; }
+  body[data-master-world="nexora"] .world-bar { background:rgba(5,8,16,.92); border-bottom:1px solid rgba(142,197,255,.15); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  body[data-master-world="nexora"] .world-bar button[data-world] { color:rgba(232,238,248,.78); border-color:rgba(142,197,255,.22); background:rgba(18,32,56,.55); }
+  body[data-master-world="nexora"] .world-bar button[data-world].is-active { color:#fff; border-color:#65d9ff; background:rgba(0,140,255,.22); box-shadow:0 0 28px rgba(0,194,255,.22); }
+  body[data-master-world="professional"],
+  body[data-master-world="vertex"] { background:#f4f2ee; }
+  body[data-master-world="professional"] .world-bar,
+  body[data-master-world="vertex"] .world-bar { background:rgba(255,255,255,.94); border-bottom:1px solid rgba(0,0,0,.1); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+  body[data-master-world="professional"] .world-bar button[data-world],
+  body[data-master-world="vertex"] .world-bar button[data-world] { color:rgba(17,17,17,.55); border-radius:0; border-color:rgba(0,0,0,.14); background:rgba(255,255,255,.65); }
+  body[data-master-world="professional"] .world-bar button[data-world].is-active,
+  body[data-master-world="vertex"] .world-bar button[data-world].is-active { color:#fff; background:#111; border-color:#111; box-shadow:0 10px 26px rgba(0,0,0,.12); }
+  body[data-master-world="freiraum"] { background:#1c1026; }
+  body[data-master-world="freiraum"] .world-bar { background:rgba(28,16,38,.94); border-bottom:1px solid rgba(255,209,102,.22); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  body[data-master-world="freiraum"] .world-bar button[data-world] { color:rgba(255,248,239,.75); border-color:rgba(255,209,102,.28); background:rgba(55,24,62,.45); }
+  body[data-master-world="freiraum"] .world-bar button[data-world].is-active { color:#24142f; border-color:rgba(255,209,102,.65); background:linear-gradient(135deg,#ffd166,#ff8bbd); box-shadow:0 10px 32px rgba(255,111,174,.22); }
+  body[data-master-world="nexora"] .sound-toggle { color:rgba(232,238,248,.85); border:1px solid rgba(142,197,255,.28); background:rgba(18,32,56,.55); cursor:pointer; }
+  body[data-master-world="professional"] .sound-toggle,
+  body[data-master-world="vertex"] .sound-toggle { color:rgba(17,17,17,.65); border:1px solid rgba(0,0,0,.16); background:rgba(255,255,255,.85); border-radius:999px !important; cursor:pointer; }
+  body[data-master-world="freiraum"] .sound-toggle { color:rgba(255,248,239,.85); border:1px solid rgba(255,209,102,.35); background:rgba(55,24,62,.45); cursor:pointer; }
+  .world-frame { position:fixed; left:0; right:0; bottom:0; top:var(--bar-h,56px); width:100%; height:calc(100% - var(--bar-h,56px)); border:0; display:none; }
+  .world-frame.is-active { display:block; }
+  @media (max-width:720px) { .world-bar button[data-world] { padding:8px 12px; font-size:.86rem; } .sound-toggle { padding:7px 10px !important; font-size:.72rem; } }
+</style>
+</head>
+<body data-master-world="professional">
+<div class="world-bar" role="group" aria-label="Designwelt wählen">
+  <button type="button" data-world="nexora">NEXORA</button>
+  <button type="button" class="is-active" data-world="professional">PROFESSIONAL</button>
+  <button type="button" data-world="freiraum">FREIRAUM</button>
+  <button type="button" class="sound-toggle" id="sound-toggle" aria-pressed="false" title="Weltwechsel-Sound">Sound Off</button>
+</div>
+<iframe class="world-frame" title="NEXORA" data-world="nexora" data-src="NEXORA.html"></iframe>
+<iframe class="world-frame is-active" title="PROFESSIONAL" data-world="professional" data-src="PROFESSIONAL.html"></iframe>
+<iframe class="world-frame" title="FREIRAUM" data-world="freiraum" data-src="FREIRAUM.html"></iframe>
+
+<script>
+(function () {
+  var CHAPTERS = ["home","about","profile","values","strengths","projects","experience","workstyle","why","faq","contact"];
+  var sharedChapter = "home";
+  var bar = document.querySelector(".world-bar");
+  var frames = Array.from(document.querySelectorAll(".world-frame"));
+  var buttons = Array.from(document.querySelectorAll(".world-bar button[data-world]"));
+  var soundBtn = document.getElementById("sound-toggle");
+  var loaded = {};
+  var soundEnabled = false;
+  var lastSoundWorld = "professional";
+
+  var SOUND_FILES = {
+    nexora: "assets/audio/Nexora sound.mp3",
+    professional: "assets/audio/Professional sound.mp3",
+    freiraum: "assets/audio/Freiraum sound.mp3",
+  };
+
+  var sounds = {};
+  Object.keys(SOUND_FILES).forEach(function (key) {
+    var src = SOUND_FILES[key];
+    try {
+      src = encodeURI(src).replace(/#/g, "%23");
+    } catch (e) {}
+    var audio = new Audio(src);
+    audio.preload = "auto";
+    audio.volume = 0.55;
+    sounds[key] = audio;
+  });
+
+  function soundKeyFromWorld(world) {
+    return world === "professional" ? "professional" : world;
+  }
+
+  function updateSoundButton() {
+    if (!soundBtn) return;
+    soundBtn.textContent = soundEnabled ? "Sound On" : "Sound Off";
+    soundBtn.classList.toggle("is-on", soundEnabled);
+    soundBtn.setAttribute("aria-pressed", soundEnabled ? "true" : "false");
+  }
+
+  function playWorldSwitchSound(worldKey) {
+    if (!soundEnabled || worldKey === lastSoundWorld) return;
+    var clip = sounds[worldKey];
+    if (!clip) return;
+    try {
+      clip.currentTime = 0;
+      var p = clip.play();
+      if (p && typeof p.catch === "function") p.catch(function () {});
+    } catch (e) {}
+    lastSoundWorld = worldKey;
+  }
+
+  if (soundBtn) {
+    soundBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      soundEnabled = !soundEnabled;
+      updateSoundButton();
+    });
+  }
+  updateSoundButton();
+
+  var NEXORA_ARROW_CSS = "body[data-world=\"nexora\"] .dna-arrow,\nbody[data-world=\"nexora\"] .dna-nav-arrow,\nbody[data-world=\"nexora\"] .dna-control,\nbody[data-world=\"nexora\"] .dna-controls,\nbody[data-world=\"nexora\"] .orbit-arrow,\nbody[data-world=\"nexora\"] .orbit-control,\nbody[data-world=\"nexora\"] .orbit-controls,\nbody[data-world=\"nexora\"] .hero-arrow,\nbody[data-world=\"nexora\"] .hero-arrows,\nbody[data-world=\"nexora\"] .carousel-arrow,\nbody[data-world=\"nexora\"] .carousel-controls,\nbody[data-world=\"nexora\"] .spiral-arrow,\nbody[data-world=\"nexora\"] .spiral-controls,\nbody[data-world=\"nexora\"] button[aria-label*=\"Weiter\"],\nbody[data-world=\"nexora\"] button[aria-label*=\"Zurück\"],\nbody[data-world=\"nexora\"] button[aria-label*=\"Next\"],\nbody[data-world=\"nexora\"] button[aria-label*=\"Previous\"] {\n  display: none !important;\n  visibility: hidden !important;\n  pointer-events: none !important;\n}";
+
+  function setBarHeight() {
+    var h = bar ? bar.offsetHeight : 56;
+    document.documentElement.style.setProperty("--bar-h", h + "px");
+  }
+  window.addEventListener("resize", setBarHeight, { passive: true });
+  setBarHeight();
+
+  function masterKey(world) {
+    return world === "professional" ? "vertex" : world;
+  }
+
+  function setMasterWorld(world) {
+    document.body.setAttribute("data-master-world", world === "professional" ? "professional" : world);
+  }
+
+  function readChapter(frame) {
+    try {
+      var d = frame.contentDocument;
+      if (!d || !d.body) return null;
+      var b = d.body.getAttribute("data-current-slide");
+      if (b && CHAPTERS.indexOf(b) >= 0) return b;
+      var a = d.querySelector(".slide.active[data-slide]");
+      if (a) {
+        var id = a.getAttribute("data-slide");
+        if (id && CHAPTERS.indexOf(id) >= 0) return id;
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  function applyChapter(frame, chapterId) {
+    var id = CHAPTERS.indexOf(chapterId) >= 0 ? chapterId : "home";
+    try {
+      var d = frame.contentDocument;
+      if (d) {
+        var link = d.querySelector('.menu-links a[data-go="' + id + '"]');
+        if (link) { link.click(); return; }
+      }
+    } catch (e1) {}
+    if (frame.contentWindow) {
+      [0, 60, 150, 320, 700].forEach(function (ms) {
+        setTimeout(function () {
+          try {
+            frame.contentWindow.postMessage({ type: "portfolio-go-chapter", chapter: id }, "*");
+          } catch (e2) {}
+        }, ms);
+      });
+    }
+  }
+
+  function injectNexoraNoArrows(frame) {
+    try {
+      var d = frame.contentDocument;
+      if (!d || d.getElementById("nexora-remove-arrow-controls")) return;
+      var st = d.createElement("style");
+      st.id = "nexora-remove-arrow-controls";
+      st.textContent = NEXORA_ARROW_CSS;
+      (d.head || d.documentElement).appendChild(st);
+    } catch (e) {}
+  }
+
+  function loadFrame(frame, world, cb) {
+    var src = frame.getAttribute("data-src");
+    if (!src) { if (cb) cb(); return; }
+    if (loaded[world] && frame.src && frame.src.indexOf("about:blank") === -1) {
+      if (cb) cb();
+      return;
+    }
+    function onLoad() {
+      frame.removeEventListener("load", onLoad);
+      loaded[world] = true;
+      if (world === "nexora") injectNexoraNoArrows(frame);
+      if (cb) cb();
+    }
+    frame.addEventListener("load", onLoad);
+    frame.src = src;
+  }
+
+  function activeWorld() {
+    var f = frames.find(function (x) { return x.classList.contains("is-active"); });
+    return f ? f.getAttribute("data-world") : "professional";
+  }
+
+  function showWorld(world) {
+    var prev = frames.find(function (f) { return f.classList.contains("is-active"); });
+    var prevWorld = prev ? prev.getAttribute("data-world") : null;
+    if (prevWorld && prevWorld !== world) {
+      playWorldSwitchSound(soundKeyFromWorld(world));
+    }
+    if (prev) {
+      var ch = readChapter(prev);
+      if (ch) sharedChapter = ch;
+    }
+    frames.forEach(function (f) {
+      f.classList.toggle("is-active", f.getAttribute("data-world") === world);
+    });
+    buttons.forEach(function (b) {
+      b.classList.toggle("is-active", b.getAttribute("data-world") === world);
+    });
+    setMasterWorld(world);
+    var target = frames.find(function (f) { return f.getAttribute("data-world") === world; });
+    if (!target) return;
+    loadFrame(target, world, function () {
+      applyChapter(target, sharedChapter);
+    });
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      showWorld(btn.getAttribute("data-world"));
+    });
+  });
+
+  window.addEventListener("message", function (e) {
+    if (!e.data || e.data.type !== "portfolio-chapter") return;
+    if (typeof e.data.chapter === "string" && CHAPTERS.indexOf(e.data.chapter) >= 0) {
+      sharedChapter = e.data.chapter;
+    }
+  });
+
+  showWorld("professional");
+})();
+</script>
+</body>
+</html>

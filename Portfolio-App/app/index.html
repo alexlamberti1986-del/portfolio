@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self'; font-src 'self' data:; connect-src 'self'; frame-src 'self';" />
+<title>Alex Lamberti Portfolio</title>
+<style>
+  * { box-sizing: border-box; cursor: default; }
+  button, a, [role="button"] { cursor: pointer; }
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #0a0a0c;
+    -webkit-font-smoothing: antialiased;
+  }
+  :root { --bar-h: 56px; }
+  .world-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2147483647;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
+    padding-top: calc(10px + env(safe-area-inset-top, 0px));
+    transition: background 0.35s ease, border-color 0.35s ease;
+  }
+  .world-bar button {
+    font: inherit;
+    cursor: pointer;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .world-bar button:hover { transform: translateY(-1px); }
+  .sound-toggle {
+    margin-left: 4px;
+    padding: 8px 14px !important;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    opacity: 0.92;
+  }
+  .sound-toggle.is-on { opacity: 1; }
+  .world-frame {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: var(--bar-h, 56px);
+    width: 100%;
+    height: calc(100% - var(--bar-h, 56px));
+    border: 0;
+    display: none;
+    background: transparent;
+  }
+  .world-frame.is-active { display: block; }
+  body[data-master-world="nexora"] { background: #050810; }
+  body[data-master-world="nexora"] .world-bar {
+    background: rgba(5, 8, 16, 0.92);
+    border-bottom: 1px solid rgba(142, 197, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  body[data-master-world="nexora"] .world-bar button {
+    color: rgba(232, 238, 248, 0.78);
+    border-color: rgba(142, 197, 255, 0.22);
+    background: rgba(18, 32, 56, 0.55);
+  }
+  body[data-master-world="nexora"] .world-bar button.is-active {
+    color: #fff;
+    border-color: #65d9ff;
+    background: rgba(0, 140, 255, 0.22);
+    box-shadow: 0 0 28px rgba(0, 194, 255, 0.22);
+  }
+  body[data-master-world="professional"],
+  body[data-master-world="vertex"] { background: #f4f2ee; }
+  body[data-master-world="professional"] .world-bar,
+  body[data-master-world="vertex"] .world-bar {
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  body[data-master-world="professional"] .world-bar button,
+  body[data-master-world="vertex"] .world-bar button {
+    color: rgba(17, 17, 17, 0.55);
+    border-radius: 0;
+    border-color: rgba(0, 0, 0, 0.14);
+    background: rgba(255, 255, 255, 0.65);
+  }
+  body[data-master-world="professional"] .world-bar button.is-active,
+  body[data-master-world="vertex"] .world-bar button.is-active {
+    color: #fff;
+    background: #111;
+    border-color: #111;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+  }
+  body[data-master-world="freiraum"] { background: #1c1026; }
+  body[data-master-world="freiraum"] .world-bar {
+    background: rgba(28, 16, 38, 0.94);
+    border-bottom: 1px solid rgba(255, 209, 102, 0.22);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  body[data-master-world="freiraum"] .world-bar button {
+    color: rgba(255, 248, 239, 0.75);
+    border-color: rgba(255, 209, 102, 0.28);
+    background: rgba(55, 24, 62, 0.45);
+  }
+  body[data-master-world="freiraum"] .world-bar button.is-active {
+    color: #24142f;
+    border-color: rgba(255, 209, 102, 0.65);
+    background: linear-gradient(135deg, #ffd166, #ff8bbd);
+    box-shadow: 0 10px 32px rgba(255, 111, 174, 0.22);
+  }
+  @media (max-width: 720px) {
+    .world-bar button { padding: 8px 12px; font-size: 0.86rem; }
+    .sound-toggle { padding: 7px 10px !important; font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body data-master-world="professional">
+<div class="world-bar" role="group" aria-label="Designwelt wählen">
+  <button type="button" data-world="nexora">NEXORA</button>
+  <button type="button" class="is-active" data-world="professional">PROFESSIONAL</button>
+  <button type="button" data-world="freiraum">FREIRAUM</button>
+  <button type="button" class="sound-toggle" id="sound-toggle" aria-pressed="false" title="Weltwechsel-Sound">Sound Off</button>
+</div>
+<iframe class="world-frame" title="NEXORA" data-world="nexora" data-src="NEXORA.html"></iframe>
+<iframe class="world-frame is-active" title="PROFESSIONAL" data-world="professional" data-src="PROFESSIONAL.html"></iframe>
+<iframe class="world-frame" title="FREIRAUM" data-world="freiraum" data-src="FREIRAUM.html"></iframe>
+<script src="shell.js"></script>
+</body>
+</html>
