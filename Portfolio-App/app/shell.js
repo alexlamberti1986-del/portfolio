@@ -13,7 +13,7 @@
   var soundBtn = document.getElementById("sound-toggle");
   var loaded = {};
   var soundEnabled = false;
-  var lastWorld = "professional";
+  var lastSoundWorld = "professional";
 
   var SOUND_FILES = {
     nexora: "assets/audio/Nexora sound.mp3",
@@ -73,19 +73,26 @@
     soundBtn.setAttribute("aria-pressed", soundEnabled ? "true" : "false");
   }
 
-  function playWorldSound(world) {
-    if (!soundEnabled || world === lastWorld) return;
-    var clip = sounds[world];
+  function soundKeyFromWorld(world) {
+    return world === "professional" ? "professional" : world;
+  }
+
+  function playWorldSwitchSound(world) {
+    var key = soundKeyFromWorld(world);
+    if (!soundEnabled || key === lastSoundWorld) return;
+    var clip = sounds[key];
     if (!clip) return;
     try {
       clip.currentTime = 0;
       var p = clip.play();
       if (p && typeof p.catch === "function") p.catch(function () {});
     } catch (e) {}
+    lastSoundWorld = key;
   }
 
   if (soundBtn) {
-    soundBtn.addEventListener("click", function () {
+    soundBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
       soundEnabled = !soundEnabled;
       updateSoundButton();
     });
@@ -168,6 +175,10 @@
     var prev = frames.find(function (f) {
       return f.classList.contains("is-active");
     });
+    var prevWorld = prev ? prev.getAttribute("data-world") : null;
+    if (prevWorld && prevWorld !== world) {
+      playWorldSwitchSound(world);
+    }
     if (prev) {
       var ch = readChapter(prev);
       if (ch) sharedChapter = ch;
@@ -189,9 +200,6 @@
     loadFrame(target, world, function () {
       applyChapter(target, sharedChapter);
     });
-
-    playWorldSound(world);
-    lastWorld = world;
   }
 
   buttons.forEach(function (btn) {
@@ -210,17 +218,5 @@
     }
   });
 
-  frames.forEach(function (frame) {
-    var world = frame.getAttribute("data-world");
-    if (frame.classList.contains("is-active")) {
-      loadFrame(frame, world, function () {
-        applyChapter(frame, sharedChapter);
-      });
-    } else {
-      frame.src = "about:blank";
-    }
-  });
-
-  setMasterWorld("professional");
-  lastWorld = "professional";
+  showWorld("professional");
 })();
