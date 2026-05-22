@@ -1,0 +1,246 @@
+/**
+ * Welten — Mobile / Tablet / Performance (NEXORA · PROFESSIONAL · FREIRAUM)
+ * Touch-Scroll, Hero-Skalierung, Dot-Nav, Hintergrund-Rand, reduzierte Effekte
+ */
+
+:root {
+  --hero-scale: 1;
+}
+
+/* ── Touch-Scroll & Hero (Tablet + Handy) ── */
+@media (max-width: 1024px) {
+  :root {
+    --hero-scale: 0.78;
+    --hero-dna-h: min(
+      calc((100svh - var(--header-h, 56px) - var(--dock-h, 0px)) * 0.78),
+      620px
+    );
+  }
+
+  html.welten-mobile,
+  html.welten-mobile body {
+    overflow-x: hidden !important;
+    overscroll-behavior-y: auto;
+  }
+
+  .slide,
+  .slide.active,
+  #slide-home.slide,
+  .world,
+  .page,
+  .hero,
+  .hero-section,
+  .home-hero,
+  .home-hero-experience,
+  .hero-stage {
+    min-height: auto;
+    overflow-x: hidden;
+    overflow-y: visible;
+    touch-action: pan-y;
+  }
+
+  #slide-home.slide.active {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .home-hero-experience {
+    touch-action: pan-y !important;
+    user-select: auto !important;
+    -webkit-user-select: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: min(
+      calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px)),
+      760px
+    ) !important;
+    overflow: visible !important;
+  }
+
+  .dna-unified-scene,
+  .dna-orbit-group,
+  .dna-ring-scene,
+  .dna-stage,
+  #dnaStage,
+  .orbit-stage,
+  .hero-interaction,
+  .mouse-effect-layer,
+  .dna-particles-canvas,
+  .dna-premium-canvas,
+  #particle-canvas,
+  #dnaPremiumCanvas,
+  #weltenMousePaintCanvas,
+  .bg-root,
+  .bg-grid,
+  .light-beams,
+  canvas:not(.welten-keep-pointer) {
+    touch-action: pan-y !important;
+    pointer-events: none !important;
+  }
+
+  .dna-slide,
+  .btn,
+  .btn-primary,
+  .btn-menu,
+  .btn-close,
+  a[href],
+  button,
+  [role="button"],
+  .dock-card,
+  .menu-links a,
+  .experience-step,
+  .faq-q,
+  .faq-question,
+  .persona-tabs button,
+  .site-header,
+  .site-header * {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  .dna-unified-scene {
+    transform: scale(var(--hero-scale));
+    transform-origin: 50% 42%;
+  }
+
+  .dna-orbit-group {
+    transform: rotateY(var(--dna-rot, 0deg)) scale(calc(var(--hero-scale) * 0.95));
+    transform-origin: 50% 50%;
+  }
+
+  .dna-slide {
+    font-size: clamp(0.62rem, 2.4vw, 0.82rem) !important;
+    padding: clamp(8px, 2vw, 12px) clamp(10px, 2.5vw, 14px) !important;
+  }
+
+  body[data-world="vertex"] .dna-unified-scene::before {
+    transform: translateX(-50%) translateY(-50%) scale(var(--hero-scale)) !important;
+  }
+
+  body[data-world="freiraum"] .dna-unified-scene::after {
+    transform: scale(var(--hero-scale)) !important;
+    transform-origin: 100% 0;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --hero-scale: 0.62;
+    --hero-dna-h: min(
+      calc((100svh - var(--header-h, 56px) - var(--dock-h, 0px)) * 0.62),
+      520px
+    );
+  }
+
+  .home-hero-experience {
+    min-height: min(
+      calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px)),
+      640px
+    ) !important;
+  }
+
+  body[data-world="vertex"] .dna-unified-scene::before {
+    font-size: clamp(2.4rem, 14vw, 5.5rem) !important;
+  }
+
+  body[data-world="nexora"] .dna-unified-scene::after,
+  body[data-world="freiraum"] .dna-unified-scene::after {
+    font-size: clamp(0.65rem, 2.8vw, 0.85rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --hero-scale: 0.52;
+    --hero-dna-h: min(
+      calc((100svh - var(--header-h, 56px) - var(--dock-h, 0px)) * 0.52),
+      440px
+    );
+  }
+
+  .home-hero-experience {
+    min-height: min(
+      calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px)),
+      520px
+    ) !important;
+  }
+
+  .dna-orbit-group {
+    height: min(100%, min(42vh, 360px)) !important;
+  }
+}
+
+/* ── Hero-Hintergrund bis zum Rand, Inhalt zentriert ── */
+.home-hero-experience,
+.hero,
+.hero-section,
+.home-hero {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.hero-inner,
+.hero-content,
+.home-main-block,
+.slide-inner--home .home-main-block {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Rechte Punktnavigation: nur grosser Desktop ── */
+@media (max-width: 1400px) {
+  .experience-rail,
+  .side-nav,
+  .dot-nav,
+  .chapter-nav,
+  .vertical-nav,
+  .right-nav,
+  .chapter-dots,
+  .chapter-dock {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .slide {
+    padding-right: clamp(16px, 4vw, 44px) !important;
+  }
+
+  #slide-home.slide {
+    padding-right: 0 !important;
+  }
+}
+
+/* ── Performance: weniger Glow/Blur/Animation auf Touch-Geräten ── */
+html.welten-mobile .light-beams,
+html.welten-mobile .dna-holo-arm,
+html.welten-reduce-effects .light-beams,
+html.welten-reduce-effects .dna-holo-arm {
+  animation-play-state: paused !important;
+}
+
+html.welten-mobile .dna-premium-canvas,
+html.welten-mobile #particle-canvas,
+html.welten-mobile #weltenMousePaintCanvas,
+html.welten-reduce-effects .dna-premium-canvas,
+html.welten-reduce-effects #particle-canvas,
+html.welten-reduce-effects #weltenMousePaintCanvas {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+html.welten-mobile .glass-card,
+html.welten-reduce-effects .glass-card {
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+html.welten-page-hidden .dna-premium-canvas,
+html.welten-page-hidden #particle-canvas,
+html.welten-page-hidden #weltenMousePaintCanvas {
+  visibility: hidden !important;
+}
