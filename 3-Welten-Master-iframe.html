@@ -109,6 +109,7 @@ body[data-master-world="freiraum"] .sound-toggle {
   background: rgba(55, 24, 62, 0.45);
 }
 </style>
+<link rel="stylesheet" href="assets/world-transition.css" />
 </head>
 <body data-master-world="vertex">
 <div class="world-bar" role="group" aria-label="Designwelt wählen">
@@ -120,6 +121,8 @@ body[data-master-world="freiraum"] .sound-toggle {
 <iframe class="world-frame" title="NEXORA" data-lazy-src="NEXORA.html" src="about:blank"></iframe>
 <iframe class="world-frame is-active" title="PROFESSIONAL" src="PROFESSIONAL.html"></iframe>
 <iframe class="world-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
+<div id="world-transition-overlay" aria-hidden="true"></div>
+<script src="assets/transition-engine.js"></script>
 <script>
 (function () {
   var CHAPTERS = ["home","about","profile","values","strengths","projects","experience","workstyle","why","faq","contact"];
@@ -129,6 +132,7 @@ body[data-master-world="freiraum"] .sound-toggle {
   var soundBtn = document.getElementById("sound-toggle");
   var soundEnabled = false;
   var lastSoundWorld = "professional";
+  var switching = false;
 
   var SOUND_FILES = {
     nexora: "assets/audio/Nexora sound.mp3",
@@ -239,6 +243,9 @@ body[data-master-world="freiraum"] .sound-toggle {
       var c = readChapter(frames[prev]);
       if (c) sharedChapter = c;
     }
+    applyActiveFrames(i);
+  }
+  function applyActiveFrames(i) {
     frames.forEach(function (f, j) {
       var show = j === i;
       f.classList.toggle("is-active", show);
@@ -261,12 +268,40 @@ body[data-master-world="freiraum"] .sound-toggle {
     });
     setMaster(i);
   }
+  function worldFromIndex(i) {
+    return i === 0 ? "nexora" : i === 1 ? "professional" : "freiraum";
+  }
+  function runTransition(i) {
+    if (typeof window.playWorldTransition === "function") {
+      return window.playWorldTransition(worldFromIndex(i));
+    }
+    return Promise.resolve();
+  }
+  function switchToWorldIndex(i) {
+    if (switching || i < 0 || i > 2) return Promise.resolve();
+    if (activeIdx() === i) return Promise.resolve();
+    switching = true;
+    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+      b.disabled = true;
+    });
+    return runTransition(i)
+      .then(function () {
+        setActive(i);
+      })
+      .finally(function () {
+        switching = false;
+        bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+          b.disabled = false;
+        });
+      });
+  }
   bar.addEventListener("click", function (e) {
     if (e.target.closest("#sound-toggle")) return;
     var btn = e.target.closest("button[data-iframe]");
     if (!btn) return;
-    setActive(parseInt(btn.getAttribute("data-iframe"), 10));
+    switchToWorldIndex(parseInt(btn.getAttribute("data-iframe"), 10));
   });
+  window.switchToWorldIndex = switchToWorldIndex;
 })();
 </script>
 </body>

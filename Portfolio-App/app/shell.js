@@ -14,6 +14,7 @@
   var loaded = {};
   var soundEnabled = false;
   var lastSoundWorld = "professional";
+  var switching = false;
 
   var SOUND_FILES = {
     nexora: "assets/audio/Nexora sound.mp3",
@@ -60,6 +61,13 @@
 
   window.addEventListener("resize", setBarHeight, { passive: true });
   setBarHeight();
+
+  function getActiveWorld() {
+    var active = frames.find(function (f) {
+      return f.classList.contains("is-active");
+    });
+    return active ? active.getAttribute("data-world") : null;
+  }
 
   function setMasterWorld(world) {
     var key = world === "professional" ? "professional" : world;
@@ -202,9 +210,38 @@
     });
   }
 
+  function runTransition(world) {
+    if (typeof window.playWorldTransition === "function") {
+      return window.playWorldTransition(world);
+    }
+    return Promise.resolve();
+  }
+
+  function switchToWorld(world) {
+    if (!world || switching) return Promise.resolve();
+    var current = getActiveWorld();
+    if (current === world) return Promise.resolve();
+
+    switching = true;
+    buttons.forEach(function (b) {
+      b.disabled = true;
+    });
+
+    return runTransition(world)
+      .then(function () {
+        showWorld(world);
+      })
+      .finally(function () {
+        switching = false;
+        buttons.forEach(function (b) {
+          b.disabled = false;
+        });
+      });
+  }
+
   buttons.forEach(function (btn) {
     btn.addEventListener("click", function () {
-      showWorld(btn.getAttribute("data-world"));
+      switchToWorld(btn.getAttribute("data-world"));
     });
   });
 
@@ -218,5 +255,6 @@
     }
   });
 
+  window.switchToWorld = switchToWorld;
   showWorld("professional");
 })();
