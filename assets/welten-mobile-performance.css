@@ -244,3 +244,209 @@ html.welten-page-hidden #particle-canvas,
 html.welten-page-hidden #weltenMousePaintCanvas {
   visibility: hidden !important;
 }
+
+/* ── Overrides: eingebettete Fixes + Welt-spezifisch (Handy) ── */
+@media (max-width: 1024px) {
+  .home-hero-experience {
+    overflow: visible !important;
+    min-height: auto !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  #slide-home.slide,
+  #slide-home.slide.active {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* NEXORA: Hero kleiner, Wischen nach unten möglich */
+  body[data-world="nexora"] .home-hero-experience {
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    padding-bottom: clamp(16px, 4vw, 28px) !important;
+  }
+
+  body[data-world="nexora"] .dna-unified-scene {
+    transform: none !important;
+    min-height: min(48vh, 440px) !important;
+    max-height: min(52vh, 480px) !important;
+    flex: 0 0 auto !important;
+    padding-bottom: 8px !important;
+  }
+
+  body[data-world="nexora"] .dna-holo-arm,
+  body[data-world="nexora"] .dna-visual-stack {
+    transform: translate(-50%, -50%) rotateZ(-11deg) scale(0.72) !important;
+    pointer-events: none !important;
+  }
+
+  body[data-world="nexora"] .dna-orbit-group {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    transform: translate(-50%, -50%) !important;
+    top: 58% !important;
+    width: min(92vw, 520px) !important;
+  }
+
+  body[data-world="nexora"] .dna-ring,
+  body[data-world="nexora"] .dna-ring-scene {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  body[data-world="nexora"] #dnaStage,
+  body[data-world="nexora"] .dna-stage {
+    pointer-events: none !important;
+    touch-action: pan-y !important;
+  }
+
+  /* PROFESSIONAL: Hero etwas größer, keine zu starke Verkleinerung */
+  body[data-world="vertex"] .home-hero-experience {
+    min-height: min(72vh, 700px) !important;
+    padding-bottom: clamp(20px, 5vw, 36px) !important;
+  }
+
+  body[data-world="vertex"] .dna-unified-scene {
+    transform: none !important;
+    min-height: min(62vh, 580px) !important;
+    padding: clamp(12px, 3vw, 20px) clamp(10px, 3vw, 16px) clamp(16px, 4vw, 24px) !important;
+  }
+
+  body[data-world="vertex"] .dna-unified-scene::before {
+    font-size: clamp(3rem, 18vw, 7.5rem) !important;
+    transform: translateX(-50%) translateY(-50%) scale(1) !important;
+    top: 50% !important;
+  }
+
+  body[data-world="vertex"] .dna-unified-scene::after {
+    transform: translateX(-100px) !important;
+    top: 14% !important;
+    font-size: clamp(0.72rem, 2.6vw, 0.85rem) !important;
+  }
+
+  body[data-world="vertex"] .dna-orbit-group {
+    transform: translateX(-50%) !important;
+    left: 50% !important;
+    right: auto !important;
+    bottom: clamp(16px, 4vh, 32px) !important;
+    width: min(96vw, 760px) !important;
+  }
+
+  body[data-world="vertex"] .dna-ring {
+    gap: clamp(8px, 2vw, 12px) !important;
+    width: min(96vw, 760px) !important;
+  }
+
+  body[data-world="vertex"] .dna-slide {
+    padding: clamp(10px, 2.5vw, 13px) clamp(12px, 3vw, 17px) !important;
+    font-size: clamp(0.68rem, 2.8vw, 0.8rem) !important;
+  }
+
+  /* FREIRAUM: alle Menüpunkte sichtbar (Grid statt versteckt) */
+  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(n+6) {
+    display: block !important;
+  }
+
+  body[data-world="freiraum"] .home-hero-experience {
+    min-height: auto !important;
+    height: auto !important;
+    padding-bottom: clamp(16px, 4vw, 28px) !important;
+  }
+
+  body[data-world="freiraum"] .dna-unified-scene {
+    transform: none !important;
+    min-height: min(70vh, 640px) !important;
+    padding: 12px clamp(10px, 3vw, 16px) 16px !important;
+  }
+
+  body[data-world="freiraum"] .dna-unified-scene::after {
+    position: relative !important;
+    right: auto !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto 10px !important;
+    text-align: center !important;
+    transform: none !important;
+    font-size: clamp(1.4rem, 7vw, 2.4rem) !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-orbit-group,
+  body[data-world="freiraum"] #slide-home .dna-ring-scene {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    transform: none !important;
+    pointer-events: none !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-ring {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: clamp(6px, 2vw, 10px) !important;
+    width: 100% !important;
+    max-width: min(420px, 94vw) !important;
+    margin: 0 auto !important;
+    padding: 0 clamp(8px, 2vw, 12px) !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-slide {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    font-size: clamp(0.62rem, 2.6vw, 0.74rem) !important;
+    padding: clamp(7px, 2vw, 10px) clamp(8px, 2.5vw, 12px) !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body[data-world="nexora"] .dna-unified-scene {
+    min-height: min(44vh, 400px) !important;
+    max-height: min(48vh, 430px) !important;
+  }
+
+  body[data-world="nexora"] .dna-ring {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  body[data-world="vertex"] .home-hero-experience {
+    min-height: min(78vh, 720px) !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-ring {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body[data-world="nexora"] .dna-unified-scene {
+    min-height: min(40vh, 360px) !important;
+    max-height: min(44vh, 390px) !important;
+  }
+
+  body[data-world="vertex"] .dna-unified-scene::before {
+    font-size: clamp(2.6rem, 16vw, 5rem) !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-ring {
+    max-width: 100% !important;
+  }
+}

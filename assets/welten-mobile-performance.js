@@ -45,11 +45,18 @@
     var hero = document.querySelector(".home-hero-experience");
     if (hero) {
       hero.style.touchAction = "pan-y";
+      hero.style.overflow = "visible";
       hero.style.webkitOverflowScrolling = "touch";
+    }
+    var slideHome = document.getElementById("slide-home");
+    if (slideHome) {
+      slideHome.style.overflowY = "auto";
+      slideHome.style.webkitOverflowScrolling = "touch";
     }
     var stage = document.getElementById("dnaStage");
     if (stage && isMobileContext()) {
       stage.style.touchAction = "pan-y";
+      stage.style.pointerEvents = "none";
     }
   }
 
