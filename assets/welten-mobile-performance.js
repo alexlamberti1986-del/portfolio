@@ -65,11 +65,27 @@
       slideHome.style.webkitOverflowScrolling = "touch";
       slideHome.style.overscrollBehaviorY = "contain";
     }
-    var ring = document.querySelector(".nexora-orbit-buttons, .nexora-orbit-ring");
-    if (ring) {
-      ring.style.touchAction = "pan-x";
-      ring.style.pointerEvents = "auto";
+    if (!isMobileContext()) {
+      var ring = document.querySelector(".nexora-orbit-buttons, .nexora-orbit-ring");
+      if (ring) {
+        ring.style.touchAction = "pan-x";
+        ring.style.pointerEvents = "auto";
+      }
     }
+  }
+
+  /** NEXORA: auf Handy keine Orbit-Transforms (nur Button-Liste) */
+  function flattenNexoraOrbitOnMobile() {
+    if (!isMobileContext()) return;
+    document.documentElement.classList.add("welten-nexora-list");
+    var shell = document.querySelector("#slide-home .nexora-orbit-buttons");
+    if (!shell) return;
+    shell.classList.add("welten-nexora-list-mode");
+    shell.querySelectorAll(".nexora-orbit-button").forEach(function (btn) {
+      btn.style.setProperty("transform", "none", "important");
+      btn.style.setProperty("opacity", "1", "important");
+      btn.style.setProperty("filter", "none", "important");
+    });
   }
 
   /** Touch: DNA-Drag auf Handy aus – Scroll + NEXORA-Orbit-Skript übernehmen */
@@ -112,6 +128,7 @@
     tuneParticleCanvas();
     allowHeroPanY();
     patchDnaDragOffOnTouch();
+    flattenNexoraOrbitOnMobile();
   }
 
   apply();
