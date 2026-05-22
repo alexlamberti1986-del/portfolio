@@ -72,64 +72,14 @@
     }
   }
 
-  /** Touch: vertikal = Seite scrollen, horizontal = Orbit (NEXORA) / keine Pointer-Capture */
-  function patchHeroTouchAxis() {
+  /** Touch: DNA-Drag auf Handy aus – Scroll + NEXORA-Orbit-Skript übernehmen */
+  function patchDnaDragOffOnTouch() {
     if (!isMobileContext()) return;
-    var hero =
-      document.getElementById("dnaStage") ||
-      document.querySelector("#slide-home .home-hero-experience");
-    if (!hero || hero.dataset.weltenTouchAxis === "1") return;
-    hero.dataset.weltenTouchAxis = "1";
-
-    var touch = null;
-
-    hero.addEventListener(
-      "pointerdown",
-      function (e) {
-        if (e.pointerType === "mouse") return;
-        if (
-          e.target.closest(
-            ".dna-slide, .nexora-orbit-button, .nexora-orbit-buttons, .nexora-orbit-ring, .nexora-orbit-nav__btn, button, a, .btn"
-          )
-        ) {
-          return;
-        }
-        touch = {
-          id: e.pointerId,
-          x: e.clientX,
-          y: e.clientY,
-          mode: null,
-        };
-        e.stopImmediatePropagation();
-      },
-      true
-    );
-
-    hero.addEventListener(
-      "pointermove",
-      function (e) {
-        if (!touch || e.pointerId !== touch.id) return;
-        var dx = e.clientX - touch.x;
-        var dy = e.clientY - touch.y;
-        if (touch.mode === "scroll") return;
-        if (!touch.mode) {
-          if (Math.abs(dy) > Math.abs(dx) + 10) {
-            touch.mode = "scroll";
-            return;
-          }
-          if (Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy) * 1.15) {
-            touch.mode = "orbit";
-          }
-        }
-      },
-      true
-    );
-
-    function endTouch(e) {
-      if (touch && e.pointerId === touch.id) touch = null;
-    }
-    hero.addEventListener("pointerup", endTouch, true);
-    hero.addEventListener("pointercancel", endTouch, true);
+    document.querySelectorAll("#dnaStage, .home-hero-experience").forEach(function (hero) {
+      if (hero.dataset.weltenNoDnaDrag === "1") return;
+      hero.dataset.weltenNoDnaDrag = "1";
+      hero.style.touchAction = "pan-y";
+    });
   }
 
   function bindVisibilityPause() {
@@ -161,7 +111,7 @@
     disableMousePaint();
     tuneParticleCanvas();
     allowHeroPanY();
-    patchHeroTouchAxis();
+    patchDnaDragOffOnTouch();
   }
 
   apply();
