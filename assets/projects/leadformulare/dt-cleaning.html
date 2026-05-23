@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DT-Cleaning – Autopflege anfragen</title>
+<style>
+:root{
+  --primary:#1583DC;--primary-dark:#0E5FA8;--primary-soft:#EAF5FF;--navy:#0F2745;--navy-dark:#071B31;--bg:#F5FAFF;--line:#DCE8F2;--muted:#667085;--text:#101827;--white:#fff;--shadow:0 26px 70px rgba(15,23,42,.10);--shadow-sm:0 12px 32px rgba(15,23,42,.08);--radius-xl:28px;--radius-lg:22px;--radius-md:16px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(21,131,220,.16),transparent 30%),linear-gradient(180deg,#fff 0%,var(--bg) 72%)}a{color:var(--primary-dark)}img{max-width:100%;display:block}.wrap{max-width:1540px;margin:0 auto;padding:22px 16px 42px;display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:24px;align-items:start}.main,.side{border-radius:30px;box-shadow:var(--shadow)}.main{background:rgba(255,255,255,.98);padding:30px;border:1px solid rgba(220,232,242,.96)}.side{position:sticky;top:24px;padding:26px;background:linear-gradient(180deg,var(--navy) 0%,var(--navy-dark) 100%);color:#fff;overflow:hidden}.side:before{content:"";position:absolute;right:-65px;top:-70px;width:210px;height:210px;border-radius:999px;background:rgba(21,131,220,.22)}.brand{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px}.brand-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap}.logo-card{height:84px;min-width:220px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:18px;padding:12px 18px;box-shadow:0 10px 22px rgba(18,32,51,.08);font-weight:950;font-size:27px;color:var(--primary-dark);letter-spacing:-.03em}.badge{display:inline-flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;background:rgba(21,131,220,.12);color:var(--primary-dark);font-size:13px;font-weight:900}.badge .dot{width:10px;height:10px;border-radius:999px;background:var(--primary)}h1{margin:0;font-size:clamp(34px,4.2vw,58px);line-height:1.02;letter-spacing:-.04em;color:var(--navy)}.sub{margin:10px 0 0;max-width:980px;color:var(--muted);font-size:17px;line-height:1.75}.progress{margin:26px 0 24px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:var(--shadow-sm)}.progress-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap}.progress-top strong{font-size:15px;color:var(--navy)}.progress-top span{font-size:14px;color:var(--muted);font-weight:700}.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;position:relative}.steps:before{content:"";position:absolute;left:24px;right:24px;top:22px;height:2px;background:var(--line)}.step{position:relative;z-index:1;text-align:center}.circle{width:44px;height:44px;margin:0 auto 10px;border-radius:999px;background:#E8F1F8;color:#475569;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 8px rgba(255,255,255,.96);transition:.2s}.label{font-size:12px;font-weight:800;color:#475569;line-height:1.25;transition:.2s}.step.active .circle,.step.done .circle{background:var(--primary);color:#fff}.step.done .label,.step.active .label{color:var(--navy)}.card{background:#fff;border:1px solid rgba(220,232,242,.95);border-radius:30px;padding:32px;box-shadow:0 18px 40px rgba(15,23,42,.07);min-height:780px;display:flex;flex-direction:column}.panel{display:none;flex:1;flex-direction:column}.panel.active{display:flex}.kicker{font-size:13px;font-weight:900;color:var(--primary-dark);letter-spacing:.09em;text-transform:uppercase;margin-bottom:12px}h2{margin:0;font-size:clamp(26px,2.5vw,40px);line-height:1.12;color:var(--navy)}.desc{margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.72;max-width:920px}.divider{height:1px;background:linear-gradient(90deg,var(--line),rgba(220,232,242,.15));margin:24px 0 26px}.hero{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;border:1px solid var(--line);background:linear-gradient(135deg,#fff 0%,var(--primary-soft) 100%);border-radius:24px;padding:16px;margin-bottom:24px;align-items:center;overflow:hidden}.hero-img,.option-img,.mini-top{position:relative;overflow:hidden;background:#edf5fb}.hero-img{height:190px;border-radius:18px}.hero-img img,.option-img img,.mini-top img{width:100%;height:100%;object-fit:cover}.img-fallback{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#eef7ff,#dbeeff)}.img-fallback:after{content:attr(data-label);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--navy);font-weight:950;font-size:20px;padding:20px}.hero-copy h3{margin:0 0 8px;font-size:22px;line-height:1.15;color:var(--navy)}.hero-copy p{margin:0;color:var(--muted);line-height:1.7;font-size:15px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.option{position:relative}.option input{position:absolute;opacity:0;pointer-events:none}.option label{display:block;height:100%}.option-card{position:relative;display:flex;flex-direction:column;min-height:290px;height:100%;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:#fff;box-shadow:var(--shadow-sm);cursor:pointer;transition:border-color .22s,box-shadow .22s,background .22s}.option-card:hover{transform:none;box-shadow:0 20px 40px rgba(18,32,51,.12)}.option input:checked + label .option-card{border-color:rgba(21,131,220,.55);box-shadow:0 20px 40px rgba(21,131,220,.16);transform:none}.check{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 10px 20px rgba(15,23,42,.1);z-index:3}.option input:checked + label .check{background:var(--primary);border-color:transparent}.option input:checked + label .check:after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900}.option-img{height:166px}.option-body{padding:19px;display:flex;flex-direction:column;gap:9px;flex:1}.option-title{margin:0;font-size:20px;line-height:1.15;font-weight:900;color:var(--navy)}.option-sub{font-size:14px;line-height:1.65;color:var(--muted)}.option-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(21,131,220,.09);color:var(--primary-dark);font-size:12px;font-weight:900;width:max-content}.price-tag{margin-top:auto;display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:rgba(15,39,69,.94);color:#fff;font-size:12px;font-weight:900;width:max-content}.vehicle-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px}.vehicle-card label{min-height:68px;border:1px solid var(--line);border-radius:18px;background:#f8fbff;display:flex;align-items:center;justify-content:center;gap:12px;font-size:18px;font-weight:950;color:var(--navy);cursor:pointer}.vehicle-card input{position:absolute;opacity:0;pointer-events:none}.vehicle-card input:checked + label{border-color:rgba(21,131,220,.45);background:rgba(21,131,220,.10);color:var(--primary-dark)}.chip-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.chip{position:relative}.chip input{position:absolute;opacity:0;pointer-events:none}.chip label{display:flex;gap:12px;align-items:flex-start;padding:0;border:1px solid var(--line);border-radius:20px;background:#F8FBFF;min-height:100%;cursor:pointer;font-weight:800;color:#334155;line-height:1.3;transition:.2s;box-shadow:var(--shadow-sm);overflow:hidden}.chip-img{width:112px;min-height:112px;background:#eaf4ff;flex:0 0 112px}.chip-img img{width:100%;height:100%;object-fit:cover}.chip-body{padding:15px 15px 15px 0;display:flex;flex-direction:column;gap:7px;flex:1}.chip-title{font-size:15px;font-weight:950;color:var(--navy)}.chip-sub{font-size:12px;line-height:1.55;color:var(--muted);font-weight:650}.chip-price{font-size:12px;color:var(--primary-dark);font-weight:950}.chip input:checked + label{border-color:rgba(21,131,220,.45);background:rgba(21,131,220,.08);box-shadow:0 12px 24px rgba(21,131,220,.10)}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.full{grid-column:1/-1}.field label{display:block;margin:0 0 10px;font-size:14px;font-weight:900;color:var(--navy)}.req{color:var(--primary-dark)}.input,.select,.textarea{width:100%;min-height:56px;padding:16px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;font-size:15px;outline:none;color:var(--text);transition:.2s}.textarea{min-height:130px;resize:vertical}.input:focus,.select:focus,.textarea:focus{border-color:rgba(21,131,220,.55);box-shadow:0 0 0 5px rgba(21,131,220,.10)}.info-box{border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#fff 0%,var(--primary-soft) 100%);padding:18px;color:#334155;line-height:1.65;font-weight:650}.calendar-box{border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,#fff 0%,#F3FAFF 100%);padding:20px;box-shadow:var(--shadow-sm)}.calendar-note{font-size:13px;color:var(--muted);line-height:1.6;margin-top:10px}.location-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px}.location-card{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px;display:none}.location-card.show{display:block}.location-card.recommended{border-color:rgba(21,131,220,.45);box-shadow:0 12px 28px rgba(21,131,220,.10)}.location-card strong{display:block;color:var(--navy);font-size:15px;margin-bottom:6px}.location-card span{display:block;color:var(--muted);font-size:13px;line-height:1.55}.location-badge{display:inline-flex!important;width:max-content;margin-bottom:9px;padding:6px 10px;border-radius:999px;background:rgba(21,131,220,.10);color:var(--primary-dark)!important;font-size:11px!important;font-weight:950!important;letter-spacing:.03em;text-transform:uppercase}.location-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.location-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border-radius:12px;background:var(--primary);color:#fff!important;text-decoration:none;font-size:12px;font-weight:950}.location-link:hover{background:var(--primary-dark)}.location-logic{margin-bottom:16px;border:1px solid rgba(21,131,220,.16);background:linear-gradient(135deg,#fff 0%,var(--primary-soft) 100%);border-radius:18px;padding:14px 16px;color:#334155;font-size:13px;line-height:1.6;font-weight:700}.location-logic strong{display:block;color:var(--navy);font-size:14px;margin-bottom:4px}.booking-hint{margin-top:10px;border-radius:14px;background:#F8FBFF;border:1px solid var(--line);padding:12px 14px;color:#334155;font-size:13px;line-height:1.6;font-weight:700}.booking-hint a{font-weight:950}.summary-title{margin:0 0 10px;font-size:24px;font-weight:900;position:relative;z-index:1}.summary-sub{margin:0 0 22px;color:rgba(255,255,255,.72);font-size:14px;line-height:1.7;position:relative;z-index:1}.summary-box{position:relative;z-index:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:22px;padding:18px}.summary-row{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}.summary-row:last-child{border-bottom:0}.summary-label{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:900}.summary-value{font-size:14px;line-height:1.7;font-weight:700;word-break:break-word}.summary-price{position:relative;z-index:1;margin-top:20px;border-radius:20px;padding:18px;background:rgba(21,131,220,.16);border:1px solid rgba(21,131,220,.25)}.summary-price strong{font-size:34px;line-height:1;color:#fff}.line-items{display:grid;gap:10px;margin-top:14px}.line-item{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:15px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09)}.line-item small{display:block;color:rgba(255,255,255,.62);font-size:11px;line-height:1.4;margin-top:3px}.line-item b{font-size:13px}.line-item strong{white-space:nowrap;color:#fff;font-size:13px}.actions{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:auto;padding-top:28px;flex-wrap:wrap}.btn{appearance:none;border:0;min-height:56px;padding:0 24px;border-radius:16px;font-size:15px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:.2s}.btn.secondary{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-sm);color:var(--navy)}.btn.primary,.btn.dark{background:var(--primary);color:#fff;box-shadow:0 18px 34px rgba(21,131,220,.24)}.btn.primary:hover,.btn.dark:hover{background:var(--primary-dark)}.error{display:none;margin-top:14px;padding:14px 16px;border-radius:16px;background:rgba(21,131,220,.08);color:var(--primary-dark);border:1px solid rgba(21,131,220,.16);font-size:14px;font-weight:850}.error.show{display:block}.mobile-summary{display:none}.hidden{display:none!important}.small-muted{font-size:12px;color:var(--muted);line-height:1.55;margin-top:8px}.modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:99999}.modal.show{display:flex}.modal-card{width:100%;max-width:580px;background:#fff;border-radius:28px;box-shadow:0 30px 80px rgba(15,23,42,.22);padding:30px;text-align:center}.modal-icon{width:78px;height:78px;margin:0 auto 18px;border-radius:999px;background:rgba(21,131,220,.10);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900}
+.step-btn{appearance:none;border:0;background:transparent;padding:0;margin:0;width:100%;color:inherit;cursor:pointer}
+.step-btn[disabled]{cursor:not-allowed;opacity:.55}
+.step.available .circle{background:#eef7ff;color:var(--primary-dark)}
+.step.locked .circle{background:#edf2f7;color:#94a3b8}
+.step.available .label{color:#334155}
+.step.locked .label{color:#94a3b8}
+.step:not(.locked) .step-btn:hover .circle{transform:none;box-shadow:0 0 0 8px rgba(255,255,255,.96),0 10px 24px rgba(18,32,51,.12)}
+.chip-icon{position:absolute;left:10px;top:10px;z-index:3;width:38px;height:38px;border-radius:14px;background:rgba(15,39,69,.92);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 10px 24px rgba(15,23,42,.18)}
+.payment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:18px}
+.payment-option{position:relative}
+.payment-option input{position:absolute;opacity:0;pointer-events:none}
+.payment-card{height:100%;border:1px solid var(--line);border-radius:22px;background:#fff;padding:20px;box-shadow:var(--shadow-sm);cursor:pointer;transition:.2s;display:flex;gap:14px;align-items:flex-start}
+.payment-card:hover{box-shadow:0 18px 38px rgba(18,32,51,.12)}
+.payment-option input:checked + label .payment-card{border-color:rgba(21,131,220,.55);background:rgba(21,131,220,.08);box-shadow:0 18px 38px rgba(21,131,220,.12)}
+.payment-mark{width:32px;height:32px;border-radius:999px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.payment-option input:checked + label .payment-mark{background:var(--primary);border-color:var(--primary);color:#fff}
+.payment-option input:checked + label .payment-mark:after{content:"✓";font-weight:950}
+.payment-title{font-weight:950;color:var(--navy);font-size:18px;line-height:1.15}
+.payment-sub{margin-top:7px;color:var(--muted);font-size:13px;line-height:1.55;font-weight:650}
+.payment-badge{display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;border-radius:999px;background:rgba(21,131,220,.10);color:var(--primary-dark);font-weight:950;font-size:12px;padding:7px 11px}
+.card-preview{border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,#fff 0%,#F3FAFF 100%);padding:20px;box-shadow:var(--shadow-sm)}
+.card-form{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;margin-top:16px}
+.business-only.hidden{display:none!important}
+.invoice-box{border:1px solid var(--line);border-radius:20px;background:#fff;padding:18px;color:#334155;line-height:1.65;font-weight:650;margin-top:14px}
+.demo-stripe{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px dashed rgba(21,131,220,.25);background:#fff;border-radius:18px;padding:14px 16px;margin-top:14px;color:var(--muted);font-size:13px;line-height:1.55}
+.demo-stripe strong{color:var(--navy)}
+@media (max-width:1350px){.wrap{grid-template-columns:1fr}.side{display:none}.mobile-summary{display:block;margin-top:18px}.summary-price{background:rgba(21,131,220,.12)}.line-item{background:#fff;border:1px solid var(--line)}.line-item small{color:var(--muted)}.line-item strong{color:var(--navy)}}@media (max-width:1180px){.grid,.chip-grid,.fields,.location-cards,.payment-grid{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}}@media (max-width:780px){.payment-grid,.card-form{grid-template-columns:1fr}.wrap{padding:12px 8px 26px}.main{padding:16px;border-radius:22px}.card{padding:16px;min-height:auto}.grid,.chip-grid,.fields,.location-cards,.vehicle-row{grid-template-columns:1fr}.steps{grid-template-columns:repeat(3,minmax(0,1fr))}.steps:before{display:none}.progress{padding:18px}.actions{flex-direction:column}.actions .btn{width:100%}.hero-img{height:160px}.chip label{display:block}.chip-img{width:100%;height:130px}.chip-body{padding:15px}}
+
+/* =========================================================
+   DT-Cleaning Formular Schutz CSS
+   Wichtig für Einbau auf jeder Webseite:
+   schützt das Formular vor fremdem Theme-, Builder- oder globalem CSS.
+   ========================================================= */
+#dtLeadApp,
+#dtLeadApp * {
+  box-sizing: border-box !important;
+}
+
+#dtLeadApp {
+  width: 100% !important;
+  max-width: 100% !important;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  color: var(--text) !important;
+  line-height: normal !important;
+}
+
+#dtLeadApp img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  border: 0 !important;
+}
+
+#dtLeadApp .wrap {
+  max-width: 1540px !important;
+  margin: 0 auto !important;
+  padding: 22px 16px 42px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 370px !important;
+  gap: 24px !important;
+  align-items: start !important;
+}
+
+#dtLeadApp .main,
+#dtLeadApp .side {
+  border-radius: 30px !important;
+  box-shadow: var(--shadow) !important;
+}
+
+#dtLeadApp .main {
+  background: rgba(255,255,255,.98) !important;
+  padding: 30px !important;
+  border: 1px solid rgba(220,232,242,.96) !important;
+}
+
+#dtLeadApp .side {
+  position: sticky !important;
+  top: 24px !important;
+  padding: 26px !important;
+  overflow: hidden !important;
+}
+
+#dtLeadApp .brand,
+#dtLeadApp .brand-left {
+  display: flex !important;
+}
+
+#dtLeadApp .brand {
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  flex-wrap: wrap !important;
+  margin-bottom: 22px !important;
+}
+
+#dtLeadApp .brand-left {
+  align-items: center !important;
+  gap: 16px !important;
+  flex-wrap: wrap !important;
+}
+
+#dtLeadApp .logo-card {
+  height: 84px !important;
+  min-width: 220px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffffff !important;
+  border-radius: 18px !important;
+  padding: 12px 18px !important;
+  box-shadow: 0 10px 22px rgba(18,32,51,.08) !important;
+  font-weight: 950 !important;
+  font-size: 27px !important;
+  color: var(--primary-dark) !important;
+  letter-spacing: -.03em !important;
+}
+
+#dtLeadApp .badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 16px !important;
+  border-radius: 999px !important;
+  background: rgba(21,131,220,.12) !important;
+  color: var(--primary-dark) !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+#dtLeadApp .progress {
+  margin: 26px 0 24px !important;
+  background: #ffffff !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 26px !important;
+  padding: 22px !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+#dtLeadApp .steps {
+  display: grid !important;
+  grid-template-columns: repeat(7,minmax(0,1fr)) !important;
+  gap: 8px !important;
+  position: relative !important;
+}
+
+#dtLeadApp .step {
+  position: relative !important;
+  z-index: 1 !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+#dtLeadApp .step-btn,
+#dtLeadApp .step-btn:hover,
+#dtLeadApp .step-btn:focus,
+#dtLeadApp .step-btn:active {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  color: inherit !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: none !important;
+}
+
+#dtLeadApp .circle {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  margin: 0 auto 10px !important;
+  border-radius: 999px !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  line-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 0 0 8px rgba(255,255,255,.96) !important;
+  transition: .2s !important;
+  transform: none !important;
+}
+
+#dtLeadApp .label {
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  transition: .2s !important;
+}
+
+#dtLeadApp .step.active .circle,
+#dtLeadApp .step.done .circle {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+}
+
+#dtLeadApp .step.done .label,
+#dtLeadApp .step.active .label {
+  color: var(--navy) !important;
+}
+
+#dtLeadApp .card {
+  background: #ffffff !important;
+  border: 1px solid rgba(220,232,242,.95) !important;
+  border-radius: 30px !important;
+  padding: 32px !important;
+  box-shadow: 0 18px 40px rgba(15,23,42,.07) !important;
+  min-height: 780px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#dtLeadApp .panel {
+  display: none !important;
+  flex: 1 !important;
+  flex-direction: column !important;
+}
+
+#dtLeadApp .panel.active {
+  display: flex !important;
+}
+
+#dtLeadApp .grid,
+#dtLeadApp .chip-grid,
+#dtLeadApp .fields,
+#dtLeadApp .location-cards,
+#dtLeadApp .payment-grid,
+#dtLeadApp .vehicle-row {
+  display: grid !important;
+  gap: 18px !important;
+}
+
+#dtLeadApp .grid {
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+}
+
+#dtLeadApp .grid2,
+#dtLeadApp .location-cards,
+#dtLeadApp .payment-grid,
+#dtLeadApp .vehicle-row {
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+}
+
+#dtLeadApp .chip-grid {
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+  gap: 14px !important;
+}
+
+#dtLeadApp .fields {
+  grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+}
+
+#dtLeadApp .option,
+#dtLeadApp .chip,
+#dtLeadApp .payment-option,
+#dtLeadApp .vehicle-card {
+  position: relative !important;
+}
+
+#dtLeadApp .option input,
+#dtLeadApp .chip input,
+#dtLeadApp .payment-option input,
+#dtLeadApp .vehicle-card input {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+#dtLeadApp .option label,
+#dtLeadApp .chip label,
+#dtLeadApp .payment-option label,
+#dtLeadApp .vehicle-card label {
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
+
+#dtLeadApp .option-card,
+#dtLeadApp .payment-card,
+#dtLeadApp .calendar-box,
+#dtLeadApp .info-box,
+#dtLeadApp .location-card,
+#dtLeadApp .card-preview {
+  border-radius: 22px !important;
+}
+
+#dtLeadApp .hero-img,
+#dtLeadApp .option-img,
+#dtLeadApp .mini-top,
+#dtLeadApp .chip-img {
+  overflow: hidden !important;
+}
+
+#dtLeadApp .hero-img img,
+#dtLeadApp .option-img img,
+#dtLeadApp .mini-top img,
+#dtLeadApp .chip-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  image-rendering: auto !important;
+  backface-visibility: hidden !important;
+  transform: translateZ(0) !important;
+}
+
+#dtLeadApp .btn,
+#dtLeadApp button,
+#dtLeadApp input,
+#dtLeadApp select,
+#dtLeadApp textarea {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+#dtLeadApp .btn,
+#dtLeadApp .btn:hover,
+#dtLeadApp .btn:focus,
+#dtLeadApp .btn:active {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 0 !important;
+  min-height: 56px !important;
+  padding: 0 24px !important;
+  border-radius: 16px !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  line-height: 1.2 !important;
+}
+
+#dtLeadApp .input,
+#dtLeadApp .select,
+#dtLeadApp .textarea {
+  width: 100% !important;
+  min-height: 56px !important;
+  padding: 16px 18px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  font-size: 15px !important;
+  outline: none !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+#dtLeadApp .textarea {
+  min-height: 130px !important;
+  resize: vertical !important;
+}
+
+#dtLeadApp .actions {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 18px !important;
+  margin-top: auto !important;
+  padding-top: 28px !important;
+  flex-wrap: wrap !important;
+}
+
+#dtLeadApp .error.show {
+  display: block !important;
+}
+
+#dtLeadApp .hidden {
+  display: none !important;
+}
+
+@media (max-width:1350px){
+  #dtLeadApp .wrap {
+    grid-template-columns: 1fr !important;
+  }
+  #dtLeadApp .side {
+    display: none !important;
+  }
+  #dtLeadApp .mobile-summary {
+    display: block !important;
+    margin-top: 18px !important;
+  }
+}
+
+@media (max-width:1180px){
+  #dtLeadApp .grid,
+  #dtLeadApp .chip-grid,
+  #dtLeadApp .fields,
+  #dtLeadApp .location-cards,
+  #dtLeadApp .payment-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  #dtLeadApp .hero {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width:780px){
+  #dtLeadApp .payment-grid,
+  #dtLeadApp .card-form,
+  #dtLeadApp .grid,
+  #dtLeadApp .chip-grid,
+  #dtLeadApp .fields,
+  #dtLeadApp .location-cards,
+  #dtLeadApp .vehicle-row {
+    grid-template-columns: 1fr !important;
+  }
+  #dtLeadApp .wrap {
+    padding: 12px 8px 26px !important;
+  }
+  #dtLeadApp .main {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+  #dtLeadApp .card {
+    padding: 16px !important;
+    min-height: auto !important;
+  }
+  #dtLeadApp .steps {
+    grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+  }
+  #dtLeadApp .steps:before {
+    display: none !important;
+  }
+  #dtLeadApp .progress {
+    padding: 18px !important;
+  }
+  #dtLeadApp .actions {
+    flex-direction: column !important;
+  }
+  #dtLeadApp .actions .btn {
+    width: 100% !important;
+  }
+  #dtLeadApp .hero-img {
+    height: 160px !important;
+  }
+  #dtLeadApp .chip label {
+    display: block !important;
+  }
+  #dtLeadApp .chip-img {
+    width: 100% !important;
+    height: 130px !important;
+  }
+}
+
+</style>
+
+<style id="dp-demo-notice-styles">
+.dp-demo-modal{position:fixed!important;inset:0!important;z-index:2147483000!important;display:none!important;align-items:center!important;justify-content:center!important;padding:22px!important;background:rgba(15,23,42,.58)!important;backdrop-filter:blur(6px)!important;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;}
+.dp-demo-modal.is-open{display:flex!important;}
+.dp-demo-card{width:min(540px,100%)!important;background:#fff!important;border-radius:26px!important;box-shadow:0 28px 90px rgba(15,23,42,.28)!important;border:1px solid rgba(148,163,184,.24)!important;overflow:hidden!important;color:#0f172a!important;}
+.dp-demo-head{padding:24px 26px 18px!important;background:linear-gradient(135deg,#0f172a,#1e293b)!important;color:#fff!important;display:flex!important;align-items:flex-start!important;gap:16px!important;}
+.dp-demo-icon{width:42px!important;height:42px!important;border-radius:999px!important;background:rgba(255,255,255,.14)!important;display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 42px!important;font-size:22px!important;}
+.dp-demo-title{margin:0!important;font-size:22px!important;line-height:1.18!important;font-weight:900!important;letter-spacing:-.02em!important;color:#fff!important;}
+.dp-demo-body{padding:24px 26px 26px!important;}
+.dp-demo-body p{margin:0 0 18px!important;font-size:16px!important;line-height:1.65!important;color:#334155!important;}
+.dp-demo-note{padding:14px 16px!important;border-radius:16px!important;background:#f8fafc!important;border:1px solid #e2e8f0!important;color:#475569!important;font-size:14px!important;line-height:1.55!important;margin-bottom:20px!important;}
+.dp-demo-actions{display:flex!important;justify-content:flex-end!important;gap:12px!important;}
+.dp-demo-close{appearance:none!important;border:0!important;border-radius:999px!important;padding:12px 22px!important;background:#0f172a!important;color:#fff!important;font-weight:900!important;font-size:14px!important;cursor:pointer!important;box-shadow:0 10px 24px rgba(15,23,42,.18)!important;}
+.dp-demo-close:hover{filter:brightness(1.08)!important;}
+@media (max-width:520px){.dp-demo-head{padding:22px!important;}.dp-demo-body{padding:22px!important;}.dp-demo-title{font-size:20px!important;}}
+</style>
+
+</head>
+<body>
+<div id="dtLeadApp"></div>
+<script>
+const CONFIG={
+  companyName:'DT-Cleaning',clientId:'dt-cleaning', demoMode:true, mailFunctionDisabled:true, noMailMessage:'Danke für den Versuch, dieses Formular abzuschicken. Dieses Formular ist eine Projekt- und Testversion. Die Versandfunktion ist deaktiviert. Es wurden keine Daten übertragen und keine E-Mails versendet.',successText:'Danke für den Versuch, dieses Formular abzuschicken. Dieses Formular ist eine Projekt- und Testversion. Die Versandfunktion ist deaktiviert. Es wurden keine Daten übertragen und keine E-Mails versendet.',subjectPrefix:'Neue DT-Cleaning Anfrage',
+  stepLabels:{1:'Kundentyp',2:'Reinigung',3:'Paket & Preis',4:'Extras',5:'Standort & Termin',6:'Kontakt',7:'Zahlung'},
+  heroImg:'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1400&q=80',
+  services:[
+    {id:'komplett',value:'Komplettreinigung',title:'Komplettreinigung',tag:'Innen & Aussen',sub:'Für ein rundum gepflegtes Fahrzeug mit sauberem Innenraum und glänzendem Aussenbereich.',img:'https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1400&q=80'},
+    {id:'innen',value:'Innenreinigung',title:'Innenreinigung',tag:'Innenraum',sub:'Für Sitze, Cockpit, Teppiche, Glasflächen und einen frischen Innenraum.',img:'https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?auto=format&fit=crop&w=1400&q=80'},
+    {id:'aussen',value:'Aussenreinigung',title:'Aussenreinigung',tag:'Aussenpflege',sub:'Schonende Handwäsche, Felgen, Glasflächen, Lackpflege und sichtbarer Glanz.',img:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=80'},
+    {id:'moto',value:'Motorradreinigung & Pflege',title:'Motorradreinigung & Pflege',tag:'Motorrad',sub:'Handwäsche, Kunststoff-/Chrompflege und Lackversiegelung mit Sprühwachs.',img:'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1400&q=80'}
+  ],
+  packages:{
+    komplett:[{id:'komplett-standard',title:'Standard Komplettreinigung',sub:'Basisreinigung innen und aussen.',pkw:129,suv:159},{id:'komplett-exklusiv',title:'Exklusiv Komplettreinigung',sub:'Erweiterte Innen- und Aussenpflege.',pkw:199,suv:219},{id:'komplett-intensiv',title:'Intensiv Komplettreinigung',sub:'Gründliche Intensivpflege für stark beanspruchte Fahrzeuge.',pkw:299,suv:319}],
+    innen:[{id:'innen-standard',title:'Standard Innenreinigung',sub:'Frischer Innenraum mit Grundreinigung.',pkw:79,suv:89},{id:'innen-exklusiv',title:'Exklusiv Innenreinigung',sub:'Erweiterte Innenraumpflege.',pkw:129,suv:139},{id:'innen-intensiv',title:'Intensiv Innenreinigung',sub:'Intensive Pflege für Sitze, Teppiche und Innenraum.',pkw:229,suv:239}],
+    aussen:[{id:'aussen-standard',title:'Standard Aussenreinigung',sub:'Aussenwäsche von Hand inkl. Felgen und Glas aussen.',pkw:69,suv:79},{id:'aussen-exklusiv',title:'Exklusiv Aussenreinigung',sub:'Handwäsche inkl. Lackversiegelung mit Sprühwachs.',pkw:89,suv:109},{id:'aussen-intensiv',title:'Intensiv Aussenreinigung',sub:'Aussenpflege mit Langzeitversiegelung.',pkw:219,suv:229}],
+    moto:[{id:'moto-standard',title:'Motorradreinigung & Pflege',sub:'Gründliche Handwäsche, Sprühwachs, Kunststoff- und Chrompflege.',fixed:69}]
+  },
+  extras:[
+    {id:'geruch',value:'Geruchsneutralisation',title:'Geruchsneutralisation',icon:'🌬️',sub:'Ozonbehandlung und Frischekur gegen unangenehme Gerüche im Innenraum.',price:75,priceLabel:'CHF 75.– mit Paket',standalone:149,img:'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=900&q=80'},
+    {id:'flugrost',value:'Flugrost entfernen',title:'Flugrost entfernen',icon:'✨',sub:'Spezialbehandlung gegen Flugrostpartikel und raue Lackoberflächen.',price:125,priceLabel:'CHF 125.–',img:'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=80'},
+    {id:'hundehaare',value:'Hundehaare entfernen',title:'Hundehaare entfernen',icon:'🐾',sub:'Spezialreinigung für Tierhaare auf Sitzen, Teppichen und Kofferraum.',price:20,variable:true,priceLabel:'ab CHF 20.–',img:'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80'},
+    {id:'stoffsitze',value:'Professionelle Stoffsitzreinigung inkl. Fleckentfernung',title:'Stoffsitzreinigung',icon:'🧼',sub:'Shampoonieren und Fleckentfernung bei Stoffsitzen und Polstern.',price:150,priceLabel:'CHF 150.–',img:'https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80'},
+    {id:'leder',value:'Reinigung und Pflege der Ledersitze',title:'Ledersitzpflege',icon:'🪑',sub:'Schonende Reinigung, Pflege und Auffrischung von Ledersitzen.',price:150,priceLabel:'CHF 150.–',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80'},
+    {id:'dachhimmel',value:'Dachhimmelreinigung',title:'Dachhimmelreinigung',icon:'☁️',sub:'Gezielte Reinigung des Fahrzeughimmels ohne unnötige Durchfeuchtung.',price:129,priceLabel:'CHF 129.–',img:'https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=900&q=80'},
+    {id:'politur',value:'Professionelle Maschinenpolitur',title:'Maschinenpolitur',icon:'🌀',sub:'Maschinenpolitur für Lackglanz, Hologramm-Reduktion und optische Aufwertung.',price:120,variable:true,priceLabel:'ab CHF 120.– / Std.',premium:true,img:'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=80'},
+    {id:'impraegnierung',value:'Imprägnierung aller Sitzpolster',title:'Sitzpolster imprägnieren',icon:'💧',sub:'Schutzfilm für textile Sitzpolster gegen Feuchtigkeit und Schmutz.',price:99,priceLabel:'CHF 99.–',img:'https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=900&q=80'},
+    {id:'cabrio',value:'Cabrioverdeck imprägnieren',title:'Cabrioverdeck imprägnieren',icon:'🏎️',sub:'Imprägnierung und Schutz für Cabrioverdeck und Textildach.',price:89,priceLabel:'CHF 89.–',img:'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80'},
+    {id:'polymer',value:'Langzeit-Polymer Lackversiegelung',title:'Langzeit-Polymer Lackversiegelung',icon:'🛡️',sub:'Hochglanz mit Abperleffekt und intensivem Langzeitschutz.',price:150,premium:true,priceLabel:'CHF 150.–',img:'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=900&q=80'},
+    {id:'keramik',value:'Crystal Coating Keramikversiegelung',title:'Keramikversiegelung',icon:'💎',sub:'Crystal Coating Keramikversiegelung für starken Lackschutz.',price:850,premium:true,priceLabel:'CHF 850.–',img:'https://images.unsplash.com/photo-1619405399517-d7fce0f13302?auto=format&fit=crop&w=900&q=80'},
+    {id:'glas_innen',value:'Reinigung aller Glasflächen innen',title:'Glasflächen innen',icon:'🪟',sub:'Streifenfreie Innenreinigung der Scheiben und Glasflächen.',price:20,priceLabel:'CHF 20.–',img:'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=900&q=80'},
+    {id:'glas_aussen',value:'Reinigung aller Glasflächen aussen',title:'Glasflächen aussen',icon:'🚿',sub:'Aussenreinigung der Scheiben, Spiegel und Glasflächen.',price:20,priceLabel:'CHF 20.–',img:'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80'},
+    {id:'frontscheibe',value:'Frontscheibenversiegelung',title:'Frontscheibenversiegelung',icon:'🌧️',sub:'Wasserabweisende Versiegelung der Frontscheibe für bessere Sicht.',price:39,priceLabel:'CHF 39.–',img:'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=900&q=80'},
+    {id:'felgen',value:'Professionelle Felgenreinigung',title:'Professionelle Felgenreinigung',icon:'⚙️',sub:'Reinigung von Felgen, Bremsstaub und hartnäckigen Ablagerungen.',price:60,priceLabel:'CHF 15.– / Felge',img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80'},
+    {id:'motorraum',value:'Motorraum reinigen / Motorraumreinigung für MFK',title:'Motorraumreinigung',icon:'🔧',sub:'Motorraum reinigen, entfetten und für MFK optisch vorbereiten.',price:39,priceLabel:'CHF 39.–',img:'https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=900&q=80'}
+  ],
+  locations:[
+    {id:'ebikon',value:'Ebikon – Mall of Switzerland',title:'Mall of Switzerland, Ebikon',sub:'Ideal für Standard-, Exklusiv- und ausgewählte Premium-Reinigungen während Einkauf oder Aufenthalt.',address:'Ebisquare-Strasse 1, 6030 Ebikon',phone:'079 955 29 41',email:'mall@dt-cleaning.ch',bookingUrl:'https://dt-cleaning.booked4.us/',role:'Carwash / Premium Handwäsche'},
+    {id:'perlen',value:'Perlen – Elsihof 1',title:'Elsihof 1, Perlen',sub:'Sinnvoll für kompakte Standard- und Exklusiv-Reinigungen sowie Motorradpflege.',address:'Elsihof 1, 6035 Perlen',phone:'041 520 60 94 / 077 525 86 93',email:'info@dt-cleaning.ch',bookingUrl:'https://dt-cleaningperlen.booked4.us/',role:'Carwash / schnelle Reinigung'},
+    {id:'rothenburg',value:'Rothenburg – Premium Detailing Center',title:'Premium Detailing Center, Rothenburg',sub:'Empfohlen für Intensivpflege, Politur, Keramikversiegelung, Platinum und umfangreiche Detailing-Arbeiten.',address:'Buzibachring 1, 6023 Rothenburg',phone:'041 521 60 94 / 077 525 86 93',email:'info@dt-cleaning.ch',bookingUrl:'https://dt-cleaningrothenburg.booked4.us/',role:'Premium Detailing Center'},
+    {id:'offen',value:'Noch offen / Beratung gewünscht',title:'Noch offen / Beratung gewünscht',sub:'DT-Cleaning prüft die Auswahl und empfiehlt den passenden Standort.',address:'Standort nach Absprache',phone:'',email:'info@dt-cleaning.ch',bookingUrl:'',role:'Beratung'}
+  ]
+};
+(function(){
+  const app=document.getElementById('dtLeadApp');let current=1,submitting=false,total=7;
+  const money=n=>'CHF '+Number(n||0).toLocaleString('de-CH',{maximumFractionDigits:0})+'.–';
+  const esc=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const q=s=>app.querySelector(s),qa=s=>Array.from(app.querySelectorAll(s));
+  const val=s=>(q(s)?.value||'').trim();
+  const radio=n=>q(`input[name="${n}"]:checked`)?.value||'';
+  const checks=n=>qa(`input[name="${n}"]:checked`).map(el=>el.value);
+  const checkedExtraIds=()=>qa('input[name="extras"]:checked').map(el=>el.dataset.id);
+  const byId=(arr,id)=>arr.find(x=>x.id===id);
+  const service=()=>byId(CONFIG.services,radio('reinigung_id'));
+  const serviceId=()=>radio('reinigung_id');
+  const isMotoSelected=()=>serviceId()==='moto';
+  const vehicleTypeLabel=()=>isMotoSelected()?'Motorrad':(radio('fahrzeugtyp')||'pkw').toUpperCase();
+  const pkg=()=>{const s=serviceId();return (CONFIG.packages[s]||[]).find(p=>p.id===radio('paket_id'));};
+  const imgErr=`onerror="this.style.display='none';this.parentElement.classList.add('img-fallback')"`;
+  const img=(src,label)=>`<img src="${src}" alt="${esc(label)}" loading="lazy" ${imgErr}>`;
+  const serviceCard=s=>`<div class="option"><input type="radio" id="svc_${s.id}" name="reinigung_id" value="${s.id}"><label for="svc_${s.id}"><span class="check"></span><div class="option-card"><div class="option-img" data-label="${esc(s.title)}">${img(s.img,s.title)}</div><div class="option-body"><span class="option-tag">${esc(s.tag)}</span><h3 class="option-title">${esc(s.title)}</h3><div class="option-sub">${esc(s.sub)}</div></div></div></label></div>`;
+  const customerCard=(id,value,title,sub,imgUrl)=>`<div class="option"><input type="radio" id="${id}" name="kundentyp" value="${value}"><label for="${id}"><span class="check"></span><div class="option-card"><div class="option-img" data-label="${esc(title)}">${img(imgUrl,title)}</div><div class="option-body"><span class="option-tag">${value==='Geschäftskunde'?'Firma':'Privat'}</span><h3 class="option-title">${esc(title)}</h3><div class="option-sub">${esc(sub)}</div></div></div></label></div>`;
+  const renderPkgCard=p=>{const vehicle=radio('fahrzeugtyp')||'pkw';const price=p.fixed||p[vehicle]||0;const sub=p.fixed?`ab ${money(price)}`:`PKW ab ${money(p.pkw)} / SUV ab ${money(p.suv)}`;return `<div class="option"><input type="radio" id="pkg_${p.id}" name="paket_id" value="${p.id}"><label for="pkg_${p.id}"><span class="check"></span><div class="option-card"><div class="option-body"><span class="option-tag">${esc(sub)}</span><h3 class="option-title">${esc(p.title)}</h3><div class="option-sub">${esc(p.sub)}</div><div class="price-tag">Aktuell berechnet: ab ${money(price)}</div></div></div></label></div>`;};
+  const renderExtraCard=e=>`<div class="chip"><input type="checkbox" id="extra_${e.id}" name="extras" value="${esc(e.value)}" data-id="${e.id}"><label for="extra_${e.id}"><div class="chip-img option-img" data-label="${esc(e.title)}"><span class="chip-icon">${esc(e.icon||'✓')}</span>${img(e.img,e.title)}</div><div class="chip-body"><span class="chip-title">${esc(e.title)}</span><span class="chip-sub">${esc(e.sub)}</span><span class="chip-price">${esc(e.priceLabel)}</span></div></label></div>`;
+  const EXTRA_RULES={
+    komplett:['geruch','flugrost','hundehaare','stoffsitze','leder','dachhimmel','politur','impraegnierung','cabrio','polymer','keramik','glas_innen','glas_aussen','frontscheibe','felgen','motorraum'],
+    innen:['geruch','hundehaare','stoffsitze','leder','dachhimmel','impraegnierung','glas_innen'],
+    aussen:['flugrost','politur','cabrio','polymer','keramik','glas_aussen','frontscheibe','felgen','motorraum'],
+    moto:['flugrost','politur','polymer','keramik','felgen']
+  };
+  const allowedExtraIds=()=>EXTRA_RULES[serviceId()]||[];
+  const allowedExtras=()=>allowedExtraIds().map(id=>byId(CONFIG.extras,id)).filter(Boolean);
+  function renderExtras(){
+    const box=q('#extrasGrid');
+    if(!box)return;
+    const allowed=allowedExtras();
+    const keep=checkedExtraIds().filter(id=>allowed.some(e=>e.id===id));
+    box.innerHTML=serviceId()
+      ? allowed.map(renderExtraCard).join('')
+      : '<div class="info-box">Bitte zuerst eine Reinigungsart wählen. Danach erscheinen nur passende Zusatzleistungen.</div>';
+    keep.forEach(id=>{const input=q(`#extra_${id}`);if(input)input.checked=true;});
+  }
+  const LOCATION_HOURS={
+    ebikon:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
+    perlen:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
+    rothenburg:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
+    offen:{label:'Termin nach Absprache · Sonntag nicht verfügbar',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}}
+  };
+  const selectedHours=()=>LOCATION_HOURS[selectedLocation()?.id]||null;
+  function updateHoursNote(){const note=q('#timeHoursNote');if(note)note.textContent=selectedHours()?.label||'Bitte zuerst Standort wählen. Sonntag ist nicht verfügbar.';}
+
+  app.innerHTML=`<div class="wrap"><div class="main"><div class="brand"><div class="brand-left"><div class="logo-card">DT-Cleaning</div><div class="badge"><span class="dot"></span>Premium Autopflege · Offerte & Termin</div></div></div><div class="head"><h1>Premium Autopflege unverbindlich anfragen</h1><p class="sub">Wählen Sie Reinigungsart, Paket, Zusatzleistungen, passenden Standort und einen Wunsch-Termin. Der Richtpreis wird live anhand der DT-Cleaning Preise berechnet.</p></div><form id="dtForm" novalidate><div class="progress"><div class="progress-top"><strong id="stepText">Schritt 1 von 7</strong><span id="stepLabel">Kundentyp wählen</span></div><div class="steps">${Array.from({length:7},(_,i)=>`<div class="step ${i===0?'active available':''}" data-step-node="${i+1}"><button type="button" class="step-btn" data-step-target="${i+1}"><div class="circle">${i+1}</div><div class="label">${CONFIG.stepLabels[i+1]}</div></button></div>`).join('')}</div></div><div class="card">
+  <section class="panel active" data-step="1"><span class="kicker">Schritt 01</span><h2>Sind Sie Privatkunde oder Geschäftskunde?</h2><p class="desc">So kann DT-Cleaning Ihre Anfrage direkt richtig einordnen.</p><div class="divider"></div><div class="grid grid2">${customerCard('leadPrivat','Privatkunde','Privatkunde','Für Einzelanfragen, Empfehlungen und Offerten rund um Ihr Fahrzeug.','https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80')}${customerCard('leadBusiness','Geschäftskunde','Geschäftskunde','Für Firmenfahrzeuge, Flotten und wiederkehrende Reinigungsbedürfnisse.','https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=1400&q=80')}</div><div class="error" data-error-step="1"></div><div class="actions"><div></div><button type="button" class="btn primary" data-next>Weiter</button></div></section>
+  <section class="panel" data-step="2"><span class="kicker">Schritt 02</span><h2>Welche Reinigungsart wünschen Sie?</h2><p class="desc">Die Bilder sind unterschiedlich und passend zur Leistung hinterlegt. Je nach Auswahl erscheinen im nächsten Schritt die passenden Pakete.</p><div class="divider"></div><div class="hero"><div class="hero-img" data-label="Professionelle Fahrzeugpflege">${img(CONFIG.heroImg,'Professionelle Fahrzeugpflege')}</div><div class="hero-copy"><h3>Professionelle Fahrzeugpflege</h3><p>Wählen Sie die gewünschte Reinigungsart – Komplettreinigung, Innenreinigung, Aussenreinigung oder Motorradpflege.</p></div></div><div class="grid grid2">${CONFIG.services.map(serviceCard).join('')}</div><div class="error" data-error-step="2"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter</button></div></section>
+  <section class="panel" data-step="3"><span class="kicker">Schritt 03</span><h2>Paket auswählen und Preis berechnen</h2><p class="desc">Wählen Sie zuerst den Fahrzeugtyp. Die Paketpreise werden direkt angezeigt und in der Übersicht mitgeführt.</p><div class="divider"></div><div class="vehicle-row"><div class="vehicle-card"><input type="radio" id="veh_pkw" name="fahrzeugtyp" value="pkw" checked><label for="veh_pkw">PKW</label></div><div class="vehicle-card"><input type="radio" id="veh_suv" name="fahrzeugtyp" value="suv"><label for="veh_suv">SUV</label></div></div><div class="grid" id="packageGrid"></div><div class="error" data-error-step="3"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter</button></div></section>
+  <section class="panel" data-step="4"><span class="kicker">Schritt 04</span><h2>Zusatzleistungen auswählen</h2><p class="desc">Je nach gewählter Reinigungsart werden nur passende Zusatzleistungen angezeigt. Nicht passende Extras werden automatisch ausgeblendet.</p><div class="divider"></div><div class="chip-grid" id="extrasGrid"></div><div class="error" data-error-step="4"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter</button></div></section>
+  <section class="panel" data-step="5"><span class="kicker">Schritt 05</span><h2>Standort und Wunsch-Termin</h2><p class="desc">Die Standortauswahl wird automatisch nach Reinigungsart, Paket und Zusatzleistungen gefiltert. Kundinnen und Kunden sehen nur Standorte, die für die gewählte Leistung sinnvoll sind.</p><div class="divider"></div><div class="location-cards" id="locationCards"></div><div class="calendar-box"><div class="fields"><div class="field full"><label for="standort">Bevorzugter Standort <span class="req">*</span></label><select id="standort" class="select"><option value="">Bitte wählen</option></select><div class="calendar-note" id="locationReason">Bitte zuerst Reinigungsart und Paket wählen.</div><div class="booking-hint" id="bookingHint">Nach der Standortwahl erscheint hier der passende Buchungslink und Kontakt.</div></div><div class="field"><label for="appointmentDate">Wunschtermin <span class="req">*</span></label><input id="appointmentDate" class="input" type="date"></div><div class="field"><label for="appointmentTime">Wunschuhrzeit <span class="req">*</span></label><select id="appointmentTime" class="select"><option value="">Bitte Datum wählen</option></select><div class="calendar-note" id="timeHoursNote">Bitte zuerst Standort und Datum wählen. Sonntag ist nicht verfügbar.</div></div><div class="field full"><label for="vehicleModel">Fahrzeug / Modell</label><input id="vehicleModel" class="input" type="text" autocomplete="off" placeholder="z. B. BMW X5 / Audi A4 / Tesla Model Y"></div></div></div><div class="error" data-error-step="5"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter</button></div></section>
+  <section class="panel" data-step="6"><span class="kicker">Schritt 06</span><h2>Kontaktdaten</h2><p class="desc">Wir melden uns mit einer passenden Rückmeldung, Bestätigung oder Offerte bei Ihnen.</p><div class="divider"></div><div class="fields"><div class="field" id="companyWrap"><label for="company">Firma <span class="req">*</span></label><input id="company" class="input" type="text" autocomplete="organization" placeholder="Firma"></div><div class="field"><label for="first">Vorname <span class="req">*</span></label><input id="first" class="input" type="text" autocomplete="given-name" placeholder="Vorname"></div><div class="field"><label for="last">Nachname <span class="req">*</span></label><input id="last" class="input" type="text" autocomplete="family-name" placeholder="Nachname"></div><div class="field"><label for="mail">E-Mail <span class="req">*</span></label><input id="mail" class="input" type="email" autocomplete="email" inputmode="email" placeholder="E-Mail-Adresse"></div><div class="field"><label for="phone">Telefon <span class="req">*</span></label><input id="phone" class="input" type="tel" autocomplete="tel" inputmode="tel" placeholder="Telefonnummer"></div><div class="field"><label for="street">Strasse / Nr.</label><input id="street" class="input" type="text" autocomplete="street-address" placeholder="Strasse und Hausnummer"></div><div class="field"><label for="city">PLZ / Ort</label><input id="city" class="input" type="text" autocomplete="postal-code" placeholder="PLZ / Ort"></div><div class="field full"><label for="msg">Nachricht / Wunsch</label><textarea id="msg" class="textarea" autocomplete="off" placeholder="Beschreiben Sie Ihr Anliegen, Ihre Wünsche oder besondere Anforderungen."></textarea></div><div class="field full"><div class="info-box"><strong>Hinweis:</strong> Der angezeigte Preis ist ein Richtpreis ab gewähltem Paket und Extras. Die finale Bestätigung erfolgt durch DT-Cleaning.</div></div></div><div class="error" data-error-step="6"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter zur Zahlung</button></div></section>
+  <section class="panel" data-step="7"><span class="kicker">Schritt 07</span><h2>Zahlung und Abschluss</h2><p class="desc">Die Zahlungsfunktion ist als Stripe-Testansicht vorbereitet. Später kann hier die echte Stripe-Anbindung aktiviert werden.</p><div class="divider"></div><div class="payment-badge">🔒 Sichere Zahlung · Stripe Testansicht</div><div class="payment-grid"><div class="payment-option"><input type="radio" id="pay_card" name="payment_method" value="Kreditkarte" checked><label for="pay_card"><div class="payment-card"><span class="payment-mark"></span><div><div class="payment-title">Kreditkarte</div><div class="payment-sub">Für Privatkunden standardmässig aktiv. Visa, Mastercard und weitere Karten können später via Stripe angebunden werden.</div></div></div></label></div><div class="payment-option business-only" id="invoicePaymentOption"><input type="radio" id="pay_invoice" name="payment_method" value="Rechnung"><label for="pay_invoice"><div class="payment-card"><span class="payment-mark"></span><div><div class="payment-title">Auf Rechnung</div><div class="payment-sub">Nur für Geschäftskunden sichtbar. Ideal für Flotten, wiederkehrende Reinigungen und Firmenaufträge.</div></div></div></label></div></div><div class="card-preview" id="cardPreview"><div class="payment-title">Kartenzahlung vorbereiten</div><div class="payment-sub">Demo-Felder für die Kundenpräsentation – es wird noch keine echte Belastung ausgelöst.</div><div class="fields card-form"><div class="field"><label for="cardNumber">Kartennummer</label><input id="cardNumber" class="input" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242"></div><div class="field"><label for="cardExpiry">MM/JJ</label><input id="cardExpiry" class="input" type="text" placeholder="12/28"></div><div class="field"><label for="cardCvc">CVC</label><input id="cardCvc" class="input" type="text" inputmode="numeric" placeholder="123"></div><div class="field full"><label for="cardName">Name auf Karte</label><input id="cardName" class="input" type="text" placeholder="Vorname Nachname"></div></div><div class="demo-stripe"><span><strong>Testmodus:</strong> Stripe-Layout vorbereitet, echte Zahlung folgt später.</span><span id="paymentAmount">Betrag: ab CHF 0.–</span></div></div><div class="invoice-box business-only hidden" id="invoiceInfo"><strong>Zahlung auf Rechnung</strong><br>Die Rechnung wird nach Prüfung und Bestätigung durch DT-Cleaning erstellt. Diese Option ist nur für Geschäftskunden vorgesehen.</div><div class="error" data-error-step="7"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="submit" class="btn dark" id="submitBtn">Demo absenden</button></div></section>
+  </div></form><div class="mobile-summary"></div></div><aside class="side"><h3 class="summary-title">Ihre Übersicht</h3><p class="summary-sub">Alle Angaben und der Richtpreis werden live zusammengefasst.</p><div class="summary-box"><div class="summary-row"><div class="summary-label">Kundentyp</div><div class="summary-value" id="sumCustomer">Noch keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Reinigung & Paket</div><div class="summary-value" id="sumService">Noch keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Extras</div><div class="summary-value" id="sumExtras">Keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Standort & Termin</div><div class="summary-value" id="sumLocation">Noch keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Fahrzeug</div><div class="summary-value" id="sumVehicle">Noch keine Angabe</div></div><div class="summary-row"><div class="summary-label">Kontakt</div><div class="summary-value" id="sumContact">Noch keine Angaben</div></div><div class="summary-row"><div class="summary-label">Zahlung</div><div class="summary-value" id="sumPayment">Kreditkarte</div></div></div><div class="summary-price"><div class="summary-label">Gesamt-Richtpreis</div><strong id="sumPrice">ab CHF 0.–</strong><div class="line-items" id="lineItems"></div></div></aside></div><div class="modal" id="successModal"><div class="modal-card"><div class="modal-icon">✓</div><h3>Vielen Dank für Ihre Anfrage</h3><p>Ihre Anfrage wurde erfolgreich übermittelt. Sie erhalten in Kürze eine Bestätigung per E-Mail.</p><div style="margin-top:22px"><button type="button" class="btn primary" id="closeModal">Schliessen</button></div></div></div>`;
+  function renderPackages(){const s=serviceId();const row=q('.vehicle-row');if(row)row.classList.toggle('hidden',isMotoSelected());const box=q('#packageGrid');box.innerHTML=(CONFIG.packages[s]||[]).map(renderPkgCard).join('')||'<div class="info-box">Bitte zuerst eine Reinigungsart wählen.</div>';}
+  function setError(step,msg){const b=q(`[data-error-step="${step}"]`);if(!b)return;b.textContent=msg;b.classList.add('show');}
+  function clearError(step){const b=q(`[data-error-step="${step}"]`);if(!b)return;b.textContent='';b.classList.remove('show');}
+  function selectedExtras(){return checkedExtraIds().map(id=>byId(CONFIG.extras,id)).filter(Boolean);}
+  function estimatePrice(){const p=pkg();const vehicle=radio('fahrzeugtyp')||'pkw';let sub=0;const items=[];if(p){const amount=p.fixed||p[vehicle]||0;sub+=amount;items.push({title:p.title,detail:p.fixed?'Paketpreis ab':'Fahrzeugtyp '+vehicle.toUpperCase(),amount});}selectedExtras().forEach(e=>{const amount=e.price||0;sub+=amount;items.push({title:e.title,detail:e.variable?'Richtwert / ab Preis':'Zusatzleistung',amount,variable:e.variable});});return {subTotal:sub,total:sub,items};}
+  function selectedLocation(){return CONFIG.locations.find(l=>l.value===val('#standort'))||null;}
+  function packageLevel(){const p=pkg();const id=(p?.id||'').toLowerCase();const title=(p?.title||'').toLowerCase();if(id.includes('platinum')||title.includes('platinum'))return 'platinum';if(id.includes('brilliant')||title.includes('brilliant'))return 'brilliant';if(id.includes('superior')||title.includes('superior'))return 'superior';if(id.includes('intensiv')||title.includes('intensiv'))return 'intensiv';if(id.includes('exklusiv')||title.includes('exklusiv'))return 'exklusiv';if(id.includes('standard')||title.includes('standard'))return 'standard';return '';}
+  function locationLogic(){const sid=serviceId();const p=pkg();const level=packageLevel();const extraIds=checkedExtraIds();const premiumExtra=selectedExtras().some(e=>e.premium)||['keramik','politur','polymer'].some(id=>extraIds.includes(id));let ids=['ebikon','perlen','rothenburg'];let rule='Bitte Auswahl vervollständigen';let reason='Sobald Reinigungsart, Paket und Extras gewählt sind, wird die passende Standortauswahl automatisch eingeschränkt.';if(!sid||!p){ids=['ebikon','perlen','rothenburg'];}
+    else if(extraIds.includes('keramik')){ids=['rothenburg'];rule='Keramikversiegelung / Premium-Aufbereitung';reason='Die Keramikversiegelung ist eine hochwertige Premium-Leistung. Deshalb wird klar das Premium Detailing Center Rothenburg angezeigt.';}
+    else if(sid==='moto'){ids=['ebikon','perlen'];rule='Motorradreinigung & Pflege';reason='Motorradreinigung wird als kompakte Handpflege an den passenden Carwash-Standorten Ebikon und Perlen angezeigt.';}
+    else if(level==='intensiv'){ids=['ebikon','rothenburg'];rule='Intensiv-Paket';reason='Intensivpakete benötigen mehr Zeit und Aufbereitungstiefe. Deshalb werden Ebikon und Rothenburg angezeigt, Perlen wird ausgeblendet.';}
+    else if(premiumExtra){ids=['ebikon','rothenburg'];rule='Premium-Zusatzleistung gewählt';reason='Extras wie Maschinenpolitur oder Langzeit-Polymer benötigen einen Premium-geeigneten Standort. Deshalb werden Ebikon und Rothenburg angezeigt.';}
+    else if(['standard','exklusiv'].includes(level)&&['innen','aussen','komplett'].includes(sid)){ids=['ebikon','perlen'];rule='Standard-/Exklusiv-Reinigung';reason='Für Standard- und Exklusivpakete sind Ebikon und Perlen die logischsten Standorte. Rothenburg bleibt für Intensiv- und Premium-Leistungen reserviert.';}
+    ids=[...new Set([...ids,'offen'])];return {ids,rule,reason};}
+  function renderLocations(){const select=q('#standort');const cards=q('#locationCards');const {ids,rule,reason}=locationLogic();const currentVal=select.value;const allowed=ids.map(id=>byId(CONFIG.locations,id)).filter(Boolean);select.innerHTML='<option value="">Bitte wählen</option>'+allowed.map(l=>`<option value="${esc(l.value)}">${esc(l.title)}</option>`).join('');if(allowed.some(l=>l.value===currentVal))select.value=currentVal;else select.value='';cards.innerHTML=allowed.map((l,idx)=>`<div class="location-card show ${idx===0&&l.id!=='offen'?'recommended':''}"><span class="location-badge">${idx===0&&l.id!=='offen'?'Empfohlen':'Möglich'}</span><strong>${esc(l.title)}</strong><span>${esc(l.address)}</span><span>${esc(l.role||'')}</span><span>${esc(l.sub)}</span>${l.phone?`<span>Telefon: ${esc(l.phone)}</span>`:''}${l.bookingUrl?`<div class="location-actions"><a class="location-link" href="${esc(l.bookingUrl)}" target="_blank" rel="noopener">Direktbuchung öffnen</a></div>`:''}</div>`).join('');const reasonBox=q('#locationReason');if(reasonBox)reasonBox.innerHTML=`<strong>${esc(rule)}</strong><br>${esc(reason)}`;updateBookingHint();}
+  function updateBookingHint(){const box=q('#bookingHint');if(!box)return;const l=selectedLocation();if(!l){box.textContent='Nach der Standortwahl erscheint hier der passende Buchungslink und Kontakt.';return;}const parts=[`Gewählt: ${l.title}`,l.address,l.phone?`Telefon: ${l.phone}`:'',l.email?`E-Mail: ${l.email}`:''].filter(Boolean);box.innerHTML=esc(parts.join(' · '))+(l.bookingUrl?`<br><a href="${esc(l.bookingUrl)}" target="_blank" rel="noopener">Passenden Online-Buchungslink öffnen</a>`:'');}
+  function updateTimeSlots(){
+    const dateInput=q('#appointmentDate');
+    const date=val('#appointmentDate');
+    const time=q('#appointmentTime');
+    if(!time)return;
+    const previous=time.value;
+    updateHoursNote();
+    if(!selectedLocation()){
+      time.innerHTML='<option value="">Bitte zuerst Standort wählen</option>';
+      return;
+    }
+    time.innerHTML='<option value="">Bitte Datum wählen</option>';
+    if(!date)return;
+    const d=new Date(date+'T12:00:00');
+    const day=d.getDay();
+    if(day===0){
+      if(dateInput)dateInput.value='';
+      time.innerHTML='<option value="">Sonntag nicht verfügbar</option>';
+      setError(5,'Sonntag ist nicht verfügbar. Bitte wählen Sie Montag bis Samstag.');
+      return;
+    }
+    const hours=selectedHours();
+    const slot=hours?.days?.[day];
+    if(!slot){
+      time.innerHTML='<option value="">An diesem Tag geschlossen</option>';
+      return;
+    }
+    const [start,end]=slot;
+    let opts='<option value="">Bitte Uhrzeit wählen</option>';
+    for(let h=start;h<end;h++){
+      opts+=`<option value="${String(h).padStart(2,'0')}:00">${String(h).padStart(2,'0')}:00</option>`;
+      opts+=`<option value="${String(h).padStart(2,'0')}:30">${String(h).padStart(2,'0')}:30</option>`;
+    }
+    time.innerHTML=opts;
+    if(previous&&Array.from(time.options).some(o=>o.value===previous))time.value=previous;
+  }
+  function setDateMin(){const d=new Date();d.setDate(d.getDate()+1);q('#appointmentDate').min=d.toISOString().split('T')[0];}
+  function toggleCompany(){const business=radio('kundentyp')==='Geschäftskunde';q('#companyWrap').classList.toggle('hidden',!business);if(!business)q('#company').value='';togglePaymentOptions();}
+  function paymentMethod(){return radio('payment_method')||'Kreditkarte';}
+  function togglePaymentOptions(){const business=radio('kundentyp')==='Geschäftskunde';const invoiceOption=q('#invoicePaymentOption');const invoiceInfo=q('#invoiceInfo');if(invoiceOption)invoiceOption.classList.toggle('hidden',!business);if(!business&&radio('payment_method')==='Rechnung'){const card=q('#pay_card');if(card)card.checked=true;}const isInvoice=paymentMethod()==='Rechnung';const cardPreview=q('#cardPreview');if(cardPreview)cardPreview.classList.toggle('hidden',isInvoice);if(invoiceInfo)invoiceInfo.classList.toggle('hidden',!business||!isInvoice);updatePaymentAmount();}
+  function updatePaymentAmount(){const el=q('#paymentAmount');if(el)el.textContent='Betrag: ab '+money(estimatePrice().total);}
+  function buildSummary(){const price=estimatePrice();const s=service();const p=pkg();const location=selectedLocation();const logic=locationLogic();const serviceName=s?.title||'-';const packageName=p?.title||'-';const extras=selectedExtras().map(e=>`${e.title} (${e.priceLabel})`).join(', ')||'-';const lines=[`Kundentyp: ${radio('kundentyp')||'-'}`,`Reinigung: ${serviceName}`,`Paket: ${packageName}`,`Standort-Logik: ${logic.rule} – ${logic.reason}`,`Mögliche Standorte: ${logic.ids.map(id=>byId(CONFIG.locations,id)?.title).filter(Boolean).join(', ')}`,`Fahrzeugtyp: ${vehicleTypeLabel()}`,`Extras: ${extras}`,`Standort: ${val('#standort')||'-'}`,`Standort Adresse: ${location?.address||'-'}`,`Direkter Buchungslink: ${location?.bookingUrl||'-'}`,`Wunschtermin: ${val('#appointmentDate')||'-'} ${val('#appointmentTime')||''}`,`Fahrzeug / Modell: ${val('#vehicleModel')||'-'}`,`Richtpreis: ab ${money(price.total)}`,`Zahlungsart: ${paymentMethod()}`,`Firma: ${val('#company')||'-'}`,`Vorname: ${val('#first')||'-'}`,`Nachname: ${val('#last')||'-'}`,`E-Mail: ${val('#mail')||'-'}`,`Telefon: ${val('#phone')||'-'}`,`Strasse / Nr.: ${val('#street')||'-'}`,`PLZ / Ort: ${val('#city')||'-'}`,`Nachricht: ${val('#msg')||'-'}`];return lines.join('\n');}
+  function updatePrice(){const price=estimatePrice();q('#sumPrice').textContent='ab '+money(price.total);q('#lineItems').innerHTML=(price.items.length?price.items:[{title:'Noch keine Auswahl',detail:'Bitte Paket wählen',amount:0}]).map(i=>`<div class="line-item"><div><b>${esc(i.title)}</b><small>${esc(i.detail||'')}</small></div><strong>ab ${money(i.amount)}</strong></div>`).join('');return price;}
+  function updateSummary(){const price=updatePrice();const s=service();const p=pkg();q('#sumCustomer').textContent=radio('kundentyp')||'Noch keine Auswahl';q('#sumService').textContent=[s?.title,p?.title].filter(Boolean).join(' / ')||'Noch keine Auswahl';q('#sumExtras').textContent=selectedExtras().map(e=>e.title).join(', ')||'Keine Auswahl';q('#sumLocation').textContent=[val('#standort'),val('#appointmentDate'),val('#appointmentTime')].filter(Boolean).join(' / ')||'Noch keine Auswahl';q('#sumVehicle').textContent=[vehicleTypeLabel(),val('#vehicleModel')].filter(Boolean).join(' / ')||'Noch keine Angabe';q('#sumContact').textContent=[[val('#company')],[val('#first'),val('#last')].filter(Boolean).join(' '),val('#mail')].flat().filter(Boolean).join(' / ')||'Noch keine Angaben';const sp=q('#sumPayment');if(sp)sp.textContent=paymentMethod();updatePaymentAmount();updateBookingHint();renderMobile();}
+  function renderMobile(){const box=q('.mobile-summary');if(!box||window.innerWidth>1350){if(box)box.innerHTML='';return;}box.innerHTML=`<div class="side" style="position:static;display:block;color:var(--text);background:#fff"><h3 class="summary-title" style="color:var(--navy)">Ihre Übersicht</h3><p class="summary-sub" style="color:var(--muted)">Alle Angaben und der Richtpreis werden live zusammengefasst.</p><div class="summary-box" style="background:#f8fbff;border-color:var(--line)">${qa('.summary-box .summary-row').map(r=>r.outerHTML).join('')}</div><div class="summary-price"><div class="summary-label" style="color:var(--muted)">Gesamt-Richtpreis</div><strong style="color:var(--navy)">${q('#sumPrice').textContent}</strong><div class="line-items">${q('#lineItems').innerHTML}</div></div></div>`;}
+  function getMaxAllowedStep(){let max=1;for(let step=1;step<=total;step++){if(validate(step,true)){max=Math.min(step+1,total);}else{max=step;break;}}return max;}
+  function updateStepStates(){const maxAllowed=getMaxAllowedStep();qa('[data-step-node]').forEach(node=>{const step=Number(node.dataset.stepNode);node.classList.remove('active','done','available','locked');if(step<current)node.classList.add('done');if(step===current)node.classList.add('active');if(step<=maxAllowed)node.classList.add('available');else node.classList.add('locked');const btn=node.querySelector('.step-btn');if(btn)btn.disabled=step>maxAllowed;});}
+  function setStep(n){current=Math.max(1,Math.min(total,n));if(current===3)renderPackages();if(current===4)renderExtras();if(current===5){renderLocations();updateTimeSlots();}qa('.panel').forEach(p=>p.classList.toggle('active',Number(p.dataset.step)===current));q('#stepText').textContent=`Schritt ${current} von ${total}`;q('#stepLabel').textContent=CONFIG.stepLabels[current]||'';clearError(current);updateSummary();updateStepStates();window.scrollTo({top:app.offsetTop-20,behavior:'smooth'});}
+  function validate(step,silent=false){if(!silent)clearError(step);const fail=(s,m)=>{if(!silent)setError(s,m);return false;};if(step===1&&!radio('kundentyp'))return fail(1,'Bitte wählen Sie Privatkunde oder Geschäftskunde.');if(step===2&&!serviceId())return fail(2,'Bitte wählen Sie eine Reinigungsart.');if(step===3&&!radio('paket_id'))return fail(3,'Bitte wählen Sie ein Paket.');if(step===5){if(!val('#standort'))return fail(5,'Bitte wählen Sie einen Standort.');if(!val('#appointmentDate'))return fail(5,'Bitte wählen Sie einen Wunschtermin.');const d=new Date(val('#appointmentDate')+'T12:00:00');if(d.getDay()===0)return fail(5,'Sonntag ist nicht verfügbar. Bitte wählen Sie Montag bis Samstag.');if(!val('#appointmentTime'))return fail(5,'Bitte wählen Sie eine Wunschuhrzeit.');}if(step===6){if(radio('kundentyp')==='Geschäftskunde'&&!val('#company'))return fail(6,'Bitte geben Sie den Firmennamen ein.');if(!val('#first')||!val('#last'))return fail(6,'Bitte geben Sie Vorname und Nachname ein.');if(!/^\S+@\S+\.\S+$/.test(val('#mail')))return fail(6,'Bitte geben Sie eine gültige E-Mail-Adresse ein.');if(!val('#phone'))return fail(6,'Bitte geben Sie eine Telefonnummer ein.');}if(step===7){if(!paymentMethod())return fail(7,'Bitte wählen Sie eine Zahlungsart.');if(radio('kundentyp')!=='Geschäftskunde'&&paymentMethod()==='Rechnung')return fail(7,'Auf Rechnung ist nur für Geschäftskunden möglich.');}return true;}
+  async function submitForm(e){
+    e.preventDefault();
+    if(submitting)return;
+    if(!validate(7))return;
+
+    submitting=true;
+    const btn=q('#submitBtn');
+    if(btn){
+      btn.disabled=true;
+      btn.textContent='Demo wird geprüft...';
+    }
+
+    const price=estimatePrice();
+    const s=service();
+    const p=pkg();
+    const extras=selectedExtras();
+    const location=selectedLocation();
+    const logic=locationLogic();
+    const summary=buildSummary();
+
+    const payload={
+      client_id:CONFIG.clientId,
+      form_type:'dt_cleaning_lead_v4_google_sheet_mail',
+      company_name:CONFIG.companyName,
+      formular_typ:'DT-Cleaning Leadformular mit Standortlogik und Zahlungsdemo',
+
+      customer_type:radio('kundentyp'),
+      kundentyp:radio('kundentyp'),
+
+      service:s?.title||'',
+      reinigung:s?.title||'',
+      dienstleistung:s?.title||'',
+
+      package:p?.title||'',
+      paket:p?.title||'',
+      details:p?.title||'',
+
+      vehicle_type:vehicleTypeLabel(),
+      fahrzeug:[vehicleTypeLabel(),val('#vehicleModel')].filter(Boolean).join(' / '),
+      vehicle:val('#vehicleModel'),
+
+      extras:extras.map(e=>e.title).join('\n'),
+
+      standort:val('#standort'),
+      location:val('#standort'),
+      location_address:location?.address||'',
+      location_phone:location?.phone||'',
+      location_email:location?.email||'',
+      location_booking_url:location?.bookingUrl||'',
+
+      allowed_locations:logic.ids.map(id=>byId(CONFIG.locations,id)?.title).filter(Boolean).join('\n'),
+      location_logic_rule:logic.rule,
+      location_logic_reason:logic.reason,
+
+      appointment_date:val('#appointmentDate'),
+      appointment_time:val('#appointmentTime'),
+
+      firma:val('#company'),
+      company:val('#company'),
+
+      vorname:val('#first'),
+      first_name:val('#first'),
+
+      nachname:val('#last'),
+      last_name:val('#last'),
+
+      email:val('#mail'),
+
+      telefon:val('#phone'),
+      phone:val('#phone'),
+
+      strasse_nr:val('#street'),
+      street:val('#street'),
+
+      plz_ort:val('#city'),
+      city:val('#city'),
+
+      nachricht:val('#msg'),
+      message:val('#msg'),
+
+      subtotal:String(price.subTotal||''),
+      estimated_total:String(price.total||''),
+      price_items:price.items.map(i=>`${i.title}: ${money(i.amount)}`).join('\n'),
+
+      payment_method:paymentMethod(),
+      zahlungsart:paymentMethod(),
+      stripe_demo:'Ja – Testansicht ohne echte Zahlung',
+
+      zusammenfassung:summary,
+      website:''
+    };
+
+    try{
+      await sendDigitalPlusLead(payload, CONFIG);
+
+      const modal=q('#successModal');
+      if(modal)modal.classList.add('show');
+
+      /* Demo-Version: Eingaben bleiben zur Ansicht erhalten. */
+      current=1;
+      renderPackages();
+      renderLocations();
+      toggleCompany();
+      togglePaymentOptions();
+      updateTimeSlots();
+      updateSummary();
+      setStep(1);
+    }catch(error){
+      setError(7,'Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie DT-Cleaning direkt.');
+    }finally{
+      submitting=false;
+      if(btn){
+        btn.disabled=false;
+        btn.textContent='Demo absenden';
+      }
+    }
+  }
+  app.addEventListener('click',e=>{const next=e.target.closest('[data-next]');if(next){if(!validate(current))return;setStep(Math.min(current+1,total));return;}const prev=e.target.closest('[data-prev]');if(prev){setStep(Math.max(current-1,1));return;}const jump=e.target.closest('[data-step-target]');if(jump){const target=Number(jump.dataset.stepTarget);const maxAllowed=getMaxAllowedStep();if(target<=maxAllowed){setStep(target);}else{setError(current,`Bitte füllen Sie zuerst Schritt ${maxAllowed} korrekt aus, bevor Sie weiter nach vorne springen.`);}return;}if(e.target.id==='closeModal'||e.target.id==='successModal')q('#successModal').classList.remove('show');});
+  app.addEventListener('change',e=>{if(e.target.name==='kundentyp')toggleCompany();if(e.target.name==='payment_method')togglePaymentOptions();if(e.target.name==='reinigung_id'){renderPackages();renderExtras();const st=q('#standort');if(st)st.value='';q('#appointmentDate').value='';q('#appointmentTime').innerHTML='<option value="">Bitte Datum wählen</option>';renderLocations();updateTimeSlots();}if(e.target.name==='fahrzeugtyp'){renderPackages();}if(e.target.name==='paket_id'||e.target.name==='extras'){renderLocations();updateTimeSlots();}if(e.target.id==='standort'){updateBookingHint();updateTimeSlots();}if(e.target.id==='appointmentDate')updateTimeSlots();if(e.target.matches('input, select, textarea')){clearError(current);updateSummary();updateStepStates();}});
+  app.addEventListener('input',e=>{if(e.target.matches('input, select, textarea')){clearError(current);updateSummary();updateStepStates();}});
+  q('#dtForm').addEventListener('submit',submitForm);window.addEventListener('resize',renderMobile);setDateMin();renderPackages();renderExtras();renderLocations();toggleCompany();togglePaymentOptions();updateTimeSlots();updateSummary();setStep(1);
+})();
+
+/* Digital Plus Demo Helper – Projektversion ohne Datenübertragung */
+(function(){
+  var DEFAULT_MESSAGE = 'Danke für den Versuch, dieses Formular abzuschicken. Dieses Formular ist eine Projekt- und Testversion. Die Versandfunktion ist deaktiviert. Es wurden keine Daten übertragen und keine E-Mails versendet.';
+  window.DP_DEMO_MESSAGE = window.DP_DEMO_MESSAGE || DEFAULT_MESSAGE;
+  window.showDigitalPlusDemoNotice = function(message){
+    var text = message || window.DP_DEMO_MESSAGE || DEFAULT_MESSAGE;
+    var modal = document.getElementById('dpDemoNoticeModal');
+    if(!modal){
+      modal = document.createElement('div');
+      modal.id = 'dpDemoNoticeModal';
+      modal.className = 'dp-demo-modal';
+      modal.setAttribute('role','dialog');
+      modal.setAttribute('aria-modal','true');
+      modal.innerHTML = '<div class="dp-demo-card"><div class="dp-demo-head"><div class="dp-demo-icon" aria-hidden="true">ℹ</div><div><h3 class="dp-demo-title">Projektversion – kein Versand</h3></div></div><div class="dp-demo-body"><p data-demo-message></p><div class="dp-demo-note">Alle Auswahlfelder, Schritte und die Übersicht funktionieren weiterhin als Vorschau. Es wird jedoch kein Kontaktformular ausgelöst.</div><div class="dp-demo-actions"><button type="button" class="dp-demo-close">Verstanden</button></div></div></div>';
+      document.body.appendChild(modal);
+      modal.addEventListener('click', function(event){
+        if(event.target === modal || event.target.closest('.dp-demo-close')){
+          modal.classList.remove('is-open');
+        }
+      });
+      document.addEventListener('keydown', function(event){
+        if(event.key === 'Escape') modal.classList.remove('is-open');
+      });
+    }
+    var messageBox = modal.querySelector('[data-demo-message]');
+    if(messageBox) messageBox.textContent = text;
+    modal.classList.add('is-open');
+    var closeButton = modal.querySelector('.dp-demo-close');
+    if(closeButton) closeButton.focus({preventScroll:true});
+  };
+})();
+
+function sendDigitalPlusLead(payload, preferredConfig){
+  var cfg = preferredConfig || (typeof CONFIG !== 'undefined' ? CONFIG : (typeof FORM_CONFIG !== 'undefined' ? FORM_CONFIG : {}));
+  var text = (cfg && cfg.noMailMessage) || window.DP_DEMO_MESSAGE || 'Danke für den Versuch, dieses Formular abzuschicken. Dieses Formular ist eine Projekt- und Testversion. Die Versandfunktion ist deaktiviert. Es wurden keine Daten übertragen und keine E-Mails versendet.';
+  if(typeof window.showDigitalPlusDemoNotice === 'function') window.showDigitalPlusDemoNotice(text);
+  return Promise.resolve({success:true, demo:true, message:text});
+}
+
+</script>
+</body>
+</html>
