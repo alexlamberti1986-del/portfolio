@@ -250,6 +250,11 @@
     });
     setMasterWorld(world);
 
+    if (prev) {
+      var ch = readChapter(prev);
+      if (ch) sharedChapter = ch;
+    }
+
     if (prev && prev.getAttribute("data-world") !== world) {
       playWorldSwitchSound(world);
     }
