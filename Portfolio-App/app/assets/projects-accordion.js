@@ -4,6 +4,59 @@
 (function () {
   "use strict";
 
+  function screenshotUrl(pageUrl) {
+    return (
+      "https://s0.wp.com/mshots/v1/" +
+      encodeURIComponent(pageUrl) +
+      "?w=900"
+    );
+  }
+
+  function ensureLivePreviewFallback(wrap) {
+    if (!wrap || wrap.dataset.fallbackReady === "1") return;
+    wrap.dataset.fallbackReady = "1";
+    var url = wrap.getAttribute("data-preview-url");
+    if (!url) return;
+    var img = wrap.querySelector(".project-card__preview-shot");
+    if (!img) {
+      img = document.createElement("img");
+      img.className = "project-card__preview-shot";
+      img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      wrap.appendChild(img);
+    }
+    img.setAttribute("data-lazy-src", screenshotUrl(url));
+
+    var frame = wrap.querySelector("iframe");
+    if (!frame) {
+      activateFallback(wrap, img);
+      return;
+    }
+
+    var timer = window.setTimeout(function () {
+      activateFallback(wrap, img);
+    }, 2800);
+
+    frame.addEventListener("load", function () {
+      window.clearTimeout(timer);
+    });
+
+    frame.addEventListener("error", function () {
+      window.clearTimeout(timer);
+      activateFallback(wrap, img);
+    });
+  }
+
+  function activateFallback(wrap, img) {
+    wrap.classList.add("is-fallback");
+    var src = img.getAttribute("data-lazy-src");
+    if (src && !img.getAttribute("src")) {
+      img.setAttribute("src", src);
+      img.removeAttribute("data-lazy-src");
+    }
+  }
+
   function loadPanelPreviews(panel) {
     if (!panel || panel.dataset.previewsLoaded === "1") return;
     panel.dataset.previewsLoaded = "1";
@@ -12,6 +65,13 @@
       if (!src || frame.getAttribute("src")) return;
       frame.setAttribute("src", src);
       frame.removeAttribute("data-lazy-src");
+    });
+    panel.querySelectorAll(".project-card__preview--live").forEach(ensureLivePreviewFallback);
+    panel.querySelectorAll("img.project-card__preview-shot[data-lazy-src]").forEach(function (img) {
+      var src = img.getAttribute("data-lazy-src");
+      if (!src || img.getAttribute("src")) return;
+      img.setAttribute("src", src);
+      img.removeAttribute("data-lazy-src");
     });
   }
 
