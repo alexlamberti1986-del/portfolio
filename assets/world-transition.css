@@ -22,7 +22,25 @@
 }
 
 #world-transition-overlay.world-transition--professional.is-active {
-  background: #0a0a0a;
+  background: #0c0c0c;
+}
+
+#world-transition-overlay.world-transition--professional::after {
+  background: radial-gradient(
+    ellipse 70% 60% at 50% 50%,
+    rgba(248, 246, 242, 0.06) 0%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+}
+
+#world-transition-overlay.world-transition--nexora::after {
+  background: radial-gradient(
+    ellipse 75% 65% at 50% 48%,
+    rgba(0, 180, 255, 0.08) 0%,
+    transparent 50%,
+    rgba(3, 8, 16, 0.4) 100%
+  );
 }
 
 #world-transition-overlay.world-transition--freiraum.is-active {
@@ -43,22 +61,6 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
-}
-
-#world-transition-overlay.world-transition--nexora::after {
-  background: radial-gradient(
-    ellipse 80% 70% at 50% 50%,
-    transparent 35%,
-    rgba(5, 8, 7, 0.35) 100%
-  );
-}
-
-#world-transition-overlay.world-transition--professional::after {
-  background: radial-gradient(
-    ellipse 75% 65% at 50% 50%,
-    transparent 40%,
-    rgba(0, 0, 0, 0.2) 100%
-  );
 }
 
 #world-transition-overlay.world-transition--freiraum::after {

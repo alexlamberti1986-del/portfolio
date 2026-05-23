@@ -221,6 +221,7 @@
           if (prev && prev !== target) {
             prev.classList.remove("is-leaving");
           }
+          postFrame(target, { type: "portfolio-world-enter", world: world });
           resolve();
         }, CROSSFADE_MS);
       });

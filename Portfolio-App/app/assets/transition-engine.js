@@ -8,7 +8,8 @@
   var MIN_MS = 1800;
   var MAX_MS = 2400;
   var DEFAULT_MS = 1500;
-  var FADE_MS = 380;
+  var FADE_MS = 520;
+  var PRO_MS = 680;
 
   var mqReduce = global.matchMedia("(prefers-reduced-motion: reduce)");
   var mqMobile = global.matchMedia("(max-width: 768px), (hover: none) and (pointer: coarse)");
@@ -134,28 +135,14 @@
   }
 
   function initProfessional(size) {
-    lines = [];
-    var lc = lineCount("professional");
-    var cols = Math.ceil(Math.sqrt(lc * (size.w / size.h)));
-    var rows = Math.ceil(lc / cols);
-    for (var r = 0; r < rows; r++) {
-      for (var c = 0; c < cols; c++) {
-        if (lines.length >= lc) break;
-        lines.push({
-          gx: (c + 0.5) / cols,
-          gy: (r + 0.5) / rows,
-          phase: Math.random(),
-        });
-      }
-    }
     particles = [];
-    var n = particleCount("professional");
+    var n = isMobile() ? 14 : 22;
     for (var i = 0; i < n; i++) {
       particles.push({
         x: Math.random(),
         y: Math.random(),
-        vx: (Math.random() - 0.5) * 0.002,
-        vy: 0.003 + Math.random() * 0.004,
+        r: 0.6 + Math.random() * 1.4,
+        phase: Math.random() * Math.PI * 2,
       });
     }
   }
@@ -178,21 +165,41 @@
   }
 
   function drawNexora(w, h, progress, t) {
-    var bg = "#050807";
-    ctx.fillStyle = bg;
+    ctx.fillStyle = "#030810";
     ctx.fillRect(0, 0, w, h);
 
     var cx = w * 0.5;
-    var cy = h * 0.5;
-    var warp = easeOutQuart(progress);
-    var maxR = Math.hypot(w, h) * 0.72;
+    var cy = h * 0.48;
+    var reveal = easeOutQuart(progress);
+    var maxR = Math.min(w, h) * (0.22 + reveal * 0.55);
+
+    var bloom = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
+    bloom.addColorStop(0, "rgba(90, 220, 255, " + (0.28 * (1 - progress * 0.35)) + ")");
+    bloom.addColorStop(0.42, "rgba(0, 150, 255, " + (0.1 * (1 - progress * 0.5)) + ")");
+    bloom.addColorStop(1, "transparent");
+    ctx.fillStyle = bloom;
+    ctx.fillRect(0, 0, w, h);
+
     ctx.save();
+    ctx.globalAlpha = 0.035 * (1 - progress);
+    ctx.fillStyle = "#00d4ff";
+    for (var sy = 0; sy < h; sy += 5) {
+      ctx.fillRect(0, (sy + (t * 0.04) % 5) | 0, w, 1);
+    }
+    ctx.restore();
+
+    var ringR = maxR * (0.35 + (1 - reveal) * 0.45);
+    ctx.strokeStyle = "rgba(0, 212, 255, " + (0.08 + (1 - progress) * 0.14) + ")";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+    ctx.stroke();
 
     lines.forEach(function (ln) {
-      var a = ln.angle + progress * 0.12;
-      var inner = maxR * (0.02 + warp * 0.08);
-      var outer = maxR * (0.25 + (1 - warp) * 0.75);
-      ctx.strokeStyle = "rgba(0, 212, 255, " + (0.06 + (1 - progress) * 0.14) + ")";
+      var a = ln.angle + progress * 0.06;
+      var inner = ringR * 0.15;
+      var outer = ringR * (0.55 + (1 - reveal) * 0.85);
+      ctx.strokeStyle = "rgba(0, 212, 255, " + (0.04 + (1 - progress) * 0.09) + ")";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cx + Math.cos(a) * inner, cy + Math.sin(a) * inner);
@@ -201,129 +208,127 @@
     });
 
     particles.forEach(function (p) {
-      var d = p.dist * (1 - warp * 0.92);
-      var radius = d * maxR * 0.5;
-      var a = p.angle + Math.sin(t * 0.002 + p.wobble) * 0.02;
+      var d = p.dist * (1 - reveal * 0.88);
+      var radius = d * maxR * 0.85;
+      var a = p.angle + Math.sin(t * 0.0015 + p.wobble) * 0.015;
       var x = cx + Math.cos(a) * radius;
       var y = cy + Math.sin(a) * radius;
-      var col = p.hue ? "#00ff9c" : "#00d4ff";
-      ctx.strokeStyle = col;
-      ctx.globalAlpha = 0.25 + (1 - d) * 0.55;
-      ctx.lineWidth = 1.2;
-      var tail = p.len * (0.4 + warp);
+      ctx.fillStyle = p.hue ? "rgba(0, 255, 180, 0.55)" : "rgba(0, 212, 255, 0.65)";
+      ctx.globalAlpha = 0.15 + (1 - d) * 0.45;
       ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(
-        x - Math.cos(a) * tail,
-        y - Math.sin(a) * tail
-      );
-      ctx.stroke();
+      ctx.arc(x, y, 1.2 + (1 - d) * 1.8, 0, Math.PI * 2);
+      ctx.fill();
     });
-
     ctx.globalAlpha = 1;
-    ctx.restore();
 
-    var vig = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR);
-    vig.addColorStop(0, "rgba(0, 255, 156, 0.04)");
-    vig.addColorStop(0.35, "transparent");
-    vig.addColorStop(1, "rgba(5, 8, 7, 0.65)");
+    var vig = ctx.createRadialGradient(cx, cy, maxR * 0.2, cx, cy, Math.hypot(w, h) * 0.72);
+    vig.addColorStop(0, "transparent");
+    vig.addColorStop(1, "rgba(3, 8, 16, " + (0.35 + progress * 0.35) + ")");
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, w, h);
   }
 
   function drawProfessional(w, h, progress, t) {
-    ctx.fillStyle = "#0a0a0a";
+    ctx.fillStyle = "#0c0c0c";
     ctx.fillRect(0, 0, w, h);
 
-    var cx = w * 0.5;
-    var cy = h * 0.5;
-    var depth = easeInOutCubic(progress);
-    var horizon = 0.38 + depth * 0.22;
-
-    lines.forEach(function (ln, idx) {
-      var px = (ln.gx - 0.5) * 1.6;
-      var pz = 0.15 + ((ln.phase + progress * 1.2) % 1) * 0.85;
-      var scale = 1 / pz;
-      var x = cx + px * w * 0.42 * scale;
-      var y = cy + (horizon - 0.5) * h * scale * 0.55;
-      var alpha = Math.min(0.35, 0.08 + (1 - pz) * 0.35);
-      ctx.strokeStyle = idx % 3 === 0 ? "rgba(255,255,255," + alpha + ")" : "rgba(119,119,119," + alpha * 0.9 + ")";
-      ctx.lineWidth = 1;
-      var len = 12 * scale;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, y + len);
-      ctx.stroke();
-    });
+    var wash = 1 - easeInOutCubic(progress);
+    ctx.fillStyle = "rgba(248, 246, 242, " + (wash * 0.16) + ")";
+    ctx.fillRect(0, 0, w, h);
 
     particles.forEach(function (p) {
-      p.y += p.vy * (1 + depth * 2);
-      p.x += p.vx;
-      if (p.y > 1.1) {
-        p.y = -0.05;
-        p.x = Math.random();
-      }
-      var py = cy + (p.y - horizon) * h * 0.9;
-      ctx.fillStyle = "rgba(255,255,255," + (0.04 + (1 - depth) * 0.12) + ")";
-      ctx.fillRect(p.x * w, py, 1.5, 8 + depth * 6);
+      var dx = p.x * w + Math.sin(t * 0.00035 + p.phase) * 10;
+      var dy = p.y * h + Math.cos(t * 0.00028 + p.phase) * 6 + progress * 12;
+      ctx.fillStyle = "rgba(255,255,255," + (0.03 + wash * 0.07) + ")";
+      ctx.beginPath();
+      ctx.arc(dx, dy, p.r, 0, Math.PI * 2);
+      ctx.fill();
     });
 
-    ctx.strokeStyle = "rgba(255,255,255,0.08)";
+    ctx.strokeStyle = "rgba(255,255,255," + (wash * 0.05) + ")";
     ctx.lineWidth = 1;
-    for (var i = -4; i <= 4; i++) {
-      var yy = cy + i * 28 * (1 + depth);
+    for (var i = 0; i < 4; i++) {
+      var yy = h * (0.38 + i * 0.1) + Math.sin(t * 0.00025 + i * 1.7) * 5;
       ctx.beginPath();
-      ctx.moveTo(0, yy);
-      ctx.lineTo(w, yy);
+      ctx.moveTo(-10, yy);
+      ctx.lineTo(w + 10, yy);
       ctx.stroke();
     }
   }
 
   function drawFreiraum(w, h, progress, t) {
-    var g = ctx.createLinearGradient(0, 0, w, h);
-    g.addColorStop(0, "#1a1028");
-    g.addColorStop(1, "#241832");
+    var g = ctx.createLinearGradient(0, 0, w * 0.7, h);
+    g.addColorStop(0, "#2a1420");
+    g.addColorStop(0.45, "#3a1c28");
+    g.addColorStop(1, "#1a1024");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
 
     var cx = w * 0.5;
-    var cy = h * 0.5;
+    var cy = h * 0.46;
     var flow = easeInOutCubic(progress);
-    var maxR = Math.min(w, h) * 0.55;
+    var maxR = Math.min(w, h) * 0.52;
 
     blobs.forEach(function (b) {
-      var angle = b.phase + t * 0.0012 * b.drift;
-      var dist = (0.2 + (1 - flow) * 0.65 + Math.sin(angle * 2) * 0.08) * maxR;
+      var angle = b.phase + t * 0.0009 * b.drift;
+      var dist = (0.12 + (1 - flow) * 0.55 + Math.sin(angle * 1.6) * 0.06) * maxR;
       var x = cx + Math.cos(angle) * dist;
-      var y = cy + Math.sin(angle * 1.1) * dist * 0.85;
-      var r = b.r * maxR * (0.65 + flow * 0.35);
+      var y = cy + Math.sin(angle * 1.08) * dist * 0.82;
+      var r = b.r * maxR * (0.55 + flow * 0.45);
 
       var grd = ctx.createRadialGradient(x, y, 0, x, y, r);
-      grd.addColorStop(0, b.color + "aa");
-      grd.addColorStop(0.5, b.color + "44");
+      grd.addColorStop(0, b.color + "99");
+      grd.addColorStop(0.55, b.color + "33");
       grd.addColorStop(1, "transparent");
       ctx.fillStyle = grd;
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
-
-      ctx.strokeStyle = b.color + "55";
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.35;
-      ctx.beginPath();
-      ctx.arc(x, y, r * 0.72, t * 0.001 * b.spin, t * 0.001 * b.spin + Math.PI * 0.7);
-      ctx.stroke();
-      ctx.globalAlpha = 1;
     });
 
-    ctx.fillStyle = "rgba(255, 255, 255, 0.03)";
-    for (var i = 0; i < 6; i++) {
-      var fx = cx + Math.sin(t * 0.0008 + i) * w * 0.3 * (1 - flow);
-      var fy = cy + Math.cos(t * 0.0007 + i * 1.3) * h * 0.25;
+    ctx.fillStyle = "rgba(255, 230, 200, 0.04)";
+    for (var i = 0; i < 10; i++) {
+      var fx = cx + Math.sin(t * 0.0006 + i * 1.4) * w * 0.28 * (0.4 + flow);
+      var fy = cy + Math.cos(t * 0.00055 + i * 1.1) * h * 0.22 * (0.4 + flow);
+      var fr = 2 + (i % 3);
+      ctx.globalAlpha = 0.25 + (1 - flow) * 0.35;
       ctx.beginPath();
-      ctx.arc(fx, fy, 40 + i * 12, 0, Math.PI * 2);
+      ctx.arc(fx, fy, fr, 0, Math.PI * 2);
       ctx.fill();
     }
+    ctx.globalAlpha = 1;
+
+    var warm = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR * 1.1);
+    warm.addColorStop(0, "rgba(255, 180, 120, " + (0.06 * (1 - flow)) + ")");
+    warm.addColorStop(1, "transparent");
+    ctx.fillStyle = warm;
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  function playSoftProfessional(resolve) {
+    ensureDom();
+    running = true;
+    var size = resizeCanvas();
+    initProfessional(size);
+    overlay.className = "world-transition--professional";
+    overlay.classList.add("is-active");
+    overlay.setAttribute("aria-hidden", "false");
+    document.documentElement.classList.add("world-transition-lock");
+
+    var duration = PRO_MS;
+    var start = performance.now();
+    function frame(now) {
+      var elapsed = now - start;
+      var progress = Math.min(1, elapsed / duration);
+      drawProfessional(size.w, size.h, progress, now);
+      if (elapsed >= duration) {
+        hideOverlay();
+        resolve();
+        return;
+      }
+      rafId = global.requestAnimationFrame(frame);
+    }
+    rafId = global.requestAnimationFrame(frame);
   }
 
   function playFade(world, resolve) {
@@ -355,7 +360,6 @@
     var h = size.h;
 
     if (world === "nexora") initNexora(size);
-    else if (world === "professional") initProfessional(size);
     else initFreiraum(size);
 
     overlay.className = "world-transition--" + world;
@@ -382,7 +386,6 @@
       var t = now;
 
       if (world === "nexora") drawNexora(w, h, progress, t);
-      else if (world === "professional") drawProfessional(w, h, progress, t);
       else drawFreiraum(w, h, progress, t);
 
       if (elapsed >= duration) {
@@ -412,6 +415,10 @@
       }
       if (mqReduce.matches) {
         playFade(world, finish);
+        return;
+      }
+      if (world === "professional") {
+        playSoftProfessional(finish);
         return;
       }
       playTunnel(world, finish);
