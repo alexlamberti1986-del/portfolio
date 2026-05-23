@@ -98,6 +98,16 @@
     });
   }
 
+  function bindWorldPauseMessage() {
+    window.addEventListener("message", function (e) {
+      if (!e.data || e.data.type !== "portfolio-world-pause") return;
+      document.documentElement.classList.toggle(
+        "welten-world-paused",
+        !!e.data.paused
+      );
+    });
+  }
+
   function bindVisibilityPause() {
     function onVis() {
       document.documentElement.classList.toggle("welten-page-hidden", document.hidden);
@@ -146,6 +156,7 @@
     mqReduce.addListener(apply);
   }
 
+  bindWorldPauseMessage();
   bindVisibilityPause();
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", observeActiveSlide);

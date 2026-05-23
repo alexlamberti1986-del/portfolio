@@ -65,18 +65,8 @@
     height: calc(100% - var(--bar-h, 56px));
     border: 0;
     display: block;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.45s ease, visibility 0.45s ease;
     z-index: 0;
     background: transparent;
-  }
-  .world-frame.is-active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    z-index: 1;
   }
   body[data-master-world="nexora"] { background: #050810; }
   body[data-master-world="nexora"] .world-bar {
@@ -159,6 +149,7 @@
     .sound-toggle { padding: 7px 10px !important; font-size: 0.72rem; }
   }
 </style>
+<link rel="stylesheet" href="assets/shell-performance.css" />
 <link rel="stylesheet" href="assets/world-transition.css" />
 </head>
 <body data-master-world="professional">
@@ -169,7 +160,7 @@
   <button type="button" class="sound-toggle" id="sound-toggle" aria-pressed="false" title="Weltwechsel-Sound">Sound Off</button>
 </div>
 <iframe class="world-frame" title="NEXORA" data-world="nexora" data-src="NEXORA.html"></iframe>
-<iframe class="world-frame is-active" title="PROFESSIONAL" data-world="professional" data-src="PROFESSIONAL.html"></iframe>
+<iframe class="world-frame is-active" title="PROFESSIONAL" data-world="professional" data-src="PROFESSIONAL.html" src="PROFESSIONAL.html"></iframe>
 <iframe class="world-frame" title="FREIRAUM" data-world="freiraum" data-src="FREIRAUM.html"></iframe>
 <div id="world-transition-overlay" aria-hidden="true"></div>
 <script src="assets/transition-engine.js"></script>

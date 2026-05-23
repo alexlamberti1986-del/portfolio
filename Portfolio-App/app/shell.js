@@ -6,12 +6,13 @@
     "experience", "workstyle", "why", "faq", "contact",
   ];
 
+  var CROSSFADE_MS = 550;
   var sharedChapter = "home";
   var bar = document.querySelector(".world-bar");
   var frames = Array.from(document.querySelectorAll(".world-frame"));
   var buttons = Array.from(document.querySelectorAll(".world-bar button[data-world]"));
   var soundBtn = document.getElementById("sound-toggle");
-  var loaded = {};
+  var loaded = { professional: false };
   var soundEnabled = false;
   var lastSoundWorld = "professional";
   var switching = false;
@@ -29,7 +30,7 @@
       src = encodeURI(src).replace(/#/g, "%23");
     } catch (e) {}
     var audio = new Audio(src);
-    audio.preload = "auto";
+    audio.preload = "none";
     audio.volume = 0.55;
     sounds[key] = audio;
   });
@@ -64,7 +65,7 @@
 
   function getActiveWorld() {
     var active = frames.find(function (f) {
-      return f.classList.contains("is-active");
+      return f.classList.contains("is-active") && !f.classList.contains("is-leaving");
     });
     return active ? active.getAttribute("data-world") : null;
   }
@@ -107,6 +108,19 @@
   }
   updateSoundButton();
 
+  function postFrame(frame, data) {
+    if (!frame || !frame.contentWindow) return;
+    try {
+      frame.contentWindow.postMessage(data, "*");
+    } catch (e) {}
+  }
+
+  function setFramePaused(frame, paused) {
+    if (!frame) return;
+    frame.classList.toggle("is-paused", paused);
+    postFrame(frame, { type: "portfolio-world-pause", paused: paused });
+  }
+
   function readChapter(frame) {
     try {
       var d = frame.contentDocument;
@@ -135,14 +149,9 @@
       }
     } catch (e1) {}
     if (frame.contentWindow) {
-      [0, 60, 150, 320, 700].forEach(function (ms) {
+      [0, 60, 150, 320].forEach(function (ms) {
         setTimeout(function () {
-          try {
-            frame.contentWindow.postMessage(
-              { type: "portfolio-go-chapter", chapter: id },
-              "*"
-            );
-          } catch (e2) {}
+          postFrame(frame, { type: "portfolio-go-chapter", chapter: id });
         }, ms);
       });
     }
@@ -159,54 +168,62 @@
     } catch (e) {}
   }
 
-  function loadFrame(frame, world, cb) {
+  function loadFrame(frame, world) {
     var src = frame.getAttribute("data-src");
-    if (!src) {
-      if (cb) cb();
-      return;
-    }
+    if (!src) return Promise.resolve(frame);
     if (loaded[world] && frame.src && frame.src.indexOf("about:blank") === -1) {
-      if (cb) cb();
-      return;
+      return Promise.resolve(frame);
     }
-    function onLoad() {
-      frame.removeEventListener("load", onLoad);
-      loaded[world] = true;
-      if (world === "nexora") injectNexoraNoArrows(frame);
-      if (cb) cb();
-    }
-    frame.addEventListener("load", onLoad);
-    frame.src = src;
+    return new Promise(function (resolve) {
+      function onLoad() {
+        frame.removeEventListener("load", onLoad);
+        loaded[world] = true;
+        if (world === "nexora") injectNexoraNoArrows(frame);
+        frame.classList.add("is-ready");
+        resolve(frame);
+      }
+      frame.addEventListener("load", onLoad);
+      frame.src = src;
+    });
   }
 
-  function showWorld(world) {
-    var prev = frames.find(function (f) {
-      return f.classList.contains("is-active");
-    });
-    var prevWorld = prev ? prev.getAttribute("data-world") : null;
-    if (prevWorld && prevWorld !== world) {
-      playWorldSwitchSound(world);
-    }
-    if (prev) {
-      var ch = readChapter(prev);
-      if (ch) sharedChapter = ch;
-    }
-
-    frames.forEach(function (f) {
-      f.classList.toggle("is-active", f.getAttribute("data-world") === world);
-    });
-    buttons.forEach(function (b) {
-      b.classList.toggle("is-active", b.getAttribute("data-world") === world);
-    });
-    setMasterWorld(world);
-
+  function crossfadeToWorld(world, prev) {
     var target = frames.find(function (f) {
       return f.getAttribute("data-world") === world;
     });
-    if (!target) return;
+    if (!target) return Promise.resolve();
 
-    loadFrame(target, world, function () {
+    return loadFrame(target, world).then(function () {
+      if (prev && prev !== target) {
+        prev.classList.add("is-leaving");
+        prev.classList.remove("is-active");
+        setFramePaused(prev, true);
+      }
+
+      frames.forEach(function (f) {
+        var on = f === target;
+        f.classList.toggle("is-active", on);
+        if (on) {
+          f.classList.remove("is-leaving");
+          f.classList.add("is-ready");
+          setFramePaused(f, false);
+        }
+      });
+
+      buttons.forEach(function (b) {
+        b.classList.toggle("is-active", b.getAttribute("data-world") === world);
+      });
+      setMasterWorld(world);
       applyChapter(target, sharedChapter);
+
+      return new Promise(function (resolve) {
+        setTimeout(function () {
+          if (prev && prev !== target) {
+            prev.classList.remove("is-leaving");
+          }
+          resolve();
+        }, CROSSFADE_MS);
+      });
     });
   }
 
@@ -223,13 +240,30 @@
     if (current === world) return Promise.resolve();
 
     switching = true;
-    buttons.forEach(function (b) {
-      b.disabled = true;
+    var prev = frames.find(function (f) {
+      return f.getAttribute("data-world") === current;
     });
 
-    return runTransition(world)
+    buttons.forEach(function (b) {
+      b.disabled = true;
+      b.classList.toggle("is-active", b.getAttribute("data-world") === world);
+    });
+    setMasterWorld(world);
+
+    if (prev && prev.getAttribute("data-world") !== world) {
+      playWorldSwitchSound(world);
+    }
+
+    var preloadPromise = loadFrame(
+      frames.find(function (f) {
+        return f.getAttribute("data-world") === world;
+      }),
+      world
+    );
+
+    return Promise.all([runTransition(world), preloadPromise])
       .then(function () {
-        showWorld(world);
+        return crossfadeToWorld(world, prev);
       })
       .finally(function () {
         switching = false;
@@ -237,6 +271,49 @@
           b.disabled = false;
         });
       });
+  }
+
+  function bootProfessional() {
+    document.documentElement.classList.add("shell-booting");
+    var pro = frames.find(function (f) {
+      return f.getAttribute("data-world") === "professional";
+    });
+    frames.forEach(function (f) {
+      if (f !== pro) {
+        f.removeAttribute("src");
+        f.classList.remove("is-active", "is-ready");
+        setFramePaused(f, true);
+      }
+    });
+    if (!pro) return;
+    pro.classList.add("is-active");
+    setMasterWorld("professional");
+    buttons.forEach(function (b) {
+      b.classList.toggle("is-active", b.getAttribute("data-world") === "professional");
+    });
+
+    function reveal() {
+      pro.classList.add("is-ready");
+      loaded.professional = true;
+      setFramePaused(pro, false);
+      requestAnimationFrame(function () {
+        document.documentElement.classList.remove("shell-booting");
+        document.documentElement.classList.add("shell-ready");
+      });
+    }
+
+    if (pro.src && pro.src.indexOf("PROFESSIONAL") !== -1) {
+      if (pro.contentDocument && pro.contentDocument.readyState === "complete") {
+        reveal();
+      } else {
+        pro.addEventListener("load", reveal, { once: true });
+      }
+      return;
+    }
+
+    var src = pro.getAttribute("data-src") || "PROFESSIONAL.html";
+    pro.addEventListener("load", reveal, { once: true });
+    pro.src = src;
   }
 
   buttons.forEach(function (btn) {
@@ -256,5 +333,5 @@
   });
 
   window.switchToWorld = switchToWorld;
-  showWorld("professional");
+  bootProfessional();
 })();

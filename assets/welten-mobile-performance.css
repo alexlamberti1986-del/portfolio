@@ -20,23 +20,25 @@
   html.welten-mobile,
   html.welten-mobile body {
     overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
     overscroll-behavior-y: auto;
   }
 
-  .slide,
-  .slide.active,
-  #slide-home.slide,
-  .world,
-  .page,
-  .hero,
-  .hero-section,
-  .home-hero,
-  .home-hero-experience,
-  .hero-stage {
-    min-height: auto;
-    overflow-x: hidden;
-    overflow-y: visible;
-    touch-action: pan-y;
+  html.welten-mobile .slide,
+  html.welten-mobile .slide.active,
+  html.welten-mobile #slide-home.slide,
+  html.welten-mobile .world,
+  html.welten-mobile .page,
+  html.welten-mobile .hero,
+  html.welten-mobile .hero-section,
+  html.welten-mobile .home-hero,
+  html.welten-mobile .home-hero-experience,
+  html.welten-mobile .hero-stage {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    touch-action: pan-y !important;
   }
 
   #slide-home.slide.active {
@@ -50,11 +52,34 @@
     -webkit-user-select: auto !important;
     height: auto !important;
     max-height: none !important;
-    min-height: min(
-      calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px)),
-      760px
-    ) !important;
+    min-height: auto !important;
     overflow: visible !important;
+  }
+
+  #dnaStage.home-hero-experience,
+  .home-hero-experience#dnaStage,
+  .dna-stage,
+  .orbit-stage,
+  .hero-interaction,
+  .mouse-effect-layer {
+    touch-action: pan-y !important;
+    pointer-events: none !important;
+  }
+
+  #dnaStage .dna-slide,
+  #dnaStage .nexora-orbit-button,
+  #dnaStage .nexora-orbit-buttons,
+  #dnaStage .btn,
+  #dnaStage button,
+  #dnaStage a[href] {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  .nexora-orbit-buttons,
+  .nexora-orbit-ring {
+    touch-action: pan-y !important;
+    pointer-events: auto !important;
   }
 
   .dna-particles-canvas,
@@ -68,18 +93,6 @@
   canvas:not(.welten-keep-pointer) {
     touch-action: pan-y !important;
     pointer-events: none !important;
-  }
-
-  #dnaStage.home-hero-experience,
-  .home-hero-experience#dnaStage {
-    touch-action: pan-y !important;
-    pointer-events: auto !important;
-  }
-
-  .nexora-orbit-buttons,
-  .nexora-orbit-ring {
-    touch-action: pan-x !important;
-    pointer-events: auto !important;
   }
 
   .dna-slide,
@@ -124,18 +137,16 @@
 
 @media (max-width: 768px) {
   :root {
-    --hero-scale: 0.62;
+    --hero-scale: 0.64;
     --hero-dna-h: min(
-      calc((100svh - var(--header-h, 56px) - var(--dock-h, 0px)) * 0.62),
-      520px
+      calc((100svh - var(--header-h, 56px) - var(--dock-h, 0px)) * 0.64),
+      480px
     );
   }
 
   .home-hero-experience {
-    min-height: min(
-      calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px)),
-      640px
-    ) !important;
+    min-height: auto !important;
+    max-height: none !important;
   }
 
   body[data-world="vertex"] .dna-unified-scene::before {
@@ -150,18 +161,16 @@
 
 @media (max-width: 480px) {
   :root {
-    --hero-scale: 0.52;
+    --hero-scale: 0.54;
     --hero-dna-h: min(
-      calc((100svh - var(--header-h, 56px) - var(--dock-h, 0px)) * 0.52),
-      440px
+      calc((100svh - var(--header-h, 56px) - var(--dock-h, 0px)) * 0.54),
+      400px
     );
   }
 
   .home-hero-experience {
-    min-height: min(
-      calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px)),
-      520px
-    ) !important;
+    min-height: auto !important;
+    max-height: none !important;
   }
 
   .dna-orbit-group {
@@ -242,6 +251,16 @@ html.welten-page-hidden .dna-premium-canvas,
 html.welten-page-hidden #particle-canvas,
 html.welten-page-hidden #weltenMousePaintCanvas {
   visibility: hidden !important;
+}
+
+html.welten-world-paused .dna-particles-canvas,
+html.welten-world-paused .dna-premium-canvas,
+html.welten-world-paused #particle-canvas,
+html.welten-world-paused #weltenMousePaintCanvas,
+html.welten-world-paused .light-beams {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation-play-state: paused !important;
 }
 
 /* ── Overrides: eingebettete Fixes + Welt-spezifisch (Handy) ── */

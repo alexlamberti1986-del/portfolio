@@ -7,8 +7,8 @@
 
   var MIN_MS = 1800;
   var MAX_MS = 2400;
-  var DEFAULT_MS = 2100;
-  var FADE_MS = 420;
+  var DEFAULT_MS = 1500;
+  var FADE_MS = 380;
 
   var mqReduce = global.matchMedia("(prefers-reduced-motion: reduce)");
   var mqMobile = global.matchMedia("(max-width: 768px), (hover: none) and (pointer: coarse)");
@@ -363,7 +363,7 @@
     overlay.setAttribute("aria-hidden", "false");
     document.documentElement.classList.add("world-transition-lock");
 
-    var duration = DEFAULT_MS;
+    var duration = isMobile() ? 1100 : DEFAULT_MS;
     var start = performance.now();
     var onResize = function () {
       size = resizeCanvas();
