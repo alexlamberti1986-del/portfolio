@@ -1,4 +1,4 @@
-/* World transition overlay — fullscreen, no layout shift */
+/* World transition overlay — lightweight CSS effects */
 #world-transition-overlay {
   position: fixed;
   inset: 0;
@@ -9,7 +9,7 @@
   overflow: hidden;
   contain: strict;
   isolation: isolate;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+  transition: opacity 0.12s ease, visibility 0.12s ease;
 }
 
 #world-transition-overlay.is-active {
@@ -17,62 +17,93 @@
   visibility: visible;
 }
 
-#world-transition-overlay.world-transition--nexora.is-active {
-  background: #050807;
+#world-transition-overlay.is-exiting {
+  opacity: 0;
 }
 
-#world-transition-overlay.world-transition--professional.is-active {
-  background: #0c0c0c;
-}
-
-#world-transition-overlay.world-transition--professional::after {
-  background: radial-gradient(
-    ellipse 70% 60% at 50% 50%,
-    rgba(248, 246, 242, 0.06) 0%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
-}
-
-#world-transition-overlay.world-transition--nexora::after {
-  background: radial-gradient(
-    ellipse 75% 65% at 50% 48%,
-    rgba(0, 180, 255, 0.08) 0%,
-    transparent 50%,
-    rgba(3, 8, 16, 0.4) 100%
-  );
-}
-
-#world-transition-overlay.world-transition--freiraum.is-active {
-  background: #1a1028;
-}
-
-#world-transition-overlay .world-transition-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  vertical-align: top;
-}
-
+#world-transition-overlay::before,
 #world-transition-overlay::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s ease;
 }
 
-#world-transition-overlay.world-transition--freiraum::after {
-  background: radial-gradient(
-    ellipse 85% 75% at 50% 50%,
-    transparent 30%,
-    rgba(28, 16, 38, 0.28) 100%
+#world-transition-overlay.world-transition--nexora.is-active {
+  background: #040810;
+}
+
+#world-transition-overlay.world-transition--nexora::before {
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    rgba(0, 210, 255, 0.55) 50%,
+    transparent 58%
   );
+  transform: translateX(-120%);
+  animation: wt-nexora-sweep 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-#world-transition-overlay.is-active::after {
-  opacity: 1;
+#world-transition-overlay.world-transition--nexora::after {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(0, 220, 255, 0.06) 3px,
+    rgba(0, 220, 255, 0.06) 4px
+  );
+  opacity: 0;
+  animation: wt-nexora-scan 0.42s ease-out forwards;
+}
+
+@keyframes wt-nexora-sweep {
+  0% { transform: translateX(-120%); opacity: 0.2; }
+  35% { opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+
+@keyframes wt-nexora-scan {
+  0%, 20% { opacity: 0; }
+  45% { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+#world-transition-overlay.world-transition--professional.is-active {
+  background: #f6f4f0;
+}
+
+#world-transition-overlay.world-transition--professional::before {
+  background: linear-gradient(90deg, #fff 0%, #f8f6f2 48%, rgba(248, 246, 242, 0) 100%);
+  transform: translateX(-105%);
+  animation: wt-pro-wipe 0.42s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
+}
+
+#world-transition-overlay.world-transition--professional::after {
+  background: linear-gradient(90deg, transparent 49.5%, rgba(0, 0, 0, 0.72) 50%, transparent 50.5%);
+  opacity: 0;
+  animation: wt-pro-line 0.42s ease-out forwards;
+}
+
+@keyframes wt-pro-wipe {
+  0% { transform: translateX(-105%); }
+  100% { transform: translateX(105%); }
+}
+
+@keyframes wt-pro-line {
+  0%, 30% { opacity: 0; transform: translateX(-8%); }
+  50% { opacity: 0.9; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(8%); }
+}
+
+#world-transition-overlay.world-transition--freiraum.is-active {
+  background: radial-gradient(ellipse 90% 80% at 50% 45%, #3a2030 0%, #1a1024 100%);
+  animation: wt-freiraum-fade 0.42s ease-out forwards;
+}
+
+@keyframes wt-freiraum-fade {
+  0% { opacity: 0.15; filter: brightness(1.08); }
+  40% { opacity: 1; filter: brightness(1); }
+  100% { opacity: 0; filter: brightness(0.98); }
 }
 
 html.world-transition-lock,
@@ -82,7 +113,9 @@ html.world-transition-lock body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #world-transition-overlay {
-    transition: opacity 0.28s ease, visibility 0.28s ease;
+  #world-transition-overlay::before,
+  #world-transition-overlay::after,
+  #world-transition-overlay.world-transition--freiraum.is-active {
+    animation-duration: 0.28s !important;
   }
 }

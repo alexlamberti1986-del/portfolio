@@ -99,12 +99,55 @@
   }
 
   function bindWorldPauseMessage() {
+    var paused = false;
+    var origRaf = window.requestAnimationFrame;
+    var origCaf = window.cancelAnimationFrame;
+    var blockedIds = new Map();
+    var nextId = 1;
+
+    window.__portfolioWorldPaused = false;
+
+    function patchRaf() {
+      if (window.__portfolioRafPatched) return;
+      window.__portfolioRafPatched = true;
+      window.requestAnimationFrame = function (cb) {
+        if (window.__portfolioWorldPaused) return 0;
+        var id = origRaf.call(window, cb);
+        blockedIds.set(id, cb);
+        return id;
+      };
+      window.cancelAnimationFrame = function (id) {
+        blockedIds.delete(id);
+        return origCaf.call(window, id);
+      };
+    }
+
+    function setPaused(next) {
+      paused = !!next;
+      window.__portfolioWorldPaused = paused;
+      document.documentElement.classList.toggle("welten-world-paused", paused);
+      if (paused) {
+        blockedIds.forEach(function (_cb, id) {
+          origCaf.call(window, id);
+        });
+        blockedIds.clear();
+      }
+    }
+
+    patchRaf();
+
     window.addEventListener("message", function (e) {
-      if (!e.data || e.data.type !== "portfolio-world-pause") return;
-      document.documentElement.classList.toggle(
-        "welten-world-paused",
-        !!e.data.paused
-      );
+      if (!e.data) return;
+      if (e.data.type === "portfolio-world-pause") {
+        setPaused(!!e.data.paused);
+      }
+      if (e.data.type === "portfolio-world-enter") {
+        setPaused(false);
+        document.querySelectorAll("#particle-canvas, #weltenMousePaintCanvas").forEach(function (c) {
+          c.style.display = "";
+        });
+        window.dispatchEvent(new Event("resize"));
+      }
     });
   }
 

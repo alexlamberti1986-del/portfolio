@@ -1,24 +1,23 @@
-/* Shell — schneller Start, Crossfade zwischen Welten */
+/* Shell — fast boot, quick crossfade */
 html.shell-booting .world-frame.is-active {
-  opacity: 0;
-  transform: scale(0.992);
+  opacity: 1;
+  transform: none;
 }
 
 html.shell-ready .world-frame.is-active.is-ready {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
 .world-frame {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: scale(0.992);
-  will-change: opacity, transform;
+  transform: none;
+  will-change: opacity;
   transition:
-    opacity 0.55s ease,
-    transform 0.55s ease,
-    visibility 0s linear 0.55s;
+    opacity 0.38s ease,
+    visibility 0s linear 0.38s;
 }
 
 .world-frame.is-active {
@@ -26,19 +25,16 @@ html.shell-ready .world-frame.is-active.is-ready {
   pointer-events: auto;
   z-index: 1;
   transition:
-    opacity 0.55s ease,
-    transform 0.55s ease,
+    opacity 0.38s ease,
     visibility 0s;
 }
 
 .world-frame.is-active.is-ready {
   opacity: 1;
-  transform: scale(1);
 }
 
 .world-frame.is-leaving {
   opacity: 0 !important;
-  transform: scale(0.992) !important;
   pointer-events: none !important;
   z-index: 0 !important;
 }
@@ -49,10 +45,7 @@ html.shell-ready .world-frame.is-active.is-ready {
 
 @media (prefers-reduced-motion: reduce) {
   .world-frame,
-  .world-frame.is-active,
-  html.shell-booting .world-frame.is-active,
-  html.shell-ready .world-frame.is-active.is-ready {
+  .world-frame.is-active {
     transition-duration: 0.2s !important;
-    transform: none !important;
   }
 }
