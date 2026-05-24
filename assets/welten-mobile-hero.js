@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260524";
+  var HERO_VER = "20260526";
   var mqHero = window.matchMedia("(max-width: 1024px)");
   var enterTimer = 0;
 
@@ -15,17 +15,22 @@
   function ensureStylesheetLock() {
     if (!isHeroMobile()) return;
     var id = "welten-mobile-hero-stylesheet-lock";
-    if (document.getElementById(id)) return;
+    var href = "assets/welten-mobile-hero.css?v=" + HERO_VER;
+    var existing = document.getElementById(id);
+    if (existing) {
+      if (existing.getAttribute("href") !== href) existing.setAttribute("href", href);
+      return;
+    }
     var link = document.createElement("link");
     link.id = id;
     link.rel = "stylesheet";
-    link.href = "assets/welten-mobile-hero.css?v=" + HERO_VER;
+    link.href = href;
     document.body.appendChild(link);
   }
 
   function ensureNexoraClaim(stage) {
     if (!stage || stage.querySelector(".nexora-mobile-hero-claim")) return;
-    var claim = document.createElement("motion".replace("motion", "div"));
+    var claim = document.createElement("div");
     claim.className = "nexora-mobile-hero-claim";
     claim.innerHTML =
       '<span class="nexora-mobile-hero-kicker">NEXORA</span>' +
@@ -69,12 +74,16 @@
       shell.style.setProperty("left", "auto", "important");
       shell.style.setProperty("transform", "none", "important");
       shell.style.setProperty("width", "100%", "important");
+      shell.style.setProperty("max-width", "min(92vw, 340px)", "important");
       shell.style.setProperty("opacity", "1", "important");
       shell.style.setProperty("visibility", "visible", "important");
     }
     var ring = document.querySelector("#slide-home .nexora-orbit-ring");
     if (ring) {
       ring.style.setProperty("position", "relative", "important");
+      ring.style.setProperty("display", "flex", "important");
+      ring.style.setProperty("flex-wrap", "wrap", "important");
+      ring.style.setProperty("justify-content", "center", "important");
       ring.style.setProperty("transform", "none", "important");
       ring.style.setProperty("width", "100%", "important");
       ring.style.setProperty("height", "auto", "important");
@@ -86,8 +95,9 @@
       btn.style.setProperty("transform", "none", "important");
       btn.style.setProperty("opacity", "1", "important");
       btn.style.setProperty("filter", "none", "important");
-      btn.style.setProperty("width", "100%", "important");
-      btn.style.setProperty("min-width", "0", "important");
+      btn.style.setProperty("width", "auto", "important");
+      btn.style.setProperty("flex", "0 1 auto", "important");
+      btn.style.setProperty("min-height", "44px", "important");
       btn.style.setProperty("height", "auto", "important");
     });
     document.querySelectorAll("#slide-home .nexora-orbit-nav").forEach(function (nav) {
@@ -106,13 +116,28 @@
 
   function resetFreiraumMobile() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "freiraum") return;
+    var ring = document.querySelector("#slide-home .dna-ring");
+    if (ring) {
+      ring.style.setProperty("display", "flex", "important");
+      ring.style.setProperty("flex-wrap", "wrap", "important");
+      ring.style.setProperty("justify-content", "center", "important");
+      ring.style.setProperty("position", "relative", "important");
+      ring.style.setProperty("transform", "none", "important");
+      ring.style.setProperty("width", "100%", "important");
+      ring.style.setProperty("height", "auto", "important");
+    }
     document.querySelectorAll("#slide-home .dna-slide").forEach(function (slide) {
       slide.style.setProperty("position", "relative", "important");
       slide.style.setProperty("left", "auto", "important");
       slide.style.setProperty("top", "auto", "important");
+      slide.style.setProperty("right", "auto", "important");
+      slide.style.setProperty("bottom", "auto", "important");
       slide.style.setProperty("transform", "none", "important");
-      slide.style.setProperty("width", "100%", "important");
+      slide.style.setProperty("width", "auto", "important");
+      slide.style.setProperty("flex", "0 1 auto", "important");
+      slide.style.setProperty("min-height", "44px", "important");
       slide.style.setProperty("opacity", "1", "important");
+      slide.style.setProperty("display", "inline-flex", "important");
     });
   }
 
@@ -150,6 +175,7 @@
       ensureFreiraumClaim(document.querySelector("#slide-home .dna-unified-scene"));
       resetFreiraumMobile();
       window.setTimeout(resetFreiraumMobile, 120);
+      window.setTimeout(resetFreiraumMobile, 480);
     }
   }
 
