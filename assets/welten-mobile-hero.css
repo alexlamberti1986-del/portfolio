@@ -1,44 +1,32 @@
 /**
- * Mobile Hero — immersive layouts (NEXORA · FREIRAUM)
- * Desktop unverändert. Nur html.welten-mobile-hero aktiv.
+ * Mobile Hero — NEXORA · FREIRAUM (≤1024px)
+ * Lädt als letztes Stylesheet — keine html-Klasse nötig.
  */
 
 @keyframes welten-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes welten-nexora-brain-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.88);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(10px) scale(0.88); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes welten-freiraum-float-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (max-width: 1024px) {
-  /* ── NEXORA: eigenes Mobile-Layout ── */
-  html.welten-mobile-hero body[data-world="nexora"] #dnaStage.home-hero-experience {
+
+  /* ═══════════════════════════════════════
+     NEXORA — eigenes Mobile-Hero-Layout
+     ═══════════════════════════════════════ */
+
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience {
+    position: relative !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -46,22 +34,62 @@
     min-height: auto !important;
     max-height: none !important;
     height: auto !important;
-    padding: clamp(18px, 5vw, 28px) clamp(14px, 4vw, 20px) clamp(14px, 3vw, 20px) !important;
+    overflow: visible !important;
+    padding: clamp(18px, 5vw, 28px) clamp(14px, 4vw, 20px) clamp(16px, 3vw, 24px) !important;
     gap: 0 !important;
     background:
       radial-gradient(ellipse 110% 55% at 50% 0%, rgba(0, 160, 255, 0.14), transparent 58%),
       linear-gradient(180deg, rgba(5, 10, 22, 0.98) 0%, rgba(4, 8, 18, 0.92) 100%) !important;
+    box-shadow: none !important;
   }
 
-  html.welten-mobile-hero body[data-world="nexora"] #dnaStage .dna-particles-canvas,
-  html.welten-mobile-hero body[data-world="nexora"] #dnaStage .dna-premium-canvas {
+  body[data-world="nexora"] #slide-home .home-hero-experience::before,
+  body[data-world="nexora"] #slide-home .home-hero-experience::after {
+    display: none !important;
+    content: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
+    pointer-events: none !important;
   }
 
-  html.welten-mobile-hero body[data-world="nexora"] .neuro-core {
-    order: 10 !important;
+  body[data-world="nexora"] #slide-home .dna-particles-canvas,
+  body[data-world="nexora"] #slide-home .dna-premium-canvas {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* Desktop Orbit / DNA / Helix aus */
+  body[data-world="nexora"] #slide-home .dna-unified-scene,
+  body[data-world="nexora"] #slide-home .dna-ring-scene,
+  body[data-world="nexora"] #slide-home .dna-holo-arm,
+  body[data-world="nexora"] #slide-home .dna-visual-stack,
+  body[data-world="nexora"] #slide-home .dna-orbit-group,
+  body[data-world="nexora"] #slide-home .dna-layer,
+  body[data-world="nexora"] #slide-home .dna-asset,
+  body[data-world="nexora"] #slide-home .nexora-orbit-nav {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: auto !important;
+    z-index: -1 !important;
+  }
+
+  /* Brain — klein, zentriert, sichtbar */
+  body[data-world="nexora"] #slide-home .neuro-core {
+    order: 2 !important;
     position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
     flex: 0 0 auto !important;
     width: min(48vw, 188px) !important;
     height: min(48vw, 188px) !important;
@@ -69,44 +97,55 @@
     max-height: none !important;
     margin: clamp(6px, 1.5vh, 12px) auto clamp(10px, 2vh, 16px) !important;
     transform: none !important;
+    scale: 1 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     pointer-events: none !important;
-    opacity: 0;
+    z-index: 3 !important;
   }
 
-  html.welten-mobile-hero body[data-world="nexora"] .dna-unified-scene {
-    display: none !important;
-  }
-
-  html.welten-mobile-hero body[data-world="nexora"] .nexora-mobile-hero-claim {
-    order: 20 !important;
-    width: 100%;
-    max-width: 340px;
-    margin: 0 auto 12px;
-    text-align: center;
-    opacity: 0;
-  }
-
-  html.welten-mobile-hero body[data-world="nexora"] .nexora-mobile-hero-kicker {
-    display: block;
-    font-size: clamp(0.72rem, 2.8vw, 0.82rem);
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: rgba(101, 217, 255, 0.92);
-    margin-bottom: 6px;
-  }
-
-  html.welten-mobile-hero body[data-world="nexora"] .nexora-mobile-hero-claim p {
-    margin: 0;
-    font-size: clamp(0.82rem, 3vw, 0.94rem);
-    line-height: 1.45;
-    color: rgba(232, 244, 255, 0.78);
-    letter-spacing: 0.06em;
-  }
-
-  html.welten-mobile-hero body[data-world="nexora"] #slide-home .nexora-orbit-buttons {
-    order: 30 !important;
+  body[data-world="nexora"] .nexora-mobile-hero-claim {
+    order: 3 !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 340px !important;
+    margin: 0 auto 12px !important;
+    padding: 0 8px !important;
+    text-align: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     position: relative !important;
+    z-index: 4 !important;
+  }
+
+  body[data-world="nexora"] .nexora-mobile-hero-kicker {
+    display: block !important;
+    font-size: clamp(0.72rem, 2.8vw, 0.82rem) !important;
+    letter-spacing: 0.28em !important;
+    text-transform: uppercase !important;
+    color: rgba(101, 217, 255, 0.92) !important;
+    margin-bottom: 6px !important;
+  }
+
+  body[data-world="nexora"] .nexora-mobile-hero-claim p {
+    margin: 0 !important;
+    font-size: clamp(0.82rem, 3vw, 0.94rem) !important;
+    line-height: 1.45 !important;
+    color: rgba(232, 244, 255, 0.78) !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  /* Orbit-Buttons → sauberes Grid (kein 3D-Orbit) */
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons.welten-nexora-list-mode {
+    order: 4 !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
     inset: auto !important;
+    transform: none !important;
     width: 100% !important;
     max-width: min(100%, 420px) !important;
     height: auto !important;
@@ -115,117 +154,149 @@
     margin: 0 auto !important;
     padding: 0 !important;
     perspective: none !important;
-    transform: none !important;
-    opacity: 0;
+    transform-style: flat !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 10 !important;
   }
 
-  html.welten-mobile-hero body[data-world="nexora"] #slide-home .nexora-orbit-buttons::before {
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons::before {
     display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
   }
 
-  html.welten-mobile-hero body[data-world="nexora"] #slide-home .nexora-orbit-ring {
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    transform: none !important;
+    transform-style: flat !important;
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 8px !important;
-    width: 100% !important;
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
     justify-items: stretch !important;
+    pointer-events: auto !important;
   }
 
-  html.welten-mobile-hero body[data-world="nexora"] #slide-home .nexora-orbit-button {
+  body[data-world="nexora"] #slide-home .nexora-orbit-button {
     position: relative !important;
     left: auto !important;
     top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
     height: auto !important;
     min-height: 42px !important;
+    margin: 0 !important;
     padding: 10px 8px !important;
     font-size: clamp(0.62rem, 2.4vw, 0.72rem) !important;
     transform: none !important;
+    translate: none !important;
+    rotate: none !important;
+    scale: 1 !important;
     opacity: 1 !important;
     filter: none !important;
+    visibility: visible !important;
     border-radius: 14px !important;
     justify-content: center !important;
+    z-index: 1 !important;
+    pointer-events: auto !important;
   }
 
-  html.welten-mobile-hero.welten-hero-enter body[data-world="nexora"] .neuro-core {
-    animation: welten-nexora-brain-in 0.82s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
-  }
+  /* ═══════════════════════════════════════
+     FREIRAUM — Cluster-Grid statt Oval
+     ═══════════════════════════════════════ */
 
-  html.welten-mobile-hero.welten-hero-enter body[data-world="nexora"] .nexora-mobile-hero-claim {
-    animation: welten-fade-up 0.72s ease 0.26s forwards;
-  }
-
-  html.welten-mobile-hero.welten-hero-enter body[data-world="nexora"] #slide-home .nexora-orbit-buttons {
-    animation: welten-fade-up 0.78s ease 0.42s forwards;
-  }
-
-  /* ── FREIRAUM: organisches Cluster-Grid ── */
-  html.welten-mobile-hero body[data-world="freiraum"] .home-hero-experience {
+  body[data-world="freiraum"] #slide-home .home-hero-experience {
     min-height: auto !important;
     height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
     padding-bottom: 8px !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] .dna-unified-scene {
+  body[data-world="freiraum"] #slide-home .dna-unified-scene {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+    position: relative !important;
     min-height: auto !important;
     max-height: none !important;
+    height: auto !important;
     padding: clamp(14px, 4vw, 22px) clamp(12px, 3vw, 16px) 6px !important;
     gap: 12px !important;
+    transform: none !important;
     background:
       radial-gradient(ellipse 90% 50% at 50% 8%, rgba(255, 209, 102, 0.1), transparent 55%),
       radial-gradient(ellipse 70% 40% at 80% 30%, rgba(255, 111, 174, 0.08), transparent 50%) !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] .dna-unified-scene::before,
-  html.welten-mobile-hero body[data-world="freiraum"] .dna-unified-scene::after {
+  body[data-world="freiraum"] #slide-home .dna-unified-scene::before,
+  body[data-world="freiraum"] #slide-home .dna-unified-scene::after {
     display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] .freiraum-mobile-hero-claim {
-    width: 100%;
-    max-width: 360px;
-    text-align: center;
-    opacity: 0;
+  body[data-world="freiraum"] .freiraum-mobile-hero-claim {
+    display: block !important;
+    width: 100% !important;
+    max-width: 360px !important;
+    text-align: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 4 !important;
+    order: 1 !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] .freiraum-mobile-hero-kicker {
-    display: block;
-    font-size: clamp(0.72rem, 2.8vw, 0.84rem);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255, 209, 102, 0.95);
-    margin-bottom: 5px;
+  body[data-world="freiraum"] .freiraum-mobile-hero-kicker {
+    display: block !important;
+    font-size: clamp(0.72rem, 2.8vw, 0.84rem) !important;
+    letter-spacing: 0.22em !important;
+    text-transform: uppercase !important;
+    color: rgba(255, 209, 102, 0.95) !important;
+    margin-bottom: 5px !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] .freiraum-mobile-hero-claim p {
-    margin: 0;
-    font-size: clamp(0.8rem, 2.8vw, 0.92rem);
-    color: rgba(255, 248, 239, 0.82);
-    line-height: 1.4;
+  body[data-world="freiraum"] .freiraum-mobile-hero-claim p {
+    margin: 0 !important;
+    font-size: clamp(0.8rem, 2.8vw, 0.92rem) !important;
+    color: rgba(255, 248, 239, 0.82) !important;
+    line-height: 1.4 !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] #slide-home .dna-orbit-group,
-  html.welten-mobile-hero body[data-world="freiraum"] #slide-home .dna-ring-scene {
+  body[data-world="freiraum"] #slide-home .dna-orbit-group,
+  body[data-world="freiraum"] #slide-home .dna-ring-scene {
     position: relative !important;
     inset: auto !important;
+    left: auto !important;
+    top: auto !important;
     width: 100% !important;
     height: auto !important;
     min-height: 0 !important;
     transform: none !important;
-    pointer-events: none !important;
-    opacity: 0;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    order: 2 !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] #slide-home .dna-ring {
+  body[data-world="freiraum"] #slide-home .dna-ring {
+    position: relative !important;
+    inset: auto !important;
+    left: auto !important;
+    top: auto !important;
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 7px !important;
@@ -233,14 +304,19 @@
     max-width: min(100%, 380px) !important;
     margin: 0 auto !important;
     padding: 0 !important;
+    transform: none !important;
     pointer-events: auto !important;
+    height: auto !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] #slide-home .dna-slide,
-  html.welten-mobile-hero body[data-world="freiraum"] #slide-home .dna-slide:nth-child(n) {
+  body[data-world="freiraum"] #slide-home .dna-slide,
+  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(n) {
     position: relative !important;
     left: auto !important;
     top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
@@ -250,39 +326,57 @@
     font-size: clamp(0.58rem, 2.2vw, 0.68rem) !important;
     line-height: 1.12 !important;
     transform: none !important;
-    text-align: center;
-  }
-
-  html.welten-mobile-hero.welten-hero-enter body[data-world="freiraum"] .freiraum-mobile-hero-claim {
-    animation: welten-fade-up 0.72s ease 0.1s forwards;
-  }
-
-  html.welten-mobile-hero.welten-hero-enter body[data-world="freiraum"] #slide-home .dna-orbit-group {
-    animation: welten-freiraum-float-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s forwards;
+    translate: none !important;
+    rotate: none !important;
+    text-align: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
     pointer-events: auto !important;
+    z-index: 2 !important;
   }
 }
 
 @media (max-width: 480px) {
-  html.welten-mobile-hero body[data-world="nexora"] #slide-home .nexora-orbit-ring {
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring {
     grid-template-columns: 1fr !important;
     max-width: 280px !important;
   }
 
-  html.welten-mobile-hero body[data-world="freiraum"] #slide-home .dna-ring {
+  body[data-world="freiraum"] #slide-home .dna-ring {
     grid-template-columns: 1fr !important;
     max-width: 280px !important;
   }
 }
 
+/* Optionale Intro-Animation (nur wenn Shell signalisiert) */
+@media (max-width: 1024px) {
+  html.welten-hero-enter body[data-world="nexora"] #slide-home .neuro-core {
+    animation: welten-nexora-brain-in 0.82s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+  }
+
+  html.welten-hero-enter body[data-world="nexora"] .nexora-mobile-hero-claim {
+    animation: welten-fade-up 0.72s ease 0.26s both;
+  }
+
+  html.welten-hero-enter body[data-world="nexora"] #slide-home .nexora-orbit-buttons {
+    animation: welten-fade-up 0.78s ease 0.42s both;
+  }
+
+  html.welten-hero-enter body[data-world="freiraum"] .freiraum-mobile-hero-claim {
+    animation: welten-fade-up 0.72s ease 0.1s both;
+  }
+
+  html.welten-hero-enter body[data-world="freiraum"] #slide-home .dna-orbit-group {
+    animation: welten-freiraum-float-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html.welten-mobile-hero .neuro-core,
-  html.welten-mobile-hero .nexora-mobile-hero-claim,
-  html.welten-mobile-hero .freiraum-mobile-hero-claim,
-  html.welten-mobile-hero .nexora-orbit-buttons,
-  html.welten-mobile-hero .dna-orbit-group {
-    opacity: 1 !important;
+  body[data-world="nexora"] #slide-home .neuro-core,
+  body[data-world="nexora"] .nexora-mobile-hero-claim,
+  body[data-world="freiraum"] .freiraum-mobile-hero-claim,
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
+  body[data-world="freiraum"] #slide-home .dna-orbit-group {
     animation: none !important;
-    transform: none !important;
   }
 }
