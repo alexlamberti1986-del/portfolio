@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260523a";
+  var HERO_VER = "20260523b";
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
   var WORLDS = {
@@ -115,8 +115,13 @@
     flattenProButtons();
   }
 
+  function markHeroGrid(ring) {
+    if (ring) ring.classList.add("welten-mobile-hero-grid");
+  }
+
   function flattenNexoraButtons() {
     var ring = document.querySelector("#slide-home .nexora-orbit-ring");
+    markHeroGrid(ring);
     if (ring) {
       ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
@@ -133,6 +138,7 @@
 
   function flattenFreiraumButtons() {
     var ring = document.querySelector("#slide-home .dna-ring");
+    markHeroGrid(ring);
     if (ring) {
       ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
@@ -148,6 +154,7 @@
 
   function flattenProButtons() {
     var ring = document.querySelector("#slide-home .dna-ring");
+    markHeroGrid(ring);
     if (ring) {
       ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
