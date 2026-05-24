@@ -80,6 +80,14 @@
     if (!items.length) return;
 
     items.forEach(function (item) {
+      item.classList.remove("is-open");
+      var trigger = item.querySelector(".projects-accordion__trigger");
+      var panel = item.querySelector(".projects-accordion__panel");
+      if (trigger) trigger.setAttribute("aria-expanded", "false");
+      if (panel) panel.setAttribute("hidden", "");
+    });
+
+    items.forEach(function (item) {
       var trigger = item.querySelector(".projects-accordion__trigger");
       var panel = item.querySelector(".projects-accordion__panel");
       if (!trigger || !panel) return;
@@ -101,15 +109,6 @@
         }
       });
     });
-
-    var open = items.find(function (i) {
-      return i.classList.contains("is-open");
-    });
-    if (open) {
-      var openPanel = open.querySelector(".projects-accordion__panel");
-      if (openPanel) openPanel.removeAttribute("hidden");
-      loadPanelPreviews(openPanel);
-    }
   }
 
   function boot() {

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+<link rel="icon" href="assets/favicon/favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
+<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Alex Lamberti | Welten (NEXORA · PROFESSIONAL · FREIRAUM)</title>
@@ -303,6 +308,12 @@ body[data-master-world="freiraum"] .sound-toggle {
       var c = readChapter(frames[prev]);
       if (c) sharedChapter = c;
       if (prev !== i) playWorldSwitchSound(soundKeyFromIframe(i));
+    }
+    if (loaded[i] && frames[i].src && frames[i].src.indexOf("about:blank") === -1) {
+      applyActiveFrames(i);
+      switching = false;
+      bar.querySelectorAll("button[data-iframe]").forEach(function (b) { b.disabled = false; });
+      return Promise.resolve();
     }
     return loadFrame(i).then(function () {
       applyActiveFrames(i);

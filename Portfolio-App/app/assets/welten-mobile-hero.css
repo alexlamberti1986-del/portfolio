@@ -274,7 +274,7 @@ body[data-world="freiraum"] #slide-home .dna-asset {
   }
 
   body[data-world="freiraum"] #slide-home .dna-unified-scene::after {
-    content: "KREATIV · EMOTIONAL · NAHBAR" !important;
+    content: "KREATIVITÄT · IDEEN · BEGEISTERUNG" !important;
     display: block !important;
     position: relative !important;
     order: 1 !important;

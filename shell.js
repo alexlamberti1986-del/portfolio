@@ -259,6 +259,15 @@
       playWorldSwitchSound(world);
     }
 
+    if (loaded[world] && target && target.src && target.src.indexOf("about:blank") === -1) {
+      showWorld(world, prev);
+      switching = false;
+      buttons.forEach(function (b) {
+        b.disabled = false;
+      });
+      return Promise.resolve();
+    }
+
     return loadFrame(target, world)
       .then(function () {
         showWorld(world, prev);
