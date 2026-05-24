@@ -1,11 +1,26 @@
 /**
- * Mobile Hero — DOM + Stylesheet-Lock (NEXORA · FREIRAUM)
+ * Mobile Hero — DOM + Stylesheet (NEXORA · PROFESSIONAL · FREIRAUM)
  */
 (function () {
   "use strict";
 
-  var HERO_VER = "20260522f";
+  var HERO_VER = "20260523a";
   var mqHero = window.matchMedia("(max-width: 1024px)");
+
+  var WORLDS = {
+    nexora: {
+      title: "NEXORA",
+      keywords: "STRATEGIE · TECHNOLOGIE · ZUKUNFT",
+    },
+    freiraum: {
+      title: "FREIRAUM",
+      keywords: "KREATIVITÄT · IDEEN · BEGEISTERUNG",
+    },
+    vertex: {
+      title: "PROFESSIONAL",
+      keywords: "STRATEGIE · STRUKTUR · WIRKUNG",
+    },
+  };
 
   function isHeroMobile() {
     return mqHero.matches;
@@ -27,86 +42,120 @@
     document.body.appendChild(link);
   }
 
-  function ensureNexoraClaim(stage) {
-    if (!stage || stage.querySelector(".nexora-mobile-hero-claim")) return;
-    var claim = document.createElement("div");
-    claim.className = "nexora-mobile-hero-claim";
-    claim.innerHTML =
-      '<span class="nexora-mobile-hero-keywords">STRATEGIE · TECHNOLOGIE · ZUKUNFT</span>';
-    var buttons = stage.querySelector(".nexora-orbit-buttons");
-    if (buttons) {
-      stage.insertBefore(claim, buttons);
-    } else {
-      stage.appendChild(claim);
-    }
+  function metaHtml(keywords) {
+    return (
+      '<div class="welten-mobile-hero-line" aria-hidden="true">' +
+      "<span></span><span></span><span></span></div>" +
+      '<p class="welten-mobile-hero-keywords">' +
+      keywords +
+      "</p>"
+    );
   }
 
-  function resetNexoraOrbitMobile() {
-    if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
-    var shell = document.querySelector("#slide-home .nexora-orbit-buttons");
-    if (shell) {
-      shell.classList.add("welten-nexora-list-mode");
-      shell.style.setProperty("position", "relative", "important");
-      shell.style.setProperty("transform", "none", "important");
-      shell.style.setProperty("width", "100%", "important");
-      shell.style.setProperty("max-width", "min(92vw, 340px)", "important");
-      shell.style.setProperty("opacity", "1", "important");
-      shell.style.setProperty("visibility", "visible", "important");
+  function ensureTitle(container, title) {
+    if (!container) return null;
+    var el = container.querySelector(":scope > .welten-mobile-hero-title");
+    if (!el) {
+      el = document.createElement("div");
+      el.className = "welten-mobile-hero-title";
+      el.textContent = title;
+      container.insertBefore(el, container.firstChild);
+    } else {
+      el.textContent = title;
     }
+    return el;
+  }
+
+  function ensureMeta(container, keywords) {
+    if (!container) return null;
+    var meta = container.querySelector(":scope > .welten-mobile-hero-meta");
+    if (!meta) {
+      meta = document.createElement("div");
+      meta.className = "welten-mobile-hero-meta";
+      meta.innerHTML = metaHtml(keywords);
+      var buttons =
+        container.querySelector(".nexora-orbit-buttons") ||
+        container.querySelector(".dna-orbit-group");
+      if (buttons) {
+        container.insertBefore(meta, buttons);
+      } else {
+        container.appendChild(meta);
+      }
+    } else {
+      var kw = meta.querySelector(".welten-mobile-hero-keywords");
+      if (kw) kw.textContent = keywords;
+    }
+    return meta;
+  }
+
+  function buildNexoraHero() {
+    var stage = document.getElementById("dnaStage");
+    if (!stage) return;
+    var cfg = WORLDS.nexora;
+    ensureTitle(stage, cfg.title);
+    ensureMeta(stage, cfg.keywords);
+    flattenNexoraButtons();
+  }
+
+  function buildFreiraumHero() {
+    var scene = document.querySelector("#slide-home .dna-unified-scene");
+    if (!scene) return;
+    var cfg = WORLDS.freiraum;
+    ensureTitle(scene, cfg.title);
+    ensureMeta(scene, cfg.keywords);
+    flattenFreiraumButtons();
+  }
+
+  function buildProfessionalHero() {
+    var scene = document.querySelector("#slide-home .dna-unified-scene");
+    if (!scene) return;
+    var cfg = WORLDS.vertex;
+    ensureTitle(scene, cfg.title);
+    ensureMeta(scene, cfg.keywords);
+    flattenProButtons();
+  }
+
+  function flattenNexoraButtons() {
     var ring = document.querySelector("#slide-home .nexora-orbit-ring");
     if (ring) {
-      ring.style.setProperty("display", "flex", "important");
-      ring.style.setProperty("flex-wrap", "wrap", "important");
-      ring.style.setProperty("justify-content", "center", "important");
+      ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
     }
     document.querySelectorAll("#slide-home .nexora-orbit-button").forEach(function (btn) {
       btn.style.setProperty("position", "relative", "important");
       btn.style.setProperty("transform", "none", "important");
       btn.style.setProperty("opacity", "1", "important");
-      btn.style.setProperty("flex", "0 1 auto", "important");
-      btn.style.setProperty("min-height", "46px", "important");
     });
     document.querySelectorAll("#slide-home .neuro-core, #slide-home .nexora-orbit-nav").forEach(function (el) {
       el.style.setProperty("display", "none", "important");
     });
   }
 
-  function resetFreiraumMobile() {
-    if (!isHeroMobile() || document.body.getAttribute("data-world") !== "freiraum") return;
+  function flattenFreiraumButtons() {
     var ring = document.querySelector("#slide-home .dna-ring");
     if (ring) {
-      ring.style.setProperty("display", "flex", "important");
-      ring.style.setProperty("flex-wrap", "wrap", "important");
-      ring.style.setProperty("justify-content", "center", "important");
-      ring.style.setProperty("position", "relative", "important");
+      ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
-      ring.style.setProperty("width", "100%", "important");
-      ring.style.setProperty("height", "auto", "important");
     }
-    document.querySelectorAll("#slide-home .dna-slide").forEach(function (slide) {
-      slide.style.setProperty("position", "relative", "important");
-      slide.style.setProperty("left", "auto", "important");
-      slide.style.setProperty("top", "auto", "important");
-      slide.style.setProperty("transform", "none", "important");
-      slide.style.setProperty("display", "inline-flex", "important");
-      slide.style.setProperty("opacity", "1", "important");
+    document.querySelectorAll("#slide-home .dna-slide").forEach(function (btn) {
+      btn.style.setProperty("position", "relative", "important");
+      btn.style.setProperty("left", "auto", "important");
+      btn.style.setProperty("top", "auto", "important");
+      btn.style.setProperty("transform", "none", "important");
+      btn.style.setProperty("opacity", "1", "important");
     });
-    var claim = document.querySelector(".freiraum-mobile-hero-claim");
-    if (claim) claim.style.setProperty("display", "none", "important");
   }
 
-  function watchNexoraStage() {
-    var stage = document.getElementById("dnaStage");
-    if (!stage || stage.__weltenHeroObs) return;
-    stage.__weltenHeroObs = true;
-    var obs = new MutationObserver(function () {
-      if (isHeroMobile() && document.body.getAttribute("data-world") === "nexora") {
-        ensureNexoraClaim(stage);
-        resetNexoraOrbitMobile();
-      }
+  function flattenProButtons() {
+    var ring = document.querySelector("#slide-home .dna-ring");
+    if (ring) {
+      ring.style.setProperty("display", "grid", "important");
+      ring.style.setProperty("transform", "none", "important");
+    }
+    document.querySelectorAll("#slide-home .dna-slide").forEach(function (btn) {
+      btn.style.setProperty("position", "relative", "important");
+      btn.style.setProperty("transform", "none", "important");
     });
-    obs.observe(stage, { childList: true, subtree: true });
   }
 
   function buildMobileHeroDom() {
@@ -118,36 +167,39 @@
     document.body.classList.add("welten-mobile-hero-active");
     document.documentElement.classList.add("welten-mobile-hero");
     ensureStylesheetLock();
+
     var world = document.body.getAttribute("data-world");
-    if (world === "nexora") {
-      ensureNexoraClaim(document.getElementById("dnaStage"));
-      watchNexoraStage();
-      resetNexoraOrbitMobile();
-      window.setTimeout(resetNexoraOrbitMobile, 120);
-    }
-    if (world === "freiraum") {
-      resetFreiraumMobile();
-      window.setTimeout(resetFreiraumMobile, 120);
-    }
+    if (world === "nexora") buildNexoraHero();
+    if (world === "freiraum") buildFreiraumHero();
+    if (world === "vertex") buildProfessionalHero();
   }
 
-  function onWorldEnter() {
-    buildMobileHeroDom();
+  function watchNexoraStage() {
+    var stage = document.getElementById("dnaStage");
+    if (!stage || stage.__weltenHeroObs) return;
+    stage.__weltenHeroObs = true;
+    var obs = new MutationObserver(function () {
+      if (isHeroMobile() && document.body.getAttribute("data-world") === "nexora") {
+        buildNexoraHero();
+      }
+    });
+    obs.observe(stage, { childList: true, subtree: true });
   }
 
   function boot() {
     buildMobileHeroDom();
+    if (isHeroMobile() && document.body.getAttribute("data-world") === "nexora") {
+      watchNexoraStage();
+    }
   }
 
   window.addEventListener("message", function (e) {
-    if (!e.data) return;
-    if (e.data.type === "portfolio-world-enter") {
-      onWorldEnter();
+    if (e.data && e.data.type === "portfolio-world-enter") {
+      buildMobileHeroDom();
     }
   });
 
   window.addEventListener("load", boot);
-
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
@@ -160,8 +212,5 @@
     mqHero.addListener(boot);
   }
 
-  window.WeltenMobileHero = {
-    refresh: boot,
-    version: HERO_VER,
-  };
+  window.WeltenMobileHero = { refresh: boot, version: HERO_VER };
 })();
