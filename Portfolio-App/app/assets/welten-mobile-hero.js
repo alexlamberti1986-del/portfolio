@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260522d";
+  var HERO_VER = "20260522e";
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
   function isHeroMobile() {
