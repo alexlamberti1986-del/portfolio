@@ -72,6 +72,15 @@
     display: block;
     z-index: 0;
     background: transparent;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .world-frame.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 1;
   }
   body[data-master-world="nexora"] { background: #050810; }
   body[data-master-world="nexora"] .world-bar {
@@ -152,6 +161,21 @@
   @media (max-width: 720px) {
     .world-bar button[data-world] { padding: 8px 12px; font-size: 0.86rem; }
     .sound-toggle { padding: 7px 10px !important; font-size: 0.72rem; }
+  }
+  @media (max-width: 1024px) {
+    .world-bar {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 2147483647 !important;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+    .world-frame {
+      top: var(--bar-h, 120px) !important;
+      height: calc(100% - var(--bar-h, 120px)) !important;
+    }
   }
 </style>
 <link rel="stylesheet" href="assets/shell-performance.css" />

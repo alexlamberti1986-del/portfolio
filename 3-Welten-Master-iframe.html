@@ -38,6 +38,21 @@ html, body { margin: 0; height: 100%; overflow: hidden; font-family: system-ui, 
 @media (max-width: 720px) {
   .sound-toggle { padding: 7px 10px !important; font-size: 0.72rem; }
 }
+@media (max-width: 1024px) {
+  .world-bar {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 2147483647 !important;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  .world-frame {
+    top: var(--bar-h, 120px) !important;
+    height: calc(100% - var(--bar-h, 120px)) !important;
+  }
+}
 .world-frame {
   position: fixed; left: 0; right: 0; bottom: 0; top: var(--bar-h, 56px);
   width: 100%; height: calc(100% - var(--bar-h, 56px));
@@ -136,6 +151,34 @@ body[data-master-world="freiraum"] .sound-toggle {
   var lastSoundWorld = "professional";
   var switching = false;
   var loaded = { 1: true };
+
+  function setBarHeight() {
+    if (!bar) return;
+    var h = Math.ceil(bar.getBoundingClientRect().height);
+    if (h < 48) h = 56;
+    document.documentElement.style.setProperty("--bar-h", h + "px");
+  }
+
+  function unlockShell(activeIdx) {
+    switching = false;
+    document.documentElement.classList.remove("world-transition-lock", "is-transitioning", "shell-loading");
+    document.body.classList.remove("is-transitioning", "shell-loading");
+    document.documentElement.style.pointerEvents = "";
+    document.body.style.pointerEvents = "";
+    bar.querySelectorAll("button[data-iframe]").forEach(function (b) { b.disabled = false; });
+    frames.forEach(function (f, j) {
+      var on = j === activeIdx;
+      f.classList.toggle("is-active", on);
+      f.style.pointerEvents = on ? "auto" : "none";
+    });
+    setBarHeight();
+  }
+
+  window.addEventListener("resize", setBarHeight, { passive: true });
+  setBarHeight();
+  if (bar && typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(setBarHeight).observe(bar);
+  }
 
   var SOUND_FILES = {
     nexora: "assets/audio/Nexora sound.mp3",
@@ -287,8 +330,10 @@ body[data-master-world="freiraum"] .sound-toggle {
     var prev = activeIdx();
     if (prev >= 0 && prev !== i) setFramePaused(frames[prev], true);
     frames.forEach(function (f, j) {
-      f.classList.toggle("is-active", j === i);
-      if (j === i) setFramePaused(f, false);
+      var on = j === i;
+      f.classList.toggle("is-active", on);
+      f.style.pointerEvents = on ? "auto" : "none";
+      if (on) setFramePaused(f, false);
     });
     bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
       b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
@@ -296,6 +341,7 @@ body[data-master-world="freiraum"] .sound-toggle {
     setMaster(i);
     applyChapter(frames[i], sharedChapter);
     postFrame(frames[i], { type: "portfolio-world-enter", world: soundKeyFromIframe(i) });
+    unlockShell(i);
   }
 
   function switchToWorldIndex(i) {
@@ -311,15 +357,14 @@ body[data-master-world="freiraum"] .sound-toggle {
     }
     if (loaded[i] && frames[i].src && frames[i].src.indexOf("about:blank") === -1) {
       applyActiveFrames(i);
-      switching = false;
-      bar.querySelectorAll("button[data-iframe]").forEach(function (b) { b.disabled = false; });
       return Promise.resolve();
     }
     return loadFrame(i).then(function () {
       applyActiveFrames(i);
+    }).catch(function () {
+      unlockShell(i);
     }).finally(function () {
-      switching = false;
-      bar.querySelectorAll("button[data-iframe]").forEach(function (b) { b.disabled = false; });
+      unlockShell(i);
     });
   }
 

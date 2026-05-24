@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260523b";
+  var HERO_VER = "20260524a";
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
   var WORLDS = {

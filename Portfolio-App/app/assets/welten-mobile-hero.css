@@ -705,4 +705,44 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
     content: none !important;
     height: 0 !important;
   }
+
+  /* Performance-CSS: Flex-Orbit → einheitliches Grid */
+  body[data-world="vertex"] #slide-home .dna-ring,
+  body[data-world="freiraum"] #slide-home .dna-ring,
+  body[data-world="vertex"] #slide-home .dna-orbit-group,
+  body[data-world="freiraum"] #slide-home .dna-orbit-group,
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring {
+    display: grid !important;
+    flex-wrap: unset !important;
+    flex-direction: unset !important;
+    align-content: start !important;
+  }
+
+  body[data-world="vertex"] .home-hero-experience,
+  body[data-world="vertex"] .dna-unified-scene,
+  body[data-world="freiraum"] .home-hero-experience,
+  body[data-world="freiraum"] .dna-unified-scene {
+    min-height: auto !important;
+    max-height: none !important;
+    height: auto !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  body[data-world="freiraum"] #slide-home #particle-canvas,
+  body[data-world="freiraum"] #slide-home .light-beams,
+  body[data-world="freiraum"] #slide-home .experience-rail,
+  body[data-world="freiraum"] #slide-home .dna-ring-scene::before {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    height: 0 !important;
+  }
+
+  body[data-world] #slide-home .nexora-orbit-buttons::after,
+  body[data-world] #slide-home .dna-orbit-group::after {
+    content: none !important;
+    display: none !important;
+  }
 }

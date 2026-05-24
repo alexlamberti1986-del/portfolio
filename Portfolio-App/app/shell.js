@@ -56,12 +56,52 @@
     "display:none!important;visibility:hidden!important;pointer-events:none!important;}";
 
   function setBarHeight() {
-    var h = bar ? bar.offsetHeight : 56;
+    if (!bar) return;
+    var h = Math.ceil(bar.getBoundingClientRect().height);
+    if (h < 48) h = 56;
     document.documentElement.style.setProperty("--bar-h", h + "px");
+  }
+
+  function unlockShell(activeWorld) {
+    switching = false;
+    document.documentElement.classList.remove(
+      "world-transition-lock",
+      "is-transitioning",
+      "shell-loading",
+      "shell-switching"
+    );
+    document.body.classList.remove("is-transitioning", "shell-loading", "shell-switching");
+    document.documentElement.style.pointerEvents = "";
+    document.body.style.pointerEvents = "";
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+
+    buttons.forEach(function (b) {
+      b.disabled = false;
+    });
+
+    frames.forEach(function (f) {
+      var w = f.getAttribute("data-world");
+      var on = w === activeWorld;
+      f.classList.remove("is-leaving");
+      f.classList.toggle("is-active", on);
+      if (on) {
+        f.classList.remove("is-paused");
+        f.classList.add("is-ready");
+      } else {
+        f.classList.add("is-paused");
+        f.classList.remove("is-ready");
+      }
+    });
+
+    setBarHeight();
   }
 
   window.addEventListener("resize", setBarHeight, { passive: true });
   setBarHeight();
+  if (bar && typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(setBarHeight).observe(bar);
+  }
 
   function getActiveWorld() {
     var active = frames.find(function (f) {
@@ -213,15 +253,21 @@
       prev.classList.remove("is-active", "is-ready");
       prev.classList.add("is-leaving");
       setFramePaused(prev, true);
+      setTimeout(function () {
+        prev.classList.remove("is-leaving");
+      }, 0);
     }
 
     frames.forEach(function (f) {
       var on = f === target;
       f.classList.toggle("is-active", on);
       if (on) {
-        f.classList.remove("is-leaving");
+        f.classList.remove("is-leaving", "is-paused");
         f.classList.add("is-ready");
         setFramePaused(f, false);
+      } else if (f !== prev) {
+        f.classList.remove("is-active", "is-ready", "is-leaving");
+        setFramePaused(f, true);
       }
     });
 
@@ -231,6 +277,7 @@
     setMasterWorld(world);
     applyChapter(target, sharedChapter);
     postFrame(target, { type: "portfolio-world-enter", world: world });
+    unlockShell(world);
   }
 
   function switchToWorld(world) {
@@ -261,10 +308,6 @@
 
     if (loaded[world] && target && target.src && target.src.indexOf("about:blank") === -1) {
       showWorld(world, prev);
-      switching = false;
-      buttons.forEach(function (b) {
-        b.disabled = false;
-      });
       return Promise.resolve();
     }
 
@@ -272,11 +315,11 @@
       .then(function () {
         showWorld(world, prev);
       })
+      .catch(function () {
+        unlockShell(world);
+      })
       .finally(function () {
-        switching = false;
-        buttons.forEach(function (b) {
-          b.disabled = false;
-        });
+        unlockShell(world);
       });
   }
 
