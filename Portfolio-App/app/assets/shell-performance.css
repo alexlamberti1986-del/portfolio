@@ -27,6 +27,12 @@
   pointer-events: none !important;
 }
 
+.world-bar,
+.world-bar button,
+.world-bar .sound-toggle {
+  pointer-events: auto !important;
+}
+
 .world-transition-overlay,
 .transition-overlay,
 .loading-overlay,
@@ -41,15 +47,6 @@
 html.world-transition-lock,
 html.world-transition-lock body {
   overflow: hidden !important;
-  pointer-events: auto !important;
-}
-
-html.shell-switching,
-html.shell-switching body {
-  pointer-events: auto !important;
-}
-
-body.shell-switching .world-bar {
   pointer-events: auto !important;
 }
 

@@ -98,6 +98,53 @@
     });
   }
 
+  function cleanupIframeTransition() {
+    if (typeof window.cleanupWorldTransition === "function") {
+      window.cleanupWorldTransition(document);
+      return;
+    }
+    document
+      .querySelectorAll(
+        ".world-transition-overlay, .world-transition-canvas, #world-transition-overlay, .transition-overlay, .loading-overlay"
+      )
+      .forEach(function (el) {
+        el.remove();
+      });
+    document.documentElement.classList.remove(
+      "transition-active",
+      "is-transitioning",
+      "world-switching",
+      "world-transition-lock",
+      "locked",
+      "welten-world-paused"
+    );
+    document.body.classList.remove(
+      "transition-active",
+      "is-transitioning",
+      "world-switching",
+      "locked"
+    );
+    document.documentElement.style.overflow = "";
+    document.documentElement.style.pointerEvents = "";
+    document.body.style.overflow = "";
+    document.body.style.pointerEvents = "";
+    document.body.style.touchAction = "";
+
+    document.querySelectorAll(".home-hero-experience, #dnaStage").forEach(function (hero) {
+      hero.classList.remove("is-dragging");
+      hero.style.touchAction = "pan-y";
+      hero.style.pointerEvents = "";
+    });
+
+    document.querySelectorAll("#weltenMousePaintCanvas, #particle-canvas").forEach(function (c) {
+      c.style.pointerEvents = "none";
+      if (window.matchMedia && window.matchMedia("(max-width: 1024px)").matches) {
+        c.style.display = "none";
+        c.style.opacity = "0";
+      }
+    });
+  }
+
   function bindWorldPauseMessage() {
     var paused = false;
     var origRaf = window.requestAnimationFrame;
@@ -138,13 +185,27 @@
 
     window.addEventListener("message", function (e) {
       if (!e.data) return;
+      if (e.data.type === "portfolio-cleanup-transition") {
+        cleanupIframeTransition();
+        setPaused(false);
+        return;
+      }
       if (e.data.type === "portfolio-world-pause") {
         setPaused(!!e.data.paused);
+        if (e.data.paused) cleanupIframeTransition();
+        return;
       }
       if (e.data.type === "portfolio-world-enter") {
         setPaused(false);
+        cleanupIframeTransition();
         document.querySelectorAll("#particle-canvas, #weltenMousePaintCanvas").forEach(function (c) {
-          c.style.display = "";
+          if (isMobileContext()) {
+            c.style.display = "none";
+            c.style.opacity = "0";
+          } else {
+            c.style.display = "";
+          }
+          c.style.pointerEvents = "none";
         });
         window.dispatchEvent(new Event("resize"));
       }

@@ -745,4 +745,22 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
     content: none !important;
     display: none !important;
   }
+
+  /* NEXORA: kein Orbit-Drag / touch-action:none auf Mobile */
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience,
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring {
+    touch-action: pan-y !important;
+    -ms-touch-action: pan-y !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-hero-experience.is-dragging,
+  body[data-world="nexora"] #slide-home #dnaStage.is-dragging {
+    touch-action: pan-y !important;
+  }
+
+  body[data-world="nexora"] #slide-home .nexora-orbit-button {
+    touch-action: manipulation !important;
+  }
 }

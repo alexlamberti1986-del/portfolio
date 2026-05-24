@@ -62,30 +62,36 @@
     document.documentElement.style.setProperty("--bar-h", h + "px");
   }
 
+  function cleanupShellState() {
+    if (typeof window.cleanupWorldTransition === "function") {
+      window.cleanupWorldTransition(document);
+    }
+
+    frames.forEach(function (f) {
+      postFrame(f, { type: "portfolio-cleanup-transition" });
+    });
+  }
+
   function unlockShell(activeWorld) {
     switching = false;
-    document.documentElement.classList.remove(
-      "world-transition-lock",
-      "is-transitioning",
-      "shell-loading",
-      "shell-switching"
-    );
-    document.body.classList.remove("is-transitioning", "shell-loading", "shell-switching");
-    document.documentElement.style.pointerEvents = "";
-    document.body.style.pointerEvents = "";
-    document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
+    window.__worldTransitionRunning = false;
+    cleanupShellState();
 
     buttons.forEach(function (b) {
       b.disabled = false;
+      b.style.pointerEvents = "";
     });
+    if (bar) bar.style.pointerEvents = "";
 
+    var activeCount = 0;
     frames.forEach(function (f) {
       var w = f.getAttribute("data-world");
       var on = w === activeWorld;
       f.classList.remove("is-leaving");
       f.classList.toggle("is-active", on);
+      f.style.pointerEvents = on ? "auto" : "none";
       if (on) {
+        activeCount += 1;
         f.classList.remove("is-paused");
         f.classList.add("is-ready");
       } else {
@@ -93,6 +99,15 @@
         f.classList.remove("is-ready");
       }
     });
+
+    if (!activeCount && activeWorld) {
+      var fallback = frameByWorld(activeWorld);
+      if (fallback) {
+        fallback.classList.add("is-active", "is-ready");
+        fallback.classList.remove("is-paused", "is-leaving");
+        fallback.style.pointerEvents = "auto";
+      }
+    }
 
     setBarHeight();
   }
@@ -280,10 +295,12 @@
     unlockShell(world);
   }
 
-  function switchToWorld(world) {
-    if (!world || switching) return Promise.resolve();
+  function switchToWorldInternal(world) {
     var current = getActiveWorld();
-    if (current === world) return Promise.resolve();
+    if (current === world) {
+      unlockShell(world);
+      return Promise.resolve();
+    }
 
     switching = true;
     var prev = frameByWorld(current);
@@ -311,16 +328,49 @@
       return Promise.resolve();
     }
 
-    return loadFrame(target, world)
+    return loadFrame(target, world).then(function () {
+      showWorld(world, prev);
+    });
+  }
+
+  function handleWorldSwitch(world) {
+    if (!world) return Promise.resolve();
+    if (window.__worldTransitionRunning) return Promise.resolve();
+
+    window.__worldTransitionRunning = true;
+    cleanupShellState();
+
+    var play =
+      typeof window.playWorldTransition === "function"
+        ? window.playWorldTransition(world)
+        : Promise.resolve();
+
+    var safety = setTimeout(function () {
+      unlockShell(world);
+    }, 10000);
+
+    return Promise.resolve(play)
       .then(function () {
-        showWorld(world, prev);
+        return switchToWorldInternal(world);
       })
-      .catch(function () {
+      .catch(function (err) {
+        console.error(err);
         unlockShell(world);
+        return switchToWorldInternal(world);
       })
       .finally(function () {
+        clearTimeout(safety);
+        cleanupShellState();
         unlockShell(world);
+        window.__worldTransitionRunning = false;
       });
+  }
+
+  function switchToWorld(world) {
+    if (switching && !window.__worldTransitionRunning) {
+      unlockShell(getActiveWorld() || world);
+    }
+    return handleWorldSwitch(world);
   }
 
   function bootProfessional() {
@@ -388,5 +438,10 @@
   });
 
   window.switchToWorld = switchToWorld;
+  window.handleWorldSwitch = handleWorldSwitch;
   bootProfessional();
+  if (typeof window.cleanupWorldTransition === "function") {
+    window.cleanupWorldTransition(document);
+  }
+  cleanupShellState();
 })();
