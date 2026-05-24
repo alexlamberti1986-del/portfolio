@@ -37,6 +37,7 @@ body[data-world="freiraum"] #slide-home .dna-asset {
      NEXORA — PROFESSIONAL-Struktur
      ═══════════════════════════════════════ */
 
+  /* ── Hero-Höhe & Abstände wie PROFESSIONAL ── */
   body[data-world="nexora"] #slide-home .home-hero-experience,
   body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience {
     position: relative !important;
@@ -44,13 +45,13 @@ body[data-world="freiraum"] #slide-home .dna-asset {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    min-height: auto !important;
+    min-height: min(82dvh, calc(var(--vvh-inner, 700px) * 0.82)) !important;
     max-height: none !important;
     height: auto !important;
     overflow: visible !important;
     touch-action: pan-y !important;
-    padding: clamp(18px, 5vw, 28px) clamp(14px, 4vw, 20px) clamp(16px, 3vw, 24px) !important;
-    gap: 0 !important;
+    padding: 8px clamp(14px, 4vw, 20px) clamp(14px, 3vw, 20px) !important;
+    gap: clamp(8px, 2vh, 14px) !important;
     background: #101318 !important;
     box-shadow: none !important;
   }
@@ -67,13 +68,16 @@ body[data-world="freiraum"] #slide-home .dna-asset {
     transform: none !important;
     width: min(92vw, 340px) !important;
     max-width: 92vw !important;
-    margin: clamp(16px, 4vw, 24px) auto 0 !important;
-    padding: 0 12px 6px !important;
+    margin: 0 auto !important;
+    padding: 0 12px clamp(6px, 1.5vw, 10px) !important;
     text-align: center !important;
-    font: 900 clamp(2rem, 11vw, 3.6rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+    font: 900 clamp(2.1rem, 11vw, 3.8rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
     letter-spacing: 0.1em !important;
-    line-height: 0.88 !important;
-    color: rgba(101, 217, 255, 0.14) !important;
+    line-height: 0.9 !important;
+    color: rgba(101, 217, 255, 0.42) !important;
+    text-shadow:
+      0 0 36px rgba(0, 180, 255, 0.28),
+      0 2px 14px rgba(0, 0, 0, 0.45) !important;
     pointer-events: none !important;
     z-index: 1 !important;
     opacity: 1 !important;
@@ -148,7 +152,7 @@ body[data-world="freiraum"] #slide-home .dna-asset {
     height: auto !important;
     min-height: 0 !important;
     margin: 0 auto !important;
-    padding: 10px 12px 14px !important;
+    padding: 0 12px 4px !important;
     perspective: none !important;
     transform-style: flat !important;
     pointer-events: auto !important;
@@ -230,12 +234,12 @@ body[data-world="freiraum"] #slide-home .dna-asset {
      ═══════════════════════════════════════ */
 
   body[data-world="freiraum"] #slide-home .home-hero-experience {
-    min-height: auto !important;
+    min-height: min(82dvh, calc(var(--vvh-inner, 700px) * 0.82)) !important;
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
     touch-action: pan-y !important;
-    padding-bottom: 8px !important;
+    padding: 8px 0 clamp(14px, 3vw, 20px) !important;
   }
 
   body[data-world="freiraum"] #slide-home .dna-unified-scene {
@@ -243,10 +247,10 @@ body[data-world="freiraum"] #slide-home .dna-asset {
     flex-direction: column !important;
     align-items: stretch !important;
     position: relative !important;
-    min-height: auto !important;
+    min-height: min(75dvh, calc(var(--vvh-inner, 640px) * 0.75)) !important;
     max-height: none !important;
     height: auto !important;
-    padding: clamp(14px, 4vw, 22px) clamp(12px, 3vw, 16px) 6px !important;
+    padding: clamp(8px, 2vw, 14px) clamp(12px, 3vw, 16px) clamp(6px, 1.5vw, 10px) !important;
     gap: clamp(8px, 2vh, 14px) !important;
     transform: none !important;
     background: transparent !important;
@@ -264,13 +268,16 @@ body[data-world="freiraum"] #slide-home .dna-asset {
     transform: none !important;
     width: min(92vw, 340px) !important;
     max-width: 92vw !important;
-    margin: clamp(16px, 4vw, 24px) auto 0 !important;
-    padding: 0 12px 6px !important;
+    margin: 0 auto !important;
+    padding: 0 12px clamp(6px, 1.5vw, 10px) !important;
     text-align: center !important;
-    font: 900 clamp(2rem, 11vw, 3.4rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+    font: 900 clamp(2.1rem, 11vw, 3.6rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
     letter-spacing: 0.08em !important;
-    line-height: 0.88 !important;
-    color: rgba(255, 209, 102, 0.14) !important;
+    line-height: 0.9 !important;
+    color: rgba(255, 209, 102, 0.44) !important;
+    text-shadow:
+      0 0 40px rgba(255, 139, 189, 0.26),
+      0 2px 14px rgba(0, 0, 0, 0.42) !important;
     pointer-events: none !important;
     z-index: 1 !important;
     opacity: 1 !important;
@@ -354,7 +361,7 @@ body[data-world="freiraum"] #slide-home .dna-asset {
     max-width: 100% !important;
     height: auto !important;
     margin: 0 auto !important;
-    padding: 10px 12px 14px !important;
+    padding: 0 8px 4px !important;
     transform: none !important;
     pointer-events: auto !important;
   }
@@ -422,6 +429,18 @@ body[data-world="freiraum"] #slide-home .dna-asset {
   /* PROFESSIONAL — eckige Buttons */
   body[data-world="vertex"] #slide-home .dna-slide {
     border-radius: 2px !important;
+  }
+
+  /* Abstand Hero → Intro-Block wie PROFESSIONAL */
+  body[data-world="nexora"] #slide-home.slide,
+  body[data-world="freiraum"] #slide-home.slide {
+    padding-bottom: clamp(10px, 2.5vw, 20px) !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-main-block,
+  body[data-world="freiraum"] #slide-home .home-main-block {
+    margin-top: 0 !important;
+    padding-top: clamp(8px, 2vw, 14px) !important;
   }
 }
 
