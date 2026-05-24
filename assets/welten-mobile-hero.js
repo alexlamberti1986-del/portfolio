@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260526";
+  var HERO_VER = "20260527";
   var mqHero = window.matchMedia("(max-width: 1024px)");
   var enterTimer = 0;
 
@@ -105,12 +105,11 @@
     });
     var brain = document.querySelector("#slide-home .neuro-core");
     if (brain) {
-      brain.style.setProperty("position", "relative", "important");
-      brain.style.setProperty("top", "auto", "important");
-      brain.style.setProperty("width", "min(48vw, 188px)", "important");
-      brain.style.setProperty("height", "min(48vw, 188px)", "important");
-      brain.style.setProperty("opacity", "1", "important");
-      brain.style.setProperty("transform", "none", "important");
+      brain.style.setProperty("display", "none", "important");
+      brain.style.setProperty("visibility", "hidden", "important");
+      brain.style.setProperty("opacity", "0", "important");
+      brain.style.setProperty("height", "0", "important");
+      brain.style.setProperty("width", "0", "important");
     }
   }
 
