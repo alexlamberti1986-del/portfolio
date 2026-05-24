@@ -1,33 +1,40 @@
 /**
- * Mobile Hero — NEXORA · FREIRAUM (≤1024px)
- * Button-Layout = PROFESSIONAL Mobile (flex-wrap Zeilen), Weltfarben je Welt.
+ * Welten Mobile Hero — NEXORA · FREIRAUM (≤1024px)
+ * Struktur wie PROFESSIONAL: Linie → Schlagwörter → Buttons → Weltname im Hintergrund
  */
 
-@keyframes welten-fade-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ── FREIRAUM: Hero ohne Portrait-Hintergrund (alle Viewports) ── */
+body[data-world="freiraum"] #slide-home .home-hero-experience {
+  background-image: none !important;
+  background:
+    radial-gradient(ellipse 85% 65% at 18% 22%, rgba(255, 139, 189, 0.22), transparent 52%),
+    radial-gradient(ellipse 75% 55% at 82% 68%, rgba(255, 209, 102, 0.16), transparent 50%),
+    radial-gradient(ellipse 60% 45% at 55% 40%, rgba(123, 223, 242, 0.1), transparent 48%),
+    linear-gradient(168deg, #2a1420 0%, #1a1028 42%, #120a1a 100%) !important;
 }
 
-@keyframes welten-nexora-brain-in {
-  from { opacity: 0; transform: translateY(10px) scale(0.88); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+body[data-world="freiraum"] #slide-home .home-hero-experience::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  animation: none !important;
 }
 
-@keyframes welten-freiraum-float-in {
-  from { opacity: 0; transform: translateY(18px) scale(0.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+body[data-world="freiraum"] #slide-home .dna-premium-canvas,
+body[data-world="freiraum"] #slide-home .dna-particles-canvas,
+body[data-world="freiraum"] #slide-home .dna-holo-arm,
+body[data-world="freiraum"] #slide-home .dna-visual-stack,
+body[data-world="freiraum"] #slide-home .dna-layer,
+body[data-world="freiraum"] #slide-home .dna-asset {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 @media (max-width: 1024px) {
 
-  /* ── Shared: PROFESSIONAL Mobile Button-Band ── */
-  body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
-  body[data-world="freiraum"] #slide-home .dna-orbit-group {
-    touch-action: pan-y !important;
-  }
-
   /* ═══════════════════════════════════════
-     NEXORA
+     NEXORA — PROFESSIONAL-Struktur
      ═══════════════════════════════════════ */
 
   body[data-world="nexora"] #slide-home .home-hero-experience,
@@ -44,27 +51,34 @@
     touch-action: pan-y !important;
     padding: clamp(18px, 5vw, 28px) clamp(14px, 4vw, 20px) clamp(16px, 3vw, 24px) !important;
     gap: 0 !important;
-  background: #101318 !important;
+    background: #101318 !important;
     box-shadow: none !important;
   }
 
-  body[data-world="nexora"] #slide-home .home-hero-experience::before,
-  body[data-world="nexora"] #slide-home .home-hero-experience::after {
-    display: none !important;
-    content: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
+  body[data-world="nexora"] #slide-home .home-hero-experience::before {
+    content: "NEXORA" !important;
+    display: block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 58% !important;
+    transform: translateX(-50%) translateY(-50%) !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font: 900 clamp(2rem, 11vw, 3.6rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+    letter-spacing: 0.1em !important;
+    line-height: 0.88 !important;
+    color: rgba(101, 217, 255, 0.09) !important;
     pointer-events: none !important;
+    z-index: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
+  body[data-world="nexora"] #slide-home .home-hero-experience::after,
   body[data-world="nexora"] #slide-home .dna-particles-canvas,
-  body[data-world="nexora"] #slide-home .dna-premium-canvas {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
-
+  body[data-world="nexora"] #slide-home .dna-premium-canvas,
   body[data-world="nexora"] #slide-home .dna-unified-scene,
   body[data-world="nexora"] #slide-home .dna-ring-scene,
   body[data-world="nexora"] #slide-home .dna-holo-arm,
@@ -72,75 +86,56 @@
   body[data-world="nexora"] #slide-home .dna-orbit-group,
   body[data-world="nexora"] #slide-home .dna-layer,
   body[data-world="nexora"] #slide-home .dna-asset,
-  body[data-world="nexora"] #slide-home .nexora-orbit-nav {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    max-height: 0 !important;
-    overflow: hidden !important;
-    pointer-events: none !important;
-    position: absolute !important;
-    left: -9999px !important;
-    z-index: -1 !important;
-  }
-
+  body[data-world="nexora"] #slide-home .nexora-orbit-nav,
   body[data-world="nexora"] #slide-home .neuro-core,
   body[data-world="nexora"] #slide-home .neuro-core * {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
-    width: 0 !important;
     height: 0 !important;
-    min-height: 0 !important;
     max-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
     overflow: hidden !important;
     pointer-events: none !important;
-    position: absolute !important;
-    left: -9999px !important;
-    z-index: -1 !important;
   }
 
   body[data-world="nexora"] .nexora-mobile-hero-claim {
-    order: 2 !important;
+    order: 1 !important;
     display: block !important;
     width: min(92vw, 340px) !important;
     max-width: 92vw !important;
-    margin: 0 auto 0 !important;
-    padding: 14px 12px 10px !important;
+    margin: 8px auto 0 !important;
+    padding: 14px 12px 0 !important;
     text-align: center !important;
-    opacity: 1 !important;
-    visibility: visible !important;
     position: relative !important;
     z-index: 4 !important;
-    background: rgba(18, 21, 27, 0.96) !important;
-    border: 1px solid rgba(255, 255, 255, 0.07) !important;
-    border-bottom: none !important;
-    border-radius: 14px 14px 0 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
 
   body[data-world="nexora"] .nexora-mobile-hero-kicker {
+    display: none !important;
+  }
+
+  body[data-world="nexora"] .nexora-mobile-hero-keywords {
     display: block !important;
-    font-size: clamp(0.72rem, 2.8vw, 0.82rem) !important;
-    letter-spacing: 0.28em !important;
+    padding-top: 14px !important;
+    border-top: 2px solid rgba(101, 217, 255, 0.55) !important;
+    font: 500 clamp(0.68rem, 2.4vw, 0.82rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+    letter-spacing: 0.16em !important;
     text-transform: uppercase !important;
-    color: rgba(101, 217, 255, 0.92) !important;
-    margin-bottom: 6px !important;
+    color: rgba(180, 230, 255, 0.82) !important;
+    line-height: 1.35 !important;
   }
 
   body[data-world="nexora"] .nexora-mobile-hero-claim p {
-    margin: 0 !important;
-    font-size: clamp(0.82rem, 3vw, 0.94rem) !important;
-    line-height: 1.45 !important;
-    color: rgba(232, 244, 255, 0.78) !important;
+    display: none !important;
   }
 
-  /* Button-Band wie PROFESSIONAL */
   body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
   body[data-world="nexora"] #slide-home .nexora-orbit-buttons.welten-nexora-list-mode {
-    order: 4 !important;
+    order: 2 !important;
     position: relative !important;
     inset: auto !important;
     transform: none !important;
@@ -157,11 +152,10 @@
     visibility: visible !important;
     z-index: 10 !important;
     touch-action: pan-y !important;
-    background: rgba(18, 21, 27, 0.96) !important;
-    border: 1px solid rgba(255, 255, 255, 0.07) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
-    border-radius: 0 0 14px 14px !important;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22) !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
 
   body[data-world="nexora"] #slide-home .nexora-orbit-buttons::before {
@@ -195,18 +189,15 @@
     min-width: 0 !important;
     max-width: 100% !important;
     height: auto !important;
-    min-height: 44px !important;
+    min-height: 46px !important;
     margin: 0 !important;
-    padding: clamp(9px, 2.2vw, 12px) clamp(10px, 2.8vw, 14px) !important;
+    padding: clamp(10px, 2.4vw, 13px) clamp(14px, 3.2vw, 18px) !important;
     font: 700 clamp(0.64rem, 2.5vw, 0.76rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
     text-align: center !important;
-    line-height: 1.15 !important;
+    line-height: 1.2 !important;
     transform: none !important;
-    translate: none !important;
-    rotate: none !important;
-    scale: 1 !important;
     opacity: 1 !important;
     filter: none !important;
     visibility: visible !important;
@@ -221,7 +212,6 @@
     pointer-events: auto !important;
     touch-action: manipulation !important;
     -webkit-tap-highlight-color: transparent !important;
-    transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
     z-index: 1 !important;
   }
 
@@ -231,14 +221,8 @@
     transform: none !important;
   }
 
-  body[data-world="nexora"] #slide-home .nexora-orbit-button:active {
-    transform: translateY(1px) !important;
-    background: rgba(0, 140, 220, 0.22) !important;
-    box-shadow: 0 0 20px rgba(0, 180, 255, 0.28) !important;
-  }
-
   /* ═══════════════════════════════════════
-     FREIRAUM
+     FREIRAUM — PROFESSIONAL-Struktur
      ═══════════════════════════════════════ */
 
   body[data-world="freiraum"] #slide-home .home-hero-experience {
@@ -261,46 +245,63 @@
     padding: clamp(14px, 4vw, 22px) clamp(12px, 3vw, 16px) 6px !important;
     gap: clamp(8px, 2vh, 14px) !important;
     transform: none !important;
-    background:
-      radial-gradient(ellipse 90% 50% at 50% 8%, rgba(255, 209, 102, 0.1), transparent 55%),
-      radial-gradient(ellipse 70% 40% at 80% 30%, rgba(255, 111, 174, 0.08), transparent 50%) !important;
+    background: transparent !important;
   }
 
-  body[data-world="freiraum"] #slide-home .dna-unified-scene::before,
+  body[data-world="freiraum"] #slide-home .dna-unified-scene::before {
+    content: "FREIRAUM" !important;
+    display: block !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 58% !important;
+    transform: translateX(-50%) translateY(-50%) !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+    font: 900 clamp(2rem, 11vw, 3.4rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+    letter-spacing: 0.08em !important;
+    line-height: 0.88 !important;
+    color: rgba(255, 209, 102, 0.1) !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    border: none !important;
+    filter: none !important;
+    animation: none !important;
+    background: none !important;
+  }
+
   body[data-world="freiraum"] #slide-home .dna-unified-scene::after {
-    display: none !important;
-    content: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
+    content: "KREATIV · EMOTIONAL · NAHBAR" !important;
+    display: block !important;
+    position: relative !important;
+    order: 1 !important;
+    right: auto !important;
+    left: auto !important;
+    top: auto !important;
+    width: min(92vw, 340px) !important;
+    max-width: 92vw !important;
+    margin: 8px auto 0 !important;
+    padding: 14px 12px 0 !important;
+    text-align: center !important;
+    transform: none !important;
+    border-top: 2px solid rgba(255, 209, 102, 0.55) !important;
+    font: 500 clamp(0.68rem, 2.4vw, 0.82rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase !important;
+    color: rgba(255, 232, 210, 0.88) !important;
+    text-shadow: none !important;
+    pointer-events: none !important;
+    z-index: 4 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    line-height: 1.35 !important;
   }
 
   body[data-world="freiraum"] .freiraum-mobile-hero-claim {
-    display: block !important;
-    width: min(92vw, 340px) !important;
-    max-width: 92vw !important;
-    margin: 0 auto !important;
-    text-align: center !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    position: relative !important;
-    z-index: 4 !important;
-    order: 1 !important;
-  }
-
-  body[data-world="freiraum"] .freiraum-mobile-hero-kicker {
-    display: block !important;
-    font-size: clamp(0.72rem, 2.8vw, 0.84rem) !important;
-    letter-spacing: 0.22em !important;
-    text-transform: uppercase !important;
-    color: rgba(255, 209, 102, 0.95) !important;
-    margin-bottom: 5px !important;
-  }
-
-  body[data-world="freiraum"] .freiraum-mobile-hero-claim p {
-    margin: 0 !important;
-    font-size: clamp(0.8rem, 2.8vw, 0.92rem) !important;
-    color: rgba(255, 248, 239, 0.82) !important;
-    line-height: 1.4 !important;
+    display: none !important;
   }
 
   body[data-world="freiraum"] #slide-home .dna-orbit-group {
@@ -317,7 +318,7 @@
     opacity: 1 !important;
     visibility: visible !important;
     order: 2 !important;
-    z-index: 2 !important;
+    z-index: 10 !important;
     touch-action: pan-y !important;
   }
 
@@ -345,11 +346,12 @@
     max-width: 100% !important;
     height: auto !important;
     margin: 0 auto !important;
-    padding: 0 8px 4px !important;
+    padding: 10px 12px 14px !important;
     transform: none !important;
     pointer-events: auto !important;
   }
 
+  /* FREIRAUM Mobile Buttons — Desktop-Look, Grid wie PROFESSIONAL */
   body[data-world="freiraum"] #slide-home .dna-slide,
   body[data-world="freiraum"] #slide-home .dna-slide:nth-child(n) {
     position: relative !important;
@@ -363,14 +365,14 @@
     min-width: 0 !important;
     max-width: 100% !important;
     height: auto !important;
-    min-height: 44px !important;
+    min-height: 48px !important;
     margin: 0 !important;
-    padding: clamp(9px, 2.2vw, 12px) clamp(10px, 2.8vw, 14px) !important;
+    padding: clamp(12px, 2.8vw, 15px) clamp(16px, 3.6vw, 22px) !important;
     font: 700 clamp(0.64rem, 2.5vw, 0.76rem) ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
     text-align: center !important;
-    line-height: 1.15 !important;
+    line-height: 1.25 !important;
     transform: none !important;
     translate: none !important;
     rotate: none !important;
@@ -380,17 +382,20 @@
     align-items: center !important;
     justify-content: center !important;
     border-radius: 999px 24px 999px 24px !important;
-    border: 1px solid rgba(255, 209, 102, 0.42) !important;
-    background: rgba(38, 18, 48, 0.72) !important;
+    border: 1px solid rgba(255, 209, 102, 0.48) !important;
+    background:
+      linear-gradient(135deg, rgba(255, 111, 174, 0.22), rgba(255, 209, 102, 0.14)),
+      rgba(38, 18, 48, 0.72) !important;
     color: rgba(255, 248, 239, 0.96) !important;
     box-shadow:
-      0 0 14px rgba(255, 111, 174, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+      0 0 18px rgba(255, 111, 174, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(14px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(1.2) !important;
     cursor: pointer !important;
     pointer-events: auto !important;
     touch-action: manipulation !important;
     -webkit-tap-highlight-color: transparent !important;
-    transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
     z-index: 2 !important;
   }
 
@@ -400,21 +405,22 @@
 
   body[data-world="freiraum"] #slide-home .dna-slide:active {
     transform: translateY(1px) !important;
-    background: rgba(255, 111, 174, 0.18) !important;
-    box-shadow: 0 0 18px rgba(255, 209, 102, 0.22) !important;
+    background:
+      linear-gradient(135deg, rgba(255, 111, 174, 0.32), rgba(255, 209, 102, 0.22)),
+      rgba(48, 22, 58, 0.82) !important;
+    box-shadow: 0 0 22px rgba(255, 209, 102, 0.24) !important;
   }
 
-  /* PROFESSIONAL — eckige Buttons (wie bisher NEXORA Mobile) */
+  /* PROFESSIONAL — eckige Buttons */
   body[data-world="vertex"] #slide-home .dna-slide {
     border-radius: 2px !important;
   }
 }
 
-/* Feintuning Phone / Tablet (wie PROFESSIONAL) */
 @media (max-width: 768px) {
   body[data-world="nexora"] #slide-home .nexora-orbit-button,
   body[data-world="freiraum"] #slide-home .dna-slide {
-    padding: clamp(9px, 2.2vw, 12px) clamp(10px, 2.6vw, 13px) !important;
+    padding: clamp(11px, 2.6vw, 14px) clamp(14px, 3.2vw, 18px) !important;
     font-size: clamp(0.64rem, 2.5vw, 0.74rem) !important;
   }
 }
@@ -427,44 +433,19 @@
 
   body[data-world="nexora"] #slide-home .nexora-orbit-button,
   body[data-world="freiraum"] #slide-home .dna-slide {
-    padding: 9px 11px !important;
+    padding: 11px 14px !important;
     font-size: clamp(0.62rem, 2.4vw, 0.7rem) !important;
   }
 }
 
 @media (max-width: 390px) {
   body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
-  body[data-world="freiraum"] #slide-home .dna-orbit-group,
-  body[data-world="nexora"] .nexora-mobile-hero-claim,
-  body[data-world="freiraum"] .freiraum-mobile-hero-claim {
+  body[data-world="freiraum"] #slide-home .dna-orbit-group {
     max-width: min(94vw, 320px) !important;
   }
-}
 
-/* Intro-Animation */
-@media (max-width: 1024px) {
-  html.welten-hero-enter body[data-world="nexora"] .nexora-mobile-hero-claim {
-    animation: welten-fade-up 0.72s ease 0.26s both;
-  }
-
-  html.welten-hero-enter body[data-world="nexora"] #slide-home .nexora-orbit-buttons {
-    animation: welten-fade-up 0.78s ease 0.42s both;
-  }
-
-  html.welten-hero-enter body[data-world="freiraum"] .freiraum-mobile-hero-claim {
-    animation: welten-fade-up 0.72s ease 0.1s both;
-  }
-
-  html.welten-hero-enter body[data-world="freiraum"] #slide-home .dna-orbit-group {
-    animation: welten-freiraum-float-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
   body[data-world="nexora"] .nexora-mobile-hero-claim,
-  body[data-world="freiraum"] .freiraum-mobile-hero-claim,
-  body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
-  body[data-world="freiraum"] #slide-home .dna-orbit-group {
-    animation: none !important;
+  body[data-world="freiraum"] #slide-home .dna-unified-scene::after {
+    max-width: min(94vw, 320px) !important;
   }
 }

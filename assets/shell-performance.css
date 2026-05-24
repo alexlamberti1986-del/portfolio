@@ -1,51 +1,26 @@
-/* Shell — fast boot, quick crossfade */
-html.shell-booting .world-frame.is-active {
-  opacity: 1;
-  transform: none;
-}
-
-html.shell-ready .world-frame.is-active.is-ready {
-  opacity: 1;
-  transform: none;
-}
-
+/* Shell — instant iframe switch, no fade/scale */
 .world-frame {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: none;
-  will-change: opacity;
-  transition:
-    opacity 0.38s ease,
-    visibility 0s linear 0.38s;
-}
-
-.world-frame.is-active {
-  visibility: visible;
-  pointer-events: auto;
-  z-index: 1;
-  transition:
-    opacity 0.38s ease,
-    visibility 0s;
+  transition: none !important;
 }
 
 .world-frame.is-active.is-ready {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
 }
 
 .world-frame.is-leaving {
   opacity: 0 !important;
+  visibility: hidden !important;
   pointer-events: none !important;
   z-index: 0 !important;
+  transition: none !important;
 }
 
 .world-frame.is-paused {
   pointer-events: none !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .world-frame,
-  .world-frame.is-active {
-    transition-duration: 0.2s !important;
-  }
 }

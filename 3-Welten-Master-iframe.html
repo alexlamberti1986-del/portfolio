@@ -38,7 +38,6 @@ html, body { margin: 0; height: 100%; overflow: hidden; font-family: system-ui, 
   width: 100%; height: calc(100% - var(--bar-h, 56px));
   border: 0; display: block;
   opacity: 0; visibility: hidden; pointer-events: none;
-  transition: opacity 0.45s ease, visibility 0.45s ease;
   z-index: 0;
 }
 .world-frame.is-active {
@@ -109,7 +108,7 @@ body[data-master-world="freiraum"] .sound-toggle {
   background: rgba(55, 24, 62, 0.45);
 }
 </style>
-<link rel="stylesheet" href="assets/world-transition.css" />
+<link rel="stylesheet" href="assets/shell-performance.css" />
 </head>
 <body data-master-world="vertex">
 <div class="world-bar" role="group" aria-label="Designwelt wählen">
@@ -121,8 +120,6 @@ body[data-master-world="freiraum"] .sound-toggle {
 <iframe class="world-frame" title="NEXORA" data-lazy-src="NEXORA.html" src="about:blank"></iframe>
 <iframe class="world-frame is-active" title="PROFESSIONAL" src="PROFESSIONAL.html"></iframe>
 <iframe class="world-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
-<div id="world-transition-overlay" aria-hidden="true"></div>
-<script src="assets/transition-engine.js"></script>
 <script>
 (function () {
   var CHAPTERS = ["home","about","profile","values","strengths","projects","experience","workstyle","why","faq","contact"];
@@ -133,6 +130,7 @@ body[data-master-world="freiraum"] .sound-toggle {
   var soundEnabled = false;
   var lastSoundWorld = "professional";
   var switching = false;
+  var loaded = { 1: true };
 
   var SOUND_FILES = {
     nexora: "assets/audio/Nexora sound.mp3",
@@ -143,11 +141,9 @@ body[data-master-world="freiraum"] .sound-toggle {
   var sounds = {};
   Object.keys(SOUND_FILES).forEach(function (key) {
     var src = SOUND_FILES[key];
-    try {
-      src = encodeURI(src).replace(/#/g, "%23");
-    } catch (e) {}
+    try { src = encodeURI(src).replace(/#/g, "%23"); } catch (e) {}
     var audio = new Audio(src);
-    audio.preload = "auto";
+    audio.preload = "none";
     audio.volume = 0.55;
     sounds[key] = audio;
   });
@@ -183,6 +179,7 @@ body[data-master-world="freiraum"] .sound-toggle {
     });
   }
   updateSoundButton();
+
   function isOur(win) {
     if (!win) return false;
     for (var i = 0; i < frames.length; i++) {
@@ -190,11 +187,13 @@ body[data-master-world="freiraum"] .sound-toggle {
     }
     return false;
   }
+
   window.addEventListener("message", function (e) {
     if (!e.data || e.data.type !== "portfolio-chapter") return;
     if (!isOur(e.source)) return;
     if (typeof e.data.chapter === "string" && CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;
   });
+
   function readChapter(f) {
     try {
       var d = f.contentDocument;
@@ -206,6 +205,7 @@ body[data-master-world="freiraum"] .sound-toggle {
     } catch (err) {}
     return null;
   }
+
   function applyChapter(f, id) {
     var ch = CHAPTERS.indexOf(id) >= 0 ? id : "home";
     try {
@@ -216,91 +216,116 @@ body[data-master-world="freiraum"] .sound-toggle {
       }
     } catch (e1) {}
     if (f.contentWindow) {
-      [0, 60, 150, 320, 700].forEach(function (ms) {
-        setTimeout(function () {
-          try { f.contentWindow.postMessage({ type: "portfolio-go-chapter", chapter: ch }, "*"); } catch (e2) {}
-        }, ms);
-      });
+      try { f.contentWindow.postMessage({ type: "portfolio-go-chapter", chapter: ch }, "*"); } catch (e2) {}
     }
   }
+
+  function postFrame(f, data) {
+    if (!f || !f.contentWindow) return;
+    try { f.contentWindow.postMessage(data, "*"); } catch (e) {}
+  }
+
+  function setFramePaused(f, paused) {
+    postFrame(f, { type: "portfolio-world-pause", paused: paused });
+  }
+
   function activeIdx() {
     var idx = -1;
     frames.forEach(function (f, j) { if (f.classList.contains("is-active")) idx = j; });
     return idx;
   }
+
   function setMaster(i) {
     var btn = bar.querySelector('button[data-iframe="' + i + '"]');
     var key = btn && btn.getAttribute("data-world-key");
     if (!key) key = i === 0 ? "nexora" : i === 1 ? "vertex" : "freiraum";
     document.body.setAttribute("data-master-world", key);
   }
-  function setActive(i) {
-    var prev = activeIdx();
-    if (prev >= 0 && prev !== i) {
-      playWorldSwitchSound(soundKeyFromIframe(i));
-    }
-    if (prev >= 0) {
-      var c = readChapter(frames[prev]);
-      if (c) sharedChapter = c;
-    }
-    applyActiveFrames(i);
+
+  function preloadFrame(i) {
+    var f = frames[i];
+    if (!f || loaded[i]) return;
+    var lazy = f.getAttribute("data-lazy-src");
+    if (!lazy) return;
+    var blank = !f.src || f.src.indexOf("about:blank") !== -1;
+    if (!blank) { loaded[i] = true; return; }
+    f.addEventListener("load", function onLoad() {
+      f.removeEventListener("load", onLoad);
+      loaded[i] = true;
+    });
+    f.src = lazy;
   }
-  function applyActiveFrames(i) {
-    frames.forEach(function (f, j) {
-      var show = j === i;
-      f.classList.toggle("is-active", show);
-      if (!show) return;
+
+  function loadFrame(i) {
+    return new Promise(function (resolve) {
+      var f = frames[i];
+      if (!f) return resolve();
+      if (loaded[i]) return resolve();
       var lazy = f.getAttribute("data-lazy-src");
+      if (!lazy) { loaded[i] = true; return resolve(); }
       var blank = !f.src || f.src.indexOf("about:blank") !== -1;
-      if (lazy && blank) {
-        function onLoad() {
-          f.removeEventListener("load", onLoad);
-          applyChapter(f, sharedChapter);
-        }
-        f.addEventListener("load", onLoad);
-        f.src = lazy;
-      } else {
-        setTimeout(function () { applyChapter(f, sharedChapter); }, 80);
+      if (!blank && f.contentDocument && f.contentDocument.readyState === "complete") {
+        loaded[i] = true;
+        return resolve();
       }
+      function onLoad() {
+        f.removeEventListener("load", onLoad);
+        loaded[i] = true;
+        resolve();
+      }
+      f.addEventListener("load", onLoad);
+      if (blank) f.src = lazy;
+    });
+  }
+
+  function applyActiveFrames(i) {
+    var prev = activeIdx();
+    if (prev >= 0 && prev !== i) setFramePaused(frames[prev], true);
+    frames.forEach(function (f, j) {
+      f.classList.toggle("is-active", j === i);
+      if (j === i) setFramePaused(f, false);
     });
     bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
       b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
     });
     setMaster(i);
+    applyChapter(frames[i], sharedChapter);
+    postFrame(frames[i], { type: "portfolio-world-enter", world: soundKeyFromIframe(i) });
   }
-  function worldFromIndex(i) {
-    return i === 0 ? "nexora" : i === 1 ? "professional" : "freiraum";
-  }
-  function runTransition(i) {
-    if (typeof window.playWorldTransition === "function") {
-      return window.playWorldTransition(worldFromIndex(i));
-    }
-    return Promise.resolve();
-  }
+
   function switchToWorldIndex(i) {
     if (switching || i < 0 || i > 2) return Promise.resolve();
     if (activeIdx() === i) return Promise.resolve();
     switching = true;
-    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-      b.disabled = true;
+    var prev = activeIdx();
+    bar.querySelectorAll("button[data-iframe]").forEach(function (b) { b.disabled = true; });
+    if (prev >= 0) {
+      var c = readChapter(frames[prev]);
+      if (c) sharedChapter = c;
+      if (prev !== i) playWorldSwitchSound(soundKeyFromIframe(i));
+    }
+    return loadFrame(i).then(function () {
+      applyActiveFrames(i);
+    }).finally(function () {
+      switching = false;
+      bar.querySelectorAll("button[data-iframe]").forEach(function (b) { b.disabled = false; });
     });
-    return runTransition(i)
-      .then(function () {
-        setActive(i);
-      })
-      .finally(function () {
-        switching = false;
-        bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-          b.disabled = false;
-        });
-      });
   }
+
+  bar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
+    var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+    btn.addEventListener("mouseenter", function () { preloadFrame(idx); });
+    btn.addEventListener("touchstart", function () { preloadFrame(idx); }, { passive: true });
+    btn.addEventListener("focus", function () { preloadFrame(idx); });
+  });
+
   bar.addEventListener("click", function (e) {
     if (e.target.closest("#sound-toggle")) return;
     var btn = e.target.closest("button[data-iframe]");
     if (!btn) return;
     switchToWorldIndex(parseInt(btn.getAttribute("data-iframe"), 10));
   });
+
   window.switchToWorldIndex = switchToWorldIndex;
 })();
 </script>

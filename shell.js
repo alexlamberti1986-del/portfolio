@@ -6,7 +6,6 @@
     "experience", "workstyle", "why", "faq", "contact",
   ];
 
-  var CROSSFADE_MS = 380;
   var sharedChapter = "home";
   var bar = document.querySelector(".world-bar");
   var frames = Array.from(document.querySelectorAll(".world-frame"));
@@ -150,11 +149,7 @@
       }
     } catch (e1) {}
     if (frame.contentWindow) {
-      [0, 60, 150].forEach(function (ms) {
-        setTimeout(function () {
-          postFrame(frame, { type: "portfolio-go-chapter", chapter: id });
-        }, ms);
-      });
+      postFrame(frame, { type: "portfolio-go-chapter", chapter: id });
     }
   }
 
@@ -210,13 +205,13 @@
     loadFrame(frameByWorld(world), world);
   }
 
-  function crossfadeToWorld(world, prev) {
+  function showWorld(world, prev) {
     var target = frameByWorld(world);
-    if (!target) return Promise.resolve();
+    if (!target) return;
 
     if (prev && prev !== target) {
+      prev.classList.remove("is-active", "is-ready");
       prev.classList.add("is-leaving");
-      prev.classList.remove("is-active");
       setFramePaused(prev, true);
     }
 
@@ -235,21 +230,7 @@
     });
     setMasterWorld(world);
     applyChapter(target, sharedChapter);
-
-    return new Promise(function (resolve) {
-      setTimeout(function () {
-        if (prev && prev !== target) prev.classList.remove("is-leaving");
-        postFrame(target, { type: "portfolio-world-enter", world: world });
-        resolve();
-      }, CROSSFADE_MS);
-    });
-  }
-
-  function runTransition(world) {
-    if (typeof window.playWorldTransition === "function") {
-      return window.playWorldTransition(world);
-    }
-    return Promise.resolve();
+    postFrame(target, { type: "portfolio-world-enter", world: world });
   }
 
   function switchToWorld(world) {
@@ -278,12 +259,9 @@
       playWorldSwitchSound(world);
     }
 
-    var loadPromise = loadFrame(target, world);
-    runTransition(world);
-
-    return loadPromise
+    return loadFrame(target, world)
       .then(function () {
-        return crossfadeToWorld(world, prev);
+        showWorld(world, prev);
       })
       .finally(function () {
         switching = false;
