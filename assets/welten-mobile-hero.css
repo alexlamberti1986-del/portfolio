@@ -210,7 +210,7 @@
     opacity: 1 !important;
     filter: none !important;
     visibility: visible !important;
-    border-radius: 0 !important;
+    border-radius: 18px !important;
     border: 1px solid rgba(101, 217, 255, 0.55) !important;
     background: rgba(6, 18, 36, 0.78) !important;
     color: rgba(232, 248, 255, 0.96) !important;
