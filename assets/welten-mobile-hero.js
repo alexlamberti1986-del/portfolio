@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260526a";
+  var HERO_VER = "20260527a";
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
   var WORLDS = {
@@ -41,17 +41,13 @@
 
   function ensureStylesheetLock() {
     if (!isHeroMobile()) return;
+    if (document.getElementById("welten-mobile-hero-stylesheet")) return;
     var id = "welten-mobile-hero-stylesheet-lock";
-    var href = "assets/welten-mobile-hero.css?v=" + HERO_VER;
-    var existing = document.getElementById(id);
-    if (existing) {
-      if (existing.getAttribute("href") !== href) existing.setAttribute("href", href);
-      return;
-    }
+    if (document.getElementById(id)) return;
     var link = document.createElement("link");
     link.id = id;
     link.rel = "stylesheet";
-    link.href = href;
+    link.href = "assets/welten-mobile-hero.css?v=" + HERO_VER;
     document.body.appendChild(link);
   }
 

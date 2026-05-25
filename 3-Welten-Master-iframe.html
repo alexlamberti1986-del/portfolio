@@ -50,12 +50,16 @@ html, body { margin: 0; height: 100%; overflow: hidden; font-family: system-ui, 
   }
   .world-frame {
     top: var(--bar-h, 120px) !important;
-    height: calc(100% - var(--bar-h, 120px)) !important;
+    height: calc(100svh - var(--bar-h, 120px)) !important;
+    height: calc(100dvh - var(--bar-h, 120px)) !important;
+    max-height: calc(100dvh - var(--bar-h, 120px)) !important;
   }
 }
 .world-frame {
   position: fixed; left: 0; right: 0; bottom: 0; top: var(--bar-h, 56px);
-  width: 100%; height: calc(100% - var(--bar-h, 56px));
+  width: 100%;
+  height: calc(100svh - var(--bar-h, 56px));
+  height: calc(100dvh - var(--bar-h, 56px));
   border: 0; display: block;
   opacity: 0; visibility: hidden; pointer-events: none;
   z-index: 0;

@@ -64,6 +64,8 @@ html.world-transition-lock body {
 
   .world-frame {
     top: var(--bar-h, 120px) !important;
-    height: calc(100% - var(--bar-h, 120px)) !important;
+    height: calc(100svh - var(--bar-h, 120px)) !important;
+    height: calc(100dvh - var(--bar-h, 120px)) !important;
+    max-height: calc(100dvh - var(--bar-h, 120px)) !important;
   }
 }

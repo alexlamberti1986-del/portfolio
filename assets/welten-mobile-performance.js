@@ -53,18 +53,6 @@
 
   function allowHeroPanY() {
     applyViewportUnits();
-    var hero = document.querySelector(".home-hero-experience");
-    if (hero) {
-      hero.style.touchAction = "pan-y";
-      hero.style.overflow = "visible";
-      hero.style.webkitOverflowScrolling = "touch";
-    }
-    var slideHome = document.getElementById("slide-home");
-    if (slideHome) {
-      slideHome.style.overflowY = "auto";
-      slideHome.style.webkitOverflowScrolling = "touch";
-      slideHome.style.overscrollBehaviorY = "contain";
-    }
     if (!isMobileContext()) {
       var ring = document.querySelector(".nexora-orbit-buttons, .nexora-orbit-ring");
       if (ring) {
@@ -157,14 +145,6 @@
         } catch (err2) {}
       }
     });
-
-    var slideHome = document.getElementById("slide-home");
-    if (slideHome && isMobileContext()) {
-      slideHome.style.overflowY = "auto";
-      slideHome.style.webkitOverflowScrolling = "touch";
-      slideHome.style.touchAction = "pan-y";
-      slideHome.style.pointerEvents = "auto";
-    }
 
     document.querySelectorAll("#weltenMousePaintCanvas, #particle-canvas").forEach(function (c) {
       c.style.pointerEvents = "none";
@@ -294,27 +274,54 @@
   }
 
   function fixSlidesLayout() {
+    if (!isMobileContext()) {
+      document.documentElement.style.removeProperty("--header-h");
+      document.documentElement.style.removeProperty("--dock-h");
+      return;
+    }
+    var header = document.querySelector(".site-header");
+    var headerH = header ? Math.ceil(header.getBoundingClientRect().height) : 56;
+    if (headerH < 40) headerH = 56;
+    var dock = document.querySelector(".chapter-dock");
+    var dockH = 0;
+    if (dock) {
+      var dockRect = dock.getBoundingClientRect();
+      if (dockRect.height > 0 && dock.offsetParent !== null) {
+        dockH = Math.ceil(dockRect.height);
+      }
+    }
+    document.documentElement.style.setProperty("--header-h", headerH + "px");
+    document.documentElement.style.setProperty("--dock-h", dockH + "px");
+  }
+
+  function wireMobileHeroNav() {
     if (!isMobileContext()) return;
-    var root = document.getElementById("slidesRoot") || document.querySelector("main.slides-root");
-    if (!root) return;
-    var headerH =
-      parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue("--header-h")
-      ) || 56;
-    var dockH =
-      parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue("--dock-h")
-      ) || 0;
-    var h = Math.max(320, window.innerHeight - headerH - dockH);
-    var px = h + "px";
-    root.style.height = px;
-    root.style.minHeight = px;
-    root.style.maxHeight = "none";
-    root.style.overflow = "hidden";
-    document.documentElement.style.height = "100%";
-    document.body.style.height = "100%";
-    document.body.style.overflow = "hidden";
-    document.body.style.pointerEvents = "auto";
+    document
+      .querySelectorAll(
+        "#slide-home .nexora-orbit-button[data-go], #slide-home .dna-slide[data-go], #slide-home .hero-button[data-go]"
+      )
+      .forEach(function (btn) {
+        if (btn.dataset.weltenMobileNav === "1") return;
+        btn.dataset.weltenMobileNav = "1";
+        btn.addEventListener(
+          "click",
+          function (e) {
+            if (!isMobileContext()) return;
+            var id = btn.getAttribute("data-go");
+            if (!id) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var link = document.querySelector('.menu-links a[data-go="' + id + '"]');
+            if (link) link.click();
+            else {
+              var step = document.querySelector('.experience-step[data-go="' + id + '"]');
+              if (step) step.click();
+            }
+            queueCleanup();
+          },
+          true
+        );
+      });
   }
 
   function bindMailTelLinks() {
@@ -375,6 +382,7 @@
     patchDnaDragOffOnTouch();
     flattenNexoraOrbitOnMobile();
     fixSlidesLayout();
+    wireMobileHeroNav();
     ensureWorldUnpaused();
   }
 
@@ -408,9 +416,15 @@
     fixSlidesLayout();
   }, { passive: true });
 
+  window.addEventListener("load", wireMobileHeroNav);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", wireMobileHeroNav);
+  }
+
   window.WeltenMobilePerf = {
     isMobile: isMobileContext,
     refresh: apply,
     cleanup: queueCleanup,
+    wireNav: wireMobileHeroNav,
   };
 })();

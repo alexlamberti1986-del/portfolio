@@ -784,22 +784,6 @@ body[data-world="freiraum"] #slide-contact .portrait-photo {
    ============================================================================= */
 
 @media (max-width: 1024px) {
-  /* NEXORA inline 100vh/overflow:hidden aufheben */
-  #slide-home .home-hero-experience,
-  #slide-home #dnaStage.home-hero-experience {
-    min-height: auto !important;
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-    touch-action: pan-y !important;
-  }
-
-  #slide-home .nexora-orbit-nav,
-  #slide-home .nexora-orbit-nav--lr {
-    display: none !important;
-    pointer-events: none !important;
-  }
-
   /* Sticky Header: Hintergrund + Inhalt im selben Container */
   .site-header {
     position: fixed !important;
@@ -947,43 +931,6 @@ body[data-world="freiraum"] #slide-contact .portrait-photo {
 
   body[data-world="freiraum"] .welten-mobile-hero-keywords {
     margin-bottom: clamp(20px, 4vw, 28px) !important;
-  }
-
-  /* Folien-Container: Höhe für position:absolute Slides (nicht auf 0 kollabieren) */
-  html.welten-mobile,
-  html.welten-mobile body {
-    height: 100% !important;
-    min-height: 100% !important;
-  }
-
-  main.slides-root,
-  #slidesRoot {
-    position: relative !important;
-    height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
-    min-height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
-    max-height: none !important;
-    overflow: hidden !important;
-  }
-
-  .slide {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
-
-  .slide.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    z-index: 2 !important;
-  }
-
-  .slide:not(#slide-home) {
-    padding-bottom: clamp(24px, 6vw, 48px) !important;
-  }
-
-  .menu-overlay:not(.open) {
-    pointer-events: none !important;
   }
 
   .menu-overlay.open {

@@ -1,10 +1,68 @@
 /**
- * Mobile/Tablet — finale Overrides (nach allen Inline-Styles)
+ * Mobile/Tablet Layout — lädt zuletzt (nach Inline-Styles)
+ * Scroll-Modell, Safe-Area, keine festen vh-Hero-Höhen
  * Desktop ≥1025px: keine Regeln
  */
 
 @media (max-width: 1024px) {
-  /* NEXORA Inline-Block force-nexora-final-brain-hero aufheben */
+  html.welten-mobile {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  html.welten-mobile,
+  html.welten-mobile body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    touch-action: manipulation;
+  }
+
+  /* Ein Scroll-Container: aktive Folie */
+  main.slides-root,
+  #slidesRoot {
+    position: relative;
+    box-sizing: border-box;
+    height: calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px));
+    height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px));
+    min-height: calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px));
+    min-height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px));
+    overflow: hidden;
+  }
+
+  .slide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    position: absolute !important;
+    inset: 0;
+    top: var(--header-h, 56px);
+    bottom: var(--dock-h, 0px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto !important;
+    min-height: 0;
+    max-height: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 2;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+  }
+
+  /* NEXORA Inline (#force-nexora-final-brain-hero) + welten-ui-v10 */
   #slide-home .home-hero-experience,
   #slide-home #dnaStage.home-hero-experience {
     height: auto !important;
@@ -14,95 +72,156 @@
     touch-action: pan-y !important;
   }
 
-  /* Orbit-Shell: kein absoluter Kasten (sonst abgeschnitten) */
   #slide-home .nexora-orbit-buttons,
   #slide-home .nexora-orbit-buttons.welten-nexora-list-mode,
   html.welten-nexora-list #slide-home .nexora-orbit-buttons {
-    position: relative !important;
-    top: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    right: auto !important;
-    inset: auto !important;
-    transform: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    margin: 0 auto !important;
-    padding: 0 0 8px !important;
-    perspective: none !important;
-    pointer-events: auto !important;
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    inset: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin: 0 auto;
+    padding: 0 0 8px;
+    perspective: none;
+    pointer-events: auto;
   }
 
-  #slide-home .neuro-core {
-    display: none !important;
-    pointer-events: none !important;
-  }
-
-  /* Home-Folie: kompletter Inhalt scrollbar (Hero + Intro) */
-  main.slides-root,
-  #slidesRoot {
-    position: relative !important;
-    height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
-    min-height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
-    overflow: hidden !important;
-  }
-
-  #slide-home.slide,
-  #slide-home.slide.active {
-    position: absolute !important;
-    inset: 0 !important;
-    top: var(--header-h, 56px) !important;
-    bottom: var(--dock-h, 0px) !important;
-    overflow-x: hidden !important;
-    overflow-y: scroll !important;
-    -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior-y: contain !important;
-    touch-action: pan-y !important;
-    -webkit-overflow-scrolling: touch !important;
+  #slide-home .neuro-core,
+  #slide-home .nexora-orbit-nav,
+  #slide-home .nexora-orbit-nav--lr {
+    display: none;
+    pointer-events: none;
   }
 
   #slide-home .slide-inner--home,
   #slide-home .home-main-block {
-    position: relative !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    overflow: visible !important;
-    min-height: min-content !important;
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    overflow: visible;
+    min-height: min-content;
+    max-width: 100%;
   }
 
   #slide-home .home-hero-experience,
   #slide-home .dna-unified-scene {
-    flex-shrink: 0 !important;
-    overflow: visible !important;
+    flex-shrink: 0;
+    overflow: visible;
+    max-width: 100%;
   }
 
-  .slide.active:not(#slide-home) {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    touch-action: pan-y !important;
+  /* PROFESSIONAL: kein riesiges Pseudo-Wasserzeichen auf Touch */
+  body[data-world="vertex"] #slide-home .dna-unified-scene::before {
+    display: none;
+  }
+
+  body[data-world="vertex"] .home-hero-experience,
+  body[data-world="vertex"] .dna-unified-scene,
+  body[data-world="freiraum"] .home-hero-experience,
+  body[data-world="freiraum"] .dna-unified-scene,
+  body[data-world="nexora"] .home-hero-experience {
+    min-height: 0;
+    max-height: none;
+    height: auto;
   }
 
   body[data-world="nexora"] #slide-home .home-hero-experience.is-dragging,
   body[data-world="nexora"] #slide-home #dnaStage.is-dragging {
-    touch-action: pan-y !important;
-    overflow: visible !important;
-    pointer-events: auto !important;
+    touch-action: pan-y;
+    overflow: visible;
+    pointer-events: auto;
   }
 
-  /* Touch-Scroll nicht von Hero-Grid blockieren */
-  #slide-home .hero-buttons-grid,
-  #slide-home .nexora-orbit-ring,
-  #slide-home .dna-ring {
-    touch-action: pan-y !important;
+  /* Safe-Area iOS */
+  .site-header {
+    padding-top: max(var(--header-air-top, 8px), env(safe-area-inset-top, 0px));
+    padding-left: max(clamp(12px, 3vw, 32px), env(safe-area-inset-left, 0px));
+    padding-right: max(clamp(8px, 2.2vw, 22px), env(safe-area-inset-right, 0px));
   }
 
-  #slide-home .hero-button,
-  #slide-home .nexora-orbit-button,
-  #slide-home .dna-slide {
-    touch-action: manipulation !important;
+  .chapter-dock {
+    padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  }
+
+  .slide:not(#slide-home) {
+    padding-bottom: max(clamp(24px, 6vw, 48px), env(safe-area-inset-bottom, 0px));
+  }
+
+  .menu-overlay:not(.open) {
+    pointer-events: none;
+  }
+
+  /* Kein horizontaler Overflow */
+  .slide-inner,
+  .home-layout,
+  .card-grid,
+  .glass-card,
+  img,
+  video {
+    max-width: 100%;
+  }
+
+  .header-left {
+    flex-wrap: wrap;
+    row-gap: 6px;
+    max-width: calc(100% - 88px);
+  }
+
+  html.welten-mobile body.is-dragging,
+  html.welten-mobile #dnaStage.is-dragging,
+  html.welten-mobile .home-hero-experience.is-dragging {
+    touch-action: pan-y;
+    overflow: visible;
+  }
+
+  .bg-root,
+  .bg-grid,
+  .light-beams,
+  #particle-canvas,
+  #dnaPremiumCanvas,
+  #dnaParticlesCanvas,
+  .dna-particles-canvas,
+  .dna-premium-canvas,
+  #weltenMousePaintCanvas {
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body[data-world="freiraum"] #slide-home .home-main-block .home-portrait-card,
+  body[data-world="freiraum"] #slide-home .home-main-block .portrait-photo,
+  body[data-world="freiraum"] #slide-home .home-main-block img#heroPhoto {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    height: auto;
+  }
+
+  body[data-world="freiraum"] .home-main-block .portrait-photo,
+  body[data-world="freiraum"] .contact-visual .portrait-photo {
+    mix-blend-mode: normal;
+  }
+
+  a[href^="mailto:"],
+  a[href^="tel:"],
+  .site-header .header-meta[href^="mailto:"],
+  .site-header .header-meta[href^="tel:"] {
+    pointer-events: auto;
+    touch-action: manipulation;
+    cursor: pointer;
+    position: relative;
+    z-index: 10090;
+  }
+
+  .slide-inner {
+    padding-bottom: 0;
+    margin-bottom: 0;
   }
 }

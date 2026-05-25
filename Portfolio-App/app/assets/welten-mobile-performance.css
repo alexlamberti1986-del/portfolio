@@ -26,9 +26,6 @@
     overscroll-behavior-y: auto;
   }
 
-  html.welten-mobile .slide,
-  html.welten-mobile .slide.active,
-  html.welten-mobile #slide-home.slide,
   html.welten-mobile .world,
   html.welten-mobile .page,
   html.welten-mobile .hero,
@@ -40,11 +37,6 @@
     min-height: auto !important;
     overflow: visible !important;
     touch-action: pan-y !important;
-  }
-
-  #slide-home.slide.active {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
   }
 
   .home-hero-experience {
@@ -290,13 +282,6 @@ html.welten-world-paused .light-beams {
     height: auto !important;
   }
 
-  #slide-home.slide,
-  #slide-home.slide.active {
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
-  }
-
   /* NEXORA: Button-Liste wie PROFESSIONAL, Look NEXORA (kein 3D-Orbit) */
   body[data-world="nexora"] #dnaStage,
   body[data-world="nexora"] #dnaStage.home-hero-experience,
@@ -406,7 +391,8 @@ html.welten-world-paused .light-beams {
 
   /* PROFESSIONAL: Spalten-Layout, Claim + Buttons lesbar */
   body[data-world="vertex"] .home-hero-experience {
-    min-height: min(82dvh, calc(var(--vvh-inner, 700px) * 0.82)) !important;
+    min-height: 0 !important;
+    height: auto !important;
     padding: 8px 0 20px !important;
   }
 
@@ -417,7 +403,8 @@ html.welten-world-paused .light-beams {
     align-items: stretch !important;
     justify-content: flex-start !important;
     gap: clamp(8px, 2vh, 14px) !important;
-    min-height: min(75dvh, calc(var(--vvh-inner, 640px) * 0.75)) !important;
+    min-height: 0 !important;
+    height: auto !important;
     padding: clamp(8px, 2vw, 14px) !important;
   }
 
@@ -512,7 +499,8 @@ html.welten-world-paused .light-beams {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    min-height: min(78dvh, calc(var(--vvh-inner, 680px) * 0.78)) !important;
+    min-height: 0 !important;
+    height: auto !important;
     padding: 10px 10px 14px !important;
   }
 
@@ -577,12 +565,10 @@ html.welten-world-paused .light-beams {
 }
 
 @media (max-width: 768px) {
-  body[data-world="vertex"] .home-hero-experience {
-    min-height: min(86dvh, calc(var(--vvh-inner, 720px) * 0.86)) !important;
-  }
-
+  body[data-world="vertex"] .home-hero-experience,
   body[data-world="freiraum"] .dna-unified-scene {
-    min-height: min(82dvh, calc(var(--vvh-inner, 700px) * 0.82)) !important;
+    min-height: 0 !important;
+    height: auto !important;
   }
 }
 
@@ -640,18 +626,7 @@ html.welten-world-paused .light-beams {
   }
 }
 
-/* =============================================================================
-   Mobile/Tablet Responsive Pass (20260525)
-   ============================================================================= */
 @media (max-width: 1024px) {
-  html.welten-mobile body.is-dragging,
-  html.welten-mobile #dnaStage.is-dragging,
-  html.welten-mobile .home-hero-experience.is-dragging {
-    overflow-y: auto !important;
-    touch-action: pan-y !important;
-  }
-
-  /* NEXORA Orbit-Liste → Grid (Performance-Pass überschreiben) */
   body[data-world="nexora"] #slide-home .nexora-orbit-ring,
   body[data-world="nexora"] #slide-home .nexora-orbit-ring.hero-buttons-grid {
     display: grid !important;
@@ -660,81 +635,14 @@ html.welten-world-paused .light-beams {
     align-items: stretch !important;
   }
 
-  body[data-world="vertex"] .home-hero-experience,
-  body[data-world="vertex"] .dna-unified-scene,
-  body[data-world="freiraum"] .home-hero-experience,
-  body[data-world="freiraum"] .dna-unified-scene {
-    min-height: auto !important;
-    max-height: none !important;
-    height: auto !important;
-  }
-
   body[data-world="vertex"] #slide-home .dna-ring,
   body[data-world="freiraum"] #slide-home .dna-ring {
     display: grid !important;
     flex-wrap: unset !important;
   }
 
-  /* Header-Links: über Dekoration, touch-fähig */
-  .site-header {
-    pointer-events: auto !important;
-    z-index: 10080 !important;
-  }
-
-  .site-header .header-meta[href^="mailto:"],
-  .site-header .header-meta[href^="tel:"] {
-    pointer-events: auto !important;
-    touch-action: manipulation !important;
-    position: relative !important;
-    z-index: 2 !important;
-    cursor: pointer !important;
-  }
-
-  /* Canvas/Overlays blockieren keine Links */
-  .bg-root,
-  .bg-grid,
-  .light-beams,
-  #particle-canvas,
-  #dnaPremiumCanvas,
-  #dnaParticlesCanvas,
-  .dna-particles-canvas,
-  .dna-premium-canvas {
-    z-index: 0 !important;
-    pointer-events: none !important;
-  }
-
-  html.welten-mobile,
-  html.welten-mobile body {
-    height: 100% !important;
-    min-height: 100% !important;
-    overflow: hidden !important;
-  }
-
-  main.slides-root,
-  #slidesRoot {
-    position: relative !important;
-    height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
-    min-height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
-    max-height: none !important;
-    overflow: hidden !important;
-  }
-
-  .slide.active {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  .slide:not(.active) {
-    pointer-events: none !important;
-  }
-
   a[href^="mailto:"],
   a[href^="tel:"],
-  .contact-actions a[href^="mailto:"],
-  .contact-actions a[href^="tel:"],
   .site-header .header-meta[href^="mailto:"],
   .site-header .header-meta[href^="tel:"] {
     pointer-events: auto !important;
@@ -744,30 +652,6 @@ html.welten-world-paused .light-beams {
     z-index: 10090 !important;
   }
 
-  body[data-world="freiraum"] #slide-home .home-main-block .home-portrait-card,
-  body[data-world="freiraum"] #slide-home .home-main-block .portrait-photo,
-  body[data-world="freiraum"] #slide-home .home-main-block img#heroPhoto {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    height: auto !important;
-    content: none !important;
-  }
-
-  body[data-world="freiraum"] .home-main-block .portrait-photo,
-  body[data-world="freiraum"] .contact-visual .portrait-photo {
-    mix-blend-mode: normal !important;
-  }
-
-  .slide:not(#slide-home) {
-    padding-bottom: clamp(28px, 6vw, 56px) !important;
-  }
-
-  .slide-inner {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-  }
-
   .slide::after,
   .page::after,
   .section::after {
@@ -775,12 +659,5 @@ html.welten-world-paused .light-beams {
     height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
-  }
-}
-
-@media (max-width: 768px) {
-  body[data-world="vertex"] .home-hero-experience,
-  body[data-world="freiraum"] .dna-unified-scene {
-    min-height: auto !important;
   }
 }
