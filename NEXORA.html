@@ -7814,6 +7814,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <!-- FINAL PATCH v6: robuste Klick-Navigation fuer Orbit-Buttons auch waehrend der Rotation -->
 <script id="nexora-orbit-click-navigation-v6">
 (function () {
+  if (window.matchMedia("(max-width: 1024px)").matches) return;
+
   var ORDER = ['home','about','profile','values','strengths','projects','experience','workstyle','why','faq','contact'];
   var down = null;
 
@@ -8482,7 +8484,10 @@ body[data-world="nexora"] .faq-panel-inner {
 })();
 </script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260525b" id="welten-mobile-hero-stylesheet" />
-<script src="assets/welten-mobile-hero.js?v=20260525b" defer></script>
+<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260526a" id="welten-mobile-hero-stylesheet" />
+<script src="assets/welten-mobile-hero.js?v=20260526a" defer></script>
+<link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
+<link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260526a" />
+<script src="assets/welten-mobile-nexora-nav.js" defer></script>
 </body>
 </html>

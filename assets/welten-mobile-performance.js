@@ -149,6 +149,13 @@
         hero.style.minHeight = "auto";
         hero.style.maxHeight = "none";
       }
+      if (typeof hero.releasePointerCapture === "function") {
+        try {
+          if (hero.hasPointerCapture && hero.hasPointerCapture()) {
+            hero.releasePointerCapture(hero.pointerId || 0);
+          }
+        } catch (err2) {}
+      }
     });
 
     var slideHome = document.getElementById("slide-home");
@@ -218,8 +225,18 @@
         return;
       }
       if (e.data.type === "portfolio-world-pause") {
-        setPaused(!!e.data.paused);
-        if (e.data.paused) cleanupIframeTransition();
+        var shouldPause = !!e.data.paused;
+        if (isMobileContext() && shouldPause) {
+          try {
+            var frame = window.frameElement;
+            if (frame && frame.classList.contains("is-active")) {
+              shouldPause = false;
+            }
+          } catch (err) {}
+        }
+        setPaused(shouldPause);
+        if (shouldPause) cleanupIframeTransition();
+        else cleanupIframeTransition();
         return;
       }
       if (e.data.type === "portfolio-world-enter") {
@@ -303,7 +320,6 @@
   function bindMailTelLinks() {
     document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(function (a) {
       a.classList.add("welten-mailtel-link");
-      a.setAttribute("rel", "noopener");
     });
 
     document.addEventListener(
@@ -313,10 +329,10 @@
         if (!a) return;
         var href = a.getAttribute("href");
         if (!href) return;
+        e.preventDefault();
         e.stopPropagation();
-        if (e.defaultPrevented) {
-          window.location.href = href;
-        }
+        e.stopImmediatePropagation();
+        window.location.assign(href);
       },
       true
     );

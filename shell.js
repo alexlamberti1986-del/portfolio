@@ -268,6 +268,7 @@
       prev.classList.remove("is-active", "is-ready");
       prev.classList.add("is-leaving");
       setFramePaused(prev, true);
+      postFrame(prev, { type: "portfolio-cleanup-transition" });
       setTimeout(function () {
         prev.classList.remove("is-leaving");
       }, 0);
@@ -291,6 +292,7 @@
     });
     setMasterWorld(world);
     applyChapter(target, sharedChapter);
+    postFrame(target, { type: "portfolio-cleanup-transition" });
     postFrame(target, { type: "portfolio-world-enter", world: world });
     unlockShell(world);
   }

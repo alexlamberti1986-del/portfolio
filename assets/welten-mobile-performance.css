@@ -644,15 +644,6 @@ html.welten-world-paused .light-beams {
    Mobile/Tablet Responsive Pass (20260525)
    ============================================================================= */
 @media (max-width: 1024px) {
-  html.welten-mobile,
-  html.welten-mobile body {
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    height: auto !important;
-    touch-action: pan-y !important;
-    pointer-events: auto !important;
-  }
-
   html.welten-mobile body.is-dragging,
   html.welten-mobile #dnaStage.is-dragging,
   html.welten-mobile .home-hero-experience.is-dragging {
