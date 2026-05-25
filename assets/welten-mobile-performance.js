@@ -101,7 +101,6 @@
   function cleanupIframeTransition() {
     if (typeof window.cleanupWorldTransition === "function") {
       window.cleanupWorldTransition(document);
-      return;
     }
     document
       .querySelectorAll(
@@ -116,33 +115,61 @@
       "world-switching",
       "world-transition-lock",
       "locked",
-      "welten-world-paused"
+      "welten-world-paused",
+      "no-scroll",
+      "scroll-locked",
+      "menu-open"
     );
     document.body.classList.remove(
       "transition-active",
       "is-transitioning",
       "world-switching",
-      "locked"
+      "locked",
+      "no-scroll",
+      "scroll-locked",
+      "menu-open",
+      "is-dragging"
     );
     document.documentElement.style.overflow = "";
     document.documentElement.style.pointerEvents = "";
+    document.documentElement.style.touchAction = "";
     document.body.style.overflow = "";
     document.body.style.pointerEvents = "";
     document.body.style.touchAction = "";
+    document.body.style.position = "";
+    document.body.style.height = "";
 
     document.querySelectorAll(".home-hero-experience, #dnaStage").forEach(function (hero) {
       hero.classList.remove("is-dragging");
       hero.style.touchAction = "pan-y";
       hero.style.pointerEvents = "";
+      hero.style.overflow = "visible";
+      if (isMobileContext()) {
+        hero.style.height = "auto";
+        hero.style.minHeight = "auto";
+        hero.style.maxHeight = "none";
+      }
     });
+
+    var slideHome = document.getElementById("slide-home");
+    if (slideHome && isMobileContext()) {
+      slideHome.style.overflowY = "auto";
+      slideHome.style.webkitOverflowScrolling = "touch";
+      slideHome.style.touchAction = "pan-y";
+      slideHome.style.pointerEvents = "auto";
+    }
 
     document.querySelectorAll("#weltenMousePaintCanvas, #particle-canvas").forEach(function (c) {
       c.style.pointerEvents = "none";
-      if (window.matchMedia && window.matchMedia("(max-width: 1024px)").matches) {
+      if (isMobileContext()) {
         c.style.display = "none";
         c.style.opacity = "0";
       }
     });
+
+    if (window.WeltenMobileHero && typeof window.WeltenMobileHero.refresh === "function") {
+      window.WeltenMobileHero.refresh();
+    }
   }
 
   function bindWorldPauseMessage() {
@@ -198,6 +225,7 @@
       if (e.data.type === "portfolio-world-enter") {
         setPaused(false);
         cleanupIframeTransition();
+        apply();
         document.querySelectorAll("#particle-canvas, #weltenMousePaintCanvas").forEach(function (c) {
           if (isMobileContext()) {
             c.style.display = "none";
@@ -208,6 +236,13 @@
           c.style.pointerEvents = "none";
         });
         window.dispatchEvent(new Event("resize"));
+        setTimeout(function () {
+          cleanupIframeTransition();
+          apply();
+        }, 120);
+        setTimeout(function () {
+          cleanupIframeTransition();
+        }, 400);
       }
     });
   }

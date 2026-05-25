@@ -70,8 +70,8 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
   }
 }
 
-/* ── Tablet 768–1024px (Referenzwerte) ── */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* ── Tablet 769–1024px (Referenzwerte) ── */
+@media (min-width: 769px) and (max-width: 1024px) {
   body[data-world="nexora"] #slide-home .home-hero-experience,
   body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience,
   body[data-world="freiraum"] #slide-home .home-hero-experience,
@@ -199,8 +199,8 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
     position: relative !important;
     inset: auto !important;
     display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 22px 24px !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 18px !important;
     width: 100% !important;
     max-width: 82vw !important;
     height: auto !important;
@@ -210,18 +210,6 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
     justify-content: center !important;
     align-items: stretch !important;
     flex-wrap: unset !important;
-  }
-
-  body[data-world="nexora"] #slide-home .nexora-orbit-ring > *:nth-child(9),
-  body[data-world="freiraum"] #slide-home .dna-ring > *:nth-child(9),
-  body[data-world="vertex"] #slide-home .dna-ring > *:nth-child(9) {
-    grid-column: 2 !important;
-  }
-
-  body[data-world="nexora"] #slide-home .nexora-orbit-ring > *:nth-child(10),
-  body[data-world="freiraum"] #slide-home .dna-ring > *:nth-child(10),
-  body[data-world="vertex"] #slide-home .dna-ring > *:nth-child(10) {
-    grid-column: 3 !important;
   }
 
   body[data-world="nexora"] #slide-home .nexora-orbit-button,
@@ -259,8 +247,8 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
   }
 }
 
-/* ── Handy ≤767px (Referenzwerte) ── */
-@media (max-width: 767px) {
+/* ── Handy ≤768px (Referenzwerte) ── */
+@media (max-width: 768px) {
   body[data-world="nexora"] #slide-home .home-hero-experience,
   body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience,
   body[data-world="freiraum"] #slide-home .home-hero-experience,
@@ -388,8 +376,8 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
     position: relative !important;
     inset: auto !important;
     display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 18px 20px !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
     width: 100% !important;
     max-width: 86vw !important;
     height: auto !important;
@@ -670,8 +658,8 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
   }
 }
 
-/* Tablet-Padding auch für 768px exakt (falls nur max-width Block greift) */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* Tablet-Padding auch für 769px exakt (falls nur max-width Block greift) */
+@media (min-width: 769px) and (max-width: 1024px) {
   body[data-world="nexora"] #slide-home .home-hero-experience,
   body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience,
   body[data-world="freiraum"] #slide-home .home-hero-experience,
@@ -762,5 +750,302 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
 
   body[data-world="nexora"] #slide-home .nexora-orbit-button {
     touch-action: manipulation !important;
+  }
+}
+
+/* =============================================================================
+   Mobile/Tablet Responsive Pass (20260525) — Hero-Grid, Header, Scroll, Layering
+   Desktop ≥1025px unverändert
+   ============================================================================= */
+
+@media (max-width: 1024px) {
+  /* NEXORA inline 100vh/overflow:hidden aufheben */
+  #slide-home .home-hero-experience,
+  #slide-home #dnaStage.home-hero-experience {
+    min-height: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    touch-action: pan-y !important;
+  }
+
+  #slide-home .nexora-orbit-nav,
+  #slide-home .nexora-orbit-nav--lr {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  /* Sticky Header: Hintergrund + Inhalt im selben Container */
+  .site-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 10080 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    transform: none !important;
+    isolation: isolate !important;
+    pointer-events: auto !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.2) !important;
+    backdrop-filter: blur(16px) saturate(1.2) !important;
+    background: linear-gradient(180deg, rgba(4, 8, 14, 0.94) 0%, rgba(4, 8, 14, 0.82) 100%) !important;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28) !important;
+  }
+
+  body[data-world="vertex"] .site-header {
+    background: linear-gradient(180deg, rgba(244, 242, 238, 0.96) 0%, rgba(244, 242, 238, 0.88) 100%) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  body[data-world="freiraum"] .site-header {
+    background: linear-gradient(180deg, rgba(28, 16, 38, 0.94) 0%, rgba(28, 16, 38, 0.82) 100%) !important;
+  }
+
+  .site-header .header-left,
+  .site-header .btn-menu,
+  .site-header .brand-mark,
+  .site-header .header-meta {
+    position: relative !important;
+    z-index: 1 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+  }
+
+  .site-header .header-meta {
+    cursor: pointer !important;
+  }
+
+  .menu-overlay {
+    z-index: 10100 !important;
+  }
+
+  /* Hero Shell: Grid + Kontakt-Reihe */
+  body[data-world] #slide-home .hero-buttons-shell,
+  body[data-world] #slide-home .nexora-orbit-buttons.hero-buttons-shell,
+  body[data-world] #slide-home .dna-orbit-group.hero-buttons-shell {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+    z-index: 12 !important;
+  }
+
+  body[data-world] #slide-home .hero-buttons-grid,
+  body[data-world] #slide-home .nexora-orbit-ring.hero-buttons-grid,
+  body[data-world] #slide-home .dna-ring.hero-buttons-grid,
+  body[data-world] #slide-home .welten-mobile-hero-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    flex-wrap: unset !important;
+    flex-direction: unset !important;
+    justify-content: stretch !important;
+    align-items: stretch !important;
+    transform: none !important;
+    position: relative !important;
+    inset: auto !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-world] #slide-home .hero-button,
+  body[data-world] #slide-home .nexora-orbit-button.hero-button,
+  body[data-world] #slide-home .dna-slide.hero-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: unset !important;
+    margin: 0 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    cursor: pointer !important;
+    z-index: 2 !important;
+  }
+
+  body[data-world] #slide-home .hero-contact-button-row {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin-top: 12px !important;
+    padding: 0 16px !important;
+    pointer-events: auto !important;
+    z-index: 12 !important;
+  }
+
+  body[data-world] #slide-home .hero-contact-button-row .hero-button {
+    width: 100% !important;
+    max-width: 260px !important;
+    margin: 0 auto !important;
+  }
+
+  /* Kompaktere vertikale Hero-Abstände (bes. PROFESSIONAL) */
+  body[data-world="vertex"] #slide-home .home-hero-experience {
+    min-height: auto !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  body[data-world="vertex"] #slide-home .dna-unified-scene {
+    min-height: auto !important;
+    gap: clamp(6px, 1.5vh, 10px) !important;
+    padding: clamp(4px, 1.5vw, 8px) 10px clamp(8px, 2vw, 12px) !important;
+  }
+
+  body[data-world="vertex"] .welten-mobile-hero-title {
+    margin-bottom: clamp(12px, 3vw, 18px) !important;
+  }
+
+  body[data-world="vertex"] .welten-mobile-hero-line {
+    margin-bottom: clamp(14px, 3.5vw, 20px) !important;
+  }
+
+  body[data-world="vertex"] .welten-mobile-hero-keywords {
+    margin-bottom: clamp(18px, 4vw, 26px) !important;
+  }
+
+  body[data-world="nexora"] .welten-mobile-hero-title {
+    margin-bottom: clamp(14px, 3vw, 20px) !important;
+  }
+
+  body[data-world="nexora"] .welten-mobile-hero-keywords {
+    margin-bottom: clamp(20px, 4vw, 28px) !important;
+  }
+
+  body[data-world="freiraum"] .welten-mobile-hero-keywords {
+    margin-bottom: clamp(20px, 4vw, 28px) !important;
+  }
+
+  /* Unterseiten: kein Leerraum durch 100vh */
+  main.slides-root {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .slide:not(#slide-home) {
+    min-height: 0 !important;
+    padding-bottom: clamp(24px, 6vw, 48px) !important;
+  }
+
+  .slide-inner,
+  .slide-inner--home .home-main-block {
+    min-height: 0 !important;
+  }
+
+  /* Profilbilder: Home + Kontakt, alle Welten */
+  #slide-home .home-portrait-card,
+  #slide-contact .contact-visual {
+    width: min(88vw, 420px) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow: hidden !important;
+  }
+
+  #slide-home .home-portrait-card img.portrait-photo,
+  #slide-home .portrait-photo,
+  #slide-contact .contact-visual img.contact-photo,
+  #slide-contact .contact-photo {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: min(72vh, 520px) !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    display: block !important;
+    margin: 0 auto !important;
+    transform: none !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .home-portrait-card img,
+  body[data-world="freiraum"] #slide-contact .contact-visual img {
+    object-fit: cover !important;
+    object-position: center 18% !important;
+  }
+
+  .contact-actions a[href^="mailto:"],
+  .contact-actions a[href^="tel:"] {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    position: relative !important;
+    z-index: 3 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body[data-world] #slide-home .hero-buttons-grid,
+  body[data-world] #slide-home .nexora-orbit-ring.hero-buttons-grid,
+  body[data-world] #slide-home .dna-ring.hero-buttons-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    max-width: 390px !important;
+    padding: 0 16px !important;
+  }
+
+  body[data-world] #slide-home .hero-button,
+  body[data-world] #slide-home .nexora-orbit-button.hero-button,
+  body[data-world] #slide-home .dna-slide.hero-button {
+    min-height: 52px !important;
+    font-size: 14px !important;
+    border-radius: 14px !important;
+    white-space: nowrap !important;
+    padding: 0 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  body[data-world="vertex"] #slide-home .dna-slide.hero-button {
+    border-radius: 2px !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-slide.hero-button {
+    border-radius: 999px 20px 999px 20px !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="freiraum"] #slide-home .home-hero-experience,
+  body[data-world="vertex"] #slide-home .home-hero-experience {
+    padding-top: 48px !important;
+    padding-bottom: 40px !important;
+  }
+
+  .site-header .header-meta {
+    font-size: clamp(0.72rem, 2.8vw, 0.82rem) !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  body[data-world] #slide-home .hero-buttons-grid,
+  body[data-world] #slide-home .nexora-orbit-ring.hero-buttons-grid,
+  body[data-world] #slide-home .dna-ring.hero-buttons-grid {
+    gap: 18px !important;
+    max-width: 720px !important;
+    padding: 0 20px !important;
+  }
+
+  body[data-world] #slide-home .hero-button,
+  body[data-world] #slide-home .nexora-orbit-button.hero-button,
+  body[data-world] #slide-home .dna-slide.hero-button {
+    min-height: 56px !important;
+    font-size: clamp(13px, 1.6vw, 16px) !important;
+    padding: 0 12px !important;
+  }
+
+  body[data-world] #slide-home .hero-contact-button-row {
+    margin-top: 18px !important;
+    padding: 0 20px !important;
+  }
+
+  body[data-world] #slide-home .hero-contact-button-row .hero-button {
+    max-width: 280px !important;
   }
 }

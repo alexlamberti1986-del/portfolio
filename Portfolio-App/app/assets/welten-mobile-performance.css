@@ -621,3 +621,111 @@ html.welten-world-paused .light-beams {
     flex: 0 1 auto !important;
   }
 }
+
+/* =============================================================================
+   Mobile/Tablet Responsive Pass (20260525)
+   ============================================================================= */
+@media (max-width: 1024px) {
+  html.welten-mobile,
+  html.welten-mobile body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
+    touch-action: pan-y !important;
+    pointer-events: auto !important;
+  }
+
+  html.welten-mobile body.is-dragging,
+  html.welten-mobile #dnaStage.is-dragging,
+  html.welten-mobile .home-hero-experience.is-dragging {
+    overflow-y: auto !important;
+    touch-action: pan-y !important;
+  }
+
+  /* NEXORA Orbit-Liste → Grid (Performance-Pass überschreiben) */
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring,
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring.hero-buttons-grid {
+    display: grid !important;
+    flex-wrap: unset !important;
+    justify-content: stretch !important;
+    align-items: stretch !important;
+  }
+
+  body[data-world="vertex"] .home-hero-experience,
+  body[data-world="vertex"] .dna-unified-scene,
+  body[data-world="freiraum"] .home-hero-experience,
+  body[data-world="freiraum"] .dna-unified-scene {
+    min-height: auto !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  body[data-world="vertex"] #slide-home .dna-ring,
+  body[data-world="freiraum"] #slide-home .dna-ring {
+    display: grid !important;
+    flex-wrap: unset !important;
+  }
+
+  /* Header-Links: über Dekoration, touch-fähig */
+  .site-header {
+    pointer-events: auto !important;
+    z-index: 10080 !important;
+  }
+
+  .site-header .header-meta[href^="mailto:"],
+  .site-header .header-meta[href^="tel:"] {
+    pointer-events: auto !important;
+    touch-action: manipulation !important;
+    position: relative !important;
+    z-index: 2 !important;
+    cursor: pointer !important;
+  }
+
+  /* Canvas/Overlays blockieren keine Links */
+  .bg-root,
+  .bg-grid,
+  .light-beams,
+  #particle-canvas,
+  #dnaPremiumCanvas,
+  #dnaParticlesCanvas,
+  .dna-particles-canvas,
+  .dna-premium-canvas {
+    z-index: 0 !important;
+    pointer-events: none !important;
+  }
+
+  main.slides-root {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .slide.active {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .slide:not(#slide-home) {
+    padding-bottom: clamp(28px, 6vw, 56px) !important;
+  }
+
+  .slide-inner {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .slide::after,
+  .page::after,
+  .section::after {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body[data-world="vertex"] .home-hero-experience,
+  body[data-world="freiraum"] .dna-unified-scene {
+    min-height: auto !important;
+  }
+}
