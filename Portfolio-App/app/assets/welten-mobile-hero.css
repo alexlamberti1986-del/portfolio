@@ -17,20 +17,45 @@ body[data-world="freiraum"] #slide-home .home-hero-experience::after {
   display: none !important;
 }
 
+/* FREIRAUM: nur Hero-Deko ausblenden — Profilbild im Intro-Block bleibt sichtbar */
+body[data-world="freiraum"] #slide-home .home-hero-experience .home-portrait-card,
+body[data-world="freiraum"] #slide-home .home-hero-experience .portrait-photo,
+body[data-world="freiraum"] #slide-home .dna-unified-scene .home-portrait-card,
 body[data-world="freiraum"] #slide-home .dna-premium-canvas,
 body[data-world="freiraum"] #slide-home .dna-particles-canvas,
 body[data-world="freiraum"] #slide-home .dna-holo-arm,
 body[data-world="freiraum"] #slide-home .dna-visual-stack,
 body[data-world="freiraum"] #slide-home .dna-layer,
-body[data-world="freiraum"] #slide-home .dna-asset,
-body[data-world="freiraum"] #slide-home .home-portrait-card,
-body[data-world="freiraum"] #slide-home .portrait-photo {
+body[data-world="freiraum"] #slide-home .dna-asset {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
   display: none !important;
   height: 0 !important;
   overflow: hidden !important;
+}
+
+body[data-world="freiraum"] #slide-home .home-main-block .home-portrait-card,
+body[data-world="freiraum"] #slide-home .home-main-block .portrait-photo,
+body[data-world="freiraum"] #slide-home .home-main-block img#heroPhoto,
+body[data-world="freiraum"] #slide-contact .contact-visual,
+body[data-world="freiraum"] #slide-contact .portrait-photo,
+body[data-world="freiraum"] #slide-contact img#contactPhoto {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  max-height: none !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  content: none !important;
+}
+
+body[data-world="freiraum"] #slide-home .home-main-block .portrait-photo,
+body[data-world="freiraum"] #slide-contact .portrait-photo {
+  width: 100% !important;
+  object-fit: cover !important;
+  object-position: center 22% !important;
 }
 
 /* Alte Desktop-Hero-Elemente ausblenden */
@@ -924,20 +949,45 @@ body[data-world="freiraum"] #slide-home .portrait-photo {
     margin-bottom: clamp(20px, 4vw, 28px) !important;
   }
 
-  /* Unterseiten: kein Leerraum durch 100vh */
-  main.slides-root {
-    height: auto !important;
-    min-height: 0 !important;
+  /* Folien-Container: Höhe für position:absolute Slides (nicht auf 0 kollabieren) */
+  html.welten-mobile,
+  html.welten-mobile body {
+    height: 100% !important;
+    min-height: 100% !important;
+  }
+
+  main.slides-root,
+  #slidesRoot {
+    position: relative !important;
+    height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
+    min-height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px)) !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  .slide {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .slide.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 2 !important;
   }
 
   .slide:not(#slide-home) {
-    min-height: 0 !important;
     padding-bottom: clamp(24px, 6vw, 48px) !important;
   }
 
-  .slide-inner,
-  .slide-inner--home .home-main-block {
-    min-height: 0 !important;
+  .menu-overlay:not(.open) {
+    pointer-events: none !important;
+  }
+
+  .menu-overlay.open {
+    pointer-events: auto !important;
   }
 
   /* Profilbilder: Home + Kontakt, alle Welten */

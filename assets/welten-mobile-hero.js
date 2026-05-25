@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260525a";
+  var HERO_VER = "20260525b";
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
   var WORLDS = {
@@ -329,12 +329,32 @@
     }
   }
 
+  function afterNavigation() {
+    disableNexoraOrbitOnMobile();
+    if (window.WeltenMobilePerf && typeof window.WeltenMobilePerf.cleanup === "function") {
+      window.WeltenMobilePerf.cleanup();
+    }
+    setTimeout(boot, 40);
+  }
+
+  document.addEventListener(
+    "click",
+    function (e) {
+      if (!isHeroMobile()) return;
+      if (e.target.closest('[data-go], .nexora-orbit-button, .dna-slide')) {
+        afterNavigation();
+      }
+    },
+    true
+  );
+
   window.addEventListener("message", function (e) {
     if (e.data && e.data.type === "portfolio-world-enter") {
       setTimeout(boot, 50);
+      afterNavigation();
     }
     if (e.data && e.data.type === "portfolio-cleanup-transition") {
-      disableNexoraOrbitOnMobile();
+      afterNavigation();
     }
   });
 

@@ -271,6 +271,86 @@
     });
   }
 
+  function ensureWorldUnpaused() {
+    window.__portfolioWorldPaused = false;
+    document.documentElement.classList.remove("welten-world-paused");
+  }
+
+  function fixSlidesLayout() {
+    if (!isMobileContext()) return;
+    var root = document.getElementById("slidesRoot") || document.querySelector("main.slides-root");
+    if (!root) return;
+    var headerH =
+      parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--header-h")
+      ) || 56;
+    var dockH =
+      parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--dock-h")
+      ) || 0;
+    var h = Math.max(320, window.innerHeight - headerH - dockH);
+    var px = h + "px";
+    root.style.height = px;
+    root.style.minHeight = px;
+    root.style.maxHeight = "none";
+    root.style.overflow = "hidden";
+    document.documentElement.style.height = "100%";
+    document.body.style.height = "100%";
+    document.body.style.overflow = "hidden";
+    document.body.style.pointerEvents = "auto";
+  }
+
+  function bindMailTelLinks() {
+    document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(function (a) {
+      a.classList.add("welten-mailtel-link");
+      a.setAttribute("rel", "noopener");
+    });
+
+    document.addEventListener(
+      "click",
+      function (e) {
+        var a = e.target.closest && e.target.closest('a[href^="mailto:"], a[href^="tel:"]');
+        if (!a) return;
+        var href = a.getAttribute("href");
+        if (!href) return;
+        e.stopPropagation();
+        if (e.defaultPrevented) {
+          window.location.href = href;
+        }
+      },
+      true
+    );
+  }
+
+  function queueCleanup() {
+    ensureWorldUnpaused();
+    cleanupIframeTransition();
+    requestAnimationFrame(function () {
+      cleanupIframeTransition();
+      fixSlidesLayout();
+    });
+    setTimeout(function () {
+      cleanupIframeTransition();
+      fixSlidesLayout();
+    }, 80);
+    setTimeout(cleanupIframeTransition, 250);
+  }
+
+  function bindNavigationCleanup() {
+    document.addEventListener(
+      "click",
+      function (e) {
+        if (!isMobileContext()) return;
+        if (e.target.closest('a[href^="mailto:"], a[href^="tel:"]')) return;
+        var nav = e.target.closest(
+          "[data-go], .nexora-orbit-button, .dna-slide, .btn-menu, .menu-links a, .dock-card, .experience-step"
+        );
+        if (nav) queueCleanup();
+      },
+      true
+    );
+  }
+
   function apply() {
     setMobileClasses();
     disableMousePaint();
@@ -278,6 +358,8 @@
     allowHeroPanY();
     patchDnaDragOffOnTouch();
     flattenNexoraOrbitOnMobile();
+    fixSlidesLayout();
+    ensureWorldUnpaused();
   }
 
   apply();
@@ -297,14 +379,22 @@
 
   bindWorldPauseMessage();
   bindVisibilityPause();
+  bindMailTelLinks();
+  bindNavigationCleanup();
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", observeActiveSlide);
   } else {
     observeActiveSlide();
   }
 
+  window.addEventListener("resize", function () {
+    applyViewportUnits();
+    fixSlidesLayout();
+  }, { passive: true });
+
   window.WeltenMobilePerf = {
     isMobile: isMobileContext,
     refresh: apply,
+    cleanup: queueCleanup,
   };
 })();
