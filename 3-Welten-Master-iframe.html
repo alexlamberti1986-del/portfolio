@@ -181,7 +181,6 @@ body[data-master-world="freiraum"] .sound-toggle {
   function unlockShell(activeIdx) {
     switching = false;
     window.__worldTransitionRunning = false;
-    cleanupShellState();
     document.documentElement.style.pointerEvents = "";
     document.body.style.pointerEvents = "";
     if (bar) bar.style.pointerEvents = "auto";
@@ -278,8 +277,18 @@ body[data-master-world="freiraum"] .sound-toggle {
     return null;
   }
 
+  function isTouchShell() {
+    return window.matchMedia("(max-width: 1024px)").matches ||
+      window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  }
+
   function applyChapter(f, id) {
     var ch = CHAPTERS.indexOf(id) >= 0 ? id : "home";
+    var useMessageOnly = f === frames[0] && isTouchShell();
+    if (useMessageOnly) {
+      postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
+      return;
+    }
     try {
       var d = f.contentDocument;
       if (d) {
@@ -352,7 +361,10 @@ body[data-master-world="freiraum"] .sound-toggle {
 
   function applyActiveFrames(i) {
     var prev = activeIdx();
-    if (prev >= 0 && prev !== i) setFramePaused(frames[prev], true);
+    if (prev >= 0 && prev !== i) {
+      postFrame(frames[prev], { type: "portfolio-cleanup-transition" });
+      setFramePaused(frames[prev], true);
+    }
     frames.forEach(function (f, j) {
       var on = j === i;
       f.classList.toggle("is-active", on);
@@ -363,8 +375,14 @@ body[data-master-world="freiraum"] .sound-toggle {
       b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
     });
     setMaster(i);
-    applyChapter(frames[i], sharedChapter);
     postFrame(frames[i], { type: "portfolio-world-enter", world: soundKeyFromIframe(i) });
+    if (i === 0 && isTouchShell()) {
+      setTimeout(function () {
+        applyChapter(frames[i], sharedChapter);
+      }, 180);
+    } else {
+      applyChapter(frames[i], sharedChapter);
+    }
     unlockShell(i);
   }
 
@@ -393,14 +411,18 @@ body[data-master-world="freiraum"] .sound-toggle {
 
   function switchToWorldIndex(i) {
     if (i < 0 || i > 2) return Promise.resolve();
-    if (window.__worldTransitionRunning) return Promise.resolve();
+    if (window.__worldTransitionRunning) {
+      unlockShell(activeIdx());
+      window.__worldTransitionRunning = false;
+    }
     if (switching && !window.__worldTransitionRunning) unlockShell(activeIdx());
 
     window.__worldTransitionRunning = true;
     cleanupShellState();
 
     var play = typeof window.playWorldTransition === "function" ? window.playWorldTransition(soundKeyFromIframe(i)) : Promise.resolve();
-    var safety = setTimeout(function () { unlockShell(i); }, 10000);
+    var safetyMs = window.matchMedia("(max-width: 1024px)").matches ? 3500 : 10000;
+    var safety = setTimeout(function () { unlockShell(i); }, safetyMs);
 
     return Promise.resolve(play).then(function () {
       return switchToWorldIndexInternal(i);

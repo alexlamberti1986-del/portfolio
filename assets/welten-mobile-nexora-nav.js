@@ -4,10 +4,14 @@
 (function () {
   "use strict";
 
-  var mq = window.matchMedia("(max-width: 1024px)");
-
   function isMobile() {
-    return mq.matches;
+    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
+      return window.WeltenTouchEnv.isTouch();
+    }
+    return (
+      window.matchMedia("(max-width: 1280px)").matches ||
+      window.matchMedia("(hover: none) and (pointer: coarse)").matches
+    );
   }
 
   function goChapter(id) {
@@ -37,16 +41,13 @@
             var id = btn.getAttribute("data-go");
             if (!id) return;
             e.preventDefault();
-            e.stopImmediatePropagation();
+            e.stopPropagation();
             goChapter(id);
             if (window.WeltenMobilePerf && window.WeltenMobilePerf.cleanup) {
               window.WeltenMobilePerf.cleanup();
             }
-            if (window.WeltenMobileHero && window.WeltenMobileHero.refresh) {
-              setTimeout(window.WeltenMobileHero.refresh, 60);
-            }
           },
-          true
+          false
         );
       });
   }
@@ -60,11 +61,7 @@
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   }
-  if (mq.addEventListener) {
-    mq.addEventListener("change", boot);
-  } else {
-    mq.addListener(boot);
-  }
+  window.addEventListener("resize", boot, { passive: true });
 
   window.addEventListener("message", function (e) {
     if (e.data && (e.data.type === "portfolio-world-enter" || e.data.type === "portfolio-cleanup-transition")) {

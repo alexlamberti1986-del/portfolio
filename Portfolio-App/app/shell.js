@@ -72,10 +72,22 @@
     });
   }
 
+  function isTouchShell() {
+    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
+      return window.WeltenTouchEnv.isTouch();
+    }
+    return !!(
+      window.matchMedia("(hover: none) and (pointer: coarse)").matches ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(max-width: 1280px)").matches
+    );
+  }
+
   function unlockShell(activeWorld) {
     switching = false;
     window.__worldTransitionRunning = false;
-    cleanupShellState();
+    document.documentElement.style.pointerEvents = "";
+    document.body.style.pointerEvents = "";
 
     buttons.forEach(function (b) {
       b.disabled = false;
@@ -193,6 +205,10 @@
 
   function applyChapter(frame, chapterId) {
     var id = CHAPTERS.indexOf(chapterId) >= 0 ? chapterId : "home";
+    if (frame.getAttribute("data-world") === "nexora" && isTouchShell()) {
+      postFrame(frame, { type: "portfolio-go-chapter", chapter: id });
+      return;
+    }
     try {
       var d = frame.contentDocument;
       if (d) {
@@ -265,6 +281,7 @@
     if (!target) return;
 
     if (prev && prev !== target) {
+      postFrame(prev, { type: "portfolio-cleanup-transition" });
       prev.classList.remove("is-active", "is-ready");
       prev.classList.add("is-leaving");
       setFramePaused(prev, true);
@@ -290,8 +307,14 @@
       b.classList.toggle("is-active", b.getAttribute("data-world") === world);
     });
     setMasterWorld(world);
-    applyChapter(target, sharedChapter);
     postFrame(target, { type: "portfolio-world-enter", world: world });
+    if (world === "nexora" && isTouchShell()) {
+      setTimeout(function () {
+        applyChapter(target, sharedChapter);
+      }, 200);
+    } else {
+      applyChapter(target, sharedChapter);
+    }
     unlockShell(world);
   }
 
@@ -335,7 +358,10 @@
 
   function handleWorldSwitch(world) {
     if (!world) return Promise.resolve();
-    if (window.__worldTransitionRunning) return Promise.resolve();
+    if (window.__worldTransitionRunning) {
+      unlockShell(getActiveWorld() || world);
+      window.__worldTransitionRunning = false;
+    }
 
     window.__worldTransitionRunning = true;
     cleanupShellState();
@@ -345,9 +371,10 @@
         ? window.playWorldTransition(world)
         : Promise.resolve();
 
+    var safetyMs = isTouchShell() ? 3500 : 10000;
     var safety = setTimeout(function () {
       unlockShell(world);
-    }, 10000);
+    }, safetyMs);
 
     return Promise.resolve(play)
       .then(function () {

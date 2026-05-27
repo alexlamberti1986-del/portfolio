@@ -1,0 +1,65 @@
+/**
+ * NEXORA auf Touch-Geräten — höchste Priorität (nach allen Inline-Styles)
+ */
+html.welten-touch-env #slide-home .home-hero-experience,
+html.welten-touch-env #slide-home #dnaStage.home-hero-experience,
+html.welten-touch-env #slide-home .dna-unified-scene,
+html.welten-touch-env #slide-home .nexora-orbit-buttons,
+html.welten-touch-env #slide-home .nexora-orbit-ring,
+html.welten-touch-env #slide-home .nexora-orbit-button {
+  touch-action: pan-y !important;
+  -ms-touch-action: pan-y !important;
+}
+
+html.welten-touch-env #slide-home .home-hero-experience,
+html.welten-touch-env #slide-home #dnaStage {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+html.welten-touch-env #dnaOrbitGroup,
+html.welten-touch-env #slide-home .dna-orbit-group,
+html.welten-touch-env #slide-home .dna-unified-scene,
+html.welten-touch-env #slide-home .dna-ring-scene,
+html.welten-touch-env #slide-home .dna-ring,
+html.welten-touch-env #slide-home .dna-slide,
+html.welten-touch-env #slide-home .neuro-core,
+html.welten-touch-env #slide-home .nexora-orbit-nav,
+html.welten-touch-env #slide-home .dna-premium-canvas,
+html.welten-touch-env #slide-home .dna-particles-canvas {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  touch-action: none !important;
+}
+
+html.welten-touch-env #slide-home .nexora-orbit-buttons,
+html.welten-touch-env #slide-home .nexora-orbit-ring,
+html.welten-touch-env #slide-home .nexora-orbit-button {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+}
+
+html.welten-touch-env #slide-home .nexora-orbit-ring {
+  display: grid !important;
+  transform: none !important;
+  perspective: none !important;
+}
+
+html.welten-touch-env .home-hero-experience.is-dragging,
+html.welten-touch-env #dnaStage.is-dragging {
+  touch-action: pan-y !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+}
+
+html.welten-touch-env.welten-world-paused,
+html.welten-touch-env.welten-world-paused body {
+  pointer-events: auto !important;
+  touch-action: auto !important;
+}

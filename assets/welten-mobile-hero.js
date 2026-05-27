@@ -4,7 +4,8 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260527a";
+  var HERO_VER = "20260528a";
+  var nexoraHeroRetryTimer = null;
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
   var WORLDS = {
@@ -36,7 +37,33 @@
   ];
 
   function isHeroMobile() {
+    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
+      return window.WeltenTouchEnv.isTouch();
+    }
     return mqHero.matches;
+  }
+
+  function isHomeChapter() {
+    var slide =
+      document.body.getAttribute("data-current-slide") ||
+      (document.querySelector(".slide.active[data-slide]") &&
+        document.querySelector(".slide.active[data-slide]").getAttribute("data-slide"));
+    return !slide || slide === "home";
+  }
+
+  function releaseHeroPointerCapture() {
+    document.querySelectorAll("#dnaStage, .home-hero-experience").forEach(function (hero) {
+      hero.classList.remove("is-dragging");
+      hero.style.touchAction = "pan-y";
+      if (typeof hero.releasePointerCapture !== "function") return;
+      try {
+        if (typeof hero.hasPointerCapture === "function") {
+          for (var i = 0; i < 20; i++) {
+            if (hero.hasPointerCapture(i)) hero.releasePointerCapture(i);
+          }
+        }
+      } catch (e) {}
+    });
   }
 
   function ensureStylesheetLock() {
@@ -155,12 +182,20 @@
       else byGo[go] = btn;
     });
 
-    HERO_GRID_ORDER.forEach(function (go) {
-      if (byGo[go]) ctx.ring.appendChild(byGo[go]);
+    HERO_GRID_ORDER.forEach(function (go, idx) {
+      var btn = byGo[go];
+      if (!btn) return;
+      var siblings = Array.prototype.filter.call(ctx.ring.children, function (el) {
+        return el.classList && el.classList.contains("hero-button");
+      });
+      var at = siblings.indexOf(btn);
+      if (btn.parentNode !== ctx.ring || at !== idx) {
+        ctx.ring.appendChild(btn);
+      }
     });
 
     var contactRow = ensureContactRow(ctx.shell);
-    if (contactRow && contactBtn) {
+    if (contactRow && contactBtn && contactBtn.parentNode !== contactRow) {
       contactRow.appendChild(contactBtn);
     }
 
@@ -209,9 +244,12 @@
       el.style.setProperty("display", "none", "important");
       el.style.setProperty("pointer-events", "none", "important");
     });
+    releaseHeroPointerCapture();
   }
 
   function buildNexoraHero() {
+    if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
+    if (!isHomeChapter()) return;
     var stage = document.getElementById("dnaStage");
     if (!stage) return;
     var cfg = WORLDS.nexora;
@@ -220,6 +258,16 @@
     flattenNexoraButtons();
     restructureHeroButtons();
     disableNexoraOrbitOnMobile();
+  }
+
+  function scheduleNexoraHeroRetry() {
+    clearTimeout(nexoraHeroRetryTimer);
+    nexoraHeroRetryTimer = setTimeout(function () {
+      if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
+      if (!isHomeChapter()) return;
+      if (document.querySelector("#slide-home .nexora-orbit-button")) return;
+      buildNexoraHero();
+    }, 200);
   }
 
   function buildFreiraumHero() {
@@ -301,36 +349,27 @@
     ensureStylesheetLock();
 
     var world = document.body.getAttribute("data-world");
-    if (world === "nexora") buildNexoraHero();
+    if (world === "nexora") {
+      buildNexoraHero();
+      scheduleNexoraHeroRetry();
+    }
     if (world === "freiraum") buildFreiraumHero();
     if (world === "vertex") buildProfessionalHero();
   }
 
-  function watchNexoraStage() {
-    var stage = document.getElementById("dnaStage");
-    if (!stage || stage.__weltenHeroObs) return;
-    stage.__weltenHeroObs = true;
-    var obs = new MutationObserver(function () {
-      if (isHeroMobile() && document.body.getAttribute("data-world") === "nexora") {
-        buildNexoraHero();
-      }
-    });
-    obs.observe(stage, { childList: true, subtree: true });
-  }
-
   function boot() {
     buildMobileHeroDom();
-    if (isHeroMobile() && document.body.getAttribute("data-world") === "nexora") {
-      watchNexoraStage();
-    }
   }
 
   function afterNavigation() {
+    releaseHeroPointerCapture();
     disableNexoraOrbitOnMobile();
     if (window.WeltenMobilePerf && typeof window.WeltenMobilePerf.cleanup === "function") {
       window.WeltenMobilePerf.cleanup();
     }
-    setTimeout(boot, 40);
+    if (isHomeChapter()) {
+      setTimeout(boot, 40);
+    }
   }
 
   document.addEventListener(

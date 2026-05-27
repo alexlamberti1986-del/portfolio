@@ -9,7 +9,15 @@
   var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function isMobileContext() {
-    return mqTablet.matches || mqCoarse.matches || mqReduce.matches;
+    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
+      return window.WeltenTouchEnv.isTouch() || mqReduce.matches;
+    }
+    return (
+      mqTablet.matches ||
+      mqCoarse.matches ||
+      mqReduce.matches ||
+      window.matchMedia("(max-width: 1280px)").matches
+    );
   }
 
   function setMobileClasses() {
@@ -206,17 +214,11 @@
       }
       if (e.data.type === "portfolio-world-pause") {
         var shouldPause = !!e.data.paused;
-        if (isMobileContext() && shouldPause) {
-          try {
-            var frame = window.frameElement;
-            if (frame && frame.classList.contains("is-active")) {
-              shouldPause = false;
-            }
-          } catch (err) {}
+        if (isMobileContext()) {
+          shouldPause = false;
         }
         setPaused(shouldPause);
-        if (shouldPause) cleanupIframeTransition();
-        else cleanupIframeTransition();
+        cleanupIframeTransition();
         return;
       }
       if (e.data.type === "portfolio-world-enter") {
@@ -310,7 +312,7 @@
             var id = btn.getAttribute("data-go");
             if (!id) return;
             e.preventDefault();
-            e.stopImmediatePropagation();
+            e.stopPropagation();
             var link = document.querySelector('.menu-links a[data-go="' + id + '"]');
             if (link) link.click();
             else {
@@ -319,7 +321,7 @@
             }
             queueCleanup();
           },
-          true
+          false
         );
       });
   }

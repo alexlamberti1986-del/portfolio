@@ -4454,10 +4454,12 @@ body.is-home .bg-root::after {
    - keine Eigenrotation der Buttons
    - Drag auf dem freien Hero-Bereich neben den Buttons
    ============================================================================= */
-#slide-home .home-hero-experience,
-#slide-home .dna-unified-scene {
-  pointer-events: auto !important;
-  touch-action: none !important;
+@media (min-width: 1025px) and (hover: hover) {
+  #slide-home .home-hero-experience,
+  #slide-home .dna-unified-scene {
+    pointer-events: auto !important;
+    touch-action: none !important;
+  }
 }
 #slide-home .dna-orbit-group {
   transform-style: preserve-3d !important;
@@ -5083,6 +5085,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   pointer-events: none !important;
 }
 </style>
+<script src="assets/welten-touch-env.js"></script>
 <link rel="stylesheet" href="assets/welten-skills-charts.css" />
 <link rel="stylesheet" href="assets/welten-mobile-performance.css" />
 <link rel="stylesheet" href="assets/projects-accordion.css" />
@@ -6111,8 +6114,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       }
 
       function dnaFrame() {
-        if (dnaOrbitGroup) {
-          if (!dnaDrag && !reduceMotion) {
+        if (!reduceMotion && dnaOrbitGroup) {
+          if (!dnaDrag) {
             if (Math.abs(orbitVelocity) > 0.002) {
               orbitTarget += orbitVelocity;
               orbitVelocity *= 0.972;
@@ -6137,11 +6140,15 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
           orbitAngle += shortestDelta(orbitTarget, orbitAngle) * 0.055;
           dnaOrbitGroup.style.setProperty("--dna-rot", orbitAngle.toFixed(3) + "deg");
           updateDnaSlideDepths(orbitAngle);
+          requestAnimationFrame(dnaFrame);
         }
-        requestAnimationFrame(dnaFrame);
       }
 
-      if (dnaStage && dnaOrbitGroup) {
+      var touchUI =
+        (window.WeltenTouchEnv && window.WeltenTouchEnv.isTouch()) ||
+        reduceMotion;
+      if (dnaStage && dnaOrbitGroup && !dnaStage.dataset.dnaDragInit && !touchUI) {
+        dnaStage.dataset.dnaDragInit = "1";
         updateDnaSlideDepths(0);
 
         dnaStage.addEventListener(
@@ -6207,78 +6214,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         dnaStage.addEventListener("pointerup", endDnaDrag);
         dnaStage.addEventListener("pointercancel", endDnaDrag);
 
-        requestAnimationFrame(dnaFrame);
-      }
-
-      if (dnaStage && dnaOrbitGroup) {
-        updateDnaSlideDepths(0);
-
-        dnaStage.addEventListener(
-          "pointerdown",
-          function (e) {
-            if (e.target && e.target.closest && e.target.closest(".dna-slide")) return;
-            if (e.pointerType === "touch" || e.pointerType === "pen") return;
-            if (e.pointerType === "mouse" && e.button !== 0) return;
-            dnaDrag = true;
-            dnaMoved = false;
-            dnaSpringing = false;
-            dnaStartX = e.clientX;
-            dnaStartAngle = orbitAngle;
-            dnaPid = e.pointerId;
-            dnaOrbitGroup.classList.add("is-dragging");
-            try {
-              dnaStage.setPointerCapture(e.pointerId);
-            } catch (err) {}
-          },
-          true
-        );
-
-        dnaStage.addEventListener("pointermove", function (e) {
-          if (!dnaDrag || e.pointerId !== dnaPid) return;
-          var dx = e.clientX - dnaStartX;
-          if (Math.abs(dx) > 10) dnaMoved = true;
-          orbitAngle = dnaStartAngle - dx * DNA_ROT_DRAG_SENS;
-          dnaOrbitGroup.style.setProperty("--dna-rot", orbitAngle + "deg");
-          updateDnaSlideDepths(orbitAngle);
-        });
-
-        dnaStage.addEventListener("pointerup", function (e) {
-          if (!dnaDrag || e.pointerId !== dnaPid) return;
-          dnaDrag = false;
-          dnaPid = null;
-          dnaOrbitGroup.classList.remove("is-dragging");
-          if (dnaMoved) dnaSuppressTap = true;
-          if (reduceMotion) {
-            orbitAngle = Math.round(orbitAngle / DNA_STEP) * DNA_STEP;
-            dnaOrbitGroup.style.setProperty("--dna-rot", orbitAngle + "deg");
-            updateDnaSlideDepths(orbitAngle);
-          } else {
-            dnaSpringTarget = Math.round(orbitAngle / DNA_STEP) * DNA_STEP;
-            dnaSpringing = true;
-          }
-          try {
-            dnaStage.releasePointerCapture(e.pointerId);
-          } catch (err) {}
-        });
-
-        dnaStage.addEventListener("pointercancel", function (e) {
-          dnaDrag = false;
-          dnaPid = null;
-          if (dnaOrbitGroup) dnaOrbitGroup.classList.remove("is-dragging");
-          if (reduceMotion) {
-            orbitAngle = Math.round(orbitAngle / DNA_STEP) * DNA_STEP;
-            dnaOrbitGroup.style.setProperty("--dna-rot", orbitAngle + "deg");
-            updateDnaSlideDepths(orbitAngle);
-          } else {
-            dnaSpringTarget = Math.round(orbitAngle / DNA_STEP) * DNA_STEP;
-            dnaSpringing = true;
-          }
-          try {
-            if (e.pointerId != null) dnaStage.releasePointerCapture(e.pointerId);
-          } catch (err) {}
-        });
-
-        requestAnimationFrame(dnaFrame);
+        if (!reduceMotion) requestAnimationFrame(dnaFrame);
       }
 
 
@@ -7109,6 +7045,19 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   100% { transform: scale(1.08) translate3d(1.2%, .6%, 0); opacity: .95; }
 }
 
+@media (max-width: 1024px) {
+  #slide-home .home-hero-experience,
+  #slide-home #dnaStage.home-hero-experience,
+  #slide-home .dna-unified-scene {
+    touch-action: pan-y !important;
+    -ms-touch-action: pan-y !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
 /* Alte DNA-/Helix-Darstellung im Home-Hero entfernen */
 #slide-home .dna-premium-canvas,
 #slide-home .dna-holo-arm,
@@ -7474,6 +7423,54 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     ['contact', 'Kontakt']
   ];
 
+  function isTouchUI() {
+    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
+      return window.WeltenTouchEnv.isTouch();
+    }
+    return !!(
+      window.matchMedia("(hover: none) and (pointer: coarse)").matches ||
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(max-width: 1280px)").matches
+    );
+  }
+
+  function initMobileOrbitShell() {
+    if (!isTouchUI()) return;
+    var hero = document.querySelector("#slide-home .home-hero-experience");
+    if (!hero) return;
+    document.documentElement.classList.add("welten-nexora-list");
+    var shell = hero.querySelector(".nexora-orbit-buttons");
+    if (!shell) {
+      shell = document.createElement("div");
+      shell.className = "nexora-orbit-buttons welten-nexora-list-mode";
+      shell.setAttribute("aria-label", "NEXORA Navigation");
+      shell.innerHTML = '<div class="nexora-orbit-ring"></div>';
+      hero.appendChild(shell);
+    }
+    shell.classList.add("welten-nexora-list-mode");
+    var ring = shell.querySelector(".nexora-orbit-ring");
+    if (!ring) return;
+    if (!ring.querySelector(".nexora-orbit-button")) {
+      items.forEach(function (item) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "nexora-orbit-button";
+        btn.setAttribute("data-go", item[0]);
+        btn.textContent = item[1];
+        ring.appendChild(btn);
+      });
+    }
+    ring.querySelectorAll(".nexora-orbit-button").forEach(function (b) {
+      b.style.setProperty("transform", "none", "important");
+      b.style.setProperty("opacity", "1", "important");
+      b.style.setProperty("filter", "none", "important");
+    });
+    hero.querySelectorAll(".nexora-orbit-nav").forEach(function (n) {
+      n.style.setProperty("display", "none", "important");
+      n.style.setProperty("pointer-events", "none", "important");
+    });
+  }
+
   function navigateTo(id) {
     var slideEl = document.getElementById('slide-' + id);
     if (!slideEl) return;
@@ -7499,6 +7496,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   }
 
   function initOrbit() {
+    if (isTouchUI()) {
+      initMobileOrbitShell();
+      var heroTouch = document.querySelector("#slide-home .home-hero-experience");
+      if (heroTouch) heroTouch.dataset.nexoraOrbitCore = "1";
+      return;
+    }
     var hero = document.querySelector('#slide-home .home-hero-experience');
     if (!hero) return;
 
@@ -7761,24 +7764,6 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       try {
         hero.releasePointerCapture(e.pointerId);
       } catch (err2) {}
-    }
-
-    var mqMobileHero = window.matchMedia('(max-width: 1024px)');
-    function flattenOrbitListMode() {
-      shell.classList.add('welten-nexora-list-mode');
-      document.documentElement.classList.add('welten-nexora-list');
-      ring.querySelectorAll('.nexora-orbit-button').forEach(function (b) {
-        b.style.setProperty('transform', 'none', 'important');
-        b.style.setProperty('opacity', '1', 'important');
-        b.style.setProperty('filter', 'none', 'important');
-      });
-    }
-    if (mqMobileHero.matches) {
-      flattenOrbitListMode();
-      mqMobileHero.addEventListener('change', function () {
-        if (mqMobileHero.matches) flattenOrbitListMode();
-      });
-      return;
     }
 
     hero.addEventListener('pointerdown', orbitStartDrag, true);
@@ -8484,8 +8469,11 @@ body[data-world="nexora"] .faq-panel-inner {
 })();
 </script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260527a" id="welten-mobile-hero-stylesheet" />
-<script src="assets/welten-mobile-hero.js?v=20260527a" defer></script>
+<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260528a" id="welten-mobile-hero-stylesheet" />
+<link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260528a" />
+<script src="assets/welten-mobile-hero.js?v=20260528a" defer></script>
+<script src="assets/welten-mobile-nexora-nav.js?v=20260528a" defer></script>
+<script src="assets/welten-nexora-mobile-fix.js?v=20260528a" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260527a" />
 </body>
