@@ -95,6 +95,56 @@
     });
   }
 
+  function bindHeroScrollFallback() {
+    if (document.documentElement.dataset.nexoraHeroScrollBound === "1") return;
+    document.documentElement.dataset.nexoraHeroScrollBound = "1";
+    var startY = 0;
+    var startX = 0;
+    var lastY = 0;
+    var dragging = false;
+
+    function activeHome() {
+      return (
+        document.body &&
+        document.body.getAttribute("data-world") === "nexora" &&
+        document.body.getAttribute("data-current-slide") === "home"
+      );
+    }
+
+    document.addEventListener(
+      "touchstart",
+      function (e) {
+        if (!activeHome()) return;
+        if (!e.touches || !e.touches[0]) return;
+        var t = e.touches[0];
+        startY = t.clientY;
+        startX = t.clientX;
+        lastY = t.clientY;
+        dragging = false;
+      },
+      { passive: true, capture: true }
+    );
+
+    document.addEventListener(
+      "touchmove",
+      function (e) {
+        if (!activeHome()) return;
+        if (!e.touches || !e.touches[0]) return;
+        var t = e.touches[0];
+        var dy = t.clientY - startY;
+        var dx = t.clientX - startX;
+        if (!dragging && Math.abs(dy) > Math.abs(dx) + 6) dragging = true;
+        if (!dragging) return;
+
+        var slideHome = document.getElementById("slide-home");
+        if (!slideHome) return;
+        slideHome.scrollTop += lastY - t.clientY;
+        lastY = t.clientY;
+      },
+      { passive: true, capture: true }
+    );
+  }
+
   function stabilize() {
     if (typeof window.stopWorldTransitionRaf === "function") {
       window.stopWorldTransitionRaf();
@@ -113,6 +163,7 @@
     if (window.WeltenMobileHero && typeof window.WeltenMobileHero.refresh === "function") {
       window.WeltenMobileHero.refresh();
     }
+    bindHeroScrollFallback();
     setTimeout(unlockHeroScroll, 0);
     setTimeout(unlockHeroScroll, 120);
     setTimeout(unlockHeroScroll, 350);
@@ -150,5 +201,5 @@
     }
   });
 
-  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528c" };
+  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528d" };
 })();

@@ -85,7 +85,7 @@ html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-button
   min-height: 0 !important;
   max-height: none !important;
   perspective: none !important;
-  pointer-events: auto !important;
+  pointer-events: none !important;
   touch-action: pan-y !important;
   flex: 0 0 auto !important;
   padding: 0 0 12px !important;
@@ -106,7 +106,7 @@ html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-ring {
   height: auto !important;
   transform: none !important;
   perspective: none !important;
-  pointer-events: auto !important;
+  pointer-events: none !important;
   touch-action: pan-y !important;
 }
 
