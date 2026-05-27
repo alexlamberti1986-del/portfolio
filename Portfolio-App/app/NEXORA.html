@@ -4273,19 +4273,21 @@ body.is-home .bg-root::after {
   border-top: 1px solid rgba(112, 218, 255, .18) !important;
 }
 
-@media (max-width: 1100px) {
-  #slide-home .home-hero-experience { min-height: 720px !important; }
-  #slide-home .neuro-core { width: min(840px, 94vw) !important; height: min(360px, 43vw) !important; top: 260px !important; }
-  #slide-home .dna-ring-scene { top: 560px !important; }
-  #slide-home .dna-slide { width: min(300px, 54vw) !important; min-height: 108px !important; padding: 18px 18px 18px 84px !important; }
-  #slide-home .dna-slide .nav-icon,
-  #slide-home .dna-slide .orb-icon { width: 52px !important; height: 52px !important; }
-}
-@media (max-width: 680px) {
-  #slide-home .home-hero-experience { min-height: 660px !important; }
-  #slide-home .neuro-core { width: 720px !important; max-width: 118vw !important; height: 310px !important; top: 230px !important; }
-  #slide-home .dna-ring-scene { top: 500px !important; }
-  #slide-home .dna-slide { width: min(285px, 74vw) !important; min-height: 96px !important; padding: 16px 16px 16px 76px !important; }
+@media (min-width: 1025px) and (hover: hover) {
+  @media (max-width: 1100px) {
+    #slide-home .home-hero-experience { min-height: 720px !important; }
+    #slide-home .neuro-core { width: min(840px, 94vw) !important; height: min(360px, 43vw) !important; top: 260px !important; }
+    #slide-home .dna-ring-scene { top: 560px !important; }
+    #slide-home .dna-slide { width: min(300px, 54vw) !important; min-height: 108px !important; padding: 18px 18px 18px 84px !important; }
+    #slide-home .dna-slide .nav-icon,
+    #slide-home .dna-slide .orb-icon { width: 52px !important; height: 52px !important; }
+  }
+  @media (max-width: 680px) {
+    #slide-home .home-hero-experience { min-height: 660px !important; }
+    #slide-home .neuro-core { width: 720px !important; max-width: 118vw !important; height: 310px !important; top: 230px !important; }
+    #slide-home .dna-ring-scene { top: 500px !important; }
+    #slide-home .dna-slide { width: min(285px, 74vw) !important; min-height: 96px !important; padding: 16px 16px 16px 76px !important; }
+  }
 }
 
 
@@ -6999,7 +7001,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 
 
 <style id="force-nexora-final-brain-hero">
-/* Final override: Home-Hero exakt mit holografischem Gehirn + Orbit-Buttons */
+/* Final override: Home-Hero exakt mit holografischem Gehirn + Orbit-Buttons (nur Desktop) */
+@media (min-width: 1025px) and (hover: hover) {
 #slide-home .home-hero-experience {
   position: relative !important;
   min-height: 100vh !important;
@@ -7044,18 +7047,6 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   0% { transform: scale(1.04) translate3d(-1.1%, -.4%, 0); opacity: .78; }
   100% { transform: scale(1.08) translate3d(1.2%, .6%, 0); opacity: .95; }
 }
-
-@media (max-width: 1024px) {
-  #slide-home .home-hero-experience,
-  #slide-home #dnaStage.home-hero-experience,
-  #slide-home .dna-unified-scene {
-    touch-action: pan-y !important;
-    -ms-touch-action: pan-y !important;
-    height: auto !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
 }
 
 /* Alte DNA-/Helix-Darstellung im Home-Hero entfernen */
@@ -8469,11 +8460,11 @@ body[data-world="nexora"] .faq-panel-inner {
 })();
 </script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260528a" id="welten-mobile-hero-stylesheet" />
-<link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260528a" />
-<script src="assets/welten-mobile-hero.js?v=20260528a" defer></script>
-<script src="assets/welten-mobile-nexora-nav.js?v=20260528a" defer></script>
-<script src="assets/welten-nexora-mobile-fix.js?v=20260528a" defer></script>
+<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260528b" id="welten-mobile-hero-stylesheet" />
+<link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260528b" />
+<script src="assets/welten-mobile-hero.js?v=20260528b" defer></script>
+<script src="assets/welten-mobile-nexora-nav.js?v=20260528b" defer></script>
+<script src="assets/welten-nexora-mobile-fix.js?v=20260528b" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260527a" />
 </body>

@@ -48,6 +48,12 @@
   }
 
   function unlockHeroScroll() {
+    var slideHome = document.getElementById("slide-home");
+    if (slideHome) {
+      slideHome.style.setProperty("overflow-y", "auto", "important");
+      slideHome.style.setProperty("-webkit-overflow-scrolling", "touch", "important");
+      slideHome.style.setProperty("touch-action", "pan-y", "important");
+    }
     document
       .querySelectorAll("#dnaStage, .home-hero-experience, #slide-home")
       .forEach(function (el) {
@@ -58,6 +64,12 @@
         el.style.setProperty("min-height", "0", "important");
         el.style.setProperty("max-height", "none", "important");
       });
+    document.querySelectorAll("#slide-home .nexora-orbit-buttons").forEach(function (shell) {
+      shell.style.setProperty("position", "relative", "important");
+      shell.style.setProperty("top", "auto", "important");
+      shell.style.setProperty("bottom", "auto", "important");
+      shell.style.setProperty("transform", "none", "important");
+    });
     document.documentElement.style.pointerEvents = "";
     document.body.style.pointerEvents = "";
     document.documentElement.style.touchAction = "";
@@ -122,5 +134,5 @@
     }
   });
 
-  window.WeltenNexoraMobileFix = { stabilize: stabilize, version: "20260528a" };
+  window.WeltenNexoraMobileFix = { stabilize: stabilize, version: "20260528b" };
 })();
