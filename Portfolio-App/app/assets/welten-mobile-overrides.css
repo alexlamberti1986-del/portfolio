@@ -19,7 +19,7 @@
     height: 100%;
     min-height: 100%;
     margin: 0;
-    touch-action: manipulation;
+    touch-action: pan-y;
   }
 
   /* Ein Scroll-Container: aktive Folie */
@@ -224,4 +224,40 @@
     padding-bottom: 0;
     margin-bottom: 0;
   }
+}
+
+/* NEXORA Touch/Tablet: Scroll im Hero — lädt zuletzt, auch >1024px */
+html.welten-touch-env body[data-world="nexora"] #slide-home.slide.active {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+}
+
+html.welten-touch-env body[data-world="nexora"] #slide-home .home-hero-experience,
+html.welten-touch-env body[data-world="nexora"] #slide-home #dnaStage {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  touch-action: pan-y !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-ring,
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-button,
+html.welten-touch-env body[data-world="nexora"] #slide-home .welten-mobile-hero-title,
+html.welten-touch-env body[data-world="nexora"] #slide-home .welten-mobile-hero-meta {
+  touch-action: pan-y !important;
+}
+
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-buttons {
+  position: relative !important;
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  pointer-events: auto !important;
 }

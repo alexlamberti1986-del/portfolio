@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260528a";
+  var HERO_VER = "20260528c";
   var nexoraHeroRetryTimer = null;
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
@@ -244,7 +244,15 @@
       el.style.setProperty("display", "none", "important");
       el.style.setProperty("pointer-events", "none", "important");
     });
+    document.querySelectorAll("#slide-home .nexora-orbit-button").forEach(function (btn) {
+      btn.style.setProperty("touch-action", "pan-y", "important");
+      btn.style.setProperty("position", "relative", "important");
+      btn.style.setProperty("transform", "none", "important");
+    });
     releaseHeroPointerCapture();
+    if (window.WeltenNexoraMobileFix && typeof window.WeltenNexoraMobileFix.unlockHeroScroll === "function") {
+      window.WeltenNexoraMobileFix.unlockHeroScroll();
+    }
   }
 
   function buildNexoraHero() {

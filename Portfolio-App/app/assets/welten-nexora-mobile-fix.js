@@ -50,12 +50,18 @@
   function unlockHeroScroll() {
     var slideHome = document.getElementById("slide-home");
     if (slideHome) {
+      slideHome.classList.add("active");
       slideHome.style.setProperty("overflow-y", "auto", "important");
       slideHome.style.setProperty("-webkit-overflow-scrolling", "touch", "important");
       slideHome.style.setProperty("touch-action", "pan-y", "important");
     }
     document
-      .querySelectorAll("#dnaStage, .home-hero-experience, #slide-home")
+      .querySelectorAll(
+        "#dnaStage, .home-hero-experience, #slide-home, #slide-home .slide-inner--home, " +
+          "#slide-home .home-main-block, #slide-home .welten-mobile-hero-title, " +
+          "#slide-home .welten-mobile-hero-meta, #slide-home .nexora-orbit-buttons, " +
+          "#slide-home .nexora-orbit-ring, #slide-home .nexora-orbit-button"
+      )
       .forEach(function (el) {
         el.classList.remove("is-dragging");
         el.style.setProperty("touch-action", "pan-y", "important");
@@ -68,12 +74,19 @@
       shell.style.setProperty("position", "relative", "important");
       shell.style.setProperty("top", "auto", "important");
       shell.style.setProperty("bottom", "auto", "important");
+      shell.style.setProperty("left", "auto", "important");
       shell.style.setProperty("transform", "none", "important");
+      shell.style.setProperty("pointer-events", "auto", "important");
+    });
+    document.querySelectorAll("#slide-home .nexora-orbit-button").forEach(function (btn) {
+      btn.style.setProperty("position", "relative", "important");
+      btn.style.setProperty("transform", "none", "important");
+      btn.style.setProperty("touch-action", "pan-y", "important");
     });
     document.documentElement.style.pointerEvents = "";
     document.body.style.pointerEvents = "";
-    document.documentElement.style.touchAction = "";
-    document.body.style.touchAction = "";
+    document.documentElement.style.touchAction = "pan-y";
+    document.body.style.touchAction = "pan-y";
   }
 
   function blockDesktopOrbitScript() {
@@ -100,6 +113,9 @@
     if (window.WeltenMobileHero && typeof window.WeltenMobileHero.refresh === "function") {
       window.WeltenMobileHero.refresh();
     }
+    setTimeout(unlockHeroScroll, 0);
+    setTimeout(unlockHeroScroll, 120);
+    setTimeout(unlockHeroScroll, 350);
   }
 
   ["touchstart", "pointerdown", "pointercancel", "pointerup", "touchend"].forEach(function (ev) {
@@ -134,5 +150,5 @@
     }
   });
 
-  window.WeltenNexoraMobileFix = { stabilize: stabilize, version: "20260528b" };
+  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528c" };
 })();

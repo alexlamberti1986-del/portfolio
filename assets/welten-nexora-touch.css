@@ -1,8 +1,8 @@
 /**
- * NEXORA auf Touch-Geräten — höchste Priorität (nach allen Inline-Styles)
+ * NEXORA auf Touch-Geräten — Scroll + Hero-Layout (höchste Priorität)
  */
-html.welten-touch-env #slide-home.slide,
-html.welten-touch-env #slide-home.slide.active {
+html.welten-touch-env body[data-world="nexora"] #slide-home.slide,
+html.welten-touch-env body[data-world="nexora"] #slide-home.slide.active {
   overflow-x: hidden !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
@@ -11,66 +11,67 @@ html.welten-touch-env #slide-home.slide.active {
   pointer-events: auto !important;
 }
 
-html.welten-touch-env #slide-home .slide-inner--home {
+html.welten-touch-env body[data-world="nexora"] #slide-home .slide-inner--home {
   overflow: visible !important;
   min-height: min-content !important;
   touch-action: pan-y !important;
 }
 
-html.welten-touch-env #slide-home .home-hero-experience,
-html.welten-touch-env #slide-home #dnaStage.home-hero-experience,
-html.welten-touch-env #slide-home .dna-unified-scene,
-html.welten-touch-env #slide-home .nexora-orbit-buttons,
-html.welten-touch-env #slide-home .nexora-orbit-ring,
-html.welten-touch-env #slide-home .nexora-orbit-button {
-  touch-action: pan-y !important;
-  -ms-touch-action: pan-y !important;
-}
-
-html.welten-touch-env #slide-home .home-hero-experience,
-html.welten-touch-env #slide-home #dnaStage {
+html.welten-touch-env body[data-world="nexora"] #slide-home .home-hero-experience,
+html.welten-touch-env body[data-world="nexora"] #slide-home #dnaStage,
+html.welten-touch-env body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
   height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
   overflow: visible !important;
   pointer-events: auto !important;
+  touch-action: pan-y !important;
+  -ms-touch-action: pan-y !important;
   user-select: auto !important;
   -webkit-user-select: auto !important;
+  position: relative !important;
 }
 
-html.welten-touch-env #slide-home .home-main-block {
+html.welten-touch-env body[data-world="nexora"] #slide-home .welten-mobile-hero-title,
+html.welten-touch-env body[data-world="nexora"] #slide-home .welten-mobile-hero-meta,
+html.welten-touch-env body[data-world="nexora"] #slide-home .welten-mobile-hero-keywords,
+html.welten-touch-env body[data-world="nexora"] #slide-home .home-main-block {
+  touch-action: pan-y !important;
+  pointer-events: auto !important;
+}
+
+html.welten-touch-env body[data-world="nexora"] #slide-home .home-main-block {
   position: relative !important;
   overflow: visible !important;
-  pointer-events: auto !important;
-  touch-action: pan-y !important;
 }
 
 html.welten-touch-env #dnaOrbitGroup,
-html.welten-touch-env #slide-home .dna-orbit-group,
-html.welten-touch-env #slide-home .dna-unified-scene,
-html.welten-touch-env #slide-home .dna-ring-scene,
-html.welten-touch-env #slide-home .dna-ring,
-html.welten-touch-env #slide-home .dna-slide,
-html.welten-touch-env #slide-home .neuro-core,
-html.welten-touch-env #slide-home .nexora-orbit-nav,
-html.welten-touch-env #slide-home .dna-premium-canvas,
-html.welten-touch-env #slide-home .dna-particles-canvas {
+html.welten-touch-env body[data-world="nexora"] #slide-home .dna-orbit-group,
+html.welten-touch-env body[data-world="nexora"] #slide-home .dna-unified-scene,
+html.welten-touch-env body[data-world="nexora"] #slide-home .dna-ring-scene,
+html.welten-touch-env body[data-world="nexora"] #slide-home .dna-ring,
+html.welten-touch-env body[data-world="nexora"] #slide-home .dna-slide,
+html.welten-touch-env body[data-world="nexora"] #slide-home .neuro-core,
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-nav,
+html.welten-touch-env body[data-world="nexora"] #slide-home .dna-premium-canvas,
+html.welten-touch-env body[data-world="nexora"] #slide-home .dna-particles-canvas {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
   touch-action: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
 }
 
-html.welten-touch-env #slide-home .nexora-orbit-buttons,
-html.welten-touch-env #slide-home .nexora-orbit-ring,
-html.welten-touch-env #slide-home .nexora-orbit-button {
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-buttons.welten-nexora-list-mode {
   display: block !important;
   visibility: visible !important;
-  pointer-events: auto !important;
-  touch-action: manipulation !important;
-}
-
-html.welten-touch-env #slide-home .nexora-orbit-buttons {
   position: relative !important;
   top: auto !important;
   bottom: auto !important;
@@ -84,19 +85,44 @@ html.welten-touch-env #slide-home .nexora-orbit-buttons {
   min-height: 0 !important;
   max-height: none !important;
   perspective: none !important;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
+  flex: 0 0 auto !important;
+  padding: 0 0 12px !important;
+  margin: 0 !important;
 }
 
-html.welten-touch-env #slide-home .nexora-orbit-ring {
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-buttons::before {
+  display: none !important;
+  content: none !important;
+}
+
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-ring {
   display: grid !important;
   position: relative !important;
   top: auto !important;
   left: auto !important;
+  width: 100% !important;
+  height: auto !important;
   transform: none !important;
   perspective: none !important;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
 }
 
-html.welten-touch-env .home-hero-experience.is-dragging,
-html.welten-touch-env #dnaStage.is-dragging {
+html.welten-touch-env body[data-world="nexora"] #slide-home .nexora-orbit-button {
+  display: flex !important;
+  visibility: visible !important;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
+}
+
+html.welten-touch-env body[data-world="nexora"] .home-hero-experience.is-dragging,
+html.welten-touch-env body[data-world="nexora"] #dnaStage.is-dragging {
   touch-action: pan-y !important;
   pointer-events: auto !important;
   overflow: visible !important;
@@ -105,5 +131,5 @@ html.welten-touch-env #dnaStage.is-dragging {
 html.welten-touch-env.welten-world-paused,
 html.welten-touch-env.welten-world-paused body {
   pointer-events: auto !important;
-  touch-action: auto !important;
+  touch-action: pan-y !important;
 }
