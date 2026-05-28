@@ -102,6 +102,8 @@
     var startX = 0;
     var lastY = 0;
     var dragging = false;
+    var forceDragging = false;
+    var touchId = null;
 
     function activeHome() {
       if (!document.body || document.body.getAttribute("data-world") !== "nexora") return false;
@@ -117,10 +119,12 @@
         if (!activeHome()) return;
         if (!e.touches || !e.touches[0]) return;
         var t = e.touches[0];
+        touchId = t.identifier;
         startY = t.clientY;
         startX = t.clientX;
         lastY = t.clientY;
         dragging = false;
+        forceDragging = false;
       },
       { passive: true, capture: true }
     );
@@ -131,6 +135,14 @@
         if (!activeHome()) return;
         if (!e.touches || !e.touches[0]) return;
         var t = e.touches[0];
+        if (touchId !== null) {
+          for (var i = 0; i < e.touches.length; i++) {
+            if (e.touches[i].identifier === touchId) {
+              t = e.touches[i];
+              break;
+            }
+          }
+        }
         var dy = t.clientY - startY;
         var dx = t.clientX - startX;
         if (!dragging && Math.abs(dy) > Math.abs(dx) + 6) dragging = true;
@@ -138,8 +150,37 @@
 
         var slideHome = document.getElementById("slide-home");
         if (!slideHome) return;
+        var target = e.target && e.target.closest ? e.target.closest(".nexora-orbit-button, .hero-button, [data-go]") : null;
+        // Only force-scroll when the gesture is vertical and not an intentional button tap.
+        if (!target || Math.abs(dy) > 14) {
+          forceDragging = true;
+        }
+        if (forceDragging) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
         slideHome.scrollTop += lastY - t.clientY;
         lastY = t.clientY;
+      },
+      { passive: false, capture: true }
+    );
+
+    document.addEventListener(
+      "touchend",
+      function () {
+        dragging = false;
+        forceDragging = false;
+        touchId = null;
+      },
+      { passive: true, capture: true }
+    );
+
+    document.addEventListener(
+      "touchcancel",
+      function () {
+        dragging = false;
+        forceDragging = false;
+        touchId = null;
       },
       { passive: true, capture: true }
     );
@@ -201,5 +242,5 @@
     }
   });
 
-  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528e" };
+  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528f" };
 })();
