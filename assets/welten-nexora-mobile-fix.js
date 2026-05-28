@@ -104,11 +104,11 @@
     var dragging = false;
 
     function activeHome() {
-      return (
-        document.body &&
-        document.body.getAttribute("data-world") === "nexora" &&
-        document.body.getAttribute("data-current-slide") === "home"
-      );
+      if (!document.body || document.body.getAttribute("data-world") !== "nexora") return false;
+      var current = document.body.getAttribute("data-current-slide");
+      if (current === "home" || !current) return true;
+      var slideHome = document.getElementById("slide-home");
+      return !!(slideHome && slideHome.classList.contains("active"));
     }
 
     document.addEventListener(
@@ -201,5 +201,5 @@
     }
   });
 
-  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528d" };
+  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528e" };
 })();
