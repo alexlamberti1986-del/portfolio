@@ -36,26 +36,23 @@ body[data-world="freiraum"] #slide-home .dna-asset {
 }
 
 body[data-world="freiraum"] #slide-home .home-main-block .home-portrait-card,
+body[data-world="freiraum"] #slide-contact .contact-visual {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
 body[data-world="freiraum"] #slide-home .home-main-block .portrait-photo,
 body[data-world="freiraum"] #slide-home .home-main-block img#heroPhoto,
-body[data-world="freiraum"] #slide-contact .contact-visual,
 body[data-world="freiraum"] #slide-contact .portrait-photo,
 body[data-world="freiraum"] #slide-contact img#contactPhoto {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  height: auto !important;
-  max-height: none !important;
   pointer-events: auto !important;
-  overflow: visible !important;
-  content: none !important;
-}
-
-body[data-world="freiraum"] #slide-home .home-main-block .portrait-photo,
-body[data-world="freiraum"] #slide-contact .portrait-photo {
-  width: 100% !important;
-  object-fit: cover !important;
-  object-position: center 22% !important;
 }
 
 /* Alte Desktop-Hero-Elemente ausblenden */
@@ -647,44 +644,69 @@ body[data-world="freiraum"] #slide-contact .portrait-photo {
     padding-bottom: clamp(10px, 2.5vw, 20px) !important;
   }
 
-  /* NEXORA Bilder Home (unter Hero) + Kontakt */
+  /* NEXORA + FREIRAUM: Profilbild exakt im Rahmen (cover, wie Desktop) */
   body[data-world="nexora"] #slide-home .home-portrait-card,
-  body[data-world="nexora"] #slide-contact .contact-visual {
-    overflow: visible !important;
-    height: auto !important;
-    max-height: none !important;
-    min-height: 0 !important;
+  body[data-world="nexora"] #slide-contact .contact-visual,
+  body[data-world="freiraum"] #slide-home .home-portrait-card,
+  body[data-world="freiraum"] #slide-contact .contact-visual {
+    position: relative !important;
+    overflow: hidden !important;
+    width: min(88vw, 420px) !important;
+    max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    aspect-ratio: 4 / 5 !important;
+    min-height: 240px !important;
+    max-height: min(72vh, 520px) !important;
+    border-radius: var(--radius-lg, 28px) !important;
+    box-sizing: border-box !important;
   }
 
+  body[data-world="nexora"] #slide-home .home-portrait-card img,
   body[data-world="nexora"] #slide-home .home-portrait-card img.portrait-photo,
-  body[data-world="nexora"] #slide-home .portrait-photo,
+  body[data-world="nexora"] #slide-home img#heroPhoto,
+  body[data-world="nexora"] #slide-contact .contact-visual img,
   body[data-world="nexora"] #slide-contact .contact-visual img.contact-photo,
-  body[data-world="nexora"] #slide-contact .portrait-photo,
-  body[data-world="nexora"] .nexora-hero-image,
-  body[data-world="nexora"] .nexora-contact-image,
-  body[data-world="nexora"] .nexora-visual img,
-  body[data-world="nexora"] .hero-visual img {
-    width: min(82vw, 420px) !important;
-    max-width: 100% !important;
-    height: auto !important;
+  body[data-world="nexora"] #slide-contact img#contactPhoto,
+  body[data-world="freiraum"] #slide-home .home-portrait-card img,
+  body[data-world="freiraum"] #slide-home img#heroPhoto,
+  body[data-world="freiraum"] #slide-contact .contact-visual img,
+  body[data-world="freiraum"] #slide-contact img#contactPhoto {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
     max-height: none !important;
-    object-fit: contain !important;
-    object-position: center center !important;
+    min-height: 0 !important;
+    object-fit: cover !important;
+    object-position: center top !important;
     display: block !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
     opacity: 1 !important;
     visibility: visible !important;
-    position: relative !important;
-    transform: none !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
   }
 
-  body[data-world="nexora"] .nexora-hero-bg,
-  body[data-world="nexora"] .nexora-contact-bg {
-    background-size: contain !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
+  body[data-world="freiraum"] #slide-home .home-portrait-card img,
+  body[data-world="freiraum"] #slide-contact .contact-visual img {
+    object-position: center 22% !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-portrait-card::before,
+  body[data-world="nexora"] #slide-home .home-portrait-card::after,
+  body[data-world="nexora"] #slide-contact .contact-visual::before,
+  body[data-world="nexora"] #slide-contact .contact-visual::after,
+  body[data-world="freiraum"] #slide-home .home-portrait-card::before,
+  body[data-world="freiraum"] #slide-home .home-portrait-card::after,
+  body[data-world="freiraum"] #slide-contact .contact-visual::before,
+  body[data-world="freiraum"] #slide-contact .contact-visual::after {
+    display: none !important;
+    content: none !important;
+    animation: none !important;
   }
 }
 
@@ -726,7 +748,7 @@ body[data-world="freiraum"] #slide-contact .portrait-photo {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     touch-action: pan-y !important;
-    overscroll-behavior-y: contain !important;
+    overscroll-behavior-y: auto !important;
   }
 
   html.welten-mobile .slide:not(#slide-home) {
@@ -959,35 +981,44 @@ body[data-world="freiraum"] #slide-contact .portrait-photo {
     pointer-events: auto !important;
   }
 
-  /* Profilbilder: Home + Kontakt, alle Welten */
+  /* Profilbilder: Home + Kontakt (Rahmen + Bild deckend) */
   #slide-home .home-portrait-card,
   #slide-contact .contact-visual {
+    position: relative !important;
     width: min(88vw, 420px) !important;
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
     overflow: hidden !important;
+    aspect-ratio: 4 / 5 !important;
+    min-height: 240px !important;
+    max-height: min(72vh, 520px) !important;
+    box-sizing: border-box !important;
   }
 
+  #slide-home .home-portrait-card img,
   #slide-home .home-portrait-card img.portrait-photo,
-  #slide-home .portrait-photo,
+  #slide-home img#heroPhoto,
+  #slide-contact .contact-visual img,
   #slide-contact .contact-visual img.contact-photo,
-  #slide-contact .contact-photo {
+  #slide-contact img#contactPhoto {
+    position: absolute !important;
+    inset: 0 !important;
     width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    max-height: min(72vh, 520px) !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-height: 0 !important;
     object-fit: cover !important;
     object-position: center top !important;
     display: block !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     transform: none !important;
   }
 
   body[data-world="freiraum"] #slide-home .home-portrait-card img,
   body[data-world="freiraum"] #slide-contact .contact-visual img {
-    object-fit: cover !important;
-    object-position: center 18% !important;
+    object-position: center 22% !important;
   }
 
   .contact-actions a[href^="mailto:"],

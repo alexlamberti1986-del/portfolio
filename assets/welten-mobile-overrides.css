@@ -58,7 +58,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
+    overscroll-behavior-y: auto;
     touch-action: pan-y;
   }
 
@@ -201,7 +201,6 @@
     display: block;
     visibility: visible;
     opacity: 1;
-    height: auto;
   }
 
   body[data-world="freiraum"] .home-main-block .portrait-photo,

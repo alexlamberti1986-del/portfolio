@@ -2,7 +2,9 @@
  * NEXORA auf Touch — Scroll + Hero (höchste Priorität, lädt zuletzt)
  */
 html.welten-touch-env body[data-world="nexora"] #slide-home.slide,
-html.welten-touch-env body[data-world="nexora"] #slide-home.slide.active {
+html.welten-touch-env body[data-world="nexora"] #slide-home.slide.active,
+html.welten-nexora-scroll-ready body[data-world="nexora"] #slide-home.slide,
+html.welten-nexora-scroll-ready body[data-world="nexora"] #slide-home.slide.active {
   position: absolute !important;
   top: var(--header-h, 56px) !important;
   bottom: var(--dock-h, 0px) !important;
@@ -15,8 +17,9 @@ html.welten-touch-env body[data-world="nexora"] #slide-home.slide.active {
   overflow-x: hidden !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
-  overscroll-behavior-y: contain !important;
+  overscroll-behavior-y: auto !important;
   touch-action: pan-y !important;
+  scroll-behavior: auto !important;
   pointer-events: auto !important;
 }
 

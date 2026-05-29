@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260529a";
+  var HERO_VER = "20260529c";
   var nexoraHeroRetryTimer = null;
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
