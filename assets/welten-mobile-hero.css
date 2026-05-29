@@ -699,17 +699,34 @@ body[data-world="freiraum"] #slide-contact .portrait-photo {
   }
 }
 
-/* ── Scroll: Unterseiten nur so hoch wie Inhalt ── */
+/* ── Scroll: Unterseiten nur so hoch wie Inhalt (Home = eigener Scroll-Container) ── */
 @media (max-width: 1024px) {
-  html.welten-mobile .slide,
-  html.welten-mobile .slide.active,
+  html.welten-mobile .slide:not(#slide-home),
+  html.welten-mobile .slide.active:not(#slide-home),
   html.welten-mobile .page,
   html.welten-mobile .section,
   html.welten-mobile .content-section,
-  html.welten-mobile .subpage,
-  html.welten-mobile #slide-home.slide {
+  html.welten-mobile .subpage {
     min-height: auto !important;
     height: auto !important;
+  }
+
+  html.welten-mobile #slide-home.slide,
+  html.welten-mobile #slide-home.slide.active {
+    position: absolute !important;
+    top: var(--header-h, 56px) !important;
+    bottom: var(--dock-h, 0px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: contain !important;
   }
 
   html.welten-mobile .slide:not(#slide-home) {

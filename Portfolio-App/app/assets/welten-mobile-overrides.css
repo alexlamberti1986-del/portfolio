@@ -48,8 +48,8 @@
     left: 0;
     right: 0;
     width: 100%;
-    height: auto !important;
-    min-height: 0;
+    height: 100% !important;
+    min-height: 0 !important;
     max-height: none;
     opacity: 1;
     visibility: visible;
@@ -227,7 +227,17 @@
 }
 
 /* NEXORA Touch/Tablet: Scroll im Hero — lädt zuletzt, auch >1024px */
+html.welten-touch-env body[data-world="nexora"] #slide-home.slide,
 html.welten-touch-env body[data-world="nexora"] #slide-home.slide.active {
+  position: absolute !important;
+  top: var(--header-h, 56px) !important;
+  bottom: var(--dock-h, 0px) !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;

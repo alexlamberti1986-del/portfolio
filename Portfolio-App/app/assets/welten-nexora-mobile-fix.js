@@ -49,18 +49,29 @@
 
   function unlockHeroScroll() {
     var slideHome = document.getElementById("slide-home");
-    if (slideHome) {
-      slideHome.classList.add("active");
-      slideHome.style.setProperty("overflow-y", "auto", "important");
-      slideHome.style.setProperty("-webkit-overflow-scrolling", "touch", "important");
-      slideHome.style.setProperty("touch-action", "pan-y", "important");
-    }
+    if (!slideHome) return;
+
+    slideHome.classList.add("active");
+    slideHome.style.setProperty("position", "absolute", "important");
+    slideHome.style.setProperty("top", "var(--header-h, 56px)", "important");
+    slideHome.style.setProperty("bottom", "var(--dock-h, 0px)", "important");
+    slideHome.style.setProperty("left", "0", "important");
+    slideHome.style.setProperty("right", "0", "important");
+    slideHome.style.setProperty("width", "100%", "important");
+    slideHome.style.setProperty("height", "100%", "important");
+    slideHome.style.setProperty("min-height", "0", "important");
+    slideHome.style.setProperty("max-height", "none", "important");
+    slideHome.style.setProperty("overflow-y", "auto", "important");
+    slideHome.style.setProperty("overflow-x", "hidden", "important");
+    slideHome.style.setProperty("-webkit-overflow-scrolling", "touch", "important");
+    slideHome.style.setProperty("touch-action", "pan-y", "important");
+
     document
       .querySelectorAll(
-        "#dnaStage, .home-hero-experience, #slide-home, #slide-home .slide-inner--home, " +
+        "#dnaStage, .home-hero-experience, #slide-home .slide-inner--home, " +
           "#slide-home .home-main-block, #slide-home .welten-mobile-hero-title, " +
           "#slide-home .welten-mobile-hero-meta, #slide-home .nexora-orbit-buttons, " +
-          "#slide-home .nexora-orbit-ring, #slide-home .nexora-orbit-button"
+          "#slide-home .nexora-orbit-ring"
       )
       .forEach(function (el) {
         el.classList.remove("is-dragging");
@@ -69,24 +80,27 @@
         el.style.setProperty("height", "auto", "important");
         el.style.setProperty("min-height", "0", "important");
         el.style.setProperty("max-height", "none", "important");
+        el.style.removeProperty("max-height");
       });
+
     document.querySelectorAll("#slide-home .nexora-orbit-buttons").forEach(function (shell) {
       shell.style.setProperty("position", "relative", "important");
       shell.style.setProperty("top", "auto", "important");
       shell.style.setProperty("bottom", "auto", "important");
       shell.style.setProperty("left", "auto", "important");
       shell.style.setProperty("transform", "none", "important");
-      shell.style.setProperty("pointer-events", "auto", "important");
     });
+
     document.querySelectorAll("#slide-home .nexora-orbit-button").forEach(function (btn) {
       btn.style.setProperty("position", "relative", "important");
       btn.style.setProperty("transform", "none", "important");
-      btn.style.setProperty("touch-action", "pan-y", "important");
+      btn.style.setProperty("touch-action", "manipulation", "important");
     });
+
     document.documentElement.style.pointerEvents = "";
     document.body.style.pointerEvents = "";
-    document.documentElement.style.touchAction = "pan-y";
-    document.body.style.touchAction = "pan-y";
+    document.documentElement.style.touchAction = "";
+    document.body.style.touchAction = "";
   }
 
   function blockDesktopOrbitScript() {
@@ -96,93 +110,40 @@
   }
 
   function bindHeroScrollFallback() {
-    if (document.documentElement.dataset.nexoraHeroScrollBound === "1") return;
-    document.documentElement.dataset.nexoraHeroScrollBound = "1";
-    var startY = 0;
-    var startX = 0;
+    var slideHome = document.getElementById("slide-home");
+    if (!slideHome || slideHome.dataset.nexoraHeroScrollBound === "1") return;
+    slideHome.dataset.nexoraHeroScrollBound = "1";
+
     var lastY = 0;
-    var dragging = false;
-    var forceDragging = false;
-    var touchId = null;
 
-    function activeHome() {
-      if (!document.body || document.body.getAttribute("data-world") !== "nexora") return false;
-      var current = document.body.getAttribute("data-current-slide");
-      if (current === "home" || !current) return true;
-      var slideHome = document.getElementById("slide-home");
-      return !!(slideHome && slideHome.classList.contains("active"));
-    }
-
-    document.addEventListener(
+    slideHome.addEventListener(
       "touchstart",
       function (e) {
-        if (!activeHome()) return;
-        if (!e.touches || !e.touches[0]) return;
-        var t = e.touches[0];
-        touchId = t.identifier;
-        startY = t.clientY;
-        startX = t.clientX;
-        lastY = t.clientY;
-        dragging = false;
-        forceDragging = false;
+        if (!e.touches || !e.touches.length) return;
+        lastY = e.touches[0].clientY;
       },
-      { passive: true, capture: true }
+      { passive: true }
     );
 
-    document.addEventListener(
+    slideHome.addEventListener(
       "touchmove",
       function (e) {
-        if (!activeHome()) return;
-        if (!e.touches || !e.touches[0]) return;
-        var t = e.touches[0];
-        if (touchId !== null) {
-          for (var i = 0; i < e.touches.length; i++) {
-            if (e.touches[i].identifier === touchId) {
-              t = e.touches[i];
-              break;
-            }
+        if (!e.touches || !e.touches.length) return;
+        var y = e.touches[0].clientY;
+        var dy = lastY - y;
+        if (!dy) return;
+
+        if (slideHome.scrollHeight > slideHome.clientHeight + 2) {
+          var maxScroll = slideHome.scrollHeight - slideHome.clientHeight;
+          var next = Math.max(0, Math.min(maxScroll, slideHome.scrollTop + dy));
+          if (next !== slideHome.scrollTop) {
+            slideHome.scrollTop = next;
+            e.preventDefault();
           }
         }
-        var dy = t.clientY - startY;
-        var dx = t.clientX - startX;
-        if (!dragging && Math.abs(dy) > Math.abs(dx) + 6) dragging = true;
-        if (!dragging) return;
-
-        var slideHome = document.getElementById("slide-home");
-        if (!slideHome) return;
-        var target = e.target && e.target.closest ? e.target.closest(".nexora-orbit-button, .hero-button, [data-go]") : null;
-        // Only force-scroll when the gesture is vertical and not an intentional button tap.
-        if (!target || Math.abs(dy) > 14) {
-          forceDragging = true;
-        }
-        if (forceDragging) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
-        slideHome.scrollTop += lastY - t.clientY;
-        lastY = t.clientY;
+        lastY = y;
       },
-      { passive: false, capture: true }
-    );
-
-    document.addEventListener(
-      "touchend",
-      function () {
-        dragging = false;
-        forceDragging = false;
-        touchId = null;
-      },
-      { passive: true, capture: true }
-    );
-
-    document.addEventListener(
-      "touchcancel",
-      function () {
-        dragging = false;
-        forceDragging = false;
-        touchId = null;
-      },
-      { passive: true, capture: true }
+      { passive: false }
     );
   }
 
@@ -193,6 +154,7 @@
     blockDesktopOrbitScript();
     hideDesktopOrbitLayers();
     unlockHeroScroll();
+    bindHeroScrollFallback();
     releaseAllCapture();
 
     window.__portfolioWorldPaused = false;
@@ -204,10 +166,10 @@
     if (window.WeltenMobileHero && typeof window.WeltenMobileHero.refresh === "function") {
       window.WeltenMobileHero.refresh();
     }
-    bindHeroScrollFallback();
+
     setTimeout(unlockHeroScroll, 0);
     setTimeout(unlockHeroScroll, 120);
-    setTimeout(unlockHeroScroll, 350);
+    setTimeout(unlockHeroScroll, 400);
   }
 
   ["touchstart", "pointerdown", "pointercancel", "pointerup", "touchend"].forEach(function (ev) {
@@ -242,5 +204,5 @@
     }
   });
 
-  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260528f" };
+  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260529a" };
 })();
