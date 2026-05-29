@@ -325,18 +325,6 @@ html.welten-world-paused .light-beams {
     pointer-events: none !important;
   }
 
-  body[data-world="nexora"] #slide-home .home-main-block .portrait-photo,
-  body[data-world="nexora"] #slide-home .home-portrait-card img,
-  body[data-world="nexora"] #slide-contact .contact-visual img,
-  body[data-world="nexora"] #slide-contact .portrait-photo {
-    transform: none !important;
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center top !important;
-  }
 
   body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
   body[data-world="nexora"] #slide-home .nexora-orbit-buttons.welten-nexora-list-mode {

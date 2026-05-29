@@ -284,14 +284,7 @@
     var header = document.querySelector(".site-header");
     var headerH = header ? Math.ceil(header.getBoundingClientRect().height) : 56;
     if (headerH < 40) headerH = 56;
-    var dock = document.querySelector(".chapter-dock");
     var dockH = 0;
-    if (dock) {
-      var dockRect = dock.getBoundingClientRect();
-      if (dockRect.height > 0 && dock.offsetParent !== null) {
-        dockH = Math.ceil(dockRect.height);
-      }
-    }
     document.documentElement.style.setProperty("--header-h", headerH + "px");
     document.documentElement.style.setProperty("--dock-h", dockH + "px");
   }

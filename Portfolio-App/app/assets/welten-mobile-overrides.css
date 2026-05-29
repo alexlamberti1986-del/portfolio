@@ -8,6 +8,7 @@
   html.welten-mobile {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    --dock-h: 0px !important;
   }
 
   html.welten-mobile,
@@ -148,7 +149,24 @@
   }
 
   .chapter-dock {
-    padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+  }
+
+  html.welten-mobile main.slides-root,
+  html.welten-mobile #slidesRoot {
+    padding-bottom: 0 !important;
+  }
+
+  html.welten-mobile .slide.active {
+    bottom: 0 !important;
   }
 
   .slide:not(#slide-home) {

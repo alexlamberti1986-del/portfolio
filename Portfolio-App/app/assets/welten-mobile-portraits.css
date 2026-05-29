@@ -1,8 +1,10 @@
 /**
- * Mobile/Tablet Profilbilder — lädt als letztes Stylesheet
- * NEXORA/FREIRAUM: Foto füllt Rahmen (kein Screen-Blend, keine Deko-Pseudo-Elemente)
+ * Mobile Touch: Profilbilder NEXORA/FREIRAUM — Foto füllt Rahmen
+ * Desktop ≥1025px: Inline-Welten-Styles (Blend, Rahmen-Deko) bleiben aktiv
  */
-@media (max-width: 1024px) {
+
+@media (max-width: 1024px) and (pointer: coarse),
+  (max-width: 1024px) and (hover: none) {
   html.welten-mobile body[data-world="nexora"] #slide-home .home-portrait-card,
   html.welten-mobile body[data-world="nexora"] #slide-contact .contact-visual,
   html.welten-mobile body[data-world="freiraum"] #slide-home .home-portrait-card,
@@ -75,5 +77,53 @@
     opacity: 0 !important;
     pointer-events: none !important;
     animation: none !important;
+  }
+}
+
+/* Desktop: Mobile-Overrides zurücksetzen — Original-Look aus Inline-CSS */
+@media (min-width: 1025px) {
+  body[data-world="nexora"] #slide-home .home-portrait-card img,
+  body[data-world="nexora"] #slide-home .home-portrait-card img.portrait-photo,
+  body[data-world="nexora"] #slide-home img#heroPhoto,
+  body[data-world="nexora"] #slide-contact .contact-visual img,
+  body[data-world="nexora"] #slide-contact .contact-visual img.contact-photo,
+  body[data-world="nexora"] #slide-contact img#contactPhoto {
+    mix-blend-mode: revert !important;
+    filter: revert !important;
+    opacity: revert !important;
+    transform: revert !important;
+    object-fit: revert !important;
+    object-position: revert !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-portrait-card::before,
+  body[data-world="nexora"] #slide-home .home-portrait-card::after,
+  body[data-world="nexora"] #slide-contact .contact-visual::before,
+  body[data-world="nexora"] #slide-contact .contact-visual::after {
+    display: revert !important;
+    content: revert !important;
+    opacity: revert !important;
+    animation: revert !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .home-portrait-card,
+  body[data-world="freiraum"] #slide-contact .contact-visual {
+    border-radius: revert !important;
+    transform: revert !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .home-portrait-card img,
+  body[data-world="freiraum"] #slide-contact .contact-visual img {
+    filter: revert !important;
+    object-position: revert !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .home-portrait-card::before,
+  body[data-world="freiraum"] #slide-home .home-portrait-card::after,
+  body[data-world="freiraum"] #slide-contact .contact-visual::before,
+  body[data-world="freiraum"] #slide-contact .contact-visual::after {
+    display: revert !important;
+    content: revert !important;
+    opacity: revert !important;
   }
 }
