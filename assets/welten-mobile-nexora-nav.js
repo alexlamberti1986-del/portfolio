@@ -5,13 +5,7 @@
   "use strict";
 
   function isMobile() {
-    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
-      return window.WeltenTouchEnv.isTouch();
-    }
-    return (
-      window.matchMedia("(max-width: 1280px)").matches ||
-      window.matchMedia("(hover: none) and (pointer: coarse)").matches
-    );
+    return window.matchMedia("(max-width: 1024px)").matches;
   }
 
   function goChapter(id) {

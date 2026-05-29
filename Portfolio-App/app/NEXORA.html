@@ -7419,14 +7419,10 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   ];
 
   function isTouchUI() {
-    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
-      return window.WeltenTouchEnv.isTouch();
+    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isMobileLayout === "function") {
+      return window.WeltenTouchEnv.isMobileLayout();
     }
-    return !!(
-      window.matchMedia("(hover: none) and (pointer: coarse)").matches ||
-      window.matchMedia("(pointer: coarse)").matches ||
-      window.matchMedia("(max-width: 1280px)").matches
-    );
+    return window.matchMedia("(max-width: 1024px)").matches;
   }
 
   function initMobileOrbitShell() {
@@ -7815,7 +7811,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <script id="nexora-orbit-click-navigation-v6">
 (function () {
   if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function" && window.WeltenTouchEnv.isTouch()) return;
-  if (window.matchMedia("(max-width: 1280px)").matches) return;
+  if (window.matchMedia("(max-width: 1024px)").matches) return;
 
   var ORDER = ['home','about','profile','values','strengths','projects','experience','workstyle','why','faq','contact'];
   var down = null;
@@ -8487,13 +8483,13 @@ body[data-world="nexora"] .faq-panel-inner {
 })();
 </script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260530a" id="welten-mobile-hero-stylesheet" />
-<link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260530a" />
-<script src="assets/welten-mobile-hero.js?v=20260530a" defer></script>
-<script src="assets/welten-mobile-nexora-nav.js?v=20260530a" defer></script>
-<script src="assets/welten-nexora-mobile-fix.js?v=20260530a" defer></script>
+<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260530b" id="welten-mobile-hero-stylesheet" />
+<link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260530b" />
+<script src="assets/welten-mobile-hero.js?v=20260530b" defer></script>
+<script src="assets/welten-mobile-nexora-nav.js?v=20260530b" defer></script>
+<script src="assets/welten-nexora-mobile-fix.js?v=20260530b" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
-<link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260530a" />
-<link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260530a" />
+<link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260530b" />
+<link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260530b" />
 </body>
 </html>

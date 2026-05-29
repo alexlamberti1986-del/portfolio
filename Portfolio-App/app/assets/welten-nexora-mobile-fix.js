@@ -1,23 +1,22 @@
 /**
- * NEXORA — Touch/Tablet: Orbit/3D aus, natives Scrollen (kein Inline-Style-Hammer)
+ * NEXORA — Touch/Tablet ≤1024px: Orbit/3D aus, natives Scrollen
  */
 (function () {
   "use strict";
 
-  function isTouchUI() {
-    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
-      return window.WeltenTouchEnv.isTouch();
+  var mqMobile = window.matchMedia("(max-width: 1024px)");
+
+  function isMobileLayout() {
+    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isMobileLayout === "function") {
+      return window.WeltenTouchEnv.isMobileLayout();
     }
-    return !!(
-      window.matchMedia("(hover: none) and (pointer: coarse)").matches ||
-      window.matchMedia("(pointer: coarse)").matches ||
-      window.matchMedia("(max-width: 1280px)").matches
-    );
+    return mqMobile.matches;
   }
 
-  if (!isTouchUI()) return;
-
-  var stabilizeQueued = false;
+  var hideSel =
+    "#dnaOrbitGroup, .dna-orbit-group, .dna-unified-scene, .neuro-core, " +
+    ".nexora-orbit-nav, .dna-premium-canvas, .dna-particles-canvas, " +
+    "#dnaPremiumCanvas, #dnaParticlesCanvas, .dna-ring, .dna-slide";
 
   function releaseCapture(el) {
     if (!el || typeof el.releasePointerCapture !== "function") return;
@@ -36,12 +35,20 @@
       .forEach(releaseCapture);
   }
 
+  function restoreDesktopHero() {
+    document.documentElement.classList.remove("welten-nexora-list", "welten-nexora-scroll-ready");
+    document.querySelectorAll(hideSel).forEach(function (el) {
+      el.style.removeProperty("display");
+      el.style.removeProperty("visibility");
+      el.style.removeProperty("pointer-events");
+    });
+    document.querySelectorAll("#slide-home .home-hero-experience").forEach(function (hero) {
+      delete hero.dataset.nexoraOrbitCore;
+    });
+  }
+
   function hideDesktopOrbitLayers() {
     document.documentElement.classList.add("welten-nexora-list", "welten-nexora-scroll-ready");
-    var hideSel =
-      "#dnaOrbitGroup, .dna-orbit-group, .dna-unified-scene, .neuro-core, " +
-      ".nexora-orbit-nav, .dna-premium-canvas, .dna-particles-canvas, " +
-      "#dnaPremiumCanvas, #dnaParticlesCanvas, .dna-ring, .dna-slide";
     document.querySelectorAll(hideSel).forEach(function (el) {
       el.style.setProperty("display", "none", "important");
       el.style.setProperty("visibility", "hidden", "important");
@@ -76,7 +83,14 @@
     document.body.style.touchAction = "";
   }
 
+  var stabilizeQueued = false;
+
   function stabilize() {
+    if (!isMobileLayout()) {
+      restoreDesktopHero();
+      return;
+    }
+
     if (typeof window.stopWorldTransitionRaf === "function") {
       window.stopWorldTransitionRaf();
     }
@@ -104,6 +118,22 @@
     });
   }
 
+  if (!isMobileLayout()) {
+    restoreDesktopHero();
+    if (mqMobile.addEventListener) {
+      mqMobile.addEventListener("change", stabilize);
+    } else {
+      mqMobile.addListener(stabilize);
+    }
+    window.WeltenNexoraMobileFix = {
+      stabilize: stabilize,
+      unlockHeroScroll: unlockHeroScroll,
+      restoreDesktopHero: restoreDesktopHero,
+      version: "20260530b",
+    };
+    return;
+  }
+
   ["touchstart", "pointerup", "touchend", "pointercancel"].forEach(function (ev) {
     document.addEventListener(
       ev,
@@ -123,6 +153,12 @@
   window.addEventListener("load", stabilize, { once: true });
   window.addEventListener("pageshow", stabilize);
 
+  if (mqMobile.addEventListener) {
+    mqMobile.addEventListener("change", stabilize);
+  } else {
+    mqMobile.addListener(stabilize);
+  }
+
   window.addEventListener("message", function (e) {
     if (
       e.data &&
@@ -134,5 +170,10 @@
     }
   });
 
-  window.WeltenNexoraMobileFix = { stabilize: stabilize, unlockHeroScroll: unlockHeroScroll, version: "20260530a" };
+  window.WeltenNexoraMobileFix = {
+    stabilize: stabilize,
+    unlockHeroScroll: unlockHeroScroll,
+    restoreDesktopHero: restoreDesktopHero,
+    version: "20260530b",
+  };
 })();

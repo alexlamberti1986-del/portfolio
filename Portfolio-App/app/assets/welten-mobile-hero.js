@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260530a";
+  var HERO_VER = "20260530b";
   var nexoraHeroRetryTimer = null;
   var mqHero = window.matchMedia("(max-width: 1024px)");
 
@@ -37,9 +37,6 @@
   ];
 
   function isHeroMobile() {
-    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
-      return window.WeltenTouchEnv.isTouch();
-    }
     return mqHero.matches;
   }
 
@@ -206,15 +203,49 @@
   function resetHeroButtonDom() {
     document
       .querySelectorAll(
-        ".hero-buttons-shell, .hero-buttons-grid, .hero-button, .hero-contact-button-row"
+        ".hero-buttons-shell, .hero-buttons-grid, .hero-button, .hero-contact-button-row, .welten-mobile-hero-grid"
       )
       .forEach(function (el) {
         el.classList.remove(
           "hero-buttons-shell",
           "hero-buttons-grid",
-          "hero-button"
+          "hero-button",
+          "welten-mobile-hero-grid"
         );
       });
+
+    document
+      .querySelectorAll(
+        "#slide-home .nexora-orbit-button, #slide-home .dna-slide, " +
+          "#slide-home .nexora-orbit-ring, #slide-home .dna-ring, " +
+          "#slide-home .home-hero-experience, #slide-home #dnaStage, " +
+          "#slide-home .nexora-orbit-buttons, #slide-home .dna-orbit-group, " +
+          "#slide-home .neuro-core, #slide-home .nexora-orbit-nav"
+      )
+      .forEach(function (el) {
+        [
+          "display",
+          "visibility",
+          "position",
+          "transform",
+          "opacity",
+          "left",
+          "top",
+          "right",
+          "bottom",
+          "height",
+          "min-height",
+          "max-height",
+          "overflow",
+          "touch-action",
+          "pointer-events",
+        ].forEach(function (prop) {
+          el.style.removeProperty(prop);
+        });
+      });
+
+    document.documentElement.classList.remove("welten-nexora-list", "welten-nexora-scroll-ready");
+
     var row = document.querySelector("#slide-home .hero-contact-button-row");
     if (!row) return;
     var contact = row.querySelector("[data-go='contact']");

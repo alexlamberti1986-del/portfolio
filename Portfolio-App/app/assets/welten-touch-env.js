@@ -1,6 +1,5 @@
 /**
- * Touch/Tablet-Erkennung — einheitlich für alle Welten-Skripte
- * (Handy, Tablet, große Touch-Laptops; nicht nur max-width: 1024px)
+ * Touch-Erkennung — nur echte Touch-Geräte (kein Desktop-Fenster <1280px)
  */
 (function (global) {
   "use strict";
@@ -8,15 +7,20 @@
   function isTouchUI() {
     return !!(
       global.matchMedia("(hover: none) and (pointer: coarse)").matches ||
-      global.matchMedia("(pointer: coarse)").matches ||
-      global.matchMedia("(max-width: 1280px)").matches
+      global.matchMedia("(pointer: coarse)").matches
     );
   }
 
+  function isMobileLayout() {
+    return global.matchMedia("(max-width: 1024px)").matches;
+  }
+
   function applyTouchClass() {
-    var on = isTouchUI();
-    global.document.documentElement.classList.toggle("welten-touch-env", on);
-    return on;
+    var touch = isTouchUI();
+    var mobile = isMobileLayout();
+    global.document.documentElement.classList.toggle("welten-touch-env", touch);
+    global.document.documentElement.classList.toggle("welten-mobile-layout", mobile);
+    return touch;
   }
 
   applyTouchClass();
@@ -27,7 +31,8 @@
 
   global.WeltenTouchEnv = {
     isTouch: isTouchUI,
+    isMobileLayout: isMobileLayout,
     refresh: applyTouchClass,
-    version: "20260528a",
+    version: "20260530b",
   };
 })(window);

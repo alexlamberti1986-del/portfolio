@@ -3,6 +3,7 @@
  * Exakte Referenz: Titel → Linie + 3 Punkte → Schlagwörter → Button-Grid
  */
 
+@media (max-width: 1024px) {
 /* FREIRAUM: kein Portrait / Oval im Hero (Desktop unverändert) */
 body[data-world="freiraum"] #slide-home .home-hero-experience {
   background-image: none !important;
@@ -54,6 +55,8 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
+
+} /* end FREIRAUM mobile-only block */
 
 /* Alte Desktop-Hero-Elemente ausblenden */
 @media (max-width: 1024px) {

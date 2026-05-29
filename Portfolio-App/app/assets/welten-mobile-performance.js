@@ -9,15 +9,8 @@
   var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function isMobileContext() {
-    if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function") {
-      return window.WeltenTouchEnv.isTouch() || mqReduce.matches;
-    }
-    return (
-      mqTablet.matches ||
-      mqCoarse.matches ||
-      mqReduce.matches ||
-      window.matchMedia("(max-width: 1280px)").matches
-    );
+    if (mqReduce.matches) return true;
+    return mqTablet.matches || mqCoarse.matches;
   }
 
   function setMobileClasses() {
