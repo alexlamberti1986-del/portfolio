@@ -1,13 +1,14 @@
 /**
  * Hero-Titelgrafiken ausblenden (Desktop · Laptop · Tablet Querformat)
- * Nur #slide-home — Hintergrund, Navigation, Buttons, Side-Dots bleiben unverändert.
- * Mobile + Tablet Hochformat: Titel bleiben sichtbar.
+ * Nur Mobile-Overlay-Titel (.welten-mobile-hero-*) — nicht die Desktop-Schriftzüge.
+ * PROFESSIONAL Desktop: „PROFESSIONAL“ + „Strategie · Struktur · Wirkung“ bleiben sichtbar.
+ * Mobile + Tablet Hochformat: Mobile-Titel bleiben sichtbar.
  */
 
 @media (min-width: 1025px),
        (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
 
-  /* Mobile-Hero: Schriftzug + Unterzeile (alle Welten) */
+  /* Mobile-Hero-Overlay: Schriftzug + Unterzeile (alle Welten) */
   #slide-home .welten-mobile-hero-title,
   #slide-home .welten-mobile-hero-meta,
   #slide-home .welten-mobile-hero-keywords,
@@ -27,22 +28,6 @@
     clip-path: inset(50%) !important;
   }
 
-  /* PROFESSIONAL: „PROFESSIONAL“ + „STRATEGIE · STRUKTUR · WIRKUNG“ */
-  body[data-world="vertex"] #slide-home .dna-unified-scene::before,
-  body[data-world="vertex"] #slide-home .dna-unified-scene::after {
-    content: none !important;
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    overflow: hidden !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    pointer-events: none !important;
-  }
-
   /* NEXORA: Text-Overlays im Hero (falls aktiv) */
   body[data-world="nexora"] #slide-home .dna-unified-scene::after,
   body[data-world="nexora"] #slide-home .home-hero-experience > .welten-mobile-hero-title,
@@ -54,7 +39,7 @@
     pointer-events: none !important;
   }
 
-  /* FREIRAUM: Mobile-Titel im Hero (FREIRAUM + Schlagwörter) — ::before-Blob-Deko bleibt */
+  /* FREIRAUM: Mobile-Titel im Hero — ::before-Blob-Deko bleibt */
   body[data-world="freiraum"] #slide-home .welten-mobile-hero-title,
   body[data-world="freiraum"] #slide-home .welten-mobile-hero-meta {
     display: none !important;
