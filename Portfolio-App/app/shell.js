@@ -454,13 +454,34 @@
     });
   });
 
+  function isOurFrame(win) {
+    if (!win) return false;
+    return frames.some(function (f) {
+      try {
+        return f.contentWindow === win;
+      } catch (e) {
+        return false;
+      }
+    });
+  }
+
   window.addEventListener("message", function (e) {
-    if (!e.data || e.data.type !== "portfolio-chapter") return;
-    if (
-      typeof e.data.chapter === "string" &&
-      CHAPTERS.indexOf(e.data.chapter) >= 0
-    ) {
-      sharedChapter = e.data.chapter;
+    if (!e.data) return;
+    if (e.data.type === "portfolio-chapter") {
+      if (
+        typeof e.data.chapter === "string" &&
+        CHAPTERS.indexOf(e.data.chapter) >= 0
+      ) {
+        sharedChapter = e.data.chapter;
+      }
+      return;
+    }
+    if (e.data.type === "portfolio-open-external") {
+      if (!isOurFrame(e.source)) return;
+      var href = e.data.href;
+      if (typeof href === "string" && /^(mailto:|tel:)/i.test(href)) {
+        window.location.href = href;
+      }
     }
   });
 

@@ -1,0 +1,64 @@
+/**
+ * Hero-Titelgrafiken ausblenden (Desktop · Laptop · Tablet Querformat)
+ * Nur #slide-home — Hintergrund, Navigation, Buttons, Side-Dots bleiben unverändert.
+ * Mobile + Tablet Hochformat: Titel bleiben sichtbar.
+ */
+
+@media (min-width: 1025px),
+       (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+
+  /* Mobile-Hero: Schriftzug + Unterzeile (alle Welten) */
+  #slide-home .welten-mobile-hero-title,
+  #slide-home .welten-mobile-hero-meta,
+  #slide-home .welten-mobile-hero-keywords,
+  #slide-home .welten-mobile-hero-line {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    width: 0 !important;
+    clip: rect(0, 0, 0, 0) !important;
+    clip-path: inset(50%) !important;
+  }
+
+  /* PROFESSIONAL: „PROFESSIONAL“ + „STRATEGIE · STRUKTUR · WIRKUNG“ */
+  body[data-world="vertex"] #slide-home .dna-unified-scene::before,
+  body[data-world="vertex"] #slide-home .dna-unified-scene::after {
+    content: none !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* NEXORA: Text-Overlays im Hero (falls aktiv) */
+  body[data-world="nexora"] #slide-home .dna-unified-scene::after,
+  body[data-world="nexora"] #slide-home .home-hero-experience > .welten-mobile-hero-title,
+  body[data-world="nexora"] #slide-home .home-hero-experience > .welten-mobile-hero-meta {
+    content: none !important;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* FREIRAUM: Mobile-Titel im Hero (FREIRAUM + Schlagwörter) — ::before-Blob-Deko bleibt */
+  body[data-world="freiraum"] #slide-home .welten-mobile-hero-title,
+  body[data-world="freiraum"] #slide-home .welten-mobile-hero-meta {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}

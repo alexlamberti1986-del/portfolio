@@ -5,9 +5,7 @@
 
 @media (max-width: 1024px) and (pointer: coarse),
   (max-width: 1024px) and (hover: none) {
-  html.welten-mobile body[data-world="nexora"] #slide-home .home-portrait-card,
   html.welten-mobile body[data-world="nexora"] #slide-contact .contact-visual,
-  html.welten-mobile body[data-world="freiraum"] #slide-home .home-portrait-card,
   html.welten-mobile body[data-world="freiraum"] #slide-contact .contact-visual {
     position: relative !important;
     overflow: hidden !important;
@@ -24,19 +22,13 @@
     isolation: isolate !important;
   }
 
-  html.welten-mobile body[data-world="freiraum"] #slide-home .home-portrait-card,
   html.welten-mobile body[data-world="freiraum"] #slide-contact .contact-visual {
     border-radius: 32px !important;
   }
 
-  html.welten-mobile body[data-world="nexora"] #slide-home .home-portrait-card img,
-  html.welten-mobile body[data-world="nexora"] #slide-home .home-portrait-card img.portrait-photo,
-  html.welten-mobile body[data-world="nexora"] #slide-home img#heroPhoto,
   html.welten-mobile body[data-world="nexora"] #slide-contact .contact-visual img,
   html.welten-mobile body[data-world="nexora"] #slide-contact .contact-visual img.contact-photo,
   html.welten-mobile body[data-world="nexora"] #slide-contact img#contactPhoto,
-  html.welten-mobile body[data-world="freiraum"] #slide-home .home-portrait-card img,
-  html.welten-mobile body[data-world="freiraum"] #slide-home img#heroPhoto,
   html.welten-mobile body[data-world="freiraum"] #slide-contact .contact-visual img,
   html.welten-mobile body[data-world="freiraum"] #slide-contact img#contactPhoto {
     position: absolute !important;
@@ -59,7 +51,6 @@
     z-index: 0 !important;
   }
 
-  html.welten-mobile body[data-world="freiraum"] #slide-home .home-portrait-card img,
   html.welten-mobile body[data-world="freiraum"] #slide-contact .contact-visual img {
     object-position: center 22% !important;
   }

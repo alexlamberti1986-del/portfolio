@@ -260,9 +260,19 @@ body[data-master-world="freiraum"] .sound-toggle {
   }
 
   window.addEventListener("message", function (e) {
-    if (!e.data || e.data.type !== "portfolio-chapter") return;
-    if (!isOur(e.source)) return;
-    if (typeof e.data.chapter === "string" && CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;
+    if (!e.data) return;
+    if (e.data.type === "portfolio-chapter") {
+      if (!isOur(e.source)) return;
+      if (typeof e.data.chapter === "string" && CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;
+      return;
+    }
+    if (e.data.type === "portfolio-open-external") {
+      if (!isOur(e.source)) return;
+      var href = e.data.href;
+      if (typeof href === "string" && /^(mailto:|tel:)/i.test(href)) {
+        window.location.href = href;
+      }
+    }
   });
 
   function readChapter(f) {

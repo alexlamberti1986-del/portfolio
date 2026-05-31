@@ -312,6 +312,34 @@
       });
   }
 
+  function isInIframe() {
+    try {
+      return window.self !== window.top;
+    } catch (e) {
+      return true;
+    }
+  }
+
+  function openMailTelLink(href) {
+    if (!href) return;
+
+    if (isInIframe()) {
+      try {
+        window.parent.postMessage({ type: "portfolio-open-external", href: href }, "*");
+      } catch (e) {}
+      try {
+        window.top.location.href = href;
+        return;
+      } catch (e2) {}
+    }
+
+    try {
+      window.location.href = href;
+    } catch (e3) {
+      window.open(href, "_blank", "noopener,noreferrer");
+    }
+  }
+
   function bindMailTelLinks() {
     document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]').forEach(function (a) {
       a.classList.add("welten-mailtel-link");
@@ -327,7 +355,7 @@
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        window.location.assign(href);
+        openMailTelLink(href);
       },
       true
     );

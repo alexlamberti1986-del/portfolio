@@ -66,10 +66,17 @@ function createWindow() {
   blockDevShortcuts(mainWindow);
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (/^https?:/i.test(url)) {
+    if (/^(https?|mailto|tel):/i.test(url)) {
       shell.openExternal(url);
     }
     return { action: "deny" };
+  });
+
+  mainWindow.webContents.on("will-navigate", (event, url) => {
+    if (/^(mailto:|tel:)/i.test(url)) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
   });
 
   mainWindow.loadFile(INDEX_HTML);
@@ -100,4 +107,10 @@ app.on("activate", () => {
 
 app.on("web-contents-created", (_event, contents) => {
   contents.on("will-attach-webview", (event) => event.preventDefault());
+  contents.on("will-navigate", (event, url) => {
+    if (/^(mailto:|tel:)/i.test(url)) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
 });
