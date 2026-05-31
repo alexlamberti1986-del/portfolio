@@ -937,9 +937,13 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     box-sizing: border-box !important;
   }
 
+  #slide-home .home-portrait-card img,
+  #slide-home .home-portrait-card img.portrait-photo,
+  #slide-home img#heroPhoto,
   #slide-contact .contact-visual img,
   #slide-contact .contact-visual img.contact-photo,
   #slide-contact img#contactPhoto,
+  body[data-world="vertex"] #slide-home .home-portrait-card img,
   body[data-world="vertex"] #slide-contact .contact-visual img {
     position: absolute !important;
     inset: 0 !important;
@@ -955,24 +959,14 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     transform: none !important;
   }
 
-  @media (min-width: 769px) {
-    #slide-home .home-portrait-card img,
-    #slide-home .home-portrait-card img.portrait-photo,
-    #slide-home img#heroPhoto,
-    body[data-world="vertex"] #slide-home .home-portrait-card img {
-      position: absolute !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      max-width: none !important;
-      max-height: none !important;
-      min-height: 0 !important;
-      object-fit: cover !important;
-      object-position: center center !important;
-      display: block !important;
-      margin: 0 !important;
-      transform: none !important;
-    }
+  html.welten-mobile body[data-world="freiraum"] #slide-home .home-portrait-card img,
+  html.welten-mobile body[data-world="freiraum"] #slide-home img#heroPhoto {
+    object-position: center 22% !important;
+  }
+
+  html.welten-mobile body[data-world="freiraum"] #slide-contact .contact-visual img,
+  html.welten-mobile body[data-world="freiraum"] #slide-contact img#contactPhoto {
+    object-position: center 22% !important;
   }
 
   /* Home: gleicher Abstand unten wie Kontakt-Folien */
