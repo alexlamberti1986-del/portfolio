@@ -1,0 +1,450 @@
+/* Sprint 2 — Visuelles Redesign: Typografie, asymmetrische Layouts, Scroll-Reveal */
+
+/* ── Scroll-Reveal ── */
+.welten-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.welten-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.welten-reveal--left {
+  transform: translateX(-32px);
+}
+
+.welten-reveal--right {
+  transform: translateX(32px);
+}
+
+.welten-reveal--left.is-visible,
+.welten-reveal--right.is-visible {
+  transform: none;
+}
+
+.welten-reveal--delay-1 { transition-delay: 0.08s; }
+.welten-reveal--delay-2 { transition-delay: 0.16s; }
+.welten-reveal--delay-3 { transition-delay: 0.24s; }
+.welten-reveal--delay-4 { transition-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .welten-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Editorial Page Heroes ── */
+.welten-page-hero {
+  position: relative;
+  margin-bottom: clamp(1.5rem, 4vw, 2.75rem);
+  padding: clamp(1.25rem, 3vw, 2rem) 0 clamp(1rem, 2vw, 1.5rem);
+  max-width: 920px;
+}
+
+.welten-page-hero::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(48px, 8vw, 72px);
+  height: 3px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--welten-accent, #65d9ff), transparent);
+}
+
+.welten-page-hero__kicker {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.72;
+  margin-bottom: 0.65rem;
+}
+
+.welten-page-hero__title {
+  margin: 0;
+  font-size: clamp(2rem, 5.5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  max-width: 18ch;
+}
+
+.welten-page-hero__lead {
+  margin: 0.85rem 0 0;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6;
+  opacity: 0.88;
+  max-width: 52ch;
+}
+
+body[data-world="vertex"] {
+  --welten-accent: #111;
+}
+
+body[data-world="freiraum"] {
+  --welten-accent: #ffd166;
+}
+
+body[data-world="nexora"] {
+  --welten-accent: #65d9ff;
+}
+
+/* Slide-Header als Hero (Fallback wenn kein inject) */
+.slide:not(#slide-home) > .slide-inner > .chapter-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.72;
+  margin-bottom: 0.5rem;
+}
+
+.slide:not(#slide-home) > .slide-inner > .section-title {
+  font-size: clamp(1.85rem, 4.5vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  max-width: 20ch;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Home: Bento Highlights ── */
+.welten-home-extras {
+  position: relative;
+}
+
+.welten-section-head {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.welten-section-head h2 {
+  font-size: clamp(1.5rem, 3.2vw, 2.25rem) !important;
+  letter-spacing: -0.03em;
+  margin: 0 !important;
+}
+
+.welten-section-head p {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 0.95rem;
+  max-width: 48ch;
+}
+
+.welten-highlights--bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(10px, 1.8vw, 16px);
+}
+
+.welten-highlight-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(16px, 2vw, 22px) !important;
+  min-height: clamp(150px, 22vw, 200px);
+}
+
+.welten-highlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, transparent 40%, rgba(101, 217, 255, 0.06));
+  pointer-events: none;
+}
+
+.welten-highlight-card .wh-num {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1;
+  opacity: 0.12;
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  letter-spacing: -0.05em;
+}
+
+.welten-highlight-card:nth-child(1) { grid-column: span 7; }
+.welten-highlight-card:nth-child(2) { grid-column: span 5; }
+.welten-highlight-card:nth-child(3) { grid-column: span 5; }
+.welten-highlight-card:nth-child(4) { grid-column: span 7; }
+
+body[data-world="vertex"] .welten-highlight-card::after {
+  background: linear-gradient(145deg, transparent 40%, rgba(0, 0, 0, 0.04));
+}
+
+body[data-world="freiraum"] .welten-highlight-card::after {
+  background: linear-gradient(145deg, transparent 40%, rgba(255, 209, 102, 0.08));
+}
+
+/* Service pills → editorial chips */
+.welten-services-teaser--chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.welten-service-pill {
+  border-radius: 999px !important;
+  padding: 11px 18px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.welten-service-pill:hover {
+  transform: translateY(-2px);
+}
+
+/* Home CTA Band */
+.welten-cta-band {
+  margin-top: clamp(2rem, 5vw, 3rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: clamp(18px, 3vw, 28px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.welten-cta-band::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  right: -80px;
+  top: -100px;
+  background: radial-gradient(circle, rgba(101, 217, 255, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.welten-cta-band h2 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
+}
+
+.welten-cta-band p {
+  margin: 0;
+  opacity: 0.85;
+  max-width: 42ch;
+}
+
+.welten-cta-band__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+body[data-world="vertex"] .welten-cta-band::before {
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.06), transparent 70%);
+}
+
+body[data-world="freiraum"] .welten-cta-band::before {
+  background: radial-gradient(circle, rgba(255, 111, 174, 0.12), transparent 70%);
+}
+
+/* ── Leistungen: Bento Grid ── */
+.welten-leistungen-grid--bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: clamp(10px, 1.8vw, 16px);
+}
+
+.welten-leistung-card {
+  border-radius: clamp(14px, 2vw, 20px) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+}
+
+.welten-leistung-card:hover {
+  transform: translateY(-4px);
+}
+
+.welten-leistung-card .lc-icon {
+  font-size: 1.35rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+.welten-leistung-card:nth-child(1) { grid-column: span 4; }
+.welten-leistung-card:nth-child(2) { grid-column: span 4; }
+.welten-leistung-card:nth-child(3) { grid-column: span 4; }
+.welten-leistung-card:nth-child(4) { grid-column: span 6; }
+.welten-leistung-card:nth-child(5) { grid-column: span 6; }
+.welten-leistung-card:nth-child(6) { grid-column: span 12; }
+
+/* ── Über mich: Prozess-Timeline ── */
+.welten-process {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+}
+
+.welten-process h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.welten-process-steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(8px, 1.5vw, 14px);
+  counter-reset: welten-step;
+}
+
+.welten-process-step {
+  padding: clamp(14px, 2vw, 20px);
+  border-radius: 16px;
+  position: relative;
+  counter-increment: welten-step;
+}
+
+.welten-process-step::before {
+  content: counter(welten-step, decimal-leading-zero);
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  opacity: 0.55;
+  margin-bottom: 0.5rem;
+}
+
+.welten-process-step strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+
+.welten-process-step span {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  opacity: 0.82;
+}
+
+/* About merged: zigzag */
+.welten-about-merged .welten-merge-block:nth-child(odd) {
+  margin-right: clamp(0px, 8vw, 80px);
+}
+
+.welten-about-merged .welten-merge-block:nth-child(even) {
+  margin-left: clamp(0px, 8vw, 80px);
+}
+
+/* ── Projekte: Karten ── */
+#slide-projects .project-card {
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  border-radius: clamp(14px, 2vw, 20px) !important;
+}
+
+#slide-projects .project-card:hover {
+  transform: translateY(-5px);
+}
+
+#slide-projects .projects-accordion__trigger {
+  border-radius: 14px;
+  transition: background 0.2s ease;
+}
+
+/* ── Kontakt: Premium Cards ── */
+.welten-contact-card {
+  border-radius: clamp(16px, 2.5vw, 22px) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.welten-contact-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--welten-accent, #65d9ff);
+  border-radius: 4px 0 0 4px;
+}
+
+.welten-contact-card:nth-child(2)::before {
+  opacity: 0.75;
+}
+
+.welten-contact-card:nth-child(3)::before {
+  opacity: 0.55;
+}
+
+/* ── Home Intro Typography ── */
+#slide-home .home-copy h1 {
+  font-size: clamp(1.85rem, 4.8vw, 3.1rem) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.04em !important;
+}
+
+#slide-home .home-copy .lead {
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem) !important;
+  line-height: 1.5 !important;
+  opacity: 0.92;
+}
+
+#slide-home .home-layout--intro {
+  gap: clamp(1.25rem, 3vw, 2.5rem) !important;
+}
+
+#slide-home .home-portrait-card {
+  border-radius: clamp(18px, 3vw, 28px) !important;
+  overflow: hidden;
+  transform: rotate(-1.5deg);
+  transition: transform 0.4s ease;
+}
+
+#slide-home .home-portrait-card:hover {
+  transform: rotate(0deg) scale(1.01);
+}
+
+/* Buttons polish */
+.btn, .btn-primary {
+  border-radius: 999px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.btn:hover, .btn-primary:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .welten-highlights--bento .welten-highlight-card,
+  .welten-leistungen-grid--bento .welten-leistung-card {
+    grid-column: span 12 !important;
+  }
+
+  .welten-process-steps {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .welten-cta-band {
+    grid-template-columns: 1fr;
+  }
+
+  .welten-about-merged .welten-merge-block:nth-child(odd),
+  .welten-about-merged .welten-merge-block:nth-child(even) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #slide-home .home-portrait-card {
+    transform: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .welten-process-steps {
+    grid-template-columns: 1fr;
+  }
+}
