@@ -1,0 +1,62 @@
+/* Sprint 4 — TBT/INP: Canvas aus auf Unterseiten, weniger Paint auf Mobile */
+
+body.is-subpage canvas,
+body.is-subpage #weltenMousePaintCanvas,
+html.welten-subpage-perf canvas {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.is-subpage #particle-canvas,
+body.is-subpage .light-beams {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+@media (max-width: 1024px) {
+  body.is-subpage .glass-card,
+  html.welten-perf-mobile .glass-card {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  body[data-world="nexora"].is-subpage .glass-card {
+    background: rgba(18, 32, 56, 0.82) !important;
+  }
+
+  body[data-world="vertex"].is-subpage .glass-card {
+    background: rgba(255, 255, 255, 0.92) !important;
+  }
+
+  body[data-world="freiraum"].is-subpage .glass-card {
+    background: rgba(40, 20, 52, 0.82) !important;
+  }
+
+  .slide-inner {
+    contain: layout style;
+  }
+
+  body.is-home #dnaPremiumCanvas,
+  body.is-home #dnaParticlesCanvas {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .bg-root::before,
+  .bg-root::after,
+  .light-beams {
+    animation: none !important;
+  }
+
+  .project-card__preview iframe {
+    loading: lazy;
+  }
+}
+
+html.welten-world-paused *,
+html.welten-subpage-perf * {
+  scroll-behavior: auto !important;
+}

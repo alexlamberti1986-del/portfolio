@@ -426,9 +426,20 @@
     document.querySelectorAll("[data-welten-leistungen-v1] .slide-inner, [data-welten-strengths-v1] .slide-inner").forEach(buildOverview);
   }
 
+  function boot() {
+    var onLeistungen =
+      document.body.getAttribute("data-current-slide") === "leistungen" ||
+      !!document.querySelector("#slide-leistungen.active");
+    if (onLeistungen) {
+      init();
+      return;
+    }
+    document.addEventListener("welten-init-skills-charts", init, { once: true });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
-    init();
+    boot();
   }
 })();

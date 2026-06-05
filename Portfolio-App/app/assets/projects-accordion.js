@@ -115,9 +115,20 @@
     document.querySelectorAll("[data-projects-accordion]").forEach(initAccordion);
   }
 
+  function bootDeferred() {
+    var onProjects =
+      document.body.getAttribute("data-current-slide") === "projects" ||
+      !!document.querySelector("#slide-projects.active");
+    if (onProjects) {
+      boot();
+      return;
+    }
+    document.addEventListener("welten-init-projects-accordion", boot, { once: true });
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
+    document.addEventListener("DOMContentLoaded", bootDeferred);
   } else {
-    boot();
+    bootDeferred();
   }
 })();
