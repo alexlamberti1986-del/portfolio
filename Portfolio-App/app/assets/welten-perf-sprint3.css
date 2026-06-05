@@ -1,0 +1,48 @@
+/* Sprint 3 — Performance: Bilder, LCP, Paint */
+
+img[fetchpriority="high"],
+img#heroPhoto {
+  content-visibility: visible;
+}
+
+img#contactPhoto {
+  content-visibility: auto;
+}
+
+.project-card__preview iframe {
+  content-visibility: auto;
+  contain: strict;
+}
+
+.project-card__preview iframe[data-lazy-src]:not([src]) {
+  min-height: 180px;
+  background: rgba(128, 128, 128, 0.08);
+}
+
+.contact-map-embed iframe {
+  content-visibility: auto;
+}
+
+/* Reduziert Paint für inaktive Slides (zusätzlich zu shell-performance) */
+.slide:not(.active) img,
+.slide:not(.active) iframe {
+  content-visibility: hidden;
+}
+
+.slide.active img#heroPhoto {
+  content-visibility: visible;
+}
+
+@media (max-width: 768px) {
+  .home-portrait-card {
+    contain: layout style paint;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .welten-highlight-card,
+  .welten-leistung-card {
+    transition: none !important;
+  }
+}
