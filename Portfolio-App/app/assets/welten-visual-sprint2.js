@@ -102,64 +102,7 @@
   }
 
   function enhanceHomeExtras() {
-    var extras = document.querySelector(".welten-home-extras");
-    if (!extras || extras.dataset.sprint2 === "1") return;
-    extras.dataset.sprint2 = "1";
-
-    extras.querySelectorAll("section").forEach(function (sec, i) {
-      var h2 = sec.querySelector("h2");
-      if (!h2 || sec.querySelector(".welten-section-head")) return;
-      var head = document.createElement("div");
-      head.className = "welten-section-head welten-reveal";
-      var sub = document.createElement("p");
-      sub.textContent =
-        i === 0
-          ? "Ausgewählte Referenzen — von Webauftritten bis digitalen Visitenkarten."
-          : "Kernkompetenzen auf einen Blick — klicken für Details.";
-      head.appendChild(h2.cloneNode(true));
-      head.appendChild(sub);
-      h2.replaceWith(head);
-    });
-
-    var hl = extras.querySelector(".welten-highlights");
-    if (hl) {
-      hl.classList.add("welten-highlights--bento");
-      hl.querySelectorAll(".welten-highlight-card").forEach(function (card, idx) {
-        var num = document.createElement("span");
-        num.className = "wh-num";
-        num.textContent = String(idx + 1).padStart(2, "0");
-        card.appendChild(num);
-        markReveal(card, null, Math.min(idx + 1, 4));
-      });
-    }
-
-    var pills = extras.querySelector(".welten-services-teaser");
-    if (pills) {
-      pills.classList.add("welten-services-teaser--chips");
-      pills.querySelectorAll(".welten-service-pill").forEach(function (p, i) {
-        markReveal(p, null, Math.min(i + 1, 4));
-      });
-    }
-
-    var homeBlock = document.querySelector("#slide-home .home-main-block");
-    if (homeBlock && !homeBlock.querySelector(".welten-cta-band")) {
-      var band = document.createElement("section");
-      band.className = "welten-cta-band glass-card welten-reveal";
-      band.setAttribute("aria-label", "Kontaktaufnahme");
-      band.innerHTML =
-        "<div>" +
-        "<h2>Bereit für Ihr nächstes Projekt?</h2>" +
-        "<p>Ob Website, Branding oder digitale Strategie — ich freue mich auf den Austausch.</p>" +
-        "</div>" +
-        '<div class="welten-cta-band__actions">' +
-        '<button type="button" class="btn btn-primary" data-go="contact">Kontakt aufnehmen</button>' +
-        '<button type="button" class="btn" data-go="projects">Projekte ansehen</button>' +
-        "</div>";
-      homeBlock.appendChild(band);
-    }
-
-    markReveal(extras.querySelector(".welten-home-highlights"), "left");
-    markReveal(extras.querySelector(".welten-home-services"), "right", 2);
+    /* Home endet nach Hero + 2 Buttons — keine Zusatzsektionen */
   }
 
   function enhanceLeistungen() {
@@ -211,9 +154,6 @@
   }
 
   function enhanceContact() {
-    document.querySelectorAll(".welten-contact-card").forEach(function (card, i) {
-      markReveal(card, null, Math.min(i + 1, 3));
-    });
     var map = document.querySelector(".contact-map-embed");
     if (map) markReveal(map, null, 2);
   }

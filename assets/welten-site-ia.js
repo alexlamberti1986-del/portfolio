@@ -99,54 +99,7 @@
   }
 
   function injectHomeExtras() {
-    var home = document.querySelector("#slide-home .home-main-block");
-    if (!home || home.querySelector(".welten-home-extras")) return;
-
-    var wrap = document.createElement("div");
-    wrap.className = "welten-home-extras";
-    wrap.innerHTML =
-      '<section class="welten-home-highlights" aria-label="Projekt-Highlights">' +
-      '<h2>Ausgewählte Projekte</h2>' +
-      '<div class="welten-highlights"></div>' +
-      '<div class="welten-home-cta">' +
-      '<button type="button" class="btn btn-primary" data-go="projects">Alle Projekte ansehen</button>' +
-      "</div></section>" +
-      '<section class="welten-home-services" aria-label="Leistungsübersicht">' +
-      "<h2>Leistungen im Überblick</h2>" +
-      '<div class="welten-services-teaser"></div>' +
-      '<div class="welten-home-cta">' +
-      '<button type="button" class="btn" data-go="leistungen">Leistungen entdecken</button>' +
-      '<button type="button" class="btn btn-primary" data-go="contact">Kontakt aufnehmen</button>' +
-      "</div></section>";
-
-    var hl = wrap.querySelector(".welten-highlights");
-    HIGHLIGHTS.forEach(function (h) {
-      var card = document.createElement("article");
-      card.className = "welten-highlight-card glass-card";
-      card.innerHTML =
-        '<span class="wh-kicker">' + h.kicker + " · " + h.cat + "</span>" +
-        "<h3>" + h.title + "</h3>" +
-        '<p class="prose" style="margin:0;font-size:.9rem;">Klicken für alle Projekte.</p>';
-      card.style.cursor = "pointer";
-      card.addEventListener("click", function () {
-        navigateToChapter(h.go);
-      });
-      hl.appendChild(card);
-    });
-
-    var pills = wrap.querySelector(".welten-services-teaser");
-    SERVICES.forEach(function (s) {
-      var pill = document.createElement("button");
-      pill.type = "button";
-      pill.className = "welten-service-pill";
-      pill.textContent = s.title;
-      pill.addEventListener("click", function () {
-        navigateToChapter("leistungen");
-      });
-      pills.appendChild(pill);
-    });
-
-    home.appendChild(wrap);
+    /* Home endet nach Hero + 2 Buttons — keine Zusatzsektionen */
   }
 
   function injectLeistungenGrid() {
@@ -208,45 +161,13 @@
 
   function enhanceContact() {
     var slide = document.querySelector("#slide-contact .glass-card");
-    if (!slide || slide.querySelector(".welten-contact-cards")) return;
-
-    var cards = document.createElement("div");
-    cards.className = "welten-contact-cards";
-    cards.innerHTML =
-      '<a class="welten-contact-card glass-card" href="tel:+41796678211">' +
-      '<span class="cc-label">Telefon</span><span class="cc-value">079 667 82 11</span>' +
-      '<span class="cc-hint">Direktanruf auf Mobilgeräten</span></a>' +
-      '<a class="welten-contact-card glass-card" href="mailto:alex.lamberti@hotmail.ch">' +
-      '<span class="cc-label">E-Mail</span><span class="cc-value">alex.lamberti@hotmail.ch</span>' +
-      '<span class="cc-hint">Schnell &amp; unkompliziert</span></a>' +
-      '<a class="welten-contact-card glass-card" href="https://www.google.com/maps/search/?api=1&query=Schulweg%20603%2C%205324%20Full-Reuenthal%2C%20Schweiz" target="_blank" rel="noopener noreferrer">' +
-      '<span class="cc-label">Standort</span><span class="cc-value">Full-Reuenthal, CH</span>' +
-      '<span class="cc-hint">Google Maps öffnen</span></a>';
-
-    var actions = slide.querySelector(".contact-actions");
-    if (actions) {
-      actions.parentNode.insertBefore(cards, actions);
-    } else {
-      slide.appendChild(cards);
-    }
-
-    if (!slide.querySelector(".contact-map-embed")) {
-      var map = document.createElement("div");
-      map.className = "contact-map-embed";
-      map.innerHTML =
-        '<iframe title="Standort Alex Lamberti" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
-        'src="https://maps.google.com/maps?q=Schulweg+603,+5324+Full-Reuenthal,+Schweiz&output=embed"></iframe>';
-      slide.appendChild(map);
-    }
-
-    if (!slide.querySelector(".welten-contact-actions-row")) {
-      var row = document.createElement("div");
-      row.className = "welten-contact-actions-row";
-      row.innerHTML =
-        '<a class="btn btn-primary" href="tel:+41796678211">Anrufen</a>' +
-        '<a class="btn" href="mailto:alex.lamberti@hotmail.ch">E-Mail senden</a>';
-      slide.appendChild(row);
-    }
+    if (!slide || slide.querySelector(".contact-map-embed")) return;
+    var map = document.createElement("div");
+    map.className = "contact-map-embed";
+    map.innerHTML =
+      '<iframe title="Standort Alex Lamberti" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
+      'src="https://maps.google.com/maps?q=Schulweg+603,+5324+Full-Reuenthal,+Schweiz&output=embed"></iframe>';
+    slide.appendChild(map);
   }
 
   function patchNavigationClicks() {
