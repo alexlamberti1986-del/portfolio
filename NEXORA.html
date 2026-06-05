@@ -7296,9 +7296,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     position: absolute !important;
     left: 50% !important;
     top: 50% !important;
-    width: clamp(215px, 17vw, 315px) !important;
-    min-width: clamp(215px, 17vw, 315px) !important;
-    height: clamp(70px, 6.5vw, 96px) !important;
+    width: clamp(200px, 15.5vw, 272px) !important;
+    min-width: clamp(200px, 15.5vw, 272px) !important;
+    max-width: clamp(200px, 15.5vw, 272px) !important;
+    height: clamp(64px, 5.8vw, 84px) !important;
+    min-height: clamp(64px, 5.8vw, 84px) !important;
+    max-height: clamp(64px, 5.8vw, 84px) !important;
     padding: 0 24px !important;
     border-radius: 24px !important;
     border: 1px solid rgba(142, 220, 255, .55) !important;
@@ -7329,8 +7332,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     /* Wichtig: kein Gegen-Rotate mehr. Die Karte kreist wie im Portfolio nur um das Gehirn. */
     transform:
       translate(calc(-50% + var(--helix-x, 0px)), calc(-50% + var(--helix-y, 0px)))
-      rotateY(calc(var(--i) * 36deg))
-      translateZ(var(--orbit-radius, min(780px, 52vw)))
+      rotateY(calc(var(--i, 0) * var(--nexora-orbit-step, 72deg)))
+      translateZ(var(--orbit-radius, min(720px, 48vw)))
       scale(var(--card-scale, .90)) !important;
     transition:
       opacity .35s cubic-bezier(.22,1,.36,1),
@@ -7608,53 +7611,51 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     }
 
     function updateButtons(currentAngle) {
-      ring.style.setProperty('--nexora-orbit-rot', currentAngle.toFixed(3) + 'deg');
       var buttons = ring.querySelectorAll('.nexora-orbit-button');
-      var rows = [];
-      buttons.forEach(function (btn, i) {
-        var off = norm(currentAngle + i * STEP);
-        var dist = Math.min(off, 360 - off);
-        rows.push({ btn: btn, i: i, dist: dist, off: off });
-      });
-      rows.sort(function (a, b) {
-        return a.dist - b.dist;
-      });
-      var frontIndex = rows.length ? rows[0].i : -1;
-      var helixSpan = 680;
-      var lanePxPerDeg = helixSpan / 180;
+      var n = buttons.length;
+      if (!n) return;
+      var step = 360 / n;
+      ring.style.setProperty('--nexora-orbit-rot', currentAngle.toFixed(3) + 'deg');
+      ring.style.setProperty('--nexora-orbit-step', step.toFixed(4) + 'deg');
 
-      rows.forEach(function (row) {
-        var btn = row.btn;
-        var i = row.i;
-        var dist = row.dist;
-        var off = row.off;
+      var frontIndex = 0;
+      var minDist = Infinity;
+      for (var fi = 0; fi < n; fi++) {
+        var offF = norm(currentAngle + fi * step);
+        var distF = Math.min(offF, 360 - offF);
+        if (distF < minDist) {
+          minDist = distF;
+          frontIndex = fi;
+        }
+      }
+
+      var helixAmp = Math.min(132, 34 + n * 13);
+      var baseRadius = 448;
+
+      for (var i = 0; i < n; i++) {
+        var btn = buttons[i];
+        var off = norm(currentAngle + i * step);
+        var dist = Math.min(off, 360 - off);
         var rad = off * Math.PI / 180;
         var depth = Math.cos(rad);
         var side = Math.sin(rad);
-        var signed = off <= 180 ? off : off - 360;
-        var helixY = -signed * lanePxPerDeg * 0.74;
-        var helixX = side * 92 + depth * 44;
-        var tier = dist / STEP;
-        var ringVis = Math.max(0, 1 - Math.min(4.85, tier) / 4.85);
-        var depthBoost = Math.max(0.2, Math.pow(Math.max(0, depth), 0.9));
-        var verticalBand = Math.max(0.22, 1 - Math.pow(Math.abs(helixY) / (helixSpan * 0.48), 1.32));
-        var radius = 505 + Math.abs(side) * 158;
+        var helixY = -side * helixAmp;
+        var helixX = side * 34;
+        var radius = baseRadius + depth * 68;
         var isFront = i === frontIndex;
         btn.classList.toggle('is-front', isFront);
-        var blurPx = isFront ? 0 : Math.min(3.4, 0.5 + dist * 0.015);
-        var op = isFront ? 1 : 0.24 + 0.68 * ringVis * depthBoost;
-        var scCore =
-          0.5 +
-          0.48 * Math.pow(Math.max(0, 1 - dist / (STEP * 2.25)), 1.12) * verticalBand;
-        var sc = isFront ? Math.max(1.12, scCore) : scCore * (0.9 + 0.1 * depthBoost);
+        btn.style.setProperty('--i', String(i));
+        var blurPx = isFront ? 0 : Math.min(2.4, 0.35 + dist * 0.011);
+        var op = isFront ? 1 : Math.max(0.3, 0.34 + 0.56 * Math.max(0, depth));
+        var sc = isFront ? 1.06 : Math.max(0.8, 0.82 + 0.12 * Math.max(0, depth));
         btn.style.setProperty('--helix-x', helixX.toFixed(2) + 'px');
         btn.style.setProperty('--helix-y', helixY.toFixed(2) + 'px');
-        btn.style.setProperty('--orbit-radius', 'min(' + radius.toFixed(1) + 'px, min(780px, 52vw))');
+        btn.style.setProperty('--orbit-radius', 'min(' + radius.toFixed(1) + 'px, min(720px, 48vw))');
         btn.style.setProperty('--card-opacity', Math.min(1, op).toFixed(3));
         btn.style.setProperty('--card-scale', sc.toFixed(3));
         btn.style.setProperty('--card-blur', blurPx.toFixed(2) + 'px');
-        btn.style.setProperty('--card-z', String(Math.round(88 + depth * 128 + (isFront ? 28 : 0))));
-      });
+        btn.style.setProperty('--card-z', String(Math.round(90 + depth * 108 + (isFront ? 22 : 0))));
+      }
     }
 
     function frame() {
@@ -7979,8 +7980,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 #slide-home .nexora-orbit-button {
   transform:
     translate(calc(-50% + var(--helix-x, 0px)), calc(-50% + var(--helix-y, 0px)))
-    rotateY(calc(var(--i) * 36deg))
-    translateZ(var(--orbit-radius, min(780px, 52vw)))
+    rotateY(calc(var(--i, 0) * var(--nexora-orbit-step, 72deg)))
+    translateZ(var(--orbit-radius, min(720px, 48vw)))
     scale(var(--card-scale, 0.9)) !important;
 }
 #slide-home .nexora-orbit-button:not(.is-front) {
@@ -8008,8 +8009,8 @@ body[data-world="nexora"] #slide-home .home-copy ul.prose {
 #slide-home .nexora-orbit-button.is-front {
   transform:
     translate(calc(-50% + var(--helix-x, 0px)), calc(-50% + var(--helix-y, 0px)))
-    rotateY(calc(var(--i) * 36deg))
-    translateZ(var(--orbit-radius, min(780px, 52vw)))
+    rotateY(calc(var(--i, 0) * var(--nexora-orbit-step, 72deg)))
+    translateZ(var(--orbit-radius, min(720px, 48vw)))
     scale(var(--card-scale, 0.92)) !important;
 }
 </style>
@@ -8492,8 +8493,10 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-ux-refine.js?v=20260530a" defer></script>
 <link rel="stylesheet" href="assets/welten-final.css?v=20260530b" />
 <script src="assets/welten-final.js?v=20260530b" defer></script>
-<link rel="stylesheet" href="assets/welten-cleanup.css?v=20260531b" />
-<script src="assets/welten-cleanup.js?v=20260531b" defer></script>
+<link rel="stylesheet" href="assets/welten-cleanup.css?v=20260531c" />
+<script src="assets/welten-cleanup.js?v=20260531c" defer></script>
+<link rel="stylesheet" href="assets/welten-premium-review.css?v=20260531c" />
+<script src="assets/welten-premium-review.js?v=20260531c" defer></script>
 <link rel="stylesheet" href="assets/welten-hero-hide-desktop-titles.css?v=20260531b" />
 <link rel="stylesheet" href="assets/welten-mobile-home-portrait-fix.css?v=20260531b" />
 </body>

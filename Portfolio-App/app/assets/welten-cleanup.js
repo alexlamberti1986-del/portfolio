@@ -176,30 +176,30 @@
 
   function rebuildContactPremium() {
     var slide = document.querySelector("#slide-contact .slide-inner");
-    if (!slide || slide.dataset.weltenContactV === "2") return;
-    slide.dataset.weltenContactV = "2";
+    if (!slide || slide.dataset.weltenContactV === "3") return;
+    slide.dataset.weltenContactV = "3";
 
     slide.innerHTML =
-      '<div class="welten-contact-page">' +
-      '<header class="welten-contact-hero welten-contact-hero--split">' +
+      '<div class="welten-contact-page welten-contact-page--vertical">' +
+      '<header class="welten-contact-hero">' +
       '<div class="welten-contact-hero__copy">' +
       '<p class="chapter-label">Kontakt</p>' +
       "<h2>Kontakt</h2>" +
-      '<p class="welten-contact-lead">Ich freue mich auf den persönlichen Austausch — ob für ein neues Projekt, eine Website oder eine starke digitale Präsenz.</p>' +
+      '<p class="welten-contact-lead">Persönlich, direkt und unkompliziert — ich freue mich auf Ihre Nachricht oder Ihren Anruf.</p>' +
       "</div>" +
+      "</header>" +
       '<figure class="welten-contact-portrait welten-contact-portrait--hero">' +
       '<img class="portrait-photo welten-portrait-img" id="contactPhotoHero" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="520" height="650" decoding="async" loading="lazy" />' +
       "</figure>" +
-      "</header>" +
       '<div class="welten-contact-links">' +
       '<a class="welten-contact-link welten-contact-link--tel" href="tel:' + TEL + '">' + TEL_DISP + "</a>" +
       '<a class="welten-contact-link welten-contact-link--mail" href="mailto:' + MAIL + '">' + MAIL + "</a>" +
       "</div>" +
+      '<p class="welten-contact-outro">Ich freue mich auf spannende Projekte und neue Herausforderungen.</p>' +
       '<footer class="welten-contact-outro-block">' +
       '<figure class="welten-contact-portrait welten-contact-portrait--outro">' +
       '<img class="portrait-photo welten-portrait-img" id="contactPhotoOutro" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="420" height="520" decoding="async" loading="lazy" />' +
       "</figure>" +
-      '<p class="welten-contact-outro">Ich freue mich auf spannende Projekte und neue Herausforderungen.</p>' +
       "</footer>" +
       "</div>";
 
@@ -214,10 +214,10 @@
     closing.className = "welten-home-closing";
     closing.setAttribute("aria-label", "Persönlicher Abschluss");
     closing.innerHTML =
-      '<p class="welten-home-closing__text">Alex Lamberti verbindet Branding, Webdesign und digitale Strategie — persönlich, präzise und mit Blick auf echte Wirkung.</p>' +
       '<figure class="welten-home-closing__portrait">' +
       '<img class="portrait-photo welten-portrait-img" id="homeClosingPhoto" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="480" height="600" decoding="async" loading="lazy" />' +
       "</figure>" +
+      '<p class="welten-home-closing__text">Alex Lamberti verbindet Branding, Webdesign und digitale Strategie — persönlich, präzise und mit Blick auf echte Wirkung.</p>' +
       '<div class="welten-home-closing__cta">' +
       '<button type="button" class="btn" data-go="about">Über mich</button>' +
       "</div>";
@@ -342,25 +342,34 @@
 
     var ring = hero.querySelector(".nexora-orbit-ring");
     if (ring) {
-      ring.querySelectorAll(".nexora-orbit-button").forEach(function (b) {
-        b.remove();
+      var seen = {};
+      ring.querySelectorAll(".nexora-orbit-button").forEach(function (btn) {
+        var go = btn.getAttribute("data-go");
+        if (!go || seen[go]) {
+          btn.remove();
+          return;
+        }
+        seen[go] = true;
       });
-      ORBIT_ITEMS.forEach(function (item, index) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "nexora-orbit-button";
-        btn.setAttribute("data-go", item[0]);
-        btn.style.setProperty("--i", index);
-        btn.textContent = item[1];
-        ring.appendChild(btn);
-      });
+      if (ring.querySelectorAll(".nexora-orbit-button").length !== ORBIT_ITEMS.length) {
+        ring.querySelectorAll(".nexora-orbit-button").forEach(function (b) {
+          b.remove();
+        });
+        ORBIT_ITEMS.forEach(function (item, index) {
+          var el = document.createElement("button");
+          el.type = "button";
+          el.className = "nexora-orbit-button";
+          el.setAttribute("data-go", item[0]);
+          el.style.setProperty("--i", index);
+          el.textContent = item[1];
+          ring.appendChild(el);
+        });
+      }
+      ring.style.setProperty("--nexora-orbit-step", 360 / ORBIT_ITEMS.length + "deg");
     }
 
     hero.querySelectorAll(".dna-slide").forEach(function (btn) {
-      var go = btn.getAttribute("data-go");
-      if (go && CHAPTERS.indexOf(resolveChapter(go)) < 0) {
-        btn.remove();
-      }
+      btn.remove();
     });
   }
 
