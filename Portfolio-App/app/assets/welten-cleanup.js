@@ -149,27 +149,81 @@
     });
   }
 
+  var PORTRAIT_PLACEHOLDER =
+    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+
+  function applyAllPortraits() {
+    var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
+    var w = document.body.getAttribute("data-world") || "nexora";
+    var src = IMG[w] || IMG.nexora || IMG.vertex;
+    if (!src) return;
+    var alt =
+      w === "vertex"
+        ? "Alex Lamberti"
+        : w === "freiraum"
+          ? "Alex Lamberti — Freiraum"
+          : "Alex Lamberti — Nexora";
+    document
+      .querySelectorAll(".welten-portrait-img, #heroPhoto, #contactPhoto, #contactPhotoHero, #contactPhotoOutro, #homeClosingPhoto")
+      .forEach(function (img) {
+        img.removeAttribute("srcset");
+        img.src = src;
+        img.alt = alt;
+        img.style.display = "block";
+        img.style.opacity = "1";
+      });
+  }
+
   function rebuildContactPremium() {
     var slide = document.querySelector("#slide-contact .slide-inner");
-    if (!slide || slide.querySelector(".welten-contact-page")) return;
+    if (!slide || slide.dataset.weltenContactV === "2") return;
+    slide.dataset.weltenContactV = "2";
 
     slide.innerHTML =
       '<div class="welten-contact-page">' +
-      '<header class="welten-contact-hero">' +
+      '<header class="welten-contact-hero welten-contact-hero--split">' +
+      '<div class="welten-contact-hero__copy">' +
       '<p class="chapter-label">Kontakt</p>' +
       "<h2>Kontakt</h2>" +
-      '<p class="welten-contact-lead">Bereit für ein neues Projekt oder eine starke digitale Präsenz?</p>' +
+      '<p class="welten-contact-lead">Ich freue mich auf den persönlichen Austausch — ob für ein neues Projekt, eine Website oder eine starke digitale Präsenz.</p>' +
+      "</div>" +
+      '<figure class="welten-contact-portrait welten-contact-portrait--hero">' +
+      '<img class="portrait-photo welten-portrait-img" id="contactPhotoHero" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="520" height="650" decoding="async" loading="lazy" />' +
+      "</figure>" +
       "</header>" +
       '<div class="welten-contact-links">' +
       '<a class="welten-contact-link welten-contact-link--tel" href="tel:' + TEL + '">' + TEL_DISP + "</a>" +
       '<a class="welten-contact-link welten-contact-link--mail" href="mailto:' + MAIL + '">' + MAIL + "</a>" +
       "</div>" +
-      '<div class="welten-contact-map">' +
-      '<iframe title="Standort Alex Lamberti" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
-      'src="https://maps.google.com/maps?q=Schulweg+603,+5324+Full-Reuenthal,+Schweiz&output=embed"></iframe>' +
-      "</div>" +
-      '<p class="welten-contact-outro">Ich freue mich auf deine Anfrage.</p>' +
+      '<footer class="welten-contact-outro-block">' +
+      '<figure class="welten-contact-portrait welten-contact-portrait--outro">' +
+      '<img class="portrait-photo welten-portrait-img" id="contactPhotoOutro" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="420" height="520" decoding="async" loading="lazy" />' +
+      "</figure>" +
+      '<p class="welten-contact-outro">Ich freue mich auf spannende Projekte und neue Herausforderungen.</p>' +
+      "</footer>" +
       "</div>";
+
+    applyAllPortraits();
+  }
+
+  function injectHomeClosing() {
+    var block = document.querySelector("#slide-home .home-main-block");
+    if (!block || block.querySelector(".welten-home-closing")) return;
+
+    var closing = document.createElement("section");
+    closing.className = "welten-home-closing";
+    closing.setAttribute("aria-label", "Persönlicher Abschluss");
+    closing.innerHTML =
+      '<p class="welten-home-closing__text">Alex Lamberti verbindet Branding, Webdesign und digitale Strategie — persönlich, präzise und mit Blick auf echte Wirkung.</p>' +
+      '<figure class="welten-home-closing__portrait">' +
+      '<img class="portrait-photo welten-portrait-img" id="homeClosingPhoto" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="480" height="600" decoding="async" loading="lazy" />' +
+      "</figure>" +
+      '<div class="welten-home-closing__cta">' +
+      '<button type="button" class="btn" data-go="about">Über mich</button>' +
+      "</div>";
+
+    block.appendChild(closing);
+    applyAllPortraits();
   }
 
   function enhanceHomeStory() {
@@ -311,9 +365,16 @@
   }
 
   function ensureProjectsAccordion() {
-    if (document.body.getAttribute("data-current-slide") === "projects") {
-      document.dispatchEvent(new CustomEvent("welten-init-projects-accordion"));
-    }
+    document.dispatchEvent(new CustomEvent("welten-init-projects-accordion"));
+    setTimeout(function () {
+      var root = document.querySelector("[data-projects-accordion]");
+      if (!root) return;
+      if (root.querySelector(".projects-accordion__item.is-open")) return;
+      var first = root.querySelector(
+        '.projects-accordion__item[data-category="websites"] .projects-accordion__trigger'
+      );
+      if (first) first.click();
+    }, 160);
   }
 
   function onChapterChange(e) {
@@ -321,15 +382,20 @@
     if (ch === "leistungen") injectLeistungenRich();
     if (ch === "contact") rebuildContactPremium();
     if (ch === "projects") ensureProjectsAccordion();
+    if (ch === "home") injectHomeClosing();
   }
 
   function apply() {
     removeFooter();
     rebuildContactPremium();
     enhanceHomeStory();
+    injectHomeClosing();
     injectLeistungenRich();
     fixNexoraOrbit();
-    ensureProjectsAccordion();
+    applyAllPortraits();
+    if (document.body.getAttribute("data-current-slide") === "projects") {
+      ensureProjectsAccordion();
+    }
   }
 
   if (document.readyState === "loading") {
@@ -339,6 +405,21 @@
   }
 
   document.addEventListener("welten-chapter-change", onChapterChange);
+  document.addEventListener(
+    "click",
+    function (e) {
+      if (e.target.closest("[data-world-set]") || e.target.closest("[data-go]")) {
+        setTimeout(applyAllPortraits, 90);
+      }
+    },
+    true
+  );
+  try {
+    new MutationObserver(applyAllPortraits).observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-world"],
+    });
+  } catch (e) {}
   window.addEventListener("resize", function () {
     setTimeout(fixNexoraOrbit, 120);
   });

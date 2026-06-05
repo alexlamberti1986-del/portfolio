@@ -5,8 +5,8 @@ $files = @(
   "3-Welten-Master-iframe.html", "Portfolio-App\app\3-Welten-Master-iframe.html"
 )
 $cleanup = @'
-<link rel="stylesheet" href="assets/welten-cleanup.css?v=20260531a" />
-<script src="assets/welten-cleanup.js?v=20260531a" defer></script>
+<link rel="stylesheet" href="assets/welten-cleanup.css?v=20260531b" />
+<script src="assets/welten-cleanup.js?v=20260531b" defer></script>
 '@
 $utf8 = New-Object System.Text.UTF8Encoding $false
 foreach ($rel in $files) {
@@ -14,8 +14,8 @@ foreach ($rel in $files) {
   if (-not (Test-Path $path)) { continue }
   $t = [IO.File]::ReadAllText($path)
   if ($t -match 'welten-cleanup') {
-    $t = $t -replace 'welten-cleanup\.css\?v=[^"]+', 'welten-cleanup.css?v=20260531a'
-    $t = $t -replace 'welten-cleanup\.js\?v=[^"]+', 'welten-cleanup.js?v=20260531a'
+    $t = $t -replace 'welten-cleanup\.css\?v=[^"]+', 'welten-cleanup.css?v=20260531b'
+    $t = $t -replace 'welten-cleanup\.js\?v=[^"]+', 'welten-cleanup.js?v=20260531b'
   } elseif ($t -match 'welten-final') {
     $t = $t.Replace(
       '<script src="assets/welten-final.js?v=20260530b" defer></script>',
@@ -27,7 +27,7 @@ foreach ($rel in $files) {
 }
 $sync = @(
   "welten-cleanup.css", "welten-cleanup.js",
-  "welten-ux-refine.js", "welten-final.js"
+  "welten-ux-refine.js", "welten-ux-refine.css", "welten-final.js"
 )
 foreach ($n in $sync) {
   $s = Join-Path $root "assets\$n"

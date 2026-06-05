@@ -3,7 +3,7 @@
 /* ── Home: endet nach Hero + 2 Buttons ── */
 #slide-home .home-copy .more,
 #slide-home .home-copy ul.prose,
-#slide-home .home-portrait-card,
+#slide-home .home-layout--intro .home-portrait-card,
 #slide-home .welten-home-extras,
 #slide-home .welten-cta-band,
 .welten-home-extras,
@@ -40,12 +40,10 @@ body.is-home #slide-home .slide-inner--home {
 }
 
 #slide-contact .contact-visual,
-#slide-contact .contact-actions {
+#slide-contact .contact-actions,
+.welten-contact-map,
+.contact-map-embed {
   display: none !important;
-}
-
-#slide-contact .contact-map-embed {
-  margin-top: 1.5rem;
 }
 
 /* ── Footer ── */

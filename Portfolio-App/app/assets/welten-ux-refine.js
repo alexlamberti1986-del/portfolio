@@ -34,16 +34,7 @@
   }
 
   function ensureContactMapOnly() {
-    var slide = document.querySelector("#slide-contact .glass-card");
-    if (!slide) return;
-    if (!slide.querySelector(".contact-map-embed")) {
-      var map = document.createElement("div");
-      map.className = "contact-map-embed";
-      map.innerHTML =
-        '<iframe title="Standort Alex Lamberti" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
-        'src="https://maps.google.com/maps?q=Schulweg+603,+5324+Full-Reuenthal,+Schweiz&output=embed"></iframe>';
-      slide.appendChild(map);
-    }
+    /* Maps entfernt — persönliche Kontaktseite ohne Kartenansicht */
   }
 
   function apply() {
