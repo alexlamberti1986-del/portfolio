@@ -1,0 +1,288 @@
+/* Welten Cleanup — Kontakt premium, Nav Mobile, Leistungen, FAQ, kein Footer */
+
+/* ── Footer entfernt ── */
+.welten-site-footer {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ── Kontakt premium ── */
+#slide-contact .contact-layout {
+  display: block !important;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2rem) 0;
+}
+
+#slide-contact .glass-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.welten-contact-page {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+}
+
+.welten-contact-hero .chapter-label {
+  margin-bottom: 0.75rem;
+}
+
+.welten-contact-hero h2 {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin: 0 0 1rem;
+}
+
+.welten-contact-lead {
+  margin: 0;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.55;
+  opacity: 0.88;
+  max-width: 42ch;
+}
+
+.welten-contact-links {
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.welten-contact-link {
+  display: block;
+  font-size: clamp(1.35rem, 3.2vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  padding: 0.35rem 0;
+  min-height: 48px;
+  line-height: 1.3;
+  border-bottom: 1px solid transparent;
+  transition: opacity 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  word-break: break-word;
+}
+
+.welten-contact-link:hover {
+  opacity: 0.82;
+  border-bottom-color: currentColor;
+  transform: translateX(4px);
+}
+
+.welten-contact-map {
+  border-radius: clamp(16px, 2.5vw, 24px);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  min-height: 240px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+}
+
+.welten-contact-map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.welten-contact-outro {
+  margin: 0;
+  font-size: clamp(1rem, 1.8vw, 1.1rem);
+  opacity: 0.8;
+  font-style: italic;
+}
+
+body[data-world="nexora"] .welten-contact-map {
+  box-shadow: 0 0 48px rgba(101, 217, 255, 0.12), 0 24px 64px rgba(0, 0, 0, 0.35);
+}
+
+body[data-world="vertex"] .welten-contact-hero h2,
+body[data-world="vertex"] .welten-contact-link {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body[data-world="freiraum"] .welten-contact-map {
+  border-radius: 28px 18px 32px 22px;
+}
+
+/* ── Home Story ── */
+.welten-home-story__title {
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+/* ── Leistungen erweitert ── */
+.welten-leistungen-rich {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.welten-leistung-rich {
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.welten-leistung-rich h3 {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+}
+
+.welten-leistung-rich__desc {
+  margin: 0 0 0.85rem;
+  line-height: 1.65;
+  opacity: 0.92;
+}
+
+.welten-leistung-rich__benefit {
+  margin: 0 0 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  opacity: 0.88;
+}
+
+.welten-leistung-rich ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.welten-leistung-rich li {
+  line-height: 1.55;
+}
+
+.welten-leistung-rich__result {
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* ── FAQ Accordion ── */
+.welten-faq {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.welten-faq > h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.welten-faq__item {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.welten-faq__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 4px;
+  min-height: 52px;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.welten-faq__trigger::after {
+  content: "+";
+  font-size: 1.25rem;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.welten-faq__item.is-open .welten-faq__trigger::after {
+  content: "−";
+}
+
+.welten-faq__panel {
+  padding: 0 4px 18px;
+  line-height: 1.65;
+  opacity: 0.9;
+}
+
+.welten-faq__panel[hidden] {
+  display: none;
+}
+
+/* ── Mobile / Tablet Navigation ── */
+@media (max-width: 1024px) {
+  .menu-links a {
+    font-size: clamp(0.95rem, 3.8vw, 1.05rem) !important;
+    padding: 14px 6px !important;
+    min-height: 48px !important;
+    white-space: normal !important;
+    line-height: 1.35 !important;
+  }
+
+  #slide-home .nexora-orbit-button,
+  #slide-home .dna-slide {
+    font-size: clamp(0.78rem, 3.2vw, 0.92rem) !important;
+    padding: 12px 14px !important;
+    min-height: 44px !important;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cta-row {
+    flex-wrap: wrap;
+    gap: 12px !important;
+  }
+
+  .cta-row .btn {
+    min-height: 48px;
+    padding: 12px 20px !important;
+    font-size: clamp(0.88rem, 3.5vw, 0.98rem) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .welten-contact-link {
+    font-size: clamp(1.15rem, 5vw, 1.45rem);
+  }
+}
+
+/* ── NEXORA Projekte: Klicks sicherstellen ── */
+#slide-projects .projects-accordion,
+#slide-projects .projects-accordion__trigger,
+#slide-projects .project-card {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 2;
+}
+
+#slide-projects .projects-accordion__trigger {
+  min-height: 52px;
+}
+
+/* ── Experience: sanfte Übergänge ── */
+.slide.active .slide-inner {
+  animation: weltenSceneIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes weltenSceneIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.active .slide-inner {
+    animation: none;
+  }
+}

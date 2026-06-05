@@ -69,6 +69,7 @@
   }
 
   function rebuildContactMinimal() {
+    if (document.querySelector(".welten-contact-page")) return;
     var card = document.querySelector("#slide-contact .glass-card");
     if (!card || card.dataset.weltenContactFinal === "1") return;
     card.dataset.weltenContactFinal = "1";

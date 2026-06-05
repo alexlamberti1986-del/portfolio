@@ -19,17 +19,7 @@
   }
 
   function injectFooter() {
-    if (document.querySelector(".welten-site-footer")) return;
-    var footer = document.createElement("footer");
-    footer.className = "welten-site-footer";
-    footer.setAttribute("role", "contentinfo");
-    footer.innerHTML =
-      '<div class="welten-site-footer__inner">' +
-      '<a href="tel:' + TEL + '">' + TEL_DISP + "</a>" +
-      '<a href="mailto:' + MAIL + '">' + MAIL + "</a>" +
-      '<span class="welten-site-footer__copy">© Alex Lamberti</span>' +
-      "</div>";
-    document.body.appendChild(footer);
+    /* Footer entfernt — Kontakt nur in Navigation und Kontaktseite */
   }
 
   function injectMenuContact() {
