@@ -133,7 +133,8 @@ body[data-master-world="freiraum"] .sound-toggle {
 }
 </style>
 <link rel="stylesheet" href="assets/world-transition.css" />
-<link rel="stylesheet" href="assets/shell-performance.css" />
+<link rel="stylesheet" href="assets/shell-performance.css?v=20260531c" />
+<script src="assets/welten-runtime-perf.js"></script>
 <script src="assets/transition-engine.js"></script>
 </head>
 <body data-master-world="vertex">
@@ -197,7 +198,19 @@ body[data-master-world="freiraum"] .sound-toggle {
     setBarHeight();
   }
 
-  window.addEventListener("resize", setBarHeight, { passive: true });
+  var throttledSetBarHeight = (function () {
+    var scheduled = false;
+    return function () {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(function () {
+        scheduled = false;
+        setBarHeight();
+      });
+    };
+  })();
+
+  window.addEventListener("resize", throttledSetBarHeight, { passive: true });
   setBarHeight();
   if (bar && typeof ResizeObserver !== "undefined") {
     new ResizeObserver(setBarHeight).observe(bar);

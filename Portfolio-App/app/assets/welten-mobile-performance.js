@@ -161,42 +161,16 @@
   }
 
   function bindWorldPauseMessage() {
-    var paused = false;
-    var origRaf = window.requestAnimationFrame;
-    var origCaf = window.cancelAnimationFrame;
-    var blockedIds = new Map();
-    var nextId = 1;
-
     window.__portfolioWorldPaused = false;
 
-    function patchRaf() {
-      if (window.__portfolioRafPatched) return;
-      window.__portfolioRafPatched = true;
-      window.requestAnimationFrame = function (cb) {
-        if (window.__portfolioWorldPaused) return 0;
-        var id = origRaf.call(window, cb);
-        blockedIds.set(id, cb);
-        return id;
-      };
-      window.cancelAnimationFrame = function (id) {
-        blockedIds.delete(id);
-        return origCaf.call(window, id);
-      };
-    }
-
     function setPaused(next) {
-      paused = !!next;
-      window.__portfolioWorldPaused = paused;
-      document.documentElement.classList.toggle("welten-world-paused", paused);
-      if (paused) {
-        blockedIds.forEach(function (_cb, id) {
-          origCaf.call(window, id);
-        });
-        blockedIds.clear();
+      window.__portfolioWorldPaused = !!next;
+      document.documentElement.classList.toggle("welten-world-paused", window.__portfolioWorldPaused);
+      if (window.WeltenRuntimePerf) {
+        if (window.__portfolioWorldPaused) window.WeltenRuntimePerf.pauseAnimations();
+        else window.WeltenRuntimePerf.resumeAnimations();
       }
     }
-
-    patchRaf();
 
     window.addEventListener("message", function (e) {
       if (!e.data) return;
@@ -206,11 +180,7 @@
         return;
       }
       if (e.data.type === "portfolio-world-pause") {
-        var shouldPause = !!e.data.paused;
-        if (isMobileContext()) {
-          shouldPause = false;
-        }
-        setPaused(shouldPause);
+        setPaused(!!e.data.paused);
         cleanupIframeTransition();
         return;
       }
@@ -224,6 +194,7 @@
             c.style.opacity = "0";
           } else {
             c.style.display = "";
+            c.style.visibility = "";
           }
           c.style.pointerEvents = "none";
         });
@@ -232,9 +203,6 @@
           cleanupIframeTransition();
           apply();
         }, 120);
-        setTimeout(function () {
-          cleanupIframeTransition();
-        }, 400);
       }
     });
   }
@@ -403,7 +371,10 @@
   }
 
   apply();
-  window.addEventListener("resize", applyViewportUnits, { passive: true });
+  var throttledViewport = window.WeltenRuntimePerf
+    ? window.WeltenRuntimePerf.rafThrottle(applyViewportUnits)
+    : applyViewportUnits;
+  window.addEventListener("resize", throttledViewport, { passive: true });
   window.addEventListener("orientationchange", function () {
     setTimeout(apply, 150);
   });
@@ -427,10 +398,16 @@
     observeActiveSlide();
   }
 
-  window.addEventListener("resize", function () {
-    applyViewportUnits();
-    fixSlidesLayout();
-  }, { passive: true });
+  var throttledLayout = window.WeltenRuntimePerf
+    ? window.WeltenRuntimePerf.rafThrottle(function () {
+        applyViewportUnits();
+        fixSlidesLayout();
+      })
+    : function () {
+        applyViewportUnits();
+        fixSlidesLayout();
+      };
+  window.addEventListener("resize", throttledLayout, { passive: true });
 
   window.addEventListener("load", wireMobileHeroNav);
   if (document.readyState === "loading") {

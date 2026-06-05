@@ -50,6 +50,19 @@ html.world-transition-lock body {
   pointer-events: auto !important;
 }
 
+.world-frame:not(.is-active) {
+  content-visibility: hidden;
+  contain: strict;
+}
+
+.world-frame.is-active:not(.is-leaving) {
+  content-visibility: visible;
+}
+
+.world-bar {
+  contain: layout style;
+}
+
 @media (max-width: 1024px) {
   .world-bar {
     position: fixed !important;

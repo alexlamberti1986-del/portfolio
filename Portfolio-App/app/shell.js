@@ -124,7 +124,19 @@
     setBarHeight();
   }
 
-  window.addEventListener("resize", setBarHeight, { passive: true });
+  var throttledSetBarHeight = (function () {
+    var scheduled = false;
+    return function () {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(function () {
+        scheduled = false;
+        setBarHeight();
+      });
+    };
+  })();
+
+  window.addEventListener("resize", throttledSetBarHeight, { passive: true });
   setBarHeight();
   if (bar && typeof ResizeObserver !== "undefined") {
     new ResizeObserver(setBarHeight).observe(bar);

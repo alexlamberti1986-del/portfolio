@@ -665,3 +665,56 @@ html.welten-world-paused .light-beams {
 }
 
 /* Desktop ≥1025px: Mobile-Hero-Regeln greifen nicht */
+
+/* ── Runtime Performance: weniger Layout/Paint, pausierte Welten ── */
+@media (max-width: 1024px) {
+  .slide:not(.active) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 480px;
+    contain: layout style paint;
+  }
+
+  .slide.active {
+    content-visibility: visible;
+  }
+}
+
+html.welten-world-paused canvas,
+html.welten-page-hidden canvas,
+html.welten-reduce-effects .dna-premium-canvas,
+html.welten-reduce-effects .dna-particles-canvas,
+html.welten-reduce-effects #particle-canvas,
+html.welten-reduce-effects #weltenMousePaintCanvas {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.welten-world-paused *,
+html.welten-page-hidden * {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  canvas {
+    display: none !important;
+  }
+}
+
+img:not([loading]) {
+  content-visibility: auto;
+}
+
+.slide img[loading="lazy"],
+.home-portrait-card img,
+.contact-visual img {
+  decoding: async;
+}
+
