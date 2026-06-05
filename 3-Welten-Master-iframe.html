@@ -20,7 +20,12 @@
 <meta property="og:title" content="Alex Lamberti | Digital Marketing, Webdesign & Strategie" />
 <meta property="og:description" content="Portfolio von Alex Lamberti — Projekte, Leistungen und Kontakt in NEXORA, PROFESSIONAL und FREIRAUM." />
 <meta property="og:url" content="https://www.alexlamberti.ch/" />
-<meta property="og:image" content="https://www.alexlamberti.ch/assets/favicon/android-chrome-512x512.png" />
+<meta property="og:image" content="https://www.alexlamberti.ch/assets/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Alex Lamberti — Branding, Webseiten und digitale Erlebnisse" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://www.alexlamberti.ch/assets/og-image.jpg" />
 <title>Alex Lamberti | Digital Marketing, Webdesign & Strategie</title>
 <style>
 * { cursor: default; }
@@ -154,7 +159,15 @@ body[data-master-world="freiraum"] .sound-toggle {
 <script src="assets/welten-ux-refine.js?v=20260530a" defer></script>
 <link rel="stylesheet" href="assets/welten-final.css?v=20260530b" />
 <script src="assets/welten-final.js?v=20260530b" defer></script>
-<script src="assets/transition-engine.js"></script>
+<script>
+(function () {
+  if (window.matchMedia("(max-width: 1024px), (prefers-reduced-motion: reduce)").matches) return;
+  var s = document.createElement("script");
+  s.src = "assets/transition-engine.js";
+  s.defer = true;
+  document.head.appendChild(s);
+})();
+</script>
 </head>
 <body data-master-world="vertex">
 <div class="world-bar" role="group" aria-label="Designwelt wählen">

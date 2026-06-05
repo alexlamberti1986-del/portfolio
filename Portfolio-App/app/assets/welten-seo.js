@@ -5,7 +5,7 @@
   "use strict";
 
   var BASE = "https://www.alexlamberti.ch";
-  var OG_IMAGE = BASE + "/assets/favicon/android-chrome-512x512.png";
+  var OG_IMAGE = BASE + "/assets/og-image.jpg";
 
   var PAGES = {
     home: {
@@ -148,6 +148,9 @@
     upsertMeta("property", "og:description", page.description);
     upsertMeta("property", "og:url", BASE + page.path);
     upsertMeta("property", "og:image", OG_IMAGE);
+    upsertMeta("property", "og:image:width", "1200");
+    upsertMeta("property", "og:image:height", "630");
+    upsertMeta("property", "og:image:alt", "Alex Lamberti — Branding, Webseiten und digitale Erlebnisse");
 
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", page.title);

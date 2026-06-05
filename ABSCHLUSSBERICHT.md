@@ -168,35 +168,32 @@ Tel + E-Mail zusätzlich: Header, Footer, Mobile-Menü
 
 ## 13. Lighthouse Ergebnisse
 
-Lighthouse sollte nach Deploy manuell geprüft werden:
+Automatische PageSpeed-API-Messung war quota-limitiert. Bitte manuell prüfen:
 
 ```
 Desktop-Ziel:  90+
 Mobile-Ziel:   85–90+
 ```
 
-**Erwartete Verbesserungen durch:**
-- WebP-Bilder, lazy loading
-- Weniger DOM auf Home (keine Karten/Teaser)
-- Pausierte Animationen auf Unterseiten
-- Reduzierte Mobile-Effekte
+**Test:** https://pagespeed.web.dev → `alexlamberti.ch` (Home, /projekte, /kontakt)
 
-**Empfohlener Test:**
-1. https://pagespeed.web.dev → alexlamberti.ch
-2. Pro Hauptseite (/ , /projekte, /kontakt) testen
-3. Core Web Vitals in Search Console nach 2–4 Wochen prüfen
+**Bereits umgesetzte Performance-Maßnahmen:**
+- WebP-Bilder, lazy loading
+- Weniger DOM auf Home
+- Pausierte Animationen auf Unterseiten
+- `transition-engine.js` nur Desktop (>1024px), deferred
+- Inaktive Iframes: `content-visibility: hidden`
 
 ---
 
 ## 14. Offene Empfehlungen
 
-1. **OG-Bild:** Dediziertes Social-Sharing-Bild (1200×630) statt Favicon
+1. ~~**OG-Bild:** Dediziertes Social-Sharing-Bild (1200×630)~~ → **Erledigt:** `assets/og-image.jpg` (47 KB)
 2. **AVIF:** Zusätzlich zu WebP für moderne Browser (`<picture>` mit AVIF-Fallback)
-3. **Lighthouse-Baseline:** Nach Deploy messen und Werte hier ergänzen
+3. **Lighthouse-Baseline:** Manuell auf pagespeed.web.dev messen und Werte ergänzen
 4. **Google Search Console:** Property verifizieren, Sitemap einreichen
 5. **Bing Webmaster:** Sitemap einreichen
 6. **Analytics:** Optional privacy-freundliches Tracking (Plausible/Fathom)
-7. **Kontakt:** Optional Maps-Link im Footer (bewusst weggelassen für Minimalismus)
 
 ---
 
