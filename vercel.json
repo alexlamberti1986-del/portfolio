@@ -1,0 +1,30 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/projekte", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/leistungen", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/kontakt", "destination": "/3-Welten-Master-iframe.html" }
+  ],
+  "redirects": [
+    { "source": "/3-Welten-Master-iframe.html", "destination": "/", "permanent": true },
+    { "source": "/NEXORA.html", "destination": "/", "permanent": true },
+    { "source": "/PROFESSIONAL.html", "destination": "/", "permanent": true },
+    { "source": "/FREIRAUM.html", "destination": "/", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

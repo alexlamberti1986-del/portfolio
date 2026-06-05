@@ -2,8 +2,8 @@
   "use strict";
 
   var CHAPTERS = [
-    "home", "about", "profile", "values", "strengths", "projects",
-    "experience", "workstyle", "why", "faq", "contact",
+    "home", "projects", "leistungen", "about",
+    "contact",
   ];
 
   var sharedChapter = "home";

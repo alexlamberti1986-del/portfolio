@@ -2059,7 +2059,7 @@
     /* FREIRAUM: jede Unterseite andere Kunst-Farbe */
     body[data-world="freiraum"][data-current-slide="about"] .slide.active { background: radial-gradient(900px 520px at 12% 10%, rgba(104,216,214,.16), transparent 60%); }
     body[data-world="freiraum"][data-current-slide="values"] .slide.active { background: radial-gradient(900px 520px at 10% 20%, rgba(255,209,102,.20), transparent 60%); }
-    body[data-world="freiraum"][data-current-slide="strengths"] .slide.active { background: radial-gradient(900px 520px at 88% 12%, rgba(255,111,174,.18), transparent 60%); }
+    body[data-world="freiraum"][data-current-slide="leistungen"] .slide.active { background: radial-gradient(900px 520px at 88% 12%, rgba(255,111,174,.18), transparent 60%); }
     body[data-world="freiraum"][data-current-slide="projects"] .slide.active { background: radial-gradient(900px 520px at 50% 12%, rgba(122,92,255,.16), transparent 60%); }
     body[data-world="freiraum"][data-current-slide="experience"] .slide.active { background: radial-gradient(900px 520px at 20% 18%, rgba(255,146,91,.16), transparent 60%); }
     body[data-world="freiraum"][data-current-slide="contact"] .slide.active { background: radial-gradient(900px 520px at 86% 16%, rgba(104,216,214,.18), transparent 60%); }
@@ -3663,7 +3663,7 @@ body[data-world="vertex"] .home-portrait-card,
     <button type="button" class="experience-step" data-go="about" data-label="Über mich">Über mich</button>
     <button type="button" class="experience-step" data-go="profile" data-label="Profil">Profil</button>
     <button type="button" class="experience-step" data-go="values" data-label="Werte">Werte</button>
-    <button type="button" class="experience-step" data-go="strengths" data-label="Stärken">Stärken</button>
+    <button type="button" class="experience-step" data-go="leistungen" data-label="Stärken">Stärken</button>
     <button type="button" class="experience-step" data-go="projects" data-label="Projekte">Projekte</button>
     <button type="button" class="experience-step" data-go="experience" data-label="Erfahrung">Erfahrung</button>
     <button type="button" class="experience-step" data-go="workstyle" data-label="Arbeitsweise">Arbeitsweise</button>
@@ -3679,17 +3679,11 @@ body[data-world="vertex"] .home-portrait-card,
         </div>
         <button type="button" class="btn-close" id="closeMenu">Schliessen</button>
       </div>
-      <nav class="menu-links" aria-label="Kapitel">
+      <nav class="menu-links" aria-label="Hauptnavigation">
         <a href="#" data-go="home">Home</a>
-        <a href="#" data-go="about">Über mich</a>
-        <a href="#" data-go="profile">Profil</a>
-        <a href="#" data-go="values">Werte</a>
-        <a href="#" data-go="strengths">Stärken</a>
         <a href="#" data-go="projects">Projekte</a>
-        <a href="#" data-go="experience">Erfahrung</a>
-        <a href="#" data-go="workstyle">Arbeitsweise</a>
-        <a href="#" data-go="why">Motivation</a>
-        <a href="#" data-go="faq">FAQ</a>
+        <a href="#" data-go="leistungen">Leistungen</a>
+        <a href="#" data-go="about">Über mich</a>
         <a href="#" data-go="contact">Kontakt</a>
       </nav>
     </div>
@@ -3776,20 +3770,11 @@ body[data-world="vertex"] .home-portrait-card,
             </div>
             <div class="dna-orbit-group" id="dnaOrbitGroup" style="--dna-rot: 0deg;">
               <div class="dna-ring-scene">
-                <div class="dna-ring" id="dnaRing">
-                  <button type="button" class="dna-slide" data-go="about" style="--i: 0; --lift: -40px; --z-depth: -52px;">Über mich</button>
-                  <button type="button" class="dna-slide" data-go="profile" style="--i: 1; --lift: 34px; --z-depth: 36px;">Profil</button>
-                  <button type="button" class="dna-slide" data-go="values" style="--i: 2; --lift: -36px; --z-depth: 28px;">Werte</button>
-                  <button type="button" class="dna-slide" data-go="strengths" style="--i: 3; --lift: 40px; --z-depth: -30px;">Stärken</button>
-                  <button type="button" class="dna-slide" data-go="projects" style="--i: 4; --lift: -32px; --z-depth: 44px;">Projekte</button>
-                  <button type="button" class="dna-slide" data-go="experience" style="--i: 5; --lift: 30px; --z-depth: -40px;">Erfahrung</button>
-                  <button type="button" class="dna-slide" data-go="workstyle" style="--i: 6; --lift: -38px; --z-depth: 32px;">Arbeit</button>
-                  <button type="button" class="dna-slide" data-go="why" style="--i: 7; --lift: 36px; --z-depth: -36px;">Motivation</button>
-                  <button type="button" class="dna-slide" data-go="faq" style="--i: 8; --lift: -34px; --z-depth: 40px;">FAQ</button>
-                  <button type="button" class="dna-slide" data-go="contact" style="--i: 9; --lift: 42px; --z-depth: -42px;">Kontakt</button>
-                </div>
-              </div>
-            </div>
+                <div class="dna-ring" id="dnaRing">                  <button type="button" class="dna-slide" data-go="projects" style="--i: 0; --lift: -40px; --z-depth: -52px;">Projekte</button>
+                  <button type="button" class="dna-slide" data-go="leistungen" style="--i: 1; --lift: 34px; --z-depth: 36px;">Leistungen</button>
+                  <button type="button" class="dna-slide" data-go="about" style="--i: 2; --lift: -36px; --z-depth: 28px;">Über mich</button>
+                  <button type="button" class="dna-slide" data-go="contact" style="--i: 3; --lift: 40px; --z-depth: -30px;">Kontakt</button>
+                  <button type="button" class="dna-slide" data-go="home" style="--i: 4; --lift: -32px; --z-depth: 44px;">Home</button></div></div></div>
           </div>
         </div>
 
@@ -3869,7 +3854,7 @@ body[data-world="vertex"] .home-portrait-card,
     </section>
 
     <!-- WP: Section „Werte“ — ausführliche Karten + Motto -->
-    <section class="slide" id="slide-values" data-slide="values" aria-label="Werte" data-welten-values-v1>
+    <section class="slide" id="slide-values" data-welten-deprecated="1" data-welten-deprecated="1" data-welten-deprecated="1" data-slide="values" aria-label="Werte" data-welten-values-v1>
       <div class="slide-inner">
         <p class="chapter-label">Werte</p>
         <h2 class="section-title">Persönliche Werte</h2>
@@ -3886,12 +3871,12 @@ body[data-world="vertex"] .home-portrait-card,
     </section>
 
     <!-- WP: Section „Stärken“ — Kompetenz-Karten (aus Zeugnissen verdichtet) -->
-    <section class="slide" id="slide-strengths" data-slide="strengths" aria-label="Stärken" data-welten-strengths-v1>
+    <section class="slide" id="slide-leistungen" data-slide="leistungen" aria-label="Stärken" data-welten-leistungen-v1>
       <div class="slide-inner">
         <p class="chapter-label">Stärken</p>
-        <h2 class="section-title">Was ich besonders mitbringe</h2>
+        <h2 class="section-title">Leistungen &amp; Kompetenzen</h2>
         <p class="prose">Diese Stärken nutze ich in digitalen Projekten – von der Konzeption über Inhalte und Gestaltung bis zur Umsetzung und Verbesserung.</p>
-        <div class="welten-strengths-lanes" data-welten-strengths-lanes>
+        <div class="welten-strengths-lanes" data-welten-leistungen-lanes>
           <div class="sl-col glass-card"><h3>Fokus</h3><ul class="sl-list"><li>Machermentalität &amp; Zielklarheit</li><li>Digitales Systemdenken</li><li>Conversion-Orientierung</li></ul></div>
           <div class="sl-col glass-card"><h3>Ausdruck</h3><ul class="sl-list"><li>Content &amp; Sprache</li><li>Kreativität mit Marke im Blick</li><li>Kommunikation im Team</li></ul></div>
         </div>
@@ -4133,7 +4118,7 @@ body[data-world="vertex"] .home-portrait-card,
     </section>
 
     <!-- WP: Section „Erfahrung“ — drei Blöcke: Beruf, Bildung, Schule -->
-    <section class="slide" id="slide-experience" data-slide="experience" aria-label="Erfahrung">
+    <section class="slide" id="slide-experience" data-welten-deprecated="1" data-welten-deprecated="1" data-welten-deprecated="1" data-slide="experience" aria-label="Erfahrung">
       <div class="slide-inner">
         <p class="chapter-label">Erfahrung</p>
         <h2 class="section-title">Vom Markenraum zur digitalen Strategie.</h2>
@@ -4221,7 +4206,7 @@ body[data-world="vertex"] .home-portrait-card,
 
     <!-- WP: Section „Kontakt“ — nur E-Mail & Telefon, Bild wie Home (Doppelbild) -->
     
-    <section class="slide" id="slide-profile" data-slide="profile" aria-label="Profil Digital Marketing">
+    <section class="slide" id="slide-profile" data-welten-deprecated="1" data-welten-deprecated="1" data-welten-deprecated="1" data-slide="profile" aria-label="Profil Digital Marketing">
       <div class="slide-inner">
         <p class="chapter-label">Profil</p>
         <h2 class="section-title">Mein Profil im Digital Marketing</h2>
@@ -4241,7 +4226,7 @@ body[data-world="vertex"] .home-portrait-card,
       </div>
     </section>
 
-    <section class="slide" id="slide-workstyle" data-slide="workstyle" aria-label="Arbeitsweise">
+    <section class="slide" id="slide-workstyle" data-welten-deprecated="1" data-welten-deprecated="1" data-welten-deprecated="1" data-slide="workstyle" aria-label="Arbeitsweise">
       <div class="slide-inner">
         <p class="chapter-label">Arbeitsweise</p>
         <h2 class="section-title">So arbeite ich</h2>
@@ -4255,7 +4240,7 @@ body[data-world="vertex"] .home-portrait-card,
       </div>
     </section>
 
-    <section class="slide" id="slide-why" data-slide="why" aria-label="Motivation Digital Marketing">
+    <section class="slide" id="slide-why" data-welten-deprecated="1" data-welten-deprecated="1" data-welten-deprecated="1" data-slide="why" aria-label="Motivation Digital Marketing">
       <div class="slide-inner">
         <p class="chapter-label">Motivation</p>
         <h2 class="section-title">Motivation &amp; Fokus</h2>
@@ -4272,7 +4257,7 @@ body[data-world="vertex"] .home-portrait-card,
       </div>
     </section>
 
-    <section class="slide" id="slide-faq" data-slide="faq" aria-label="FAQ">
+    <section class="slide" id="slide-faq" data-welten-deprecated="1" data-welten-deprecated="1" data-welten-deprecated="1" data-slide="faq" aria-label="FAQ">
       <div class="slide-inner">
         <p class="chapter-label">FAQ</p>
         <h2 class="section-title">Häufige Fragen</h2>
@@ -4432,7 +4417,7 @@ body[data-world="vertex"] .home-portrait-card,
       }
 
       /** Reihenfolge der Kapitel — muss zu .slide[data-slide] passen (Fortschrittsleiste entfernt). */
-      var CHAPTER_ORDER = ["home","about","profile","values","strengths","projects","experience","workstyle","why","faq","contact"];
+      var CHAPTER_ORDER = ["home","projects","leistungen","about","contact"];
 
       var slides = CHAPTER_ORDER.map(function (id) {
         return document.querySelector('.slide[data-slide="' + id + '"]');
@@ -5539,7 +5524,7 @@ body[data-world="vertex"] .home-portrait-card,
 </script>
 
 
-<script id="portfolio-master-bridge">(function(){if(window.parent===window)return;var CH=["home","about","profile","values","strengths","projects","experience","workstyle","why","faq","contact"];function chapter(){var b=document.body&&document.body.getAttribute("data-current-slide");if(b&&CH.indexOf(b)>=0)return b;var s=document.querySelector(".slide.active[data-slide]");if(s){var id=s.getAttribute("data-slide");if(CH.indexOf(id)>=0)return id;}return"home";}function push(){try{window.parent.postMessage({type:"portfolio-chapter",chapter:chapter()},"*");}catch(e){}}function goToChapter(raw){var id=raw;if(CH.indexOf(id)<0)id="home";var n=0;function tryClick(){var link=document.querySelector('.menu-links a[data-go="'+id+'"]');if(link){link.click();return;}if(++n<35)setTimeout(tryClick,45);}tryClick();}window.addEventListener("message",function(e){if(!e.data||e.data.type!=="portfolio-go-chapter")return;goToChapter(e.data.chapter);});document.addEventListener("click",function(){setTimeout(push,0);},true);window.addEventListener("load",push);if(document.body)new MutationObserver(push).observe(document.body,{attributes:true,attributeFilter:["data-current-slide"]});push();})();</script>
+<script id="portfolio-master-bridge">(function(){if(window.parent===window)return;var CH=["home","projects","leistungen","about","contact"];function chapter(){var b=document.body&&document.body.getAttribute("data-current-slide");if(b&&CH.indexOf(b)>=0)return b;var s=document.querySelector(".slide.active[data-slide]");if(s){var id=s.getAttribute("data-slide");if(CH.indexOf(id)>=0)return id;}return"home";}function push(){try{window.parent.postMessage({type:"portfolio-chapter",chapter:chapter()},"*");}catch(e){}}function goToChapter(raw){var map={profile:"leistungen",values:"about",strengths:"leistungen",experience:"about",workstyle:"about",why:"about",faq:"about"};var id=map[raw]||raw;if(CH.indexOf(id)<0)id="home";var n=0;function tryClick(){var link=document.querySelector('.menu-links a[data-go="'+id+'"]');if(link){link.click();return;}if(++n<35)setTimeout(tryClick,45);}tryClick();}window.addEventListener("message",function(e){if(!e.data||e.data.type!=="portfolio-go-chapter")return;goToChapter(e.data.chapter);});document.addEventListener("click",function(){setTimeout(push,0);},true);window.addEventListener("load",push);if(document.body)new MutationObserver(push).observe(document.body,{attributes:true,attributeFilter:["data-current-slide"]});push();})();</script>
 <style id="welten-patch-css-v1">
   .slide#slide-faq .value-card h3 { font-size: 0.98rem; margin-bottom: 0.45rem; }
   .slide#slide-faq .card-grid { margin-top: 0.75rem; }
@@ -5950,6 +5935,9 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260531b" />
 <link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260531b" />
+<link rel="stylesheet" href="assets/welten-site-ia.css?v=20260601a" />
+<script src="assets/welten-seo.js?v=20260601a"></script>
+<script src="assets/welten-site-ia.js?v=20260601a" defer></script>
 <link rel="stylesheet" href="assets/welten-hero-hide-desktop-titles.css?v=20260531b" />
 <link rel="stylesheet" href="assets/welten-mobile-home-portrait-fix.css?v=20260531b" />
 </body>

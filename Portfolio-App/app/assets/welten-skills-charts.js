@@ -423,7 +423,7 @@
   }
 
   function init() {
-    document.querySelectorAll("[data-welten-strengths-v1] .slide-inner").forEach(buildOverview);
+    document.querySelectorAll("[data-welten-leistungen-v1] .slide-inner, [data-welten-strengths-v1] .slide-inner").forEach(buildOverview);
   }
 
   if (document.readyState === "loading") {

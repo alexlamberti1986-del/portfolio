@@ -31,7 +31,7 @@
     "about",
     "profile",
     "values",
-    "strengths",
+    "leistungen",
     "experience",
     "projects",
     "workstyle",
