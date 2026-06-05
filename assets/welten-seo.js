@@ -9,9 +9,9 @@
 
   var PAGES = {
     home: {
-      title: "Alex Lamberti | Digital Marketing, Webdesign & Strategie",
+      title: "Alex Lamberti | Branding, Webseiten & digitale Erlebnisse",
       description:
-        "Alex Lamberti — Digital Marketing, Branding, Webdesign und Strategie. Projekte, Leistungen und Kontakt in drei Designwelten.",
+        "Alex Lamberti gestaltet Branding, Webseiten, digitale Erlebnisse und Strategie — als hochwertige digitale Markenwelt in drei Welten.",
       path: "/",
     },
     projects: {
