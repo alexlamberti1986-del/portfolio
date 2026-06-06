@@ -4,12 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260530d";
-  var nexoraHeroRetryTimer = null;
-  var mqHero = window.matchMedia("(max-width: 1024px)");
-  var mqTabletLandscape = window.matchMedia(
-    "(min-width: 769px) and (max-width: 1024px) and (orientation: landscape)"
-  );
+  var HERO_VER = "20260606f";
 
   var WORLDS = {
     nexora: {
@@ -26,18 +21,14 @@
     },
   };
 
-  /** 3×3 Grid + Kontakt separat (Mobile/Tablet) */
-  var HERO_GRID_ORDER = [
-    "about",
-    "profile",
-    "values",
-    "leistungen",
-    "experience",
-    "projects",
-    "workstyle",
-    "why",
-    "faq",
-  ];
+  /** Mobile/Tablet: Home oben, dann 2×2 (Projekte|Leistungen, Über mich|Kontakt) */
+  var HERO_GRID_ORDER = ["home", "projects", "leistungen", "about", "contact"];
+
+  var nexoraHeroRetryTimer = null;
+  var mqHero = window.matchMedia("(max-width: 1024px)");
+  var mqTabletLandscape = window.matchMedia(
+    "(min-width: 769px) and (max-width: 1024px) and (orientation: landscape)"
+  );
 
   function isHeroMobile() {
     return mqHero.matches;
@@ -173,6 +164,13 @@
     var ctx = getHeroButtonContext();
     if (!ctx.shell || !ctx.ring) return;
 
+    var contactRow = ctx.shell.querySelector(":scope > .hero-contact-button-row");
+    if (contactRow) {
+      var rowContact = contactRow.querySelector("[data-go='contact']");
+      if (rowContact) ctx.ring.appendChild(rowContact);
+      contactRow.remove();
+    }
+
     ctx.shell.classList.add("hero-buttons-shell");
     ctx.ring.classList.add("hero-buttons-grid", "welten-mobile-hero-grid");
 
@@ -180,10 +178,13 @@
     if (!buttons.length) return;
 
     var byGo = {};
-    var contactBtn = null;
-
     buttons.forEach(function (btn) {
       var go = btn.getAttribute("data-go");
+      if (!go || byGo[go]) {
+        btn.remove();
+        return;
+      }
+      byGo[go] = btn;
       btn.classList.add("hero-button");
       btn.style.setProperty("position", "relative", "important");
       btn.style.setProperty("transform", "none", "important");
@@ -192,26 +193,12 @@
       btn.style.setProperty("top", "auto", "important");
       btn.style.setProperty("right", "auto", "important");
       btn.style.setProperty("bottom", "auto", "important");
-      if (go === "contact") contactBtn = btn;
-      else byGo[go] = btn;
     });
 
-    HERO_GRID_ORDER.forEach(function (go, idx) {
+    HERO_GRID_ORDER.forEach(function (go) {
       var btn = byGo[go];
-      if (!btn) return;
-      var siblings = Array.prototype.filter.call(ctx.ring.children, function (el) {
-        return el.classList && el.classList.contains("hero-button");
-      });
-      var at = siblings.indexOf(btn);
-      if (btn.parentNode !== ctx.ring || at !== idx) {
-        ctx.ring.appendChild(btn);
-      }
+      if (btn) ctx.ring.appendChild(btn);
     });
-
-    var contactRow = ensureContactRow(ctx.shell);
-    if (contactRow && contactBtn && contactBtn.parentNode !== contactRow) {
-      contactRow.appendChild(contactBtn);
-    }
 
     ctx.ring.style.setProperty("display", "grid", "important");
     ctx.ring.style.setProperty("transform", "none", "important");
