@@ -195,8 +195,6 @@
   try {
     new MutationObserver(function () {
       syncWorldIntro();
-      applyPortraits();
-      wireHomeClosingAbout();
-    }).observe(document.body, { attributes: true, attributeFilter: ["data-world"], childList: true, subtree: true });
+    }).observe(document.body, { attributes: true, attributeFilter: ["data-world"] });
   } catch (e) {}
 })();

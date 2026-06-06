@@ -8,9 +8,6 @@
   ],
   "redirects": [
     { "source": "/3-Welten-Master-iframe.html", "destination": "/", "permanent": true },
-    { "source": "/NEXORA.html", "destination": "/", "permanent": true },
-    { "source": "/PROFESSIONAL.html", "destination": "/", "permanent": true },
-    { "source": "/FREIRAUM.html", "destination": "/", "permanent": true },
     { "source": "/home", "destination": "/", "permanent": true },
     { "source": "/projects", "destination": "/projekte", "permanent": true },
     { "source": "/contact", "destination": "/kontakt", "permanent": true },
