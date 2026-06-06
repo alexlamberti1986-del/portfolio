@@ -1,11 +1,5 @@
-/* UX Refine — minimalistische Home, keine Kontaktboxen, Footer */
+/* UX Refine — Footer, Menü-Kontakt (Home/Kontakt FINAL bleiben sichtbar) */
 
-/* ── Home: endet nach Hero + 2 Buttons ── */
-#slide-home .home-copy .more,
-#slide-home .home-copy ul.prose,
-#slide-home .home-layout--intro .home-portrait-card,
-#slide-home .welten-home-extras,
-#slide-home .welten-cta-band,
 .welten-home-extras,
 .welten-cta-band {
   display: none !important;
@@ -16,8 +10,7 @@
 }
 
 #slide-home .home-layout--intro {
-  grid-template-columns: 1fr !important;
-  max-width: 920px;
+  max-width: none;
 }
 
 #slide-home .home-main-block {
@@ -28,7 +21,7 @@ body.is-home #slide-home .slide-inner--home {
   padding-bottom: clamp(1rem, 3vh, 2rem);
 }
 
-/* ── Kontakt: keine Boxen, nur Text + Map ── */
+/* ── Keine injizierten Kontaktboxen ── */
 .welten-contact-cards,
 .welten-contact-card,
 .welten-contact-actions-row {
@@ -37,13 +30,6 @@ body.is-home #slide-home .slide-inner--home {
   height: 0 !important;
   overflow: hidden !important;
   pointer-events: none !important;
-}
-
-#slide-contact .contact-visual,
-#slide-contact .contact-actions,
-.welten-contact-map,
-.contact-map-embed {
-  display: none !important;
 }
 
 /* ── Footer ── */

@@ -43,23 +43,7 @@
   }
 
   function injectHomeIntro() {
-    var copy = document.querySelector("#slide-home .home-copy");
-    if (!copy || copy.querySelector(".welten-home-intro")) return;
-
-    var lead = copy.querySelector(".lead");
-    var intro = document.createElement("div");
-    intro.className = "welten-home-intro";
-    intro.setAttribute("aria-label", "Kurzvorstellung");
-    var p = document.createElement("p");
-    p.className = "welten-home-intro__text";
-    p.textContent = HOME_INTRO[worldKey()] || HOME_INTRO.nexora;
-
-    if (lead && lead.nextSibling) {
-      copy.insertBefore(intro, lead.nextSibling);
-    } else {
-      copy.appendChild(intro);
-    }
-    intro.appendChild(p);
+    /* Home-Inhalt aus FINAL HTML — kein zusätzlicher Intro-Block */
   }
 
   function fixHomeButtons() {
@@ -69,46 +53,7 @@
   }
 
   function rebuildContactMinimal() {
-    if (document.querySelector(".welten-contact-page")) return;
-    var card = document.querySelector("#slide-contact .glass-card");
-    if (!card || card.dataset.weltenContactFinal === "1") return;
-    card.dataset.weltenContactFinal = "1";
-
-    card.querySelectorAll(".prose, .contact-actions").forEach(function (el) {
-      el.remove();
-    });
-
-    var visual = document.querySelector("#slide-contact .contact-visual");
-    if (visual) visual.remove();
-
-    var layout = document.querySelector("#slide-contact .contact-layout");
-    if (layout) layout.classList.add("contact-layout--minimal");
-
-    var title = card.querySelector(".section-title");
-    if (title) title.textContent = "Kontakt";
-
-    var stack = card.querySelector(".welten-contact-stack");
-    if (!stack) {
-      stack = document.createElement("div");
-      stack.className = "welten-contact-stack";
-      card.appendChild(stack);
-    }
-
-    stack.innerHTML =
-      '<a class="welten-textlink welten-contact-line" href="tel:' + TEL + '">' + TEL_DISP + "</a>" +
-      '<a class="welten-textlink welten-contact-line" href="mailto:' + MAIL + '">' + MAIL + "</a>";
-
-    if (!card.querySelector(".contact-map-embed")) {
-      var map = document.createElement("div");
-      map.className = "contact-map-embed";
-      map.innerHTML =
-        '<iframe title="Standort Alex Lamberti" loading="lazy" referrerpolicy="no-referrer-when-downgrade" ' +
-        'src="https://maps.google.com/maps?q=Schulweg+603,+5324+Full-Reuenthal,+Schweiz&output=embed"></iframe>';
-      stack.appendChild(map);
-    } else {
-      var existing = card.querySelector(".contact-map-embed");
-      stack.appendChild(existing);
-    }
+    /* FINAL contact-layout — siehe welten-final-restore.js */
   }
 
   function unifyTextLinks() {

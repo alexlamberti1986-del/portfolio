@@ -7,24 +7,18 @@
   pointer-events: none !important;
 }
 
-/* ── Kontakt premium ── */
+/* ── Kontakt: FINAL contact-layout (Details in welten-final-restore.css) ── */
 #slide-contact .contact-layout {
-  display: block !important;
-  max-width: 920px;
-  margin: 0 auto;
-  padding: clamp(1rem, 3vw, 2rem) 0;
+  display: grid !important;
+  grid-template-columns: 1fr minmax(260px, 340px) !important;
+  gap: 28px !important;
+  align-items: stretch !important;
 }
 
-#slide-contact .glass-card {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
-
-.welten-contact-page {
-  display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
+@media (max-width: 800px) {
+  #slide-contact .contact-layout {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 .welten-contact-hero .chapter-label {

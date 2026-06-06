@@ -58,32 +58,7 @@
   margin: 0 !important;
 }
 
-/* ── Kontakt vertikal persönlich ── */
-.welten-contact-page--vertical {
-  display: grid;
-  gap: clamp(1.75rem, 4vw, 2.75rem);
-}
-
-.welten-contact-page--vertical .welten-contact-hero__copy {
-  max-width: 52ch;
-}
-
-.welten-contact-page--vertical .welten-contact-portrait--hero {
-  max-width: min(320px, 72vw);
-}
-
-.welten-contact-page--vertical .welten-contact-outro-block {
-  grid-template-columns: 1fr;
-  border-top: none;
-  padding-top: 0;
-  gap: clamp(1.25rem, 3vw, 1.75rem);
-}
-
-.welten-contact-page--vertical .welten-contact-portrait--outro {
-  max-width: min(260px, 64vw);
-}
-
-/* ── Home Abschluss: Bild → Text → Button ── */
+/* ── Hero CTA einheitlich (alle Welten) ── */
 .welten-home-closing {
   text-align: left;
 }

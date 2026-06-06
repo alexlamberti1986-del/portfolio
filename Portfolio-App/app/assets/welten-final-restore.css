@@ -1,0 +1,100 @@
+/* FINAL Restore — Kontakt, Home unter Hero, Zeitstrahl sichtbar */
+
+/* Home: Bereich unter dem Hero aus FINAL */
+#slide-home .home-copy .more,
+#slide-home .home-copy ul.prose,
+#slide-home .home-layout--intro .home-portrait-card {
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+#slide-home .home-layout--intro {
+  display: grid !important;
+  grid-template-columns: 1fr minmax(260px, 400px) !important;
+  align-items: center !important;
+  gap: clamp(24px, 5vw, 56px) !important;
+}
+
+@media (max-width: 960px) {
+  #slide-home .home-layout--intro {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+#slide-home .home-main-block {
+  display: block !important;
+  visibility: visible !important;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(10px, 2vw, 22px) clamp(18px, 4vw, 64px) clamp(14px, 2vw, 28px);
+}
+
+/* Kontakt: FINAL contact-layout */
+#slide-contact .contact-layout,
+#slide-contact .slide-inner.contact-layout {
+  display: grid !important;
+  grid-template-columns: 1fr minmax(260px, 340px) !important;
+  gap: 28px !important;
+  align-items: stretch !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: inherit !important;
+}
+
+@media (max-width: 800px) {
+  #slide-contact .contact-layout,
+  #slide-contact .slide-inner.contact-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+#slide-contact .contact-visual,
+#slide-contact .contact-actions {
+  display: grid !important;
+  visibility: visible !important;
+  height: auto !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+#slide-contact .contact-visual {
+  display: block !important;
+}
+
+#slide-contact .glass-card {
+  background: var(--glass, rgba(18, 32, 56, 0.42)) !important;
+  border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18)) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35) !important;
+  padding: clamp(24px, 4vw, 40px) !important;
+}
+
+.welten-contact-page {
+  display: none !important;
+}
+
+.contact-layout--minimal .contact-actions,
+.contact-layout--minimal .contact-visual {
+  display: grid !important;
+  visibility: visible !important;
+}
+
+/* Zeitstrahl in Über mich */
+.welten-experience-timeline .timeline {
+  margin-top: 28px;
+}
+
+.welten-experience-timeline .exp-block-title {
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+@media (max-width: 640px) {
+  .welten-experience-timeline .timeline {
+    padding-left: 20px;
+  }
+  .welten-experience-timeline .tl-item::before {
+    left: -19px;
+  }
+}

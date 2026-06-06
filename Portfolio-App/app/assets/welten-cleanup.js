@@ -175,35 +175,7 @@
   }
 
   function rebuildContactPremium() {
-    var slide = document.querySelector("#slide-contact .slide-inner");
-    if (!slide || slide.dataset.weltenContactV === "3") return;
-    slide.dataset.weltenContactV = "3";
-
-    slide.innerHTML =
-      '<div class="welten-contact-page welten-contact-page--vertical">' +
-      '<header class="welten-contact-hero">' +
-      '<div class="welten-contact-hero__copy">' +
-      '<p class="chapter-label">Kontakt</p>' +
-      "<h2>Kontakt</h2>" +
-      '<p class="welten-contact-lead">Persönlich, direkt und unkompliziert — ich freue mich auf Ihre Nachricht oder Ihren Anruf.</p>' +
-      "</div>" +
-      "</header>" +
-      '<figure class="welten-contact-portrait welten-contact-portrait--hero">' +
-      '<img class="portrait-photo welten-portrait-img" id="contactPhotoHero" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="520" height="650" decoding="async" loading="lazy" />' +
-      "</figure>" +
-      '<div class="welten-contact-links">' +
-      '<a class="welten-contact-link welten-contact-link--tel" href="tel:' + TEL + '">' + TEL_DISP + "</a>" +
-      '<a class="welten-contact-link welten-contact-link--mail" href="mailto:' + MAIL + '">' + MAIL + "</a>" +
-      "</div>" +
-      '<p class="welten-contact-outro">Ich freue mich auf spannende Projekte und neue Herausforderungen.</p>' +
-      '<footer class="welten-contact-outro-block">' +
-      '<figure class="welten-contact-portrait welten-contact-portrait--outro">' +
-      '<img class="portrait-photo welten-portrait-img" id="contactPhotoOutro" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="420" height="520" decoding="async" loading="lazy" />' +
-      "</figure>" +
-      "</footer>" +
-      "</div>";
-
-    applyAllPortraits();
+    /* FINAL contact-layout — siehe welten-final-restore.js */
   }
 
   function injectHomeClosing() {
