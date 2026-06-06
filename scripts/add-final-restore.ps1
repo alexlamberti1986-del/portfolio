@@ -1,5 +1,5 @@
 $root = Split-Path $PSScriptRoot -Parent
-$ver = "20260601a"
+$ver = "20260601b"
 $files = @(
   "NEXORA.html", "PROFESSIONAL.html", "FREIRAUM.html",
   "Portfolio-App\app\NEXORA.html", "Portfolio-App\app\PROFESSIONAL.html", "Portfolio-App\app\FREIRAUM.html",

@@ -191,11 +191,29 @@
       "</figure>" +
       '<p class="welten-home-closing__text">Alex Lamberti verbindet Branding, Webdesign und digitale Strategie — persönlich, präzise und mit Blick auf echte Wirkung.</p>' +
       '<div class="welten-home-closing__cta">' +
-      '<button type="button" class="btn" data-go="about">Über mich</button>' +
+      '<button type="button" class="btn" data-go="about">Mehr über mich</button>' +
       "</div>";
 
     block.appendChild(closing);
     applyAllPortraits();
+    wireHomeClosingAboutBtn(closing.querySelector('[data-go="about"]'));
+  }
+
+  function wireHomeClosingAboutBtn(btn) {
+    if (!btn || btn.dataset.weltenAboutWired === "1") return;
+    btn.dataset.weltenAboutWired = "1";
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
+        window.WeltenSiteIA.navigateToChapter("about");
+        return;
+      }
+      var nav =
+        document.querySelector('.experience-step[data-go="about"]') ||
+        document.querySelector('.menu-links a[data-go="about"]');
+      if (nav) nav.click();
+    });
   }
 
   function enhanceHomeStory() {

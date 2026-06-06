@@ -1,6 +1,5 @@
-/* FINAL Restore — Kontakt, Home unter Hero, Zeitstrahl sichtbar */
+/* FINAL Restore — Kontakt, Home unter Hero, freistehender Zeitstrahl */
 
-/* Home: Bereich unter dem Hero aus FINAL */
 #slide-home .home-copy .more,
 #slide-home .home-copy ul.prose,
 #slide-home .home-layout--intro .home-portrait-card {
@@ -41,13 +40,16 @@
   align-items: stretch !important;
   max-width: none !important;
   margin: 0 !important;
-  padding: inherit !important;
 }
 
 @media (max-width: 800px) {
   #slide-contact .contact-layout,
   #slide-contact .slide-inner.contact-layout {
     grid-template-columns: 1fr !important;
+  }
+
+  #slide-contact .contact-visual {
+    order: 2;
   }
 }
 
@@ -64,11 +66,18 @@
   display: block !important;
 }
 
+#slide-contact .contact-visual img.contact-photo,
+#slide-contact .contact-photo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block !important;
+}
+
 #slide-contact .glass-card {
   background: var(--glass, rgba(18, 32, 56, 0.42)) !important;
   border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18)) !important;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35) !important;
-  padding: clamp(24px, 4vw, 40px) !important;
 }
 
 .welten-contact-page {
@@ -81,20 +90,61 @@
   visibility: visible !important;
 }
 
-/* Zeitstrahl in Über mich */
-.welten-experience-timeline .timeline {
-  margin-top: 28px;
+/* Erfahrung: freistehend, ohne umhüllende Box */
+#slide-about .experience-section,
+#slide-about .welten-experience-timeline {
+  margin-top: clamp(3rem, 7vw, 6rem);
+  padding-inline: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
-.welten-experience-timeline .exp-block-title {
+#slide-about .experience-section .section-heading {
+  margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+#slide-about .experience-section .section-heading .section-title {
+  margin: 0.35rem 0 0;
+}
+
+#slide-about .experience-section__intro {
+  max-width: 68ch;
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+#slide-about .timeline--standalone,
+#slide-about .experience-section .timeline {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 0 0 24px !important;
+}
+
+#slide-about .experience-section .exp-block-title {
   margin-top: clamp(1.75rem, 4vw, 2.5rem);
 }
 
+#slide-about .experience-section .exp-block-title:first-of-type {
+  margin-top: clamp(1rem, 2.5vw, 1.5rem);
+}
+
 @media (max-width: 640px) {
-  .welten-experience-timeline .timeline {
-    padding-left: 20px;
+  #slide-about .timeline--standalone,
+  #slide-about .experience-section .timeline {
+    padding-left: 20px !important;
   }
-  .welten-experience-timeline .tl-item::before {
+
+  #slide-about .experience-section .tl-item::before {
     left: -19px;
   }
+}
+
+/* Home-Abschluss Button */
+.welten-home-closing__cta .btn[data-go="about"] {
+  cursor: pointer;
+  min-height: 48px;
 }

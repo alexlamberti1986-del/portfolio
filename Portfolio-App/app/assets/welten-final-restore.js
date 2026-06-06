@@ -1,5 +1,5 @@
 /**
- * FINAL Restore — Kontakt, Home unter Hero, Erfahrung-Zeitstrahl (Referenz: Alex_Lamberti_3_Welten_FINAL)
+ * FINAL Restore — Kontakt, Home unter Hero, freistehender Erfahrung-Zeitstrahl
  */
 (function () {
   "use strict";
@@ -18,6 +18,20 @@
     freiraum: "FREIRAUM · Kreativ · Emotional · Nahbar",
   };
 
+  function navigateChapter(id) {
+    if (window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
+      if (window.WeltenSiteIA.navigateToChapter(id)) return true;
+    }
+    var el =
+      document.querySelector('.experience-step[data-go="' + id + '"]') ||
+      document.querySelector('.menu-links a[data-go="' + id + '"]');
+    if (el) {
+      el.click();
+      return true;
+    }
+    return false;
+  }
+
   function applyPortraits() {
     var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
     var w = document.body.getAttribute("data-world") || "nexora";
@@ -35,16 +49,22 @@
       });
   }
 
+  function contactNeedsRebuild(slide) {
+    if (!slide) return false;
+    if (slide.querySelector(".welten-contact-page")) return true;
+    if (!slide.querySelector(".contact-actions") || !slide.querySelector(".contact-visual")) return true;
+    if (!slide.querySelector('.contact-actions a[href^="mailto:"]')) return true;
+    if (!slide.querySelector('.contact-actions a[href^="tel:"]')) return true;
+    if (!slide.querySelector(".contact-actions a[href*='google.com/maps']")) return true;
+    return false;
+  }
+
   function restoreContactFinal() {
     var slide = document.querySelector("#slide-contact .slide-inner");
     if (!slide) return;
 
-    if (
-      slide.classList.contains("contact-layout") &&
-      slide.querySelector(".contact-actions") &&
-      slide.querySelector(".contact-visual") &&
-      !slide.querySelector(".welten-contact-page")
-    ) {
+    if (!contactNeedsRebuild(slide)) {
+      slide.className = "slide-inner contact-layout";
       slide.classList.remove("contact-layout--minimal");
       applyPortraits();
       return;
@@ -80,34 +100,54 @@
   function injectExperienceTimeline() {
     var about = document.querySelector("#slide-about .slide-inner");
     var exp = document.querySelector("#slide-experience .slide-inner");
-    if (!about || !exp || about.querySelector(".welten-experience-timeline")) return;
+    if (!about || !exp) return;
+
+    about.querySelectorAll(".welten-experience-timeline, .experience-section").forEach(function (el) {
+      el.remove();
+    });
+
+    if (about.querySelector("#experience")) return;
 
     var wrap = document.createElement("section");
-    wrap.className = "welten-experience-timeline welten-merge-block glass-card";
+    wrap.className = "experience-section";
+    wrap.id = "experience";
     wrap.setAttribute("aria-label", "Erfahrung");
 
-    var label = document.createElement("p");
-    label.className = "chapter-label";
-    label.textContent = "Erfahrung";
-    wrap.appendChild(label);
-
-    var title = exp.querySelector(".section-title");
-    if (title) {
-      var h = document.createElement("h3");
-      h.className = "section-title";
-      h.style.fontSize = "clamp(1.15rem, 2.5vw, 1.45rem)";
-      h.textContent = title.textContent;
-      wrap.appendChild(h);
-    }
+    var heading = document.createElement("div");
+    heading.className = "section-heading";
+    heading.innerHTML =
+      '<p class="chapter-label eyebrow">Erfahrung</p>' +
+      '<h2 class="section-title">Stationen, Bildung und Entwicklung</h2>';
+    wrap.appendChild(heading);
 
     var intro = exp.querySelector(".prose");
-    if (intro) wrap.appendChild(intro.cloneNode(true));
+    if (intro) {
+      var introClone = intro.cloneNode(true);
+      introClone.classList.add("experience-section__intro");
+      wrap.appendChild(introClone);
+    }
 
     exp.querySelectorAll(".exp-block-title, .timeline").forEach(function (el) {
-      wrap.appendChild(el.cloneNode(true));
+      var clone = el.cloneNode(true);
+      if (clone.classList.contains("timeline")) {
+        clone.classList.add("timeline--standalone");
+      }
+      wrap.appendChild(clone);
     });
 
     about.appendChild(wrap);
+  }
+
+  function wireHomeClosingAbout() {
+    document.querySelectorAll(".welten-home-closing [data-go='about']").forEach(function (btn) {
+      if (btn.dataset.weltenAboutWired === "1") return;
+      btn.dataset.weltenAboutWired = "1";
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        navigateChapter("about");
+      });
+    });
   }
 
   function syncWorldIntro() {
@@ -119,9 +159,22 @@
   function apply() {
     restoreContactFinal();
     injectExperienceTimeline();
+    wireHomeClosingAbout();
     syncWorldIntro();
     applyPortraits();
   }
+
+  document.addEventListener(
+    "click",
+    function (e) {
+      var btn = e.target.closest(".welten-home-closing [data-go='about']");
+      if (!btn || btn.dataset.weltenAboutWired === "1") return;
+      e.preventDefault();
+      e.stopPropagation();
+      navigateChapter("about");
+    },
+    true
+  );
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", apply);
@@ -133,13 +186,17 @@
     var ch = e && e.detail && e.detail.chapter;
     if (ch === "contact") restoreContactFinal();
     if (ch === "about") injectExperienceTimeline();
-    if (ch === "home") applyPortraits();
+    if (ch === "home") {
+      applyPortraits();
+      wireHomeClosingAbout();
+    }
   });
 
   try {
     new MutationObserver(function () {
       syncWorldIntro();
       applyPortraits();
-    }).observe(document.body, { attributes: true, attributeFilter: ["data-world"] });
+      wireHomeClosingAbout();
+    }).observe(document.body, { attributes: true, attributeFilter: ["data-world"], childList: true, subtree: true });
   } catch (e) {}
 })();
