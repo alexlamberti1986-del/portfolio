@@ -59,20 +59,15 @@
 }
 
 /* ── Hero CTA einheitlich (alle Welten) ── */
-.welten-home-closing {
-  text-align: left;
-}
-
-.welten-home-closing__portrait {
-  order: 1;
-}
-
-.welten-home-closing__text {
-  order: 2;
-}
-
+.welten-home-closing,
+.welten-home-closing__portrait,
+.welten-home-closing__text,
 .welten-home-closing__cta {
-  order: 3;
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
 }
 
 /* ── Menü einheitlich ── */
@@ -129,7 +124,6 @@ body.welten-personality--vertex .section-title {
   letter-spacing: -0.035em;
 }
 
-body.welten-personality--freiraum .welten-home-closing__portrait,
 body.welten-personality--freiraum .welten-contact-portrait {
   border-radius: 28px 18px 32px 22px;
 }

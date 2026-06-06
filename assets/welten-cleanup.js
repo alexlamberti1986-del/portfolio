@@ -178,41 +178,9 @@
     /* FINAL contact-layout — siehe welten-final-restore.js */
   }
 
-  function injectHomeClosing() {
-    var block = document.querySelector("#slide-home .home-main-block");
-    if (!block || block.querySelector(".welten-home-closing")) return;
-
-    var closing = document.createElement("section");
-    closing.className = "welten-home-closing";
-    closing.setAttribute("aria-label", "Persönlicher Abschluss");
-    closing.innerHTML =
-      '<figure class="welten-home-closing__portrait">' +
-      '<img class="portrait-photo welten-portrait-img" id="homeClosingPhoto" src="' + PORTRAIT_PLACEHOLDER + '" alt="Alex Lamberti" width="480" height="600" decoding="async" loading="lazy" />' +
-      "</figure>" +
-      '<p class="welten-home-closing__text">Alex Lamberti verbindet Branding, Webdesign und digitale Strategie — persönlich, präzise und mit Blick auf echte Wirkung.</p>' +
-      '<div class="welten-home-closing__cta">' +
-      '<button type="button" class="btn" data-go="about">Mehr über mich</button>' +
-      "</div>";
-
-    block.appendChild(closing);
-    applyAllPortraits();
-    wireHomeClosingAboutBtn(closing.querySelector('[data-go="about"]'));
-  }
-
-  function wireHomeClosingAboutBtn(btn) {
-    if (!btn || btn.dataset.weltenAboutWired === "1") return;
-    btn.dataset.weltenAboutWired = "1";
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
-        window.WeltenSiteIA.navigateToChapter("about");
-        return;
-      }
-      var nav =
-        document.querySelector('.experience-step[data-go="about"]') ||
-        document.querySelector('.menu-links a[data-go="about"]');
-      if (nav) nav.click();
+  function removeHomeClosing() {
+    document.querySelectorAll(".welten-home-closing").forEach(function (el) {
+      el.remove();
     });
   }
 
@@ -381,14 +349,14 @@
     if (ch === "leistungen") injectLeistungenRich();
     if (ch === "contact") rebuildContactPremium();
     if (ch === "projects") ensureProjectsAccordion();
-    if (ch === "home") injectHomeClosing();
+    if (ch === "home") removeHomeClosing();
   }
 
   function apply() {
     removeFooter();
     rebuildContactPremium();
     enhanceHomeStory();
-    injectHomeClosing();
+    removeHomeClosing();
     injectLeistungenRich();
     fixNexoraOrbit();
     applyAllPortraits();

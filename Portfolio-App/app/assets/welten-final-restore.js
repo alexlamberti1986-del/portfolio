@@ -138,18 +138,6 @@
     about.appendChild(wrap);
   }
 
-  function wireHomeClosingAbout() {
-    document.querySelectorAll(".welten-home-closing [data-go='about']").forEach(function (btn) {
-      if (btn.dataset.weltenAboutWired === "1") return;
-      btn.dataset.weltenAboutWired = "1";
-      btn.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        navigateChapter("about");
-      });
-    });
-  }
-
   function syncWorldIntro() {
     var w = document.body.getAttribute("data-world") || "nexora";
     var label = document.getElementById("worldIntro");
@@ -158,22 +146,9 @@
 
   function apply() {
     injectExperienceTimeline();
-    wireHomeClosingAbout();
     syncWorldIntro();
     applyPortraits();
   }
-
-  document.addEventListener(
-    "click",
-    function (e) {
-      var btn = e.target.closest(".welten-home-closing [data-go='about']");
-      if (!btn || btn.dataset.weltenAboutWired === "1") return;
-      e.preventDefault();
-      e.stopPropagation();
-      navigateChapter("about");
-    },
-    true
-  );
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", apply);
@@ -184,10 +159,7 @@
   document.addEventListener("welten-chapter-change", function (e) {
     var ch = e && e.detail && e.detail.chapter;
     if (ch === "about") injectExperienceTimeline();
-    if (ch === "home") {
-      applyPortraits();
-      wireHomeClosingAbout();
-    }
+    if (ch === "home") applyPortraits();
   });
 
   try {

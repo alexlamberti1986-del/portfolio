@@ -110,16 +110,18 @@ body[data-world="freiraum"] .welten-contact-map {
   border-radius: 28px 18px 32px 22px;
 }
 
-/* ── Home persönlicher Abschluss ── */
+/* ── Home-Abschluss entfernt ── */
 .welten-home-closing {
-  margin-top: clamp(2.5rem, 6vh, 4rem);
-  padding-top: clamp(1.5rem, 4vw, 2.5rem);
-  border-top: 1px solid rgba(128, 128, 128, 0.16);
-  display: grid;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  max-width: 520px;
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
+/* legacy styles kept for cache safety */
 .welten-home-closing__text {
   margin: 0;
   font-size: clamp(0.98rem, 1.6vw, 1.08rem);
