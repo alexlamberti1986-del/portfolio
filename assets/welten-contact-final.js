@@ -38,17 +38,40 @@
     );
   }
 
+  function syncNexoraContactFromHome() {
+    if (document.body.getAttribute("data-world") !== "nexora") return;
+    var hero = document.getElementById("heroPhoto");
+    var contact = document.getElementById("contactPhoto");
+    if (!contact) return;
+
+    if (hero && hero.src && hero.src.indexOf("data:image/gif") === -1) {
+      contact.removeAttribute("srcset");
+      contact.src = hero.src;
+      contact.alt = hero.alt || "Alex Lamberti — Nexora";
+    }
+
+    contact.style.display = "block";
+    contact.style.visibility = "visible";
+    contact.style.opacity = "1";
+    contact.style.mixBlendMode = "normal";
+    contact.style.objectPosition = "58% center";
+    contact.style.filter =
+      "brightness(1.05) contrast(1.12) saturate(1.2) drop-shadow(0 0 35px rgba(0,170,255,.5))";
+  }
+
   function applyContactPortrait() {
     var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
     var w = document.body.getAttribute("data-world") || "nexora";
     var src = IMG[w] || IMG.nexora || IMG.vertex;
-    if (!src) return;
-    document.querySelectorAll("#contactPhoto, #slide-contact .contact-photo").forEach(function (img) {
-      img.removeAttribute("srcset");
-      img.src = src;
-      img.style.display = "block";
-      img.style.opacity = "1";
-    });
+    if (src) {
+      document.querySelectorAll("#contactPhoto, #slide-contact .contact-photo").forEach(function (img) {
+        img.removeAttribute("srcset");
+        img.src = src;
+        img.style.display = "block";
+        img.style.opacity = "1";
+      });
+    }
+    syncNexoraContactFromHome();
   }
 
   function needsContactRebuild(slide) {
@@ -96,6 +119,16 @@
       if (document.body.getAttribute("data-current-slide") === "contact") {
         applyContactPortrait();
       }
-    }).observe(document.body, { attributes: true, attributeFilter: ["data-world"] });
+      if (document.body.getAttribute("data-world") === "nexora") {
+        syncNexoraContactFromHome();
+      }
+    }).observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-world", "data-current-slide"],
+    });
   } catch (e) {}
+
+  window.addEventListener("load", function () {
+    setTimeout(syncNexoraContactFromHome, 80);
+  });
 })();

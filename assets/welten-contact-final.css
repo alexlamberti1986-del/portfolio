@@ -100,8 +100,38 @@
   min-height: 0 !important;
   max-width: none !important;
   object-fit: cover !important;
-  object-position: center 30%;
+  object-position: center center;
   display: block !important;
+}
+
+/* NEXORA Kontakt = identisch wie Home-Portrait */
+body[data-world="nexora"] #slide-contact .contact-visual {
+  border-radius: 32px !important;
+  max-width: min(400px, 100%) !important;
+  max-height: min(68vh, 560px) !important;
+  margin-inline: auto;
+  background: #020712 !important;
+  border-color: rgba(0, 170, 255, 0.42) !important;
+  box-shadow:
+    0 0 0 1px rgba(0, 170, 255, 0.18),
+    0 0 70px rgba(0, 170, 255, 0.26),
+    0 38px 120px rgba(0, 0, 0, 0.65) !important;
+  isolation: isolate;
+}
+
+body[data-world="nexora"] #slide-contact .contact-visual::before,
+body[data-world="nexora"] #slide-contact .contact-visual::after {
+  display: none !important;
+  content: none !important;
+}
+
+body[data-world="nexora"] #slide-contact .contact-visual img.contact-photo,
+body[data-world="nexora"] #slide-contact .contact-visual img.portrait-photo,
+body[data-world="nexora"] #slide-contact img#contactPhoto {
+  object-position: 58% center !important;
+  mix-blend-mode: normal !important;
+  filter: brightness(1.05) contrast(1.12) saturate(1.2) drop-shadow(0 0 35px rgba(0, 170, 255, 0.5)) !important;
+  opacity: 1 !important;
 }
 
 /* Legacy Overrides ausblenden */
