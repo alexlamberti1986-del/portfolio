@@ -6,9 +6,9 @@
 
 #slide-contact .slide-inner.contact-layout {
   display: grid !important;
-  grid-template-columns: 1fr minmax(260px, 340px) !important;
-  gap: clamp(20px, 3vw, 28px) !important;
-  align-items: stretch !important;
+  grid-template-columns: 1fr minmax(260px, 400px) !important;
+  gap: clamp(24px, 5vw, 56px) !important;
+  align-items: center !important;
   width: 100%;
   max-width: min(1180px, calc(100vw - clamp(32px, 6vw, 128px))) !important;
   margin: 0 auto !important;
@@ -16,16 +16,23 @@
   box-sizing: border-box !important;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 960px) {
   #slide-contact .slide-inner.contact-layout {
     grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 800px) {
+  #slide-contact .slide-inner.contact-layout {
     max-width: min(720px, calc(100vw - 32px)) !important;
     padding-inline: clamp(16px, 4vw, 24px) !important;
   }
 
   #slide-contact .contact-visual {
     order: 2;
-    max-width: min(420px, 100%);
+    width: min(88vw, 420px) !important;
+    max-width: 100% !important;
+    max-height: min(72vh, 520px) !important;
     margin-inline: auto;
   }
 }
@@ -82,12 +89,16 @@
   visibility: visible !important;
   position: relative;
   width: 100%;
-  min-height: 280px;
+  max-width: min(400px, 100%) !important;
+  margin: 0 auto !important;
+  min-height: 240px;
   aspect-ratio: 4 / 5;
-  max-height: min(72vh, 560px);
+  max-height: min(68vh, 560px) !important;
   border-radius: var(--radius-lg, 28px);
   overflow: hidden;
   border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18));
+  isolation: isolate;
+  box-sizing: border-box;
 }
 
 #slide-contact .contact-visual img.contact-photo,
@@ -119,22 +130,13 @@ body[data-world="nexora"] #slide-contact .contact-visual {
   isolation: isolate;
 }
 
-body[data-world="nexora"] #slide-contact .contact-visual::before,
-body[data-world="nexora"] #slide-contact .contact-visual::after {
-  display: none !important;
-  content: none !important;
+body[data-world="nexora"] #slide-home .home-portrait-card,
+body[data-world="nexora"] #slide-contact .contact-visual {
+  width: 100%;
+  max-width: min(400px, 100%) !important;
 }
 
-body[data-world="nexora"] #slide-contact .contact-visual img.contact-photo,
-body[data-world="nexora"] #slide-contact .contact-visual img.portrait-photo,
-body[data-world="nexora"] #slide-contact img#contactPhoto {
-  object-position: 58% center !important;
-  mix-blend-mode: normal !important;
-  filter: brightness(1.05) contrast(1.12) saturate(1.2) drop-shadow(0 0 35px rgba(0, 170, 255, 0.5)) !important;
-  opacity: 1 !important;
-}
-
-/* Legacy Overrides ausblenden */
+/* Kontakt-Portrait: Dekoration wie Home (Inline-Welten-CSS) */
 #slide-contact .welten-contact-page,
 #slide-contact .welten-contact-stack,
 #slide-contact .contact-map-embed {

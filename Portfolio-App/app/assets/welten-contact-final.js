@@ -38,25 +38,39 @@
     );
   }
 
-  function syncNexoraContactFromHome() {
-    if (document.body.getAttribute("data-world") !== "nexora") return;
+  function syncContactPortraitFromHome() {
     var hero = document.getElementById("heroPhoto");
     var contact = document.getElementById("contactPhoto");
+    var homeCard = document.querySelector("#slide-home .home-portrait-card");
+    var contactVisual = document.querySelector("#slide-contact .contact-visual");
     if (!contact) return;
 
     if (hero && hero.src && hero.src.indexOf("data:image/gif") === -1) {
       contact.removeAttribute("srcset");
       contact.src = hero.src;
-      contact.alt = hero.alt || "Alex Lamberti — Nexora";
+      contact.alt = hero.alt || contact.alt || "Alex Lamberti";
+
+      var imgStyle = window.getComputedStyle(hero);
+      contact.style.objectFit = imgStyle.objectFit;
+      contact.style.objectPosition = imgStyle.objectPosition;
+      contact.style.filter = imgStyle.filter;
+      contact.style.mixBlendMode = imgStyle.mixBlendMode;
+      contact.style.opacity = imgStyle.opacity;
+      contact.style.transform = imgStyle.transform;
     }
 
     contact.style.display = "block";
     contact.style.visibility = "visible";
-    contact.style.opacity = "1";
-    contact.style.mixBlendMode = "normal";
-    contact.style.objectPosition = "58% center";
-    contact.style.filter =
-      "brightness(1.05) contrast(1.12) saturate(1.2) drop-shadow(0 0 35px rgba(0,170,255,.5))";
+    contact.style.width = "100%";
+    contact.style.height = "100%";
+
+    if (homeCard && contactVisual) {
+      var cardStyle = window.getComputedStyle(homeCard);
+      contactVisual.style.maxWidth = cardStyle.maxWidth;
+      contactVisual.style.width = cardStyle.width;
+      contactVisual.style.maxHeight = cardStyle.maxHeight;
+      contactVisual.style.aspectRatio = cardStyle.aspectRatio;
+    }
   }
 
   function applyContactPortrait() {
@@ -71,7 +85,7 @@
         img.style.opacity = "1";
       });
     }
-    syncNexoraContactFromHome();
+    syncContactPortraitFromHome();
   }
 
   function needsContactRebuild(slide) {
@@ -119,9 +133,7 @@
       if (document.body.getAttribute("data-current-slide") === "contact") {
         applyContactPortrait();
       }
-      if (document.body.getAttribute("data-world") === "nexora") {
-        syncNexoraContactFromHome();
-      }
+      syncContactPortraitFromHome();
     }).observe(document.body, {
       attributes: true,
       attributeFilter: ["data-world", "data-current-slide"],
@@ -129,6 +141,12 @@
   } catch (e) {}
 
   window.addEventListener("load", function () {
-    setTimeout(syncNexoraContactFromHome, 80);
+    setTimeout(syncContactPortraitFromHome, 80);
+  });
+
+  window.addEventListener("resize", function () {
+    if (document.body.getAttribute("data-current-slide") === "contact") {
+      syncContactPortraitFromHome();
+    }
   });
 })();
