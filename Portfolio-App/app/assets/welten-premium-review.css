@@ -105,8 +105,21 @@
   margin-top: clamp(2.5rem, 5vw, 3.5rem);
 }
 
-/* ── Projekte Nexora Sichtbarkeit ── */
-body[data-world="nexora"] #slide-projects .projects-accordion__item.is-open .projects-accordion__panel[hidden] {
+/* ── Projekte: Sichtbarkeit (alle Welten, Nexora-Priorität) ── */
+#slide-projects .projects-accordion__item.is-open .projects-accordion__panel[hidden] {
+  display: none !important;
+}
+
+#slide-projects .projects-accordion__item.is-open .projects-accordion__panel:not([hidden]) {
+  display: grid !important;
+}
+
+#slide-projects .projects-accordion__panel-content .card-grid {
+  display: grid !important;
+  gap: clamp(14px, 2vw, 22px);
+}
+
+body[data-world="nexora"] #slide-projects .projects-accordion__item.is-open .projects-accordion__panel:not([hidden]) {
   display: grid !important;
 }
 

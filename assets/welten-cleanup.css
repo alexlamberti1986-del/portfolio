@@ -294,7 +294,7 @@ body[data-world="freiraum"] .welten-contact-map {
   }
 }
 
-/* ── NEXORA Projekte: Klicks sicherstellen ── */
+/* ── Projekte: Parität alle Welten (Nexora-Fix) ── */
 #slide-projects .projects-accordion,
 #slide-projects .projects-accordion__trigger,
 #slide-projects .project-card {
@@ -305,6 +305,30 @@ body[data-world="freiraum"] .welten-contact-map {
 
 #slide-projects .projects-accordion__trigger {
   min-height: 52px;
+}
+
+#slide-projects .projects-accordion__item.is-open .projects-accordion__panel {
+  display: grid !important;
+  grid-template-rows: 1fr !important;
+}
+
+#slide-projects .projects-accordion__item.is-open .projects-accordion__panel-content .card-grid {
+  display: grid !important;
+  gap: clamp(14px, 2vw, 22px);
+}
+
+#slide-projects .projects-accordion__item.is-open .project-card,
+#slide-projects .projects-accordion__item.is-open .project-card__preview,
+#slide-projects .projects-accordion__item.is-open .projects-accordion__panel-content {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#slide-projects.active .projects-accordion__item,
+#slide-projects.active .projects-accordion__trigger {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
 }
 
 body[data-world="nexora"] #slide-projects .projects-accordion__item.is-open .projects-accordion__panel {

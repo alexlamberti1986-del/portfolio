@@ -80,18 +80,11 @@
     if (!items.length) return;
 
     items.forEach(function (item) {
-      item.classList.remove("is-open");
       var trigger = item.querySelector(".projects-accordion__trigger");
       var panel = item.querySelector(".projects-accordion__panel");
-      if (trigger) trigger.setAttribute("aria-expanded", "false");
-      if (panel) panel.setAttribute("hidden", "");
-    });
+      if (!trigger || !panel || trigger.dataset.projectsAccordionWired === "1") return;
 
-    items.forEach(function (item) {
-      var trigger = item.querySelector(".projects-accordion__trigger");
-      var panel = item.querySelector(".projects-accordion__panel");
-      if (!trigger || !panel) return;
-
+      trigger.dataset.projectsAccordionWired = "1";
       trigger.addEventListener("click", function () {
         var wasOpen = item.classList.contains("is-open");
         items.forEach(function (other) {
@@ -106,24 +99,54 @@
           trigger.setAttribute("aria-expanded", "true");
           panel.removeAttribute("hidden");
           loadPanelPreviews(panel);
+          revealProjectCards(panel);
         }
       });
     });
   }
 
+  function revealProjectCards(scope) {
+    var root = scope || document.querySelector("#slide-projects");
+    if (!root) return;
+    root.querySelectorAll(".welten-reveal:not(.is-visible)").forEach(function (el) {
+      el.classList.add("is-visible");
+    });
+  }
+
+  function openDefaultCategory(root) {
+    if (!root || root.querySelector(".projects-accordion__item.is-open")) return;
+    var first = root.querySelector(
+      '.projects-accordion__item[data-category="websites"] .projects-accordion__trigger'
+    );
+    if (first) first.click();
+  }
+
   function boot() {
     document.querySelectorAll("[data-projects-accordion]").forEach(initAccordion);
+    revealProjectCards();
+  }
+
+  function onProjectsChapter() {
+    boot();
+    window.setTimeout(function () {
+      openDefaultCategory(document.querySelector("[data-projects-accordion]"));
+      revealProjectCards();
+    }, 120);
   }
 
   function bootDeferred() {
     var onProjects =
       document.body.getAttribute("data-current-slide") === "projects" ||
       !!document.querySelector("#slide-projects.active");
-    if (onProjects) {
-      boot();
-      return;
-    }
-    document.addEventListener("welten-init-projects-accordion", boot, { once: true });
+
+    boot();
+    if (onProjects) onProjectsChapter();
+
+    document.addEventListener("welten-init-projects-accordion", onProjectsChapter);
+    document.addEventListener("welten-chapter-change", function (e) {
+      var ch = e && e.detail && e.detail.chapter;
+      if (ch === "projects") onProjectsChapter();
+    });
   }
 
   if (document.readyState === "loading") {

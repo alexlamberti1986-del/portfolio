@@ -82,6 +82,34 @@
   padding: 0 clamp(12px, 2vw, 18px) clamp(18px, 3vw, 28px);
 }
 
+.projects-accordion__item.is-open .projects-accordion__panel {
+  grid-template-rows: 1fr;
+  display: grid !important;
+}
+
+.projects-accordion__item.is-open .projects-accordion__panel-inner {
+  overflow: visible;
+}
+
+#slide-projects.active .projects-accordion,
+#slide-projects.active .projects-accordion__item,
+#slide-projects.active .projects-accordion__trigger,
+#slide-projects.active .projects-accordion__label,
+#slide-projects.active .projects-accordion__meta,
+#slide-projects.active .projects-accordion__chevron {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+#slide-projects.active .projects-accordion__item.is-open .projects-accordion__panel-content,
+#slide-projects.active .projects-accordion__item.is-open .project-card,
+#slide-projects.active .projects-accordion__item.is-open .project-card__preview {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 .projects-accordion .card-grid {
   margin-top: 4px;
 }

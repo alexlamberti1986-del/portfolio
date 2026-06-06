@@ -162,8 +162,13 @@
     document.querySelectorAll("#slide-projects .project-card").forEach(function (card, i) {
       if (i < 12) markReveal(card, null, (i % 4) + 1);
     });
-    document.querySelectorAll("#slide-projects .projects-accordion__item").forEach(function (item, i) {
-      markReveal(item, null, Math.min(i + 1, 3));
+  }
+
+  function revealProjectsContent() {
+    var slide = document.querySelector("#slide-projects.active");
+    if (!slide) return;
+    slide.querySelectorAll(".welten-reveal:not(.is-visible)").forEach(function (el) {
+      el.classList.add("is-visible");
     });
   }
 
@@ -204,6 +209,7 @@
     requestAnimationFrame(function () {
       var active = document.querySelector(".slide.active");
       if (!active) return;
+      if (active.id === "slide-projects") revealProjectsContent();
       active.querySelectorAll(".welten-reveal:not(.is-visible)").forEach(function (el) {
         if (revealObserver) revealObserver.observe(el);
       });
