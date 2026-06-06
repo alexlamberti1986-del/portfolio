@@ -1,0 +1,155 @@
+/* Kontakt FINAL — nur #slide-contact, alle Welten, responsive */
+
+#slide-contact.slide {
+  overflow-x: clip;
+}
+
+#slide-contact .slide-inner.contact-layout {
+  display: grid !important;
+  grid-template-columns: 1fr minmax(260px, 340px) !important;
+  gap: clamp(20px, 3vw, 28px) !important;
+  align-items: stretch !important;
+  width: 100%;
+  max-width: min(1180px, calc(100vw - clamp(32px, 6vw, 128px))) !important;
+  margin: 0 auto !important;
+  padding: clamp(24px, 4vw, 48px) clamp(18px, 4vw, 64px) !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 800px) {
+  #slide-contact .slide-inner.contact-layout {
+    grid-template-columns: 1fr !important;
+    max-width: min(720px, calc(100vw - 32px)) !important;
+    padding-inline: clamp(16px, 4vw, 24px) !important;
+  }
+
+  #slide-contact .contact-visual {
+    order: 2;
+    max-width: min(420px, 100%);
+    margin-inline: auto;
+  }
+}
+
+#slide-contact .contact-copy.glass-card {
+  padding: clamp(24px, 4vw, 40px) !important;
+  border-radius: var(--radius-lg, 28px);
+}
+
+#slide-contact .contact-lead-emphasis {
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+#slide-contact .contact-actions {
+  display: grid !important;
+  gap: 12px;
+  margin-top: 24px;
+  visibility: visible !important;
+  height: auto !important;
+  overflow: visible !important;
+  pointer-events: auto !important;
+}
+
+#slide-contact .contact-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  min-height: 52px;
+  border-radius: var(--radius-md, 18px);
+  border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18));
+  background: rgba(255, 255, 255, 0.04);
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.2s ease;
+  word-break: break-word;
+}
+
+#slide-contact .contact-actions a:hover {
+  transform: translateX(2px);
+}
+
+#slide-contact .contact-actions a span:last-child {
+  font-size: 1.1rem;
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+#slide-contact .contact-visual {
+  display: block !important;
+  visibility: visible !important;
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  aspect-ratio: 4 / 5;
+  max-height: min(72vh, 560px);
+  border-radius: var(--radius-lg, 28px);
+  overflow: hidden;
+  border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18));
+}
+
+#slide-contact .contact-visual img.contact-photo,
+#slide-contact .contact-visual img.portrait-photo,
+#slide-contact img#contactPhoto {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center 30%;
+  display: block !important;
+}
+
+/* Legacy Overrides ausblenden */
+#slide-contact .welten-contact-page,
+#slide-contact .welten-contact-stack,
+#slide-contact .contact-map-embed {
+  display: none !important;
+}
+
+/* ── Welten-Stil (nur Kontakt) ── */
+body[data-world="nexora"] #slide-contact .contact-actions a:hover {
+  border-color: rgba(142, 197, 255, 0.45);
+  background: rgba(142, 197, 255, 0.08);
+}
+
+body[data-world="vertex"] #slide-contact .contact-copy.glass-card,
+body[data-world="vertex"] #slide-contact .contact-visual {
+  border-radius: 0;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.08);
+}
+
+body[data-world="vertex"] #slide-contact .contact-actions a {
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+body[data-world="vertex"] #slide-contact .contact-actions a:hover {
+  border-color: rgba(0, 0, 0, 0.28);
+  background: #fff;
+}
+
+body[data-world="freiraum"] #slide-contact .contact-visual {
+  border-radius: 28px 18px 32px 22px;
+}
+
+body[data-world="freiraum"] #slide-contact .contact-actions a:hover {
+  border-color: rgba(255, 209, 102, 0.45);
+  background: rgba(255, 209, 102, 0.08);
+}
+
+@media (max-width: 480px) {
+  #slide-contact .contact-actions a {
+    padding: 16px;
+    font-size: 0.92rem;
+  }
+
+  #slide-contact .section-title {
+    font-size: clamp(1.65rem, 7vw, 2.2rem);
+  }
+}

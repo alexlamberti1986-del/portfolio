@@ -7,19 +7,7 @@
   pointer-events: none !important;
 }
 
-/* ── Kontakt: FINAL contact-layout (Details in welten-final-restore.css) ── */
-#slide-contact .contact-layout {
-  display: grid !important;
-  grid-template-columns: 1fr minmax(260px, 340px) !important;
-  gap: 28px !important;
-  align-items: stretch !important;
-}
-
-@media (max-width: 800px) {
-  #slide-contact .contact-layout {
-    grid-template-columns: 1fr !important;
-  }
-}
+/* ── Kontakt: siehe welten-contact-final.css ── */
 
 .welten-contact-hero .chapter-label {
   margin-bottom: 0.75rem;

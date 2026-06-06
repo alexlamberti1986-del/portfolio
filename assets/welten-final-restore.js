@@ -157,7 +157,6 @@
   }
 
   function apply() {
-    restoreContactFinal();
     injectExperienceTimeline();
     wireHomeClosingAbout();
     syncWorldIntro();
@@ -184,7 +183,6 @@
 
   document.addEventListener("welten-chapter-change", function (e) {
     var ch = e && e.detail && e.detail.chapter;
-    if (ch === "contact") restoreContactFinal();
     if (ch === "about") injectExperienceTimeline();
     if (ch === "home") {
       applyPortraits();

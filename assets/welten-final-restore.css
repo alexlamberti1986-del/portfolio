@@ -1,4 +1,4 @@
-/* FINAL Restore — Kontakt, Home unter Hero, freistehender Zeitstrahl */
+/* FINAL Restore — Home unter Hero, freistehender Zeitstrahl (Kontakt: welten-contact-final.css/js) */
 
 #slide-home .home-copy .more,
 #slide-home .home-copy ul.prose,
@@ -29,65 +29,6 @@
   max-width: 1180px;
   margin: 0 auto;
   padding: clamp(10px, 2vw, 22px) clamp(18px, 4vw, 64px) clamp(14px, 2vw, 28px);
-}
-
-/* Kontakt: FINAL contact-layout */
-#slide-contact .contact-layout,
-#slide-contact .slide-inner.contact-layout {
-  display: grid !important;
-  grid-template-columns: 1fr minmax(260px, 340px) !important;
-  gap: 28px !important;
-  align-items: stretch !important;
-  max-width: none !important;
-  margin: 0 !important;
-}
-
-@media (max-width: 800px) {
-  #slide-contact .contact-layout,
-  #slide-contact .slide-inner.contact-layout {
-    grid-template-columns: 1fr !important;
-  }
-
-  #slide-contact .contact-visual {
-    order: 2;
-  }
-}
-
-#slide-contact .contact-visual,
-#slide-contact .contact-actions {
-  display: grid !important;
-  visibility: visible !important;
-  height: auto !important;
-  overflow: visible !important;
-  pointer-events: auto !important;
-}
-
-#slide-contact .contact-visual {
-  display: block !important;
-}
-
-#slide-contact .contact-visual img.contact-photo,
-#slide-contact .contact-photo {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  display: block !important;
-}
-
-#slide-contact .glass-card {
-  background: var(--glass, rgba(18, 32, 56, 0.42)) !important;
-  border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18)) !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35) !important;
-}
-
-.welten-contact-page {
-  display: none !important;
-}
-
-.contact-layout--minimal .contact-actions,
-.contact-layout--minimal .contact-visual {
-  display: grid !important;
-  visibility: visible !important;
 }
 
 /* Erfahrung: freistehend, ohne umhüllende Box */
