@@ -1,0 +1,143 @@
+/* Portal-Übergänge — Vollbild-Overlay (Demo + spätere Integration) */
+
+.world-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: #000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.world-transition-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.world-transition-overlay canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+html.world-transition-lock,
+html.world-transition-lock body {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+/* Demo-Seiten */
+.demo-page {
+  min-height: 100vh;
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #e8eef8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.demo-page h1 {
+  margin: 0;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.demo-page p {
+  margin: 0;
+  max-width: 36rem;
+  text-align: center;
+  line-height: 1.55;
+  opacity: 0.85;
+  font-size: 0.95rem;
+}
+
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
+}
+
+.demo-world-btn {
+  font: inherit;
+  cursor: pointer;
+  padding: 16px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.demo-world-btn:hover {
+  transform: translateY(-2px);
+}
+
+.demo-world-btn:active {
+  transform: scale(0.98);
+}
+
+.demo-world-btn--nexora {
+  background: linear-gradient(135deg, #003d66, #001a33);
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.35);
+  border-color: rgba(0, 212, 255, 0.45);
+}
+
+.demo-world-btn--professional {
+  background: linear-gradient(135deg, #222, #000);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.35);
+  border-radius: 0;
+  letter-spacing: 0.2em;
+}
+
+.demo-world-btn--freiraum {
+  background: linear-gradient(135deg, #4a1942, #2a1438);
+  box-shadow: 0 0 48px rgba(255, 111, 174, 0.35);
+  border-color: rgba(255, 209, 102, 0.4);
+}
+
+.demo-back {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  color: inherit;
+  text-decoration: underline;
+}
+
+.demo-page--nexora {
+  background: radial-gradient(ellipse 80% 60% at 50% 20%, #0a2840, #020610);
+}
+
+.demo-page--professional {
+  background: linear-gradient(180deg, #f4f2ee, #e8e6e1);
+  color: #111;
+}
+
+.demo-page--freiraum {
+  background: radial-gradient(ellipse 70% 55% at 30% 25%, #3d1f4a, #1c1026);
+}
+
+.demo-hint {
+  font-size: 0.8rem;
+  opacity: 0.65;
+  max-width: 28rem;
+}
