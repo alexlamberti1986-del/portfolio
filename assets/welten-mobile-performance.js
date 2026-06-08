@@ -198,11 +198,10 @@
           }
           c.style.pointerEvents = "none";
         });
-        window.dispatchEvent(new Event("resize"));
-        setTimeout(function () {
+        requestAnimationFrame(function () {
           cleanupIframeTransition();
           apply();
-        }, 120);
+        });
       }
     });
   }
@@ -336,11 +335,6 @@
       cleanupIframeTransition();
       fixSlidesLayout();
     });
-    setTimeout(function () {
-      cleanupIframeTransition();
-      fixSlidesLayout();
-    }, 80);
-    setTimeout(cleanupIframeTransition, 250);
   }
 
   function bindNavigationCleanup() {

@@ -9,6 +9,7 @@
   var origCaf = global.cancelAnimationFrame;
   var pausedCallbacks = new Set();
   var patched = false;
+  var fakeRafId = 1;
 
   function shouldPauseAnimations() {
     var body = document.body;
@@ -27,6 +28,10 @@
 
     global.requestAnimationFrame = function (cb) {
       if (typeof cb !== "function") return 0;
+      if (shouldPauseAnimations()) {
+        pausedCallbacks.add(cb);
+        return fakeRafId++;
+      }
       return origRaf.call(global, function (ts) {
         if (shouldPauseAnimations()) {
           pausedCallbacks.add(cb);
@@ -53,13 +58,19 @@
     pending.forEach(function (cb) {
       origRaf.call(global, cb);
     });
+    document.querySelectorAll("canvas").forEach(function (c) {
+      c.style.visibility = "";
+      c.style.pointerEvents = "";
+    });
     global.dispatchEvent(new Event("resize"));
   }
 
   function pauseAnimations() {
     global.__weltenAnimPaused = true;
+    document.documentElement.classList.add("welten-world-paused");
     document.querySelectorAll("canvas").forEach(function (c) {
       c.style.visibility = "hidden";
+      c.style.pointerEvents = "none";
     });
   }
 

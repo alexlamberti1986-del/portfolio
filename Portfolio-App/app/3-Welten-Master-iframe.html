@@ -151,22 +151,8 @@ body[data-master-world="freiraum"] .sound-toggle {
 }
 </style>
 <link rel="stylesheet" href="assets/world-transition.css" />
-<link rel="stylesheet" href="assets/shell-performance.css?v=20260531c" />
-<script src="assets/welten-runtime-perf.js?v=20260602c"></script>
-<link rel="stylesheet" href="assets/welten-perf-sprint4.css?v=20260602c" />
-<script src="assets/welten-perf-sprint4.js?v=20260602c" defer></script>
-<link rel="stylesheet" href="assets/welten-ux-refine.css?v=20260601b" />
-<script src="assets/welten-ux-refine.js?v=20260530a" defer></script>
-<link rel="stylesheet" href="assets/welten-final.css?v=20260530b" />
-<script src="assets/welten-final.js?v=20260601b" defer></script>
-<link rel="stylesheet" href="assets/welten-cleanup.css?v=20260606d" />
-<script src="assets/welten-cleanup.js?v=20260606d" defer></script>
-<link rel="stylesheet" href="assets/welten-premium-review.css?v=20260606d" />
-<script src="assets/welten-premium-review.js?v=20260531c" defer></script>
-<link rel="stylesheet" href="assets/welten-final-restore.css?v=20260601b" />
-<script src="assets/welten-final-restore.js?v=20260606c" defer></script>
-<link rel="stylesheet" href="assets/welten-contact-final.css?v=20260606e" />
-<script src="assets/welten-contact-final.js?v=20260606e" defer></script>
+<link rel="stylesheet" href="assets/shell-performance.css?v=20260608b" />
+<script src="assets/welten-shell-perf.js?v=20260608b" defer></script>
 <script>
 (function () {
   if (window.matchMedia("(max-width: 1024px), (prefers-reduced-motion: reduce)").matches) return;
@@ -431,6 +417,7 @@ body[data-master-world="freiraum"] .sound-toggle {
     frames.forEach(function (f, j) {
       var on = j === i;
       f.classList.toggle("is-active", on);
+      f.classList.toggle("is-paused", !on);
       f.style.pointerEvents = on ? "auto" : "none";
       if (on) setFramePaused(f, false);
     });
@@ -550,6 +537,33 @@ body[data-master-world="freiraum"] .sound-toggle {
 
   window.addEventListener("popstate", applyShellRoute);
   applyShellRoute();
+
+  function scheduleIdlePreload() {
+    if (window.WeltenShellPerf && typeof window.WeltenShellPerf.idlePreloadLazyWorlds === "function") {
+      window.WeltenShellPerf.idlePreloadLazyWorlds(preloadFrame);
+      return;
+    }
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(function () {
+        preloadFrame(0);
+        preloadFrame(2);
+      }, { timeout: 3500 });
+    } else {
+      setTimeout(function () {
+        preloadFrame(0);
+        preloadFrame(2);
+      }, 1800);
+    }
+  }
+
+  var activeFrame = frames[1];
+  if (activeFrame) {
+    if (activeFrame.contentDocument && activeFrame.contentDocument.readyState === "complete") {
+      scheduleIdlePreload();
+    } else {
+      activeFrame.addEventListener("load", scheduleIdlePreload, { once: true });
+    }
+  }
 })();
 </script>
 </body>

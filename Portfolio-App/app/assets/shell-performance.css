@@ -53,6 +53,12 @@ html.world-transition-lock body {
 .world-frame:not(.is-active) {
   content-visibility: hidden;
   contain: strict;
+  isolation: isolate;
+}
+
+.world-frame.is-paused:not(.is-active) {
+  content-visibility: hidden;
+  contain: strict;
 }
 
 .world-frame.is-active:not(.is-leaving) {
