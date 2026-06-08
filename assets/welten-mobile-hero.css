@@ -246,9 +246,9 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
   body[data-world] #slide-home .nexora-orbit-button[data-go="home"],
   body[data-world] #slide-home .dna-slide[data-go="home"] {
     grid-column: 1 / -1 !important;
-    justify-self: center !important;
-    width: min(240px, calc(50% - 9px)) !important;
-    max-width: 240px !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    max-width: none !important;
   }
 
   body[data-world="nexora"] #slide-home .nexora-orbit-button,
@@ -996,8 +996,18 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
   body[data-world] #slide-home .dna-ring.hero-buttons-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 12px !important;
-    max-width: 390px !important;
+    max-width: min(390px, 92vw) !important;
     padding: 0 16px !important;
+  }
+
+  /* Home-Button: volle Breite über beide Spalten, gleich hoch wie die anderen */
+  body[data-world] #slide-home .hero-button[data-go="home"],
+  body[data-world] #slide-home .nexora-orbit-button[data-go="home"],
+  body[data-world] #slide-home .dna-slide[data-go="home"] {
+    grid-column: 1 / -1 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    max-width: none !important;
   }
 
   body[data-world] #slide-home .hero-button,
