@@ -12,13 +12,11 @@
   var fakeRafId = 1;
 
   function shouldPauseAnimations() {
-    var body = document.body;
     return (
       !!global.__portfolioWorldPaused ||
       !!global.__weltenAnimPaused ||
       document.hidden ||
-      document.documentElement.classList.contains("welten-page-hidden") ||
-      (body && body.classList.contains("is-subpage"))
+      document.documentElement.classList.contains("welten-page-hidden")
     );
   }
 

@@ -359,7 +359,10 @@ body[data-world="nexora"] #slide-projects .projects-accordion__panel-content {
 
 /* ── Experience: sanfte Übergänge ── */
 .slide.active .slide-inner {
-  animation: weltenSceneIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: weltenSceneIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-play-state: running !important;
 }
 
 @keyframes weltenSceneIn {

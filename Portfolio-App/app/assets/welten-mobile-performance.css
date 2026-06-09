@@ -676,6 +676,7 @@ html.welten-world-paused .light-beams {
 
   .slide.active {
     content-visibility: visible;
+    contain: none;
   }
 }
 
@@ -689,9 +690,21 @@ html.welten-reduce-effects #weltenMousePaintCanvas {
   pointer-events: none !important;
 }
 
-html.welten-world-paused *,
-html.welten-page-hidden * {
+html.welten-world-paused canvas,
+html.welten-world-paused .light-beams,
+html.welten-world-paused .dna-premium-canvas,
+html.welten-world-paused .dna-particles-canvas,
+html.welten-world-paused #particle-canvas,
+html.welten-world-paused #weltenMousePaintCanvas,
+html.welten-page-hidden canvas,
+html.welten-page-hidden .light-beams {
   animation-play-state: paused !important;
+}
+
+.slide.active .slide-inner {
+  animation-play-state: running !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 @media (prefers-reduced-motion: reduce) {

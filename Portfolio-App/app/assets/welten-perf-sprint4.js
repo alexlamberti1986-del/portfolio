@@ -23,11 +23,6 @@
     syncPerfMode();
     var sub = document.body.classList.contains("is-subpage");
     document.documentElement.classList.toggle("welten-subpage-perf", sub);
-    if (sub && window.WeltenRuntimePerf) {
-      window.WeltenRuntimePerf.pauseAnimations();
-    } else if (!sub && window.WeltenRuntimePerf) {
-      window.WeltenRuntimePerf.resumeAnimations();
-    }
   }
 
   function deferUntilChapter(chapter, fn) {
