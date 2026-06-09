@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260606f";
+  var HERO_VER = "20260608c";
 
   var WORLDS = {
     nexora: {
@@ -444,8 +444,7 @@
 
   window.addEventListener("message", function (e) {
     if (e.data && e.data.type === "portfolio-world-enter") {
-      setTimeout(boot, 50);
-      afterNavigation();
+      requestAnimationFrame(boot);
     }
     if (e.data && e.data.type === "portfolio-cleanup-transition") {
       afterNavigation();

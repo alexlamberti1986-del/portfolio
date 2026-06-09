@@ -1,5 +1,5 @@
 /**
- * Shell Performance — Idle-Preload lazy Welten, spart Zeit beim ersten Wechsel
+ * Shell Performance — Aggressives Preload + schneller Weltwechsel
  */
 (function () {
   "use strict";
@@ -12,21 +12,51 @@
     return !slow;
   }
 
-  function idlePreloadLazyWorlds(preloadFrame) {
+  function preloadLazyWorlds(preloadFrame) {
     if (!shouldPrefetch() || typeof preloadFrame !== "function") return;
-    var run = function () {
+    preloadFrame(0);
+    preloadFrame(2);
+  }
+
+  /** Sofort nach kurzer Verzögerung + Idle-Fallback */
+  function scheduleLazyWorldPreload(preloadFrame) {
+    if (!shouldPrefetch() || typeof preloadFrame !== "function") return;
+    setTimeout(function () {
       preloadFrame(0);
       preloadFrame(2);
-    };
+    }, 350);
     if ("requestIdleCallback" in window) {
-      requestIdleCallback(run, { timeout: 3500 });
-    } else {
-      setTimeout(run, 1800);
+      requestIdleCallback(
+        function () {
+          preloadLazyWorlds(preloadFrame);
+        },
+        { timeout: 900 }
+      );
     }
+  }
+
+  function injectDocumentPrefetch() {
+    if (!shouldPrefetch()) return;
+    ["NEXORA.html", "FREIRAUM.html"].forEach(function (href) {
+      if (document.querySelector('link[rel="prefetch"][href="' + href + '"]')) return;
+      var link = document.createElement("link");
+      link.rel = "prefetch";
+      link.href = href;
+      link.as = "document";
+      document.head.appendChild(link);
+    });
   }
 
   window.WeltenShellPerf = {
     shouldPrefetch: shouldPrefetch,
-    idlePreloadLazyWorlds: idlePreloadLazyWorlds,
+    preloadLazyWorlds: preloadLazyWorlds,
+    scheduleLazyWorldPreload: scheduleLazyWorldPreload,
+    injectDocumentPrefetch: injectDocumentPrefetch,
   };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", injectDocumentPrefetch);
+  } else {
+    injectDocumentPrefetch();
+  }
 })();

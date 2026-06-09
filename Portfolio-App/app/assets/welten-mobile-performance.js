@@ -176,7 +176,6 @@
       if (!e.data) return;
       if (e.data.type === "portfolio-cleanup-transition") {
         cleanupIframeTransition();
-        setPaused(false);
         return;
       }
       if (e.data.type === "portfolio-world-pause") {
@@ -187,19 +186,10 @@
       if (e.data.type === "portfolio-world-enter") {
         setPaused(false);
         cleanupIframeTransition();
-        apply();
-        document.querySelectorAll("#particle-canvas, #weltenMousePaintCanvas").forEach(function (c) {
-          if (isMobileContext()) {
-            c.style.display = "none";
-            c.style.opacity = "0";
-          } else {
-            c.style.display = "";
-            c.style.visibility = "";
-          }
-          c.style.pointerEvents = "none";
-        });
+        disableMousePaint();
+        tuneParticleCanvas();
+        ensureWorldUnpaused();
         requestAnimationFrame(function () {
-          cleanupIframeTransition();
           apply();
         });
       }

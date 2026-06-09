@@ -14,6 +14,8 @@
   pointer-events: auto !important;
   z-index: 1 !important;
   transition: none !important;
+  content-visibility: visible;
+  contain: none;
 }
 
 .world-frame.is-leaving {

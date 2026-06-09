@@ -150,9 +150,11 @@ body[data-master-world="freiraum"] .sound-toggle {
   background: rgba(55, 24, 62, 0.45);
 }
 </style>
+<link rel="prefetch" href="NEXORA.html" as="document" />
+<link rel="prefetch" href="FREIRAUM.html" as="document" />
 <link rel="stylesheet" href="assets/world-transition.css" />
-<link rel="stylesheet" href="assets/shell-performance.css?v=20260608b" />
-<script src="assets/welten-shell-perf.js?v=20260608b" defer></script>
+<link rel="stylesheet" href="assets/shell-performance.css?v=20260608c" />
+<script src="assets/welten-shell-perf.js?v=20260608c" defer></script>
 <script>
 (function () {
   if (window.matchMedia("(max-width: 1024px), (prefers-reduced-motion: reduce)").matches) return;
@@ -192,17 +194,27 @@ body[data-master-world="freiraum"] .sound-toggle {
     document.documentElement.style.setProperty("--bar-h", h + "px");
   }
 
-  function notifyFramesCleanup() {
-    for (var k = 0; k < frames.length; k++) {
-      postFrame(frames[k], { type: "portfolio-cleanup-transition" });
-    }
+  function notifyFrameCleanup(f) {
+    if (f) postFrame(f, { type: "portfolio-cleanup-transition" });
   }
 
   function cleanupShellState() {
     if (typeof window.cleanupWorldTransition === "function") {
       window.cleanupWorldTransition(document);
     }
-    notifyFramesCleanup();
+  }
+
+  function frameIsReady(f) {
+    try {
+      var d = f.contentDocument;
+      return !!(d && (d.readyState === "interactive" || d.readyState === "complete"));
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function frameHasSrc(f) {
+    return !!(f && f.src && f.src.indexOf("about:blank") === -1);
   }
 
   function unlockShell(activeIdx) {
@@ -377,12 +389,13 @@ body[data-master-world="freiraum"] .sound-toggle {
     if (!f || loaded[i]) return;
     var lazy = f.getAttribute("data-lazy-src");
     if (!lazy) return;
-    var blank = !f.src || f.src.indexOf("about:blank") !== -1;
-    if (!blank) { loaded[i] = true; return; }
-    f.addEventListener("load", function onLoad() {
-      f.removeEventListener("load", onLoad);
+    if (frameHasSrc(f)) {
       loaded[i] = true;
-    });
+      return;
+    }
+    f.addEventListener("load", function () {
+      loaded[i] = true;
+    }, { once: true });
     f.src = lazy;
   }
 
@@ -392,26 +405,35 @@ body[data-master-world="freiraum"] .sound-toggle {
       if (!f) return resolve();
       if (loaded[i]) return resolve();
       var lazy = f.getAttribute("data-lazy-src");
-      if (!lazy) { loaded[i] = true; return resolve(); }
-      var blank = !f.src || f.src.indexOf("about:blank") !== -1;
-      if (!blank && f.contentDocument && f.contentDocument.readyState === "complete") {
+      if (!lazy) {
         loaded[i] = true;
         return resolve();
       }
-      function onLoad() {
-        f.removeEventListener("load", onLoad);
+      if (frameHasSrc(f) && frameIsReady(f)) {
+        loaded[i] = true;
+        return resolve();
+      }
+      var settled = false;
+      function finish() {
+        if (settled) return;
+        settled = true;
+        clearInterval(pollId);
         loaded[i] = true;
         resolve();
       }
-      f.addEventListener("load", onLoad);
-      if (blank) f.src = lazy;
+      var pollId = setInterval(function () {
+        if (frameIsReady(f)) finish();
+      }, 40);
+      f.addEventListener("load", finish, { once: true });
+      if (!frameHasSrc(f)) f.src = lazy;
+      setTimeout(finish, 12000);
     });
   }
 
   function applyActiveFrames(i) {
     var prev = activeIdx();
     if (prev >= 0 && prev !== i) {
-      postFrame(frames[prev], { type: "portfolio-cleanup-transition" });
+      notifyFrameCleanup(frames[prev]);
       setFramePaused(frames[prev], true);
     }
     frames.forEach(function (f, j) {
@@ -426,70 +448,50 @@ body[data-master-world="freiraum"] .sound-toggle {
     });
     setMaster(i);
     postFrame(frames[i], { type: "portfolio-world-enter", world: soundKeyFromIframe(i) });
-    if (i === 0 && isTouchShell()) {
-      setTimeout(function () {
-        applyChapter(frames[i], sharedChapter);
-      }, 180);
-    } else {
-      applyChapter(frames[i], sharedChapter);
-    }
+    applyChapter(frames[i], sharedChapter);
     unlockShell(i);
   }
 
-  function switchToWorldIndexInternal(i) {
+  function switchToWorldIndex(i) {
     if (i < 0 || i > 2) return Promise.resolve();
-    if (activeIdx() === i) {
+    var prev = activeIdx();
+    if (prev === i) {
       unlockShell(i);
       return Promise.resolve();
     }
+
     switching = true;
-    var prev = activeIdx();
-    bar.querySelectorAll("button[data-iframe]").forEach(function (b) { b.disabled = true; });
+    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+      b.disabled = true;
+    });
+
     if (prev >= 0) {
       var c = readChapter(frames[prev]);
       if (c) sharedChapter = c;
       if (prev !== i) playWorldSwitchSound(soundKeyFromIframe(i));
     }
-    if (loaded[i] && frames[i].src && frames[i].src.indexOf("about:blank") === -1) {
+
+    setMaster(i);
+    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+      b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
+    });
+
+    if (loaded[i] && frameHasSrc(frames[i])) {
       applyActiveFrames(i);
       return Promise.resolve();
     }
+
     return loadFrame(i).then(function () {
       applyActiveFrames(i);
-    });
-  }
-
-  function switchToWorldIndex(i) {
-    if (i < 0 || i > 2) return Promise.resolve();
-    if (window.__worldTransitionRunning) {
-      unlockShell(activeIdx());
-      window.__worldTransitionRunning = false;
-    }
-    if (switching && !window.__worldTransitionRunning) unlockShell(activeIdx());
-
-    window.__worldTransitionRunning = true;
-    cleanupShellState();
-
-    var play = typeof window.playWorldTransition === "function" ? window.playWorldTransition(soundKeyFromIframe(i)) : Promise.resolve();
-    var safetyMs = window.matchMedia("(max-width: 1024px)").matches ? 3500 : 10000;
-    var safety = setTimeout(function () { unlockShell(i); }, safetyMs);
-
-    return Promise.resolve(play).then(function () {
-      return switchToWorldIndexInternal(i);
     }).catch(function (err) {
       console.error(err);
-      unlockShell(i);
-      return switchToWorldIndexInternal(i);
-    }).finally(function () {
-      clearTimeout(safety);
-      cleanupShellState();
-      unlockShell(i);
-      window.__worldTransitionRunning = false;
+      unlockShell(prev >= 0 ? prev : i);
     });
   }
 
   bar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
     var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+    btn.addEventListener("pointerdown", function () { preloadFrame(idx); }, { passive: true });
     btn.addEventListener("mouseenter", function () { preloadFrame(idx); });
     btn.addEventListener("touchstart", function () { preloadFrame(idx); }, { passive: true });
     btn.addEventListener("focus", function () { preloadFrame(idx); });
@@ -539,21 +541,14 @@ body[data-master-world="freiraum"] .sound-toggle {
   applyShellRoute();
 
   function scheduleIdlePreload() {
-    if (window.WeltenShellPerf && typeof window.WeltenShellPerf.idlePreloadLazyWorlds === "function") {
-      window.WeltenShellPerf.idlePreloadLazyWorlds(preloadFrame);
+    if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
+      window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame);
       return;
     }
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(function () {
-        preloadFrame(0);
-        preloadFrame(2);
-      }, { timeout: 3500 });
-    } else {
-      setTimeout(function () {
-        preloadFrame(0);
-        preloadFrame(2);
-      }, 1800);
-    }
+    setTimeout(function () {
+      preloadFrame(0);
+      preloadFrame(2);
+    }, 350);
   }
 
   var activeFrame = frames[1];

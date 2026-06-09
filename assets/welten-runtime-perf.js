@@ -123,7 +123,7 @@
       if (global.__portfolioWorldPaused) pauseAnimations();
       else resumeAnimations();
     }
-    if (e.data.type === "portfolio-world-enter" || e.data.type === "portfolio-cleanup-transition") {
+    if (e.data.type === "portfolio-world-enter") {
       resumeAnimations();
     }
   });
