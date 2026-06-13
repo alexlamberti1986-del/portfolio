@@ -1,0 +1,45 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/projekte", "destination": "/index.html" },
+    { "source": "/leistungen", "destination": "/index.html" },
+    { "source": "/ueber-mich", "destination": "/index.html" },
+    { "source": "/kontakt", "destination": "/index.html" }
+  ],
+  "redirects": [
+    { "source": "/3-Welten-Master-iframe.html", "destination": "/", "permanent": true },
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/projects", "destination": "/projekte", "permanent": true },
+    { "source": "/contact", "destination": "/kontakt", "permanent": true },
+    { "source": "/about", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/about-me", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/profil", "destination": "/leistungen", "permanent": true },
+    { "source": "/profile", "destination": "/leistungen", "permanent": true },
+    { "source": "/werte", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/values", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/staerken", "destination": "/leistungen", "permanent": true },
+    { "source": "/strengths", "destination": "/leistungen", "permanent": true },
+    { "source": "/erfahrung", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/experience", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/arbeitsweise", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/workstyle", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/motivation", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/why", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/faq", "destination": "/ueber-mich", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

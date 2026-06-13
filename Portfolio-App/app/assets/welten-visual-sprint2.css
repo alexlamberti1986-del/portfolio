@@ -407,13 +407,15 @@ body[data-world="freiraum"] .welten-cta-band::before {
   transform: rotate(0deg) scale(1.01);
 }
 
-/* Buttons polish */
-.btn, .btn-primary {
+/* Buttons polish — NEXORA behält Pill-Form */
+body[data-world="nexora"] .btn,
+body[data-world="nexora"] .btn-primary {
   border-radius: 999px !important;
   transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.btn:hover, .btn-primary:hover {
+body[data-world="nexora"] .btn:hover,
+body[data-world="nexora"] .btn-primary:hover {
   transform: translateY(-1px);
 }
 

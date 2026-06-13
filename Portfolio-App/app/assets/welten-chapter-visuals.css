@@ -1,0 +1,302 @@
+/**
+ * Kapitel-Bilder in Boxen — Produktion (alexlamberti.ch).
+ */
+
+/* Keine Vollseiten-Hintergründe — nur Boxen */
+body.welten-chapter-visuals--on .slide:not(#slide-home)::after {
+  opacity: 0.08 !important;
+  animation: none !important;
+}
+
+body.welten-chapter-visuals--on .slide.active:not(#slide-home)::before {
+  background-image: none !important;
+  animation: none !important;
+}
+
+/* ── Kapitel-Box (Bild direkt in der Glass-Card) ── */
+body.welten-chapter-visuals--on .welten-chapter-box {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: transparent !important;
+  border-radius: clamp(16px, 2.2vw, 24px) !important;
+  padding: clamp(20px, 3.5vw, 36px) !important;
+  margin-bottom: clamp(1rem, 2.5vw, 1.75rem);
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box:hover .welten-chapter-box__bg {
+  transform: scale(1.05);
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box__scrim {
+  background: linear-gradient(
+    155deg,
+    rgba(2, 7, 17, 0.84) 0%,
+    rgba(2, 7, 17, 0.52) 42%,
+    rgba(2, 7, 17, 0.76) 100%
+  );
+}
+
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box__scrim {
+  background: linear-gradient(
+    155deg,
+    rgba(0, 0, 0, 0.80) 0%,
+    rgba(0, 0, 0, 0.50) 45%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+}
+
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box__scrim {
+  background: linear-gradient(
+    155deg,
+    rgba(20, 10, 28, 0.88) 0%,
+    rgba(20, 10, 28, 0.56) 45%,
+    rgba(20, 10, 28, 0.84) 100%
+  );
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box > :not(.welten-chapter-box__bg):not(.welten-chapter-box__scrim):not(.welten-chapter-box__strip) {
+  position: relative;
+  z-index: 2;
+}
+
+/* CTA-Streifen innerhalb Kontakt-Box */
+body.welten-chapter-visuals--on .welten-chapter-box__strip {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 clamp(1rem, 2.5vw, 1.5rem);
+  min-height: clamp(88px, 16vw, 130px);
+  border-radius: clamp(12px, 1.8vw, 18px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box__strip-bg,
+body.welten-chapter-visuals--on .welten-chapter-box__strip-scrim {
+  position: absolute;
+  inset: 0;
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box__strip-bg {
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box__strip-scrim {
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.72));
+}
+
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box__strip-scrim {
+  background: linear-gradient(90deg, rgba(2, 7, 17, 0.78), rgba(2, 7, 17, 0.42), rgba(2, 7, 17, 0.78));
+}
+
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box__strip-scrim {
+  background: linear-gradient(90deg, rgba(20, 10, 28, 0.82), rgba(20, 10, 28, 0.45), rgba(20, 10, 28, 0.82));
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box__strip-text {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+  max-width: 26ch;
+}
+
+/* ── Innere Karten in Bild-Boxen (lesbar halten) ── */
+body.welten-chapter-visuals--on .welten-chapter-box .welten-leistung-rich.glass-card,
+body.welten-chapter-visuals--on .welten-chapter-box .welten-leistungen-rich .glass-card {
+  background: rgba(0, 0, 0, 0.38) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box .welten-faq__item {
+  border-bottom-color: rgba(255, 255, 255, 0.14);
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box .welten-faq__trigger {
+  background: transparent;
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box .welten-faq__panel {
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 12px;
+  padding: 12px 14px 16px;
+  margin-bottom: 6px;
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box .contact-actions a {
+  background: rgba(0, 0, 0, 0.42) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box .contact-actions a:hover {
+  background: rgba(0, 0, 0, 0.55) !important;
+  border-color: rgba(255, 255, 255, 0.32) !important;
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box .vz-row.glass-card,
+body.welten-chapter-visuals--on .welten-chapter-box .welten-merge-block.glass-card {
+  background: rgba(0, 0, 0, 0.32) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ── PROFESSIONAL: weisse Schrift in Bild-Boxen ── */
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .prose,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box p,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box li,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box ul,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .chapter-label,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .welten-faq__trigger,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .welten-faq__panel,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .welten-leistung-rich__desc,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .welten-leistung-rich__benefit,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .welten-leistung-rich__result,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .contact-actions a,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .contact-actions a span,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .vz-kicker {
+  color: #f5f5f5 !important;
+}
+
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box h2,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box h3,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .section-title,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .welten-faq > h3,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box__strip-text {
+  color: #ffffff !important;
+}
+
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .welten-faq__trigger::after,
+body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box .contact-actions a span:last-child {
+  color: rgba(255, 255, 255, 0.75) !important;
+  opacity: 1;
+}
+
+/* NEXORA / FREIRAUM: helle Schrift in Boxen */
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box {
+  color: #f0f4fa;
+}
+
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box h2,
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box h3,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box h2,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box h3,
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box .section-title,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box .section-title {
+  color: #fff;
+}
+
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box .chapter-label,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box .chapter-label {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box .prose,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box .prose,
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box .welten-faq__panel,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box .welten-faq__panel {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box .contact-actions a,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box .contact-actions a {
+  color: #fff !important;
+}
+
+/* Scroll-Reveal */
+body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  body.welten-chapter-visuals--on .welten-chapter-box__bg {
+    transition: none;
+  }
+}
+
+/* Mobile: etwas stärkerer Scrim */
+@media (max-width: 768px) {
+  body.welten-chapter-visuals--on .welten-chapter-box {
+    padding: clamp(16px, 4vw, 24px) !important;
+    margin-bottom: clamp(0.85rem, 3vw, 1.25rem);
+  }
+
+  body.welten-chapter-visuals--on .welten-chapter-box__strip {
+    min-height: clamp(72px, 20vw, 100px);
+  }
+
+  body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box__scrim,
+  body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box__scrim,
+  body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box__scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.86) 0%,
+      rgba(0, 0, 0, 0.68) 50%,
+      rgba(0, 0, 0, 0.88) 100%
+    ) !important;
+  }
+}
+
+/* Tablet: leicht kompaktere Boxen */
+@media (max-width: 1024px) {
+  body.welten-chapter-visuals--on .welten-chapter-box {
+    border-radius: clamp(14px, 2vw, 20px) !important;
+  }
+
+  body.welten-chapter-visuals--on .welten-chapter-box__strip-text {
+    max-width: 22ch;
+  }
+}
+
+/* Touch: kein Hover-Zoom */
+@media (hover: none) {
+  body.welten-chapter-visuals--on .welten-chapter-box:hover .welten-chapter-box__bg {
+    transform: scale(1.02);
+  }
+}
