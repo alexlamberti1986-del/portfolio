@@ -283,6 +283,16 @@ body[data-master-world="freiraum"] .sound-toggle {
 
   function playWorldSwitchSound(worldKey) {
     if (!soundEnabled || worldKey === lastSoundWorld) return;
+    if (
+      window.WeltenWorldSwitchPreview &&
+      typeof window.WeltenWorldSwitchPreview.playTransitionSound === "function"
+    ) {
+      window.WeltenWorldSwitchPreview.playTransitionSound(
+        worldKey === "professional" ? "vertex" : worldKey
+      );
+      lastSoundWorld = worldKey;
+      return;
+    }
     var clip = sounds[worldKey];
     if (!clip) return;
     try {
@@ -468,7 +478,7 @@ body[data-master-world="freiraum"] .sound-toggle {
     if (prev >= 0) {
       var c = readChapter(frames[prev]);
       if (c) sharedChapter = c;
-      if (prev !== i) playWorldSwitchSound(soundKeyFromIframe(i));
+      if (prev !== i && !window.__wwsPreviewOwnsSound) playWorldSwitchSound(soundKeyFromIframe(i));
     }
 
     setMaster(i);
@@ -561,5 +571,8 @@ body[data-master-world="freiraum"] .sound-toggle {
   }
 })();
 </script>
+<link rel="stylesheet" href="assets/welten-world-switch-preview.css?v=20260612" />
+<link rel="stylesheet" href="assets/welten-world-buttons.css?v=20260612b" />
+<script src="assets/welten-world-switch-preview.js?v=20260612" defer></script>
 </body>
 </html>

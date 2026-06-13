@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Lokale Vorschau — Kapitel-Bilder &amp; Weltwechsel</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, sans-serif;
+      background: #0b1220;
+      color: #e8eef8;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      max-width: 540px;
+      width: 100%;
+      padding: clamp(24px, 4vw, 36px);
+      border-radius: 20px;
+      background: rgba(18, 32, 56, 0.85);
+      border: 1px solid rgba(142, 197, 255, 0.22);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+    }
+    h1 {
+      margin: 0 0 0.75rem;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+    }
+    p { margin: 0 0 1rem; line-height: 1.6; opacity: 0.9; }
+    ul {
+      margin: 0 0 1.25rem;
+      padding-left: 1.2rem;
+      line-height: 1.65;
+      opacity: 0.9;
+    }
+    .warn {
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(217, 119, 6, 0.18);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      font-size: 0.92rem;
+      margin-bottom: 1.25rem;
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 14px 20px;
+      border-radius: 999px;
+      border: none;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(135deg, #008cff, #65d9ff);
+      box-shadow: 0 10px 32px rgba(0, 140, 255, 0.28);
+    }
+    .btn:hover { filter: brightness(1.06); }
+    .hint {
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      opacity: 0.7;
+      line-height: 1.5;
+    }
+    code {
+      font-size: 0.85em;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Lokale Vorschau</h1>
+    <div class="warn">
+      Nur lokal testen. Alles ist standardmässig <strong>aus</strong> — online ändert sich nichts ohne dein OK.
+    </div>
+    <p>Die Vorschau aktiviert:</p>
+    <ul>
+      <li><strong>Kapitel-Bilder</strong> in den Boxen (orangener Banner unten)</li>
+      <li><strong>Weltwechsel-Effekt</strong> beim Wechsel NEXORA / PROFESSIONAL / FREIRAUM</li>
+    </ul>
+    <button type="button" class="btn" id="start-preview">Vorschau starten</button>
+    <p class="hint">
+      Alternativ: <code>3-Welten-Master-iframe.html?preview-chapters=1</code><br />
+      Beenden: Vorschau-Buttons oder <code>localStorage</code> leeren.
+    </p>
+  </div>
+  <script>
+    document.getElementById("start-preview").addEventListener("click", function () {
+      try {
+        localStorage.setItem("welten-chapter-visuals-preview", "1");
+        localStorage.setItem("welten-world-switch-preview", "1");
+      } catch (e) {}
+      window.location.href = "3-Welten-Master-iframe.html?preview-chapters=1&preview-world-switch=1";
+    });
+  </script>
+</body>
+</html>
