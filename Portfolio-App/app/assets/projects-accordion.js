@@ -1,5 +1,5 @@
 /**
- * Projekte-Accordion — eine Kategorie offen, Lazy-Load für Vorschau-Iframes
+ * Projekte-Accordion — Kategorien starten geschlossen, Lazy-Load für Vorschau-Iframes
  */
 (function () {
   "use strict";
@@ -113,14 +113,6 @@
     });
   }
 
-  function openDefaultCategory(root) {
-    if (!root || root.querySelector(".projects-accordion__item.is-open")) return;
-    var first = root.querySelector(
-      '.projects-accordion__item[data-category="websites"] .projects-accordion__trigger'
-    );
-    if (first) first.click();
-  }
-
   function boot() {
     document.querySelectorAll("[data-projects-accordion]").forEach(initAccordion);
     revealProjectCards();
@@ -128,10 +120,7 @@
 
   function onProjectsChapter() {
     boot();
-    window.setTimeout(function () {
-      openDefaultCategory(document.querySelector("[data-projects-accordion]"));
-      revealProjectCards();
-    }, 120);
+    revealProjectCards();
   }
 
   function bootDeferred() {

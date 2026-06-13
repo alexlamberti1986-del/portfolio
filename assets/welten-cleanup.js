@@ -333,15 +333,6 @@
 
   function ensureProjectsAccordion() {
     document.dispatchEvent(new CustomEvent("welten-init-projects-accordion"));
-    setTimeout(function () {
-      var root = document.querySelector("[data-projects-accordion]");
-      if (!root) return;
-      if (root.querySelector(".projects-accordion__item.is-open")) return;
-      var first = root.querySelector(
-        '.projects-accordion__item[data-category="websites"] .projects-accordion__trigger'
-      );
-      if (first) first.click();
-    }, 160);
   }
 
   function onChapterChange(e) {

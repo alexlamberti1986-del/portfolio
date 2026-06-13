@@ -1,5 +1,5 @@
 /**
- * Projekte-Accordion — eine Kategorie offen, Lazy-Load für Vorschau-Iframes
+ * Projekte-Accordion — Kategorien starten geschlossen, Lazy-Load für Vorschau-Iframes
  */
 (function () {
   "use strict";
@@ -128,10 +128,7 @@
 
   function onProjectsChapter() {
     boot();
-    window.setTimeout(function () {
-      openDefaultCategory(document.querySelector("[data-projects-accordion]"));
-      revealProjectCards();
-    }, 120);
+    revealProjectCards();
   }
 
   function bootDeferred() {
