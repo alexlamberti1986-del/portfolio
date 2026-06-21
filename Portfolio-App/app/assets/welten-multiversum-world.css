@@ -182,7 +182,8 @@ body[data-world="general"] .menu-links a:hover {
   color: #ff59b2 !important;
 }
 
-body[data-world="general"] .section-title {
+body[data-world="general"] .section-title,
+body[data-world="general"] .home-copy h1 {
   background: var(--mv-gradient-text);
   -webkit-background-clip: text;
   background-clip: text;
