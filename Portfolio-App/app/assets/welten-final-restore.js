@@ -13,6 +13,7 @@
     "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 
   var WORLD_INTRO = {
+    general: "MULTIVERSUM · Mix · Strategie · Begeisterung",
     nexora: "NEXORA · Virtuell · AI · Zukunft",
     vertex: "BUSINESS · Klar · Professionell · Vertrauensvoll",
     freiraum: "FREIRAUM · Kreativ · Emotional · Nahbar",
@@ -34,7 +35,7 @@
 
   function applyPortraits() {
     var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
-    var w = document.body.getAttribute("data-world") || "nexora";
+    var w = document.body.getAttribute("data-world") || "general";
     var src = IMG[w] || IMG.general || IMG.nexora || IMG.vertex;
     if (!src) return;
     document
@@ -139,7 +140,7 @@
   }
 
   function syncWorldIntro() {
-    var w = document.body.getAttribute("data-world") || "nexora";
+    var w = document.body.getAttribute("data-world") || "general";
     var label = document.getElementById("worldIntro");
     if (label && WORLD_INTRO[w]) label.textContent = WORLD_INTRO[w];
   }

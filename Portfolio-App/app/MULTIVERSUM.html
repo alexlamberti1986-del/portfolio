@@ -6665,6 +6665,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         var more = document.querySelector('.home-copy .more');
         var intro = document.getElementById('worldIntro');
         var worldCopy = {
+          general: {
+            intro: 'MULTIVERSUM · Mix · Strategie · Begeisterung',
+            h1: 'Digitale Welten. Ein Portfolio. Unendliche Möglichkeiten.',
+            lead: 'NEXORA, PROFESSIONAL und FREIRAUM vereint — ein Auftritt für jede Situation.',
+            more: 'MULTIVERSUM ist mein übergeordnetes Portfolio: analytisch wie NEXORA, klar wie PROFESSIONAL, emotional wie FREIRAUM — je nach Projekt die passende Wirkung.'
+          },
           nexora: {
             intro: 'NEXORA · Virtuell · AI · Zukunft',
             h1: 'NEXORA',
@@ -6685,7 +6691,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
           }
         };
         function applyCopy(){
-          var w = document.body.getAttribute('data-world') || 'nexora';
+          var w = document.body.getAttribute('data-world') || 'general';
           var c = worldCopy[w];
           if (!c) return;
           if (intro) intro.textContent = c.intro;
@@ -6707,6 +6713,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     (function () {
       "use strict";
       var copy = {
+        general: "MULTIVERSUM · Mix · Strategie · Begeisterung",
         nexora: "NEXORA · Virtual Interface · Neon · AI · Motion",
         vertex: "BUSINESS · Executive Look · Klarheit · Struktur",
         freiraum: "FREIRAUM · Kreativ · Nahbar · Emotional"
@@ -6716,7 +6723,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         if (active) document.body.setAttribute("data-current-slide", active.getAttribute("data-slide"));
       }
       function updateWorldLabel() {
-        var w = document.body.getAttribute("data-world") || "nexora";
+        var w = document.body.getAttribute("data-world") || "general";
         var label = document.getElementById("worldIntro");
         if (label && copy[w]) label.textContent = copy[w];
       }
@@ -6741,6 +6748,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         var more = document.querySelector('.home-copy .more');
         var intro = document.getElementById('worldIntro');
         var worldCopy = {
+          general: {
+            intro: 'MULTIVERSUM · Mix · Strategie · Begeisterung',
+            h1: 'Digitale Welten. Ein Portfolio. Unendliche Möglichkeiten.',
+            lead: 'NEXORA, PROFESSIONAL und FREIRAUM vereint — ein Auftritt für jede Situation.',
+            more: 'MULTIVERSUM ist mein übergeordnetes Portfolio: analytisch wie NEXORA, klar wie PROFESSIONAL, emotional wie FREIRAUM — je nach Projekt die passende Wirkung.'
+          },
           nexora: {
             intro: 'NEXORA · Virtuell · AI · Zukunft',
             h1: 'NEXORA',
@@ -6761,7 +6774,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
           }
         };
         function applyCopy(){
-          var w = document.body.getAttribute('data-world') || 'nexora';
+          var w = document.body.getAttribute('data-world') || 'general';
           var c = worldCopy[w];
           if (!c) return;
           if (intro) intro.textContent = c.intro;
@@ -6792,11 +6805,18 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     (function ultraFinalAssetsAndCopy(){
       "use strict";
       var ASSETS = {
+        general: window.PORTFOLIO_INLINE_IMAGES.general,
         nexora: window.PORTFOLIO_INLINE_IMAGES.nexora,
         vertex: window.PORTFOLIO_INLINE_IMAGES.vertex,
         freiraum: window.PORTFOLIO_INLINE_IMAGES.freiraum
       };
       var COPY = {
+        general: {
+          intro: "MULTIVERSUM · Mix · Strategie · Begeisterung",
+          h1: "Digitale Welten. Ein Portfolio. Unendliche Möglichkeiten.",
+          lead: "NEXORA, PROFESSIONAL und FREIRAUM vereint — ein Auftritt für jede Situation.",
+          more: "MULTIVERSUM ist mein übergeordnetes Portfolio: analytisch wie NEXORA, klar wie PROFESSIONAL, emotional wie FREIRAUM — je nach Projekt die passende Wirkung."
+        },
         nexora: {
           intro: "NEXORA · Virtuell · AI · Zukunft",
           h1: "NEXORA",
@@ -6817,7 +6837,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         }
       };
 
-      function world(){ return document.body.getAttribute("data-world") || "nexora"; }
+      function world(){ return document.body.getAttribute("data-world") || "general"; }
 
       function setImg(img, src, alt){
         if (!img) return;
@@ -6828,11 +6848,11 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 
       function applyUltraFinal(){
         var w = world();
-        var c = COPY[w] || COPY.nexora;
+        var c = COPY[w] || COPY.general;
         var hero = document.getElementById("heroPhoto");
         var contact = document.getElementById("contactPhoto");
-        setImg(hero, ASSETS[w] || ASSETS.nexora, w === "vertex" ? "Alex Lamberti" : (w === "freiraum" ? "Künstlerisches FREIRAUM-Motiv" : "Virtuelles NEXORA-Motiv"));
-        setImg(contact, ASSETS[w] || ASSETS.nexora, w === "vertex" ? "Alex Lamberti" : (w === "freiraum" ? "Künstlerisches FREIRAUM-Motiv" : "Virtuelles NEXORA-Motiv"));
+        setImg(hero, ASSETS[w] || ASSETS.general, w === "vertex" ? "Alex Lamberti" : w === "freiraum" ? "Künstlerisches FREIRAUM-Motiv" : w === "general" ? "Alex Lamberti Multiversum Portrait" : "Virtuelles NEXORA-Motiv");
+        setImg(contact, ASSETS[w] || ASSETS.general, w === "vertex" ? "Alex Lamberti" : w === "freiraum" ? "Künstlerisches FREIRAUM-Motiv" : w === "general" ? "Alex Lamberti Multiversum Portrait" : "Virtuelles NEXORA-Motiv");
 
         var intro = document.getElementById("worldIntro");
         var h1 = document.querySelector(".home-copy h1");
@@ -6861,11 +6881,11 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <script>
 (function enforceEmbeddedPortraits(){
   var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
-  function currentWorld(){ return document.body.getAttribute('data-world') || 'nexora'; }
+  function currentWorld(){ return document.body.getAttribute('data-world') || 'general'; }
   function apply(){
     var world = currentWorld();
     var key = world === 'vertex' ? 'vertex' : world;
-    var src = IMG[key] || IMG.nexora;
+    var src = IMG[key] || IMG.general;
     var alt = world === 'general'
       ? 'Alex Lamberti Multiversum Portrait'
       : world === 'vertex'
@@ -6899,10 +6919,10 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     vertex: 'Alex Lamberti Professional Portrait',
     freiraum: 'Abstraktes Kunstportrait für FREIRAUM'
   };
-  function currentWorld(){ return document.body.getAttribute('data-world') || 'nexora'; }
+  function currentWorld(){ return document.body.getAttribute('data-world') || 'general'; }
   function imgForWorld(){
     var w = currentWorld();
-    return IMG[w] || IMG.nexora;
+    return IMG[w] || IMG.general;
   }
   function applyPortraits(){
     var w = currentWorld();

@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://www.alexlamberti.ch" crossorigin />
   <link
     rel="preload"
-    href="assets/images/4welten-preview/professional/PROFESSIONAL%20PROFILBILD%20f%C3%BCr%20HOME%20und%20Kontakt.png"
+    href="assets/images/4welten-preview/general/MULTIVERSUM%20PROFILBILD%20f%C3%BCr%20HOME%20und%20Kontakt.png"
     as="image"
     type="image/png"
     fetchpriority="high"
@@ -48,12 +48,12 @@
   <link rel="stylesheet" href="assets/shell-performance.css?v=20260621live2" />
   <script src="assets/welten-shell-perf.js?v=20260621live2" defer></script>
 </head>
-<body data-master-world="vertex" data-live-shell="1" data-live-default="2">
+<body data-master-world="general" data-live-shell="1" data-live-default="0">
   <header class="mv4-bar" role="group" aria-label="Welten &amp; Steuerung">
     <nav class="mv4-worlds" aria-label="Welten wechseln">
-      <button type="button" data-iframe="0" data-world-key="general">MULTIVERSUM</button>
+      <button type="button" class="is-active" data-iframe="0" data-world-key="general">MULTIVERSUM</button>
       <button type="button" data-iframe="1" data-world-key="nexora">NEXORA</button>
-      <button type="button" class="is-active" data-iframe="2" data-world-key="vertex">PROFESSIONAL</button>
+      <button type="button" data-iframe="2" data-world-key="vertex">PROFESSIONAL</button>
       <button type="button" data-iframe="3" data-world-key="freiraum">FREIRAUM</button>
     </nav>
     <div class="mv4-actions">
@@ -89,9 +89,9 @@
     </div>
   </header>
 
-  <iframe class="mv4-frame" title="MULTIVERSUM" data-lazy-src="MULTIVERSUM.html" src="about:blank"></iframe>
+  <iframe class="mv4-frame is-active" title="MULTIVERSUM" src="MULTIVERSUM.html"></iframe>
   <iframe class="mv4-frame" title="NEXORA" data-lazy-src="NEXORA.html" src="about:blank"></iframe>
-  <iframe class="mv4-frame is-active" title="PROFESSIONAL" src="PROFESSIONAL.html"></iframe>
+  <iframe class="mv4-frame" title="PROFESSIONAL" data-lazy-src="PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
 
   <script src="assets/welten-multiversum-master.js?v=20260621live2" defer></script>
