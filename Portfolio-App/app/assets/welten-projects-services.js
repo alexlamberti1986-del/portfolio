@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var V = "20260621svc2";
+  var V = "20260621svc3";
 
   var ACCORDION_SERVICES = {
     websites: "web",
@@ -133,7 +133,8 @@
 
   function applyAccordionBackgrounds() {
     var accordion = document.querySelector("#slide-projects [data-projects-accordion]");
-    if (!accordion) return;
+    if (!accordion) return false;
+    if (!window.WeltenFormServiceImage) return false;
 
     Object.keys(ACCORDION_SERVICES).forEach(function (cat) {
       var item = accordion.querySelector('.projects-accordion__item[data-category="' + cat + '"]');
@@ -145,6 +146,15 @@
       trigger.style.setProperty("--accordion-service-bg", 'url("' + url + '")');
       trigger.classList.add("has-service-bg");
     });
+    return true;
+  }
+
+  function ensureAccordionBackgrounds(attempt) {
+    if (applyAccordionBackgrounds()) return;
+    if ((attempt || 0) >= 12) return;
+    setTimeout(function () {
+      ensureAccordionBackgrounds((attempt || 0) + 1);
+    }, 120);
   }
 
   function revealCards(root) {
@@ -231,12 +241,12 @@
 
   function boot() {
     render();
-    applyAccordionBackgrounds();
+    ensureAccordionBackgrounds(0);
   }
 
   function onProjectsChapter() {
     render();
-    applyAccordionBackgrounds();
+    ensureAccordionBackgrounds(0);
     var wrap = document.querySelector("[data-projects-services]");
     if (wrap) revealCards(wrap);
   }
@@ -245,6 +255,25 @@
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
+  }
+
+  window.addEventListener("load", function () {
+    ensureAccordionBackgrounds(0);
+  });
+
+  try {
+    new MutationObserver(function () {
+      ensureAccordionBackgrounds(0);
+    }).observe(document.body, { attributes: true, attributeFilter: ["data-world", "data-current-slide"] });
+  } catch (e) {}
+
+  var projectsSlide = document.getElementById("slide-projects");
+  if (projectsSlide) {
+    try {
+      new MutationObserver(function () {
+        if (projectsSlide.classList.contains("active")) ensureAccordionBackgrounds(0);
+      }).observe(projectsSlide, { attributes: true, attributeFilter: ["class"] });
+    } catch (e2) {}
   }
 
   document.addEventListener("welten-chapter-change", function (e) {
@@ -258,5 +287,9 @@
     }
   });
 
-  window.WeltenProjectsServices = { render: render, applyAccordionBackgrounds: applyAccordionBackgrounds };
+  window.WeltenProjectsServices = {
+    render: render,
+    applyAccordionBackgrounds: applyAccordionBackgrounds,
+    ensureAccordionBackgrounds: ensureAccordionBackgrounds,
+  };
 })();

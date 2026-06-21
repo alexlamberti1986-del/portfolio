@@ -104,7 +104,7 @@ body[data-world="general"] .btn:not(.btn-close):not(.experience-step),
 body[data-world="general"] .cta-btn,
 body[data-world="general"] a.btn-open,
 body[data-world="general"] .btn-open,
-body[data-world="general"] .projects-accordion__trigger,
+body[data-world="general"] .projects-accordion__trigger:not(.has-service-bg),
 body[data-world="general"] .persona-tabs button {
   border: 1px solid rgba(255, 89, 178, 0.22) !important;
   background: rgba(255, 255, 255, 0.05) !important;
@@ -124,7 +124,7 @@ body[data-world="general"] .btn:not(.btn-close):not(.experience-step):not(.btn-p
 body[data-world="general"] .cta-btn:not(.btn-primary):hover,
 body[data-world="general"] a.btn-open:hover,
 body[data-world="general"] .btn-open:hover,
-body[data-world="general"] .projects-accordion__trigger:hover,
+body[data-world="general"] .projects-accordion__trigger:not(.has-service-bg):hover,
 body[data-world="general"] .persona-tabs button:hover {
   transform: translateY(-1px) !important;
   border-color: rgba(255, 89, 178, 0.48) !important;
@@ -314,9 +314,17 @@ body[data-world="general"] .project-card--preview .project-card__preview {
   background: rgba(255, 255, 255, 0.04) !important;
 }
 
-body[data-world="general"] .projects-accordion__item.is-open .projects-accordion__trigger {
+body[data-world="general"] .projects-accordion__item.is-open .projects-accordion__trigger:not(.has-service-bg) {
   background: var(--mv-gradient-fill-soft) !important;
   box-shadow: inset 0 -1px 0 rgba(255, 89, 178, 0.12) !important;
+}
+
+body[data-world="general"] .projects-accordion__trigger.has-service-bg,
+body[data-world="general"] .projects-accordion__trigger.has-service-bg:hover,
+body[data-world="general"] .projects-accordion__item.is-open .projects-accordion__trigger.has-service-bg {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-color: rgba(255, 89, 178, 0.22) !important;
 }
 
 body[data-world="general"] .prose,

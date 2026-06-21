@@ -45,6 +45,7 @@
   background-image: var(--accordion-service-bg);
   background-size: cover;
   background-position: center right;
+  background-repeat: no-repeat;
   z-index: 0;
 }
 
@@ -55,9 +56,10 @@
   z-index: 1;
   background: linear-gradient(
     90deg,
-    rgba(6, 12, 24, 0.9) 0%,
-    rgba(6, 12, 24, 0.68) 42%,
-    rgba(6, 12, 24, 0.28) 100%
+    rgba(6, 12, 24, 0.88) 0%,
+    rgba(6, 12, 24, 0.55) 38%,
+    rgba(6, 12, 24, 0.12) 72%,
+    rgba(6, 12, 24, 0.04) 100%
   );
   transition: opacity 0.28s ease;
 }
@@ -254,9 +256,10 @@ body[data-world="general"] .projects-accordion__item {
 body[data-world="general"] .projects-accordion__trigger.has-service-bg::after {
   background: linear-gradient(
     90deg,
-    rgba(12, 8, 22, 0.92) 0%,
-    rgba(40, 16, 48, 0.72) 45%,
-    rgba(255, 89, 178, 0.18) 100%
+    rgba(12, 8, 22, 0.9) 0%,
+    rgba(40, 16, 48, 0.58) 40%,
+    rgba(255, 89, 178, 0.1) 78%,
+    rgba(12, 8, 22, 0.06) 100%
   );
 }
 
