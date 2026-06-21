@@ -5,6 +5,7 @@
   "use strict";
 
   var MAP = {
+    general: "general",
     nexora: "nexora",
     vertex: "vertex",
     professional: "vertex",

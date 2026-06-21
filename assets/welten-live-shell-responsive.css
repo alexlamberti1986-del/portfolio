@@ -1,0 +1,70 @@
+/**
+ * Live-Shell (3-Welten-Master) — Responsive Steuerleiste
+ * Desktop/Laptop: unverändert. Mobile/Tablet: kompakter wie Preview.
+ */
+@media (max-width: 1024px) {
+  .world-bar {
+    gap: 6px;
+    padding: 8px 10px;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .world-bar button[data-iframe] {
+    flex: 0 0 auto;
+    padding: 7px 11px;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    min-height: 30px;
+  }
+
+  .world-bar .sound-toggle {
+    margin-left: 0;
+    padding: 5px 8px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.02em;
+    min-height: 28px;
+    flex: 0 0 auto;
+  }
+
+  .world-frame {
+    top: var(--bar-h, 88px) !important;
+    height: calc(100dvh - var(--bar-h, 88px)) !important;
+    max-height: calc(100dvh - var(--bar-h, 88px)) !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .world-bar button[data-iframe] {
+    padding: 8px 13px;
+    font-size: 11px;
+  }
+
+  .world-bar .sound-toggle {
+    padding: 6px 10px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .world-bar {
+    padding: 6px 8px;
+    padding-top: calc(6px + env(safe-area-inset-top, 0px));
+    gap: 5px;
+  }
+
+  .world-bar button[data-iframe] {
+    padding: 6px 9px;
+    font-size: 9px;
+    min-height: 28px;
+  }
+
+  .world-bar .sound-toggle {
+    padding: 4px 7px !important;
+    font-size: 8px !important;
+    min-height: 26px;
+  }
+}

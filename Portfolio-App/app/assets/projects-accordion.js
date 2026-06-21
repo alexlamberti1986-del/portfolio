@@ -108,9 +108,17 @@
   function revealProjectCards(scope) {
     var root = scope || document.querySelector("#slide-projects");
     if (!root) return;
-    root.querySelectorAll(".welten-reveal:not(.is-visible)").forEach(function (el) {
+    root.querySelectorAll(".welten-reveal:not(.is-visible), .project-card--service:not(.is-visible)").forEach(function (el) {
       el.classList.add("is-visible");
     });
+  }
+
+  function openDefaultCategory(root) {
+    if (!root || root.querySelector(".projects-accordion__item.is-open")) return;
+    var first = root.querySelector(
+      '.projects-accordion__item[data-category="websites"] .projects-accordion__trigger'
+    );
+    if (first) first.click();
   }
 
   function boot() {

@@ -87,7 +87,7 @@
     link.rel = "preload";
     link.as = "image";
     link.href = href;
-    link.type = "image/webp";
+    link.type = href.indexOf(".png") !== -1 ? "image/png" : "image/webp";
     link.setAttribute("data-welten-lcp", "1");
     link.setAttribute("fetchpriority", "high");
     document.head.appendChild(link);

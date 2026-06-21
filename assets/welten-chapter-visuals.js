@@ -18,10 +18,14 @@
 
   function currentWorld() {
     var w = document.body.getAttribute("data-world") || "nexora";
+    if (w === "general") return "general";
     return w === "vertex" || w === "freiraum" || w === "nexora" ? w : "nexora";
   }
 
   function imageUrl(key) {
+    if (window.WeltenPreviewImages && typeof window.WeltenPreviewImages.chapterUrl === "function") {
+      return window.WeltenPreviewImages.chapterUrl(currentWorld(), key);
+    }
     return "assets/images/chapters/" + currentWorld() + "/" + (IMAGES[key] || IMAGES.about);
   }
 

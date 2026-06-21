@@ -1,0 +1,474 @@
+/**
+ * 4-Welten Master — Preview + Live (alexlamberti.ch)
+ */
+(function () {
+  "use strict";
+
+  var LANG_KEY = "mv-preview-lang";
+  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
+  var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
+  var ROUTE_CHAPTER = {
+    "/": "home",
+    "/projekte": "projects",
+    "/leistungen": "leistungen",
+    "/ueber-mich": "about",
+    "/kontakt": "contact",
+  };
+  var PROFILE_V = "20260621-profile-new";
+  var PROFILE_BASE = "assets/images/4welten-preview/";
+  var PROFILE_FILES = {
+    general: "MULTIVERSUM PROFILBILD für HOME und Kontakt.png",
+    nexora: "NEXORA PROFILBILD für HOME und Kontakt.png",
+    professional: "PROFESSIONAL PROFILBILD für HOME und Kontakt.png",
+    freiraum: "FREIRAUM PROFILBILD für HOME und Kontakt(1).png",
+  };
+  var PROFILE_FOLDERS = {
+    general: PROFILE_BASE + "general/",
+    nexora: PROFILE_BASE + "nexora/",
+    professional: PROFILE_BASE + "professional/",
+    freiraum: PROFILE_BASE + "freiraum/",
+  };
+  function profileUrl(key) {
+    var folder = PROFILE_FOLDERS[key] || PROFILE_FOLDERS.general;
+    var file = PROFILE_FILES[key] || PROFILE_FILES.general;
+    return folder + encodeURIComponent(file) + "?v=" + PROFILE_V;
+  }
+  var PROFILE = {
+    general: profileUrl("general"),
+    nexora: profileUrl("nexora"),
+    professional: profileUrl("professional"),
+    freiraum: profileUrl("freiraum"),
+  };
+
+  var bar = document.querySelector(".mv4-bar");
+  var frames = document.querySelectorAll(".mv4-frame");
+  var fxBtn = document.getElementById("mv4-fx");
+  var sharedChapter = "home";
+  var switching = false;
+  var effectsOn = true;
+  var currentLang = "de";
+  var PREVIEW_MOBILE_CSS = "assets/welten-multiversum-preview-mobile.css?v=20260621live2";
+  var isLiveShell = document.body && document.body.getAttribute("data-live-shell") === "1";
+  var defaultWorld = 0;
+  if (document.body && document.body.getAttribute("data-live-default")) {
+    defaultWorld = parseInt(document.body.getAttribute("data-live-default"), 10);
+    if (!isFinite(defaultWorld) || defaultWorld < 0 || defaultWorld > 3) defaultWorld = 0;
+  }
+  var loaded = {};
+  loaded[defaultWorld] = true;
+
+  function injectPreviewShellCss(f) {
+    try {
+      var d = f.contentDocument;
+      if (!d || !d.documentElement) return;
+      d.documentElement.classList.add("mv4-preview-shell");
+      if (isLiveShell) d.documentElement.classList.add("welten-live-shell");
+      if (d.getElementById("mv4-preview-mobile-css")) return;
+      var link = d.createElement("link");
+      link.id = "mv4-preview-mobile-css";
+      link.rel = "stylesheet";
+      link.href = PREVIEW_MOBILE_CSS;
+      (d.head || d.documentElement).appendChild(link);
+    } catch (e) {}
+  }
+
+  function setBarHeight() {
+    if (!bar) return;
+    var h = Math.ceil(bar.getBoundingClientRect().height);
+    if (h < 48) h = 56;
+    document.documentElement.style.setProperty("--bar-h", h + "px");
+  }
+
+  function activeIdx() {
+    var idx = -1;
+    frames.forEach(function (f, j) {
+      if (f.classList.contains("is-active")) idx = j;
+    });
+    return idx;
+  }
+
+  function soundKey(i) {
+    return i === 0 ? "general" : i === 1 ? "nexora" : i === 2 ? "professional" : "freiraum";
+  }
+
+  function masterKey(i) {
+    return WORLD_KEYS[i] || "general";
+  }
+
+  function worldSwitchKey(i) {
+    return i === 0 ? "general" : i === 1 ? "nexora" : i === 2 ? "vertex" : "freiraum";
+  }
+
+  function profileForIndex(i) {
+    return PROFILE[soundKey(i)] || PROFILE.general;
+  }
+
+  function isOurFrame(win) {
+    if (!win) return false;
+    for (var i = 0; i < frames.length; i++) {
+      try {
+        if (frames[i].contentWindow === win) return true;
+      } catch (e) {}
+    }
+    return false;
+  }
+
+  function chapterFromShellPath() {
+    var p = (location.pathname || "/").replace(/\/$/, "") || "/";
+    return ROUTE_CHAPTER[p] || "home";
+  }
+
+  function applyShellRoute() {
+    if (!isLiveShell) return;
+    var ch = chapterFromShellPath();
+    sharedChapter = ch;
+    var idx = activeIdx();
+    if (idx < 0) idx = defaultWorld;
+    var f = frames[idx];
+    if (!f) return;
+    function send() {
+      postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
+      applyChapter(f, ch);
+    }
+    if (frameIsReady(f)) send();
+    else f.addEventListener("load", send, { once: true });
+  }
+
+  function postFrame(f, data) {
+    if (!f || !f.contentWindow) return;
+    try {
+      f.contentWindow.postMessage(data, "*");
+    } catch (e) {}
+  }
+
+  function resumeAudio() {
+    try {
+      var Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      if (!window.__mv4AudioCtx) window.__mv4AudioCtx = new Ctx();
+      if (window.__mv4AudioCtx.state === "suspended") window.__mv4AudioCtx.resume();
+    } catch (e) {}
+  }
+
+  function loadPrefs() {
+    try {
+      currentLang = localStorage.getItem(LANG_KEY) || "de";
+    } catch (e) {}
+    effectsOn = true;
+  }
+
+  function saveLang() {
+    try {
+      localStorage.setItem(LANG_KEY, currentLang);
+    } catch (e) {}
+  }
+
+  function updateFxBtn() {
+    if (!fxBtn) return;
+    var labels = {
+      de: ["EFFEKTE ON", "EFFEKTE OFF"],
+      en: ["EFFECTS ON", "EFFECTS OFF"],
+      it: ["EFFETTI ON", "EFFETTI OFF"],
+    };
+    var pair = labels[currentLang] || labels.de;
+    fxBtn.textContent = effectsOn ? pair[0] : pair[1];
+    fxBtn.classList.toggle("is-on", effectsOn);
+    fxBtn.setAttribute("aria-pressed", effectsOn ? "true" : "false");
+  }
+
+  function updateFlags() {
+    document.querySelectorAll(".mv4-flag").forEach(function (btn) {
+      btn.classList.toggle("is-active", btn.dataset.lang === currentLang);
+    });
+  }
+
+  function broadcastLang() {
+    try {
+      localStorage.setItem(LANG_KEY, currentLang);
+    } catch (e) {}
+    frames.forEach(function (f) {
+      postFrame(f, { type: "portfolio-preview-lang", lang: currentLang });
+      postFrame(f, { type: "alx-preview-sync", lang: currentLang, world: mapWorldForForm(activeIdx()) });
+    });
+  }
+
+  function mapWorldForForm(i) {
+    var k = soundKey(i);
+    return k === "professional" ? "professional" : k;
+  }
+
+  function injectProfiles(f, i) {
+    injectPreviewShellCss(f);
+    try {
+      var d = f.contentDocument;
+      if (!d) return;
+      var src = profileForIndex(i);
+      d.querySelectorAll(".home-portrait-card img, #contactPhoto, .contact-photo, #heroPhoto").forEach(function (img) {
+        img.removeAttribute("srcset");
+        img.src = src;
+        img.style.filter = "none";
+        img.style.transform = "none";
+        img.style.objectFit = "cover";
+        img.style.objectPosition = "center top";
+        img.style.opacity = "1";
+        img.style.display = "";
+      });
+      postFrame(f, { type: "portfolio-apply-portraits", src: src });
+    } catch (e) {}
+  }
+
+  function frameIsReady(f) {
+    try {
+      var d = f.contentDocument;
+      return !!(d && (d.readyState === "interactive" || d.readyState === "complete"));
+    } catch (err) {
+      return false;
+    }
+  }
+
+  function frameHasSrc(f) {
+    return !!(f && f.src && f.src.indexOf("about:blank") === -1);
+  }
+
+  function lockShell() {
+    switching = true;
+    window.__worldTransitionRunning = true;
+    if (bar) {
+      bar.style.pointerEvents = "none";
+      bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+        b.disabled = true;
+      });
+    }
+  }
+
+  function unlockShell() {
+    switching = false;
+    window.__worldTransitionRunning = false;
+    if (bar) {
+      bar.style.pointerEvents = "auto";
+      bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+        b.disabled = false;
+      });
+    }
+    setBarHeight();
+  }
+
+  function setMaster(i) {
+    document.body.setAttribute("data-master-world", masterKey(i));
+    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+      b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
+    });
+  }
+
+  function readChapter(f) {
+    try {
+      var d = f.contentDocument;
+      if (!d || !d.body) return null;
+      var b = d.body.getAttribute("data-current-slide");
+      if (b && CHAPTERS.indexOf(b) >= 0) return b;
+    } catch (err) {}
+    return null;
+  }
+
+  function applyChapter(f, id) {
+    var ch = CHAPTERS.indexOf(id) >= 0 ? id : "home";
+    postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
+    try {
+      var d = f.contentDocument;
+      if (d) {
+        var link = d.querySelector('.menu-links a[data-go="' + ch + '"]');
+        if (link) link.click();
+      }
+    } catch (e1) {}
+  }
+
+  function applyActive(i) {
+    frames.forEach(function (f, j) {
+      var on = j === i;
+      f.classList.toggle("is-active", on);
+      f.style.pointerEvents = on ? "auto" : "none";
+      if (on) {
+        postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
+        applyChapter(f, sharedChapter);
+        if (frameIsReady(f)) injectProfiles(f, j);
+        else f.addEventListener("load", function () { injectProfiles(f, j); }, { once: true });
+      }
+    });
+    setMaster(i);
+    broadcastLang();
+    unlockShell();
+    setTimeout(function () {
+      var f = frames[i];
+      if (f) injectProfiles(f, i);
+    }, 400);
+  }
+
+  function loadFrame(i) {
+    return new Promise(function (resolve) {
+      var f = frames[i];
+      if (!f) return resolve();
+      if (loaded[i] && frameHasSrc(f)) return resolve();
+      var lazy = f.getAttribute("data-lazy-src");
+      if (!lazy) {
+        loaded[i] = true;
+        return resolve();
+      }
+      if (frameHasSrc(f)) {
+        loaded[i] = true;
+        return resolve();
+      }
+      function finish() {
+        loaded[i] = true;
+        resolve();
+      }
+      f.addEventListener("load", finish, { once: true });
+      f.src = lazy;
+      setTimeout(finish, 8000);
+    });
+  }
+
+  function preloadFrame(i) {
+    if (i === defaultWorld || loaded[i]) return;
+    var f = frames[i];
+    if (!f) return;
+    var lazy = f.getAttribute("data-lazy-src");
+    if (!lazy || frameHasSrc(f)) {
+      if (frameHasSrc(f)) loaded[i] = true;
+      return;
+    }
+    f.addEventListener(
+      "load",
+      function () {
+        loaded[i] = true;
+      },
+      { once: true }
+    );
+    f.src = lazy;
+  }
+
+  function switchToWorldIndex(i) {
+    return loadFrame(i).then(function () {
+      applyActive(i);
+    });
+  }
+
+  window.switchToWorldIndex = switchToWorldIndex;
+  window.mv4ActiveFrameIndex = activeIdx;
+
+  function switchTo(i) {
+    if (i < 0 || i > 3 || switching) return;
+    var prev = activeIdx();
+    if (prev === i) {
+      applyChapter(frames[i], sharedChapter);
+      return;
+    }
+
+    resumeAudio();
+    lockShell();
+    var c = readChapter(frames[prev]);
+    if (c) sharedChapter = c;
+
+    var wKey = worldSwitchKey(i);
+
+    if (!effectsOn) {
+      switchToWorldIndex(i);
+      return;
+    }
+
+    if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
+      window.WeltenWorldSwitchPreview.playSwitch(wKey, i);
+      var safetyMs =
+        (window.WeltenWorldSwitchPreview.timing &&
+          window.WeltenWorldSwitchPreview.timing.WORLD_TRANSITION_DURATION) ||
+        2000;
+      setTimeout(function () {
+        if (switching) unlockShell();
+      }, safetyMs + 800);
+      return;
+    }
+
+    switchToWorldIndex(i);
+  }
+
+  loadPrefs();
+  updateFxBtn();
+  updateFlags();
+  setBarHeight();
+  window.addEventListener("resize", setBarHeight, { passive: true });
+  if (bar && typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(setBarHeight).observe(bar);
+  }
+
+  bar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
+    var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+    btn.addEventListener("click", function () {
+      switchTo(idx);
+    });
+    btn.addEventListener("pointerdown", function () {
+      preloadFrame(idx);
+    }, { passive: true });
+    btn.addEventListener("mouseenter", function () {
+      preloadFrame(idx);
+    });
+    btn.addEventListener("touchstart", function () {
+      preloadFrame(idx);
+    }, { passive: true });
+    btn.addEventListener("focus", function () {
+      preloadFrame(idx);
+    });
+  });
+
+  if (fxBtn) {
+    fxBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      effectsOn = !effectsOn;
+      updateFxBtn();
+      resumeAudio();
+    });
+  }
+
+  document.querySelectorAll(".mv4-flag").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      currentLang = btn.dataset.lang || "de";
+      saveLang();
+      updateFlags();
+      updateFxBtn();
+      broadcastLang();
+    });
+  });
+
+  window.addEventListener("message", function (e) {
+    if (!e.data) return;
+    if (e.data.type === "portfolio-chapter" && typeof e.data.chapter === "string") {
+      if (!isOurFrame(e.source)) return;
+      if (CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;
+      return;
+    }
+    if (e.data.type === "portfolio-open-external") {
+      if (!isOurFrame(e.source)) return;
+      var href = e.data.href;
+      if (typeof href === "string" && /^(mailto:|tel:)/i.test(href)) {
+        window.location.href = href;
+      }
+    }
+  });
+
+  frames.forEach(function (f, j) {
+    f.addEventListener("load", function () {
+      injectProfiles(f, j);
+      broadcastLang();
+    });
+  });
+
+  setMaster(defaultWorld);
+  broadcastLang();
+  applyShellRoute();
+  if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
+    window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame);
+  } else {
+    [0, 1, 2, 3].forEach(function (i) {
+      if (i !== defaultWorld) preloadFrame(i);
+    });
+  }
+  window.mv4SwitchWorld = switchTo;
+})();

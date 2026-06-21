@@ -1,10 +1,10 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/projekte", "destination": "/index.html" },
-    { "source": "/leistungen", "destination": "/index.html" },
-    { "source": "/ueber-mich", "destination": "/index.html" },
-    { "source": "/kontakt", "destination": "/index.html" }
+    { "source": "/", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/projekte", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/leistungen", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/kontakt", "destination": "/3-Welten-Master-iframe.html" }
   ],
   "redirects": [
     { "source": "/3-Welten-Master-iframe.html", "destination": "/", "permanent": true },

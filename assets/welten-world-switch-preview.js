@@ -4,18 +4,91 @@
 (function () {
   "use strict";
 
-  var running = false;
-
-  var WWS_SEQUENCE_MS = 2000;
-
+  /* ── Zentrale Timing-Konstanten (alle Welten) ── */
   var WWS_TIMING = {
-    totalMs: 2800,
-    coverMs: 1600,
-    exitMs: 400,
-    postTitleHoldMs: 800,
+    WORLD_TRANSITION_DURATION: 2000,
+    EFFECT_MS: 800,
+    TITLE_REVEAL_AT: 500,
+    TITLE_FADE_IN: 300,
+    TITLE_HOLD: 900,
+    TITLE_FADE_OUT: 300,
+    EXIT_MS: 300,
+    COVER_MS: 800,
+    SOUND_DURATION_MS: 2000,
   };
 
+  var WWS_SEQUENCE_MS = WWS_TIMING.WORLD_TRANSITION_DURATION;
+
+  function wwsScale(ms) {
+    return Math.round(ms * (WWS_TIMING.WORLD_TRANSITION_DURATION / 2000));
+  }
+
+  function wwsSoundAt(gen, ms, fn) {
+    wwsAt(gen, wwsScale(ms), fn);
+  }
+
+  function applyTimingCssVars() {
+    var r = document.documentElement;
+    r.style.setProperty("--wws-transition-duration", WWS_TIMING.WORLD_TRANSITION_DURATION + "ms");
+    r.style.setProperty("--wws-title-fade-in", WWS_TIMING.TITLE_FADE_IN + "ms");
+    r.style.setProperty("--wws-title-hold", WWS_TIMING.TITLE_HOLD + "ms");
+    r.style.setProperty("--wws-title-fade-out", WWS_TIMING.TITLE_FADE_OUT + "ms");
+    r.style.setProperty("--wws-exit-duration", WWS_TIMING.EXIT_MS + "ms");
+    r.style.setProperty("--wws-effect-duration", WWS_TIMING.EFFECT_MS + "ms");
+    r.style.setProperty("--wws-pro-wipe-duration", Math.round(WWS_TIMING.EFFECT_MS * 0.39) + "ms");
+    r.style.setProperty("--wws-pro-wipe-delay", Math.round(WWS_TIMING.EFFECT_MS * 0.37) + "ms");
+  }
+
+  var running = false;
+  var activeOverlay = null;
+  var activeTimers = [];
+  var activeRaf = 0;
+
+  function wwsClearTimers() {
+    activeTimers.forEach(function (id) {
+      clearTimeout(id);
+    });
+    activeTimers = [];
+    if (activeRaf) {
+      cancelAnimationFrame(activeRaf);
+      activeRaf = 0;
+    }
+  }
+
+  function wwsLater(fn, ms) {
+    var id = setTimeout(fn, ms);
+    activeTimers.push(id);
+    return id;
+  }
+
+  function wwsAbortTransition() {
+    wwsSoundGen += 1;
+    wwsClearTimers();
+    if (activeOverlay) {
+      stopCanvas(activeOverlay);
+      activeOverlay.remove();
+      activeOverlay = null;
+    }
+    document.documentElement.classList.remove("welten-world-switch-lock");
+    running = false;
+    window.__wwsPreviewOwnsSound = false;
+  }
+
   var WORLD_ORB_THEMES = {
+    general: {
+      bgTrail: "rgba(6, 4, 16, 0.4)",
+      orbCount: 24,
+      palette: [
+        ["255, 210, 255", "255, 89, 178", "200, 40, 140"],
+        ["200, 235, 255", "94, 196, 255", "30, 120, 220"],
+        ["255, 230, 180", "255, 155, 55", "220, 100, 0"],
+        ["230, 210, 255", "155, 107, 255", "80, 30, 200"],
+        ["255, 245, 200", "255, 216, 106", "200, 150, 0"],
+      ],
+      flash: { core: "255, 255, 255", mid: "255, 89, 178", outer: "94, 196, 255" },
+      highlight: "255, 255, 255",
+      glowMul: 2.7,
+    },
     freiraum: {
       bgTrail: "rgba(28, 16, 38, 0.42)",
       orbCount: 18,
@@ -33,14 +106,19 @@
   };
 
   var WORLD_META = {
+    general: { title: "MULTIVERSUM" },
     nexora: { title: "NEXORA" },
     vertex: { title: "PROFESSIONAL" },
     freiraum: { title: "FREIRAUM" },
   };
 
   function activeFrameIndex() {
+    if (typeof window.mv4ActiveFrameIndex === "function") {
+      return window.mv4ActiveFrameIndex();
+    }
     var idx = -1;
-    document.querySelectorAll(".world-frame").forEach(function (f, j) {
+    var sel = document.querySelector(".mv4-frame") ? ".mv4-frame" : ".world-frame";
+    document.querySelectorAll(sel).forEach(function (f, j) {
       if (f.classList.contains("is-active")) idx = j;
     });
     return idx;
@@ -152,9 +230,16 @@
     } catch (e) {}
   }
 
+  function wwsEffectsEnabled() {
+    var fx = document.getElementById("mv4-fx");
+    if (fx) return fx.getAttribute("aria-pressed") === "true";
+    var legacy = document.getElementById("sound-toggle");
+    if (legacy) return legacy.getAttribute("aria-pressed") === "true";
+    return true;
+  }
+
   function wwsSoundEnabled() {
-    var btn = document.getElementById("sound-toggle");
-    return btn && btn.getAttribute("aria-pressed") === "true";
+    return wwsEffectsEnabled();
   }
 
   function wwsSoundAlive(gen) {
@@ -409,7 +494,7 @@
 
   function playNexoraSwitchSound(gen) {
     wwsScheduleRobotCodeReading(gen);
-    wwsAt(gen, WWS_SEQUENCE_MS - 10, function (ctx, t) {
+    wwsSoundAt(gen, WWS_TIMING.TITLE_REVEAL_AT - 10, function (ctx, t) {
       wwsRobotSayNexora(ctx, t);
     });
   }
@@ -436,9 +521,10 @@
   }
 
   function playProfessionalSwitchSound(gen) {
-    wwsAt(gen, 20, function (ctx, t) {
+    var wipeDur = WWS_TIMING.EFFECT_MS * 0.39 / 1000;
+    wwsSoundAt(gen, 20, function (ctx, t) {
       wwsSliderWipe(ctx, t, {
-        dur: 0.78,
+        dur: wipeDur,
         vol: 0.085,
         freqStart: 380,
         freqEnd: 5600,
@@ -448,9 +534,9 @@
       });
     });
 
-    wwsAt(gen, 740, function (ctx, t) {
+    wwsSoundAt(gen, WWS_TIMING.COVER_MS, function (ctx, t) {
       wwsSliderWipe(ctx, t, {
-        dur: 0.78,
+        dur: wipeDur,
         vol: 0.088,
         freqStart: 2200,
         freqEnd: 240,
@@ -459,56 +545,114 @@
         airFreq: 160,
       });
     });
-
   }
 
   function playFreiraumSwitchSound(gen) {
-    wwsAt(gen, 0, function (ctx, t) {
-      wwsBuildSwelling(ctx, t, 220, 0.55, 0.052);
-    });
-    wwsAt(gen, 333, function (ctx, t) {
-      wwsBuildSwelling(ctx, t, 277, 0.5, 0.058);
-    });
-    wwsAt(gen, 619, function (ctx, t) {
-      wwsBuildSwelling(ctx, t, 330, 0.48, 0.062);
+    var swellDur = WWS_TIMING.SOUND_DURATION_MS / 1000;
+    wwsSoundAt(gen, 0, function (ctx, t) {
+      wwsNoise(ctx, t, {
+        dur: swellDur * 0.58,
+        vol: 0.044,
+        freq: 220,
+        freqEnd: 980,
+        q: 0.38,
+        filterType: "lowpass",
+      });
+      wwsTone(ctx, t, {
+        type: "sine",
+        freq: 196,
+        freqEnd: 392,
+        dur: swellDur * 0.55,
+        vol: 0.026,
+        attack: swellDur * 0.11,
+      });
     });
 
-    wwsAt(gen, 754, function (ctx, t) {
-      wwsTone(ctx, t, { type: "sine", freq: 262, freqEnd: 440, dur: 1.05, vol: 0.078, attack: 0.14 });
-      wwsTone(ctx, t + 0.15, { type: "sine", freq: 330, freqEnd: 523, dur: 0.9, vol: 0.062, attack: 0.12 });
-      wwsNoise(ctx, t + 0.2, { dur: 0.75, vol: 0.032, freq: 400, freqEnd: 1100, q: 0.55, filterType: "lowpass" });
+    [90, 240, 390, 520, 660].forEach(function (ms, i) {
+      wwsSoundAt(gen, ms, function (ctx, t) {
+        wwsNoise(ctx, t, {
+          dur: 0.07 + i * 0.008,
+          vol: 0.028 + (i % 2) * 0.01,
+          freq: 520 + i * 140,
+          freqEnd: 1800 + i * 120,
+          q: 0.85 + (i % 3) * 0.15,
+          filterType: "bandpass",
+        });
+        wwsTone(ctx, t + 0.02, {
+          type: "sine",
+          freq: 330 + i * 44,
+          dur: 0.14,
+          vol: 0.018,
+          attack: 0.006,
+        });
+      });
     });
 
-    wwsAt(gen, 1413, function (ctx, t) {
-      wwsBuildSwelling(ctx, t, 440, 0.65, 0.068);
-      wwsTone(ctx, t + 0.2, { type: "sine", freq: 523, dur: 0.55, vol: 0.064, attack: 0.08 });
+    wwsSoundAt(gen, WWS_TIMING.EFFECT_MS * 0.6, function (ctx, t) {
+      wwsTone(ctx, t, { type: "sine", freq: 392, dur: 0.42, vol: 0.03, attack: 0.09 });
+      wwsTone(ctx, t + 0.09, { type: "sine", freq: 494, dur: 0.46, vol: 0.026, attack: 0.1 });
+      wwsTone(ctx, t + 0.17, { type: "triangle", freq: 587, dur: 0.5, vol: 0.02, attack: 0.11 });
+      wwsNoise(ctx, t + 0.05, {
+        dur: 0.55,
+        vol: 0.022,
+        freq: 380,
+        freqEnd: 1100,
+        q: 0.55,
+        filterType: "lowpass",
+      });
     });
 
-    wwsAt(gen, WWS_SEQUENCE_MS, function (ctx, t) {
+    wwsSoundAt(gen, WWS_TIMING.TITLE_REVEAL_AT, function (ctx, t) {
       wwsFreiraumTada(ctx, t);
     });
   }
 
+  function playMultiversumSwitchSound(gen) {
+    wwsSoundAt(gen, 0, function (ctx, t) {
+      wwsBuildSwelling(ctx, t, 98, 0.62, 0.055);
+      wwsTone(ctx, t, { type: "sine", freq: 196, freqEnd: 392, dur: 0.75, vol: 0.06, attack: 0.12 });
+    });
+    wwsSoundAt(gen, WWS_TIMING.EFFECT_MS * 0.35, function (ctx, t) {
+      wwsBuildSwelling(ctx, t, 262, 0.5, 0.058);
+      wwsTone(ctx, t + 0.05, { type: "triangle", freq: 330, freqEnd: 660, dur: 0.55, vol: 0.052, attack: 0.1 });
+    });
+    wwsSoundAt(gen, WWS_TIMING.EFFECT_MS * 0.65, function (ctx, t) {
+      wwsBuildSwelling(ctx, t, 392, 0.48, 0.062);
+      wwsNoise(ctx, t, { dur: 0.55, vol: 0.038, freq: 500, freqEnd: 2400, q: 0.7, filterType: "bandpass" });
+    });
+    wwsSoundAt(gen, WWS_TIMING.TITLE_REVEAL_AT, function (ctx, t) {
+      wwsTone(ctx, t, { type: "sine", freq: 523, freqEnd: 1046, dur: 0.7, vol: 0.07, attack: 0.08 });
+      wwsTone(ctx, t + 0.08, { type: "sine", freq: 659, dur: 0.55, vol: 0.058, attack: 0.06 });
+      wwsTone(ctx, t + 0.12, { type: "sine", freq: 784, dur: 0.5, vol: 0.05, attack: 0.05 });
+      wwsTone(ctx, t + 0.04, { type: "sine", freq: 880, freqEnd: 1320, dur: 0.42, vol: 0.072, attack: 0.01 });
+      wwsTone(ctx, t + 0.08, { type: "sine", freq: 1108, dur: 0.38, vol: 0.06, attack: 0.01 });
+      wwsNoise(ctx, t, { dur: 0.28, vol: 0.03, freq: 800, freqEnd: 3200, q: 0.55, filterType: "lowpass" });
+    });
+  }
+
   function playTransitionSound(worldKey) {
-    if (!wwsSoundEnabled()) return;
+    if (!wwsEffectsEnabled()) return;
     wwsSoundGen += 1;
     var gen = wwsSoundGen;
     wwsResumeAudio();
-    if (worldKey === "nexora") {
-      wwsActiveWorldGain = 11;
+    if (worldKey === "general") {
+      wwsActiveWorldGain = 3.8;
+      playMultiversumSwitchSound(gen);
+    } else if (worldKey === "nexora") {
+      wwsActiveWorldGain = 8;
       playNexoraSwitchSound(gen);
     } else if (worldKey === "vertex") {
       wwsActiveWorldGain = 1;
       playProfessionalSwitchSound(gen);
     } else {
-      wwsActiveWorldGain = 5.5;
+      wwsActiveWorldGain = 4.2;
       playFreiraumSwitchSound(gen);
     }
     wwsActiveWorldGain = 1;
   }
 
   function hookSoundToggle() {
-    var btn = document.getElementById("sound-toggle");
+    var btn = document.getElementById("mv4-fx") || document.getElementById("sound-toggle");
     if (!btn || btn.dataset.wwsSoundHooked === "1") return;
     btn.dataset.wwsSoundHooked = "1";
     btn.addEventListener("click", function () {
@@ -561,10 +705,10 @@
 
     var WORD = "NEXORA";
     var LETTER_ORDER = [3, 0, 5, 1, 4, 2];
-    var FIRST_LETTER_MS = 480;
-    var LETTER_STAGGER_MS = 190;
-    var LETTER_FLIGHT_MS = 380;
-    var HOLD_AFTER_MS = 180;
+    var FIRST_LETTER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.6);
+    var LETTER_STAGGER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.24);
+    var LETTER_FLIGHT_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.48);
+    var HOLD_AFTER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.22);
     var w = 0;
     var h = 0;
     var cx = 0;
@@ -743,9 +887,9 @@
     var startTime = performance.now();
     var mergeFlash = 0;
 
-    var WANDER_MS = 700;
-    var CONVERGE_MS = 850;
-    var MERGE_MS = 450;
+    var WANDER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.35);
+    var CONVERGE_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.425);
+    var MERGE_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.225);
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -887,10 +1031,341 @@
     overlay._wwsRaf = requestAnimationFrame(draw);
   }
 
+  function startFreiraumPaintCanvas(overlay) {
+    var canvas = overlay.querySelector(".welten-world-switch__canvas");
+    if (!canvas) return;
+
+    var ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    var PALETTE = [
+      [255, 47, 146],
+      [255, 105, 180],
+      [0, 217, 196],
+      [94, 196, 255],
+      [59, 130, 246],
+      [255, 155, 55],
+      [255, 216, 106],
+      [155, 107, 255],
+      [255, 255, 255],
+    ];
+
+    var w = 0;
+    var h = 0;
+    var cx = 0;
+    var cy = 0;
+    var runningAnim = true;
+    var startTime = performance.now();
+    var totalMs = WWS_TIMING.EFFECT_MS;
+    var revealMs = WWS_TIMING.TITLE_REVEAL_AT;
+    var mist = [];
+    var strokes = [];
+    var splats = [];
+    var sprays = [];
+    var sparkles = [];
+
+    function pickColor(i) {
+      return PALETTE[i % PALETTE.length];
+    }
+
+    function rgba(rgb, a) {
+      return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + a + ")";
+    }
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function easeInOutSine(t) {
+      return 0.5 - Math.cos(Math.PI * t) / 2;
+    }
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      cx = w * 0.5;
+      cy = h * 0.46;
+    }
+
+    function buildBlobPoints(seeds, rx, ry) {
+      var pts = [];
+      var i;
+      for (i = 0; i < seeds; i++) {
+        var ang = (i / seeds) * Math.PI * 2;
+        var wobble = 0.68 + Math.random() * 0.42;
+        pts.push([Math.cos(ang) * rx * wobble, Math.sin(ang) * ry * wobble]);
+      }
+      return pts;
+    }
+
+    function initScene() {
+      mist = [];
+      strokes = [];
+      splats = [];
+      sprays = [];
+      sparkles = [];
+
+      var mistCount = w < 640 ? 5 : w < 1024 ? 7 : 9;
+      var i;
+      for (i = 0; i < mistCount; i++) {
+        mist.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.max(w, h) * (0.18 + Math.random() * 0.22),
+          color: pickColor(i + 2),
+          delay: i * 70,
+          dur: 900 + Math.random() * 500,
+          driftX: (Math.random() - 0.5) * 40,
+          driftY: (Math.random() - 0.5) * 30,
+        });
+      }
+
+      var strokeCount = w < 640 ? 7 : w < 1024 ? 9 : 11;
+      for (i = 0; i < strokeCount; i++) {
+        var edge = i % 4;
+        var sx = edge === 0 ? -w * 0.12 : edge === 1 ? w * 1.12 : cx + (Math.random() - 0.5) * w * 0.9;
+        var sy = edge === 2 ? -h * 0.12 : edge === 3 ? h * 1.12 : cy + (Math.random() - 0.5) * h * 0.85;
+        var tx = cx + (Math.random() - 0.5) * w * 0.34;
+        var ty = cy + (Math.random() - 0.5) * h * 0.28;
+        strokes.push({
+          x1: sx,
+          y1: sy,
+          cx: (sx + tx) * 0.5 + (Math.random() - 0.5) * w * 0.18,
+          cy: (sy + ty) * 0.5 + (Math.random() - 0.5) * h * 0.18,
+          x2: tx,
+          y2: ty,
+          color: pickColor(i),
+          width: 18 + Math.random() * 42,
+          delay: 80 + i * 55,
+          dur: 620 + Math.random() * 380,
+        });
+      }
+
+      var splatCount = w < 640 ? 9 : 12;
+      for (i = 0; i < splatCount; i++) {
+        var ang = Math.random() * Math.PI * 2;
+        var dist = Math.max(w, h) * (0.28 + Math.random() * 0.42);
+        splats.push({
+          x: cx + Math.cos(ang) * dist * 0.55,
+          y: cy + Math.sin(ang) * dist * 0.55,
+          tx: cx + (Math.random() - 0.5) * w * 0.42,
+          ty: cy + (Math.random() - 0.5) * h * 0.36,
+          rx: 34 + Math.random() * 78,
+          ry: 28 + Math.random() * 64,
+          rot: Math.random() * Math.PI * 2,
+          points: buildBlobPoints(10 + Math.floor(Math.random() * 4), 1, 1),
+          color: pickColor(i + 1),
+          delay: 120 + i * 48,
+          dur: 700 + Math.random() * 420,
+        });
+      }
+
+      var sprayCount = w < 640 ? 14 : 22;
+      for (i = 0; i < sprayCount; i++) {
+        var fromEdge = Math.floor(Math.random() * 4);
+        var ox = fromEdge === 0 ? -20 : fromEdge === 1 ? w + 20 : Math.random() * w;
+        var oy = fromEdge === 2 ? -20 : fromEdge === 3 ? h + 20 : Math.random() * h;
+        var parts = [];
+        var p;
+        var pCount = 18 + Math.floor(Math.random() * 22);
+        for (p = 0; p < pCount; p++) {
+          parts.push({
+            vx: (cx - ox) * (0.0018 + Math.random() * 0.003) + (Math.random() - 0.5) * 2.4,
+            vy: (cy - oy) * (0.0018 + Math.random() * 0.003) + (Math.random() - 0.5) * 2.4,
+            r: 1.2 + Math.random() * 3.8,
+            drag: 0.96 + Math.random() * 0.025,
+          });
+        }
+        sprays.push({
+          x: ox,
+          y: oy,
+          parts: parts,
+          color: pickColor(i + 3),
+          delay: 60 + i * 28,
+          life: 520 + Math.random() * 420,
+        });
+      }
+
+      var sparkleCount = w < 640 ? 28 : 44;
+      for (i = 0; i < sparkleCount; i++) {
+        sparkles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: 0.6 + Math.random() * 2.2,
+          delay: 200 + Math.random() * 700,
+          dur: 400 + Math.random() * 500,
+          tw: Math.random() * Math.PI * 2,
+        });
+      }
+    }
+
+    function drawMistLayer(elapsed, dissolve) {
+      var i;
+      for (i = 0; i < mist.length; i++) {
+        var m = mist[i];
+        if (elapsed < m.delay) continue;
+        var t = Math.min(1, (elapsed - m.delay) / m.dur);
+        var p = easeInOutSine(t);
+        var x = m.x + m.driftX * p;
+        var y = m.y + m.driftY * p;
+        var r = m.r * (0.55 + p * 0.65);
+        var grd = ctx.createRadialGradient(x, y, 0, x, y, r);
+        grd.addColorStop(0, rgba(m.color, 0.22 * dissolve * (1 - t * 0.35)));
+        grd.addColorStop(0.45, rgba(m.color, 0.1 * dissolve * (1 - t * 0.25)));
+        grd.addColorStop(1, rgba(m.color, 0));
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawStroke(s, elapsed, dissolve) {
+      if (elapsed < s.delay) return;
+      var t = Math.min(1, (elapsed - s.delay) / s.dur);
+      var p = easeOutCubic(t);
+      var mx = s.x1 + (s.x2 - s.x1) * p;
+      var my = s.y1 + (s.y2 - s.y1) * p;
+      var layer;
+      for (layer = 0; layer < 4; layer++) {
+        ctx.strokeStyle = rgba(s.color, (0.34 - layer * 0.06) * dissolve);
+        ctx.lineWidth = s.width * (1 - layer * 0.14) * (0.55 + p * 0.55);
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.beginPath();
+        ctx.moveTo(s.x1, s.y1);
+        ctx.quadraticCurveTo(s.cx, s.cy, mx, my);
+        ctx.stroke();
+      }
+    }
+
+    function drawSplat(s, elapsed, dissolve) {
+      if (elapsed < s.delay) return;
+      var t = Math.min(1, (elapsed - s.delay) / s.dur);
+      var p = easeOutCubic(t);
+      var x = s.x + (s.tx - s.x) * p;
+      var y = s.y + (s.ty - s.y) * p;
+      var scale = 0.25 + p * 0.95;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(s.rot + p * 0.35);
+      ctx.scale(scale, scale * (0.88 + Math.sin(p * Math.PI) * 0.12));
+      var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, Math.max(s.rx, s.ry));
+      grd.addColorStop(0, rgba(s.color, 0.88 * dissolve));
+      grd.addColorStop(0.42, rgba(s.color, 0.52 * dissolve));
+      grd.addColorStop(0.75, rgba(s.color, 0.14 * dissolve));
+      grd.addColorStop(1, rgba(s.color, 0));
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      var i;
+      for (i = 0; i < s.points.length; i++) {
+        var pt = s.points[i];
+        var px = pt[0] * s.rx;
+        var py = pt[1] * s.ry;
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawSpray(s, elapsed, dissolve) {
+      if (elapsed < s.delay) return;
+      var age = elapsed - s.delay;
+      if (age > s.life) return;
+      var fade = 1 - age / s.life;
+      var i;
+      for (i = 0; i < s.parts.length; i++) {
+        var p = s.parts[i];
+        var x = s.x + p.vx * age;
+        var y = s.y + p.vy * age + age * 0.018;
+        p.vx *= p.drag;
+        p.vy *= p.drag;
+        ctx.fillStyle = rgba(s.color, 0.55 * fade * dissolve);
+        ctx.beginPath();
+        ctx.arc(x, y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawSparkles(elapsed, dissolve) {
+      var i;
+      for (i = 0; i < sparkles.length; i++) {
+        var sp = sparkles[i];
+        if (elapsed < sp.delay) continue;
+        var t = Math.min(1, (elapsed - sp.delay) / sp.dur);
+        var alpha = Math.sin(t * Math.PI) * 0.75 * dissolve;
+        ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
+        ctx.beginPath();
+        ctx.arc(sp.x, sp.y, sp.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawColorWash(elapsed, dissolve) {
+      var peak = Math.min(1, Math.max(0, (elapsed - 420) / 520));
+      var fade = peak * (elapsed < revealMs ? 1 : Math.max(0, 1 - (elapsed - revealMs) / 280));
+      if (fade <= 0.01) return;
+      var grd = ctx.createLinearGradient(0, 0, w, h);
+      grd.addColorStop(0, "rgba(255,47,146," + (0.14 * fade * dissolve) + ")");
+      grd.addColorStop(0.28, "rgba(155,107,255," + (0.12 * fade * dissolve) + ")");
+      grd.addColorStop(0.52, "rgba(0,217,196," + (0.1 * fade * dissolve) + ")");
+      grd.addColorStop(0.76, "rgba(255,155,55," + (0.11 * fade * dissolve) + ")");
+      grd.addColorStop(1, "rgba(94,196,255," + (0.09 * fade * dissolve) + ")");
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    resize();
+    initScene();
+
+    function draw(now) {
+      if (!runningAnim) return;
+      var elapsed = now - startTime;
+      var dissolve = elapsed < revealMs ? 1 : Math.max(0, 1 - (elapsed - revealMs) / 320);
+
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "rgba(14, 6, 22, " + (0.18 + (1 - dissolve) * 0.12) + ")";
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.globalCompositeOperation = "lighter";
+      drawMistLayer(elapsed, dissolve);
+      var i;
+      for (i = 0; i < strokes.length; i++) drawStroke(strokes[i], elapsed, dissolve);
+      for (i = 0; i < splats.length; i++) drawSplat(splats[i], elapsed, dissolve);
+      for (i = 0; i < sprays.length; i++) drawSpray(sprays[i], elapsed, dissolve);
+      drawSparkles(elapsed, dissolve);
+
+      ctx.globalCompositeOperation = "source-over";
+      drawColorWash(elapsed, dissolve);
+
+      if (elapsed > revealMs - 40) revealStagedTitle(overlay);
+      if (elapsed < totalMs + 60) {
+        overlay._wwsRaf = requestAnimationFrame(draw);
+      } else {
+        runningAnim = false;
+        revealStagedTitle(overlay);
+      }
+    }
+
+    overlay._wwsStopCanvas = function () {
+      runningAnim = false;
+      if (overlay._wwsRaf) cancelAnimationFrame(overlay._wwsRaf);
+    };
+
+    overlay._wwsRaf = requestAnimationFrame(draw);
+  }
+
+  function startFreiraumBrushCanvas(overlay) {
+    startFreiraumPaintCanvas(overlay);
+  }
+
   function startCanvas(overlay, worldKey) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (worldKey === "nexora") startNexoraMatrixCanvas(overlay);
-    else if (worldKey === "freiraum") startOrbCanvas(overlay, worldKey);
+    else if (worldKey === "general") startOrbCanvas(overlay, worldKey);
+    else if (worldKey === "freiraum") startFreiraumBrushCanvas(overlay);
   }
 
   function stopCanvas(overlay) {
@@ -900,59 +1375,75 @@
   }
 
   function playSwitch(worldKey, targetIdx) {
-    if (running) return;
+    if (running) wwsAbortTransition();
+
+    if (!wwsEffectsEnabled()) {
+      var instant = window.switchToWorldIndex;
+      if (typeof instant === "function") Promise.resolve(instant(targetIdx));
+      return;
+    }
+
     running = true;
+    wwsClearTimers();
 
     window.__wwsPreviewOwnsSound = true;
     playTransitionSound(worldKey);
 
     var overlay = buildOverlay(worldKey);
+    activeOverlay = overlay;
     document.body.appendChild(overlay);
     document.documentElement.classList.add("welten-world-switch-lock");
 
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var isRich = worldKey === "nexora" || worldKey === "freiraum" || worldKey === "vertex";
-    var coverMs = reduced ? 80 : WWS_TIMING.coverMs;
-    var minShowMs = reduced ? 180 : WWS_TIMING.totalMs;
-    var postTitleHoldMs = reduced ? 0 : WWS_TIMING.postTitleHoldMs;
-    var exitMs = reduced ? 60 : WWS_TIMING.exitMs;
+    var coverMs = reduced ? 80 : WWS_TIMING.COVER_MS;
+    var minShowMs = reduced
+      ? 180
+      : WWS_TIMING.EFFECT_MS + WWS_TIMING.TITLE_FADE_IN + WWS_TIMING.TITLE_HOLD;
+    var postTitleHoldMs = reduced ? 0 : WWS_TIMING.TITLE_HOLD;
+    var exitMs = reduced ? 60 : WWS_TIMING.EXIT_MS;
     var start = Date.now();
 
-    requestAnimationFrame(function () {
+    activeRaf = requestAnimationFrame(function () {
       overlay.classList.add("is-entering");
       startCanvas(overlay, worldKey);
       if (reduced) {
-        setTimeout(function () {
+        wwsLater(function () {
           revealStagedTitle(overlay);
         }, 200);
+      } else {
+        wwsLater(function () {
+          revealStagedTitle(overlay);
+        }, WWS_TIMING.TITLE_REVEAL_AT);
       }
       if (worldKey === "vertex" && !reduced) {
-        setTimeout(function () {
+        wwsLater(function () {
           overlay.classList.add("wws--pro-white-bg");
-        }, 740);
-        setTimeout(function () {
+        }, Math.round(WWS_TIMING.EFFECT_MS * 0.37));
+        wwsLater(function () {
           overlay.classList.remove("wws--pro-white-bg");
           overlay.classList.add("wws--pro-black-bg", "wws--dark-text");
-        }, 1520);
-        setTimeout(function () {
-          revealStagedTitle(overlay);
-        }, WWS_SEQUENCE_MS);
+        }, Math.round(WWS_TIMING.EFFECT_MS * 0.76));
       }
     });
 
     function finishExit() {
-      stopCanvas(overlay);
-      overlay.classList.remove("is-entering");
-      overlay.classList.add("is-exiting");
-      setTimeout(function () {
-        overlay.remove();
+      if (!activeOverlay) return;
+      stopCanvas(activeOverlay);
+      activeOverlay.classList.remove("is-entering");
+      activeOverlay.classList.add("is-exiting");
+      wwsLater(function () {
+        if (activeOverlay) {
+          activeOverlay.remove();
+          activeOverlay = null;
+        }
         document.documentElement.classList.remove("welten-world-switch-lock");
         running = false;
         window.__wwsPreviewOwnsSound = false;
+        wwsClearTimers();
       }, exitMs);
     }
 
-    setTimeout(function () {
+    wwsLater(function () {
       var switchFn = window.switchToWorldIndex;
       var p =
         typeof switchFn === "function"
@@ -963,17 +1454,17 @@
         var wait = Math.max(0, minShowMs - (Date.now() - start));
         if (postTitleHoldMs > 0) {
           function scheduleExit() {
-            if (overlay._wwsTitleShownAt) {
-              var sinceTitle = Date.now() - overlay._wwsTitleShownAt;
-              var extra = Math.max(0, postTitleHoldMs - sinceTitle);
-              setTimeout(finishExit, Math.max(wait, extra));
-            } else {
-              setTimeout(scheduleExit, 100);
+            if (!overlay._wwsTitleShownAt) {
+              wwsLater(scheduleExit, 50);
+              return;
             }
+            var sinceTitle = Date.now() - overlay._wwsTitleShownAt;
+            var extra = Math.max(0, postTitleHoldMs - sinceTitle);
+            wwsLater(finishExit, Math.max(wait, extra));
           }
           scheduleExit();
         } else {
-          setTimeout(finishExit, wait);
+          wwsLater(finishExit, wait);
         }
       }).catch(function () {
         finishExit();
@@ -989,7 +1480,7 @@
     bar.addEventListener(
       "click",
       function (e) {
-        if (e.target.closest("#sound-toggle")) return;
+        if (e.target.closest("#sound-toggle") || e.target.closest("#mv4-fx")) return;
         var btn = e.target.closest("button[data-iframe]");
         if (!btn) return;
 
@@ -1011,6 +1502,7 @@
   }
 
   function init() {
+    applyTimingCssVars();
     hookSoundToggle();
     hookWorldBar();
   }
@@ -1023,5 +1515,10 @@
 
   window.WeltenWorldSwitchPreview = {
     playTransitionSound: playTransitionSound,
+    playSwitch: playSwitch,
+    isSoundEnabled: wwsEffectsEnabled,
+    isEffectsEnabled: wwsEffectsEnabled,
+    timing: WWS_TIMING,
+    abort: wwsAbortTransition,
   };
 })();

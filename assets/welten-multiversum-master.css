@@ -1,0 +1,496 @@
+/* 4-Welten Preview Master — Header & Shell */
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+}
+
+:root {
+  --bar-h: 56px;
+}
+
+.mv4-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  padding-top: calc(10px + env(safe-area-inset-top, 0px));
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.mv4-logo {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 10px;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.mv4-logo img {
+  width: clamp(120px, 22vw, 200px);
+  height: auto;
+  max-height: 52px;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.35));
+}
+
+.mv4-worlds {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+.mv4-worlds button {
+  font: inherit;
+  cursor: pointer;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: 0.25s ease;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.mv4-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.mv4-fx,
+.mv4-flag,
+.sound-toggle {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+}
+
+.mv4-fx.is-on {
+  opacity: 1;
+}
+
+.mv4-fx[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.mv4-fx {
+  padding: 8px 13px;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0.72;
+}
+
+.mv4-flags {
+  display: flex;
+  gap: 6px;
+}
+
+.mv4-flag {
+  width: 40px;
+  height: 28px;
+  padding: 2px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mv4-flag img {
+  width: 30px;
+  height: 20px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.mv4-frame {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: var(--bar-h, 56px);
+  width: 100%;
+  height: calc(100dvh - var(--bar-h, 56px));
+  border: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mv4-frame.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* MULTIVERSUM (general) */
+body[data-master-world="general"] {
+  background: #05070d;
+}
+
+body[data-master-world="general"] .mv4-bar {
+  background: rgba(5, 7, 13, 0.94);
+  border-bottom: 1px solid rgba(255, 89, 178, 0.2);
+  backdrop-filter: blur(12px);
+}
+
+body[data-master-world="general"] .mv4-worlds button {
+  color: rgba(238, 243, 255, 0.78);
+  border-color: rgba(255, 89, 178, 0.22);
+  background: rgba(16, 22, 34, 0.55);
+  border-radius: 999px 28px 999px 28px / 999px 34px 999px 34px;
+}
+
+body[data-master-world="general"] .mv4-worlds button.is-active {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #5ec4ff 0%, #9b6bff 24%, #ff59b2 50%, #ff9b37 76%, #ffd86a 100%);
+  box-shadow: 0 10px 28px rgba(255, 89, 178, 0.24);
+}
+
+body[data-master-world="general"] .mv4-worlds button[data-iframe="0"] {
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+body[data-master-world="general"] .mv4-fx,
+body[data-master-world="general"] .mv4-flag,
+body[data-master-world="general"] .sound-toggle {
+  color: rgba(238, 243, 255, 0.85);
+  border-color: rgba(255, 89, 178, 0.28);
+  background: rgba(16, 22, 34, 0.55);
+}
+
+body[data-master-world="general"] .sound-toggle.is-on {
+  border-color: rgba(94, 196, 255, 0.45);
+  color: #5ec4ff;
+}
+
+body[data-master-world="general"] .mv4-fx[aria-pressed="true"],
+body[data-master-world="general"] .mv4-fx.is-on {
+  border-color: rgba(255, 89, 178, 0.45);
+  color: #ff59b2;
+}
+
+body[data-master-world="general"] .mv4-flag.is-active {
+  box-shadow: 0 0 0 2px rgba(255, 89, 178, 0.55);
+}
+
+/* NEXORA */
+body[data-master-world="nexora"] {
+  background: #050810;
+}
+
+body[data-master-world="nexora"] .mv4-bar {
+  background: rgba(5, 8, 16, 0.92);
+  border-bottom: 1px solid rgba(142, 197, 255, 0.15);
+  backdrop-filter: blur(12px);
+}
+
+body[data-master-world="nexora"] .mv4-worlds button {
+  color: rgba(232, 238, 248, 0.78);
+  border-color: rgba(142, 197, 255, 0.22);
+  background: rgba(18, 32, 56, 0.55);
+}
+
+body[data-master-world="nexora"] .mv4-worlds button.is-active {
+  color: #fff;
+  border-color: #65d9ff;
+  background: rgba(0, 140, 255, 0.22);
+  box-shadow: 0 0 28px rgba(0, 194, 255, 0.22);
+}
+
+body[data-master-world="nexora"] .mv4-fx,
+body[data-master-world="nexora"] .mv4-flag,
+body[data-master-world="nexora"] .sound-toggle {
+  color: rgba(232, 238, 248, 0.85);
+  border-color: rgba(142, 197, 255, 0.28);
+  background: rgba(18, 32, 56, 0.55);
+}
+
+body[data-master-world="nexora"] .mv4-fx[aria-pressed="true"],
+body[data-master-world="nexora"] .mv4-fx.is-on {
+  border-color: rgba(101, 217, 255, 0.45);
+  color: #65d9ff;
+}
+
+/* PROFESSIONAL */
+body[data-master-world="vertex"] {
+  background: #f4f2ee;
+}
+
+body[data-master-world="vertex"] .mv4-bar {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+body[data-master-world="vertex"] .mv4-worlds button {
+  color: rgba(17, 17, 17, 0.55);
+  border-radius: 0;
+  border-color: rgba(0, 0, 0, 0.14);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+body[data-master-world="vertex"] .mv4-worlds button.is-active {
+  color: #fff;
+  background: #111;
+  border-color: #111;
+}
+
+body[data-master-world="vertex"] .mv4-fx,
+body[data-master-world="vertex"] .mv4-flag,
+body[data-master-world="vertex"] .sound-toggle {
+  color: rgba(17, 17, 17, 0.65);
+  border-color: rgba(0, 0, 0, 0.16);
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 999px;
+}
+
+body[data-master-world="vertex"] .mv4-fx[aria-pressed="true"],
+body[data-master-world="vertex"] .mv4-fx.is-on {
+  color: #111;
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+body[data-master-world="vertex"] .mv4-flag {
+  border-radius: 8px;
+}
+
+/* FREIRAUM */
+body[data-master-world="freiraum"] {
+  background: #1c1026;
+}
+
+body[data-master-world="freiraum"] .mv4-bar {
+  background: rgba(28, 16, 38, 0.94);
+  border-bottom: 1px solid rgba(255, 209, 102, 0.22);
+  backdrop-filter: blur(12px);
+}
+
+body[data-master-world="freiraum"] .mv4-worlds button {
+  color: rgba(255, 248, 239, 0.75);
+  border-color: rgba(255, 209, 102, 0.28);
+  background: rgba(55, 24, 62, 0.45);
+}
+
+body[data-master-world="freiraum"] .mv4-worlds button.is-active {
+  color: #24142f;
+  background: linear-gradient(135deg, #ffd166, #ff8bbd);
+  box-shadow: 0 10px 32px rgba(255, 111, 174, 0.22);
+}
+
+body[data-master-world="freiraum"] .mv4-fx,
+body[data-master-world="freiraum"] .mv4-flag,
+body[data-master-world="freiraum"] .sound-toggle {
+  color: rgba(255, 248, 239, 0.85);
+  border-color: rgba(255, 209, 102, 0.35);
+  background: rgba(55, 24, 62, 0.45);
+}
+
+body[data-master-world="freiraum"] .mv4-fx[aria-pressed="true"],
+body[data-master-world="freiraum"] .mv4-fx.is-on {
+  border-color: rgba(255, 209, 102, 0.55);
+  color: #ffd166;
+}
+
+@media (max-width: 1024px) {
+  .mv4-bar {
+    gap: 6px;
+    padding: 8px 10px;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    align-items: center;
+  }
+
+  .mv4-worlds {
+    order: 2;
+    flex: 1 1 100%;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding-bottom: 2px;
+    mask-image: linear-gradient(90deg, transparent 0, #000 8px, #000 calc(100% - 8px), transparent 100%);
+  }
+
+  .mv4-worlds::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mv4-worlds button {
+    flex: 0 0 auto;
+    padding: 7px 11px;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .mv4-actions {
+    order: 1;
+    margin-left: auto;
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+
+  .mv4-fx {
+    font-size: 9px;
+    padding: 5px 8px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    min-height: 28px;
+  }
+
+  .mv4-flags {
+    gap: 4px;
+  }
+
+  .mv4-flag {
+    width: 30px;
+    height: 22px;
+    padding: 1px;
+  }
+
+  .mv4-flag img {
+    width: 24px;
+    height: 16px;
+  }
+
+  .mv4-frame {
+    top: var(--bar-h, 88px) !important;
+    height: calc(100dvh - var(--bar-h, 88px)) !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .mv4-worlds button {
+    padding: 8px 13px;
+    font-size: 11px;
+  }
+
+  .mv4-fx {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  .mv4-flag {
+    width: 34px;
+    height: 24px;
+  }
+
+  .mv4-flag img {
+    width: 26px;
+    height: 17px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mv4-bar {
+    padding: 6px 8px;
+    padding-top: calc(6px + env(safe-area-inset-top, 0px));
+  }
+
+  .mv4-worlds button {
+    padding: 6px 9px;
+    font-size: 9px;
+    min-height: 28px;
+  }
+
+  .mv4-fx {
+    font-size: 8px;
+    padding: 4px 7px;
+    min-height: 26px;
+  }
+
+  .mv4-flag {
+    width: 28px;
+    height: 20px;
+  }
+
+  .mv4-flag img {
+    width: 22px;
+    height: 14px;
+  }
+}
+
+/* MULTIVERSUM-Portal-Overlay (Master-Shell) */
+.mv-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.mv-transition.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.mv-transition__bg,
+.mv-transition__portal,
+.mv-transition__title {
+  position: absolute;
+}
+
+.mv-transition__bg {
+  inset: 0;
+}
+
+.mv-transition__portal {
+  left: 50%;
+  top: 50%;
+  width: min(72vw, 420px);
+  height: min(72vw, 420px);
+  transform: translate(-50%, -50%) scale(0.2);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+
+.mv-transition__title {
+  left: 50%;
+  top: 58%;
+  transform: translate(-50%, 0);
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+}
+
+.mv-transition.is-active .mv-transition__title {
+  animation: mv4-title-in 1.85s ease forwards;
+}
+
+@keyframes mv4-title-in {
+  0%, 35% { opacity: 0; transform: translate(-50%, 24px); }
+  50%, 82% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -12px); }
+}

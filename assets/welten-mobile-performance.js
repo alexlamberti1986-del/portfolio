@@ -35,6 +35,11 @@
   }
 
   function tuneParticleCanvas() {
+    if (document.body && document.body.getAttribute("data-world") === "general") {
+      var rm = document.getElementById("particle-canvas");
+      if (rm) rm.remove();
+      return;
+    }
     var pc = document.getElementById("particle-canvas");
     if (pc && isMobileContext()) {
       pc.style.opacity = "0";

@@ -1,24 +1,50 @@
-window.PORTFOLIO_INLINE_IMAGES = {
-  nexora: "assets/images/world-nexora.webp",
-  vertex: "assets/images/world-vertex.webp",
-  freiraum: "assets/images/world-freiraum.webp",
-};
-
-/** Responsive Varianten — Mobile kleiner, Desktop schärfer */
-window.PORTFOLIO_IMAGE_SRCSET = {
-  nexora:
-    "assets/images/world-nexora-800.webp 800w, assets/images/world-nexora.webp 1400w",
-  vertex: "assets/images/world-vertex.webp 800w",
-  freiraum:
-    "assets/images/world-freiraum-800.webp 800w, assets/images/world-freiraum.webp 1400w",
-};
-
-window.PORTFOLIO_IMAGE_SIZES = "(max-width: 768px) 88vw, (max-width: 1200px) 42vw, 400px";
-
+/**
+ * Profilbilder HOME + Kontakt — weltspezifische PROFILBILD-Dateien
+ */
 (function () {
+  "use strict";
+
+  var PORTRAIT_V = "20260621-profile-new";
+  var BASE = "assets/images/4welten-preview/";
+
+  var PORTRAIT_FILES = {
+    general: "MULTIVERSUM PROFILBILD für HOME und Kontakt.png",
+    nexora: "NEXORA PROFILBILD für HOME und Kontakt.png",
+    vertex: "PROFESSIONAL PROFILBILD für HOME und Kontakt.png",
+    freiraum: "FREIRAUM PROFILBILD für HOME und Kontakt(1).png",
+  };
+
+  var FOLDERS = {
+    general: BASE + "general/",
+    nexora: BASE + "nexora/",
+    vertex: BASE + "professional/",
+    freiraum: BASE + "freiraum/",
+  };
+
+  function portraitUrl(worldKey) {
+    var folder = FOLDERS[worldKey] || FOLDERS.nexora;
+    var file = PORTRAIT_FILES[worldKey] || PORTRAIT_FILES.nexora;
+    return folder + encodeURIComponent(file) + "?v=" + PORTRAIT_V;
+  }
+
+  window.PORTFOLIO_INLINE_IMAGES = {
+    general: portraitUrl("general"),
+    nexora: portraitUrl("nexora"),
+    vertex: portraitUrl("vertex"),
+    freiraum: portraitUrl("freiraum"),
+  };
+
+  window.PORTFOLIO_IMAGE_SRCSET = {};
+  window.PORTFOLIO_IMAGE_SIZES = "(max-width: 768px) 88vw, (max-width: 1200px) 42vw, 400px";
+
+  function cssUrl(src) {
+    return 'url("' + src + '")';
+  }
+
   var r = document.documentElement;
   var m = window.PORTFOLIO_INLINE_IMAGES;
-  r.style.setProperty("--portfolio-img-nexora", 'url("' + m.nexora + '")');
-  r.style.setProperty("--portfolio-img-vertex", 'url("' + m.vertex + '")');
-  r.style.setProperty("--portfolio-img-freiraum", 'url("' + m.freiraum + '")');
+  r.style.setProperty("--portfolio-img-general", cssUrl(m.general));
+  r.style.setProperty("--portfolio-img-nexora", cssUrl(m.nexora));
+  r.style.setProperty("--portfolio-img-vertex", cssUrl(m.vertex));
+  r.style.setProperty("--portfolio-img-freiraum", cssUrl(m.freiraum));
 })();

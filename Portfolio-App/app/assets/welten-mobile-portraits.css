@@ -71,7 +71,7 @@
   }
 }
 
-/* Desktop: Mobile-Overrides zurücksetzen — Original-Look aus Inline-CSS */
+/* Desktop: Mobile-Overrides zurücksetzen — NEXORA-Portrait bleibt mit cover (kein Stretch) */
 @media (min-width: 1025px) {
   body[data-world="nexora"] #slide-home .home-portrait-card img,
   body[data-world="nexora"] #slide-home .home-portrait-card img.portrait-photo,
@@ -79,12 +79,15 @@
   body[data-world="nexora"] #slide-contact .contact-visual img,
   body[data-world="nexora"] #slide-contact .contact-visual img.contact-photo,
   body[data-world="nexora"] #slide-contact img#contactPhoto {
-    mix-blend-mode: revert !important;
-    filter: revert !important;
-    opacity: revert !important;
-    transform: revert !important;
-    object-fit: revert !important;
-    object-position: revert !important;
+    content: normal !important;
+    mix-blend-mode: normal !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
 
   body[data-world="nexora"] #slide-home .home-portrait-card::before,

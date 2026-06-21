@@ -35,7 +35,7 @@
   function applyPortraits() {
     var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
     var w = document.body.getAttribute("data-world") || "nexora";
-    var src = IMG[w] || IMG.nexora || IMG.vertex;
+    var src = IMG[w] || IMG.general || IMG.nexora || IMG.vertex;
     if (!src) return;
     document
       .querySelectorAll(

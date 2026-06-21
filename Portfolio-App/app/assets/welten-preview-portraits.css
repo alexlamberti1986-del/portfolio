@@ -1,0 +1,54 @@
+/* Preview: statisches Profilbild Home + Kontakt — ohne Effekt/Bewegung */
+body[data-world="nexora"] #slide-home .home-portrait-card,
+body[data-world="nexora"] #slide-home .home-portrait-card img,
+body[data-world="nexora"] #slide-home #heroPhoto,
+body[data-world="nexora"] #slide-contact .contact-visual,
+body[data-world="nexora"] #slide-contact #contactPhoto,
+body[data-world="vertex"] #slide-home .home-portrait-card,
+body[data-world="vertex"] #slide-home .home-portrait-card img,
+body[data-world="vertex"] #slide-home #heroPhoto,
+body[data-world="vertex"] #slide-contact .contact-visual,
+body[data-world="vertex"] #slide-contact #contactPhoto,
+body[data-world="freiraum"] #slide-home .home-portrait-card,
+body[data-world="freiraum"] #slide-home .home-portrait-card img,
+body[data-world="freiraum"] #slide-home #heroPhoto,
+body[data-world="freiraum"] #slide-contact .contact-visual,
+body[data-world="freiraum"] #slide-contact #contactPhoto {
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+body[data-world="nexora"] #slide-home .home-portrait-card::before,
+body[data-world="nexora"] #slide-home .home-portrait-card::after,
+body[data-world="vertex"] #slide-home .home-portrait-card::before,
+body[data-world="vertex"] #slide-home .home-portrait-card::after,
+body[data-world="freiraum"] #slide-home .home-portrait-card::before,
+body[data-world="freiraum"] #slide-home .home-portrait-card::after {
+  display: none !important;
+  content: none !important;
+}
+
+body[data-world="nexora"] #slide-home #heroPhoto,
+body[data-world="nexora"] #slide-home .home-portrait-card img.portrait-photo,
+body[data-world="nexora"] #slide-contact #contactPhoto,
+body[data-world="vertex"] #slide-home #heroPhoto,
+body[data-world="vertex"] #slide-home .home-portrait-card img.portrait-photo,
+body[data-world="vertex"] #slide-contact #contactPhoto,
+body[data-world="freiraum"] #slide-home #heroPhoto,
+body[data-world="freiraum"] #slide-home .home-portrait-card img.portrait-photo,
+body[data-world="freiraum"] #slide-contact #contactPhoto {
+  object-fit: cover !important;
+  object-position: center top !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body[data-world="nexora"] #slide-home .home-portrait-card,
+body[data-world="vertex"] #slide-home .home-portrait-card,
+body[data-world="freiraum"] #slide-home .home-portrait-card {
+  overflow: hidden !important;
+  border-radius: 22px !important;
+}

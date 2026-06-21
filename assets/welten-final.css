@@ -124,6 +124,11 @@ body.welten-personality--freiraum {
   --welten-glow: rgba(255, 111, 174, 0.18);
 }
 
+body.welten-personality--general {
+  --welten-accent: #ff59b2;
+  --welten-glow: rgba(255, 89, 178, 0.16);
+}
+
 body.welten-personality--nexora .chapter-label {
   color: var(--welten-accent);
   letter-spacing: 0.14em;
@@ -139,6 +144,28 @@ body.welten-personality--vertex .chapter-label {
 body.welten-personality--freiraum .chapter-label {
   color: var(--welten-accent);
   letter-spacing: 0.1em;
+}
+
+body.welten-personality--general .chapter-label {
+  color: #ff59b2;
+  letter-spacing: 0.14em;
+}
+
+body.welten-personality--general h2.section-title,
+body.welten-personality--general .welten-page-hero__title {
+  background: linear-gradient(90deg, #5ec4ff 0%, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+body.welten-personality--general .glass-card,
+body.welten-personality--general .project-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 89, 178, 0.16) !important;
+  border-radius: 28px 14px 34px 20px / 26px 18px 30px 22px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
 }
 
 body.welten-personality--nexora .glass-card {

@@ -87,7 +87,8 @@
           "@id": BASE + "/#organization",
           name: "Alex Lamberti",
           url: BASE,
-          logo: OG_IMAGE,
+          logo: BASE + "/assets/favicon/android-chrome-512x512.png",
+          image: OG_IMAGE,
           contactPoint: {
             "@type": "ContactPoint",
             telephone: "+41796678211",

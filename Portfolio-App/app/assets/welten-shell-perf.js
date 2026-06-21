@@ -14,16 +14,18 @@
 
   function preloadLazyWorlds(preloadFrame) {
     if (!shouldPrefetch() || typeof preloadFrame !== "function") return;
-    preloadFrame(0);
-    preloadFrame(2);
+    [0, 1, 2, 3].forEach(function (i) {
+      preloadFrame(i);
+    });
   }
 
   /** Sofort nach kurzer Verzögerung + Idle-Fallback */
   function scheduleLazyWorldPreload(preloadFrame) {
     if (!shouldPrefetch() || typeof preloadFrame !== "function") return;
     setTimeout(function () {
-      preloadFrame(0);
-      preloadFrame(2);
+      [0, 1, 2, 3].forEach(function (i) {
+        preloadFrame(i);
+      });
     }, 350);
     if ("requestIdleCallback" in window) {
       requestIdleCallback(
@@ -37,7 +39,7 @@
 
   function injectDocumentPrefetch() {
     if (!shouldPrefetch()) return;
-    ["NEXORA.html", "FREIRAUM.html"].forEach(function (href) {
+    ["MULTIVERSUM.html", "NEXORA.html", "FREIRAUM.html"].forEach(function (href) {
       if (document.querySelector('link[rel="prefetch"][href="' + href + '"]')) return;
       var link = document.createElement("link");
       link.rel = "prefetch";

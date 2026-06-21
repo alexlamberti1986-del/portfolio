@@ -8,6 +8,14 @@ body.welten-chapter-visuals--on .slide:not(#slide-home)::after {
   animation: none !important;
 }
 
+body.welten-chapter-visuals--on[data-world="general"] .slide:not(#slide-home)::after,
+body.welten-chapter-visuals--on[data-world="general"] .slide.active:not(#slide-home)::before {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+  background: none !important;
+}
+
 body.welten-chapter-visuals--on .slide.active:not(#slide-home)::before {
   background-image: none !important;
   animation: none !important;
@@ -71,6 +79,44 @@ body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box__scri
     rgba(20, 10, 28, 0.56) 45%,
     rgba(20, 10, 28, 0.84) 100%
   );
+}
+
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box__scrim {
+  background: linear-gradient(
+    155deg,
+    rgba(5, 7, 13, 0.82) 0%,
+    rgba(5, 7, 13, 0.48) 42%,
+    rgba(5, 7, 13, 0.78) 100%
+  );
+}
+
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box__strip-scrim {
+  background: linear-gradient(90deg, rgba(5, 7, 13, 0.78), rgba(5, 7, 13, 0.42), rgba(5, 7, 13, 0.78));
+}
+
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box,
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box .prose {
+  color: #eef3ff;
+}
+
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box h2,
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box h3,
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box .section-title,
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box__strip-text {
+  background: linear-gradient(90deg, #5ec4ff 0%, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box .chapter-label {
+  color: #ff59b2 !important;
+  letter-spacing: 0.14em;
+}
+
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box .welten-faq__panel,
+body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box .contact-actions a {
+  color: #eef3ff !important;
 }
 
 body.welten-chapter-visuals--on .welten-chapter-box > :not(.welten-chapter-box__bg):not(.welten-chapter-box__scrim):not(.welten-chapter-box__strip) {
@@ -272,6 +318,7 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
   }
 
   body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box__scrim,
+  body.welten-chapter-visuals--on[data-world="general"] .welten-chapter-box__scrim,
   body.welten-chapter-visuals--on[data-world="vertex"] .welten-chapter-box__scrim,
   body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box__scrim {
     background: linear-gradient(

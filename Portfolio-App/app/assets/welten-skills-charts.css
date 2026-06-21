@@ -188,6 +188,30 @@
 }
 
 /* —— World theme tokens —— */
+body[data-world="general"] {
+  --sk-accent: #ff59b2;
+  --sk-accent-2: #9b6bff;
+  --sk-accent-3: #5ec4ff;
+  --sk-accent-4: #ff9b37;
+  --sk-track: rgba(255, 89, 178, 0.14);
+  --sk-label: rgba(238, 243, 255, 0.82);
+  --sk-value: #ff59b2;
+  --sk-glow: 0 0 18px rgba(255, 89, 178, 0.28);
+  --sk-bar-gradient: linear-gradient(90deg, #ff9b37 0%, #ff59b2 42%, #9b6bff 78%, #5ec4ff 100%);
+  --sk-vbar-gradient: linear-gradient(180deg, #5ec4ff 0%, #9b6bff 28%, #ff59b2 62%, #ff9b37 100%);
+  --sk-ring-gradient: #ff59b2;
+  --sk-heat-1: rgba(255, 89, 178, 0.22);
+  --sk-heat-2: rgba(155, 107, 255, 0.4);
+  --sk-heat-3: rgba(255, 155, 55, 0.54);
+  --sk-heat-4: rgba(255, 89, 178, 0.68);
+  --sk-radar-grid: rgba(155, 107, 255, 0.42);
+  --sk-radar-axis: rgba(255, 89, 178, 0.55);
+  --sk-radar-fill: rgba(255, 89, 178, 0.26);
+  --sk-radar-stroke: #ff59b2;
+  --sk-radar-point-fill: #9b6bff;
+  --sk-radar-point-stroke: #ff59b2;
+}
+
 body[data-world="nexora"] {
   --sk-accent: #4cb7ff;
   --sk-accent-2: #65d9ff;
@@ -286,6 +310,10 @@ body[data-world="vertex"] .welten-skills-donut {
     #6e6e6e 0 calc((var(--sk-s0, 0) + var(--sk-s1, 0) + var(--sk-s2, 0)) * 1%),
     #2a2a2a 0 100%
   ) !important;
+}
+
+body[data-world="general"] .welten-skills-chart-card:hover {
+  box-shadow: var(--sk-glow);
 }
 
 body[data-world="nexora"] .welten-skills-chart-card:hover {
@@ -715,6 +743,10 @@ body[data-world="nexora"] .welten-skills-chart-card:hover {
 .welten-skills-heatmap-cell.is-l3 {
   background: var(--sk-heat-3);
   box-shadow: var(--sk-glow);
+}
+
+body[data-world="general"] .welten-skills-heatmap-cell.is-l3 {
+  outline: 1px solid rgba(255, 89, 178, 0.35);
 }
 
 body[data-world="nexora"] .welten-skills-heatmap-cell.is-l3 {

@@ -1,0 +1,411 @@
+/**
+ * MULTIVERSUM — Pink-Akzent, Eclipse-Buttons, Logo-Gradient
+ * Kein isoliertes Blau — nur in Verläufen (wie Logo)
+ */
+
+body[data-world="general"] {
+  --mv-line: rgba(255, 255, 255, 0.11);
+  --mv-text: #eef3ff;
+  --mv-muted: #aab5cf;
+  --mv-pink: #ff59b2;
+  --mv-pink-dim: rgba(255, 89, 178, 0.38);
+  --mv-pink-soft: rgba(255, 89, 178, 0.14);
+  --mv-purple: #9b6bff;
+  --mv-orange: #ff9b37;
+  --mv-yellow: #ffd86a;
+  /* Solid accents = pink (never standalone blue) */
+  --mv-accent: #ff59b2;
+  --mv-accent2: #ff9b37;
+  --mv-accent3: #ffd86a;
+  --welten-accent: #ff59b2;
+  --ice: #ff59b2;
+  --ice-dim: rgba(255, 89, 178, 0.35);
+  --ice-glow: rgba(255, 89, 178, 0.22);
+  --text: #eef3ff;
+  --text-muted: #aab5cf;
+  --glass: rgba(16, 22, 34, 0.58);
+  --glass-border: rgba(255, 89, 178, 0.18);
+  --navy-0: #05070d;
+  --navy-1: #0b111b;
+  --navy-2: #101622;
+  /* Eclipse-Form wie Formular MULTIVERSUM */
+  --mv-eclipse: 999px 28px 999px 28px / 999px 34px 999px 34px;
+  --mv-eclipse-md: 28px 14px 34px 20px / 26px 18px 30px 22px;
+  --mv-eclipse-sm: 22px 12px 28px 16px / 20px 14px 24px 18px;
+  /* Logo-Gradient: Blau → Lila → Pink → Orange → Gelb */
+  --mv-gradient-text: linear-gradient(
+    90deg,
+    #5ec4ff 0%,
+    #9b6bff 22%,
+    #ff59b2 48%,
+    #ff9b37 72%,
+    #ffd86a 100%
+  );
+  --mv-gradient-fill: linear-gradient(
+    135deg,
+    #5ec4ff 0%,
+    #9b6bff 24%,
+    #ff59b2 50%,
+    #ff9b37 76%,
+    #ffd86a 100%
+  );
+  --mv-gradient-fill-soft: linear-gradient(
+    135deg,
+    rgba(94, 196, 255, 0.22) 0%,
+    rgba(155, 107, 255, 0.16) 30%,
+    rgba(255, 89, 178, 0.2) 55%,
+    rgba(255, 155, 55, 0.14) 100%
+  );
+}
+
+/* Hintergrund — pink/lila/orange, kein Blau-Blob */
+body[data-world="general"] .bg-root {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 89, 178, 0.12), transparent 32%),
+    radial-gradient(circle at 88% 14%, rgba(155, 107, 255, 0.1), transparent 26%),
+    radial-gradient(circle at 82% 88%, rgba(255, 155, 55, 0.08), transparent 24%),
+    linear-gradient(135deg, #05070d, #0b111b 45%, #06080f) !important;
+}
+
+body[data-world="general"] .slide,
+body[data-world="general"] .slide.active,
+body[data-world="general"] .slide-inner,
+body[data-world="general"] main.slides-root {
+  background: transparent !important;
+  scrollbar-color: rgba(255, 89, 178, 0.3) transparent !important;
+}
+
+body[data-world="general"] #particle-canvas,
+body[data-world="general"] .bg-grid,
+body[data-world="general"] .light-beams,
+body[data-world="general"] .dna-premium-canvas,
+body[data-world="general"] .dna-particles-canvas,
+body[data-world="general"] #weltenMousePaintCanvas,
+body[data-world="general"] .bg-root::before,
+body[data-world="general"] .bg-root::after,
+body[data-world="general"].is-subpage .bg-root::before,
+body[data-world="general"] .slide:not(#slide-home)::before,
+body[data-world="general"] .slide:not(#slide-home)::after {
+  display: none !important;
+  visibility: hidden !important;
+  content: none !important;
+  opacity: 0 !important;
+  background: none !important;
+  animation: none !important;
+  pointer-events: none !important;
+}
+
+/* —— Eclipse-Buttons (Formular-Shape) —— */
+body[data-world="general"] .mv-form-btn,
+body[data-world="general"] .mv-static-hero__nav-btn,
+body[data-world="general"] .btn-menu,
+body[data-world="general"] .btn-close,
+body[data-world="general"] .btn:not(.btn-close):not(.experience-step),
+body[data-world="general"] .cta-btn,
+body[data-world="general"] a.btn-open,
+body[data-world="general"] .btn-open,
+body[data-world="general"] .projects-accordion__trigger,
+body[data-world="general"] .persona-tabs button {
+  border: 1px solid rgba(255, 89, 178, 0.22) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--mv-text) !important;
+  border-radius: var(--mv-eclipse) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.22s ease, color 0.22s ease !important;
+}
+
+body[data-world="general"] .mv-form-btn:hover,
+body[data-world="general"] .mv-static-hero__nav-btn:hover,
+body[data-world="general"] .btn-menu:hover,
+body[data-world="general"] .btn:not(.btn-close):not(.experience-step):not(.btn-primary):hover,
+body[data-world="general"] .cta-btn:not(.btn-primary):hover,
+body[data-world="general"] a.btn-open:hover,
+body[data-world="general"] .btn-open:hover,
+body[data-world="general"] .projects-accordion__trigger:hover,
+body[data-world="general"] .persona-tabs button:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(255, 89, 178, 0.48) !important;
+  box-shadow: 0 14px 28px rgba(255, 89, 178, 0.14) !important;
+  color: var(--mv-text) !important;
+  background: rgba(255, 89, 178, 0.06) !important;
+  text-decoration: none !important;
+}
+
+body[data-world="general"] .mv-form-btn.is-active,
+body[data-world="general"] .mv-static-hero__nav-btn.is-active,
+body[data-world="general"] .btn-primary,
+body[data-world="general"] .btn-primary:hover,
+body[data-world="general"] .cta-btn.btn-primary,
+body[data-world="general"] .persona-tabs button.is-active,
+body[data-world="general"] .persona-tabs button[aria-selected="true"] {
+  background: var(--mv-gradient-fill) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 16px 38px rgba(255, 89, 178, 0.22) !important;
+}
+
+body[data-world="general"] a.btn-open,
+body[data-world="general"] .btn-open {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 10px 18px !important;
+  margin-top: 14px !important;
+  min-height: auto !important;
+  text-decoration: none !important;
+}
+
+/* Header */
+body[data-world="general"] .site-header {
+  background: transparent !important;
+}
+
+body[data-world="general"] .brand-mark,
+body[data-world="general"] .header-meta {
+  color: var(--mv-text) !important;
+  font-weight: 700 !important;
+}
+
+body[data-world="general"] .brand-mark span {
+  background: var(--mv-gradient-text) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+body[data-world="general"] .header-meta:hover,
+body[data-world="general"] .header-meta:focus-visible {
+  color: var(--mv-pink) !important;
+}
+
+body[data-world="general"] .btn-menu-lines span {
+  background: var(--mv-text) !important;
+}
+
+/* Menü */
+body[data-world="general"] .menu-overlay {
+  background: rgba(5, 7, 13, 0.72) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+body[data-world="general"] .menu-panel {
+  border: 1px solid rgba(255, 89, 178, 0.16) !important;
+  border-radius: var(--mv-eclipse-md) !important;
+  background: rgba(10, 14, 24, 0.92) !important;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45) !important;
+}
+
+body[data-world="general"] .menu-kicker {
+  color: var(--mv-pink) !important;
+  border: 1px solid rgba(255, 89, 178, 0.32) !important;
+  background: rgba(255, 89, 178, 0.1) !important;
+  border-radius: var(--mv-eclipse) !important;
+  padding: 6px 12px !important;
+  display: inline-block !important;
+}
+
+body[data-world="general"] .menu-title {
+  color: var(--mv-text) !important;
+}
+
+body[data-world="general"] .menu-links a {
+  font-family: inherit !important;
+  letter-spacing: 0 !important;
+  color: var(--mv-muted) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+body[data-world="general"] .menu-links a:hover {
+  color: var(--mv-pink) !important;
+  padding-left: 6px !important;
+}
+
+body[data-world="general"] .menu-links a.active {
+  color: var(--mv-pink) !important;
+  font-weight: 700 !important;
+}
+
+body[data-world="general"] .menu-links a::after,
+body[data-world="general"] .menu-links a.active::after {
+  background: var(--mv-gradient-fill) !important;
+}
+
+body[data-world="general"] .btn-close:hover {
+  background: rgba(255, 89, 178, 0.08) !important;
+  color: var(--mv-pink) !important;
+}
+
+/* Seitliche Navigation — pink, kein Blau */
+body[data-world="general"] .experience-rail::before {
+  background: rgba(255, 89, 178, 0.18) !important;
+}
+
+body[data-world="general"] .experience-step {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255, 89, 178, 0.32) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  color: transparent !important;
+}
+
+body[data-world="general"] .experience-step:hover {
+  border-color: rgba(255, 89, 178, 0.58) !important;
+  transform: scale(1.12) !important;
+  box-shadow: 0 0 12px rgba(255, 89, 178, 0.2) !important;
+}
+
+body[data-world="general"] .experience-step.is-active {
+  transform: scale(1.28) !important;
+  border-color: transparent !important;
+  background: var(--mv-gradient-fill) !important;
+  box-shadow: 0 0 22px rgba(255, 89, 178, 0.35) !important;
+}
+
+body[data-world="general"] .experience-step::after {
+  color: var(--mv-text) !important;
+}
+
+/* Typo — Labels pink, Titel Gradient */
+body[data-world="general"] .chapter-label,
+body[data-world="general"] .welten-page-hero__kicker,
+body[data-world="general"] .vz-kicker,
+body[data-world="general"] .project-card .block strong {
+  color: var(--mv-pink) !important;
+  text-shadow: none !important;
+}
+
+body[data-world="general"] .section-title,
+body[data-world="general"] h2.section-title,
+body[data-world="general"] .welten-page-hero__title,
+body[data-world="general"] .welten-chapter-box .section-title,
+body[data-world="general"] .welten-chapter-box h2,
+body[data-world="general"] .welten-chapter-box h3 {
+  background: var(--mv-gradient-text) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  text-shadow: none !important;
+}
+
+/* Karten & Boxen — pinker Rand, Eclipse-Ecken */
+body[data-world="general"] .glass-card,
+body[data-world="general"] .welten-chapter-box,
+body[data-world="general"] .project-card,
+body[data-world="general"] .value-card,
+body[data-world="general"] .skill-card,
+body[data-world="general"] .faq-item,
+body[data-world="general"] .projects-accordion__item {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 89, 178, 0.16) !important;
+  border-radius: var(--mv-eclipse-md) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+body[data-world="general"] .project-card--preview .project-card__preview {
+  border: 1px solid rgba(255, 89, 178, 0.14) !important;
+  border-radius: var(--mv-eclipse-sm) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+body[data-world="general"] .projects-accordion__item.is-open .projects-accordion__trigger {
+  background: var(--mv-gradient-fill-soft) !important;
+  box-shadow: inset 0 -1px 0 rgba(255, 89, 178, 0.12) !important;
+}
+
+body[data-world="general"] .prose,
+body[data-world="general"] .welten-page-hero__lead,
+body[data-world="general"] .projects-intro,
+body[data-world="general"] .project-card .block {
+  color: var(--mv-muted) !important;
+}
+
+body[data-world="general"] .project-card h3 {
+  color: #eef3ff !important;
+}
+
+/* Hero */
+body[data-world="general"] .mv-static-hero {
+  background:
+    radial-gradient(circle at 12% 10%, rgba(255, 89, 178, 0.1), transparent 34%),
+    radial-gradient(circle at 88% 18%, rgba(155, 107, 255, 0.08), transparent 28%),
+    linear-gradient(135deg, rgba(5, 7, 13, 0.98), rgba(11, 17, 27, 0.94)) !important;
+  border-bottom: 1px solid rgba(255, 89, 178, 0.14) !important;
+}
+
+body[data-world="general"] .mv-static-hero__title {
+  background: var(--mv-gradient-text) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+body[data-world="general"] .mv-static-hero__tag .mv-tag-blue,
+body[data-world="general"] .mv-static-hero__tag .mv-tag-warm {
+  background: var(--mv-gradient-text) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+body[data-world="general"] .mv-static-hero__tag .mv-tag-white {
+  color: #eef3ff !important;
+}
+
+/* UI-Akzente */
+body[data-world="general"] .welten-process-step__icon,
+body[data-world="general"] .welten-page-hero__rule {
+  background: linear-gradient(90deg, #ff59b2, transparent) !important;
+}
+
+body[data-world="general"] .welten-skill-pill.is-active,
+body[data-world="general"] .welten-process-step.is-active .welten-process-step__icon {
+  background: var(--mv-pink) !important;
+}
+
+body[data-world="general"] :focus-visible {
+  outline-color: var(--mv-pink) !important;
+}
+
+body[data-world="general"] .faq-question:hover,
+body[data-world="general"] summary:hover,
+body[data-world="general"] .welten-faq__trigger:hover {
+  color: var(--mv-pink) !important;
+}
+
+body[data-world="general"] .faq-item.is-open .faq-question {
+  color: var(--mv-pink) !important;
+}
+
+body[data-world="general"] .timeline::before {
+  background: linear-gradient(180deg, rgba(255, 89, 178, 0.4), rgba(255, 155, 55, 0.08)) !important;
+}
+
+body[data-world="general"] .tl-item::before {
+  border-color: var(--mv-pink) !important;
+  box-shadow: 0 0 14px rgba(255, 89, 178, 0.28) !important;
+}
+
+body[data-world="general"] .wp-n {
+  background: rgba(255, 89, 178, 0.12) !important;
+  border-color: rgba(255, 89, 178, 0.28) !important;
+  color: #eef3ff !important;
+  border-radius: var(--mv-eclipse-sm) !important;
+}
+
+/* Override welten-personality falls noch nexora */
+body[data-world="general"].welten-personality--nexora .chapter-label,
+body[data-world="general"].welten-personality--general .chapter-label {
+  color: var(--mv-pink) !important;
+}
+
+body[data-world="general"].welten-personality--nexora .glass-card,
+body[data-world="general"].welten-personality--general .glass-card {
+  box-shadow: none !important;
+  border-color: rgba(255, 89, 178, 0.16) !important;
+}

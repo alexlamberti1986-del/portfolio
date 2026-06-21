@@ -1,565 +1,100 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<link rel="icon" href="assets/favicon/favicon.ico" />
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
-<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
-<link rel="dns-prefetch" href="https://www.google.com" />
-<link rel="dns-prefetch" href="https://maps.google.com" />
-<link rel="preconnect" href="https://www.alexlamberti.ch" crossorigin />
-<link rel="preload" href="assets/images/world-vertex.webp" as="image" type="image/webp" fetchpriority="high" />
+  <link rel="icon" href="assets/favicon/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
+  <link rel="dns-prefetch" href="https://www.google.com" />
+  <link rel="dns-prefetch" href="https://maps.google.com" />
+  <link rel="preconnect" href="https://www.alexlamberti.ch" crossorigin />
+  <link
+    rel="preload"
+    href="assets/images/4welten-preview/professional/PROFESSIONAL%20PROFILBILD%20f%C3%BCr%20HOME%20und%20Kontakt.png"
+    as="image"
+    type="image/png"
+    fetchpriority="high"
+  />
 
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="description" content="Alex Lamberti — Digital Marketing, Branding, Webdesign und Strategie. Drei Designwelten, fünf klare Bereiche: Home, Projekte, Leistungen, Über mich, Kontakt." />
-<link rel="canonical" href="https://www.alexlamberti.ch/" />
-<meta property="og:type" content="website" />
-<meta property="og:locale" content="de_CH" />
-<meta property="og:site_name" content="Alex Lamberti" />
-<meta property="og:title" content="Alex Lamberti | Digital Marketing, Webdesign & Strategie" />
-<meta property="og:description" content="Portfolio von Alex Lamberti — Projekte, Leistungen und Kontakt in NEXORA, PROFESSIONAL und FREIRAUM." />
-<meta property="og:url" content="https://www.alexlamberti.ch/" />
-<meta property="og:image" content="https://www.alexlamberti.ch/assets/og-image.jpg" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Alex Lamberti — Branding, Webseiten und digitale Erlebnisse" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://www.alexlamberti.ch/assets/og-image.jpg" />
-<title>Alex Lamberti | Digital Marketing, Webdesign & Strategie</title>
-<style>
-* { cursor: default; }
-button, a, [role="button"] { cursor: pointer; }
-html, body { margin: 0; height: 100%; overflow: hidden; font-family: system-ui, sans-serif; }
-:root { --bar-h: 56px; }
-.world-bar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 2147483647;
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px;
-  padding: 10px 12px;
-  padding-top: calc(10px + env(safe-area-inset-top, 0px));
-  transition: background 0.35s ease, border-color 0.35s ease;
-}
-.world-bar button {
-  font: inherit; cursor: pointer;
-  padding: 10px 16px; border-radius: 999px;
-  border: 1px solid transparent;
-  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
-}
-.sound-toggle {
-  margin-left: 4px;
-  padding: 8px 14px !important;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  opacity: 0.92;
-}
-.sound-toggle.is-on { opacity: 1; }
-@media (max-width: 720px) {
-  .sound-toggle { padding: 7px 10px !important; font-size: 0.72rem; }
-}
-@media (max-width: 1024px) {
-  .world-bar {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 2147483647 !important;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-  .world-frame {
-    top: var(--bar-h, 120px) !important;
-    height: calc(100svh - var(--bar-h, 120px)) !important;
-    height: calc(100dvh - var(--bar-h, 120px)) !important;
-    max-height: calc(100dvh - var(--bar-h, 120px)) !important;
-  }
-}
-.world-frame {
-  position: fixed; left: 0; right: 0; bottom: 0; top: var(--bar-h, 56px);
-  width: 100%;
-  height: calc(100svh - var(--bar-h, 56px));
-  height: calc(100dvh - var(--bar-h, 56px));
-  border: 0; display: block;
-  opacity: 0; visibility: hidden; pointer-events: none;
-  z-index: 0;
-}
-.world-frame.is-active {
-  opacity: 1; visibility: visible; pointer-events: auto; z-index: 1;
-}
-body[data-master-world="nexora"] { background: #050810; }
-body[data-master-world="nexora"] .world-bar {
-  background: rgba(5, 8, 16, 0.92);
-  border-bottom: 1px solid rgba(142, 197, 255, 0.15);
-  backdrop-filter: blur(12px);
-}
-body[data-master-world="nexora"] .world-bar button[data-iframe] {
-  color: rgba(232, 238, 248, 0.78);
-  border-color: rgba(142, 197, 255, 0.22);
-  background: rgba(18, 32, 56, 0.55);
-}
-body[data-master-world="nexora"] .world-bar button[data-iframe].is-active {
-  color: #fff; border-color: #65d9ff;
-  background: rgba(0, 140, 255, 0.22);
-  box-shadow: 0 0 28px rgba(0, 194, 255, 0.22);
-}
-body[data-master-world="vertex"] { background: #f4f2ee; }
-body[data-master-world="vertex"] .world-bar {
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-body[data-master-world="vertex"] .world-bar button[data-iframe] {
-  color: rgba(17, 17, 17, 0.55);
-  border-radius: 0;
-  border-color: rgba(0, 0, 0, 0.14);
-  background: rgba(255, 255, 255, 0.65);
-}
-body[data-master-world="vertex"] .world-bar button[data-iframe].is-active {
-  color: #fff; background: #111; border-color: #111;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
-}
-body[data-master-world="vertex"] .sound-toggle {
-  border-radius: 999px !important;
-  color: rgba(17, 17, 17, 0.65);
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  background: rgba(255, 255, 255, 0.85);
-}
-body[data-master-world="freiraum"] { background: #1c1026; }
-body[data-master-world="freiraum"] .world-bar {
-  background: rgba(28, 16, 38, 0.94);
-  border-bottom: 1px solid rgba(255, 209, 102, 0.22);
-  backdrop-filter: blur(12px);
-}
-body[data-master-world="freiraum"] .world-bar button[data-iframe] {
-  color: rgba(255, 248, 239, 0.75);
-  border-color: rgba(255, 209, 102, 0.28);
-  background: rgba(55, 24, 62, 0.45);
-}
-body[data-master-world="freiraum"] .world-bar button[data-iframe].is-active {
-  color: #24142f;
-  background: linear-gradient(135deg, #ffd166, #ff8bbd);
-  box-shadow: 0 10px 32px rgba(255, 111, 174, 0.22);
-}
-body[data-master-world="nexora"] .sound-toggle {
-  color: rgba(232, 238, 248, 0.85);
-  border: 1px solid rgba(142, 197, 255, 0.28);
-  background: rgba(18, 32, 56, 0.55);
-}
-body[data-master-world="freiraum"] .sound-toggle {
-  color: rgba(255, 248, 239, 0.85);
-  border: 1px solid rgba(255, 209, 102, 0.35);
-  background: rgba(55, 24, 62, 0.45);
-}
-</style>
-<link rel="prefetch" href="NEXORA.html" as="document" />
-<link rel="prefetch" href="FREIRAUM.html" as="document" />
-<link rel="stylesheet" href="assets/world-transition.css" />
-<link rel="stylesheet" href="assets/shell-performance.css?v=20260608c" />
-<script src="assets/welten-shell-perf.js?v=20260608c" defer></script>
-<script>
-(function () {
-  if (window.matchMedia("(max-width: 1024px), (prefers-reduced-motion: reduce)").matches) return;
-  var s = document.createElement("script");
-  s.src = "assets/transition-engine.js";
-  s.defer = true;
-  document.head.appendChild(s);
-})();
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta
+    name="description"
+    content="Alex Lamberti — Digital Marketing, Branding, Webdesign und Strategie. Vier Designwelten: MULTIVERSUM, NEXORA, PROFESSIONAL und FREIRAUM."
+  />
+  <link rel="canonical" href="https://www.alexlamberti.ch/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="de_CH" />
+  <meta property="og:site_name" content="Alex Lamberti" />
+  <meta property="og:title" content="Alex Lamberti | Digital Marketing, Webdesign &amp; Strategie" />
+  <meta
+    property="og:description"
+    content="Portfolio von Alex Lamberti — Projekte, Leistungen und Kontakt in MULTIVERSUM, NEXORA, PROFESSIONAL und FREIRAUM."
+  />
+  <meta property="og:url" content="https://www.alexlamberti.ch/" />
+  <meta property="og:image" content="https://www.alexlamberti.ch/assets/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Alex Lamberti — Branding, Webseiten und digitale Erlebnisse" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.alexlamberti.ch/assets/og-image.jpg" />
+  <title>Alex Lamberti | Digital Marketing, Webdesign &amp; Strategie</title>
+
+  <link rel="prefetch" href="MULTIVERSUM.html" as="document" />
+  <link rel="prefetch" href="NEXORA.html" as="document" />
+  <link rel="prefetch" href="FREIRAUM.html" as="document" />
+  <link rel="stylesheet" href="assets/welten-multiversum-master.css?v=20260621live2" />
+  <link rel="stylesheet" href="assets/welten-world-switch-preview.css?v=20260621mv6" />
+  <link rel="stylesheet" href="assets/shell-performance.css?v=20260621live2" />
+  <script src="assets/welten-shell-perf.js?v=20260621live2" defer></script>
 </head>
-<body data-master-world="vertex">
-<div class="world-bar" role="group" aria-label="Designwelt wählen">
-  <button type="button" data-iframe="0" data-world-key="nexora">NEXORA</button>
-  <button type="button" class="is-active" data-iframe="1" data-world-key="vertex">PROFESSIONAL</button>
-  <button type="button" data-iframe="2" data-world-key="freiraum">FREIRAUM</button>
-  <button type="button" class="sound-toggle" id="sound-toggle" aria-pressed="false" title="Weltwechsel-Sound">Sound Off</button>
-</div>
-<iframe class="world-frame" title="NEXORA" data-lazy-src="NEXORA.html" src="about:blank"></iframe>
-<iframe class="world-frame is-active" title="PROFESSIONAL" src="PROFESSIONAL.html"></iframe>
-<iframe class="world-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
-<script>
-(function () {
-  var CHAPTERS = ["home","projects","leistungen","about","contact"];
-  var sharedChapter = "home";
-  var bar = document.querySelector(".world-bar");
-  var frames = document.querySelectorAll(".world-frame");
-  var soundBtn = document.getElementById("sound-toggle");
-  var soundEnabled = false;
-  var lastSoundWorld = "professional";
-  var switching = false;
-  var loaded = { 1: true };
+<body data-master-world="vertex" data-live-shell="1" data-live-default="2">
+  <header class="mv4-bar" role="group" aria-label="Welten &amp; Steuerung">
+    <nav class="mv4-worlds" aria-label="Welten wechseln">
+      <button type="button" data-iframe="0" data-world-key="general">MULTIVERSUM</button>
+      <button type="button" data-iframe="1" data-world-key="nexora">NEXORA</button>
+      <button type="button" class="is-active" data-iframe="2" data-world-key="vertex">PROFESSIONAL</button>
+      <button type="button" data-iframe="3" data-world-key="freiraum">FREIRAUM</button>
+    </nav>
+    <div class="mv4-actions">
+      <button
+        type="button"
+        class="mv4-fx is-on"
+        id="mv4-fx"
+        aria-pressed="true"
+        title="Weltwechsel-Effekte &amp; Sound"
+      >
+        EFFEKTE ON
+      </button>
+      <div class="mv4-flags" aria-label="Sprache">
+        <button type="button" class="mv4-flag is-active" data-lang="de" title="Deutsch" aria-label="Deutsch">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjEzLjMzMyIgZmlsbD0iIzAwMCIvPjxyZWN0IHk9IjEzLjMzMyIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEzLjMzNCIgZmlsbD0iI2RkMDAwMCIvPjxyZWN0IHk9IjI2LjY2NyIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEzLjMzMyIgZmlsbD0iI2ZmY2UwMCIvPjwvc3ZnPg=="
+            alt=""
+          />
+        </button>
+        <button type="button" class="mv4-flag" data-lang="en" title="English" aria-label="English">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDEyMTY5Ii8+PHBhdGggZD0iTTAgMGw2MCA0ME02MCAwTDAgNDAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI4Ii8+PHBhdGggZD0iTTAgMGw2MCA0ME02MCAwTDAgNDAiIHN0cm9rZT0iI0M4MTAyRSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTMwIDB2NDBNMCAyMGg2MCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjE0Ii8+PHBhdGggZD0iTTMwIDB2NDBNMCAyMGg2MCIgc3Ryb2tlPSIjQzgxMDJFIiBzdHJva2Utd2lkdGg9IjgiLz48L3N2Zz4="
+            alt=""
+          />
+        </button>
+        <button type="button" class="mv4-flag" data-lang="it" title="Italiano" aria-label="Italiano">
+          <img
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDA5MjQ2Ii8+PHJlY3QgeD0iMjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmZiIvPjxyZWN0IHg9IjQwIiB3aWR0aD0iMjAiIGhlaWdodD0iNDAiIGZpbGw9IiNjZTJiMzciLz48L3N2Zz4="
+            alt=""
+          />
+        </button>
+      </div>
+    </div>
+  </header>
 
-  function setBarHeight() {
-    if (!bar) return;
-    var h = Math.ceil(bar.getBoundingClientRect().height);
-    if (h < 48) h = 56;
-    document.documentElement.style.setProperty("--bar-h", h + "px");
-  }
+  <iframe class="mv4-frame" title="MULTIVERSUM" data-lazy-src="MULTIVERSUM.html" src="about:blank"></iframe>
+  <iframe class="mv4-frame" title="NEXORA" data-lazy-src="NEXORA.html" src="about:blank"></iframe>
+  <iframe class="mv4-frame is-active" title="PROFESSIONAL" src="PROFESSIONAL.html"></iframe>
+  <iframe class="mv4-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
 
-  function notifyFrameCleanup(f) {
-    if (f) postFrame(f, { type: "portfolio-cleanup-transition" });
-  }
-
-  function cleanupShellState() {
-    if (typeof window.cleanupWorldTransition === "function") {
-      window.cleanupWorldTransition(document);
-    }
-  }
-
-  function frameIsReady(f) {
-    try {
-      var d = f.contentDocument;
-      return !!(d && (d.readyState === "interactive" || d.readyState === "complete"));
-    } catch (err) {
-      return false;
-    }
-  }
-
-  function frameHasSrc(f) {
-    return !!(f && f.src && f.src.indexOf("about:blank") === -1);
-  }
-
-  function unlockShell(activeIdx) {
-    switching = false;
-    window.__worldTransitionRunning = false;
-    document.documentElement.style.pointerEvents = "";
-    document.body.style.pointerEvents = "";
-    if (bar) bar.style.pointerEvents = "auto";
-    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-      b.disabled = false;
-      b.style.pointerEvents = "";
-    });
-    frames.forEach(function (f, j) {
-      var on = j === activeIdx;
-      f.classList.toggle("is-active", on);
-      f.classList.remove("is-leaving");
-      f.style.pointerEvents = on ? "auto" : "none";
-    });
-    setBarHeight();
-  }
-
-  var throttledSetBarHeight = (function () {
-    var scheduled = false;
-    return function () {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(function () {
-        scheduled = false;
-        setBarHeight();
-      });
-    };
-  })();
-
-  window.addEventListener("resize", throttledSetBarHeight, { passive: true });
-  setBarHeight();
-  if (bar && typeof ResizeObserver !== "undefined") {
-    new ResizeObserver(setBarHeight).observe(bar);
-  }
-
-  var SOUND_FILES = {
-    nexora: "assets/audio/Nexora sound.mp3",
-    professional: "assets/audio/Professional sound.mp3",
-    freiraum: "assets/audio/Freiraum sound.mp3",
-  };
-
-  var sounds = {};
-  Object.keys(SOUND_FILES).forEach(function (key) {
-    var src = SOUND_FILES[key];
-    try { src = encodeURI(src).replace(/#/g, "%23"); } catch (e) {}
-    var audio = new Audio(src);
-    audio.preload = "none";
-    audio.volume = 0.55;
-    sounds[key] = audio;
-  });
-
-  function soundKeyFromIframe(i) {
-    return i === 0 ? "nexora" : i === 1 ? "professional" : "freiraum";
-  }
-
-  function updateSoundButton() {
-    if (!soundBtn) return;
-    soundBtn.textContent = soundEnabled ? "Sound On" : "Sound Off";
-    soundBtn.classList.toggle("is-on", soundEnabled);
-    soundBtn.setAttribute("aria-pressed", soundEnabled ? "true" : "false");
-  }
-
-  function playWorldSwitchSound(worldKey) {
-    if (!soundEnabled || worldKey === lastSoundWorld) return;
-    var clip = sounds[worldKey];
-    if (!clip) return;
-    try {
-      clip.currentTime = 0;
-      var p = clip.play();
-      if (p && typeof p.catch === "function") p.catch(function () {});
-    } catch (e) {}
-    lastSoundWorld = worldKey;
-  }
-
-  if (soundBtn) {
-    soundBtn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      soundEnabled = !soundEnabled;
-      updateSoundButton();
-    });
-  }
-  updateSoundButton();
-
-  function isOur(win) {
-    if (!win) return false;
-    for (var i = 0; i < frames.length; i++) {
-      try { if (frames[i].contentWindow === win) return true; } catch (e) {}
-    }
-    return false;
-  }
-
-  window.addEventListener("message", function (e) {
-    if (!e.data) return;
-    if (e.data.type === "portfolio-chapter") {
-      if (!isOur(e.source)) return;
-      if (typeof e.data.chapter === "string" && CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;
-      return;
-    }
-    if (e.data.type === "portfolio-open-external") {
-      if (!isOur(e.source)) return;
-      var href = e.data.href;
-      if (typeof href === "string" && /^(mailto:|tel:)/i.test(href)) {
-        window.location.href = href;
-      }
-    }
-  });
-
-  function readChapter(f) {
-    try {
-      var d = f.contentDocument;
-      if (!d || !d.body) return null;
-      var b = d.body.getAttribute("data-current-slide");
-      if (b && CHAPTERS.indexOf(b) >= 0) return b;
-      var a = d.querySelector(".slide.active[data-slide]");
-      if (a) { var id = a.getAttribute("data-slide"); if (id && CHAPTERS.indexOf(id) >= 0) return id; }
-    } catch (err) {}
-    return null;
-  }
-
-  function isTouchShell() {
-    return window.matchMedia("(max-width: 1024px)").matches ||
-      window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-  }
-
-  function applyChapter(f, id) {
-    var ch = CHAPTERS.indexOf(id) >= 0 ? id : "home";
-    var useMessageOnly = f === frames[0] && isTouchShell();
-    if (useMessageOnly) {
-      postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
-      return;
-    }
-    try {
-      var d = f.contentDocument;
-      if (d) {
-        var link = d.querySelector('.menu-links a[data-go="' + ch + '"]');
-        if (link) { link.click(); return; }
-      }
-    } catch (e1) {}
-    if (f.contentWindow) {
-      try { f.contentWindow.postMessage({ type: "portfolio-go-chapter", chapter: ch }, "*"); } catch (e2) {}
-    }
-  }
-
-  function postFrame(f, data) {
-    if (!f || !f.contentWindow) return;
-    try { f.contentWindow.postMessage(data, "*"); } catch (e) {}
-  }
-
-  function setFramePaused(f, paused) {
-    postFrame(f, { type: "portfolio-world-pause", paused: paused });
-  }
-
-  function activeIdx() {
-    var idx = -1;
-    frames.forEach(function (f, j) { if (f.classList.contains("is-active")) idx = j; });
-    return idx;
-  }
-
-  function setMaster(i) {
-    var btn = bar.querySelector('button[data-iframe="' + i + '"]');
-    var key = btn && btn.getAttribute("data-world-key");
-    if (!key) key = i === 0 ? "nexora" : i === 1 ? "vertex" : "freiraum";
-    document.body.setAttribute("data-master-world", key);
-  }
-
-  function preloadFrame(i) {
-    var f = frames[i];
-    if (!f || loaded[i]) return;
-    var lazy = f.getAttribute("data-lazy-src");
-    if (!lazy) return;
-    if (frameHasSrc(f)) {
-      loaded[i] = true;
-      return;
-    }
-    f.addEventListener("load", function () {
-      loaded[i] = true;
-    }, { once: true });
-    f.src = lazy;
-  }
-
-  function loadFrame(i) {
-    return new Promise(function (resolve) {
-      var f = frames[i];
-      if (!f) return resolve();
-      if (loaded[i]) return resolve();
-      var lazy = f.getAttribute("data-lazy-src");
-      if (!lazy) {
-        loaded[i] = true;
-        return resolve();
-      }
-      if (frameHasSrc(f) && frameIsReady(f)) {
-        loaded[i] = true;
-        return resolve();
-      }
-      var settled = false;
-      function finish() {
-        if (settled) return;
-        settled = true;
-        clearInterval(pollId);
-        loaded[i] = true;
-        resolve();
-      }
-      var pollId = setInterval(function () {
-        if (frameIsReady(f)) finish();
-      }, 40);
-      f.addEventListener("load", finish, { once: true });
-      if (!frameHasSrc(f)) f.src = lazy;
-      setTimeout(finish, 12000);
-    });
-  }
-
-  function applyActiveFrames(i) {
-    var prev = activeIdx();
-    if (prev >= 0 && prev !== i) {
-      notifyFrameCleanup(frames[prev]);
-      setFramePaused(frames[prev], true);
-    }
-    frames.forEach(function (f, j) {
-      var on = j === i;
-      f.classList.toggle("is-active", on);
-      f.classList.toggle("is-paused", !on);
-      f.style.pointerEvents = on ? "auto" : "none";
-      if (on) setFramePaused(f, false);
-    });
-    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-      b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
-    });
-    setMaster(i);
-    postFrame(frames[i], { type: "portfolio-world-enter", world: soundKeyFromIframe(i) });
-    applyChapter(frames[i], sharedChapter);
-    unlockShell(i);
-  }
-
-  function switchToWorldIndex(i) {
-    if (i < 0 || i > 2) return Promise.resolve();
-    var prev = activeIdx();
-    if (prev === i) {
-      unlockShell(i);
-      return Promise.resolve();
-    }
-
-    switching = true;
-    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-      b.disabled = true;
-    });
-
-    if (prev >= 0) {
-      var c = readChapter(frames[prev]);
-      if (c) sharedChapter = c;
-      if (prev !== i) playWorldSwitchSound(soundKeyFromIframe(i));
-    }
-
-    setMaster(i);
-    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-      b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
-    });
-
-    if (loaded[i] && frameHasSrc(frames[i])) {
-      applyActiveFrames(i);
-      return Promise.resolve();
-    }
-
-    return loadFrame(i).then(function () {
-      applyActiveFrames(i);
-    }).catch(function (err) {
-      console.error(err);
-      unlockShell(prev >= 0 ? prev : i);
-    });
-  }
-
-  bar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
-    var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-    btn.addEventListener("pointerdown", function () { preloadFrame(idx); }, { passive: true });
-    btn.addEventListener("mouseenter", function () { preloadFrame(idx); });
-    btn.addEventListener("touchstart", function () { preloadFrame(idx); }, { passive: true });
-    btn.addEventListener("focus", function () { preloadFrame(idx); });
-  });
-
-  bar.addEventListener("click", function (e) {
-    if (e.target.closest("#sound-toggle")) return;
-    var btn = e.target.closest("button[data-iframe]");
-    if (!btn) return;
-    switchToWorldIndex(parseInt(btn.getAttribute("data-iframe"), 10));
-  });
-
-  window.switchToWorldIndex = switchToWorldIndex;
-  if (typeof window.cleanupWorldTransition === "function") {
-    window.cleanupWorldTransition(document);
-  }
-  cleanupShellState();
-
-  var ROUTE_CHAPTER = {
-    "/": "home",
-    "/projekte": "projects",
-    "/leistungen": "leistungen",
-    "/ueber-mich": "about",
-    "/kontakt": "contact"
-  };
-
-  function chapterFromShellPath() {
-    var p = (location.pathname || "/").replace(/\/$/, "") || "/";
-    return ROUTE_CHAPTER[p] || "home";
-  }
-
-  function applyShellRoute() {
-    var ch = chapterFromShellPath();
-    sharedChapter = ch;
-    var idx = activeIdx();
-    if (idx < 0) idx = 1;
-    var f = frames[idx];
-    if (!f) return;
-    function send() {
-      postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
-    }
-    if (f.contentDocument && f.contentDocument.readyState === "complete") send();
-    else f.addEventListener("load", send, { once: true });
-  }
-
-  window.addEventListener("popstate", applyShellRoute);
-  applyShellRoute();
-
-  function scheduleIdlePreload() {
-    if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
-      window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame);
-      return;
-    }
-    setTimeout(function () {
-      preloadFrame(0);
-      preloadFrame(2);
-    }, 350);
-  }
-
-  var activeFrame = frames[1];
-  if (activeFrame) {
-    if (activeFrame.contentDocument && activeFrame.contentDocument.readyState === "complete") {
-      scheduleIdlePreload();
-    } else {
-      activeFrame.addEventListener("load", scheduleIdlePreload, { once: true });
-    }
-  }
-})();
-</script>
+  <script src="assets/welten-multiversum-master.js?v=20260621live2" defer></script>
+  <script src="assets/welten-world-switch-preview.js?v=20260621mv6" defer></script>
 </body>
 </html>

@@ -1,10 +1,11 @@
 /**
- * Kontakt — FINAL Layout (alle Welten), nur #slide-contact
+ * Kontakt — Kontaktdaten + Portrait oben, Leadformular darunter (alle Welten)
  */
 (function () {
   "use strict";
 
-  var VERSION = "2";
+  var VERSION = "5";
+  var FORM_SRC = "assets/preview/alx-leadform-demo.html";
   var TEL = "+41796678211";
   var TEL_DISP = "079 667 82 11";
   var MAIL = "alex.lamberti@hotmail.ch";
@@ -13,16 +14,46 @@
   var PLACEHOLDER =
     "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
 
+  function currentLang() {
+    try {
+      return (
+        localStorage.getItem("mv-preview-lang") ||
+        sessionStorage.getItem("mv-preview-lang") ||
+        document.documentElement.lang ||
+        "de"
+      );
+    } catch (e) {
+      return "de";
+    }
+  }
+
+  function formWorldKey() {
+    var w = document.body.getAttribute("data-world") || "nexora";
+    if (w === "general") return "general";
+    if (w === "vertex") return "professional";
+    if (w === "freiraum") return "freiraum";
+    return "nexora";
+  }
+
+  function formFrameSrc() {
+    return (
+      FORM_SRC +
+      "?embed=1&world=" +
+      encodeURIComponent(formWorldKey()) +
+      "&lang=" +
+      encodeURIComponent(currentLang()) +
+      "&v=20260621form4"
+    );
+  }
+
   function contactMarkup() {
     return (
       '<div class="contact-copy glass-card">' +
       '<p class="chapter-label">Kontakt</p>' +
       '<h2 class="section-title">Bereit für den nächsten Schritt.</h2>' +
-      '<p class="prose">Ich freue mich auf Möglichkeiten, bei denen ich meine Erfahrung in Markeninszenierung, Kundenkommunikation und digitalem Marketing gezielt einbringen kann. Besonders spannend sind für mich Unternehmen, die Wert auf Qualität, klare Kommunikation, kreative Ideen und eine starke digitale Präsenz legen.</p>' +
-      '<p class="prose">Ob Website, Content, Kampagne, Projektkoordination oder Markenauftritt – ich möchte meine Fähigkeiten dort einsetzen, wo sie Wirkung erzeugen und weiter wachsen können.</p>' +
+      '<p class="prose">Ich freue mich auf Möglichkeiten, bei denen ich meine Erfahrung in Markeninszenierung, Kundenkommunikation und digitalem Marketing gezielt einbringen kann.</p>' +
       '<p class="prose contact-lead-emphasis">Lassen Sie uns ins Gespräch kommen.</p>' +
       '<p class="prose">Ob Website, Markenauftritt, digitale Sichtbarkeit oder ein konkretes Kundenprojekt: Ich freue mich über den Austausch und reagiere schnell, verbindlich und unkompliziert.</p>' +
-      '<p class="prose">Für mich beginnt gute Zusammenarbeit mit Zuhören, Verstehen und einer klaren Einordnung der nächsten Schritte. Deshalb ist der erste Kontakt bewusst einfach gehalten: kurz schreiben, anrufen oder direkt die Adresse öffnen.</p>' +
       '<div class="contact-actions">' +
       '<a href="mailto:' + MAIL + '"><span>E-Mail: ' + MAIL + '</span><span aria-hidden="true">→</span></a>' +
       '<a href="tel:' + TEL + '"><span>Telefon: ' + TEL_DISP + '</span><span aria-hidden="true">→</span></a>' +
@@ -34,7 +65,12 @@
       '<img class="contact-photo portrait-photo" id="contactPhoto" src="' +
       PLACEHOLDER +
       '" alt="Alex Lamberti" width="600" height="720" decoding="async" loading="lazy" />' +
-      "</figure>"
+      "</figure>" +
+      '<div class="welten-leadform-wrap">' +
+      '<iframe class="welten-leadform-frame" id="weltenLeadForm" title="Leadformular" src="' +
+      formFrameSrc() +
+      '" loading="lazy"></iframe>' +
+      "</div>"
     );
   }
 
@@ -76,16 +112,58 @@
   function applyContactPortrait() {
     var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
     var w = document.body.getAttribute("data-world") || "nexora";
-    var src = IMG[w] || IMG.nexora || IMG.vertex;
+    var src = IMG[w] || IMG.general || IMG.nexora || IMG.vertex;
     if (src) {
       document.querySelectorAll("#contactPhoto, #slide-contact .contact-photo").forEach(function (img) {
         img.removeAttribute("srcset");
         img.src = src;
         img.style.display = "block";
         img.style.opacity = "1";
+        img.style.mixBlendMode = "normal";
+        img.style.filter = "none";
       });
     }
-    syncContactPortraitFromHome();
+    var hero = document.getElementById("heroPhoto");
+    var contact = document.getElementById("contactPhoto");
+    if (hero && contact && hero.src && hero.src.indexOf("data:image/gif") === -1) {
+      contact.src = hero.src;
+      contact.alt = hero.alt || contact.alt;
+    }
+  }
+
+  function resizeLeadFormFrame(height) {
+    var frame = document.getElementById("weltenLeadForm");
+    if (!frame) return;
+    var h = parseInt(height, 10);
+    if (h > 400) {
+      frame.style.height = h + "px";
+      frame.style.minHeight = h + "px";
+    }
+  }
+
+  function syncLeadFormFrame() {
+    var frame = document.getElementById("weltenLeadForm");
+    if (!frame) return;
+
+    var nextSrc = formFrameSrc();
+    var current = frame.getAttribute("src") || "";
+    if (current.split("#")[0] !== nextSrc.split("#")[0]) {
+      frame.src = nextSrc;
+      return;
+    }
+
+    if (frame.contentWindow) {
+      try {
+        frame.contentWindow.postMessage(
+          {
+            type: "alx-preview-sync",
+            world: formWorldKey(),
+            lang: currentLang(),
+          },
+          "*"
+        );
+      } catch (e) {}
+    }
   }
 
   function needsContactRebuild(slide) {
@@ -93,6 +171,7 @@
     if (slide.dataset.weltenContactFinal !== VERSION) return true;
     if (slide.querySelector(".welten-contact-page")) return true;
     if (!slide.querySelector(".contact-copy") || !slide.querySelector(".contact-visual")) return true;
+    if (!slide.querySelector(".welten-leadform-wrap")) return true;
     if (!slide.querySelector('.contact-actions a[href^="mailto:"]')) return true;
     return false;
   }
@@ -102,16 +181,18 @@
     if (!slide) return;
 
     if (!needsContactRebuild(slide)) {
-      slide.className = "slide-inner contact-layout";
+      slide.className = "slide-inner contact-layout contact-layout--form";
       slide.classList.remove("contact-layout--minimal");
       applyContactPortrait();
+      syncLeadFormFrame();
       return;
     }
 
-    slide.className = "slide-inner contact-layout";
+    slide.className = "slide-inner contact-layout contact-layout--form";
     slide.dataset.weltenContactFinal = VERSION;
     slide.innerHTML = contactMarkup();
     applyContactPortrait();
+    syncLeadFormFrame();
   }
 
   function apply() {
@@ -128,10 +209,21 @@
     if (e && e.detail && e.detail.chapter === "contact") applyContactFinal();
   });
 
+  window.addEventListener("message", function (e) {
+    if (!e.data) return;
+    if (e.data.type === "alx-form-height" && e.data.height) {
+      resizeLeadFormFrame(e.data.height);
+    }
+    if (e.data.type === "portfolio-preview-lang" || e.data.type === "alx-preview-sync") {
+      syncLeadFormFrame();
+    }
+  });
+
   try {
     new MutationObserver(function () {
       if (document.body.getAttribute("data-current-slide") === "contact") {
         applyContactPortrait();
+        syncLeadFormFrame();
       }
       syncContactPortraitFromHome();
     }).observe(document.body, {
@@ -141,7 +233,10 @@
   } catch (e) {}
 
   window.addEventListener("load", function () {
-    setTimeout(syncContactPortraitFromHome, 80);
+    setTimeout(function () {
+      syncContactPortraitFromHome();
+      syncLeadFormFrame();
+    }, 80);
   });
 
   window.addEventListener("resize", function () {
@@ -149,4 +244,9 @@
       syncContactPortraitFromHome();
     }
   });
+
+  window.WeltenContactLeadform = {
+    syncLeadFormFrame: syncLeadFormFrame,
+    formWorldKey: formWorldKey,
+  };
 })();

@@ -4,6 +4,9 @@
 (function () {
   "use strict";
 
+  if (document.body && document.body.getAttribute("data-world") === "general") return;
+  if (window.__MV_DISABLE_FX) return;
+
   var PROCESS = [
     { title: "Verstehen", desc: "Ziele, Zielgruppe und Kontext klar einordnen." },
     { title: "Konzipieren", desc: "Struktur, Botschaft und Nutzerweg entwickeln." },

@@ -94,6 +94,10 @@ body[data-world="freiraum"] {
   --welten-accent: #ffd166;
 }
 
+body[data-world="general"] {
+  --welten-accent: #ff59b2;
+}
+
 body[data-world="nexora"] {
   --welten-accent: #65d9ff;
 }

@@ -37,6 +37,7 @@
 
   function worldKey() {
     var w = (document.body && document.body.getAttribute("data-world")) || "nexora";
+    if (w === "general") return "general";
     if (w === "vertex") return "vertex";
     if (w === "freiraum") return "freiraum";
     return "nexora";
@@ -57,6 +58,7 @@
   }
 
   function unifyTextLinks() {
+    if (document.body.getAttribute("data-world") === "general") return;
     document.querySelectorAll(".btn-open, a.btn-open").forEach(function (a) {
       a.classList.add("welten-textlink");
       a.classList.remove("btn");
@@ -70,7 +72,11 @@
   }
 
   function applyWorldPersonality() {
-    document.body.classList.add("welten-personality--" + worldKey());
+    ["nexora", "vertex", "freiraum", "general"].forEach(function (k) {
+      document.body.classList.remove("welten-personality--" + k);
+    });
+    var key = worldKey();
+    if (key) document.body.classList.add("welten-personality--" + key);
   }
 
   function apply() {

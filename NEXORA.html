@@ -5091,13 +5091,16 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <script src="assets/welten-runtime-perf.js?v=20260608d"></script>
 <link rel="stylesheet" href="assets/welten-skills-charts.css" />
 <link rel="stylesheet" href="assets/welten-mobile-performance.css?v=20260608d" />
-<link rel="stylesheet" href="assets/projects-accordion.css?v=20260613a" />
+<link rel="stylesheet" href="assets/projects-accordion.css?v=20260621svc2" />
 <script src="assets/projects-accordion.js?v=20260613a" defer></script>
+<script src="assets/welten-form-service-images.js?v=20260621svc2" defer></script>
+<script src="assets/welten-projects-services.js?v=20260621svc2" defer></script>
 <script src="assets/welten-mobile-performance.js?v=20260608d" defer></script>
 <script src="assets/welten-skills-charts.js?v=20260608d" defer></script>
 </head>
 <body data-world="nexora" class="is-home">
-<script src="assets/portfolio-images.js"></script>
+<script src="assets/portfolio-images.js?v=20260621-profile-new"></script>
+<script src="assets/welten-preview-images.js?v=20260621-profile-new"></script>
 
 <!-- WP: Hintergrund-Ebenen optional weglassen oder als Section-Hintergrund + HTML für Canvas -->
   <div class="bg-root" aria-hidden="true"></div>
@@ -6538,7 +6541,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       });
 
       /** Porträt-Pfade nacheinander testen (README: alex-business.webp, alex-portrait-round.webp, PNG möglich). */
-      var PORTRAIT_SRC_CHAIN = [window.PORTFOLIO_INLINE_IMAGES.vertex];
+      var PORTRAIT_SRC_CHAIN = [window.PORTFOLIO_INLINE_IMAGES.nexora];
 
       /** Fehlendes Porträt nach allen Pfaden: Hinweis einblenden (Bilder erst dann ausblenden). */
       function showImageFallback(firstImg) {
@@ -6891,7 +6894,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 </style>
 <script id="final-embedded-portrait-fix-script">
 (function() {
-  
+  var IMAGES = window.PORTFOLIO_INLINE_IMAGES || {};
+
   function world() {
     var w = document.body.getAttribute("data-world") || "nexora";
     return IMAGES[w] ? w : "nexora";
@@ -8479,7 +8483,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-nexora-mobile-fix.js?v=20260606f" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260606f" />
-<link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260606f" />
+<link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260621live1" />
 <link rel="stylesheet" href="assets/welten-site-ia.css?v=20260601a" />
 <script src="assets/welten-seo.js?v=20260601a" defer></script>
 <script src="assets/welten-site-ia.js?v=20260601b" defer></script>
@@ -8499,12 +8503,17 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-premium-review.js?v=20260531c" defer></script>
 <link rel="stylesheet" href="assets/welten-final-restore.css?v=20260601b" />
 <script src="assets/welten-final-restore.js?v=20260606c" defer></script>
-<link rel="stylesheet" href="assets/welten-contact-final.css?v=20260606e" />
-<script src="assets/welten-contact-final.js?v=20260606e" defer></script>
+<link rel="stylesheet" href="assets/welten-contact-final.css?v=20260621form3" />
+<script src="assets/welten-contact-final.js?v=20260621form3" defer></script>
 <link rel="stylesheet" href="assets/welten-hero-hide-desktop-titles.css?v=20260606f" />
 <link rel="stylesheet" href="assets/welten-mobile-home-portrait-fix.css?v=20260606f" />
 <link rel="stylesheet" href="assets/welten-chapter-visuals.css?v=20260612" />
 <link rel="stylesheet" href="assets/welten-world-buttons.css?v=20260612b" />
 <script src="assets/welten-chapter-visuals.js?v=20260612" defer></script>
+<link rel="stylesheet" href="assets/welten-preview-portraits.css?v=20260614p1" />
+<script src="assets/welten-preview-i18n.js?v=20260614mv6" defer></script>
+<script src="assets/welten-preview-i18n-bridge.js?v=20260614form" defer></script>
+<link rel="stylesheet" href="assets/welten-nexora-portrait-fix.css?v=20260621live1" />
+<script src="assets/welten-portraits-apply.js?v=20260621-profile-new" defer></script>
 </body>
 </html>
