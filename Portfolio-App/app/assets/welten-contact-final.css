@@ -259,6 +259,32 @@ body[data-world="freiraum"] #slide-contact .welten-leadform-frame {
   box-shadow: 0 20px 48px rgba(255, 92, 163, 0.12);
 }
 
+@media (max-width: 960px) {
+  #slide-contact .slide-inner.contact-layout {
+    padding-bottom: clamp(28px, 5vw, 44px) !important;
+  }
+
+  #slide-contact .welten-leadform-wrap {
+    margin-top: 20px;
+    min-width: 0;
+  }
+
+  #slide-contact .welten-leadform-frame {
+    min-height: 600px;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  #slide-contact .welten-leadform-frame {
+    min-height: 520px;
+  }
+
+  #slide-contact .contact-copy.glass-card {
+    padding: 20px !important;
+  }
+}
+
 @media (max-width: 480px) {
   #slide-contact .contact-actions a {
     padding: 16px;

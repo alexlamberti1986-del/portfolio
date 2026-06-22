@@ -62,3 +62,21 @@
     padding: 0.48rem 0.85rem !important;
   }
 }
+
+@media (max-width: 960px) {
+  html.mv4-preview-shell #slide-contact .welten-leadform-wrap,
+  html.welten-live-shell #slide-contact .welten-leadform-wrap {
+    margin-top: 18px;
+    min-width: 0;
+  }
+
+  html.mv4-preview-shell #slide-contact .welten-leadform-frame,
+  html.welten-live-shell #slide-contact .welten-leadform-frame {
+    min-height: 560px;
+  }
+
+  html.mv4-preview-shell #slide-contact .slide-inner.contact-layout,
+  html.welten-live-shell #slide-contact .slide-inner.contact-layout {
+    padding-bottom: clamp(24px, 5vw, 40px) !important;
+  }
+}

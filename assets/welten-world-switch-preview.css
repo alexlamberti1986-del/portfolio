@@ -869,10 +869,12 @@
 
 html.welten-world-switch-lock {
   overflow: hidden;
+  touch-action: none;
 }
 
 html.welten-world-switch-lock body {
   overflow: hidden;
+  touch-action: none;
 }
 
 /* Mobile & Tablet: Safe-Area, kompaktere Typo */
@@ -880,6 +882,10 @@ html.welten-world-switch-lock body {
   .welten-world-switch__content {
     padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
     max-width: min(94vw, 420px);
+  }
+
+  .welten-world-switch__canvas {
+    opacity: 0.94;
   }
 
   .welten-world-switch__title {

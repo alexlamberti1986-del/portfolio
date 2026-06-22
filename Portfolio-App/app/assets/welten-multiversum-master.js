@@ -47,7 +47,7 @@
   var switching = false;
   var effectsOn = true;
   var currentLang = "de";
-  var PREVIEW_MOBILE_CSS = "assets/welten-multiversum-preview-mobile.css?v=20260621live2";
+  var PREVIEW_MOBILE_CSS = "assets/welten-multiversum-preview-mobile.css?v=20260623mv2";
   var isLiveShell = document.body && document.body.getAttribute("data-live-shell") === "1";
   var defaultWorld = 0;
   if (document.body && document.body.getAttribute("data-live-default")) {
@@ -377,15 +377,20 @@
 
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
       window.WeltenWorldSwitchPreview.playSwitch(wKey, i);
-      var safetyMs =
+      var timing =
         (window.WeltenWorldSwitchPreview.getTimingForWorld &&
-          window.WeltenWorldSwitchPreview.getTimingForWorld(wKey).WORLD_TRANSITION_DURATION) ||
-        (window.WeltenWorldSwitchPreview.timing &&
-          window.WeltenWorldSwitchPreview.timing.WORLD_TRANSITION_DURATION) ||
-        2000;
+          window.WeltenWorldSwitchPreview.getTimingForWorld(wKey)) ||
+        window.WeltenWorldSwitchPreview.timing ||
+        { WORLD_TRANSITION_DURATION: 3000, COVER_MS: 1200, TITLE_HOLD: 1200, EXIT_MS: 400 };
+      var safetyMs =
+        timing.COVER_MS +
+        timing.WORLD_TRANSITION_DURATION +
+        timing.TITLE_HOLD +
+        timing.EXIT_MS +
+        800;
       setTimeout(function () {
         if (switching) unlockShell();
-      }, safetyMs + 800);
+      }, safetyMs);
       return;
     }
 

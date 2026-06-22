@@ -1391,6 +1391,18 @@
     }
   }
 
+  function getTransitionFailsafeMs(timing) {
+    return (
+      timing.COVER_MS +
+      timing.EFFECT_MS +
+      timing.TITLE_FADE_IN +
+      timing.TITLE_HOLD +
+      timing.TITLE_HOLD +
+      timing.EXIT_MS +
+      700
+    );
+  }
+
   function playSwitch(worldKey, targetIdx) {
     if (running) wwsAbortTransition();
 
@@ -1434,6 +1446,10 @@
         wwsLater(function () {
           revealStagedTitle(overlay);
         }, timing.TITLE_REVEAL_AT);
+      } else {
+        wwsLater(function () {
+          revealStagedTitle(overlay);
+        }, timing.TITLE_REVEAL_AT + 180);
       }
       if (worldKey === "vertex" && !reduced) {
         wwsLater(function () {
@@ -1447,7 +1463,8 @@
     });
 
     function finishExit() {
-      if (!activeOverlay) return;
+      if (!activeOverlay || activeOverlay._wwsFinishing) return;
+      activeOverlay._wwsFinishing = true;
       stopCanvas(activeOverlay);
       activeOverlay.classList.remove("is-entering");
       activeOverlay.classList.add("is-exiting");
@@ -1474,11 +1491,18 @@
         var wait = Math.max(0, minShowMs - (Date.now() - start));
         if (postTitleHoldMs > 0) {
           function scheduleExit() {
+            var elapsed = Date.now() - start;
+            var maxHold = getTransitionFailsafeMs(timing);
             if (!overlay._wwsTitleShownAt) {
-              wwsLater(scheduleExit, 50);
-              return;
+              if (elapsed < maxHold) {
+                wwsLater(scheduleExit, 50);
+                return;
+              }
+              revealStagedTitle(overlay);
             }
-            var sinceTitle = Date.now() - overlay._wwsTitleShownAt;
+            var sinceTitle = overlay._wwsTitleShownAt
+              ? Date.now() - overlay._wwsTitleShownAt
+              : 0;
             var extra = Math.max(0, postTitleHoldMs - sinceTitle);
             wwsLater(finishExit, Math.max(wait, extra));
           }
@@ -1490,6 +1514,10 @@
         finishExit();
       });
     }, coverMs);
+
+    wwsLater(function () {
+      if (running && activeOverlay) finishExit();
+    }, getTransitionFailsafeMs(timing));
   }
 
   function hookWorldBar() {
