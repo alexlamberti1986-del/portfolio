@@ -4,18 +4,19 @@
 (function () {
   "use strict";
 
-  var V = "20260621svc3";
+  var V = "20260623svc1";
 
   var ACCORDION_SERVICES = {
     websites: "web",
     leadformulare: "form",
-    visitenkarten: "print",
+    visitenkarten: "qr",
   };
 
   var SERVICES = [
     { key: "logo", titleKey: "logo" },
     { key: "qr", titleKey: "qr" },
     { key: "seo", titleKey: "seo" },
+    { key: "print", titleKey: "print" },
     { key: "layout3d", titleKey: "layout3d" },
     { key: "present", titleKey: "present" },
   ];
@@ -36,6 +37,10 @@
       seo: {
         title: "SEO & SEA",
         desc: "Optimierung der Sichtbarkeit durch Suchmaschinenoptimierung (SEO) und Suchmaschinenwerbung (SEA).",
+      },
+      print: {
+        title: "Printmedien",
+        desc: "Flyer, Visitenkarten, Poster, Broschüren oder Roll-ups — gestaltet und druckfertig aufbereitet.",
       },
       layout3d: {
         title: "3D Layouts",
@@ -62,6 +67,10 @@
         title: "SEO & SEA",
         desc: "Improving visibility through search engine optimisation (SEO) and search engine advertising (SEA).",
       },
+      print: {
+        title: "Print media",
+        desc: "Flyers, business cards, posters, brochures or roll-ups — designed and prepared for print.",
+      },
       layout3d: {
         title: "3D layouts",
         desc: "Visualisation of spaces, concepts, interiors and project ideas in 3D.",
@@ -86,6 +95,10 @@
       seo: {
         title: "SEO & SEA",
         desc: "Ottimizzazione della visibilità tramite SEO e pubblicità sui motori di ricerca (SEA).",
+      },
+      print: {
+        title: "Materiale stampato",
+        desc: "Flyer, biglietti da visita, poster, brochure o roll-up — progettati e pronti per la stampa.",
       },
       layout3d: {
         title: "Layout 3D",
@@ -141,10 +154,25 @@
       if (!item) return;
       var trigger = item.querySelector(".projects-accordion__trigger");
       if (!trigger) return;
-      var url = imageUrl(ACCORDION_SERVICES[cat]);
+      var serviceKey = ACCORDION_SERVICES[cat];
+      var url = imageUrl(serviceKey);
       if (!url) return;
+      item.setAttribute("data-service-key", serviceKey);
       trigger.style.setProperty("--accordion-service-bg", 'url("' + url + '")');
       trigger.classList.add("has-service-bg");
+
+      var thumb = trigger.querySelector(".projects-accordion__thumb");
+      if (!thumb) {
+        thumb = document.createElement("img");
+        thumb.className = "projects-accordion__thumb";
+        thumb.alt = "";
+        thumb.loading = "lazy";
+        thumb.decoding = "async";
+        trigger.insertBefore(thumb, trigger.firstChild);
+      }
+      if (thumb.getAttribute("src") !== url) {
+        thumb.setAttribute("src", url);
+      }
     });
     return true;
   }
@@ -282,8 +310,20 @@
   document.addEventListener("welten-init-projects-accordion", onProjectsChapter);
 
   window.addEventListener("message", function (e) {
-    if (e.data && (e.data.type === "portfolio-preview-lang" || e.data.type === "alx-preview-sync")) {
+    if (!e.data) return;
+    if (e.data.type === "portfolio-preview-lang" || e.data.type === "alx-preview-sync") {
       render();
+      return;
+    }
+    if (
+      e.data.type === "portfolio-world-enter" ||
+      e.data.type === "portfolio-cleanup-transition" ||
+      e.data.type === "portfolio-go-chapter"
+    ) {
+      ensureAccordionBackgrounds(0);
+      if (e.data.type === "portfolio-go-chapter" || document.body.getAttribute("data-current-slide") === "projects") {
+        onProjectsChapter();
+      }
     }
   });
 

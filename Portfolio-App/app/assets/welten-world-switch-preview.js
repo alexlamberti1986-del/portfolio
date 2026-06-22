@@ -4,36 +4,25 @@
 (function () {
   "use strict";
 
-  /* ── Zentrale Timing-Konstanten (alle Welten) ── */
+  /* ── Einheitliche Timing-Konstanten (alle 4 Welten gleich lang) ── */
   var WWS_TIMING = {
-    WORLD_TRANSITION_DURATION: 2000,
-    EFFECT_MS: 800,
-    TITLE_REVEAL_AT: 500,
-    TITLE_FADE_IN: 300,
-    TITLE_HOLD: 900,
-    TITLE_FADE_OUT: 300,
-    EXIT_MS: 300,
-    COVER_MS: 800,
-    SOUND_DURATION_MS: 2000,
-  };
-
-  var WWS_FREIRAUM_TIMING = {
     WORLD_TRANSITION_DURATION: 3000,
     EFFECT_MS: 1200,
-    TITLE_REVEAL_AT: 750,
-    TITLE_FADE_IN: 450,
-    TITLE_HOLD: 1350,
-    TITLE_FADE_OUT: 450,
-    EXIT_MS: 450,
+    TITLE_REVEAL_AT: 1000,
+    TITLE_FADE_IN: 400,
+    TITLE_HOLD: 1200,
+    TITLE_FADE_OUT: 400,
+    EXIT_MS: 400,
     COVER_MS: 1200,
     SOUND_DURATION_MS: 3000,
   };
 
   function getTimingForWorld(worldKey) {
-    if (worldKey === "freiraum") {
-      return Object.assign({}, WWS_TIMING, WWS_FREIRAUM_TIMING);
-    }
     return WWS_TIMING;
+  }
+
+  function isCanvasDrivenWorld(worldKey) {
+    return worldKey === "nexora" || worldKey === "general" || worldKey === "freiraum";
   }
 
   var WWS_SEQUENCE_MS = WWS_TIMING.WORLD_TRANSITION_DURATION;
@@ -433,9 +422,10 @@
     }
   }
 
-  function wwsScheduleRobotCodeReading(gen) {
+  function wwsScheduleRobotCodeReading(gen, sequenceMs) {
+    var totalMs = sequenceMs || WWS_SEQUENCE_MS;
     var ms = 70;
-    while (ms < WWS_SEQUENCE_MS - 160) {
+    while (ms < totalMs - 160) {
       (function (at) {
         wwsAt(gen, at, function (ctx, t) {
           wwsRobotUtterance(ctx, t, {
@@ -455,7 +445,7 @@
     }
 
     ms = 180;
-    while (ms < WWS_SEQUENCE_MS - 220) {
+    while (ms < totalMs - 220) {
       if (Math.random() < 0.42) {
         (function (at) {
           wwsAt(gen, at, function (ctx, t) {
@@ -513,8 +503,9 @@
   }
 
   function playNexoraSwitchSound(gen) {
-    wwsScheduleRobotCodeReading(gen);
-    wwsSoundAt(gen, WWS_TIMING.TITLE_REVEAL_AT - 10, function (ctx, t) {
+    var NT = getTimingForWorld("nexora");
+    wwsScheduleRobotCodeReading(gen, NT.WORLD_TRANSITION_DURATION);
+    wwsSoundAt(gen, NT.TITLE_REVEAL_AT - 10, function (ctx, t) {
       wwsRobotSayNexora(ctx, t);
     });
   }
@@ -541,7 +532,8 @@
   }
 
   function playProfessionalSwitchSound(gen) {
-    var wipeDur = WWS_TIMING.EFFECT_MS * 0.39 / 1000;
+    var PT = getTimingForWorld("vertex");
+    var wipeDur = PT.EFFECT_MS * 0.39 / 1000;
     wwsSoundAt(gen, 20, function (ctx, t) {
       wwsSliderWipe(ctx, t, {
         dur: wipeDur,
@@ -554,7 +546,7 @@
       });
     });
 
-    wwsSoundAt(gen, WWS_TIMING.COVER_MS, function (ctx, t) {
+    wwsSoundAt(gen, PT.COVER_MS, function (ctx, t) {
       wwsSliderWipe(ctx, t, {
         dur: wipeDur,
         vol: 0.088,
@@ -629,19 +621,20 @@
   }
 
   function playMultiversumSwitchSound(gen) {
+    var MT = getTimingForWorld("general");
     wwsSoundAt(gen, 0, function (ctx, t) {
       wwsBuildSwelling(ctx, t, 98, 0.62, 0.055);
       wwsTone(ctx, t, { type: "sine", freq: 196, freqEnd: 392, dur: 0.75, vol: 0.06, attack: 0.12 });
     });
-    wwsSoundAt(gen, WWS_TIMING.EFFECT_MS * 0.35, function (ctx, t) {
+    wwsSoundAt(gen, MT.EFFECT_MS * 0.35, function (ctx, t) {
       wwsBuildSwelling(ctx, t, 262, 0.5, 0.058);
       wwsTone(ctx, t + 0.05, { type: "triangle", freq: 330, freqEnd: 660, dur: 0.55, vol: 0.052, attack: 0.1 });
     });
-    wwsSoundAt(gen, WWS_TIMING.EFFECT_MS * 0.65, function (ctx, t) {
+    wwsSoundAt(gen, MT.EFFECT_MS * 0.65, function (ctx, t) {
       wwsBuildSwelling(ctx, t, 392, 0.48, 0.062);
       wwsNoise(ctx, t, { dur: 0.55, vol: 0.038, freq: 500, freqEnd: 2400, q: 0.7, filterType: "bandpass" });
     });
-    wwsSoundAt(gen, WWS_TIMING.TITLE_REVEAL_AT, function (ctx, t) {
+    wwsSoundAt(gen, MT.TITLE_REVEAL_AT, function (ctx, t) {
       wwsTone(ctx, t, { type: "sine", freq: 523, freqEnd: 1046, dur: 0.7, vol: 0.07, attack: 0.08 });
       wwsTone(ctx, t + 0.08, { type: "sine", freq: 659, dur: 0.55, vol: 0.058, attack: 0.06 });
       wwsTone(ctx, t + 0.12, { type: "sine", freq: 784, dur: 0.5, vol: 0.05, attack: 0.05 });
@@ -726,10 +719,11 @@
 
     var WORD = "NEXORA";
     var LETTER_ORDER = [3, 0, 5, 1, 4, 2];
-    var FIRST_LETTER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.6);
-    var LETTER_STAGGER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.24);
-    var LETTER_FLIGHT_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.48);
-    var HOLD_AFTER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.22);
+    var NT = getTimingForWorld("nexora");
+    var FIRST_LETTER_MS = Math.round(NT.EFFECT_MS * 0.6);
+    var LETTER_STAGGER_MS = Math.round(NT.EFFECT_MS * 0.24);
+    var LETTER_FLIGHT_MS = Math.round(NT.EFFECT_MS * 0.48);
+    var HOLD_AFTER_MS = Math.round(NT.EFFECT_MS * 0.22);
     var w = 0;
     var h = 0;
     var cx = 0;
@@ -876,7 +870,7 @@
       if (!titleRevealed && allLettersArrived(elapsed)) {
         if (elapsed >= FIRST_LETTER_MS + (WORD.length - 1) * LETTER_STAGGER_MS + LETTER_FLIGHT_MS + HOLD_AFTER_MS) {
           titleRevealed = true;
-          markCanvasSequenceDone(overlay);
+          revealStagedTitle(overlay);
         }
       }
 
@@ -907,10 +901,11 @@
     var runningAnim = true;
     var startTime = performance.now();
     var mergeFlash = 0;
+    var OT = getTimingForWorld(worldKey);
 
-    var WANDER_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.35);
-    var CONVERGE_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.425);
-    var MERGE_MS = Math.round(WWS_TIMING.EFFECT_MS * 0.225);
+    var WANDER_MS = Math.round(OT.EFFECT_MS * 0.35);
+    var CONVERGE_MS = Math.round(OT.EFFECT_MS * 0.425);
+    var MERGE_MS = Math.round(OT.EFFECT_MS * 0.225);
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -1435,7 +1430,7 @@
         wwsLater(function () {
           revealStagedTitle(overlay);
         }, 200);
-      } else {
+      } else if (!isCanvasDrivenWorld(worldKey)) {
         wwsLater(function () {
           revealStagedTitle(overlay);
         }, timing.TITLE_REVEAL_AT);
