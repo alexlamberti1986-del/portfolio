@@ -42,7 +42,7 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260623form5"
+      "&v=20260623form6"
     );
   }
 
@@ -67,7 +67,7 @@
       '" alt="Alex Lamberti" width="600" height="720" decoding="async" loading="lazy" />' +
       "</figure>" +
       '<div class="welten-leadform-wrap">' +
-      '<iframe class="welten-leadform-frame" id="weltenLeadForm" title="Leadformular" src="' +
+      '<iframe class="welten-leadform-frame" id="weltenLeadForm" title="Leadformular" scrolling="no" src="' +
       formFrameSrc() +
       '" loading="lazy"></iframe>' +
       "</div>"
@@ -136,8 +136,11 @@
     if (!frame) return;
     var h = parseInt(height, 10);
     if (h > 400) {
+      h += 24;
       frame.style.height = h + "px";
       frame.style.minHeight = h + "px";
+      frame.style.maxHeight = h + "px";
+      frame.setAttribute("scrolling", "no");
     }
   }
 

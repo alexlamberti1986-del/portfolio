@@ -787,6 +787,9 @@ body[data-world='general'] .step-label{
   }
 }
 .field select option{color:#111;background:#fff}.dynamic-block .hidden{display:none!important}
+/* Embed mode: hide iframe scrollbar */
+html.alx-embed,html.alx-embed body{overflow:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;}
+html.alx-embed::-webkit-scrollbar,html.alx-embed body::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}
 </style>
 </head>
 <body data-world="general">
@@ -1172,11 +1175,16 @@ renderStaticText(); buildServices(); buildDynamicBlocks(); updateDynamicBlocks()
     var heroAside = document.querySelector('.hero-aside');
     if (heroAside) heroAside.style.display = 'none';
     document.getElementById('alxForm').style.padding = '0';
+    document.documentElement.classList.add('alx-embed');
+    document.body.classList.add('alx-embed');
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
     document.body.style.background = 'transparent';
   }
   function postEmbedHeight(){
     if (window.parent === window) return;
-    var h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, 960);
+    var root = document.getElementById('alxForm') || document.body;
+    var h = Math.ceil(Math.max(root.scrollHeight, root.offsetHeight, document.documentElement.scrollHeight, document.body.scrollHeight, 960)) + 32;
     try { window.parent.postMessage({ type: 'alx-form-height', height: h }, '*'); } catch(err) {}
   }
   var initWorld = params.get('world');

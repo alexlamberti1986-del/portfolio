@@ -38,6 +38,8 @@
   min-width: 0;
   width: 100%;
   margin-top: clamp(28px, 4vw, 48px);
+  overflow: hidden;
+  border-radius: var(--radius-lg, 28px);
 }
 
 #slide-contact .welten-leadform-frame {
@@ -50,6 +52,9 @@
   background: #070b12;
   opacity: 1;
   visibility: visible;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 @media (max-width: 960px) {
