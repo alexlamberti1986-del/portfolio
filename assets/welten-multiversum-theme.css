@@ -299,13 +299,24 @@ body[data-world="general"] .welten-chapter-box,
 body[data-world="general"] .project-card,
 body[data-world="general"] .value-card,
 body[data-world="general"] .skill-card,
-body[data-world="general"] .faq-item,
-body[data-world="general"] .projects-accordion__item {
+body[data-world="general"] .faq-item {
   background: rgba(255, 255, 255, 0.03) !important;
   border: 1px solid rgba(255, 89, 178, 0.16) !important;
   border-radius: var(--mv-eclipse-md) !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
+}
+
+body[data-world="general"] .projects-accordion__item {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 89, 178, 0.16) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: none !important;
+}
+
+body[data-world="general"] .projects-accordion__trigger.has-service-bg {
+  border-radius: 16px !important;
 }
 
 body[data-world="general"] .project-card--preview .project-card__preview {
