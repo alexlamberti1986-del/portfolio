@@ -156,6 +156,16 @@
   function playWorldSwitchSound(world) {
     var key = soundKeyFromWorld(world);
     if (!soundEnabled || key === lastSoundWorld) return;
+    if (
+      window.WeltenWorldSwitchPreview &&
+      typeof window.WeltenWorldSwitchPreview.playTransitionSound === "function"
+    ) {
+      window.WeltenWorldSwitchPreview.playTransitionSound(
+        key === "professional" ? "vertex" : key
+      );
+      lastSoundWorld = key;
+      return;
+    }
     var clip = sounds[key];
     if (!clip) return;
     try {

@@ -17,6 +17,25 @@
     SOUND_DURATION_MS: 2000,
   };
 
+  var WWS_FREIRAUM_TIMING = {
+    WORLD_TRANSITION_DURATION: 3000,
+    EFFECT_MS: 1200,
+    TITLE_REVEAL_AT: 750,
+    TITLE_FADE_IN: 450,
+    TITLE_HOLD: 1350,
+    TITLE_FADE_OUT: 450,
+    EXIT_MS: 450,
+    COVER_MS: 1200,
+    SOUND_DURATION_MS: 3000,
+  };
+
+  function getTimingForWorld(worldKey) {
+    if (worldKey === "freiraum") {
+      return Object.assign({}, WWS_TIMING, WWS_FREIRAUM_TIMING);
+    }
+    return WWS_TIMING;
+  }
+
   var WWS_SEQUENCE_MS = WWS_TIMING.WORLD_TRANSITION_DURATION;
 
   function wwsScale(ms) {
@@ -27,16 +46,17 @@
     wwsAt(gen, wwsScale(ms), fn);
   }
 
-  function applyTimingCssVars() {
+  function applyTimingCssVars(worldKey) {
+    var timing = getTimingForWorld(worldKey || "");
     var r = document.documentElement;
-    r.style.setProperty("--wws-transition-duration", WWS_TIMING.WORLD_TRANSITION_DURATION + "ms");
-    r.style.setProperty("--wws-title-fade-in", WWS_TIMING.TITLE_FADE_IN + "ms");
-    r.style.setProperty("--wws-title-hold", WWS_TIMING.TITLE_HOLD + "ms");
-    r.style.setProperty("--wws-title-fade-out", WWS_TIMING.TITLE_FADE_OUT + "ms");
-    r.style.setProperty("--wws-exit-duration", WWS_TIMING.EXIT_MS + "ms");
-    r.style.setProperty("--wws-effect-duration", WWS_TIMING.EFFECT_MS + "ms");
-    r.style.setProperty("--wws-pro-wipe-duration", Math.round(WWS_TIMING.EFFECT_MS * 0.39) + "ms");
-    r.style.setProperty("--wws-pro-wipe-delay", Math.round(WWS_TIMING.EFFECT_MS * 0.37) + "ms");
+    r.style.setProperty("--wws-transition-duration", timing.WORLD_TRANSITION_DURATION + "ms");
+    r.style.setProperty("--wws-title-fade-in", timing.TITLE_FADE_IN + "ms");
+    r.style.setProperty("--wws-title-hold", timing.TITLE_HOLD + "ms");
+    r.style.setProperty("--wws-title-fade-out", timing.TITLE_FADE_OUT + "ms");
+    r.style.setProperty("--wws-exit-duration", timing.EXIT_MS + "ms");
+    r.style.setProperty("--wws-effect-duration", timing.EFFECT_MS + "ms");
+    r.style.setProperty("--wws-pro-wipe-duration", Math.round(timing.EFFECT_MS * 0.39) + "ms");
+    r.style.setProperty("--wws-pro-wipe-delay", Math.round(timing.EFFECT_MS * 0.37) + "ms");
   }
 
   var running = false;
@@ -548,7 +568,8 @@
   }
 
   function playFreiraumSwitchSound(gen) {
-    var swellDur = WWS_TIMING.SOUND_DURATION_MS / 1000;
+    var FT = getTimingForWorld("freiraum");
+    var swellDur = FT.SOUND_DURATION_MS / 1000;
     wwsSoundAt(gen, 0, function (ctx, t) {
       wwsNoise(ctx, t, {
         dur: swellDur * 0.58,
@@ -588,7 +609,7 @@
       });
     });
 
-    wwsSoundAt(gen, WWS_TIMING.EFFECT_MS * 0.6, function (ctx, t) {
+    wwsSoundAt(gen, FT.EFFECT_MS * 0.6, function (ctx, t) {
       wwsTone(ctx, t, { type: "sine", freq: 392, dur: 0.42, vol: 0.03, attack: 0.09 });
       wwsTone(ctx, t + 0.09, { type: "sine", freq: 494, dur: 0.46, vol: 0.026, attack: 0.1 });
       wwsTone(ctx, t + 0.17, { type: "triangle", freq: 587, dur: 0.5, vol: 0.02, attack: 0.11 });
@@ -602,7 +623,7 @@
       });
     });
 
-    wwsSoundAt(gen, WWS_TIMING.TITLE_REVEAL_AT, function (ctx, t) {
+    wwsSoundAt(gen, FT.TITLE_REVEAL_AT, function (ctx, t) {
       wwsFreiraumTada(ctx, t);
     });
   }
@@ -1056,8 +1077,9 @@
     var cy = 0;
     var runningAnim = true;
     var startTime = performance.now();
-    var totalMs = WWS_TIMING.EFFECT_MS;
-    var revealMs = WWS_TIMING.TITLE_REVEAL_AT;
+    var FT = getTimingForWorld("freiraum");
+    var totalMs = FT.EFFECT_MS;
+    var revealMs = FT.TITLE_REVEAL_AT;
     var mist = [];
     var strokes = [];
     var splats = [];
@@ -1386,6 +1408,9 @@
     running = true;
     wwsClearTimers();
 
+    var timing = getTimingForWorld(worldKey);
+    applyTimingCssVars(worldKey);
+
     window.__wwsPreviewOwnsSound = true;
     playTransitionSound(worldKey);
 
@@ -1395,12 +1420,12 @@
     document.documentElement.classList.add("welten-world-switch-lock");
 
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var coverMs = reduced ? 80 : WWS_TIMING.COVER_MS;
+    var coverMs = reduced ? 80 : timing.COVER_MS;
     var minShowMs = reduced
       ? 180
-      : WWS_TIMING.EFFECT_MS + WWS_TIMING.TITLE_FADE_IN + WWS_TIMING.TITLE_HOLD;
-    var postTitleHoldMs = reduced ? 0 : WWS_TIMING.TITLE_HOLD;
-    var exitMs = reduced ? 60 : WWS_TIMING.EXIT_MS;
+      : timing.EFFECT_MS + timing.TITLE_FADE_IN + timing.TITLE_HOLD;
+    var postTitleHoldMs = reduced ? 0 : timing.TITLE_HOLD;
+    var exitMs = reduced ? 60 : timing.EXIT_MS;
     var start = Date.now();
 
     activeRaf = requestAnimationFrame(function () {
@@ -1413,16 +1438,16 @@
       } else {
         wwsLater(function () {
           revealStagedTitle(overlay);
-        }, WWS_TIMING.TITLE_REVEAL_AT);
+        }, timing.TITLE_REVEAL_AT);
       }
       if (worldKey === "vertex" && !reduced) {
         wwsLater(function () {
           overlay.classList.add("wws--pro-white-bg");
-        }, Math.round(WWS_TIMING.EFFECT_MS * 0.37));
+        }, Math.round(timing.EFFECT_MS * 0.37));
         wwsLater(function () {
           overlay.classList.remove("wws--pro-white-bg");
           overlay.classList.add("wws--pro-black-bg", "wws--dark-text");
-        }, Math.round(WWS_TIMING.EFFECT_MS * 0.76));
+        }, Math.round(timing.EFFECT_MS * 0.76));
       }
     });
 
@@ -1519,6 +1544,7 @@
     isSoundEnabled: wwsEffectsEnabled,
     isEffectsEnabled: wwsEffectsEnabled,
     timing: WWS_TIMING,
+    getTimingForWorld: getTimingForWorld,
     abort: wwsAbortTransition,
   };
 })();

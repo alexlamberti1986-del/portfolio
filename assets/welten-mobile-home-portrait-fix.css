@@ -13,6 +13,7 @@
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    margin-bottom: clamp(12px, 3vw, 24px) !important;
     overflow: hidden !important;
     aspect-ratio: 4 / 5 !important;
     min-height: 240px !important;
@@ -57,25 +58,34 @@
     visibility: visible !important;
     mix-blend-mode: normal !important;
     object-fit: cover !important;
-    object-position: center top !important;
+    object-position: center 15% !important;
     z-index: 0 !important;
   }
 
   html.welten-mobile body[data-world="nexora"] #slide-home img#heroPhoto,
   html.welten-mobile body[data-world="nexora"] #slide-home .home-portrait-card img.portrait-photo {
-    object-position: center top !important;
+    object-position: center 15% !important;
     filter: brightness(1.05) contrast(1.12) saturate(1.2) drop-shadow(0 0 35px rgba(0, 170, 255, 0.5)) !important;
   }
 
   html.welten-mobile body[data-world="vertex"] #slide-home img#heroPhoto,
   html.welten-mobile body[data-world="vertex"] #slide-home .home-portrait-card img.portrait-photo {
-    object-position: center top !important;
+    object-position: center 15% !important;
     filter: none !important;
   }
 
   html.welten-mobile body[data-world="freiraum"] #slide-home img#heroPhoto,
   html.welten-mobile body[data-world="freiraum"] #slide-home .home-portrait-card img.portrait-photo {
-    object-position: center 22% !important;
+    object-position: center 18% !important;
     filter: contrast(1.05) saturate(1.18) !important;
+  }
+
+  html.welten-mobile #slide-home.slide,
+  html.welten-mobile #slide-home.slide.active {
+    padding-bottom: max(clamp(32px, 8vw, 56px), env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  html.welten-mobile #slide-home .home-main-block {
+    padding-bottom: max(clamp(24px, 6vw, 44px), env(safe-area-inset-bottom, 0px)) !important;
   }
 }

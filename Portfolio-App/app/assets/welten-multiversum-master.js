@@ -378,6 +378,8 @@
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
       window.WeltenWorldSwitchPreview.playSwitch(wKey, i);
       var safetyMs =
+        (window.WeltenWorldSwitchPreview.getTimingForWorld &&
+          window.WeltenWorldSwitchPreview.getTimingForWorld(wKey).WORLD_TRANSITION_DURATION) ||
         (window.WeltenWorldSwitchPreview.timing &&
           window.WeltenWorldSwitchPreview.timing.WORLD_TRANSITION_DURATION) ||
         2000;
