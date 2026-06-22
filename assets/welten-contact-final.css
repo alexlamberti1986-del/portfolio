@@ -43,11 +43,13 @@
 #slide-contact .welten-leadform-frame {
   display: block;
   width: 100%;
-  min-height: clamp(960px, 120vh, 1400px);
+  min-height: 720px;
   height: auto;
   border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18));
   border-radius: var(--radius-lg, 28px);
   background: #070b12;
+  opacity: 1;
+  visibility: visible;
 }
 
 @media (max-width: 960px) {

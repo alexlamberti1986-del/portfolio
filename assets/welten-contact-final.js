@@ -42,7 +42,7 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260623form1"
+      "&v=20260623form2"
     );
   }
 
