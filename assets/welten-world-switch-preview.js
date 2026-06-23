@@ -20,7 +20,7 @@
   function getTimingForWorld(worldKey) {
     if (worldKey === "nexora") {
       return Object.assign({}, WWS_TIMING, {
-        TITLE_HOLD: 2000,
+        TITLE_HOLD: 1000,
       });
     }
     return WWS_TIMING;
@@ -737,7 +737,7 @@
     var FIRST_LETTER_MS = Math.round(NT.EFFECT_MS * 0.6);
     var LETTER_STAGGER_MS = Math.round(NT.EFFECT_MS * 0.24);
     var LETTER_FLIGHT_MS = Math.round(NT.EFFECT_MS * 0.48);
-    var HOLD_AFTER_MS = Math.max(900, Math.round(NT.EFFECT_MS * 0.75));
+    var HOLD_AFTER_MS = Math.max(600, Math.round(NT.EFFECT_MS * 0.5));
     var w = 0;
     var h = 0;
     var cx = 0;
