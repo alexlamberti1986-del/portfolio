@@ -188,7 +188,7 @@
         umsetzung: "Von der Idee bis zum live gesetzten Ergebnis.",
       },
       projekt: {
-        web: "Webseiten",
+        web: "Websites",
         form: "Formulare",
         seo: "SEO",
         logo: "Branding",

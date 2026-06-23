@@ -20,7 +20,7 @@
   min-height: 48px;
 }
 
-/* ── Nexora Orbit: gleiche Button-Hierarchie, Kontakt nicht größer ── */
+/* ── Nexora Orbit: gleiche Button-Hierarchie, Kontakt nicht grösser ── */
 @media (min-width: 1025px) and (hover: hover) {
   #slide-home .nexora-orbit-button,
   #slide-home .nexora-orbit-button[data-go="contact"],

@@ -9,21 +9,21 @@
 
   var PAGES = {
     home: {
-      title: "Alex Lamberti | Branding, Webseiten & digitale Erlebnisse",
+      title: "Alex Lamberti | Branding, Websites & digitale Erlebnisse",
       description:
-        "Alex Lamberti gestaltet Branding, Webseiten, digitale Erlebnisse und Strategie — als hochwertige digitale Markenwelt in drei Welten.",
+        "Alex Lamberti gestaltet Branding, Websites, digitale Erlebnisse und Strategie — als hochwertige digitale Markenwelt in drei Welten.",
       path: "/",
     },
     projects: {
-      title: "Projekte | Alex Lamberti — Webseiten, Leadformulare & Visitenkarten",
+      title: "Projekte | Alex Lamberti — Websites, Leadformulare & Visitenkarten",
       description:
-        "Ausgewählte Projekte von Alex Lamberti: Webseiten, Leadformulare und digitale Visitenkarten mit klarer Handschrift.",
+        "Ausgewählte Projekte von Alex Lamberti: Websites, Leadformulare und digitale Visitenkarten mit klarer Handschrift.",
       path: "/projekte",
     },
     leistungen: {
       title: "Leistungen | Alex Lamberti — Branding, Webdesign & Marketing",
       description:
-        "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Webseiten-Optimierung.",
+        "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Websites-Optimierung.",
       path: "/leistungen",
     },
     about: {
@@ -151,7 +151,7 @@
     upsertMeta("property", "og:image", OG_IMAGE);
     upsertMeta("property", "og:image:width", "1200");
     upsertMeta("property", "og:image:height", "630");
-    upsertMeta("property", "og:image:alt", "Alex Lamberti — Branding, Webseiten und digitale Erlebnisse");
+    upsertMeta("property", "og:image:alt", "Alex Lamberti — Branding, Websites und digitale Erlebnisse");
 
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", page.title);

@@ -42,7 +42,7 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260623form6"
+      "&v=20260623form7"
     );
   }
 
@@ -135,11 +135,11 @@
     var frame = document.getElementById("weltenLeadForm");
     if (!frame) return;
     var h = parseInt(height, 10);
-    if (h > 400) {
-      h += 24;
+    if (h > 320) {
+      h += 8;
       frame.style.height = h + "px";
       frame.style.minHeight = h + "px";
-      frame.style.maxHeight = h + "px";
+      frame.style.maxHeight = "none";
       frame.setAttribute("scrolling", "no");
     }
   }

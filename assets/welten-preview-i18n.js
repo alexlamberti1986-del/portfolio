@@ -28,7 +28,7 @@
         },
         about: { label: "Über mich", title: "Ich vereine Strategie, Technologie und Gestaltung in einem klaren digitalen Auftritt.", extraLabel: "MULTIVERSUM", extraTitle: "Alle Welten — ein Ziel" },
         leistungen: { label: "Leistungen", title: "Leistungen & Kompetenzen", intro: "Von Strategie bis Umsetzung — angepasst an Zielgruppe, Marke und Wirkung." },
-        projects: { label: "Projekte", title: "Projekte mit klarer Handschrift.", intro: "Webseiten, Leadformulare und digitale Auftritte — strukturiert nach Kategorie." },
+        projects: { label: "Projekte", title: "Projekte mit klarer Handschrift.", intro: "Websites, Leadformulare und digitale Auftritte — strukturiert nach Kategorie." },
         contact: { label: "Kontakt", title: "Bereit für den nächsten Schritt.", intro: "Schreiben Sie mir — ich melde mich schnell, verbindlich und unkompliziert." },
       },
       en: {
@@ -75,7 +75,7 @@
         home: { intro: "NEXORA · Virtuell · AI · Zukunft", h1: "Digital Marketing zwischen Strategie, Technologie und Zukunft.", lead: "Strategie wird sichtbar. Technologie wird menschlich. Marketing wird wirksam." },
         about: { label: "Über mich", title: "Ich verbinde Markenverständnis, digitale Präzision und echte Umsetzungskraft." },
         leistungen: { label: "Stärken", title: "Leistungen & Kompetenzen", intro: "Diese Stärken nutze ich in digitalen Projekten – von der Konzeption bis zur Umsetzung." },
-        projects: { label: "Projekte", title: "Projekte mit klarer Handschrift.", intro: "Drei Projektarten — Webseiten, Leadformulare und digitale Visitenkarten." },
+        projects: { label: "Projekte", title: "Projekte mit klarer Handschrift.", intro: "Drei Projektarten — Websites, Leadformulare und digitale Visitenkarten." },
         contact: { label: "Kontakt", title: "Bereit für den nächsten Schritt.", intro: "Lassen Sie uns ins Gespräch kommen." },
       },
       en: {

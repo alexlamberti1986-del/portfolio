@@ -21,7 +21,7 @@
     projects: {
       kicker: "Portfolio",
       title: "Projekte",
-      lead: "Webseiten, Leadformulare und digitale Visitenkarten — visuell kuratiert und klar strukturiert.",
+      lead: "Websites, Leadformulare und digitale Visitenkarten — visuell kuratiert und klar strukturiert.",
     },
     leistungen: {
       kicker: "Leistungen",

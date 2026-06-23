@@ -1,9 +1,9 @@
 /**
- * Einheitliche Button-Form & -Farbe pro Welt (alle Bildschirmgrößen).
+ * Einheitliche Button-Form & -Farbe pro Welt (alle Bildschirmgrössen).
  * NEXORA: unverändert (keine Regeln hier).
  */
 
-/* ── PROFESSIONAL: rechteckig, schwarz/weiß ── */
+/* ── PROFESSIONAL: rechteckig, schwarz/weiss ── */
 body[data-world="vertex"] .btn,
 body[data-world="vertex"] .btn-primary,
 body[data-world="vertex"] .btn-menu,

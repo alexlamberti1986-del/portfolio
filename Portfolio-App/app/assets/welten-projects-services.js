@@ -32,7 +32,7 @@
       },
       qr: {
         title: "QR-Code",
-        desc: "Individuell gestaltete QR-Codes für Printprodukte, Webseiten, Kampagnen und digitale Anwendungen.",
+        desc: "Individuell gestaltete QR-Codes für Printprodukte, Websites, Kampagnen und digitale Anwendungen.",
       },
       seo: {
         title: "SEO & SEA",

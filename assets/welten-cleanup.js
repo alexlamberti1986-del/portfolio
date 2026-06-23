@@ -55,7 +55,7 @@
       result: "Ergebnis: Eine Website, die professionell wirkt und gezielt führt.",
     },
     {
-      title: "Webseiten-Optimierung",
+      title: "Website-Optimierung",
       desc: "Ich verbessere bestehende Websites in Performance, Struktur, SEO und Conversion.",
       benefit: "Nutzen: Mehr Sichtbarkeit, schnellere Ladezeiten und bessere Nutzererfahrung.",
       bullets: [
@@ -189,7 +189,7 @@
     if (!intro || intro.querySelector(".welten-home-story__title")) return;
     var h2 = document.createElement("h2");
     h2.className = "welten-home-story__title";
-    h2.textContent = "Digitale Marken, Webseiten und Erlebnisse mit Charakter";
+    h2.textContent = "Digitale Marken, Websites und Erlebnisse mit Charakter";
     intro.insertBefore(h2, intro.firstChild);
   }
 

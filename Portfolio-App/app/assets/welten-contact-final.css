@@ -2,6 +2,7 @@
 
 #slide-contact.slide {
   overflow-x: clip;
+  padding-bottom: 0 !important;
 }
 
 #slide-contact .slide-inner.contact-layout {
@@ -12,7 +13,7 @@
   width: 100%;
   max-width: min(1180px, calc(100vw - clamp(32px, 6vw, 128px))) !important;
   margin: 0 auto !important;
-  padding: clamp(24px, 4vw, 48px) clamp(18px, 4vw, 64px) !important;
+  padding: clamp(24px, 4vw, 48px) clamp(18px, 4vw, 64px) clamp(20px, 3vw, 32px) !important;
   box-sizing: border-box !important;
 }
 
@@ -38,6 +39,7 @@
   min-width: 0;
   width: 100%;
   margin-top: clamp(28px, 4vw, 48px);
+  margin-bottom: 0;
   overflow: hidden;
   border-radius: var(--radius-lg, 28px);
 }
@@ -45,7 +47,7 @@
 #slide-contact .welten-leadform-frame {
   display: block;
   width: 100%;
-  min-height: 720px;
+  min-height: 0;
   height: auto;
   border: 1px solid var(--glass-border, rgba(142, 197, 255, 0.18));
   border-radius: var(--radius-lg, 28px);
@@ -275,14 +277,14 @@ body[data-world="freiraum"] #slide-contact .welten-leadform-frame {
   }
 
   #slide-contact .welten-leadform-frame {
-    min-height: 600px;
+    min-height: 0;
     border-radius: 20px;
   }
 }
 
 @media (max-width: 640px) {
   #slide-contact .welten-leadform-frame {
-    min-height: 520px;
+    min-height: 0;
   }
 
   #slide-contact .contact-copy.glass-card {
