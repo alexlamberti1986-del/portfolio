@@ -53,7 +53,7 @@
 }
 
 .welten-world-switch[data-world="freiraum"] .welten-world-switch__canvas {
-  filter: saturate(1.12) contrast(1.04) brightness(1.03);
+  filter: saturate(1.08) contrast(1.02) brightness(1.02);
 }
 
 .welten-world-switch.wws-staged:not([data-world="vertex"]) .welten-world-switch__wipe {
@@ -92,11 +92,16 @@
 
 .welten-world-switch[data-world="freiraum"].wws-staged .welten-world-switch__bg {
   background:
-    radial-gradient(ellipse 90% 70% at 22% 18%, rgba(255, 47, 146, 0.16), transparent 48%),
-    radial-gradient(ellipse 80% 60% at 78% 24%, rgba(0, 217, 196, 0.12), transparent 46%),
-    radial-gradient(ellipse 70% 55% at 52% 82%, rgba(255, 155, 55, 0.1), transparent 44%),
-    radial-gradient(ellipse 60% 50% at 68% 58%, rgba(155, 107, 255, 0.11), transparent 42%),
-    linear-gradient(155deg, #0a0612 0%, #140a1c 38%, #1a0e24 62%, #0c0610 100%) !important;
+    radial-gradient(ellipse 88% 68% at 20% 16%, rgba(255, 47, 146, 0.12), transparent 50%),
+    radial-gradient(ellipse 78% 58% at 80% 22%, rgba(0, 217, 196, 0.1), transparent 48%),
+    radial-gradient(ellipse 72% 54% at 50% 84%, rgba(255, 155, 55, 0.08), transparent 46%),
+    radial-gradient(ellipse 64% 48% at 70% 56%, rgba(155, 107, 255, 0.09), transparent 44%),
+    linear-gradient(158deg, #12081a 0%, #1a0c22 40%, #140a1c 68%, #0e0614 100%) !important;
+}
+
+.welten-world-switch[data-world="freiraum"].wws-staged .welten-world-switch__fx .wws-orb,
+.welten-world-switch[data-world="freiraum"].wws-staged .welten-world-switch__fx .wws-splash {
+  display: none !important;
 }
 
 .welten-world-switch[data-world="freiraum"].wws-staged .welten-world-switch__fx {

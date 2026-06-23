@@ -510,6 +510,46 @@
     });
   }
 
+  function wwsBrushSwish(ctx, t, opts) {
+    var dur = opts.dur || 0.36;
+    var vol = (opts.vol || 0.052) * wwsActiveWorldGain;
+    var bufferSize = Math.max(1, Math.floor(ctx.sampleRate * dur));
+    var buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    var data = buffer.getChannelData(0);
+    var i;
+    for (i = 0; i < bufferSize; i++) {
+      var env = Math.sin((i / bufferSize) * Math.PI);
+      data[i] = (Math.random() * 2 - 1) * env * (0.85 + Math.random() * 0.15);
+    }
+    var src = ctx.createBufferSource();
+    src.buffer = buffer;
+    var bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.Q.value = opts.q || 0.72;
+    bp.frequency.setValueAtTime(opts.freqStart || 260, t);
+    bp.frequency.exponentialRampToValueAtTime(Math.max(80, opts.freqEnd || 1650), t + dur * 0.88);
+    var lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.setValueAtTime(3400, t);
+    lp.frequency.exponentialRampToValueAtTime(900, t + dur);
+    var g = ctx.createGain();
+    wwsGainEnv(g, t, dur, vol, dur * 0.06, dur * 0.52, dur * 0.38);
+    src.connect(bp);
+    bp.connect(lp);
+    lp.connect(g);
+    g.connect(ctx.destination);
+    src.start(t);
+    src.stop(t + dur + 0.06);
+    wwsNoise(ctx, t + dur * 0.04, {
+      dur: dur * 0.42,
+      vol: vol * 0.28,
+      freq: 380,
+      freqEnd: 1100,
+      q: 0.48,
+      filterType: "bandpass",
+    });
+  }
+
   function wwsFreiraumTada(ctx, t) {
     wwsTone(ctx, t, { type: "sine", freq: 494, dur: 0.09, vol: 0.072, attack: 0.008 });
     wwsTone(ctx, t + 0.1, { type: "sine", freq: 523, dur: 0.38, vol: 0.105, attack: 0.012 });
@@ -561,57 +601,26 @@
 
   function playFreiraumSwitchSound(gen) {
     var FT = getTimingForWorld("freiraum");
-    var swellDur = FT.SOUND_DURATION_MS / 1000;
     wwsSoundAt(gen, 0, function (ctx, t) {
       wwsNoise(ctx, t, {
-        dur: swellDur * 0.58,
-        vol: 0.044,
-        freq: 220,
-        freqEnd: 980,
-        q: 0.38,
+        dur: 0.22,
+        vol: 0.014,
+        freq: 160,
+        freqEnd: 380,
+        q: 0.35,
         filterType: "lowpass",
-      });
-      wwsTone(ctx, t, {
-        type: "sine",
-        freq: 196,
-        freqEnd: 392,
-        dur: swellDur * 0.55,
-        vol: 0.026,
-        attack: swellDur * 0.11,
       });
     });
 
-    [90, 240, 390, 520, 660].forEach(function (ms, i) {
+    [40, 155, 270, 385, 500, 615, 730, 845].forEach(function (ms, i) {
       wwsSoundAt(gen, ms, function (ctx, t) {
-        wwsNoise(ctx, t, {
-          dur: 0.07 + i * 0.008,
-          vol: 0.028 + (i % 2) * 0.01,
-          freq: 520 + i * 140,
-          freqEnd: 1800 + i * 120,
-          q: 0.85 + (i % 3) * 0.15,
-          filterType: "bandpass",
+        wwsBrushSwish(ctx, t, {
+          dur: 0.3 + (i % 3) * 0.05,
+          vol: 0.046 + (i % 2) * 0.011,
+          freqStart: 210 + i * 32,
+          freqEnd: 1280 + i * 95,
+          q: 0.62 + (i % 2) * 0.14,
         });
-        wwsTone(ctx, t + 0.02, {
-          type: "sine",
-          freq: 330 + i * 44,
-          dur: 0.14,
-          vol: 0.018,
-          attack: 0.006,
-        });
-      });
-    });
-
-    wwsSoundAt(gen, FT.EFFECT_MS * 0.6, function (ctx, t) {
-      wwsTone(ctx, t, { type: "sine", freq: 392, dur: 0.42, vol: 0.03, attack: 0.09 });
-      wwsTone(ctx, t + 0.09, { type: "sine", freq: 494, dur: 0.46, vol: 0.026, attack: 0.1 });
-      wwsTone(ctx, t + 0.17, { type: "triangle", freq: 587, dur: 0.5, vol: 0.02, attack: 0.11 });
-      wwsNoise(ctx, t + 0.05, {
-        dur: 0.55,
-        vol: 0.022,
-        freq: 380,
-        freqEnd: 1100,
-        q: 0.55,
-        filterType: "lowpass",
       });
     });
 
@@ -1056,14 +1065,13 @@
 
     var PALETTE = [
       [255, 47, 146],
-      [255, 105, 180],
-      [0, 217, 196],
-      [94, 196, 255],
-      [59, 130, 246],
+      [255, 111, 174],
       [255, 155, 55],
       [255, 216, 106],
+      [0, 217, 196],
+      [94, 196, 255],
       [155, 107, 255],
-      [255, 255, 255],
+      [255, 180, 120],
     ];
 
     var w = 0;
@@ -1075,11 +1083,9 @@
     var FT = getTimingForWorld("freiraum");
     var totalMs = FT.EFFECT_MS;
     var revealMs = FT.TITLE_REVEAL_AT;
-    var mist = [];
-    var strokes = [];
-    var splats = [];
-    var sprays = [];
-    var sparkles = [];
+    var brushes = [];
+    var blooms = [];
+    var paperDots = [];
 
     function pickColor(i) {
       return PALETTE[i % PALETTE.length];
@@ -1089,8 +1095,8 @@
       return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + a + ")";
     }
 
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
+    function easeOutQuart(t) {
+      return 1 - Math.pow(1 - t, 4);
     }
 
     function easeInOutSine(t) {
@@ -1101,235 +1107,187 @@
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
       cx = w * 0.5;
-      cy = h * 0.46;
+      cy = h * 0.5;
     }
 
-    function buildBlobPoints(seeds, rx, ry) {
-      var pts = [];
-      var i;
-      for (i = 0; i < seeds; i++) {
-        var ang = (i / seeds) * Math.PI * 2;
-        var wobble = 0.68 + Math.random() * 0.42;
-        pts.push([Math.cos(ang) * rx * wobble, Math.sin(ang) * ry * wobble]);
-      }
-      return pts;
+    function quadPoint(x1, y1, qx, qy, x2, y2, t) {
+      var u = 1 - t;
+      return {
+        x: u * u * x1 + 2 * u * t * qx + t * t * x2,
+        y: u * u * y1 + 2 * u * t * qy + t * t * y2,
+      };
+    }
+
+    function quadTangent(x1, y1, qx, qy, x2, y2, t) {
+      var u = 1 - t;
+      return {
+        x: 2 * u * (qx - x1) + 2 * t * (x2 - qx),
+        y: 2 * u * (qy - y1) + 2 * t * (y2 - qy),
+      };
     }
 
     function initScene() {
-      mist = [];
-      strokes = [];
-      splats = [];
-      sprays = [];
-      sparkles = [];
+      brushes = [];
+      blooms = [];
+      paperDots = [];
 
-      var mistCount = w < 640 ? 5 : w < 1024 ? 7 : 9;
+      var brushCount = w < 640 ? 6 : w < 1024 ? 8 : 9;
       var i;
-      for (i = 0; i < mistCount; i++) {
-        mist.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: Math.max(w, h) * (0.18 + Math.random() * 0.22),
-          color: pickColor(i + 2),
-          delay: i * 70,
-          dur: 900 + Math.random() * 500,
-          driftX: (Math.random() - 0.5) * 40,
-          driftY: (Math.random() - 0.5) * 30,
-        });
-      }
-
-      var strokeCount = w < 640 ? 7 : w < 1024 ? 9 : 11;
-      for (i = 0; i < strokeCount; i++) {
+      for (i = 0; i < brushCount; i++) {
         var edge = i % 4;
-        var sx = edge === 0 ? -w * 0.12 : edge === 1 ? w * 1.12 : cx + (Math.random() - 0.5) * w * 0.9;
-        var sy = edge === 2 ? -h * 0.12 : edge === 3 ? h * 1.12 : cy + (Math.random() - 0.5) * h * 0.85;
-        var tx = cx + (Math.random() - 0.5) * w * 0.34;
-        var ty = cy + (Math.random() - 0.5) * h * 0.28;
-        strokes.push({
-          x1: sx,
-          y1: sy,
-          cx: (sx + tx) * 0.5 + (Math.random() - 0.5) * w * 0.18,
-          cy: (sy + ty) * 0.5 + (Math.random() - 0.5) * h * 0.18,
-          x2: tx,
-          y2: ty,
+        var x1 =
+          edge === 0
+            ? -w * 0.22
+            : edge === 1
+              ? w * 1.22
+              : cx + (Math.random() - 0.5) * w * 0.95;
+        var y1 =
+          edge === 2
+            ? -h * 0.2
+            : edge === 3
+              ? h * 1.2
+              : cy + (Math.random() - 0.5) * h * 0.9;
+        var x2 =
+          edge === 0
+            ? w * 1.08
+            : edge === 1
+              ? -w * 0.08
+              : cx + (Math.random() - 0.5) * w * 0.72;
+        var y2 =
+          edge === 2
+            ? h * 1.06
+            : edge === 3
+              ? -h * 0.06
+              : cy + (Math.random() - 0.5) * h * 0.68;
+        brushes.push({
+          x1: x1,
+          y1: y1,
+          cx: (x1 + x2) * 0.5 + (Math.random() - 0.5) * w * 0.28,
+          cy: (y1 + y2) * 0.5 + (Math.random() - 0.5) * h * 0.22,
+          x2: x2,
+          y2: y2,
           color: pickColor(i),
-          width: 18 + Math.random() * 42,
-          delay: 80 + i * 55,
-          dur: 620 + Math.random() * 380,
+          width: (w < 640 ? 58 : 82) + Math.random() * (w < 640 ? 52 : 88),
+          delay: 30 + i * 115,
+          dur: 460 + Math.random() * 260,
+          pressure: 0.72 + Math.random() * 0.28,
+          tilt: (Math.random() - 0.5) * 0.35,
         });
       }
 
-      var splatCount = w < 640 ? 9 : 12;
-      for (i = 0; i < splatCount; i++) {
-        var ang = Math.random() * Math.PI * 2;
-        var dist = Math.max(w, h) * (0.28 + Math.random() * 0.42);
-        splats.push({
-          x: cx + Math.cos(ang) * dist * 0.55,
-          y: cy + Math.sin(ang) * dist * 0.55,
-          tx: cx + (Math.random() - 0.5) * w * 0.42,
-          ty: cy + (Math.random() - 0.5) * h * 0.36,
-          rx: 34 + Math.random() * 78,
-          ry: 28 + Math.random() * 64,
-          rot: Math.random() * Math.PI * 2,
-          points: buildBlobPoints(10 + Math.floor(Math.random() * 4), 1, 1),
-          color: pickColor(i + 1),
-          delay: 120 + i * 48,
-          dur: 700 + Math.random() * 420,
+      var bloomCount = w < 640 ? 3 : 5;
+      for (i = 0; i < bloomCount; i++) {
+        blooms.push({
+          x: cx + (Math.random() - 0.5) * w * 0.55,
+          y: cy + (Math.random() - 0.5) * h * 0.45,
+          r: Math.max(w, h) * (0.16 + Math.random() * 0.14),
+          color: pickColor(i + 2),
+          delay: 180 + i * 140,
+          dur: 900 + Math.random() * 400,
         });
       }
 
-      var sprayCount = w < 640 ? 14 : 22;
-      for (i = 0; i < sprayCount; i++) {
-        var fromEdge = Math.floor(Math.random() * 4);
-        var ox = fromEdge === 0 ? -20 : fromEdge === 1 ? w + 20 : Math.random() * w;
-        var oy = fromEdge === 2 ? -20 : fromEdge === 3 ? h + 20 : Math.random() * h;
-        var parts = [];
-        var p;
-        var pCount = 18 + Math.floor(Math.random() * 22);
-        for (p = 0; p < pCount; p++) {
-          parts.push({
-            vx: (cx - ox) * (0.0018 + Math.random() * 0.003) + (Math.random() - 0.5) * 2.4,
-            vy: (cy - oy) * (0.0018 + Math.random() * 0.003) + (Math.random() - 0.5) * 2.4,
-            r: 1.2 + Math.random() * 3.8,
-            drag: 0.96 + Math.random() * 0.025,
-          });
-        }
-        sprays.push({
-          x: ox,
-          y: oy,
-          parts: parts,
-          color: pickColor(i + 3),
-          delay: 60 + i * 28,
-          life: 520 + Math.random() * 420,
-        });
-      }
-
-      var sparkleCount = w < 640 ? 28 : 44;
-      for (i = 0; i < sparkleCount; i++) {
-        sparkles.push({
+      var dotCount = w < 640 ? 90 : 140;
+      for (i = 0; i < dotCount; i++) {
+        paperDots.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: 0.6 + Math.random() * 2.2,
-          delay: 200 + Math.random() * 700,
-          dur: 400 + Math.random() * 500,
-          tw: Math.random() * Math.PI * 2,
+          r: 0.25 + Math.random() * 0.55,
+          a: 0.02 + Math.random() * 0.04,
         });
       }
     }
 
-    function drawMistLayer(elapsed, dissolve) {
+    function drawPaperBase(dissolve) {
+      var grd = ctx.createLinearGradient(0, 0, w, h);
+      grd.addColorStop(0, "rgba(18, 10, 28, " + (0.92 * dissolve) + ")");
+      grd.addColorStop(0.45, "rgba(24, 12, 34, " + (0.9 * dissolve) + ")");
+      grd.addColorStop(1, "rgba(12, 8, 20, " + (0.94 * dissolve) + ")");
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, w, h);
+
       var i;
-      for (i = 0; i < mist.length; i++) {
-        var m = mist[i];
-        if (elapsed < m.delay) continue;
-        var t = Math.min(1, (elapsed - m.delay) / m.dur);
-        var p = easeInOutSine(t);
-        var x = m.x + m.driftX * p;
-        var y = m.y + m.driftY * p;
-        var r = m.r * (0.55 + p * 0.65);
-        var grd = ctx.createRadialGradient(x, y, 0, x, y, r);
-        grd.addColorStop(0, rgba(m.color, 0.22 * dissolve * (1 - t * 0.35)));
-        grd.addColorStop(0.45, rgba(m.color, 0.1 * dissolve * (1 - t * 0.25)));
-        grd.addColorStop(1, rgba(m.color, 0));
-        ctx.fillStyle = grd;
+      for (i = 0; i < paperDots.length; i++) {
+        var d = paperDots[i];
+        ctx.fillStyle = "rgba(255,248,239," + d.a * dissolve + ")";
         ctx.beginPath();
-        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    function drawStroke(s, elapsed, dissolve) {
-      if (elapsed < s.delay) return;
-      var t = Math.min(1, (elapsed - s.delay) / s.dur);
-      var p = easeOutCubic(t);
-      var mx = s.x1 + (s.x2 - s.x1) * p;
-      var my = s.y1 + (s.y2 - s.y1) * p;
-      var layer;
-      for (layer = 0; layer < 4; layer++) {
-        ctx.strokeStyle = rgba(s.color, (0.34 - layer * 0.06) * dissolve);
-        ctx.lineWidth = s.width * (1 - layer * 0.14) * (0.55 + p * 0.55);
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        ctx.beginPath();
-        ctx.moveTo(s.x1, s.y1);
-        ctx.quadraticCurveTo(s.cx, s.cy, mx, my);
-        ctx.stroke();
-      }
-    }
-
-    function drawSplat(s, elapsed, dissolve) {
-      if (elapsed < s.delay) return;
-      var t = Math.min(1, (elapsed - s.delay) / s.dur);
-      var p = easeOutCubic(t);
-      var x = s.x + (s.tx - s.x) * p;
-      var y = s.y + (s.ty - s.y) * p;
-      var scale = 0.25 + p * 0.95;
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(s.rot + p * 0.35);
-      ctx.scale(scale, scale * (0.88 + Math.sin(p * Math.PI) * 0.12));
-      var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, Math.max(s.rx, s.ry));
-      grd.addColorStop(0, rgba(s.color, 0.88 * dissolve));
-      grd.addColorStop(0.42, rgba(s.color, 0.52 * dissolve));
-      grd.addColorStop(0.75, rgba(s.color, 0.14 * dissolve));
-      grd.addColorStop(1, rgba(s.color, 0));
+    function drawBloom(b, elapsed, dissolve) {
+      if (elapsed < b.delay) return;
+      var t = Math.min(1, (elapsed - b.delay) / b.dur);
+      var p = easeInOutSine(t);
+      var r = b.r * (0.45 + p * 0.75);
+      var grd = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
+      grd.addColorStop(0, rgba(b.color, 0.16 * dissolve * (1 - t * 0.2)));
+      grd.addColorStop(0.5, rgba(b.color, 0.07 * dissolve));
+      grd.addColorStop(1, rgba(b.color, 0));
       ctx.fillStyle = grd;
       ctx.beginPath();
-      var i;
-      for (i = 0; i < s.points.length; i++) {
-        var pt = s.points[i];
-        var px = pt[0] * s.rx;
-        var py = pt[1] * s.ry;
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.closePath();
+      ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
     }
 
-    function drawSpray(s, elapsed, dissolve) {
-      if (elapsed < s.delay) return;
-      var age = elapsed - s.delay;
-      if (age > s.life) return;
-      var fade = 1 - age / s.life;
-      var i;
-      for (i = 0; i < s.parts.length; i++) {
-        var p = s.parts[i];
-        var x = s.x + p.vx * age;
-        var y = s.y + p.vy * age + age * 0.018;
-        p.vx *= p.drag;
-        p.vy *= p.drag;
-        ctx.fillStyle = rgba(s.color, 0.55 * fade * dissolve);
-        ctx.beginPath();
-        ctx.arc(x, y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
+    function drawBrushBand(b, elapsed, dissolve) {
+      if (elapsed < b.delay) return;
+      var t = Math.min(1, (elapsed - b.delay) / b.dur);
+      var progress = easeOutQuart(t);
+      var steps = Math.max(4, Math.floor(56 * progress));
+      var s;
+      for (s = 0; s <= steps; s++) {
+        var u = (s / 56) * progress;
+        var pt = quadPoint(b.x1, b.y1, b.cx, b.cy, b.x2, b.y2, u);
+        var tan = quadTangent(b.x1, b.y1, b.cx, b.cy, b.x2, b.y2, u);
+        var ang = Math.atan2(tan.y, tan.x) + b.tilt;
+        var edgeFade = 0.55 + 0.45 * Math.sin(u * Math.PI);
+        var alpha = 0.38 * dissolve * b.pressure * edgeFade;
+        var brushW = b.width * b.pressure * (0.78 + 0.22 * edgeFade);
 
-    function drawSparkles(elapsed, dissolve) {
-      var i;
-      for (i = 0; i < sparkles.length; i++) {
-        var sp = sparkles[i];
-        if (elapsed < sp.delay) continue;
-        var t = Math.min(1, (elapsed - sp.delay) / sp.dur);
-        var alpha = Math.sin(t * Math.PI) * 0.75 * dissolve;
-        ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
+        ctx.save();
+        ctx.translate(pt.x, pt.y);
+        ctx.rotate(ang);
+        var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, brushW * 0.58);
+        grd.addColorStop(0, rgba(b.color, alpha));
+        grd.addColorStop(0.38, rgba(b.color, alpha * 0.62));
+        grd.addColorStop(0.72, rgba(b.color, alpha * 0.18));
+        grd.addColorStop(1, rgba(b.color, 0));
+        ctx.fillStyle = grd;
+        ctx.scale(1.75, 0.48);
         ctx.beginPath();
-        ctx.arc(sp.x, sp.y, sp.r, 0, Math.PI * 2);
+        ctx.arc(0, 0, brushW * 0.5, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
+
+        if (s % 7 === 0 && u > 0.08) {
+          ctx.fillStyle = rgba(b.color, alpha * 0.22);
+          ctx.beginPath();
+          ctx.ellipse(
+            pt.x + (Math.random() - 0.5) * brushW * 0.2,
+            pt.y + (Math.random() - 0.5) * brushW * 0.12,
+            brushW * 0.22,
+            brushW * 0.08,
+            ang,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+        }
       }
     }
 
     function drawColorWash(elapsed, dissolve) {
-      var peak = Math.min(1, Math.max(0, (elapsed - 420) / 520));
-      var fade = peak * (elapsed < revealMs ? 1 : Math.max(0, 1 - (elapsed - revealMs) / 280));
+      var peak = Math.min(1, Math.max(0, (elapsed - 360) / 480));
+      var fade = peak * (elapsed < revealMs ? 1 : Math.max(0, 1 - (elapsed - revealMs) / 300));
       if (fade <= 0.01) return;
       var grd = ctx.createLinearGradient(0, 0, w, h);
-      grd.addColorStop(0, "rgba(255,47,146," + (0.14 * fade * dissolve) + ")");
-      grd.addColorStop(0.28, "rgba(155,107,255," + (0.12 * fade * dissolve) + ")");
-      grd.addColorStop(0.52, "rgba(0,217,196," + (0.1 * fade * dissolve) + ")");
-      grd.addColorStop(0.76, "rgba(255,155,55," + (0.11 * fade * dissolve) + ")");
-      grd.addColorStop(1, "rgba(94,196,255," + (0.09 * fade * dissolve) + ")");
+      grd.addColorStop(0, "rgba(255,47,146," + (0.08 * fade * dissolve) + ")");
+      grd.addColorStop(0.3, "rgba(155,107,255," + (0.07 * fade * dissolve) + ")");
+      grd.addColorStop(0.55, "rgba(0,217,196," + (0.06 * fade * dissolve) + ")");
+      grd.addColorStop(0.78, "rgba(255,155,55," + (0.07 * fade * dissolve) + ")");
+      grd.addColorStop(1, "rgba(94,196,255," + (0.05 * fade * dissolve) + ")");
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, w, h);
     }
@@ -1343,16 +1301,12 @@
       var dissolve = elapsed < revealMs ? 1 : Math.max(0, 1 - (elapsed - revealMs) / 320);
 
       ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = "rgba(14, 6, 22, " + (0.18 + (1 - dissolve) * 0.12) + ")";
-      ctx.fillRect(0, 0, w, h);
+      drawPaperBase(dissolve);
 
-      ctx.globalCompositeOperation = "lighter";
-      drawMistLayer(elapsed, dissolve);
+      ctx.globalCompositeOperation = "screen";
       var i;
-      for (i = 0; i < strokes.length; i++) drawStroke(strokes[i], elapsed, dissolve);
-      for (i = 0; i < splats.length; i++) drawSplat(splats[i], elapsed, dissolve);
-      for (i = 0; i < sprays.length; i++) drawSpray(sprays[i], elapsed, dissolve);
-      drawSparkles(elapsed, dissolve);
+      for (i = 0; i < blooms.length; i++) drawBloom(blooms[i], elapsed, dissolve);
+      for (i = 0; i < brushes.length; i++) drawBrushBand(brushes[i], elapsed, dissolve);
 
       ctx.globalCompositeOperation = "source-over";
       drawColorWash(elapsed, dissolve);
