@@ -788,7 +788,7 @@ body[data-world='general'] .step-label{
 }
 .field select option{color:#111;background:#fff}.dynamic-block .hidden{display:none!important}
 /* Embed mode: hide iframe scrollbar */
-html.alx-embed,html.alx-embed body{overflow:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;}
+html.alx-embed,html.alx-embed body{overflow:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;height:auto!important;min-height:0!important;}html.alx-embed #alxForm,html.alx-embed .shell{height:auto!important;min-height:0!important;}
 html.alx-embed::-webkit-scrollbar,html.alx-embed body::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}
 </style>
 </head>
@@ -1174,6 +1174,8 @@ renderStaticText(); buildServices(); buildDynamicBlocks(); updateDynamicBlocks()
     if (topbar) topbar.style.display = 'none';
     var heroAside = document.querySelector('.hero-aside');
     if (heroAside) heroAside.style.display = 'none';
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.gridTemplateColumns = '1fr';
     document.getElementById('alxForm').style.padding = '0';
     document.documentElement.classList.add('alx-embed');
     document.body.classList.add('alx-embed');
@@ -1183,8 +1185,11 @@ renderStaticText(); buildServices(); buildDynamicBlocks(); updateDynamicBlocks()
   }
   function postEmbedHeight(){
     if (window.parent === window) return;
-    var root = document.getElementById('alxForm') || document.body;
-    var h = Math.ceil(Math.max(root.scrollHeight, root.offsetHeight, document.documentElement.scrollHeight, document.body.scrollHeight, 320)) + 8;
+    var root = document.getElementById('alxForm');
+    if (!root) return;
+    var box = root.querySelector('.shell') || root;
+    var h = Math.ceil(box.getBoundingClientRect().height);
+    if (!h || h < 120) h = Math.ceil(box.offsetHeight || box.scrollHeight || 240);
     try { window.parent.postMessage({ type: 'alx-form-height', height: h }, '*'); } catch(err) {}
   }
   var initWorld = params.get('world');
