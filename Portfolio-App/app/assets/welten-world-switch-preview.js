@@ -18,6 +18,11 @@
   };
 
   function getTimingForWorld(worldKey) {
+    if (worldKey === "nexora") {
+      return Object.assign({}, WWS_TIMING, {
+        TITLE_HOLD: 2000,
+      });
+    }
     return WWS_TIMING;
   }
 
@@ -732,7 +737,7 @@
     var FIRST_LETTER_MS = Math.round(NT.EFFECT_MS * 0.6);
     var LETTER_STAGGER_MS = Math.round(NT.EFFECT_MS * 0.24);
     var LETTER_FLIGHT_MS = Math.round(NT.EFFECT_MS * 0.48);
-    var HOLD_AFTER_MS = Math.round(NT.EFFECT_MS * 0.22);
+    var HOLD_AFTER_MS = Math.max(900, Math.round(NT.EFFECT_MS * 0.75));
     var w = 0;
     var h = 0;
     var cx = 0;
@@ -846,10 +851,15 @@
         if (elapsed < L.activateAt) continue;
         var t = Math.min(1, (elapsed - L.activateAt) / LETTER_FLIGHT_MS);
         var eased = easeOutCubic(t);
-        L.x += (L.tx - L.x) * (0.1 + eased * 0.18);
-        L.y += (L.ty - L.y) * (0.1 + eased * 0.18);
-        if (t >= 1) L.arrived = true;
-        var glow = 0.5 + eased * 0.5;
+        if (t >= 1) {
+          L.arrived = true;
+          L.x = L.tx;
+          L.y = L.ty;
+        } else {
+          L.x += (L.tx - L.x) * (0.1 + eased * 0.18);
+          L.y += (L.ty - L.y) * (0.1 + eased * 0.18);
+        }
+        var glow = L.arrived ? 1 : 0.5 + eased * 0.5;
         ctx.font =
           "800 " +
           L.size +
@@ -873,7 +883,8 @@
       ctx.fillStyle = "rgba(2, 6, 15, 0.16)";
       ctx.fillRect(0, 0, w, h);
 
-      drawRain(1);
+      var rainIntensity = titleRevealed ? 0.35 : allLettersArrived(elapsed) ? 0.55 : 1;
+      drawRain(rainIntensity);
       drawLetters(elapsed);
 
       if (!titleRevealed && allLettersArrived(elapsed)) {
@@ -1435,6 +1446,8 @@
         wwsLater(function () {
           revealStagedTitle(overlay);
         }, timing.TITLE_REVEAL_AT);
+      } else if (worldKey === "nexora") {
+        /* NEXORA: Titel erst wenn Canvas-Buchstaben fertig sind (startNexoraMatrixCanvas) */
       } else {
         wwsLater(function () {
           revealStagedTitle(overlay);
