@@ -122,3 +122,27 @@ body[data-world="freiraum"] .welten-site-footer__inner {
     display: none !important;
   }
 }
+
+/* Menü-Panel: Scrollen ohne sichtbare Scrollbar */
+.menu-panel {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.menu-panel::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+.menu-overlay {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.menu-overlay::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}
