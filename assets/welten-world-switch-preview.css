@@ -53,7 +53,7 @@
 }
 
 .welten-world-switch[data-world="freiraum"] .welten-world-switch__canvas {
-  filter: saturate(1.08) contrast(1.02) brightness(1.02);
+  filter: saturate(1.06) contrast(1.04);
 }
 
 .welten-world-switch.wws-staged:not([data-world="vertex"]) .welten-world-switch__wipe {

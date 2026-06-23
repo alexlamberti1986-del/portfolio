@@ -1131,7 +1131,7 @@
       blooms = [];
       paperDots = [];
 
-      var brushCount = w < 640 ? 6 : w < 1024 ? 8 : 9;
+      var brushCount = w < 640 ? 5 : 7;
       var i;
       for (i = 0; i < brushCount; i++) {
         var edge = i % 4;
@@ -1167,11 +1167,11 @@
           x2: x2,
           y2: y2,
           color: pickColor(i),
-          width: (w < 640 ? 58 : 82) + Math.random() * (w < 640 ? 52 : 88),
+          width: (w < 640 ? 108 : 148) + Math.random() * (w < 640 ? 92 : 132),
           delay: 30 + i * 115,
-          dur: 460 + Math.random() * 260,
-          pressure: 0.72 + Math.random() * 0.28,
-          tilt: (Math.random() - 0.5) * 0.35,
+          dur: 520 + Math.random() * 280,
+          pressure: 0.82 + Math.random() * 0.18,
+          tilt: (Math.random() - 0.5) * 0.22,
         });
       }
 
@@ -1235,40 +1235,77 @@
       if (elapsed < b.delay) return;
       var t = Math.min(1, (elapsed - b.delay) / b.dur);
       var progress = easeOutQuart(t);
-      var steps = Math.max(4, Math.floor(56 * progress));
+      if (progress <= 0.01) return;
+
+      var stepCount = 72;
+      var maxStep = Math.max(2, Math.floor(stepCount * progress));
+      var pts = [];
       var s;
-      for (s = 0; s <= steps; s++) {
-        var u = (s / 56) * progress;
-        var pt = quadPoint(b.x1, b.y1, b.cx, b.cy, b.x2, b.y2, u);
-        var tan = quadTangent(b.x1, b.y1, b.cx, b.cy, b.x2, b.y2, u);
+      for (s = 0; s <= maxStep; s++) {
+        var u = (s / stepCount) * progress;
+        pts.push(quadPoint(b.x1, b.y1, b.cx, b.cy, b.x2, b.y2, u));
+      }
+      if (pts.length < 2) return;
+
+      var baseW = b.width * b.pressure;
+
+      ctx.save();
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = rgba(b.color, 0.18 * dissolve);
+      ctx.lineWidth = baseW * 1.55;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (s = 1; s < pts.length; s++) ctx.lineTo(pts[s].x, pts[s].y);
+      ctx.stroke();
+
+      ctx.strokeStyle = rgba(b.color, 0.34 * dissolve * b.pressure);
+      ctx.lineWidth = baseW * 1.12;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (s = 1; s < pts.length; s++) ctx.lineTo(pts[s].x, pts[s].y);
+      ctx.stroke();
+
+      ctx.strokeStyle = rgba(b.color, 0.62 * dissolve * b.pressure);
+      ctx.lineWidth = baseW * 0.82;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (s = 1; s < pts.length; s++) ctx.lineTo(pts[s].x, pts[s].y);
+      ctx.stroke();
+      ctx.restore();
+
+      for (s = 0; s < pts.length; s++) {
+        var u = (s / stepCount) * progress;
+        var pt = pts[s];
+        var tan = quadTangent(b.x1, b.y1, b.cx, b.cy, b.x2, b.y2, Math.min(0.999, u));
         var ang = Math.atan2(tan.y, tan.x) + b.tilt;
-        var edgeFade = 0.55 + 0.45 * Math.sin(u * Math.PI);
-        var alpha = 0.38 * dissolve * b.pressure * edgeFade;
-        var brushW = b.width * b.pressure * (0.78 + 0.22 * edgeFade);
+        var edgeFade = 0.68 + 0.32 * Math.sin(u * Math.PI);
+        var alpha = 0.52 * dissolve * b.pressure * edgeFade;
+        var brushW = baseW * (0.92 + 0.08 * edgeFade);
 
         ctx.save();
         ctx.translate(pt.x, pt.y);
         ctx.rotate(ang);
-        var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, brushW * 0.58);
+        ctx.scale(3.6, 0.68);
+        var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, brushW * 0.5);
         grd.addColorStop(0, rgba(b.color, alpha));
-        grd.addColorStop(0.38, rgba(b.color, alpha * 0.62));
-        grd.addColorStop(0.72, rgba(b.color, alpha * 0.18));
+        grd.addColorStop(0.5, rgba(b.color, alpha * 0.78));
+        grd.addColorStop(0.82, rgba(b.color, alpha * 0.28));
         grd.addColorStop(1, rgba(b.color, 0));
         ctx.fillStyle = grd;
-        ctx.scale(1.75, 0.48);
         ctx.beginPath();
-        ctx.arc(0, 0, brushW * 0.5, 0, Math.PI * 2);
+        ctx.arc(0, 0, brushW * 0.46, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
-        if (s % 7 === 0 && u > 0.08) {
-          ctx.fillStyle = rgba(b.color, alpha * 0.22);
+        if (s % 5 === 0 && u > 0.05) {
+          ctx.fillStyle = rgba(b.color, alpha * 0.35);
           ctx.beginPath();
           ctx.ellipse(
-            pt.x + (Math.random() - 0.5) * brushW * 0.2,
-            pt.y + (Math.random() - 0.5) * brushW * 0.12,
-            brushW * 0.22,
-            brushW * 0.08,
+            pt.x + (Math.random() - 0.5) * brushW * 0.14,
+            pt.y + (Math.random() - 0.5) * brushW * 0.1,
+            brushW * 0.34,
+            brushW * 0.14,
             ang,
             0,
             Math.PI * 2
@@ -1303,9 +1340,7 @@
       ctx.globalCompositeOperation = "source-over";
       drawPaperBase(dissolve);
 
-      ctx.globalCompositeOperation = "screen";
       var i;
-      for (i = 0; i < blooms.length; i++) drawBloom(blooms[i], elapsed, dissolve);
       for (i = 0; i < brushes.length; i++) drawBrushBand(brushes[i], elapsed, dissolve);
 
       ctx.globalCompositeOperation = "source-over";
