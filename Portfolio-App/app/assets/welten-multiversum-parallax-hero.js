@@ -1,0 +1,1557 @@
+/**
+ * MULTIVERSUM Scroll Story V5 — Welt-Collage / Mindmap-Hover, 6 Kapitel.
+ */
+(function () {
+  "use strict";
+
+  var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
+  var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
+  var BASE = "assets/multiversum-v4/";
+  var V = "?v=20260625mv-v15reveal";
+
+  var ASSETS = {
+    bg: {
+      multiverse: BASE + "backgrounds/webp/background_deep_space_neutral.webp",
+      nexora: BASE + "backgrounds/webp/background_v4_neutral_blue_plum.webp",
+      professional: BASE + "backgrounds/webp/background_v4_professional_silver.webp",
+      freiraum: BASE + "backgrounds/webp/background_v4_freiraum_plum_magenta.webp",
+      overview: BASE + "backgrounds/webp/background_multiverse_three_worlds.webp",
+    },
+    orbs: {
+      nexora: BASE + "worlds/webp/nexora_orb_premium_free.webp",
+      professional: BASE + "worlds/webp/professional_orb_premium_free.webp",
+      freiraum: BASE + "worlds/webp/freiraum_orb_premium_free.webp",
+    },
+    accents: {
+      nexora: [
+        BASE + "cards/webp/cards_nexora_floating_data_panels.webp",
+        BASE + "particles/webp/particles_nexora_network.webp",
+        BASE + "trails/webp/trail_nexora_blue_data_flow.webp",
+      ],
+      professional: [
+        BASE + "cards/webp/cards_professional_precision_panels.webp",
+        BASE + "particles/webp/particles_professional_silver.webp",
+        BASE + "trails/webp/trail_professional_silver_precision.webp",
+      ],
+      freiraum: [
+        BASE + "cards/webp/cards_freiraum_creative_panels.webp",
+        BASE + "particles/webp/particles_freiraum_magenta.webp",
+        BASE + "trails/webp/trail_freiraum_magenta_orange_flow.webp",
+      ],
+    },
+    glows: {
+      nexora: BASE + "overlays/webp/overlay_nexora_blue_glow.webp",
+      professional: BASE + "overlays/webp/overlay_professional_silver_glow.webp",
+      freiraum: BASE + "overlays/webp/overlay_freiraum_magenta_orange_glow.webp",
+      merge: BASE + "overlays/webp/overlay_multiverse_connection_glow.webp",
+    },
+    transitionTrail: BASE + "trails/webp/trail_multiverse_connection.webp",
+    deco: {
+      nexora: {
+        orbit: BASE + "orbits/webp/orbit_nexora_blue_double.webp",
+        orbit2: BASE + "orbits/webp/orbit_nexora_blue_double.webp",
+        particles: BASE + "particles/webp/particles_nexora_network.webp",
+        light: BASE + "overlays/webp/overlay_nexora_blue_glow.webp",
+        line: BASE + "trails/webp/trail_nexora_blue_data_flow.webp",
+      },
+      professional: {
+        orbit: BASE + "orbits/webp/orbit_professional_silver_double.webp",
+        orbit2: BASE + "orbits/webp/orbit_professional_silver_double.webp",
+        particles: BASE + "particles/webp/particles_professional_silver.webp",
+        light: BASE + "overlays/webp/overlay_professional_silver_glow.webp",
+        line: BASE + "trails/webp/trail_professional_silver_precision.webp",
+      },
+      freiraum: {
+        orbit: BASE + "orbits/webp/orbit_freiraum_magenta_orange.webp",
+        orbit2: BASE + "orbits/webp/orbit_freiraum_magenta_orange.webp",
+        particles: BASE + "particles/webp/particles_freiraum_magenta.webp",
+        light: BASE + "overlays/webp/overlay_freiraum_magenta_orange_glow.webp",
+        line: BASE + "trails/webp/trail_freiraum_magenta_orange_flow.webp",
+      },
+      multiverse: {
+        orbit: BASE + "orbits/webp/orbit_nexora_blue_double.webp",
+        orbit2: BASE + "orbits/webp/orbit_freiraum_magenta_orange.webp",
+        particles: BASE + "particles/webp/particles_multiverse_mix.webp",
+        light: BASE + "overlays/webp/overlay_multiverse_connection_glow.webp",
+        line: BASE + "trails/webp/trail_multiverse_connection.webp",
+      },
+    },
+    scrollCue: BASE + "particles/webp/particles_multiverse_mix.webp",
+  };
+
+  var PORTFOLIO_CARDS = [
+    { go: "projects", label: "Projekte", sub: "Arbeit aus allen Welten" },
+    { go: "leistungen", label: "Leistungen", sub: "Was ich anbiete" },
+    { go: "about", label: "Über mich", sub: "Persönlichkeit & Kompetenz" },
+    { go: "contact", label: "Kontakt", sub: "Nächster Schritt" },
+  ];
+
+  var rafId = 0;
+  var scrollRoot = null;
+  var heroEl = null;
+  var dom = {};
+  var config = null;
+  var mobileLayout = false;
+  var tabletLayout = false;
+  var reducedMotion = false;
+  var animProgress = 0;
+  var mouseParallax = { x: 0, y: 0 };
+  var portfolioHoldScrolls = 0;
+  var portfolioHoldUnlocked = false;
+  var PORTFOLIO_HOLD_SCROLLS = 3;
+  var onScrollHandler = null;
+
+  function asset(path) {
+    return path + V;
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+
+  function clamp(v, min, max) {
+    return Math.min(max, Math.max(min, v));
+  }
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function easeOutExpo(t) {
+    return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+  }
+
+  function easeOutQuart(t) {
+    return 1 - Math.pow(1 - t, 4);
+  }
+
+  function deepLerp(a, b, t) {
+    if (a == null) return b;
+    if (b == null) return a;
+    if (typeof a === "number" && typeof b === "number") return lerp(a, b, t);
+    if (typeof a === "object" && !Array.isArray(a)) {
+      var out = {};
+      var keys = Object.keys(a);
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+        out[k] = deepLerp(a[k], b[k], t);
+      }
+      return out;
+    }
+    return t < 0.5 ? a : b;
+  }
+
+  function segmentBlendT(local, holdPortion) {
+    holdPortion = holdPortion !== undefined ? holdPortion : config.segmentHold || 0.72;
+    var trans = (1 - holdPortion) / 2;
+    if (trans <= 0.001) return clamp(local, 0, 1);
+    if (local >= 1 - trans) {
+      return easeInOutCubic((local - (1 - trans)) / trans);
+    }
+    return 0;
+  }
+
+  function getState(p) {
+    var bounds = config.bounds;
+    var kf = config.keyframes;
+    var hold = config.segmentHold || 0.72;
+    for (var i = 0; i < bounds.length - 1; i++) {
+      if (p <= bounds[i + 1]) {
+        var local = segmentProgress(p, bounds[i], bounds[i + 1]);
+        var t = segmentBlendT(local, hold);
+        return deepLerp(kf[i], kf[Math.min(i + 1, kf.length - 1)], t);
+      }
+    }
+    return kf[kf.length - 1];
+  }
+
+  function slideKind(index) {
+    var slide = config.slides[index];
+    return slide ? slide.sceneKind || "intro" : "intro";
+  }
+
+  function easeInOutSine(t) {
+    return -(Math.cos(Math.PI * t) - 1) / 2;
+  }
+
+  function sceneEnvelope(local, slideIndex) {
+    var timing = (config && config.timing) || {};
+    var enter = timing.enter || 0.12;
+    var exit = timing.exit || 0.1;
+    var enterT = easeInOutSine(clamp(local / enter, 0, 1));
+    var exitT = local > 1 - exit ? easeInOutSine(clamp((local - (1 - exit)) / exit, 0, 1)) : 0;
+    var hold = enterT * (1 - exitT);
+    if (slideIndex === 0 && local < 0.04) {
+      hold = easeOutQuart(clamp(local / 0.04, 0, 1));
+    }
+    return hold;
+  }
+
+  function slideVisibility(p, start, end, fade) {
+    if (p < start || p > end) return { opacity: 0, y: 28, active: false };
+    var seg = Math.max(end - start, 0.001);
+    var timing = (config && config.timing) || {};
+    var f = seg * (timing.fade || fade || 0.08);
+    var opacity = 1;
+    var y = 0;
+    if (p < start + f) {
+      var t = easeInOutSine(clamp((p - start) / f, 0, 1));
+      opacity = t;
+      y = lerp(18, 0, t);
+    } else if (p > end - f) {
+      var t2 = easeInOutSine(clamp((p - (end - f)) / f, 0, 1));
+      opacity = 1 - t2;
+      y = lerp(0, -18, t2);
+    }
+    return { opacity: opacity, y: y, active: opacity > 0.06 };
+  }
+
+  function requestWorldSwitch(worldKey, targetHash, goChapter) {
+    if (!worldKey) return;
+    var shellKey = WORLD_SHELL_KEY[worldKey];
+    if (!shellKey) return;
+
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage(
+          {
+            type: "alex:switch-world",
+            world: worldKey,
+            targetHash: targetHash || "",
+            go: goChapter || "",
+          },
+          "*"
+        );
+        return;
+      }
+    } catch (e) {}
+
+    var btn = document.querySelector('.mv4-worlds [data-world-key="' + shellKey + '"]');
+    if (btn) {
+      btn.click();
+    } else {
+      switchWorldIndex(worldKey);
+    }
+
+    if (targetHash || goChapter) {
+      setTimeout(function () {
+        scrollSectionInFrame(targetHash, goChapter);
+      }, 480);
+    }
+  }
+
+  function switchWorldIndex(worldKey) {
+    var idx = WORLD_INDEX[worldKey];
+    if (idx === undefined) return;
+    if (typeof window.switchToWorldIndex === "function") {
+      window.switchToWorldIndex(idx);
+      return;
+    }
+    try {
+      if (window.parent && window.parent !== window && typeof window.parent.switchToWorldIndex === "function") {
+        window.parent.switchToWorldIndex(idx);
+      }
+    } catch (e2) {}
+  }
+
+  function scrollSectionInFrame(targetHash, goChapter) {
+    if (window.WeltenSiteIA && typeof window.WeltenSiteIA.scrollToSection === "function") {
+      window.WeltenSiteIA.scrollToSection(targetHash, goChapter);
+      return;
+    }
+    if (goChapter && window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
+      window.WeltenSiteIA.navigateToChapter(goChapter);
+    }
+    var hash = targetHash || "";
+    if (!hash) return;
+    setTimeout(function () {
+      var id = hash.replace(/^#/, "");
+      var el =
+        document.getElementById(id) ||
+        document.getElementById("slide-" + id) ||
+        document.querySelector('[data-slide="' + id + '"]');
+      if (el && el.scrollIntoView) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
+        window.WeltenSiteIA.navigateToChapter(id);
+      }
+    }, 160);
+  }
+
+  function switchWorld(key, targetHash, goChapter) {
+    requestWorldSwitch(key, targetHash, goChapter);
+  }
+
+  function isEmbeddedFrame() {
+    try {
+      return !!(window.parent && window.parent !== window);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function navigateWorldLink(world, targetHash, goChapter, href) {
+    if (isEmbeddedFrame()) {
+      switchWorld(world, targetHash, goChapter);
+      return;
+    }
+    if (href && href !== "#") {
+      window.location.href = href;
+      return;
+    }
+    switchWorld(world, targetHash, goChapter);
+  }
+
+  function bindGoButtons(root, goChapter) {
+    root.querySelectorAll(".mv-scroll-portfolio [data-go]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (typeof goChapter === "function") goChapter(btn.getAttribute("data-go"));
+      });
+    });
+    root.querySelectorAll("[data-world-enter]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        switchWorld(btn.getAttribute("data-world-enter"));
+      });
+    });
+    if (!isEmbeddedFrame()) return;
+    root.querySelectorAll("a.world-core[data-world]").forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        navigateWorldLink(link.getAttribute("data-world"), "", "", link.getAttribute("href"));
+      });
+    });
+    root.querySelectorAll("a.world-card[data-world]").forEach(function (card) {
+      card.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        navigateWorldLink(
+          card.getAttribute("data-world"),
+          card.getAttribute("data-target"),
+          card.getAttribute("data-go"),
+          card.getAttribute("href")
+        );
+      });
+    });
+  }
+
+  function segmentProgress(p, start, end) {
+    if (end <= start) return 0;
+    return clamp((p - start) / (end - start), 0, 1);
+  }
+
+  function isWorldSlide(index) {
+    return slideKind(index) === "world";
+  }
+
+  function worldChapterIndex(world) {
+    var map = { nexora: 1, professional: 2, freiraum: 3 };
+    return map[world];
+  }
+
+  function collageFocusForScene(sceneIndex) {
+    var kind = slideKind(sceneIndex);
+    if (kind === "world") {
+      var slide = config.slides[sceneIndex];
+      return slide && slide.worldType ? slide.worldType : "all";
+    }
+    if (kind === "reveal") return "reveal";
+    if (kind === "merge") return "all";
+    return "none";
+  }
+
+  function revealedWorldsForScene(sceneIndex) {
+    var slide = config.slides[sceneIndex];
+    if (!slide) return [];
+    if (slide.revealedWorlds && slide.revealedWorlds.length) return slide.revealedWorlds;
+    if (slide.sceneKind === "world" && slide.worldType) return [slide.worldType];
+    if (slide.sceneKind === "merge") return ["nexora", "professional", "freiraum"];
+    return [];
+  }
+
+  function introHoldEndBound() {
+    if (!config || !config.bounds) return 0;
+    var idx = 4;
+    for (var i = 0; i < config.slides.length; i++) {
+      if (slideKind(i) === "world") {
+        idx = i;
+        break;
+      }
+    }
+    return config.bounds[idx] || config.bounds[1] || 0;
+  }
+
+  function worldScenePhases(local, slideIndex) {
+    var env = sceneEnvelope(local, slideIndex);
+    var kind = slideKind(slideIndex);
+    if (kind === "finale") {
+      var copyOut = local > 0.55 ? easeInOutSine(clamp((local - 0.55) / 0.2, 0, 1)) : 0;
+      return {
+        orb: env,
+        copy: env * (1 - copyOut),
+        cards: env,
+        hint: 0,
+        trail: 0,
+        env: env,
+      };
+    }
+    return {
+      orb: env,
+      copy: env,
+      cards: env,
+      hint: 0,
+      trail: 0,
+      env: env,
+    };
+  }
+
+  function layoutModeForScene(sceneIndex) {
+    var kind = slideKind(sceneIndex);
+    if (kind === "intro" || kind === "reveal" || kind === "merge") return "overview";
+    if (kind === "world") return "split-world";
+    if (kind === "finale") return "overview";
+    return "intro";
+  }
+
+  function cardOrbitForZone(kind, world, hasCards, isFocus, isRevealFocus) {
+    if (kind === "world" && isFocus) return "34cqmin";
+    if (kind === "reveal" && isRevealFocus) return "29cqmin";
+    if (kind === "reveal" && hasCards) return "26cqmin";
+    if (kind === "merge" && hasCards) return "27cqmin";
+    return "26cqmin";
+  }
+
+  function topicVisibilityForWorld() {
+    return { opacity: 0, build: 0 };
+  }
+
+  function layerShift(p, factor, par) {
+    return -p * factor * 28 * par;
+  }
+
+  function topicCardsMarkup(world, items) {
+    var cards = items
+      .map(function (item, i) {
+        return (
+          '<article class="mv-topic-card"><span class="mv-topic-card__kicker">0' +
+          (i + 1) +
+          "</span>" +
+          '<h3>' +
+          item.title +
+          "</h3><p>" +
+          item.body +
+          "</p></article>"
+        );
+      })
+      .join("");
+    return (
+      '<div class="mv-topic-wrap mv-topic-wrap--' +
+      world +
+      '" data-topic-world="' +
+      world +
+      '">' +
+      '<div class="mv-topic-grid mv-topic-grid--' +
+      world +
+      '">' +
+      cards +
+      "</div></div>"
+    );
+  }
+
+  function atmosphereMarkup() {
+    return (
+      '<div class="mv-atmo mv-atmo--nexora" data-atmo="nexora">' +
+      '<div class="mv-hud"><span class="mv-hud__corner mv-hud__corner--tl"></span><span class="mv-hud__corner mv-hud__corner--tr"></span>' +
+      '<span class="mv-hud__corner mv-hud__corner--bl"></span><span class="mv-hud__corner mv-hud__corner--br"></span>' +
+      '<span class="mv-hud__scan"></span><span class="mv-hud__label">SYS · NEXORA</span></div>' +
+      '<div class="mv-data-stream"></div></div>' +
+      '<div class="mv-atmo mv-atmo--professional" data-atmo="professional">' +
+      '<div class="mv-glass-panel mv-glass-panel--a"></div><div class="mv-glass-panel mv-glass-panel--b"></div>' +
+      '<div class="mv-glass-panel mv-glass-panel--c"></div></div>' +
+      '<div class="mv-atmo mv-atmo--freiraum" data-atmo="freiraum">' +
+      '<div class="mv-organic mv-organic--a"></div><div class="mv-organic mv-organic--b"></div>' +
+      '<div class="mv-organic mv-organic--c"></div></div>'
+    );
+  }
+
+  function decoSetMarkup(theme) {
+    var d = ASSETS.deco[theme];
+    return (
+      '<div class="mv-scroll-deco-set" data-deco-theme="' +
+      theme +
+      '">' +
+      '<img data-d="orbit" src="' +
+      asset(d.orbit) +
+      '" alt="" loading="lazy" decoding="async" />' +
+      '<img data-d="orbit2" src="' +
+      asset(d.orbit2) +
+      '" alt="" loading="lazy" decoding="async" />' +
+      '<img data-d="light" src="' +
+      asset(d.light) +
+      '" alt="" loading="lazy" decoding="async" />' +
+      '<img data-d="line" src="' +
+      asset(d.line) +
+      '" alt="" loading="lazy" decoding="async" />' +
+      "</div>"
+    );
+  }
+
+  function worldAccentMarkup() {
+    return "";
+  }
+
+  function getCollageCards(world) {
+    var cfg = window.MVWorldCollage;
+    if (!cfg) return [];
+    var all = cfg.dedupeCards ? cfg.dedupeCards(cfg.worldCards[world] || cfg.cards[world] || []) : cfg.worldCards[world] || cfg.cards[world] || [];
+    var limit = cfg.getCardLimit ? cfg.getCardLimit(window.innerWidth) : 8;
+    return all.slice(0, limit);
+  }
+
+  function worldPageHref(world) {
+    var pages = (window.MVWorldCollage && window.MVWorldCollage.pages) || {};
+    return pages[world] || "#";
+  }
+
+  function cardOrbitAngle(index, total) {
+    return -90 + index * (360 / Math.max(total, 1));
+  }
+
+  function worldZoneMarkup(world, label) {
+    var cards = getCollageCards(world);
+    var cardsHtml = cards
+      .map(function (c, i) {
+        var angle = cardOrbitAngle(i, cards.length);
+        return (
+          '<a class="world-card" href="' +
+          (c.href || "#") +
+          '" data-world="' +
+          world +
+          '" data-go="' +
+          (c.go || "") +
+          '" data-target="' +
+          (c.target || "") +
+          '" data-card-index="' +
+          i +
+          '" style="--card-angle:' +
+          angle +
+          'deg" aria-label="' +
+          label +
+          " " +
+          c.label +
+          ' öffnen"><div class="world-card__image"><img src="' +
+          asset(c.image) +
+          '" alt="' +
+          c.label +
+          '" loading="lazy" decoding="async" /></div><div class="world-card__label">' +
+          c.label +
+          "</div></a>"
+        );
+      })
+      .join("");
+    return (
+      '<section class="mv-scroll-orb world-zone world-zone--' +
+      world +
+      '" data-world-zone="' +
+      world +
+      '" data-world="' +
+      world +
+      '" data-orb="' +
+      world +
+      '">' +
+      '<a class="world-core" href="' +
+      worldPageHref(world) +
+      '" data-world="' +
+      world +
+      '" aria-label="' +
+      label +
+      ' öffnen">' +
+      '<img class="mv-orb-bubble__standalone" src="' +
+      asset(ASSETS.orbs[world]) +
+      '" alt="' +
+      label +
+      '" loading="eager" decoding="async" fetchpriority="high" />' +
+      '<span class="mv-orb-bubble__label world-name">' +
+      label +
+      "</span></a>" +
+      '<div class="world-collage" data-world-collage="' +
+      world +
+      '">' +
+      cardsHtml +
+      '<button type="button" class="world-cards-more mv-form-btn" data-world-more="' +
+      world +
+      '">Alle Bereiche ansehen</button>' +
+      "</div></section>"
+    );
+  }
+
+  function slidesMarkup() {
+    return config.slides
+      .map(function (s, i) {
+        var copyPos = s.copyPos || "";
+        var kind = s.sceneKind || "intro";
+        var isWorld = kind === "world";
+        var isReveal = kind === "reveal";
+        var stepClass = "world-step world-step--center";
+        if (isWorld) {
+          stepClass =
+            s.worldSide === "left"
+              ? "world-step world-step--split"
+              : "world-step world-step--split world-step--visual-right";
+        }
+        var worldBtn =
+          isWorld && s.worldType
+            ? '<button type="button" class="mv-scroll-slide__enter mv-form-btn" data-world-enter="' +
+              s.worldType +
+              '">Welt öffnen</button>'
+            : "";
+        var copyInner = "";
+        if (isReveal) {
+          copyInner = "";
+        } else if (isWorld) {
+          copyInner =
+            '<div class="scene-copy">' +
+            (s.lead ? '<p class="mv-scroll-slide__lead"><strong>' + s.lead + "</strong></p>" : "") +
+            (s.body ? '<p class="mv-scroll-slide__body">' + s.body + "</p>" : "") +
+            worldBtn +
+            "</div>";
+        } else {
+          copyInner =
+            '<div class="scene-copy' +
+            (kind === "finale" ? " final-copy" : "") +
+            '">' +
+            (s.eyebrow ? '<p class="mv-scroll-slide__eyebrow">' + s.eyebrow + "</p>" : "") +
+            (s.title ? "<h2>" + s.title + "</h2>" : "") +
+            (s.body ? '<p class="mv-scroll-slide__body">' + s.body + "</p>" : "") +
+            "</div>";
+        }
+        return (
+          '<article class="mv-scroll-slide ' +
+          (s.worldType ? " mv-scroll-slide--" + s.worldType : "") +
+          (isWorld ? " mv-scroll-slide--world" : "") +
+          (isReveal ? " mv-scroll-slide--reveal" : "") +
+          (kind === "finale" ? " mv-scroll-slide--finale" : "") +
+          '" data-slide="' +
+          i +
+          '" data-scene-kind="' +
+          kind +
+          '">' +
+          '<div class="' +
+          stepClass +
+          '">' +
+          '<div class="world-visual" aria-hidden="true"></div>' +
+          '<div class="world-copy ' +
+          copyPos +
+          '">' +
+          copyInner +
+          "</div></div>" +
+          "</article>"
+        );
+      })
+      .join("");
+  }
+
+  function portfolioMarkup() {
+    return PORTFOLIO_CARDS.map(function (c) {
+      return (
+        '<button type="button" class="mv-scroll-card mv-form-btn" data-go="' +
+        c.go +
+        '"><span class="mv-scroll-card__label">' +
+        c.label +
+        '</span><span class="mv-scroll-card__sub">' +
+        c.sub +
+        "</span></button>"
+      );
+    }).join("");
+  }
+
+  function orbSrc(world) {
+    return asset(ASSETS.orbs[world]);
+  }
+
+  function heroMarkup() {
+    return (
+      '<div class="mv-scroll-story mv-scroll-story--v6" id="mvParallaxHero" aria-label="MULTIVERSUM Scroll-Präsentation">' +
+      '<div class="mv-scroll-sticky">' +
+      '<div class="mv-film-grain" aria-hidden="true"></div>' +
+      '<div class="mv-world-tint" data-world-tint aria-hidden="true"></div>' +
+      '<div class="mv-layer mv-layer--1" data-parallax-layer="1">' +
+      '<div class="mv-scroll-bg" data-bg="multiverse"><img src="' +
+      asset(ASSETS.bg.multiverse) +
+      '" alt="" loading="eager" decoding="async" /></div>' +
+      '<div class="mv-scroll-bg" data-bg="nexora"><img src="' +
+      asset(ASSETS.bg.nexora) +
+      '" alt="" loading="lazy" decoding="async" /></div>' +
+      '<div class="mv-scroll-bg" data-bg="professional"><img src="' +
+      asset(ASSETS.bg.professional) +
+      '" alt="" loading="lazy" decoding="async" /></div>' +
+      '<div class="mv-scroll-bg" data-bg="freiraum"><img src="' +
+      asset(ASSETS.bg.freiraum) +
+      '" alt="" loading="lazy" decoding="async" /></div>' +
+      '<div class="mv-scroll-bg" data-bg="overview"><img src="' +
+      asset(ASSETS.bg.overview) +
+      '" alt="" loading="lazy" decoding="async" /></div>' +
+      '<div class="mv-scroll-stars" data-layer="stars"></div>' +
+      '<div class="mv-scroll-vignette" data-layer="vignette"></div>' +
+      "</div>" +
+      '<div class="mv-layer mv-layer--2" data-parallax-layer="2">' +
+      decoSetMarkup("multiverse") +
+      decoSetMarkup("nexora") +
+      decoSetMarkup("professional") +
+      decoSetMarkup("freiraum") +
+      '<img class="mv-transition-trail" data-transition-trail src="' +
+      asset(ASSETS.transitionTrail) +
+      '" alt="" aria-hidden="true" />' +
+      "</div>" +
+      '<div class="mv-layer mv-layer--3" data-parallax-layer="3">' +
+      '<div class="mv-particle-field" data-particle-field="multiverse"></div>' +
+      '<div class="mv-particle-field" data-particle-field="nexora"></div>' +
+      '<div class="mv-particle-field" data-particle-field="professional"></div>' +
+      '<div class="mv-particle-field" data-particle-field="freiraum"></div>' +
+      "</div>" +
+      '<div class="mv-layer mv-layer--4" data-parallax-layer="4">' +
+      atmosphereMarkup() +
+      '<div class="mv-world-accents" data-world-accents aria-hidden="true"></div>' +
+      '<div class="mv-world-stage" data-world-stage>' +
+      '<div class="mv-world-stage__glow" data-world-glow aria-hidden="true"></div>' +
+      '<img class="mv-world-stage__radial mv-world-stage__radial--nexora" data-radial-glow="nexora" src="' +
+      asset(ASSETS.glows.nexora) +
+      '" alt="" aria-hidden="true" />' +
+      '<img class="mv-world-stage__radial mv-world-stage__radial--professional" data-radial-glow="professional" src="' +
+      asset(ASSETS.glows.professional) +
+      '" alt="" aria-hidden="true" />' +
+      '<img class="mv-world-stage__radial mv-world-stage__radial--freiraum" data-radial-glow="freiraum" src="' +
+      asset(ASSETS.glows.freiraum) +
+      '" alt="" aria-hidden="true" />' +
+      '<img class="mv-world-stage__overlay mv-world-stage__overlay--merge" data-overlay-glow="merge" src="' +
+      asset(ASSETS.glows.merge) +
+      '" alt="" aria-hidden="true" />' +
+      '<div class="mv-world-stage__ring" data-world-ring aria-hidden="true"></div>' +
+      '<div class="mv-scroll-orbs mv-world-zones" data-layer="orbs">' +
+      worldZoneMarkup("nexora", "NEXORA") +
+      worldZoneMarkup("professional", "PROFESSIONAL") +
+      worldZoneMarkup("freiraum", "FREIRAUM") +
+      "</div></div></div>" +
+      '<div class="mv-layer mv-layer--5" data-parallax-layer="5"></div>' +
+      '<div class="mv-layer mv-layer--6" data-parallax-layer="6">' +
+      '<div class="mv-scroll-slides" data-layer="slides">' +
+      slidesMarkup() +
+      "</div></div>" +
+      '<div class="mv-layer mv-layer--7" data-parallax-layer="7">' +
+      '<div class="mv-scroll-portfolio final-cta-group" data-layer="portfolio">' +
+      portfolioMarkup() +
+      "</div>" +
+      '<p class="mv-scroll-cue" aria-hidden="true"><span>Scroll</span></p>' +
+      "</div></div></div>"
+    );
+  }
+
+  function cacheDom() {
+    if (!heroEl) return;
+    dom.layers = {};
+    heroEl.querySelectorAll("[data-parallax-layer]").forEach(function (el) {
+      dom.layers[el.getAttribute("data-parallax-layer")] = el;
+    });
+    dom.bgs = {};
+    heroEl.querySelectorAll("[data-bg]").forEach(function (el) {
+      dom.bgs[el.getAttribute("data-bg")] = el;
+    });
+    dom.stars = heroEl.querySelector('[data-layer="stars"]');
+    dom.vignette = heroEl.querySelector('[data-layer="vignette"]');
+    dom.decoSets = {};
+    heroEl.querySelectorAll("[data-deco-theme]").forEach(function (set) {
+      dom.decoSets[set.getAttribute("data-deco-theme")] = {
+        root: set,
+        orbit: set.querySelector('[data-d="orbit"]'),
+        orbit2: set.querySelector('[data-d="orbit2"]'),
+        light: set.querySelector('[data-d="light"]'),
+        line: set.querySelector('[data-d="line"]'),
+      };
+    });
+    dom.particleFields = {};
+    heroEl.querySelectorAll("[data-particle-field]").forEach(function (el) {
+      dom.particleFields[el.getAttribute("data-particle-field")] = el;
+    });
+    dom.atmo = {};
+    heroEl.querySelectorAll("[data-atmo]").forEach(function (el) {
+      dom.atmo[el.getAttribute("data-atmo")] = el;
+    });
+    dom.topicGrids = {};
+    heroEl.querySelectorAll("[data-topic-world]").forEach(function (el) {
+      dom.topicGrids[el.getAttribute("data-topic-world")] = el;
+    });
+    dom.orbs = {
+      nexora: heroEl.querySelector('[data-orb="nexora"]'),
+      professional: heroEl.querySelector('[data-orb="professional"]'),
+      freiraum: heroEl.querySelector('[data-orb="freiraum"]'),
+    };
+    dom.worldZones = dom.orbs;
+    dom.slides = heroEl.querySelectorAll(".mv-scroll-slide");
+    dom.portfolio = heroEl.querySelector('[data-layer="portfolio"]');
+    dom.cue = heroEl.querySelector(".mv-scroll-cue");
+    dom.worldStage = heroEl.querySelector("[data-world-stage]");
+    dom.worldGlow = heroEl.querySelector("[data-world-glow]");
+    dom.worldRing = heroEl.querySelector("[data-world-ring]");
+    dom.radialGlows = {};
+    heroEl.querySelectorAll("[data-radial-glow]").forEach(function (el) {
+      dom.radialGlows[el.getAttribute("data-radial-glow")] = el;
+    });
+    dom.overlayGlow = heroEl.querySelector("[data-overlay-glow]");
+    dom.transitionTrail = heroEl.querySelector("[data-transition-trail]");
+    dom.worldAccents = {};
+    heroEl.querySelectorAll("[data-accent-world]").forEach(function (el) {
+      dom.worldAccents[el.getAttribute("data-accent-world")] = el;
+    });
+  }
+
+  function getProgress() {
+    if (!scrollRoot || !heroEl) return 0;
+    var max = heroEl.offsetHeight - scrollRoot.clientHeight;
+    if (max <= 0) return 0;
+    return clamp(scrollRoot.scrollTop / max, 0, 1);
+  }
+
+  function dominantOrbKey(state) {
+    var orbs = state.orbs || {};
+    var best = "";
+    var bestOp = 0;
+    ["nexora", "professional", "freiraum"].forEach(function (key) {
+      var op = (orbs[key] && orbs[key].opacity) || 0;
+      if (op > bestOp) {
+        bestOp = op;
+        best = key;
+      }
+    });
+    return bestOp > 0.45 ? best : "";
+  }
+
+  function applyOrb(el, cfg, parallax, entrance, dominant) {
+    if (!el || !cfg) return;
+    var blur = cfg.blur || 0;
+    var ent = entrance !== undefined ? entrance : 1;
+    var scale = cfg.scale * lerp(0.68, 1, easeOutExpo(ent));
+    var yShift = clamp((cfg.y || 0) - parallax * 6, -5, 12);
+    el.style.transform =
+      "translate3d(calc(-50% + " +
+      cfg.x +
+      "vw), calc(-50% + " +
+      yShift +
+      "vh), " +
+      (cfg.z || 0) +
+      "px) scale(" +
+      scale +
+      ")";
+    el.style.opacity = String(cfg.opacity);
+    el.style.filter = blur > 0.1 ? "blur(" + blur + "px)" : "";
+    el.style.zIndex = String(Math.round(cfg.z || 0));
+    el.classList.toggle("is-dominant", !!dominant && cfg.opacity > 0.42);
+    el.classList.toggle("is-labeled", cfg.opacity > 0.34);
+  }
+
+  function applyWorldAccents() {
+    return;
+  }
+
+  function stateActiveWorldMatches(world, activeScene) {
+    if (world === "nexora") return activeScene === 1;
+    if (world === "professional") return activeScene === 2;
+    if (world === "freiraum") return activeScene === 3;
+    return false;
+  }
+
+  function visibleWorldsForScene(activeScene) {
+    var kind = slideKind(activeScene);
+    if (kind === "world") {
+      var slide = config.slides[activeScene];
+      return slide && slide.worldType ? [slide.worldType] : [];
+    }
+    if (kind === "intro" || kind === "reveal" || kind === "merge" || kind === "finale") {
+      return ["nexora", "professional", "freiraum"];
+    }
+    return [];
+  }
+
+  function setVisibleWorlds(worlds) {
+    if (!dom.worldZones) return;
+    ["nexora", "professional", "freiraum"].forEach(function (world) {
+      var zone = dom.worldZones[world];
+      if (!zone) return;
+      zone.classList.toggle("is-visible", worlds.indexOf(world) >= 0);
+    });
+  }
+
+  function worldFocusSide(activeScene) {
+    var slide = config.slides[activeScene];
+    if (!slide || slide.sceneKind !== "world") return "";
+    return slide.worldSide === "left" ? "left" : slide.worldSide === "right" ? "right" : "";
+  }
+
+  function applyWorldZoneStates(activeScene, phases) {
+    if (!dom.worldZones) return;
+    var slide = config.slides[activeScene];
+    var kind = slideKind(activeScene);
+    var revealed = revealedWorldsForScene(activeScene);
+    var highlight = (slide && slide.highlightWorld) || "";
+    var focusWorld = kind === "world" && slide ? slide.worldType : "";
+
+    setVisibleWorlds(visibleWorldsForScene(activeScene));
+    var focusSide = worldFocusSide(activeScene);
+    var env = phases.env !== undefined ? phases.env : 1;
+
+    ["nexora", "professional", "freiraum"].forEach(function (world) {
+      var zone = dom.worldZones[world];
+      if (!zone) return;
+
+      var hasCards = revealed.indexOf(world) >= 0;
+      var isWorldFocus = focusWorld === world;
+      var isReveal = kind === "reveal";
+      var isRevealFocus = isReveal && highlight === world;
+      var isMerge = kind === "merge";
+
+      var showCollage = hasCards && (isReveal || isWorldFocus || isMerge);
+      var isSoftBg = isReveal && !hasCards;
+
+      zone.classList.toggle("is-focus", isWorldFocus);
+      zone.classList.toggle("is-reveal-active", isReveal && hasCards);
+      zone.classList.toggle("is-reveal-focus", isRevealFocus);
+      zone.classList.toggle("is-scene-active", showCollage || isWorldFocus || isMerge);
+      zone.classList.toggle("is-scroll-active", isWorldFocus || isRevealFocus);
+      zone.classList.toggle("is-background", isSoftBg);
+      zone.classList.toggle("is-merge-active", isMerge && hasCards);
+      zone.classList.toggle("is-dimmed", isReveal && hasCards && !isRevealFocus);
+      zone.classList.toggle("world-zone--left-focus", isWorldFocus && focusSide === "left");
+      zone.classList.toggle("world-zone--right-focus", isWorldFocus && focusSide === "right");
+
+      var zoneEnv = isWorldFocus ? env : isRevealFocus ? env : hasCards ? Math.max(0.72, env * 0.88) : isSoftBg ? 0.55 : 0;
+      zone.style.setProperty("--scene-env", String(zoneEnv));
+
+      var orbit = cardOrbitForZone(kind, world, hasCards, isWorldFocus, isRevealFocus);
+      zone.style.setProperty("--card-orbit", orbit);
+
+      if (showCollage || isWorldFocus) {
+        var collage = zone.querySelector(".world-collage");
+        if (collage) {
+          collage.style.setProperty("--card-orbit", orbit);
+          var cardEnv = isWorldFocus ? env : isRevealFocus ? env : Math.min(1, env * 0.9 + 0.1);
+          collage.style.opacity = String(cardEnv);
+          collage.style.transform = "scale(" + lerp(0.96, 1, cardEnv) + ")";
+          collage.style.visibility = cardEnv > 0.04 ? "visible" : "hidden";
+          collage.style.pointerEvents = cardEnv > 0.28 ? "auto" : "none";
+          collage.querySelectorAll(".world-card").forEach(function (cardEl, cardIdx) {
+            var stagger = cardIdx * 0.06;
+            var cardT = clamp((cardEnv - stagger) / (1 - stagger), 0, 1);
+            cardEl.style.opacity = String(cardT);
+          });
+        }
+        var core = zone.querySelector(".world-core");
+        if (core) {
+          core.style.opacity = String(isWorldFocus ? env : Math.min(1, zoneEnv * 0.95 + 0.05));
+        }
+      } else {
+        zone.style.removeProperty("--scene-env");
+        var collageOff = zone.querySelector(".world-collage");
+        if (collageOff) {
+          collageOff.style.opacity = "";
+          collageOff.style.transform = "";
+          collageOff.style.visibility = "";
+          collageOff.style.pointerEvents = "";
+          collageOff.style.removeProperty("--card-orbit");
+          collageOff.querySelectorAll(".world-card").forEach(function (cardEl) {
+            cardEl.style.opacity = "";
+          });
+        }
+        var coreOff = zone.querySelector(".world-core");
+        if (coreOff) coreOff.style.opacity = "";
+      }
+
+      if (!isWorldFocus) {
+        zone.classList.remove("is-expanded", "world-zone--left-focus", "world-zone--right-focus");
+      }
+    });
+  }
+
+  function applyCardParallax() {
+    if (mobileLayout || tabletLayout || reducedMotion || !dom.worldZones) return;
+    var par = window.innerWidth <= 1439 ? 0.55 : 1;
+    ["nexora", "professional", "freiraum"].forEach(function (world) {
+      var zone = dom.worldZones[world];
+      if (!zone || (!zone.classList.contains("is-active") && !zone.classList.contains("is-hover"))) return;
+      zone.querySelectorAll(".world-card").forEach(function (card, i) {
+        var depth = 1 + (i % 4) * 0.08;
+        var tx = mouseParallax.x * 14 * depth * par;
+        var ty = mouseParallax.y * 10 * depth * par;
+        card.style.setProperty("--px", tx + "px");
+        card.style.setProperty("--py", ty + "px");
+      });
+    });
+  }
+
+  function bindCollageInteractions() {
+    if (!heroEl || !dom.worldZones) return;
+    heroEl.addEventListener("mousemove", function (e) {
+      if (mobileLayout || tabletLayout) return;
+      var rect = heroEl.getBoundingClientRect();
+      mouseParallax.x = clamp((e.clientX - rect.left) / rect.width - 0.5, -0.5, 0.5) * 2;
+      mouseParallax.y = clamp((e.clientY - rect.top) / rect.height - 0.5, -0.5, 0.5) * 2;
+      applyCardParallax();
+    });
+    ["nexora", "professional", "freiraum"].forEach(function (world) {
+      var zone = dom.worldZones[world];
+      if (!zone) return;
+      zone.addEventListener("mouseenter", function () {
+        zone.classList.add("is-hover", "is-active");
+      });
+      zone.addEventListener("mouseleave", function () {
+        zone.classList.remove("is-hover", "is-active");
+        zone.querySelectorAll(".world-card").forEach(function (card) {
+          card.style.removeProperty("--px");
+          card.style.removeProperty("--py");
+        });
+      });
+      zone.addEventListener("focusin", function () {
+        zone.classList.add("is-active");
+      });
+      zone.addEventListener("focusout", function () {
+        zone.classList.remove("is-active");
+      });
+      zone.addEventListener("click", function (e) {
+        if (e.target.closest("a.world-card") || e.target.closest(".world-core") || e.target.closest(".world-cards-more")) return;
+        if (!tabletLayout && !mobileLayout) return;
+        if (!zone.classList.contains("is-visible")) return;
+        if (!zone.classList.contains("is-active")) {
+          e.preventDefault();
+          ["nexora", "professional", "freiraum"].forEach(function (w) {
+            var z = dom.worldZones[w];
+            if (z) z.classList.remove("is-active", "is-expanded");
+          });
+          zone.classList.add("is-active", "is-expanded");
+        }
+      });
+    });
+    heroEl.querySelectorAll("[data-world-more]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var w = btn.getAttribute("data-world-more");
+        switchWorld(w);
+      });
+    });
+  }
+
+  function applyDecoImg(el, cfg, weight, build, axis) {
+    if (!el || !cfg) return;
+    var b = build || 0;
+    var scale = cfg.scale * lerp(0.35, 1, easeInOutCubic(b));
+    var rot = cfg.rotate + axis * 12 * b;
+    var xOff = axis * 8 * (1 - b);
+    el.style.opacity = String(cfg.opacity * weight * lerp(0.2, 1, b));
+    el.style.transform =
+      "translate3d(calc(-50% + " + xOff + "vw), -50%, 0) scale(" + scale + ") rotate(" + rot + "deg)";
+  }
+
+  function applyTopicGrid(el, opacity, build) {
+    if (!el) return;
+    var cards = el.querySelectorAll(".mv-topic-card");
+    el.style.opacity = String(opacity);
+    el.style.pointerEvents = opacity > 0.35 ? "auto" : "none";
+    cards.forEach(function (card, i) {
+      var delay = i * 0.09;
+      var t = clamp((build - delay) / (1 - delay), 0, 1);
+      t = easeOutExpo(t);
+      card.style.opacity = String(t * opacity);
+      card.style.transform = "translate3d(0, " + lerp(22, 0, t) + "px, 0) scale(" + lerp(0.94, 1, t) + ")";
+    });
+  }
+
+  function updateFrame() {
+    rafId = 0;
+    if (!heroEl || !config) return;
+
+    var rawP = getProgress();
+    if (reducedMotion || mobileLayout) {
+      animProgress = rawP;
+    } else {
+      var lerpFactor = config.smoothLerp || 0.075;
+      animProgress += (rawP - animProgress) * lerpFactor;
+      if (Math.abs(rawP - animProgress) < 0.00035) animProgress = rawP;
+    }
+    if (rawP !== animProgress) requestTick();
+
+    var p = animProgress;
+    var state = getState(p);
+    var px = config.parallax || {};
+    var par = mobileLayout ? 0.3 : window.innerWidth <= 1024 ? 0.65 : 1;
+    var bounds = config.bounds;
+    var fade = config.fade || 0.055;
+
+    var nexBuild = sceneEnvelope(segmentProgress(p, bounds[4], bounds[5]), 4);
+    var proBuild = sceneEnvelope(segmentProgress(p, bounds[5], bounds[6]), 5);
+    var freBuild = sceneEnvelope(segmentProgress(p, bounds[6], bounds[7]), 6);
+
+    if (dom.layers[1]) dom.layers[1].style.transform = "translate3d(0, " + layerShift(p, px.layer1_bg || 0.08, par) + "vh, 0)";
+    if (dom.layers[2]) dom.layers[2].style.transform = "translate3d(0, " + layerShift(p, px.layer2_nebula || 0.18, par) + "vh, 0)";
+    if (dom.layers[3]) dom.layers[3].style.transform = "translate3d(0, " + layerShift(p, px.layer3_particles || 0.28, par) + "vh, 0)";
+    if (dom.layers[4]) dom.layers[4].style.transform = "translate3d(0, " + layerShift(p, px.layer4_objects || 0.42, par) + "vh, 0)";
+    if (dom.layers[5]) dom.layers[5].style.transform = "translate3d(0, " + layerShift(p, px.layer5_cards || 0.58, par) + "vh, 0)";
+    if (dom.layers[6]) dom.layers[6].style.transform = "translate3d(0, " + layerShift(p, px.layer6_copy || 0.72, par) + "vh, 0)";
+    if (dom.layers[7]) dom.layers[7].style.transform = "translate3d(0, " + layerShift(p, px.layer7_ui || 0.85, par) + "vh, 0)";
+
+    ["multiverse", "nexora", "professional", "freiraum"].forEach(function (key) {
+      if (dom.bgs[key]) {
+        var bgOp = (state.backgrounds[key] || 0) * par;
+        dom.bgs[key].style.opacity = String(bgOp);
+        var img = dom.bgs[key].querySelector("img");
+        if (img) {
+          var zoom = 1 + bgOp * 0.08;
+          img.style.transform = "scale(" + zoom + ")";
+        }
+      }
+    });
+
+    if (dom.stars) dom.stars.style.opacity = String(state.stars * par);
+    if (dom.vignette) dom.vignette.style.opacity = String(state.vignette);
+
+    var themeWeights = {
+      multiverse: state.backgrounds.multiverse || 0,
+      nexora: state.backgrounds.nexora || 0,
+      professional: state.backgrounds.professional || 0,
+      freiraum: state.backgrounds.freiraum || 0,
+    };
+
+    Object.keys(dom.decoSets).forEach(function (theme) {
+      var set = dom.decoSets[theme];
+      var w = themeWeights[theme] || 0;
+      var d = state.decor;
+      var build = theme === "nexora" ? nexBuild : theme === "professional" ? proBuild : theme === "freiraum" ? freBuild : 0.5;
+      set.root.style.opacity = String(Math.min(1, w * 1.2));
+      applyDecoImg(set.orbit, d.orbit, w, build, 0);
+      applyDecoImg(set.orbit2, d.orbit2, w, build, 1);
+      if (set.light) {
+        set.light.style.opacity = String(d.light.opacity * w * lerp(0.3, 1, build));
+        set.light.style.transform = "translate3d(-50%, calc(-50% + " + lerp(8, 0, build) + "vh), 0) scale(" + lerp(0.8, 1.05, build) + ")";
+      }
+      if (set.line) {
+        set.line.style.opacity = String(d.line.opacity * w * build);
+        set.line.style.transform = "translate3d(-50%, -50%, 0) scaleX(" + lerp(0.2, 1, build) + ") scaleY(" + lerp(0.6, 1, build) + ")";
+      }
+    });
+
+    Object.keys(dom.particleFields).forEach(function (theme) {
+      var el = dom.particleFields[theme];
+      var w = themeWeights[theme] || 0;
+      el.style.opacity = String((state.decor.particles.opacity || 0.2) * w * par);
+    });
+
+    var activeScene = 0;
+    for (var s = 0; s < bounds.length - 1; s++) {
+      if (p >= bounds[s] && p < bounds[s + 1]) {
+        activeScene = s;
+        break;
+      }
+      if (p >= bounds[bounds.length - 2]) activeScene = bounds.length - 2;
+    }
+
+    var sceneLocal = segmentProgress(p, bounds[activeScene], bounds[activeScene + 1]);
+    var phases = worldScenePhases(sceneLocal, activeScene);
+    var layoutMode = layoutModeForScene(activeScene);
+    var orbPhase =
+      layoutMode === "overview"
+        ? sceneEnvelope(sceneLocal, activeScene)
+        : isWorldSlide(activeScene)
+        ? phases.orb
+        : 0.85;
+
+    if (dom.atmo.nexora) {
+      var atmoScale = layoutMode === "split-world" ? 0.55 : 1;
+      dom.atmo.nexora.style.opacity = String(themeWeights.nexora * nexBuild * atmoScale);
+      dom.atmo.nexora.style.transform = "scale(" + lerp(0.9, 1, nexBuild) + ")";
+    }
+    if (dom.atmo.professional) {
+      var atmoScalePro = layoutMode === "split-world" ? 0.5 : 1;
+      dom.atmo.professional.style.opacity = String(themeWeights.professional * proBuild * atmoScalePro);
+      dom.atmo.professional.style.transform = "translateX(" + lerp(-6, 0, proBuild) + "vw)";
+    }
+    if (dom.atmo.freiraum) {
+      var atmoScaleFre = layoutMode === "split-world" ? 0.58 : 1;
+      dom.atmo.freiraum.style.opacity = String(themeWeights.freiraum * freBuild * atmoScaleFre);
+      dom.atmo.freiraum.style.transform = "scale(" + lerp(0.85, 1.08, freBuild) + ") rotate(" + lerp(-4, 3, freBuild) + "deg)";
+    }
+
+    if (dom.bgs.overview) {
+      var inIntroReveal = activeScene <= 3 && slideKind(activeScene) !== "finale";
+      dom.bgs.overview.style.opacity = String(
+        inIntroReveal ? sceneEnvelope(sceneLocal, activeScene) * 0.88 : activeScene === 0 ? sceneEnvelope(sceneLocal, 0) * 0.88 : 0
+      );
+    }
+
+    var collageFocus = collageFocusForScene(activeScene);
+    var revealed = revealedWorldsForScene(activeScene);
+    heroEl.setAttribute("data-collage-focus", collageFocus);
+    heroEl.setAttribute("data-reveal-step", String(revealed.length));
+    applyWorldZoneStates(activeScene, phases);
+
+    if (dom.transitionTrail) {
+      var trailOp = clamp((state.transitionTrail || 0) * par, 0, 1);
+      dom.transitionTrail.style.opacity = String(trailOp);
+      dom.transitionTrail.style.transform =
+        "translate3d(-50%, -50%, 0) scale(" + lerp(0.88, 1.08, trailOp) + ")";
+    }
+
+    if (dom.overlayGlow) {
+      var mergeOp = slideKind(activeScene) === "merge" ? easeOutQuart(sceneLocal) * 0.85 : 0;
+      dom.overlayGlow.style.opacity = String(mergeOp);
+    }
+
+    function orbWithPhase(cfg) {
+      if (!cfg) return cfg;
+      var next = {};
+      Object.keys(cfg).forEach(function (k) {
+        next[k] = cfg[k];
+      });
+      next.opacity = (cfg.opacity || 0) * orbPhase;
+      return next;
+    }
+
+    var dominant = dominantOrbKey(state);
+
+    applyOrb(dom.orbs.nexora, orbWithPhase(state.orbs.nexora), 0, orbPhase, dominant === "nexora");
+    applyOrb(dom.orbs.professional, orbWithPhase(state.orbs.professional), 0, orbPhase, dominant === "professional");
+    applyOrb(dom.orbs.freiraum, orbWithPhase(state.orbs.freiraum), 0, orbPhase, dominant === "freiraum");
+
+    applyWorldAccents();
+
+    if (dom.worldGlow) {
+      var glowOp = isWorldSlide(activeScene) ? phases.orb * 0.95 : layoutMode === "overview" ? 0.55 : 0.2;
+      dom.worldGlow.style.opacity = String(glowOp);
+    }
+    if (dom.worldRing) {
+      var ringOp = isWorldSlide(activeScene) ? lerp(0.15, 0.62, phases.orb) : layoutMode === "overview" ? 0.38 : 0.1;
+      var ringRot =
+        slideKind(activeScene) === "world" && config.slides[activeScene].worldType === "professional"
+          ? p * 24
+          : slideKind(activeScene) === "world" && config.slides[activeScene].worldType === "freiraum"
+          ? p * 48
+          : p * 36;
+      dom.worldRing.style.opacity = String(ringOp);
+      dom.worldRing.style.transform =
+        "translate(-50%, -50%) rotate(" + ringRot + "deg) scale(" + lerp(0.94, 1.02, phases.orb || 0.5) + ")";
+    }
+    if (dom.radialGlows) {
+      ["nexora", "professional", "freiraum"].forEach(function (w) {
+        var el = dom.radialGlows[w];
+        if (!el) return;
+        var wgt = themeWeights[w] || 0;
+        var ro = wgt * (isWorldSlide(activeScene) ? phases.orb * 0.95 : layoutMode === "overview" ? 0.5 : 0.15);
+        el.style.opacity = String(clamp(ro, 0, 1));
+      });
+    }
+    if (dom.worldStage) {
+      dom.worldStage.style.transform =
+        layoutMode === "split-world"
+          ? "translateY(-50%) scale(" + lerp(0.96, 1, phases.orb || 1) + ")"
+          : layoutMode === "overview"
+          ? "translate(-50%, -50%) scale(" + lerp(0.94, 1, segmentProgress(p, bounds[0], bounds[1])) + ")"
+          : "";
+    }
+
+    var topicNex = topicVisibilityForWorld();
+    var topicPro = topicVisibilityForWorld();
+    var topicFre = topicVisibilityForWorld();
+    applyTopicGrid(dom.topicGrids.nexora, topicNex.opacity, topicNex.build);
+    applyTopicGrid(dom.topicGrids.professional, topicPro.opacity, topicPro.build);
+    applyTopicGrid(dom.topicGrids.freiraum, topicFre.opacity, topicFre.build);
+
+    for (var i = 0; i < dom.slides.length; i++) {
+      var slideKindI = slideKind(i);
+      if (slideKindI === "reveal") {
+        dom.slides[i].style.opacity = "0";
+        dom.slides[i].style.pointerEvents = "none";
+        dom.slides[i].classList.remove("is-active", "is-world-chapter");
+        continue;
+      }
+
+      var visStart = bounds[i];
+      var visEnd = bounds[i + 1];
+      if (i === 0 && slideKindI === "intro") {
+        visEnd = introHoldEndBound();
+      }
+
+      var vis = slideVisibility(p, visStart, visEnd, fade);
+      var slide = dom.slides[i];
+      var slideLocal = segmentProgress(p, bounds[i], bounds[i + 1]);
+      var slidePhases = worldScenePhases(slideLocal, i);
+      var copyEl = slide.querySelector(".world-copy");
+      var hintEl = slide.querySelector(".world-visual__hint");
+      var isWorldChapter = isWorldSlide(i);
+      var copyOpacity = isWorldChapter ? vis.opacity * slidePhases.env : vis.opacity;
+      var scale = lerp(0.98, 1, copyOpacity);
+
+      if (isWorldChapter) {
+        slide.style.opacity = String(vis.opacity > 0.02 ? 1 : 0);
+        slide.style.transform = "translate3d(-50%, -50%, 0)";
+        slide.style.pointerEvents = vis.active && copyOpacity > 0.2 ? "auto" : "none";
+        if (copyEl) {
+          copyEl.style.opacity = String(copyOpacity);
+          copyEl.style.transform =
+            "translate3d(0, " + lerp(14, 0, easeInOutSine(copyOpacity)) + "px, 0) scale(" + scale + ")";
+        }
+      } else {
+        slide.style.opacity = String(vis.opacity);
+        slide.style.transform =
+          "translate3d(-50%, calc(-50% + " + vis.y + "px), 0) scale(" + scale + ")";
+        slide.style.pointerEvents = vis.active && copyOpacity > 0.15 ? "auto" : "none";
+        if (copyEl) {
+          copyEl.style.opacity = "";
+          copyEl.style.transform = "";
+        }
+      }
+
+      slide.classList.toggle("is-active", vis.active && (isWorldChapter ? copyOpacity > 0.4 : vis.opacity > 0.45));
+      slide.classList.toggle("is-world-chapter", isWorldChapter && vis.active);
+
+      if (hintEl) {
+        hintEl.style.opacity = String(isWorldChapter ? slidePhases.hint * vis.opacity : 0);
+      }
+    }
+
+    if (dom.portfolio) {
+      var finIdx = config.slides.length - 1;
+      var finLocal = segmentProgress(p, bounds[finIdx], bounds[finIdx + 1]);
+      var finPhases = worldScenePhases(finLocal, finIdx);
+      var finTextOut = finLocal > 0.42 ? easeOutQuart(clamp((finLocal - 0.42) / 0.16, 0, 1)) : 0;
+      var portOp =
+        activeScene === finIdx && finLocal > 0.32
+          ? easeInOutSine(clamp((finLocal - 0.32) / 0.28, 0, 1))
+          : 0;
+      var cardScale = lerp(0.94, 1, portOp);
+      var portY = lerp(18, 0, portOp);
+      dom.portfolio.style.opacity = String(portOp);
+      dom.portfolio.style.transform =
+        "translate3d(-50%, calc(-50% + " + portY + "px), 0) scale(" + cardScale + ")";
+      var portfolioInteractive = portOp > 0.2;
+      dom.portfolio.style.pointerEvents = portfolioInteractive ? "auto" : "none";
+      heroEl.classList.toggle("is-portfolio-visible", portOp > 0.12);
+      heroEl.classList.toggle("is-portfolio-interactive", portfolioInteractive);
+      heroEl.classList.toggle("is-portfolio-hold", portfolioInteractive && !portfolioHoldUnlocked);
+      var finSlide = dom.slides[finIdx];
+      if (finSlide && activeScene === finIdx) {
+        var finCopy = finSlide.querySelector(".final-copy") || finSlide.querySelector(".scene-copy");
+        if (finCopy) {
+          var finVis = slideVisibility(p, bounds[finIdx], bounds[finIdx + 1], fade);
+          var copyOp = finPhases.copy * finVis.opacity * (1 - finTextOut);
+          finCopy.style.opacity = String(copyOp);
+          finCopy.style.transform = "translate3d(0, " + lerp(0, -20, finTextOut) + "px, 0)";
+        }
+      }
+    }
+
+    if (dom.cue) dom.cue.style.opacity = String(p < 0.05 ? 1 : clamp(1 - (p - 0.05) / 0.04, 0, 1));
+
+    heroEl.setAttribute("data-active-world", state.activeWorld || "multiversum");
+    heroEl.setAttribute("data-scene", String(activeScene + 1));
+    heroEl.setAttribute("data-layout", layoutMode);
+    heroEl.setAttribute("data-world-side", worldFocusSide(activeScene));
+    heroEl.setAttribute("data-dominant-orb", dominant || "");
+    heroEl.classList.toggle("is-world-focus", layoutMode === "split-world");
+    document.body.classList.toggle("is-world-focus", layoutMode === "split-world");
+  }
+
+  function requestTick() {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(updateFrame);
+  }
+
+  function heroMaxScroll() {
+    if (!scrollRoot || !heroEl) return 0;
+    return Math.max(heroEl.offsetHeight - scrollRoot.clientHeight, 0);
+  }
+
+  function isPortfolioHoldActive() {
+    if (!heroEl || !config) return false;
+    var p = getProgress();
+    var bounds = config.bounds;
+    var finIdx = config.slides.length - 1;
+    if (finIdx < 1 || p < bounds[finIdx]) return false;
+    var finLocal = segmentProgress(p, bounds[finIdx], bounds[finIdx + 1]);
+    return finLocal > 0.32;
+  }
+
+  function bindPortfolioScrollHold() {
+    if (!scrollRoot || !heroEl) return;
+
+    function onWheel(e) {
+      if (!isPortfolioHoldActive() || portfolioHoldUnlocked) return;
+      var max = heroMaxScroll();
+      if (max <= 0) return;
+      var atHeroEnd = scrollRoot.scrollTop >= max - 8;
+      if (!atHeroEnd) return;
+
+      if (e.deltaY > 0) {
+        if (portfolioHoldScrolls < PORTFOLIO_HOLD_SCROLLS) {
+          e.preventDefault();
+          portfolioHoldScrolls += 1;
+          heroEl.setAttribute("data-portfolio-hold", String(portfolioHoldScrolls));
+          if (portfolioHoldScrolls >= PORTFOLIO_HOLD_SCROLLS) {
+            portfolioHoldUnlocked = true;
+            heroEl.classList.add("is-portfolio-unlocked");
+            heroEl.removeAttribute("data-portfolio-hold");
+          }
+          requestTick();
+        }
+      } else if (e.deltaY < 0 && portfolioHoldScrolls > 0) {
+        portfolioHoldScrolls = Math.max(0, portfolioHoldScrolls - 1);
+        heroEl.setAttribute("data-portfolio-hold", String(portfolioHoldScrolls));
+      }
+    }
+
+    var touchStartY = 0;
+    scrollRoot.addEventListener(
+      "wheel",
+      onWheel,
+      { passive: false }
+    );
+    scrollRoot.addEventListener(
+      "touchstart",
+      function (e) {
+        touchStartY = e.touches && e.touches[0] ? e.touches[0].clientY : 0;
+      },
+      { passive: true }
+    );
+    scrollRoot.addEventListener(
+      "touchmove",
+      function (e) {
+        if (!isPortfolioHoldActive() || portfolioHoldUnlocked) return;
+        var max = heroMaxScroll();
+        if (max <= 0 || scrollRoot.scrollTop < max - 8) return;
+        var y = e.touches && e.touches[0] ? e.touches[0].clientY : touchStartY;
+        var delta = touchStartY - y;
+        if (delta > 12) {
+          if (portfolioHoldScrolls < PORTFOLIO_HOLD_SCROLLS) {
+            e.preventDefault();
+            portfolioHoldScrolls += 1;
+            heroEl.setAttribute("data-portfolio-hold", String(portfolioHoldScrolls));
+            touchStartY = y;
+            if (portfolioHoldScrolls >= PORTFOLIO_HOLD_SCROLLS) {
+              portfolioHoldUnlocked = true;
+              heroEl.classList.add("is-portfolio-unlocked");
+              heroEl.removeAttribute("data-portfolio-hold");
+            }
+            requestTick();
+          }
+        }
+      },
+      { passive: false }
+    );
+  }
+
+  function bindScroll() {
+    if (!scrollRoot) return;
+    onScrollHandler = function () {
+      if (!heroEl) {
+        requestTick();
+        return;
+      }
+      var max = heroMaxScroll();
+      if (scrollRoot.scrollTop < max - 48) {
+        portfolioHoldScrolls = 0;
+        portfolioHoldUnlocked = false;
+        heroEl.classList.remove("is-portfolio-unlocked");
+        heroEl.removeAttribute("data-portfolio-hold");
+      }
+      requestTick();
+    };
+    scrollRoot.addEventListener("scroll", onScrollHandler, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
+    requestTick();
+  }
+
+  function onResize() {
+    var wasMobile = mobileLayout;
+    mobileLayout = window.matchMedia("(max-width: 767px)").matches;
+    tabletLayout = window.matchMedia("(max-width: 1099px)").matches && !mobileLayout;
+    reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (heroEl) {
+      heroEl.classList.toggle("mv-scroll-story--mobile", mobileLayout);
+      heroEl.classList.toggle("mv-scroll-story--tablet", tabletLayout);
+      heroEl.classList.toggle("mv-scroll-story--reduced", reducedMotion);
+      var vh = config.scrollHeightVh || 820;
+      if (window.innerWidth <= 1024 && config.scrollHeightVhTablet) vh = config.scrollHeightVhTablet;
+      if (mobileLayout) vh = Math.min(vh, 520);
+      heroEl.style.setProperty("--mv-scroll-vh", String(vh));
+    }
+    if (wasMobile !== mobileLayout && dom.orbs) {
+      ["nexora", "professional", "freiraum"].forEach(function (w) {
+        var orb = dom.orbs[w];
+        if (!orb) return;
+        var img = orb.querySelector(".mv-orb-bubble__standalone");
+        if (img) img.src = orbSrc(w);
+      });
+    }
+    requestTick();
+  }
+
+  function isDesktopParallaxHero() {
+    try {
+      return window.matchMedia("(min-width: 1100px)").matches;
+    } catch (e) {
+      return window.innerWidth >= 1100;
+    }
+  }
+
+  function buildParallaxHero(goChapter) {
+    if (document.getElementById("mvParallaxHero") || document.body.getAttribute("data-world") !== "general") return null;
+    if (!isDesktopParallaxHero()) return null;
+    if (!window.MVSceneConfig || !window.MVSceneConfig.keyframes) return null;
+
+    config = window.MVSceneConfig;
+    mobileLayout = false;
+    tabletLayout = false;
+
+    var stage = document.getElementById("dnaStage");
+    if (!stage) return null;
+    scrollRoot = document.getElementById("slide-home");
+    if (!scrollRoot) return null;
+
+    var wrap = document.createElement("div");
+    wrap.innerHTML = heroMarkup();
+    heroEl = wrap.firstElementChild;
+    heroEl.style.setProperty("--mv-scroll-vh", String(config.scrollHeightVh || 820));
+
+    stage.parentNode.insertBefore(heroEl, stage);
+    stage.classList.add("mv-dna-hidden");
+    stage.remove();
+
+    cacheDom();
+    Object.keys(dom.particleFields || {}).forEach(function (theme) {
+      var src = ASSETS.deco[theme] && ASSETS.deco[theme].particles;
+      if (src && dom.particleFields[theme]) {
+        dom.particleFields[theme].style.backgroundImage = "url(" + asset(src) + ")";
+      }
+    });
+    bindGoButtons(heroEl, goChapter);
+    bindCollageInteractions();
+    bindPortfolioScrollHold();
+    onResize();
+    bindScroll();
+    heroEl.classList.add("is-js-ready");
+    return heroEl;
+  }
+
+  function destroy() {
+    if (rafId) window.cancelAnimationFrame(rafId);
+    if (scrollRoot && onScrollHandler) scrollRoot.removeEventListener("scroll", onScrollHandler);
+    window.removeEventListener("resize", onResize);
+    portfolioHoldScrolls = 0;
+    portfolioHoldUnlocked = false;
+    onScrollHandler = null;
+  }
+
+  window.MVParallaxHero = {
+    build: buildParallaxHero,
+    destroy: destroy,
+    switchWorld: switchWorld,
+    requestWorldSwitch: requestWorldSwitch,
+  };
+})();

@@ -58,6 +58,14 @@
     if (link) link.click();
   }
 
+  function isDesktopParallaxHero() {
+    try {
+      return window.matchMedia("(min-width: 1100px)").matches;
+    } catch (e) {
+      return window.innerWidth >= 1100;
+    }
+  }
+
   function buildStaticHero() {
     if (document.getElementById("mvStaticHero")) return;
     var stage = document.getElementById("dnaStage");
@@ -91,6 +99,15 @@
         goChapter(btn.getAttribute("data-go"));
       });
     });
+  }
+
+  function buildHero() {
+    if (document.getElementById("mvParallaxHero") || document.getElementById("mvStaticHero")) return;
+    if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
+      var built = window.MVParallaxHero.build(goChapter);
+      if (built) return;
+    }
+    buildStaticHero();
   }
 
   function syncActiveNav() {
@@ -142,7 +159,7 @@
 
   function boot() {
     applyTheme();
-    buildStaticHero();
+    buildHero();
     applyProfiles();
     injectContactForm();
     syncActiveNav();
