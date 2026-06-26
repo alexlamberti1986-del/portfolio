@@ -540,10 +540,18 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   }
 }
 
-.world-zone:hover .world-core,
 .world-zone.is-scroll-active.is-dominant .world-core,
 .world-zone.is-expanded .world-core {
-  transform: scale(1.04);
+  transform: none;
+}
+
+.world-zone.is-focus:hover .world-core img.mv-orb-bubble__standalone,
+.world-core:hover img.mv-orb-bubble__standalone,
+.world-core:focus-visible img.mv-orb-bubble__standalone,
+.world-core.is-pressed img.mv-orb-bubble__standalone {
+  transform: scale(1.06);
+  filter: brightness(1.08) saturate(1.08);
+  animation-play-state: paused;
 }
 
 .mv-scroll-orb.world-zone.is-background {
@@ -766,8 +774,8 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 .world-core:hover,
 .world-core:focus-visible,
 .world-core.is-pressed {
-  transform: scale(1.06);
-  filter: brightness(1.05);
+  transform: none;
+  filter: none;
 }
 
 .world-core:hover img.mv-orb-bubble__standalone,
@@ -1180,8 +1188,11 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 .world-core .mv-orb-bubble__label {
   position: absolute;
   left: 50%;
-  bottom: 6%;
-  transform: translateX(-50%);
+  right: auto;
+  bottom: 8%;
+  top: auto;
+  transform: translate(-50%, 0);
+  translate: none;
   font-size: clamp(16px, 1.05vw, 21px);
   letter-spacing: 0.22em;
   font-weight: 800;
@@ -1191,6 +1202,8 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   opacity: 1;
   z-index: 4;
   white-space: nowrap;
+  pointer-events: none;
+  transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
 }
 
 .mv-scroll-story[data-layout="overview"] .world-zone .world-name,
@@ -1227,8 +1240,11 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 .mv-scroll-orb span.mv-orb-bubble__label {
   position: absolute;
   left: 50%;
+  right: auto;
   bottom: 8%;
-  translate: -50% 0;
+  top: auto;
+  transform: translate(-50%, 0);
+  translate: none;
   opacity: 1;
   padding: 8px 16px;
   border: 1px solid rgba(255, 255, 255, 0.22);
@@ -1242,20 +1258,37 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 0 18px rgba(0, 0, 0, 0.65);
-  transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.45s ease, color 0.45s ease;
+  transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
   z-index: 4;
   white-space: nowrap;
+}
+
+.world-core .mv-orb-bubble__label,
+.world-core .world-name,
+.world-core:hover .mv-orb-bubble__label,
+.world-core:hover .world-name,
+.world-core:focus-visible .mv-orb-bubble__label,
+.world-zone:hover .world-core .mv-orb-bubble__label,
+.world-zone.is-focus .world-core .mv-orb-bubble__label,
+.world-zone.is-focus:hover .world-core .mv-orb-bubble__label,
+.mv-scroll-orb.world-zone:hover .world-core .mv-orb-bubble__label,
+.mv-scroll-orb.world-zone.is-focus .world-core .mv-orb-bubble__label {
+  left: 50% !important;
+  right: auto !important;
+  bottom: 8% !important;
+  transform: translate(-50%, 0) !important;
+  translate: none !important;
 }
 
 .mv-scroll-orb.is-labeled .mv-orb-bubble__label,
 .mv-scroll-story[data-layout="overview"] .mv-scroll-orb.is-labeled .mv-orb-bubble__label {
   opacity: 1;
-  transform: translateY(-4px);
+  transform: translate(-50%, 0);
 }
 
 .mv-scroll-orb.is-dominant .mv-orb-bubble__label {
   opacity: 1;
-  transform: translateY(-6px);
+  transform: translate(-50%, 0);
   font-weight: 600;
 }
 
@@ -1280,10 +1313,9 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   box-shadow: 0 0 22px rgba(255, 75, 163, 0.22);
 }
 
-.mv-scroll-orb:hover .mv-orb-bubble__label,
-.mv-scroll-orb:focus-visible .mv-orb-bubble__label {
+.mv-scroll-orb:hover > .mv-orb-bubble__label,
+.mv-scroll-orb:focus-visible > .mv-orb-bubble__label {
   opacity: 1;
-  transform: translateY(-8px);
   outline: none;
 }
 
