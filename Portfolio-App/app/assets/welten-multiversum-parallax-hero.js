@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260626mv-v23finale";
+  var V = "?v=20260626mv-v24links";
 
   var ASSETS = {
     bg: {
@@ -338,6 +338,28 @@
     requestWorldSwitch(world, hash, go);
   }
 
+  function bindPressFeedback(root) {
+    root.querySelectorAll(".world-core, .world-card").forEach(function (el) {
+      function clearPressed() {
+        el.classList.remove("is-pressed");
+      }
+      el.addEventListener("mousedown", function () {
+        el.classList.add("is-pressed");
+      });
+      el.addEventListener("mouseup", clearPressed);
+      el.addEventListener("mouseleave", clearPressed);
+      el.addEventListener(
+        "touchstart",
+        function () {
+          el.classList.add("is-pressed");
+        },
+        { passive: true }
+      );
+      el.addEventListener("touchend", clearPressed);
+      el.addEventListener("touchcancel", clearPressed);
+    });
+  }
+
   function bindWorldNavigation(root) {
     root.addEventListener(
       "click",
@@ -346,7 +368,7 @@
         if (core) {
           e.preventDefault();
           e.stopPropagation();
-          navigateWorldLink(core.getAttribute("data-world"), "#home", "home", core.getAttribute("href"));
+          navigateWorldLink(core.getAttribute("data-world"), "", "home", core.getAttribute("href"));
           return;
         }
         var card = e.target.closest("a.world-card[data-world]");
@@ -362,6 +384,7 @@
       },
       true
     );
+    bindPressFeedback(root);
   }
 
   function bindGoButtons(root, goChapter) {
@@ -698,9 +721,11 @@
       worldPageHref(world) +
       '" data-world="' +
       world +
-      '" data-go="home" data-target="#home" aria-label="' +
+      '" data-go="home" data-target="" title="' +
       label +
-      ' öffnen">' +
+      ' Home öffnen" aria-label="' +
+      label +
+      ' Home öffnen">' +
       '<img class="mv-orb-bubble__standalone" src="' +
       asset(ASSETS.orbs[world]) +
       '" alt="' +

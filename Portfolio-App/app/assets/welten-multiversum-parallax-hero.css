@@ -467,7 +467,7 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   text-decoration: none;
   transform-style: preserve-3d;
   will-change: transform, opacity;
-  transition: transform 0.55s ease;
+  transition: transform 0.55s ease, filter 0.35s ease;
   z-index: 12;
   overflow: visible;
   pointer-events: auto;
@@ -739,29 +739,6 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   z-index: var(--z-cards);
 }
 
-@media (hover: hover) and (min-width: 1100px) {
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:hover {
-    transform:
-      translate(-50%, -50%)
-      rotate(var(--card-angle, 0deg))
-      translateY(calc(-1 * var(--card-orbit, 26cqmin)))
-      rotate(calc(-1 * var(--card-angle, 0deg)))
-      scale(1.045);
-    filter: brightness(1.08) saturate(1.06);
-    z-index: calc(var(--z-cards) + 4);
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core:hover img.mv-orb-bubble__standalone,
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus:hover .world-core img.mv-orb-bubble__standalone {
-    transform: scale(1.06);
-    filter: brightness(1.08) saturate(1.08);
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core img.mv-orb-bubble__standalone {
-    transition: transform 0.38s ease, filter 0.38s ease;
-  }
-}
-
 .world-card__image,
 .world-card-media {
   display: flex;
@@ -775,6 +752,28 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   background: transparent;
   border: none;
   box-shadow: none;
+  transition: transform 0.32s ease, filter 0.32s ease;
+  transform-origin: center center;
+}
+
+.world-card:hover .world-card__image,
+.world-card:focus-visible .world-card__image,
+.world-card.is-pressed .world-card__image {
+  transform: scale(1.07);
+  filter: brightness(1.08) saturate(1.06);
+}
+
+.world-core:hover,
+.world-core:focus-visible,
+.world-core.is-pressed {
+  transform: scale(1.06);
+  filter: brightness(1.05);
+}
+
+.world-core:hover img.mv-orb-bubble__standalone,
+.world-core:focus-visible img.mv-orb-bubble__standalone,
+.world-core.is-pressed img.mv-orb-bubble__standalone {
+  animation-play-state: paused;
 }
 
 .world-card__image img,
@@ -2552,7 +2551,29 @@ body.is-world-focus .mv-scroll-story .world-copy button {
     cursor: pointer;
   }
 
-  .world-core:focus-visible {
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core .world-name,
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core .mv-orb-bubble__label {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    pointer-events: none;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:hover,
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:focus-visible,
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card.is-pressed {
+    z-index: calc(var(--z-cards) + 8);
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:hover .world-card__image,
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:focus-visible .world-card__image,
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card.is-pressed .world-card__image {
+    transform: scale(1.08);
+    filter: brightness(1.1) saturate(1.08);
+  }
+
+  .world-core:focus-visible,
+  .world-card:focus-visible {
     outline: 2px solid rgba(104, 231, 255, 0.65);
     outline-offset: 4px;
   }
