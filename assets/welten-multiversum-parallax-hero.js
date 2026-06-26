@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260626mv-v25label";
+  var V = "?v=20260626mv-v26worldbtn";
 
   var ASSETS = {
     bg: {
@@ -396,8 +396,10 @@
     });
     root.querySelectorAll("[data-world-enter]").forEach(function (btn) {
       btn.addEventListener("click", function (e) {
+        e.preventDefault();
         e.stopPropagation();
-        switchWorld(btn.getAttribute("data-world-enter"));
+        var world = btn.getAttribute("data-world-enter");
+        navigateWorldLink(world, "", "home", worldPageHref(world));
       });
     });
     bindWorldNavigation(root);

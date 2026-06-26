@@ -2271,31 +2271,61 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-size: 0.78rem;
-  border-color: rgba(104, 231, 255, 0.35);
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-.mv-scroll-slide__enter.mv-form-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(104, 231, 255, 0.18);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease, color 0.35s ease;
 }
 
 .mv-scroll-slide--nexora .mv-scroll-slide__enter.mv-form-btn {
-  border-color: rgba(0, 168, 255, 0.5);
-  color: #68e7ff;
-  background: rgba(0, 40, 80, 0.35);
+  border-color: rgba(0, 168, 255, 0.5) !important;
+  color: #68e7ff !important;
+  background: rgba(0, 40, 80, 0.35) !important;
+  box-shadow: none !important;
+}
+
+.mv-scroll-slide--nexora .mv-scroll-slide__enter.mv-form-btn:hover,
+.mv-scroll-slide--nexora .mv-scroll-slide__enter.mv-form-btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(104, 231, 255, 0.82) !important;
+  color: #9ee8ff !important;
+  background: rgba(0, 56, 112, 0.48) !important;
+  box-shadow: 0 10px 32px rgba(0, 168, 255, 0.28) !important;
 }
 
 .mv-scroll-slide--professional .mv-scroll-slide__enter.mv-form-btn {
-  border-color: rgba(207, 213, 223, 0.4);
-  color: #e8ecf2;
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(207, 213, 223, 0.42) !important;
+  color: #e8ecf2 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: none !important;
+}
+
+.mv-scroll-slide--professional .mv-scroll-slide__enter.mv-form-btn:hover,
+.mv-scroll-slide--professional .mv-scroll-slide__enter.mv-form-btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(232, 236, 242, 0.72) !important;
+  color: #f5f7fa !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(207, 213, 223, 0.24), 0 0 24px rgba(207, 213, 223, 0.14) !important;
 }
 
 .mv-scroll-slide--freiraum .mv-scroll-slide__enter.mv-form-btn {
-  border-color: rgba(255, 75, 163, 0.48);
-  color: #ff9bc2;
-  background: rgba(60, 10, 40, 0.35);
+  border-color: rgba(255, 209, 102, 0.52) !important;
+  color: #ffd166 !important;
+  background: rgba(48, 36, 8, 0.34) !important;
+  box-shadow: none !important;
+}
+
+.mv-scroll-slide--freiraum .mv-scroll-slide__enter.mv-form-btn:hover,
+.mv-scroll-slide--freiraum .mv-scroll-slide__enter.mv-form-btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 216, 106, 0.82) !important;
+  color: #ffe08a !important;
+  background: rgba(56, 42, 10, 0.46) !important;
+  box-shadow: 0 10px 32px rgba(255, 209, 102, 0.26) !important;
+}
+
+body[data-world="general"] .mv-scroll-story .mv-scroll-slide--nexora .mv-scroll-slide__enter.mv-form-btn:hover,
+body[data-world="general"] .mv-scroll-story .mv-scroll-slide--professional .mv-scroll-slide__enter.mv-form-btn:hover,
+body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scroll-slide__enter.mv-form-btn:hover {
+  text-decoration: none !important;
 }
 
 .mv-scroll-slide--world .world-copy h2,
@@ -2580,6 +2610,12 @@ body.is-world-focus .mv-scroll-story .world-copy button {
     inset: 28%;
     z-index: 14;
     pointer-events: auto;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core,
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core * {
     cursor: pointer;
   }
 
