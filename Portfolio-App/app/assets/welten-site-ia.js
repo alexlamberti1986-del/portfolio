@@ -203,9 +203,60 @@
     }
   }
 
+  function scrollToSection(targetHash, goChapter) {
+    if (goChapter) navigateToChapter(goChapter);
+    if (!targetHash) return;
+    var id = String(targetHash).replace(/^#/, "");
+    var sectionAliases = {
+      "ueber-mich": "slide-about",
+      projekte: "slide-projects",
+      leistungen: "slide-leistungen",
+      kontakt: "slide-contact",
+      faq: "slide-about",
+      expertise: "slide-about",
+      "erfahrung-bildung": "slide-about",
+      "werte-arbeitsweise": "slide-about",
+      "naechster-schritt": "slide-contact",
+      webdesign: "slide-leistungen",
+      seo: "slide-leistungen",
+      logo: "slide-leistungen",
+      "qr-code": "slide-leistungen",
+      leadformular: "slide-projects",
+      print: "slide-leistungen",
+      "layout-3d": "slide-leistungen",
+      praesentationen: "slide-projects",
+      strategie: "slide-about",
+      kreativitaet: "slide-about",
+      "business-design": "slide-leistungen",
+    };
+    var targetId = sectionAliases[id] || id;
+    setTimeout(
+      function () {
+        var el = document.getElementById(targetId);
+        if (!el) {
+          el =
+            document.querySelector('.slide[data-slide="' + id + '"]') ||
+            document.getElementById("slide-" + id);
+        }
+        if (el && el.closest && el.closest(".mv-collage-anchors") && sectionAliases[id]) {
+          el = document.getElementById(sectionAliases[id]);
+        }
+        if (el && el.scrollIntoView) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      },
+      goChapter ? 380 : 120
+    );
+  }
+
   function onParentChapterMessage(e) {
     if (!e.data || e.data.type !== "portfolio-go-chapter") return;
     navigateToChapter(e.data.chapter);
+  }
+
+  function onAlexScrollMessage(e) {
+    if (!e.data || e.data.type !== "alex:scroll-to-section") return;
+    scrollToSection(e.data.targetHash, e.data.go);
   }
 
   function apply() {
@@ -216,6 +267,7 @@
     patchNavigationClicks();
     watchChapterChanges();
     window.addEventListener("message", onParentChapterMessage);
+    window.addEventListener("message", onAlexScrollMessage);
     initFromUrl();
   }
 
@@ -228,6 +280,7 @@
   window.WeltenSiteIA = {
     resolveChapter: resolveChapter,
     navigateToChapter: navigateToChapter,
+    scrollToSection: scrollToSection,
     syncUrl: syncUrl,
     ROUTES: ROUTES,
   };

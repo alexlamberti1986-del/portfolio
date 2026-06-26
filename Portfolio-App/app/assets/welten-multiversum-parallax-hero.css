@@ -56,7 +56,7 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   --z-header: 500;
 }
 
-/* Fallback: ohne JS sofort sichtbar (MULTIVERSUM Opening) */
+/* Fallback: ohne JS nur MULTIVERSUM-Intro — keine Weltenkugeln / Nexora-Elemente */
 .mv-scroll-story:not(.is-js-ready) .mv-scroll-bg[data-bg="multiverse"] {
   opacity: 1 !important;
 }
@@ -67,9 +67,23 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   pointer-events: auto;
 }
 
-.mv-scroll-story:not(.is-js-ready) .mv-scroll-orbs,
 .mv-scroll-story:not(.is-js-ready) .mv-scroll-cue {
   opacity: 1 !important;
+}
+
+.mv-scroll-story:not(.is-js-ready) .mv-world-stage,
+.mv-scroll-story:not(.is-js-ready) .mv-scroll-orbs,
+.mv-scroll-story:not(.is-js-ready) .world-zone,
+.mv-scroll-story:not(.is-js-ready) .mv-scroll-bg:not([data-bg="multiverse"]),
+.mv-scroll-story:not(.is-js-ready) [data-deco-theme]:not([data-deco-theme="multiverse"]),
+.mv-scroll-story:not(.is-js-ready) [data-particle-field]:not([data-particle-field="multiverse"]),
+.mv-scroll-story:not(.is-js-ready) [data-atmo],
+.mv-scroll-story:not(.is-js-ready) .mv-transition-trail,
+.mv-scroll-story:not(.is-js-ready) .mv-world-stage__radial,
+.mv-scroll-story:not(.is-js-ready) .mv-world-stage__overlay {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .mv-scroll-sticky {
@@ -569,7 +583,7 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   filter: saturate(0.94) brightness(0.94);
   transition: opacity 0.55s ease, transform 0.55s ease, filter 0.55s ease, visibility 0.55s ease;
   pointer-events: none;
-  z-index: 260;
+  z-index: 20;
   overflow: visible;
   --card-orbit: 26cqmin;
 }
@@ -582,8 +596,19 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   opacity: 1;
   visibility: visible;
   transform: scale(1);
-  pointer-events: auto;
+  pointer-events: none;
   filter: saturate(1) brightness(1);
+}
+
+.world-zone.is-scene-active .world-card,
+.world-zone.is-focus .world-card {
+  pointer-events: auto;
+}
+
+.world-zone.is-focus .world-core {
+  inset: 34%;
+  z-index: 50;
+  pointer-events: auto;
 }
 
 .world-zone.is-visible:not(.is-scene-active):not(.is-focus) .world-collage {
@@ -596,10 +621,6 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-}
-
-.world-zone.is-focus .world-core {
-  inset: 34%;
 }
 
 .world-zone.is-background.is-visible .world-collage,
@@ -615,7 +636,7 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   opacity: 1;
   transform: scale(1.02);
   filter: saturate(1.06) brightness(1.04);
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .mv-scroll-story[data-layout="overview"] .world-zone .world-card {
@@ -2592,23 +2613,19 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-collage {
-    pointer-events: auto;
+    pointer-events: none;
     z-index: 20;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
     cursor: pointer;
     pointer-events: auto;
-  }
-
-  .mv-scroll-story .world-card__image,
-  .mv-scroll-story .world-card__image img {
-    pointer-events: none;
+    z-index: 30;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
     inset: 28%;
-    z-index: 14;
+    z-index: 50;
     pointer-events: auto;
     cursor: pointer;
     text-decoration: none;
@@ -2617,6 +2634,11 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core,
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core * {
     cursor: pointer;
+  }
+
+  .mv-scroll-story .world-card__image,
+  .mv-scroll-story .world-card__image img {
+    pointer-events: none;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core .world-name,

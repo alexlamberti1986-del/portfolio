@@ -400,15 +400,25 @@ body[data-world="freiraum"] .welten-cta-band::before {
   gap: clamp(1.25rem, 3vw, 2.5rem) !important;
 }
 
-#slide-home .home-portrait-card {
+body:not([data-world="vertex"]) #slide-home .home-portrait-card {
   border-radius: clamp(18px, 3vw, 28px) !important;
   overflow: hidden;
   transform: rotate(-1.5deg);
   transition: transform 0.4s ease;
 }
 
-#slide-home .home-portrait-card:hover {
+body:not([data-world="vertex"]) #slide-home .home-portrait-card:hover {
   transform: rotate(0deg) scale(1.01);
+}
+
+body[data-world="vertex"] #slide-home .home-portrait-card {
+  border-radius: 0 !important;
+  overflow: hidden;
+  transform: none !important;
+}
+
+body[data-world="vertex"] #slide-home .home-portrait-card:hover {
+  transform: none !important;
 }
 
 /* Buttons polish — NEXORA behält Pill-Form */

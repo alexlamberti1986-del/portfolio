@@ -208,16 +208,18 @@
   margin-right: auto;
 }
 
-/* ── Rechte Punktnavigation: nur grosser Desktop ── */
+/* ── Rechte Punktnavigation: Multiversum ohne Scroll; Welten wieder sichtbar ── */
 @media (max-width: 1400px) {
-  .experience-rail,
-  .side-nav,
-  .dot-nav,
-  .chapter-nav,
-  .vertical-nav,
-  .right-nav,
-  .chapter-dots,
-  .chapter-dock {
+  body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail,
+  body[data-world="general"]:has(#mvParallaxHero):not([data-current-slide]) .experience-rail,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .experience-rail,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .side-nav,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .dot-nav,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .chapter-nav,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .vertical-nav,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .right-nav,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .chapter-dots,
+  body:not([data-world="nexora"]):not([data-world="vertex"]):not([data-world="freiraum"]) .chapter-dock {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
@@ -230,6 +232,23 @@
 
   #slide-home.slide {
     padding-right: 0 !important;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1400px) {
+  body[data-world="nexora"] .experience-rail,
+  body[data-world="vertex"] .experience-rail,
+  body[data-world="freiraum"] .experience-rail {
+    display: grid !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-world="nexora"] .slide:not(#slide-home),
+  body[data-world="vertex"] .slide:not(#slide-home),
+  body[data-world="freiraum"] .slide:not(#slide-home) {
+    padding-right: clamp(56px, 6vw, 96px) !important;
   }
 }
 

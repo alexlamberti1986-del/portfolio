@@ -27,6 +27,11 @@
     border-radius: 32px !important;
   }
 
+  html.welten-mobile body[data-world="vertex"] #slide-home .home-portrait-card {
+    border-radius: 0 !important;
+    transform: none !important;
+  }
+
   html.welten-mobile body[data-world] #slide-home .home-portrait-card::before,
   html.welten-mobile body[data-world] #slide-home .home-portrait-card::after {
     display: none !important;

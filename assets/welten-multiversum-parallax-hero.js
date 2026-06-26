@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260626mv-v27btncenter";
+  var V = "?v=20260626mv-v29boot";
 
   var ASSETS = {
     bg: {
@@ -360,6 +360,16 @@
     });
   }
 
+  function bindWorldCoreLinks(root) {
+    root.querySelectorAll("a.world-core[data-world]").forEach(function (core) {
+      core.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        navigateWorldLink(core.getAttribute("data-world"), "", "home", core.getAttribute("href"));
+      });
+    });
+  }
+
   function bindWorldNavigation(root) {
     root.addEventListener(
       "click",
@@ -385,6 +395,7 @@
       true
     );
     bindPressFeedback(root);
+    bindWorldCoreLinks(root);
   }
 
   function bindGoButtons(root, goChapter) {
@@ -1122,6 +1133,7 @@
           cardEl.style.opacity = "";
           cardEl.style.visibility = "";
           cardEl.style.display = "";
+          cardEl.style.pointerEvents = "";
         });
       }
       var core = zone.querySelector(".world-core");
@@ -1129,6 +1141,8 @@
         core.style.opacity = "";
         core.style.visibility = "";
         core.style.display = "";
+        core.style.pointerEvents = "";
+        core.style.zIndex = "";
       }
     });
   }
@@ -1241,16 +1255,19 @@
           collage.style.opacity = String(cardEnv);
           collage.style.transform = "scale(" + lerp(0.96, 1, cardEnv) + ")";
           collage.style.visibility = cardEnv > 0.04 ? "visible" : "hidden";
-          collage.style.pointerEvents = cardEnv > 0.18 ? "auto" : "none";
+          collage.style.pointerEvents = "none";
           collage.querySelectorAll(".world-card").forEach(function (cardEl, cardIdx) {
             var stagger = cardIdx * 0.06;
             var cardT = clamp((cardEnv - stagger) / (1 - stagger), 0, 1);
             cardEl.style.opacity = String(cardT);
+            cardEl.style.pointerEvents = cardT > 0.18 ? "auto" : "none";
           });
         }
         var core = zone.querySelector(".world-core");
         if (core) {
           core.style.opacity = String(isWorldFocus ? env : Math.min(1, zoneEnv * 0.95 + 0.05));
+          core.style.pointerEvents = isWorldFocus && env > 0.18 ? "auto" : "none";
+          core.style.zIndex = isWorldFocus ? "50" : "";
         }
       } else {
         zone.style.removeProperty("--scene-env");
@@ -1263,10 +1280,15 @@
           collageOff.style.removeProperty("--card-orbit");
           collageOff.querySelectorAll(".world-card").forEach(function (cardEl) {
             cardEl.style.opacity = "";
+            cardEl.style.pointerEvents = "";
           });
         }
         var coreOff = zone.querySelector(".world-core");
-        if (coreOff) coreOff.style.opacity = "";
+        if (coreOff) {
+          coreOff.style.opacity = "";
+          coreOff.style.pointerEvents = "";
+          coreOff.style.zIndex = "";
+        }
       }
 
       if (!isWorldFocus) {
@@ -1846,6 +1868,14 @@
     scrollRoot = document.getElementById("slide-home");
     if (!scrollRoot) return null;
 
+    if ("scrollRestoration" in window.history) {
+      try {
+        window.history.scrollRestoration = "manual";
+      } catch (e) {}
+    }
+    scrollRoot.scrollTop = 0;
+    animProgress = 0;
+
     var wrap = document.createElement("div");
     wrap.innerHTML = heroMarkup();
     heroEl = wrap.firstElementChild;
@@ -1867,6 +1897,7 @@
     bindPortfolioScrollHold();
     onResize();
     bindScroll();
+    updateFrame();
     heroEl.classList.add("is-js-ready");
     return heroEl;
   }

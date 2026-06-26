@@ -37,7 +37,7 @@
     var src =
       "assets/images/4welten-preview/general/" +
       encodeURIComponent("MULTIVERSUM PROFILBILD für HOME und Kontakt.png") +
-      "?v=20260621-profile-new";
+      "?v=20260626-prof-neu";
     document.querySelectorAll(".home-portrait-card img, #contactPhoto, .contact-photo, #heroPhoto").forEach(function (img) {
       img.src = src;
       img.removeAttribute("srcset");
