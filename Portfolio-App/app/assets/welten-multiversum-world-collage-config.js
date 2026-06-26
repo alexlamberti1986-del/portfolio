@@ -1,15 +1,23 @@
 /**
- * MULTIVERSUM — Welt-Collage v14 Final (transparente Paket-Assets)
+ * MULTIVERSUM — Welt-Collage v16 (2x High-Res Assets)
  */
 (function () {
   "use strict";
 
-  var CARDS = "assets/multiversum-v14/cards/";
-  var ORBS = "assets/multiversum-v14/orbs/";
+  var CARDS = "assets/multiversum-v16/cards/";
+  var ORBS = "assets/multiversum-v16/orbs/";
   var PAGES = {
     nexora: "NEXORA.html",
     professional: "PROFESSIONAL.html",
     freiraum: "FREIRAUM.html",
+  };
+
+  var CARD_SLUG = {
+    home: "home",
+    projects: "projekte",
+    leistungen: "leistungen",
+    about: "ueber-mich",
+    contact: "kontakt",
   };
 
   function card(world, label, imagePath, go, target) {
@@ -20,6 +28,7 @@
       go: go,
       target: target,
       href: PAGES[world] + (target || ""),
+      cardSlug: CARD_SLUG[go] || go || "home",
     };
   }
 
@@ -66,9 +75,9 @@
   };
 
   window.MVWorldCollage = {
-    version: 14,
+    version: 16,
     layout: "mindmap-petal",
-    assetBase: "assets/multiversum-v14/",
+    assetBase: "assets/multiversum-v16/",
     orbs: ORBS,
     pages: PAGES,
     worldCards: worldCards,

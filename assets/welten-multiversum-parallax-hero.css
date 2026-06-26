@@ -2307,3 +2307,100 @@ body.is-world-focus .mv-scroll-story .world-copy button {
     right: auto;
   }
 }
+
+/* V16 recording audit — desktop parallax hero only */
+@media (min-width: 1100px) {
+  .mv-scroll-story {
+    --mv-copy-w: clamp(360px, 34vw, 560px);
+    --mv-orb-size: clamp(280px, 26vw, 470px);
+    --mv-card-w: clamp(128px, 9.2vw, 178px);
+    --mv-card-gap: clamp(22px, 2.2vw, 42px);
+  }
+
+  .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="right"] .mv-world-stage {
+    left: auto;
+    right: clamp(48px, 8vw, 120px);
+  }
+
+  .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="left"] .mv-world-stage {
+    left: clamp(48px, 8vw, 120px);
+    right: auto;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus {
+    width: min(58vw, 820px);
+    height: min(66vh, 720px);
+    --card-orbit: 0;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
+    width: var(--mv-card-w);
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card__image img {
+    max-height: clamp(88px, 8.2vw, 132px);
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="home"] {
+    left: 50%;
+    top: 7%;
+    transform: translateX(-50%);
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    left: 20%;
+    top: 27%;
+    transform: translate(-50%, -50%);
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    left: 80%;
+    top: 28%;
+    transform: translate(-50%, -50%);
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    left: 20%;
+    top: 72%;
+    transform: translate(-50%, -50%);
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    left: 80%;
+    top: 72%;
+    transform: translate(-50%, -50%);
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="projekte"] {
+    left: 18%;
+    top: 28%;
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="leistungen"] {
+    left: 82%;
+    top: 26%;
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone--right-focus.is-focus .world-card[data-card="projekte"] {
+    left: 22%;
+    top: 26%;
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone--right-focus.is-focus .world-card[data-card="leistungen"] {
+    left: 78%;
+    top: 28%;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
+    inset: 32%;
+  }
+
+  .mv-scroll-story .scene-copy {
+    max-width: var(--mv-copy-w);
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .scene-copy .mv-scroll-slide__lead strong {
+    font-size: clamp(25px, 2.2vw, 44px);
+    line-height: 1.12;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .mv-scroll-slide__body {
+    font-size: clamp(16px, 1.15vw, 21px);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.78);
+  }
+}

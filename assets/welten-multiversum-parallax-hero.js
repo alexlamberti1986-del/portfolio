@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260625mv-v15reveal";
+  var V = "?v=20260626mv-v16audit";
 
   var ASSETS = {
     bg: {
@@ -18,9 +18,9 @@
       overview: BASE + "backgrounds/webp/background_multiverse_three_worlds.webp",
     },
     orbs: {
-      nexora: BASE + "worlds/webp/nexora_orb_premium_free.webp",
-      professional: BASE + "worlds/webp/professional_orb_premium_free.webp",
-      freiraum: BASE + "worlds/webp/freiraum_orb_premium_free.webp",
+      nexora: "assets/multiversum-v16/orbs/nexora_orb_transparent.png",
+      professional: "assets/multiversum-v16/orbs/professional_orb_transparent.png",
+      freiraum: "assets/multiversum-v16/orbs/freiraum_orb_transparent.png",
     },
     accents: {
       nexora: [
@@ -371,16 +371,49 @@
     return [];
   }
 
-  function introHoldEndBound() {
-    if (!config || !config.bounds) return 0;
-    var idx = 4;
-    for (var i = 0; i < config.slides.length; i++) {
-      if (slideKind(i) === "world") {
-        idx = i;
-        break;
-      }
+  function slideVisibilityRange(slideIndex) {
+    var slide = config.slides[slideIndex];
+    var ch = config.chapters || {};
+    if (!slide) return [0, 0];
+    if (slide.visibility) return slide.visibility;
+    var kind = slide.sceneKind || "intro";
+    if (kind === "intro") return [0, (ch.introToNexora && ch.introToNexora[1]) || 0.22];
+    if (kind === "world" && slide.worldType === "nexora") {
+      return [ch.nexoraFocus[0], ch.nexoraToProfessional[1]];
     }
-    return config.bounds[idx] || config.bounds[1] || 0;
+    if (kind === "world" && slide.worldType === "professional") {
+      return [ch.professionalFocus[0], ch.professionalToFreiraum[1]];
+    }
+    if (kind === "world" && slide.worldType === "freiraum") {
+      return [ch.freiraumFocus[0], ch.freiraumFocus[1]];
+    }
+    if (kind === "merge") return ch.mergeAndFinalCTA || [0.88, 0.96];
+    if (kind === "finale") return [ch.mergeAndFinalCTA[0], 1];
+    return [config.bounds[slideIndex], config.bounds[slideIndex + 1]];
+  }
+
+  function slideIndexForWorld(worldType) {
+    if (!config || !config.slides) return -1;
+    for (var i = 0; i < config.slides.length; i++) {
+      var slide = config.slides[i];
+      if (slide && slide.sceneKind === "world" && slide.worldType === worldType) return i;
+    }
+    return -1;
+  }
+
+  function worldBuildProgress(p, worldType) {
+    if (!config || !config.chapters) return 0;
+    var key =
+      worldType === "nexora"
+        ? "nexoraFocus"
+        : worldType === "professional"
+        ? "professionalFocus"
+        : worldType === "freiraum"
+        ? "freiraumFocus"
+        : "";
+    var range = key ? config.chapters[key] : null;
+    if (!range) return 0;
+    return sceneEnvelope(segmentProgress(p, range[0], range[1]), 0);
   }
 
   function worldScenePhases(local, slideIndex) {
@@ -535,6 +568,8 @@
           (c.target || "") +
           '" data-card-index="' +
           i +
+          '" data-card="' +
+          (c.cardSlug || c.go || "home") +
           '" style="--card-angle:' +
           angle +
           'deg" aria-label="' +
@@ -1086,9 +1121,9 @@
     var bounds = config.bounds;
     var fade = config.fade || 0.055;
 
-    var nexBuild = sceneEnvelope(segmentProgress(p, bounds[4], bounds[5]), 4);
-    var proBuild = sceneEnvelope(segmentProgress(p, bounds[5], bounds[6]), 5);
-    var freBuild = sceneEnvelope(segmentProgress(p, bounds[6], bounds[7]), 6);
+    var nexBuild = worldBuildProgress(p, "nexora");
+    var proBuild = worldBuildProgress(p, "professional");
+    var freBuild = worldBuildProgress(p, "freiraum");
 
     if (dom.layers[1]) dom.layers[1].style.transform = "translate3d(0, " + layerShift(p, px.layer1_bg || 0.08, par) + "vh, 0)";
     if (dom.layers[2]) dom.layers[2].style.transform = "translate3d(0, " + layerShift(p, px.layer2_nebula || 0.18, par) + "vh, 0)";
@@ -1180,7 +1215,7 @@
     }
 
     if (dom.bgs.overview) {
-      var inIntroReveal = activeScene <= 3 && slideKind(activeScene) !== "finale";
+      var inIntroReveal = activeScene <= 1 && slideKind(activeScene) !== "finale";
       dom.bgs.overview.style.opacity = String(
         inIntroReveal ? sceneEnvelope(sceneLocal, activeScene) * 0.88 : activeScene === 0 ? sceneEnvelope(sceneLocal, 0) * 0.88 : 0
       );
@@ -1272,15 +1307,13 @@
         continue;
       }
 
-      var visStart = bounds[i];
-      var visEnd = bounds[i + 1];
-      if (i === 0 && slideKindI === "intro") {
-        visEnd = introHoldEndBound();
-      }
+      var visRange = slideVisibilityRange(i);
+      var visStart = visRange[0];
+      var visEnd = visRange[1];
 
       var vis = slideVisibility(p, visStart, visEnd, fade);
       var slide = dom.slides[i];
-      var slideLocal = segmentProgress(p, bounds[i], bounds[i + 1]);
+      var slideLocal = segmentProgress(p, visStart, visEnd);
       var slidePhases = worldScenePhases(slideLocal, i);
       var copyEl = slide.querySelector(".world-copy");
       var hintEl = slide.querySelector(".world-visual__hint");
@@ -1318,12 +1351,13 @@
 
     if (dom.portfolio) {
       var finIdx = config.slides.length - 1;
-      var finLocal = segmentProgress(p, bounds[finIdx], bounds[finIdx + 1]);
+      var finRange = slideVisibilityRange(finIdx);
+      var finLocal = segmentProgress(p, finRange[0], finRange[1]);
       var finPhases = worldScenePhases(finLocal, finIdx);
       var finTextOut = finLocal > 0.42 ? easeOutQuart(clamp((finLocal - 0.42) / 0.16, 0, 1)) : 0;
       var portOp =
-        activeScene === finIdx && finLocal > 0.32
-          ? easeInOutSine(clamp((finLocal - 0.32) / 0.28, 0, 1))
+        p >= finRange[0] && finLocal > 0.28
+          ? easeInOutSine(clamp((finLocal - 0.28) / 0.32, 0, 1))
           : 0;
       var cardScale = lerp(0.94, 1, portOp);
       var portY = lerp(18, 0, portOp);
@@ -1336,10 +1370,10 @@
       heroEl.classList.toggle("is-portfolio-interactive", portfolioInteractive);
       heroEl.classList.toggle("is-portfolio-hold", portfolioInteractive && !portfolioHoldUnlocked);
       var finSlide = dom.slides[finIdx];
-      if (finSlide && activeScene === finIdx) {
+      if (finSlide && p >= finRange[0]) {
         var finCopy = finSlide.querySelector(".final-copy") || finSlide.querySelector(".scene-copy");
         if (finCopy) {
-          var finVis = slideVisibility(p, bounds[finIdx], bounds[finIdx + 1], fade);
+          var finVis = slideVisibility(p, finRange[0], finRange[1], fade);
           var copyOp = finPhases.copy * finVis.opacity * (1 - finTextOut);
           finCopy.style.opacity = String(copyOp);
           finCopy.style.transform = "translate3d(0, " + lerp(0, -20, finTextOut) + "px, 0)";
@@ -1373,9 +1407,10 @@
     var p = getProgress();
     var bounds = config.bounds;
     var finIdx = config.slides.length - 1;
-    if (finIdx < 1 || p < bounds[finIdx]) return false;
-    var finLocal = segmentProgress(p, bounds[finIdx], bounds[finIdx + 1]);
-    return finLocal > 0.32;
+    var finRange = slideVisibilityRange(finIdx);
+    if (finIdx < 1 || p < finRange[0]) return false;
+    var finLocal = segmentProgress(p, finRange[0], finRange[1]);
+    return finLocal > 0.28;
   }
 
   function bindPortfolioScrollHold() {
