@@ -2403,4 +2403,89 @@ body.is-world-focus .mv-scroll-story .world-copy button {
     line-height: 1.65;
     color: rgba(255, 255, 255, 0.78);
   }
+
+  .mv-scroll-story[data-layout="split-world"] .world-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: var(--mv-card-w);
+  }
+
+  .mv-scroll-story .world-card__image {
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    border-radius: clamp(12px, 1vw, 16px);
+    background: rgba(8, 14, 28, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    min-height: 0;
+  }
+
+  .mv-scroll-story .world-card__image img {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    object-position: center 18%;
+    filter: none;
+  }
+
+  .mv-scroll-story .world-card[data-card="home"] .world-card__image {
+    aspect-ratio: 1 / 1;
+    background: rgba(6, 10, 22, 0.55);
+  }
+
+  .mv-scroll-story .world-card[data-card="home"] .world-card__image img {
+    object-fit: contain;
+    object-position: center;
+    padding: 12%;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.35));
+  }
+
+  .mv-scroll-story .world-card[data-card="ueber-mich"] .world-card__image {
+    aspect-ratio: 3 / 4;
+  }
+
+  .mv-scroll-story .world-card[data-card="ueber-mich"] .world-card__image img {
+    object-fit: cover;
+    object-position: center 8%;
+  }
+
+  .mv-scroll-story .world-card__label {
+    margin-top: 8px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(6, 10, 22, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    font-size: clamp(12px, 0.78vw, 15px);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-shadow: none;
+    line-height: 1.2;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="home"] {
+    top: 8%;
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    left: 22%;
+    top: 28%;
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    left: 78%;
+    top: 28%;
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    left: 22%;
+    top: 74%;
+  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    left: 78%;
+    top: 74%;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
+    inset: 30%;
+  }
 }

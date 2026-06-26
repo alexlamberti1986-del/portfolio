@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260626mv-v16audit";
+  var V = "?v=20260626mv-v17cards";
 
   var ASSETS = {
     bg: {
@@ -399,6 +399,25 @@
       if (slide && slide.sceneKind === "world" && slide.worldType === worldType) return i;
     }
     return -1;
+  }
+
+  function slideIndexForProgress(p) {
+    var ch = config.chapters || {};
+    if (p < ((ch.introToNexora && ch.introToNexora[1]) || 0.22)) return 0;
+    if (p < ((ch.nexoraToProfessional && ch.nexoraToProfessional[1]) || 0.46)) return 1;
+    if (p < ((ch.professionalToFreiraum && ch.professionalToFreiraum[1]) || 0.7)) return 2;
+    if (p < ((ch.freiraumFocus && ch.freiraumFocus[1]) || 0.88)) return 3;
+    if (p < ((ch.mergeAndFinalCTA && ch.mergeAndFinalCTA[1]) || 0.96)) return 4;
+    return 5;
+  }
+
+  function boundSegmentForProgress(p) {
+    var bounds = config.bounds || [];
+    if (bounds.length < 2) return 0;
+    for (var s = 0; s < bounds.length - 1; s++) {
+      if (p >= bounds[s] && p < bounds[s + 1]) return s;
+    }
+    return bounds.length - 2;
   }
 
   function worldBuildProgress(p, worldType) {
@@ -889,11 +908,9 @@
     return;
   }
 
-  function stateActiveWorldMatches(world, activeScene) {
-    if (world === "nexora") return activeScene === 1;
-    if (world === "professional") return activeScene === 2;
-    if (world === "freiraum") return activeScene === 3;
-    return false;
+  function stateActiveWorldMatches(world, activeSlide) {
+    var slide = config.slides[activeSlide];
+    return !!(slide && slide.sceneKind === "world" && slide.worldType === world);
   }
 
   function visibleWorldsForScene(activeScene) {
@@ -1179,22 +1196,17 @@
       el.style.opacity = String((state.decor.particles.opacity || 0.2) * w * par);
     });
 
-    var activeScene = 0;
-    for (var s = 0; s < bounds.length - 1; s++) {
-      if (p >= bounds[s] && p < bounds[s + 1]) {
-        activeScene = s;
-        break;
-      }
-      if (p >= bounds[bounds.length - 2]) activeScene = bounds.length - 2;
-    }
-
-    var sceneLocal = segmentProgress(p, bounds[activeScene], bounds[activeScene + 1]);
-    var phases = worldScenePhases(sceneLocal, activeScene);
-    var layoutMode = layoutModeForScene(activeScene);
+    var activeBound = boundSegmentForProgress(p);
+    var activeSlide = slideIndexForProgress(p);
+    var slideRange = slideVisibilityRange(activeSlide);
+    var slideLocal = segmentProgress(p, slideRange[0], slideRange[1]);
+    var boundLocal = segmentProgress(p, bounds[activeBound], bounds[activeBound + 1]);
+    var phases = worldScenePhases(slideLocal, activeSlide);
+    var layoutMode = layoutModeForScene(activeSlide);
     var orbPhase =
       layoutMode === "overview"
-        ? sceneEnvelope(sceneLocal, activeScene)
-        : isWorldSlide(activeScene)
+        ? sceneEnvelope(slideLocal, activeSlide)
+        : isWorldSlide(activeSlide)
         ? phases.orb
         : 0.85;
 
@@ -1215,17 +1227,17 @@
     }
 
     if (dom.bgs.overview) {
-      var inIntroReveal = activeScene <= 1 && slideKind(activeScene) !== "finale";
+      var inIntroReveal = activeSlide === 0;
       dom.bgs.overview.style.opacity = String(
-        inIntroReveal ? sceneEnvelope(sceneLocal, activeScene) * 0.88 : activeScene === 0 ? sceneEnvelope(sceneLocal, 0) * 0.88 : 0
+        inIntroReveal ? sceneEnvelope(slideLocal, activeSlide) * 0.88 : 0
       );
     }
 
-    var collageFocus = collageFocusForScene(activeScene);
-    var revealed = revealedWorldsForScene(activeScene);
+    var collageFocus = collageFocusForScene(activeSlide);
+    var revealed = revealedWorldsForScene(activeSlide);
     heroEl.setAttribute("data-collage-focus", collageFocus);
     heroEl.setAttribute("data-reveal-step", String(revealed.length));
-    applyWorldZoneStates(activeScene, phases);
+    applyWorldZoneStates(activeSlide, phases);
 
     if (dom.transitionTrail) {
       var trailOp = clamp((state.transitionTrail || 0) * par, 0, 1);
@@ -1235,7 +1247,7 @@
     }
 
     if (dom.overlayGlow) {
-      var mergeOp = slideKind(activeScene) === "merge" ? easeOutQuart(sceneLocal) * 0.85 : 0;
+      var mergeOp = slideKind(activeSlide) === "merge" ? easeOutQuart(slideLocal) * 0.85 : 0;
       dom.overlayGlow.style.opacity = String(mergeOp);
     }
 
@@ -1258,15 +1270,15 @@
     applyWorldAccents();
 
     if (dom.worldGlow) {
-      var glowOp = isWorldSlide(activeScene) ? phases.orb * 0.95 : layoutMode === "overview" ? 0.55 : 0.2;
+      var glowOp = isWorldSlide(activeSlide) ? phases.orb * 0.95 : layoutMode === "overview" ? 0.55 : 0.2;
       dom.worldGlow.style.opacity = String(glowOp);
     }
     if (dom.worldRing) {
-      var ringOp = isWorldSlide(activeScene) ? lerp(0.15, 0.62, phases.orb) : layoutMode === "overview" ? 0.38 : 0.1;
+      var ringOp = isWorldSlide(activeSlide) ? lerp(0.15, 0.62, phases.orb) : layoutMode === "overview" ? 0.38 : 0.1;
       var ringRot =
-        slideKind(activeScene) === "world" && config.slides[activeScene].worldType === "professional"
+        slideKind(activeSlide) === "world" && config.slides[activeSlide].worldType === "professional"
           ? p * 24
-          : slideKind(activeScene) === "world" && config.slides[activeScene].worldType === "freiraum"
+          : slideKind(activeSlide) === "world" && config.slides[activeSlide].worldType === "freiraum"
           ? p * 48
           : p * 36;
       dom.worldRing.style.opacity = String(ringOp);
@@ -1278,7 +1290,7 @@
         var el = dom.radialGlows[w];
         if (!el) return;
         var wgt = themeWeights[w] || 0;
-        var ro = wgt * (isWorldSlide(activeScene) ? phases.orb * 0.95 : layoutMode === "overview" ? 0.5 : 0.15);
+        var ro = wgt * (isWorldSlide(activeSlide) ? phases.orb * 0.95 : layoutMode === "overview" ? 0.5 : 0.15);
         el.style.opacity = String(clamp(ro, 0, 1));
       });
     }
@@ -1384,9 +1396,9 @@
     if (dom.cue) dom.cue.style.opacity = String(p < 0.05 ? 1 : clamp(1 - (p - 0.05) / 0.04, 0, 1));
 
     heroEl.setAttribute("data-active-world", state.activeWorld || "multiversum");
-    heroEl.setAttribute("data-scene", String(activeScene + 1));
+    heroEl.setAttribute("data-scene", String(activeSlide + 1));
     heroEl.setAttribute("data-layout", layoutMode);
-    heroEl.setAttribute("data-world-side", worldFocusSide(activeScene));
+    heroEl.setAttribute("data-world-side", worldFocusSide(activeSlide));
     heroEl.setAttribute("data-dominant-orb", dominant || "");
     heroEl.classList.toggle("is-world-focus", layoutMode === "split-world");
     document.body.classList.toggle("is-world-focus", layoutMode === "split-world");
