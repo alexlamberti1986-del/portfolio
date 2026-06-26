@@ -444,8 +444,46 @@
     });
   });
 
+  var WORLD_SHELL_KEY_MAP = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
+
+  function clickWorldShellButton(worldKey) {
+    var shellKey = WORLD_SHELL_KEY_MAP[worldKey];
+    if (!shellKey) return false;
+    var btn = document.querySelector('.mv4-worlds [data-world-key="' + shellKey + '"]');
+    if (!btn) return false;
+    btn.click();
+    return true;
+  }
+
+  function postScrollToActiveFrame(targetHash, goChapter) {
+    if (!targetHash && !goChapter) return;
+    setTimeout(function () {
+      var activeFrame = document.querySelector(".mv4-frame.is-active");
+      if (!activeFrame || !activeFrame.contentWindow) return;
+      activeFrame.contentWindow.postMessage(
+        {
+          type: "alex:scroll-to-section",
+          targetHash: targetHash || "",
+          go: goChapter || "",
+        },
+        "*"
+      );
+    }, 620);
+  }
+
   window.addEventListener("message", function (e) {
     if (!e.data) return;
+    if (e.data.type === "alex:switch-world") {
+      if (!isOurFrame(e.source)) return;
+      if (clickWorldShellButton(e.data.world)) {
+        postScrollToActiveFrame(e.data.targetHash, e.data.go);
+        return;
+      }
+      if (e.data.href && typeof e.data.href === "string") {
+        window.location.assign(e.data.href);
+      }
+      return;
+    }
     if (e.data.type === "portfolio-chapter" && typeof e.data.chapter === "string") {
       if (!isOurFrame(e.source)) return;
       if (CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;

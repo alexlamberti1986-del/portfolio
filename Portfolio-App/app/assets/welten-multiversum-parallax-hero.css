@@ -2430,6 +2430,21 @@ body.is-world-focus .mv-scroll-story .world-copy button {
     transform: translate(-50%, -50%) translate(30cqw, -24cqh) !important;
   }
 
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-collage {
+    pointer-events: auto;
+    z-index: 20;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .mv-scroll-story .world-card__image,
+  .mv-scroll-story .world-card__image img {
+    pointer-events: none;
+  }
+
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
     inset: 28%;
     z-index: 14;

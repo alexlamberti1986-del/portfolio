@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260626mv-v19intro";
+  var V = "?v=20260626mv-v20links";
 
   var ASSETS = {
     bg: {
@@ -206,10 +206,37 @@
     return { opacity: opacity, y: y, active: opacity > 0.06 };
   }
 
+  function chapterHash(goChapter, targetHash) {
+    var hashMap = {
+      home: "#home",
+      projects: "#projekte",
+      leistungen: "#leistungen",
+      about: "#ueber-mich",
+      contact: "#kontakt",
+    };
+    if (targetHash) {
+      var raw = String(targetHash).trim();
+      if (!raw) return hashMap[goChapter] || "#home";
+      return raw.charAt(0) === "#" ? raw : "#" + raw;
+    }
+    return hashMap[goChapter] || "#home";
+  }
+
+  function worldHref(world, goChapter, targetHash) {
+    var pages = (window.MVWorldCollage && window.MVWorldCollage.pages) || {};
+    var page = pages[world] || "";
+    if (!page) return "#";
+    var hash = chapterHash(goChapter, targetHash);
+    return hash === "#home" ? page : page + hash;
+  }
+
   function requestWorldSwitch(worldKey, targetHash, goChapter) {
     if (!worldKey) return;
     var shellKey = WORLD_SHELL_KEY[worldKey];
     if (!shellKey) return;
+    var go = goChapter || "home";
+    var hash = chapterHash(go, targetHash);
+    var href = worldHref(worldKey, go, targetHash);
 
     try {
       if (window.parent && window.parent !== window) {
@@ -217,14 +244,20 @@
           {
             type: "alex:switch-world",
             world: worldKey,
-            targetHash: targetHash || "",
-            go: goChapter || "",
+            targetHash: hash === "#home" ? "" : hash,
+            go: go,
+            href: href,
           },
           "*"
         );
         return;
       }
     } catch (e) {}
+
+    if (href && href !== "#") {
+      window.location.assign(href);
+      return;
+    }
 
     var btn = document.querySelector('.mv4-worlds [data-world-key="' + shellKey + '"]');
     if (btn) {
@@ -233,9 +266,9 @@
       switchWorldIndex(worldKey);
     }
 
-    if (targetHash || goChapter) {
+    if (hash !== "#home" || go !== "home") {
       setTimeout(function () {
-        scrollSectionInFrame(targetHash, goChapter);
+        scrollSectionInFrame(hash, go);
       }, 480);
     }
   }
@@ -291,17 +324,44 @@
   }
 
   function navigateWorldLink(world, targetHash, goChapter, href) {
-    var hash = targetHash || "";
-    var go = goChapter || "";
+    var go = goChapter || "home";
+    var hash = chapterHash(go, targetHash);
     if (isEmbeddedFrame()) {
-      switchWorld(world, hash, go);
+      requestWorldSwitch(world, hash, go);
       return;
     }
-    if (href && href !== "#") {
-      window.location.assign(href);
+    var dest = href && href !== "#" ? href : worldHref(world, go, targetHash);
+    if (dest && dest !== "#") {
+      window.location.assign(dest);
       return;
     }
-    switchWorld(world, hash, go);
+    requestWorldSwitch(world, hash, go);
+  }
+
+  function bindWorldNavigation(root) {
+    root.addEventListener(
+      "click",
+      function (e) {
+        var core = e.target.closest("a.world-core[data-world]");
+        if (core) {
+          e.preventDefault();
+          e.stopPropagation();
+          navigateWorldLink(core.getAttribute("data-world"), "#home", "home", core.getAttribute("href"));
+          return;
+        }
+        var card = e.target.closest("a.world-card[data-world]");
+        if (!card) return;
+        e.preventDefault();
+        e.stopPropagation();
+        navigateWorldLink(
+          card.getAttribute("data-world"),
+          card.getAttribute("data-target"),
+          card.getAttribute("data-go"),
+          card.getAttribute("href")
+        );
+      },
+      true
+    );
   }
 
   function bindGoButtons(root, goChapter) {
@@ -317,25 +377,7 @@
         switchWorld(btn.getAttribute("data-world-enter"));
       });
     });
-    root.querySelectorAll("a.world-core[data-world]").forEach(function (link) {
-      link.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        navigateWorldLink(link.getAttribute("data-world"), "", "home", link.getAttribute("href"));
-      });
-    });
-    root.querySelectorAll("a.world-card[data-world]").forEach(function (card) {
-      card.addEventListener("click", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        navigateWorldLink(
-          card.getAttribute("data-world"),
-          card.getAttribute("data-target"),
-          card.getAttribute("data-go"),
-          card.getAttribute("href")
-        );
-      });
-    });
+    bindWorldNavigation(root);
   }
 
   function segmentProgress(p, start, end) {
