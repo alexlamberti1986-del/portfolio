@@ -294,8 +294,19 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
 }
 
 .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage {
-  opacity: 0.35;
-  pointer-events: none;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.mv-scroll-story.is-js-ready[data-layout="finale"] .mv-world-stage {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.mv-scroll-story[data-layout="intro"] .mv-scroll-bg[data-bg="overview"] {
+  opacity: 0 !important;
 }
 
 .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
@@ -2354,9 +2365,10 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus {
-    width: min(58vw, 820px);
-    height: min(66vh, 720px);
+    width: min(54vw, 760px);
+    height: min(62vh, 680px);
     --card-orbit: 0;
+    overflow: visible;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] .world-card__image {
@@ -2389,42 +2401,42 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
-    left: 10%;
-    top: 30%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translate(-30cqw, -24cqh) !important;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
-    left: 90%;
-    top: 30%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translate(30cqw, -24cqh) !important;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
-    left: 10%;
-    top: 76%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translate(-30cqw, 24cqh) !important;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
-    left: 90%;
-    top: 76%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translate(30cqw, 24cqh) !important;
   }
 
-  .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="projekte"] {
-    left: 12%;
-    top: 30%;
-  }
-  .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="leistungen"] {
-    left: 88%;
-    top: 30%;
-  }
+  .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="projekte"],
   .mv-scroll-story[data-layout="split-world"] .world-zone--right-focus.is-focus .world-card[data-card="projekte"] {
-    left: 12%;
-    top: 30%;
+    transform: translate(-50%, -50%) translate(-30cqw, -24cqh) !important;
   }
+  .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="leistungen"],
   .mv-scroll-story[data-layout="split-world"] .world-zone--right-focus.is-focus .world-card[data-card="leistungen"] {
-    left: 88%;
-    top: 30%;
+    transform: translate(-50%, -50%) translate(30cqw, -24cqh) !important;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
-    inset: 30%;
+    inset: 28%;
     z-index: 14;
+  }
+
+  .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage .mv-world-zones {
+    overflow: visible;
   }
 
   .mv-scroll-story .scene-copy {

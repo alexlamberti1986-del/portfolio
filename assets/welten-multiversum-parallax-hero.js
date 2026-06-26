@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260626mv-v18polish";
+  var V = "?v=20260626mv-v19intro";
 
   var ASSETS = {
     bg: {
@@ -291,15 +291,17 @@
   }
 
   function navigateWorldLink(world, targetHash, goChapter, href) {
+    var hash = targetHash || "";
+    var go = goChapter || "";
     if (isEmbeddedFrame()) {
-      switchWorld(world, targetHash, goChapter);
+      switchWorld(world, hash, go);
       return;
     }
     if (href && href !== "#") {
-      window.location.href = href;
+      window.location.assign(href);
       return;
     }
-    switchWorld(world, targetHash, goChapter);
+    switchWorld(world, hash, go);
   }
 
   function bindGoButtons(root, goChapter) {
@@ -460,10 +462,19 @@
 
   function layoutModeForScene(sceneIndex) {
     var kind = slideKind(sceneIndex);
-    if (kind === "intro" || kind === "reveal" || kind === "merge") return "overview";
+    if (kind === "intro") return "intro";
+    if (kind === "reveal" || kind === "merge") return "overview";
     if (kind === "world") return "split-world";
-    if (kind === "finale") return "overview";
+    if (kind === "finale") return "finale";
     return "intro";
+  }
+
+  function worldStageOpacity(activeSlide, p, phases, slideLocal) {
+    var kind = slideKind(activeSlide);
+    if (kind === "intro" || kind === "finale") return 0;
+    if (kind === "world") return phases.orb || 0;
+    if (kind === "merge") return easeOutQuart(slideLocal);
+    return 0;
   }
 
   function cardOrbitForZone(kind, world, hasCards, isFocus, isRevealFocus) {
@@ -914,11 +925,12 @@
 
   function visibleWorldsForScene(activeScene) {
     var kind = slideKind(activeScene);
+    if (kind === "intro" || kind === "finale") return [];
     if (kind === "world") {
       var slide = config.slides[activeScene];
       return slide && slide.worldType ? [slide.worldType] : [];
     }
-    if (kind === "intro" || kind === "reveal" || kind === "merge" || kind === "finale") {
+    if (kind === "reveal" || kind === "merge") {
       return ["nexora", "professional", "freiraum"];
     }
     return [];
@@ -1234,12 +1246,10 @@
     }
 
     if (dom.bgs.overview) {
-      var inIntroReveal = activeSlide === 0;
-      dom.bgs.overview.style.opacity = String(
-        inIntroReveal ? sceneEnvelope(slideLocal, activeSlide) * 0.88 : 0
-      );
+      dom.bgs.overview.style.opacity = "0";
     }
 
+    var stageOp = worldStageOpacity(activeSlide, p, phases, slideLocal);
     var collageFocus = collageFocusForScene(activeSlide);
     var revealed = revealedWorldsForScene(activeSlide);
     heroEl.setAttribute("data-collage-focus", collageFocus);
@@ -1270,9 +1280,9 @@
 
     var dominant = dominantOrbKey(state);
 
-    applyOrb(dom.orbs.nexora, orbWithPhase(state.orbs.nexora), 0, orbPhase, dominant === "nexora");
-    applyOrb(dom.orbs.professional, orbWithPhase(state.orbs.professional), 0, orbPhase, dominant === "professional");
-    applyOrb(dom.orbs.freiraum, orbWithPhase(state.orbs.freiraum), 0, orbPhase, dominant === "freiraum");
+    applyOrb(dom.orbs.nexora, orbWithPhase(state.orbs.nexora), 0, orbPhase * stageOp, dominant === "nexora");
+    applyOrb(dom.orbs.professional, orbWithPhase(state.orbs.professional), 0, orbPhase * stageOp, dominant === "professional");
+    applyOrb(dom.orbs.freiraum, orbWithPhase(state.orbs.freiraum), 0, orbPhase * stageOp, dominant === "freiraum");
 
     applyWorldAccents();
 
@@ -1302,11 +1312,14 @@
       });
     }
     if (dom.worldStage) {
+      dom.worldStage.style.opacity = String(stageOp);
+      dom.worldStage.style.visibility = stageOp > 0.03 ? "visible" : "hidden";
+      dom.worldStage.style.pointerEvents = stageOp > 0.2 ? "auto" : "none";
       dom.worldStage.style.transform =
         layoutMode === "split-world"
           ? "translateY(-50%) scale(" + lerp(0.96, 1, phases.orb || 1) + ")"
           : layoutMode === "overview"
-          ? "translate(-50%, -50%) scale(" + lerp(0.94, 1, segmentProgress(p, bounds[0], bounds[1])) + ")"
+          ? "translate(-50%, -50%) scale(" + lerp(0.94, 1, slideLocal) + ")"
           : "";
     }
 
