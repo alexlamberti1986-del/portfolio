@@ -1,14 +1,14 @@
 /**
- * MULTIVERSUM Scroll Story V16 — Recording Audit Timeline
+ * MULTIVERSUM Scroll Story V22 — Finale copy → Portfolio buttons flow
  */
 (function () {
   "use strict";
 
   window.MVSceneConfig = {
-    version: 16,
+    version: 22,
     sceneCount: 6,
-    scrollHeightVh: 520,
-    scrollHeightVhTablet: 520,
+    scrollHeightVh: 560,
+    scrollHeightVhTablet: 560,
     fade: 0.07,
     smoothLerp: 0.08,
     segmentHold: 0.68,
@@ -17,7 +17,7 @@
       exit: 0.08,
       fade: 0.07,
     },
-    bounds: [0, 0.16, 0.22, 0.4, 0.46, 0.64, 0.7, 0.88, 0.96, 1],
+    bounds: [0, 0.16, 0.22, 0.4, 0.46, 0.64, 0.7, 0.8, 0.91, 0.97, 1],
 
     chapters: {
       intro: [0.0, 0.16],
@@ -26,9 +26,11 @@
       nexoraToProfessional: [0.4, 0.46],
       professionalFocus: [0.46, 0.64],
       professionalToFreiraum: [0.64, 0.7],
-      freiraumFocus: [0.7, 0.88],
-      mergeAndFinalCTA: [0.88, 0.96],
-      releaseToNormalContent: [0.96, 1.0],
+      freiraumFocus: [0.7, 0.8],
+      finaleCopyOnly: [0.86, 0.91],
+      portfolioFrame: [0.91, 0.93],
+      portfolioButtons: [0.93, 0.97],
+      releaseToNormalContent: [0.97, 1.0],
     },
 
     parallax: {
@@ -82,6 +84,7 @@
         body: "Technologie, Struktur und Kreativität verbinden sich zu einem Portfolio, das zeigt, was möglich ist.",
         copyPos: "copy--center-bottom",
         sceneKind: "merge",
+        visibility: [0, 0],
       },
       {
         id: "portfolio-contact",
@@ -214,32 +217,47 @@
         portfolio: { opacity: 0, y: 10 },
       },
       {
-        activeWorld: "merge",
-        backgrounds: { multiverse: 0.58, nexora: 0.2, professional: 0.18, freiraum: 0.22 },
-        stars: 0.16,
-        particles: 0.28,
-        vignette: 0.32,
+        activeWorld: "multiversum",
+        backgrounds: { multiverse: 0.62, nexora: 0.04, professional: 0.04, freiraum: 0.04 },
+        stars: 0.12,
+        particles: 0.14,
+        vignette: 0.36,
         orbs: {
-          nexora: { x: -14, y: -2, scale: 0.48, opacity: 0.9, blur: 0, z: 32 },
-          professional: { x: 0, y: -2, scale: 0.46, opacity: 0.88, blur: 0, z: 31 },
-          freiraum: { x: 14, y: 0, scale: 0.48, opacity: 0.9, blur: 0, z: 32 },
+          nexora: { x: -12, y: -2, scale: 0.2, opacity: 0, blur: 2, z: 8 },
+          professional: { x: 0, y: -2, scale: 0.18, opacity: 0, blur: 2, z: 8 },
+          freiraum: { x: 12, y: 0, scale: 0.2, opacity: 0, blur: 2, z: 8 },
         },
-        decor: { orbit: { opacity: 0.38, scale: 1.24, rotate: 14 }, orbit2: { opacity: 0.24, scale: 1.12, rotate: 0 }, particles: { opacity: 0.28 }, light: { opacity: 0.26 }, line: { opacity: 0.36 } },
+        decor: { orbit: { opacity: 0.1, scale: 1, rotate: 4 }, orbit2: { opacity: 0.06, scale: 1, rotate: 0 }, particles: { opacity: 0.08 }, light: { opacity: 0.08 }, line: { opacity: 0.06 } },
         transitionTrail: 0,
-        portfolio: { opacity: 0.55, y: 4 },
+        portfolio: { opacity: 0, y: 10 },
       },
       {
         activeWorld: "multiversum",
-        backgrounds: { multiverse: 0.58, nexora: 0.1, professional: 0.08, freiraum: 0.1 },
-        stars: 0.12,
-        particles: 0.16,
-        vignette: 0.4,
+        backgrounds: { multiverse: 0.55, nexora: 0.02, professional: 0.02, freiraum: 0.02 },
+        stars: 0.1,
+        particles: 0.1,
+        vignette: 0.42,
         orbs: {
-          nexora: { x: -12, y: -2, scale: 0.26, opacity: 0.46, blur: 1, z: 14 },
-          professional: { x: 0, y: -4, scale: 0.24, opacity: 0.44, blur: 1, z: 13 },
-          freiraum: { x: 12, y: -2, scale: 0.26, opacity: 0.46, blur: 1, z: 14 },
+          nexora: { x: -12, y: -2, scale: 0.16, opacity: 0, blur: 2, z: 6 },
+          professional: { x: 0, y: -2, scale: 0.14, opacity: 0, blur: 2, z: 6 },
+          freiraum: { x: 12, y: 0, scale: 0.16, opacity: 0, blur: 2, z: 6 },
         },
-        decor: { orbit: { opacity: 0.14, scale: 1.02, rotate: 8 }, orbit2: { opacity: 0.08, scale: 1, rotate: 0 }, particles: { opacity: 0.12 }, light: { opacity: 0.1 }, line: { opacity: 0.08 } },
+        decor: { orbit: { opacity: 0.08, scale: 1, rotate: 2 }, orbit2: { opacity: 0.05, scale: 1, rotate: 0 }, particles: { opacity: 0.06 }, light: { opacity: 0.06 }, line: { opacity: 0.04 } },
+        transitionTrail: 0,
+        portfolio: { opacity: 0.85, y: 0 },
+      },
+      {
+        activeWorld: "multiversum",
+        backgrounds: { multiverse: 0.52, nexora: 0, professional: 0, freiraum: 0 },
+        stars: 0.08,
+        particles: 0.08,
+        vignette: 0.44,
+        orbs: {
+          nexora: { x: -12, y: -2, scale: 0.12, opacity: 0, blur: 2, z: 4 },
+          professional: { x: 0, y: -2, scale: 0.1, opacity: 0, blur: 2, z: 4 },
+          freiraum: { x: 12, y: 0, scale: 0.12, opacity: 0, blur: 2, z: 4 },
+        },
+        decor: { orbit: { opacity: 0.06, scale: 1, rotate: 0 }, orbit2: { opacity: 0.04, scale: 1, rotate: 0 }, particles: { opacity: 0.04 }, light: { opacity: 0.04 }, line: { opacity: 0.03 } },
         transitionTrail: 0,
         portfolio: { opacity: 1, y: 0 },
       },

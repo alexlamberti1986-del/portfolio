@@ -305,6 +305,57 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   pointer-events: none !important;
 }
 
+.mv-scroll-story.is-js-ready[data-layout="portfolio"] .mv-world-stage {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.mv-scroll-story.is-post-world .mv-world-stage,
+.mv-scroll-story.is-post-world .world-zone,
+.mv-scroll-story.is-post-world .world-collage,
+.mv-scroll-story.is-post-world .world-core,
+.mv-scroll-story.is-post-world .world-card {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.mv-scroll-story.is-js-ready[data-layout="finale"] .mv-world-stage,
+.mv-scroll-story.is-js-ready[data-layout="portfolio"] .mv-world-stage,
+.mv-scroll-story.is-js-ready[data-layout="finale"] .world-zone,
+.mv-scroll-story.is-js-ready[data-layout="portfolio"] .world-zone,
+.mv-scroll-story.is-js-ready[data-layout="finale"] .world-card,
+.mv-scroll-story.is-js-ready[data-layout="portfolio"] .world-card {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.mv-scroll-story.is-finale-copy-visible .mv-scroll-slide--finale {
+  left: 50%;
+  top: 50%;
+  width: min(560px, 88vw);
+  transform: translate3d(-50%, -50%, 0);
+  z-index: var(--z-copy);
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(155deg, rgba(8, 14, 28, 0.82), rgba(5, 9, 20, 0.62));
+  backdrop-filter: blur(22px);
+}
+
+.mv-scroll-story.is-finale-copy-visible .mv-scroll-slide--finale .final-copy,
+.mv-scroll-story.is-finale-copy-visible .mv-scroll-slide--finale .scene-copy {
+  text-align: center;
+}
+
+.mv-scroll-story[data-layout="portfolio"] .mv-scroll-slide--finale {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 .mv-scroll-story[data-layout="intro"] .mv-scroll-bg[data-bg="overview"] {
   opacity: 0 !important;
 }
@@ -684,8 +735,31 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   cursor: pointer;
   text-decoration: none;
   color: #fff;
-  transition: transform 0.45s ease, filter 0.45s ease, opacity 0.45s ease, z-index 0s;
+  transition: transform 0.38s ease, filter 0.38s ease, opacity 0.38s ease, z-index 0s;
   z-index: var(--z-cards);
+}
+
+@media (hover: hover) and (min-width: 1100px) {
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:hover {
+    transform:
+      translate(-50%, -50%)
+      rotate(var(--card-angle, 0deg))
+      translateY(calc(-1 * var(--card-orbit, 26cqmin)))
+      rotate(calc(-1 * var(--card-angle, 0deg)))
+      scale(1.045);
+    filter: brightness(1.08) saturate(1.06);
+    z-index: calc(var(--z-cards) + 4);
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core:hover img.mv-orb-bubble__standalone,
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus:hover .world-core img.mv-orb-bubble__standalone {
+    transform: scale(1.06);
+    filter: brightness(1.08) saturate(1.08);
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core img.mv-orb-bubble__standalone {
+    transition: transform 0.38s ease, filter 0.38s ease;
+  }
 }
 
 .world-card__image,
@@ -1364,10 +1438,36 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   grid-template-columns: repeat(2, minmax(128px, 1fr));
   gap: 12px;
   width: min(480px, 84vw);
+  padding: 0;
   opacity: 0;
   transform: translate3d(-50%, -50%, 0);
   pointer-events: none;
   z-index: var(--z-final-cta);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  background: transparent;
+  transition: border-color 0.45s ease, background 0.45s ease, box-shadow 0.45s ease;
+}
+
+.mv-scroll-story.is-portfolio-frame-visible .mv-scroll-portfolio {
+  padding: clamp(18px, 2.4vw, 26px);
+  border-color: rgba(255, 255, 255, calc(0.1 + var(--portfolio-frame-op, 0) * 0.18));
+  background: linear-gradient(
+    155deg,
+    rgba(8, 14, 28, calc(var(--portfolio-frame-op, 0) * 0.72)),
+    rgba(5, 9, 20, calc(var(--portfolio-frame-op, 0) * 0.52))
+  );
+  backdrop-filter: blur(calc(var(--portfolio-frame-op, 0) * 22px));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, calc(var(--portfolio-frame-op, 0) * 0.28));
+}
+
+.mv-scroll-story.is-portfolio-visible .mv-scroll-card {
+  opacity: 1;
+}
+
+.mv-scroll-story:not(.is-portfolio-visible) .mv-scroll-card {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .mv-scroll-card {
@@ -2448,6 +2548,13 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
     inset: 28%;
     z-index: 14;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .world-core:focus-visible {
+    outline: 2px solid rgba(104, 231, 255, 0.65);
+    outline-offset: 4px;
   }
 
   .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage .mv-world-zones {
