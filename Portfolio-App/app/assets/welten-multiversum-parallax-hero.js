@@ -7,7 +7,7 @@
   var WORLD_INDEX = { nexora: 1, professional: 2, freiraum: 3 };
   var WORLD_SHELL_KEY = { nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
   var BASE = "assets/multiversum-v4/";
-  var V = "?v=20260626mv-v17cards";
+  var V = "?v=20260626mv-v18polish";
 
   var ASSETS = {
     bg: {
@@ -18,9 +18,9 @@
       overview: BASE + "backgrounds/webp/background_multiverse_three_worlds.webp",
     },
     orbs: {
-      nexora: "assets/multiversum-v16/orbs/nexora_orb_transparent.png",
-      professional: "assets/multiversum-v16/orbs/professional_orb_transparent.png",
-      freiraum: "assets/multiversum-v16/orbs/freiraum_orb_transparent.png",
+      nexora: BASE + "worlds/webp/nexora_orb_premium_free.webp",
+      professional: BASE + "worlds/webp/professional_orb_premium_free.webp",
+      freiraum: BASE + "worlds/webp/freiraum_orb_premium_free.webp",
     },
     accents: {
       nexora: [
@@ -315,12 +315,11 @@
         switchWorld(btn.getAttribute("data-world-enter"));
       });
     });
-    if (!isEmbeddedFrame()) return;
     root.querySelectorAll("a.world-core[data-world]").forEach(function (link) {
       link.addEventListener("click", function (e) {
         e.preventDefault();
         e.stopPropagation();
-        navigateWorldLink(link.getAttribute("data-world"), "", "", link.getAttribute("href"));
+        navigateWorldLink(link.getAttribute("data-world"), "", "home", link.getAttribute("href"));
       });
     });
     root.querySelectorAll("a.world-card[data-world]").forEach(function (card) {
@@ -468,11 +467,11 @@
   }
 
   function cardOrbitForZone(kind, world, hasCards, isFocus, isRevealFocus) {
-    if (kind === "world" && isFocus) return "34cqmin";
-    if (kind === "reveal" && isRevealFocus) return "29cqmin";
-    if (kind === "reveal" && hasCards) return "26cqmin";
-    if (kind === "merge" && hasCards) return "27cqmin";
-    return "26cqmin";
+    if (kind === "world" && isFocus) return "0";
+    if (kind === "reveal" && isRevealFocus) return "32cqmin";
+    if (kind === "reveal" && hasCards) return "28cqmin";
+    if (kind === "merge" && hasCards) return "36cqmin";
+    return "28cqmin";
   }
 
   function topicVisibilityForWorld() {
@@ -990,7 +989,7 @@
           collage.style.opacity = String(cardEnv);
           collage.style.transform = "scale(" + lerp(0.96, 1, cardEnv) + ")";
           collage.style.visibility = cardEnv > 0.04 ? "visible" : "hidden";
-          collage.style.pointerEvents = cardEnv > 0.28 ? "auto" : "none";
+          collage.style.pointerEvents = cardEnv > 0.18 ? "auto" : "none";
           collage.querySelectorAll(".world-card").forEach(function (cardEl, cardIdx) {
             var stagger = cardIdx * 0.06;
             var cardT = clamp((cardEnv - stagger) / (1 - stagger), 0, 1);
@@ -1053,7 +1052,15 @@
       var zone = dom.worldZones[world];
       if (!zone) return;
       zone.addEventListener("mouseenter", function () {
-        zone.classList.add("is-hover", "is-active");
+        zone.classList.add("is-hover");
+        var layout = heroEl ? heroEl.getAttribute("data-layout") : "";
+        if (
+          layout === "split-world" ||
+          zone.classList.contains("is-scene-active") ||
+          zone.classList.contains("is-merge-active")
+        ) {
+          zone.classList.add("is-active");
+        }
       });
       zone.addEventListener("mouseleave", function () {
         zone.classList.remove("is-hover", "is-active");

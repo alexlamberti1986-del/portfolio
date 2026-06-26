@@ -399,20 +399,39 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   padding: 0;
   margin: 0;
   background: transparent;
-  border-radius: 999px;
+  border-radius: 50%;
   cursor: pointer;
   color: white;
   text-decoration: none;
   transform-style: preserve-3d;
   will-change: transform, opacity;
   transition: transform 0.55s ease;
-  z-index: 6;
+  z-index: 12;
+  overflow: visible;
+  pointer-events: auto;
+}
+
+.world-core::after {
+  content: "";
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 0 24px rgba(255, 255, 255, 0.08),
+    0 0 42px rgba(104, 231, 255, 0.14);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .world-core img.mv-orb-bubble__standalone {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  clip-path: circle(50% at 50% 50%);
   image-rendering: auto;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -422,6 +441,8 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
     contrast(1.04)
     saturate(1.06);
   transform-style: preserve-3d;
+  position: relative;
+  z-index: 2;
 }
 
 .world-zone.is-focus .world-core img.mv-orb-bubble__standalone {
@@ -487,13 +508,18 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   transition: filter 0.35s ease;
 }
 
-.world-zone.is-visible .world-collage,
 .world-zone.is-scene-active .world-collage {
   opacity: 1;
   visibility: visible;
   transform: scale(1);
   pointer-events: auto;
   filter: saturate(1) brightness(1);
+}
+
+.world-zone.is-visible:not(.is-scene-active):not(.is-focus) .world-collage {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .world-zone:not(.is-visible):not(.is-scene-active) .world-collage {
@@ -503,7 +529,7 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
 }
 
 .world-zone.is-focus .world-core {
-  inset: 38%;
+  inset: 34%;
 }
 
 .world-zone.is-background.is-visible .world-collage,
@@ -513,11 +539,12 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   filter: saturate(0.96) brightness(0.96);
 }
 
-.world-zone:hover .world-collage,
-.world-zone.is-active .world-collage {
+.mv-scroll-story[data-layout="split-world"] .world-zone.is-focus:hover .world-collage,
+.mv-scroll-story[data-layout="overview"] .world-zone.is-merge-active:hover .world-collage,
+.mv-scroll-story[data-layout="overview"] .world-zone.is-merge-active.is-active .world-collage {
   opacity: 1;
-  transform: scale(1.03);
-  filter: saturate(1.08) brightness(1.06);
+  transform: scale(1.02);
+  filter: saturate(1.06) brightness(1.04);
   pointer-events: auto;
 }
 
@@ -531,9 +558,9 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
 .mv-scroll-story[data-layout="overview"] .world-zone.is-reveal-active .world-card,
 .mv-scroll-story[data-layout="overview"] .world-zone.is-reveal-focus .world-card,
 .mv-scroll-story[data-collage-focus="all"] .world-zone.is-scene-active .world-card,
-.mv-scroll-story[data-layout="overview"] .world-zone:hover .world-card,
-.mv-scroll-story[data-layout="overview"] .world-zone.is-active .world-card,
-.mv-scroll-story[data-layout="overview"] .world-zone.is-focus .world-card {
+.mv-scroll-story[data-layout="overview"] .world-zone.is-merge-active:hover .world-card,
+.mv-scroll-story[data-layout="overview"] .world-zone.is-merge-active.is-active .world-card,
+.mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
   opacity: 1;
   pointer-events: auto;
 }
@@ -725,7 +752,7 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 }
 
 .world-zone.is-focus {
-  --card-orbit: 34cqmin;
+  --card-orbit: 0;
 }
 
 .world-zone.is-scene-active .world-card {
@@ -879,8 +906,7 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   .mv-scroll-story[data-layout="overview"] .world-zone.is-reveal-active .world-card,
   .mv-scroll-story[data-layout="overview"] .world-zone.is-reveal-focus .world-card,
   .mv-scroll-story[data-collage-focus="all"] .world-zone.is-scene-active .world-card,
-  .mv-scroll-story[data-layout="overview"] .world-zone:hover .world-card,
-  .mv-scroll-story[data-layout="overview"] .world-zone.is-active .world-card,
+  .mv-scroll-story[data-layout="overview"] .world-zone.is-merge-active .world-card,
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
     display: flex;
   }
@@ -2333,60 +2359,72 @@ body.is-world-focus .mv-scroll-story .world-copy button {
     --card-orbit: 0;
   }
 
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
-    width: var(--mv-card-w);
-    transform: translate(-50%, -50%) scale(1);
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] .world-card__image {
+    height: clamp(88px, 6.8vw, 124px);
   }
 
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card__image img {
-    max-height: clamp(88px, 8.2vw, 132px);
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
+    width: var(--mv-card-w);
+    transform: translate(-50%, -50%) scale(1) !important;
+    rotate: none;
+    z-index: 10;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="home"] {
-    left: 50%;
-    top: 7%;
-    transform: translateX(-50%);
+    display: none;
   }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card__image {
+    height: clamp(76px, 5.8vw, 108px);
+    width: 100%;
+    min-height: 0;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card__image img {
+    max-height: none;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+  }
+
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
-    left: 20%;
-    top: 27%;
-    transform: translate(-50%, -50%);
+    left: 10%;
+    top: 30%;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
-    left: 80%;
-    top: 28%;
-    transform: translate(-50%, -50%);
+    left: 90%;
+    top: 30%;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
-    left: 20%;
-    top: 72%;
-    transform: translate(-50%, -50%);
+    left: 10%;
+    top: 76%;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
-    left: 80%;
-    top: 72%;
-    transform: translate(-50%, -50%);
+    left: 90%;
+    top: 76%;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="projekte"] {
-    left: 18%;
-    top: 28%;
+    left: 12%;
+    top: 30%;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone--left-focus.is-focus .world-card[data-card="leistungen"] {
-    left: 82%;
-    top: 26%;
+    left: 88%;
+    top: 30%;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone--right-focus.is-focus .world-card[data-card="projekte"] {
-    left: 22%;
-    top: 26%;
+    left: 12%;
+    top: 30%;
   }
   .mv-scroll-story[data-layout="split-world"] .world-zone--right-focus.is-focus .world-card[data-card="leistungen"] {
-    left: 78%;
-    top: 28%;
+    left: 88%;
+    top: 30%;
   }
 
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
-    inset: 32%;
+    inset: 30%;
+    z-index: 14;
   }
 
   .mv-scroll-story .scene-copy {
@@ -2463,29 +2501,5 @@ body.is-world-focus .mv-scroll-story .world-copy button {
     letter-spacing: 0.01em;
     text-shadow: none;
     line-height: 1.2;
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="home"] {
-    top: 8%;
-  }
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
-    left: 22%;
-    top: 28%;
-  }
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
-    left: 78%;
-    top: 28%;
-  }
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
-    left: 22%;
-    top: 74%;
-  }
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
-    left: 78%;
-    top: 74%;
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
-    inset: 30%;
   }
 }
