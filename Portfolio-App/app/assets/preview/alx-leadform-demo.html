@@ -791,8 +791,9 @@ body[data-world='general'] .step-label{
 html.alx-embed,html.alx-embed body{overflow:hidden!important;scrollbar-width:none!important;-ms-overflow-style:none!important;height:auto!important;min-height:0!important;}html.alx-embed #alxForm,html.alx-embed .shell{height:auto!important;min-height:0!important;}
 html.alx-embed::-webkit-scrollbar,html.alx-embed body::-webkit-scrollbar{width:0!important;height:0!important;display:none!important;}
 </style>
-<link rel="stylesheet" href="alx-leadform-v37.css?v=20260628form-v37" />
-<script src="alx-leadform-images-v37.js?v=20260628form-v37"></script>
+<link rel="stylesheet" href="alx-leadform-v37.css?v=20260628form-mobile" />
+<link rel="stylesheet" href="alx-leadform-mobile.css?v=20260628form-mobile" />
+<script src="alx-leadform-images-v37.js?v=20260628form-mobile"></script>
 </head>
 <body data-world="general">
 <div id="alxForm">
@@ -1191,10 +1192,11 @@ renderStaticText(); buildServices(); buildDynamicBlocks(); updateDynamicBlocks()
     var root = document.getElementById('alxForm');
     if (!root) return;
     var box = root.querySelector('.shell') || root;
-    var h = Math.ceil(box.getBoundingClientRect().height);
-    if (!h || h < 120) h = Math.ceil(box.offsetHeight || box.scrollHeight || 240);
+    var h = Math.ceil(Math.max(box.getBoundingClientRect().height, box.scrollHeight, box.offsetHeight));
+    if (!h || h < 120) h = 240;
     try { window.parent.postMessage({ type: 'alx-form-height', height: h }, '*'); } catch(err) {}
   }
+  window.__alxPostEmbedHeight = postEmbedHeight;
   var initWorld = params.get('world');
   var initLang = params.get('lang');
   if (initWorld && ['general','nexora','professional','freiraum'].indexOf(initWorld) >= 0) switchWorld(initWorld);
@@ -1209,13 +1211,31 @@ renderStaticText(); buildServices(); buildDynamicBlocks(); updateDynamicBlocks()
     setTimeout(postEmbedHeight, 350);
     setTimeout(postEmbedHeight, 1200);
     window.addEventListener('resize', postEmbedHeight);
+    window.addEventListener('load', postEmbedHeight);
+    document.querySelectorAll('.service-banner, .option-card-media, .block-banner').forEach(function(el){
+      el.addEventListener('load', postEmbedHeight, true);
+    });
     if (typeof renderSteps === 'function') {
       var _renderSteps = renderSteps;
       renderSteps = function(){
         _renderSteps();
-        setTimeout(postEmbedHeight, 100);
+        setTimeout(postEmbedHeight, 80);
+        setTimeout(postEmbedHeight, 400);
       };
     }
+    if (typeof updateDynamicBlocks === 'function') {
+      var _updateDynamicBlocks = updateDynamicBlocks;
+      updateDynamicBlocks = function(){
+        _updateDynamicBlocks();
+        setTimeout(postEmbedHeight, 80);
+      };
+    }
+    try {
+      var shell = document.querySelector('#alxForm .shell');
+      if (shell && typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(function(){ postEmbedHeight(); }).observe(shell);
+      }
+    } catch (roErr) {}
   }
   if (window.parent !== window) {
     postEmbedHeight();

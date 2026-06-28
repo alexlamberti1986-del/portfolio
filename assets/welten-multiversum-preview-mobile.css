@@ -72,7 +72,7 @@
 
   html.mv4-preview-shell #slide-contact .welten-leadform-frame,
   html.welten-live-shell #slide-contact .welten-leadform-frame {
-    min-height: 560px;
+    min-height: 0;
   }
 
   html.mv4-preview-shell #slide-contact .slide-inner.contact-layout,

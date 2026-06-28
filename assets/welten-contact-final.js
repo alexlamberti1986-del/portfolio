@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "6";
+  var VERSION = "7";
   var FORM_SRC = "assets/preview/alx-leadform-demo.html";
   var TEL = "+41796678211";
   var TEL_DISP = "079 667 82 11";
@@ -42,7 +42,7 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260628form-v37"
+      "&v=20260628form-mobile"
     );
   }
 

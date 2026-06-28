@@ -65,6 +65,75 @@
 }
 
 @media (max-width: 960px) {
+  #slide-contact .slide-inner.contact-layout--form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding: 14px 14px 18px !important;
+    max-width: min(720px, calc(100vw - 20px)) !important;
+  }
+
+  #slide-contact .contact-layout--form .welten-leadform-wrap {
+    order: 1 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 16px !important;
+  }
+
+  #slide-contact .contact-layout--form .contact-copy {
+    order: 2 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    padding: 16px !important;
+  }
+
+  #slide-contact .contact-layout--form .contact-visual {
+    order: 3 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    max-width: min(280px, 72vw) !important;
+    max-height: min(240px, 42vh) !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 5 !important;
+    margin-inline: auto !important;
+  }
+
+  #slide-contact .contact-copy .prose:not(.contact-lead-emphasis) {
+    display: none !important;
+  }
+
+  #slide-contact .contact-copy .section-title {
+    font-size: clamp(1.35rem, 6vw, 1.75rem) !important;
+    margin-bottom: 6px !important;
+  }
+
+  #slide-contact .contact-copy .contact-lead-emphasis {
+    font-size: 0.95rem !important;
+    margin-top: 0.35rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  #slide-contact .contact-actions {
+    margin-top: 12px !important;
+    gap: 8px !important;
+  }
+
+  #slide-contact .contact-actions a {
+    padding: 12px 14px !important;
+    min-height: 44px !important;
+    font-size: 0.84rem !important;
+  }
+
+  #slide-contact .welten-leadform-frame {
+    border-radius: 16px !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+}
+
+@media (max-width: 960px) {
   #slide-contact .slide-inner.contact-layout {
     grid-template-columns: 1fr !important;
   }
@@ -77,11 +146,15 @@
   }
 
   #slide-contact .contact-layout--form .contact-visual {
-    order: 2;
+    order: 3;
   }
 
   #slide-contact .welten-leadform-wrap {
-    order: 3;
+    order: 1;
+  }
+
+  #slide-contact .contact-layout--form .contact-copy {
+    order: 2;
   }
 }
 
