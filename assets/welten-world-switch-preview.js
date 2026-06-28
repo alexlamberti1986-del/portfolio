@@ -18,12 +18,47 @@
   };
 
   function getTimingForWorld(worldKey) {
+    if (worldKey === "general") {
+      return Object.assign({}, WWS_TIMING, {
+        WORLD_TRANSITION_DURATION: 3800,
+        EFFECT_MS: 2000,
+        TITLE_REVEAL_AT: 1720,
+        TITLE_FADE_IN: 520,
+        TITLE_HOLD: 1400,
+        COVER_MS: 1300,
+      });
+    }
     if (worldKey === "nexora") {
       return Object.assign({}, WWS_TIMING, {
         TITLE_HOLD: 1000,
       });
     }
+    if (worldKey === "freiraum") {
+      return Object.assign({}, WWS_TIMING, {
+        WORLD_TRANSITION_DURATION: 4000,
+        EFFECT_MS: 2400,
+        TITLE_REVEAL_AT: 1880,
+        TITLE_FADE_IN: 560,
+        TITLE_HOLD: 1300,
+        COVER_MS: 1250,
+      });
+    }
     return WWS_TIMING;
+  }
+
+  function getOrbPhaseMs(worldKey, effectMs) {
+    if (worldKey === "general") {
+      return {
+        wander: Math.round(effectMs * 0.22),
+        converge: Math.round(effectMs * 0.58),
+        merge: Math.round(effectMs * 0.2),
+      };
+    }
+    return {
+      wander: Math.round(effectMs * 0.35),
+      converge: Math.round(effectMs * 0.425),
+      merge: Math.round(effectMs * 0.225),
+    };
   }
 
   function isCanvasDrivenWorld(worldKey) {
@@ -90,8 +125,8 @@
 
   var WORLD_ORB_THEMES = {
     general: {
-      bgTrail: "rgba(6, 4, 16, 0.4)",
-      orbCount: 24,
+      bgTrail: "rgba(6, 4, 16, 0.38)",
+      orbCount: 40,
       palette: [
         ["255, 210, 255", "255, 89, 178", "200, 40, 140"],
         ["200, 235, 255", "94, 196, 255", "30, 120, 220"],
@@ -617,14 +652,15 @@
       });
     });
 
-    [40, 155, 270, 385, 500, 615, 730, 845].forEach(function (ms, i) {
+    [40, 155, 270, 385, 500, 615, 730, 845, 960, 1080, 1200, 1320, 1440, 1560, 1680, 1800].forEach(function (ms, i) {
+      if (ms > FT.EFFECT_MS + 120) return;
       wwsSoundAt(gen, ms, function (ctx, t) {
         wwsBrushSwish(ctx, t, {
-          dur: 0.3 + (i % 3) * 0.05,
-          vol: 0.046 + (i % 2) * 0.011,
-          freqStart: 210 + i * 32,
-          freqEnd: 1280 + i * 95,
-          q: 0.62 + (i % 2) * 0.14,
+          dur: 0.28 + (i % 3) * 0.06,
+          vol: 0.044 + (i % 2) * 0.012,
+          freqStart: 190 + i * 28,
+          freqEnd: 1180 + i * 88,
+          q: 0.58 + (i % 2) * 0.16,
         });
       });
     });
@@ -923,9 +959,11 @@
     var mergeFlash = 0;
     var OT = getTimingForWorld(worldKey);
 
-    var WANDER_MS = Math.round(OT.EFFECT_MS * 0.35);
-    var CONVERGE_MS = Math.round(OT.EFFECT_MS * 0.425);
-    var MERGE_MS = Math.round(OT.EFFECT_MS * 0.225);
+    var phases = getOrbPhaseMs(worldKey, OT.EFFECT_MS);
+    var WANDER_MS = phases.wander;
+    var CONVERGE_MS = phases.converge;
+    var MERGE_MS = phases.merge;
+    var isGeneral = worldKey === "general";
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -937,18 +975,27 @@
     function initOrbs() {
       orbs = [];
       var count = theme.orbCount;
-      if (w < 640) count = Math.max(10, Math.floor(count * 0.6));
-      else if (w < 1024) count = Math.max(12, Math.floor(count * 0.78));
+      if (w < 640) count = Math.max(14, Math.floor(count * 0.62));
+      else if (w < 1024) count = Math.max(18, Math.floor(count * 0.8));
       var i;
       for (i = 0; i < count; i++) {
         var pal = theme.palette[i % theme.palette.length];
+        var spawnX = Math.random() * w;
+        var spawnY = Math.random() * h;
+        if (isGeneral) {
+          var ring = i / count;
+          var angle = ring * Math.PI * 2 + Math.random() * 0.6;
+          var dist = 0.28 + Math.random() * 0.38;
+          spawnX = cx + Math.cos(angle) * w * dist;
+          spawnY = cy + Math.sin(angle) * h * dist;
+        }
         orbs.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 3.2,
-          vy: (Math.random() - 0.5) * 3.2,
-          r: 16 + Math.random() * 32,
-          baseR: 16 + Math.random() * 32,
+          x: spawnX,
+          y: spawnY,
+          vx: (Math.random() - 0.5) * (isGeneral ? 2.6 : 3.2),
+          vy: (Math.random() - 0.5) * (isGeneral ? 2.6 : 3.2),
+          r: (isGeneral ? 12 : 16) + Math.random() * (isGeneral ? 26 : 32),
+          baseR: (isGeneral ? 12 : 16) + Math.random() * (isGeneral ? 26 : 32),
           pulse: Math.random() * Math.PI * 2,
           alpha: 1,
           coreRgb: pal[0],
@@ -1009,31 +1056,42 @@
         }
       } else if (phase === "converge") {
         var t = (elapsed - WANDER_MS) / CONVERGE_MS;
-        var pull = 0.06 + easeOutCubic(t) * 0.22;
+        var pull = isGeneral
+          ? 0.04 + easeOutCubic(t) * 0.34
+          : 0.06 + easeOutCubic(t) * 0.22;
+        var maxSp = isGeneral ? 10 : 8;
         for (var c = 0; c < orbs.length; c++) {
           var orb = orbs[c];
-          orb.pulse += 0.06;
+          orb.pulse += isGeneral ? 0.07 : 0.06;
           var dx = cx - orb.x;
           var dy = cy - orb.y;
           var dist = Math.sqrt(dx * dx + dy * dy) || 1;
           orb.vx += (dx / dist) * pull;
           orb.vy += (dy / dist) * pull;
+          if (isGeneral && dist < Math.min(w, h) * 0.18) {
+            orb.vx *= 0.92;
+            orb.vy *= 0.92;
+          }
           var sp = Math.sqrt(orb.vx * orb.vx + orb.vy * orb.vy) || 1;
-          if (sp > 8) {
-            orb.vx = (orb.vx / sp) * 8;
-            orb.vy = (orb.vy / sp) * 8;
+          if (sp > maxSp) {
+            orb.vx = (orb.vx / sp) * maxSp;
+            orb.vy = (orb.vy / sp) * maxSp;
           }
           orb.x += orb.vx;
           orb.y += orb.vy;
+          if (isGeneral) {
+            orb.r = orb.baseR * (1 + (1 - t) * 0.12);
+          }
           drawOrb(orb);
         }
       } else if (phase === "merge") {
         var mt = (elapsed - WANDER_MS - CONVERGE_MS) / MERGE_MS;
-        mergeFlash = Math.min(1, mt * 1.4);
+        mergeFlash = isGeneral ? Math.min(1, easeOutCubic(mt) * 1.12) : Math.min(1, mt * 1.4);
+        var snap = isGeneral ? 0.18 : 0.14;
         for (var m = 0; m < orbs.length; m++) {
           var ob = orbs[m];
-          ob.x += (cx - ob.x) * 0.14;
-          ob.y += (cy - ob.y) * 0.14;
+          ob.x += (cx - ob.x) * snap;
+          ob.y += (cy - ob.y) * snap;
           ob.r = ob.baseR * (1 - easeOutCubic(mt));
           ob.alpha = 1 - mt;
           if (ob.r > 1 && ob.alpha > 0.05) {
@@ -1041,17 +1099,21 @@
           }
         }
         var flash = theme.flash;
-        var flashR = 40 + mergeFlash * Math.min(w, h) * 0.35;
+        var flashR = (isGeneral ? 48 : 40) + mergeFlash * Math.min(w, h) * (isGeneral ? 0.42 : 0.35);
         var grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, flashR);
-        grd.addColorStop(0, "rgba(" + flash.core + ", " + (mergeFlash * 0.85) + ")");
-        grd.addColorStop(0.35, "rgba(" + flash.mid + ", " + (mergeFlash * 0.55) + ")");
-        grd.addColorStop(0.7, "rgba(" + flash.outer + ", " + (mergeFlash * 0.2) + ")");
+        grd.addColorStop(0, "rgba(" + flash.core + ", " + (mergeFlash * (isGeneral ? 0.92 : 0.85)) + ")");
+        grd.addColorStop(0.35, "rgba(" + flash.mid + ", " + (mergeFlash * (isGeneral ? 0.62 : 0.55)) + ")");
+        grd.addColorStop(0.7, "rgba(" + flash.outer + ", " + (mergeFlash * (isGeneral ? 0.26 : 0.2)) + ")");
         grd.addColorStop(1, "rgba(" + flash.outer + ", 0)");
         ctx.fillStyle = grd;
         ctx.beginPath();
         ctx.arc(cx, cy, flashR, 0, Math.PI * 2);
         ctx.fill();
-        if (mt > 0.96) revealStagedTitle(overlay);
+        if (isGeneral) {
+          if (mt > 0.42) revealStagedTitle(overlay);
+        } else if (mt > 0.96) {
+          revealStagedTitle(overlay);
+        }
       } else {
         revealStagedTitle(overlay);
       }
@@ -1095,8 +1157,9 @@
     var totalMs = FT.EFFECT_MS;
     var revealMs = FT.TITLE_REVEAL_AT;
     var brushes = [];
-    var blooms = [];
+    var splatters = [];
     var paperDots = [];
+    var titleRevealed = false;
 
     function pickColor(i) {
       return PALETTE[i % PALETTE.length];
@@ -1114,11 +1177,15 @@
       return 0.5 - Math.cos(Math.PI * t) / 2;
     }
 
+    function easeOutExpo(t) {
+      return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+    }
+
     function resize() {
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
       cx = w * 0.5;
-      cy = h * 0.5;
+      cy = h * 0.46;
     }
 
     function quadPoint(x1, y1, qx, qy, x2, y2, t) {
@@ -1137,85 +1204,96 @@
       };
     }
 
-    function initScene() {
-      brushes = [];
-      blooms = [];
-      paperDots = [];
-
-      var brushCount = w < 640 ? 5 : 7;
+    function spawnSplatter(x, y, color, strength) {
+      var count = 2 + Math.floor(Math.random() * 4);
       var i;
-      for (i = 0; i < brushCount; i++) {
-        var edge = i % 4;
-        var x1 =
-          edge === 0
-            ? -w * 0.22
-            : edge === 1
-              ? w * 1.22
-              : cx + (Math.random() - 0.5) * w * 0.95;
-        var y1 =
-          edge === 2
-            ? -h * 0.2
-            : edge === 3
-              ? h * 1.2
-              : cy + (Math.random() - 0.5) * h * 0.9;
-        var x2 =
-          edge === 0
-            ? w * 1.08
-            : edge === 1
-              ? -w * 0.08
-              : cx + (Math.random() - 0.5) * w * 0.72;
-        var y2 =
-          edge === 2
-            ? h * 1.06
-            : edge === 3
-              ? -h * 0.06
-              : cy + (Math.random() - 0.5) * h * 0.68;
-        brushes.push({
-          x1: x1,
-          y1: y1,
-          cx: (x1 + x2) * 0.5 + (Math.random() - 0.5) * w * 0.28,
-          cy: (y1 + y2) * 0.5 + (Math.random() - 0.5) * h * 0.22,
-          x2: x2,
-          y2: y2,
-          color: pickColor(i),
-          width: (w < 640 ? 108 : 148) + Math.random() * (w < 640 ? 92 : 132),
-          delay: 30 + i * 115,
-          dur: 520 + Math.random() * 280,
-          pressure: 0.82 + Math.random() * 0.18,
-          tilt: (Math.random() - 0.5) * 0.22,
-        });
-      }
-
-      var bloomCount = w < 640 ? 3 : 5;
-      for (i = 0; i < bloomCount; i++) {
-        blooms.push({
-          x: cx + (Math.random() - 0.5) * w * 0.55,
-          y: cy + (Math.random() - 0.5) * h * 0.45,
-          r: Math.max(w, h) * (0.16 + Math.random() * 0.14),
-          color: pickColor(i + 2),
-          delay: 180 + i * 140,
-          dur: 900 + Math.random() * 400,
-        });
-      }
-
-      var dotCount = w < 640 ? 90 : 140;
-      for (i = 0; i < dotCount; i++) {
-        paperDots.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: 0.25 + Math.random() * 0.55,
-          a: 0.02 + Math.random() * 0.04,
+      for (i = 0; i < count; i++) {
+        splatters.push({
+          x: x + (Math.random() - 0.5) * 28 * strength,
+          y: y + (Math.random() - 0.5) * 22 * strength,
+          rx: 4 + Math.random() * 16 * strength,
+          ry: 3 + Math.random() * 10 * strength,
+          rot: Math.random() * Math.PI,
+          color: color,
+          life: 1,
+          born: performance.now() - startTime,
         });
       }
     }
 
-    function drawPaperBase(dissolve) {
+    function initScene() {
+      brushes = [];
+      splatters = [];
+      paperDots = [];
+
+      var brushCount = w < 640 ? 7 : 11;
+      var presets = [
+        [-0.18, 0.12, 1.12, 0.88],
+        [1.18, 0.08, -0.1, 0.92],
+        [0.52, -0.22, 0.48, 1.14],
+        [0.12, 1.16, 0.88, -0.08],
+        [-0.08, 0.52, 1.08, 0.48],
+        [1.06, 0.42, -0.12, 0.58],
+        [0.22, -0.14, 0.78, 1.1],
+        [-0.14, 0.82, 1.1, 0.18],
+        [0.92, 1.08, 0.08, 0.22],
+        [0.08, 0.28, 0.92, 0.72],
+        [0.72, 0.92, 0.28, 0.08],
+      ];
+
+      var i;
+      for (i = 0; i < brushCount; i++) {
+        var p = presets[i % presets.length];
+        var x1 = p[0] * w;
+        var y1 = p[1] * h;
+        var x2 = p[2] * w;
+        var y2 = p[3] * h;
+        brushes.push({
+          x1: x1,
+          y1: y1,
+          cx: (x1 + x2) * 0.5 + (Math.random() - 0.5) * w * 0.18,
+          cy: (y1 + y2) * 0.5 + (Math.random() - 0.5) * h * 0.16,
+          x2: x2,
+          y2: y2,
+          color: pickColor(i),
+          width: (w < 640 ? 118 : 168) + Math.random() * (w < 640 ? 88 : 148),
+          delay: 40 + i * 145,
+          dur: 680 + Math.random() * 360,
+          pressure: 0.78 + Math.random() * 0.22,
+          tilt: (Math.random() - 0.5) * 0.35,
+          bristles: 4 + (i % 3),
+        });
+      }
+
+      var dotCount = w < 640 ? 110 : 170;
+      for (i = 0; i < dotCount; i++) {
+        paperDots.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: 0.2 + Math.random() * 0.65,
+          a: 0.018 + Math.random() * 0.04,
+        });
+      }
+    }
+
+    function drawPaperBase(dissolve, elapsed) {
+      var warm = Math.min(0.14, elapsed / totalMs * 0.14);
       var grd = ctx.createLinearGradient(0, 0, w, h);
-      grd.addColorStop(0, "rgba(18, 10, 28, " + (0.92 * dissolve) + ")");
-      grd.addColorStop(0.45, "rgba(24, 12, 34, " + (0.9 * dissolve) + ")");
-      grd.addColorStop(1, "rgba(12, 8, 20, " + (0.94 * dissolve) + ")");
+      grd.addColorStop(0, "rgba(14, 8, 22, " + (0.94 * dissolve) + ")");
+      grd.addColorStop(0.45, "rgba(20, 10, 30, " + (0.92 * dissolve) + ")");
+      grd.addColorStop(1, "rgba(10, 6, 18, " + (0.96 * dissolve) + ")");
+      ctx.globalCompositeOperation = "source-over";
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, w, h);
+
+      if (warm > 0.01) {
+        var wash = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.55);
+        wash.addColorStop(0, "rgba(255,155,55," + warm * dissolve + ")");
+        wash.addColorStop(0.45, "rgba(255,47,146," + (warm * 0.55 * dissolve) + ")");
+        wash.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = wash;
+        ctx.fillRect(0, 0, w, h);
+      }
 
       var i;
       for (i = 0; i < paperDots.length; i++) {
@@ -1227,28 +1305,36 @@
       }
     }
 
-    function drawBloom(b, elapsed, dissolve) {
-      if (elapsed < b.delay) return;
-      var t = Math.min(1, (elapsed - b.delay) / b.dur);
-      var p = easeInOutSine(t);
-      var r = b.r * (0.45 + p * 0.75);
-      var grd = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
-      grd.addColorStop(0, rgba(b.color, 0.16 * dissolve * (1 - t * 0.2)));
-      grd.addColorStop(0.5, rgba(b.color, 0.07 * dissolve));
-      grd.addColorStop(1, rgba(b.color, 0));
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
-      ctx.fill();
+    function drawSplatterField(dissolve, elapsed) {
+      var i;
+      for (i = splatters.length - 1; i >= 0; i--) {
+        var s = splatters[i];
+        var age = (elapsed - s.born) / 900;
+        if (age > 1.2) {
+          splatters.splice(i, 1);
+          continue;
+        }
+        var alpha = (1 - age * 0.75) * 0.55 * dissolve;
+        if (alpha <= 0.01) continue;
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.rot);
+        ctx.globalCompositeOperation = "lighter";
+        ctx.fillStyle = rgba(s.color, alpha);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, s.rx, s.ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
     }
 
     function drawBrushBand(b, elapsed, dissolve) {
       if (elapsed < b.delay) return;
       var t = Math.min(1, (elapsed - b.delay) / b.dur);
-      var progress = easeOutQuart(t);
-      if (progress <= 0.01) return;
+      var progress = easeOutExpo(t);
+      if (progress <= 0.008) return;
 
-      var stepCount = 72;
+      var stepCount = 88;
       var maxStep = Math.max(2, Math.floor(stepCount * progress));
       var pts = [];
       var s;
@@ -1259,26 +1345,29 @@
       if (pts.length < 2) return;
 
       var baseW = b.width * b.pressure;
+      var tip = pts[pts.length - 1];
 
       ctx.save();
+      ctx.globalCompositeOperation = "lighter";
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.strokeStyle = rgba(b.color, 0.18 * dissolve);
-      ctx.lineWidth = baseW * 1.55;
+
+      ctx.strokeStyle = rgba(b.color, 0.14 * dissolve);
+      ctx.lineWidth = baseW * 1.85;
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
       for (s = 1; s < pts.length; s++) ctx.lineTo(pts[s].x, pts[s].y);
       ctx.stroke();
 
-      ctx.strokeStyle = rgba(b.color, 0.34 * dissolve * b.pressure);
-      ctx.lineWidth = baseW * 1.12;
+      ctx.strokeStyle = rgba(b.color, 0.32 * dissolve * b.pressure);
+      ctx.lineWidth = baseW * 1.22;
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
       for (s = 1; s < pts.length; s++) ctx.lineTo(pts[s].x, pts[s].y);
       ctx.stroke();
 
-      ctx.strokeStyle = rgba(b.color, 0.62 * dissolve * b.pressure);
-      ctx.lineWidth = baseW * 0.82;
+      ctx.strokeStyle = rgba(b.color, 0.58 * dissolve * b.pressure);
+      ctx.lineWidth = baseW * 0.72;
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
       for (s = 1; s < pts.length; s++) ctx.lineTo(pts[s].x, pts[s].y);
@@ -1290,54 +1379,81 @@
         var pt = pts[s];
         var tan = quadTangent(b.x1, b.y1, b.cx, b.cy, b.x2, b.y2, Math.min(0.999, u));
         var ang = Math.atan2(tan.y, tan.x) + b.tilt;
-        var edgeFade = 0.68 + 0.32 * Math.sin(u * Math.PI);
-        var alpha = 0.52 * dissolve * b.pressure * edgeFade;
-        var brushW = baseW * (0.92 + 0.08 * edgeFade);
+        var edgeFade = 0.55 + 0.45 * Math.sin(u * Math.PI);
+        var alpha = 0.48 * dissolve * b.pressure * edgeFade;
+        var brushW = baseW * (0.88 + 0.12 * edgeFade);
+        var bristleN = b.bristles;
+        var bi;
 
         ctx.save();
+        ctx.globalCompositeOperation = "lighter";
         ctx.translate(pt.x, pt.y);
         ctx.rotate(ang);
-        ctx.scale(3.6, 0.68);
-        var grd = ctx.createRadialGradient(0, 0, 0, 0, 0, brushW * 0.5);
-        grd.addColorStop(0, rgba(b.color, alpha));
-        grd.addColorStop(0.5, rgba(b.color, alpha * 0.78));
-        grd.addColorStop(0.82, rgba(b.color, alpha * 0.28));
-        grd.addColorStop(1, rgba(b.color, 0));
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(0, 0, brushW * 0.46, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-
-        if (s % 5 === 0 && u > 0.05) {
-          ctx.fillStyle = rgba(b.color, alpha * 0.35);
+        for (bi = 0; bi < bristleN; bi++) {
+          var off = (bi - (bristleN - 1) / 2) * brushW * 0.11;
+          var grd = ctx.createRadialGradient(off, 0, 0, off, 0, brushW * 0.42);
+          grd.addColorStop(0, rgba(b.color, alpha));
+          grd.addColorStop(0.55, rgba(b.color, alpha * 0.72));
+          grd.addColorStop(1, rgba(b.color, 0));
+          ctx.fillStyle = grd;
           ctx.beginPath();
-          ctx.ellipse(
-            pt.x + (Math.random() - 0.5) * brushW * 0.14,
-            pt.y + (Math.random() - 0.5) * brushW * 0.1,
-            brushW * 0.34,
-            brushW * 0.14,
-            ang,
-            0,
-            Math.PI * 2
-          );
+          ctx.ellipse(off, 0, brushW * 0.38, brushW * 0.12, 0, 0, Math.PI * 2);
           ctx.fill();
         }
+        ctx.restore();
+
+        if (s % 4 === 0 && u > 0.04 && Math.random() > 0.55) {
+          spawnSplatter(pt.x, pt.y, b.color, 0.7 + u * 0.5);
+        }
+      }
+
+      if (progress > 0.08 && Math.random() > 0.72) {
+        spawnSplatter(tip.x, tip.y, b.color, 1.1);
+      }
+    }
+
+    function drawCenterBloom(elapsed, dissolve) {
+      var start = totalMs * 0.62;
+      if (elapsed < start) return;
+      var t = Math.min(1, (elapsed - start) / (totalMs * 0.28));
+      var p = easeInOutSine(t);
+      if (p <= 0.01) return;
+
+      var r = Math.min(w, h) * (0.08 + p * 0.38);
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      var grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      grd.addColorStop(0, "rgba(255,255,255," + (0.42 * p * dissolve) + ")");
+      grd.addColorStop(0.18, "rgba(255,216,106," + (0.34 * p * dissolve) + ")");
+      grd.addColorStop(0.42, "rgba(255,47,146," + (0.28 * p * dissolve) + ")");
+      grd.addColorStop(0.68, "rgba(0,217,196," + (0.18 * p * dissolve) + ")");
+      grd.addColorStop(1, "rgba(94,196,255,0)");
+      ctx.fillStyle = grd;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      if (p > 0.52 && !titleRevealed) {
+        titleRevealed = true;
+        revealStagedTitle(overlay);
       }
     }
 
     function drawColorWash(elapsed, dissolve) {
-      var peak = Math.min(1, Math.max(0, (elapsed - 360) / 480));
-      var fade = peak * (elapsed < revealMs ? 1 : Math.max(0, 1 - (elapsed - revealMs) / 300));
+      var peak = Math.min(1, Math.max(0, (elapsed - 280) / 620));
+      var fade = peak * (elapsed < revealMs + 200 ? 1 : Math.max(0, 1 - (elapsed - revealMs - 200) / 360));
       if (fade <= 0.01) return;
+      ctx.globalCompositeOperation = "lighter";
       var grd = ctx.createLinearGradient(0, 0, w, h);
-      grd.addColorStop(0, "rgba(255,47,146," + (0.08 * fade * dissolve) + ")");
-      grd.addColorStop(0.3, "rgba(155,107,255," + (0.07 * fade * dissolve) + ")");
-      grd.addColorStop(0.55, "rgba(0,217,196," + (0.06 * fade * dissolve) + ")");
-      grd.addColorStop(0.78, "rgba(255,155,55," + (0.07 * fade * dissolve) + ")");
-      grd.addColorStop(1, "rgba(94,196,255," + (0.05 * fade * dissolve) + ")");
+      grd.addColorStop(0, "rgba(255,47,146," + (0.1 * fade * dissolve) + ")");
+      grd.addColorStop(0.28, "rgba(155,107,255," + (0.08 * fade * dissolve) + ")");
+      grd.addColorStop(0.52, "rgba(0,217,196," + (0.07 * fade * dissolve) + ")");
+      grd.addColorStop(0.76, "rgba(255,155,55," + (0.09 * fade * dissolve) + ")");
+      grd.addColorStop(1, "rgba(94,196,255," + (0.06 * fade * dissolve) + ")");
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "source-over";
     }
 
     resize();
@@ -1346,23 +1462,22 @@
     function draw(now) {
       if (!runningAnim) return;
       var elapsed = now - startTime;
-      var dissolve = elapsed < revealMs ? 1 : Math.max(0, 1 - (elapsed - revealMs) / 320);
+      var dissolve = elapsed < revealMs + 280 ? 1 : Math.max(0, 1 - (elapsed - revealMs - 280) / 380);
 
-      ctx.globalCompositeOperation = "source-over";
-      drawPaperBase(dissolve);
+      drawPaperBase(dissolve, elapsed);
 
       var i;
       for (i = 0; i < brushes.length; i++) drawBrushBand(brushes[i], elapsed, dissolve);
 
-      ctx.globalCompositeOperation = "source-over";
+      drawSplatterField(dissolve, elapsed);
       drawColorWash(elapsed, dissolve);
+      drawCenterBloom(elapsed, dissolve);
 
-      if (elapsed > revealMs - 40) revealStagedTitle(overlay);
-      if (elapsed < totalMs + 60) {
-        overlay._wwsRaf = requestAnimationFrame(draw);
-      } else {
+      if (elapsed > totalMs + 80) {
         runningAnim = false;
-        revealStagedTitle(overlay);
+        if (!titleRevealed) revealStagedTitle(overlay);
+      } else {
+        overlay._wwsRaf = requestAnimationFrame(draw);
       }
     }
 
@@ -1446,8 +1561,8 @@
         wwsLater(function () {
           revealStagedTitle(overlay);
         }, timing.TITLE_REVEAL_AT);
-      } else if (worldKey === "nexora") {
-        /* NEXORA: Titel erst wenn Canvas-Buchstaben fertig sind (startNexoraMatrixCanvas) */
+      } else if (worldKey === "nexora" || worldKey === "general" || worldKey === "freiraum") {
+        /* Canvas-gesteuerte Titel-Enthüllung (NEXORA / MULTIVERSUM / FREIRAUM) */
       } else {
         wwsLater(function () {
           revealStagedTitle(overlay);
