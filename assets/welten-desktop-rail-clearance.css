@@ -1,31 +1,92 @@
-/**
- * Desktop/Laptop: Abstand zur seitlichen Navigation (ab 1401px, Rail sichtbar).
- * Tablet/Mobil (<1401px) unverändert — dort ist die Rail ausgeblendet.
- * Ab 2400px: bestehende 27″-Proportionen (7vw / max 128px).
- */
-@media (min-width: 1401px) and (max-width: 2399px) {
-  :root {
-    --welten-rail-zone: clamp(158px, calc(72px + 6.8vw), 192px);
-    --welten-content-max: min(1180px, calc(100vw - var(--welten-rail-zone) - clamp(48px, 7vw, 112px)));
-  }
-
-  .slide:not(#slide-home) {
-    padding-right: var(--welten-rail-zone) !important;
-    padding-left: clamp(20px, 3.6vw, 64px) !important;
-  }
-
-  .slide:not(#slide-home) .slide-inner {
-    width: 100% !important;
-    max-width: var(--welten-content-max) !important;
-    margin-inline: auto !important;
-    box-sizing: border-box;
-  }
-}
-
-/* Sehr breite Monitore: Inhalt zentriert halten wie auf 27″ */
-@media (min-width: 2400px) {
-  .slide:not(#slide-home) .slide-inner {
-    max-width: 1180px !important;
-    margin-inline: auto !important;
-  }
-}
+/**
+ * Laptop/Tablet (≤2559px): Seitliche Navigation aus, Inhalte ohne Rail-Reserve.
+ * Parallax-Welten nach rechts, Karten enger — kein Überlappen mit Textbox.
+ * 27″ Desktop (≥2560px): Rail sichtbar (Inline-CSS).
+ */
+@media (max-width: 2559px) {
+  .experience-rail,
+  .side-nav,
+  .dot-nav,
+  .chapter-nav,
+  .vertical-nav,
+  .right-nav,
+  .chapter-dots,
+  .chapter-dock {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  body[data-mv-v4-test="1"][data-world="general"]:has(#mvParallaxHero) .experience-rail,
+  body[data-world="nexora"] .experience-rail,
+  body[data-world="vertex"] .experience-rail,
+  body[data-world="freiraum"] .experience-rail {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  .slide {
+    padding-right: clamp(16px, 4vw, 44px) !important;
+    padding-left: clamp(16px, 4vw, 44px) !important;
+  }
+
+  #slide-home.slide {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  #slide-projects .slide-inner,
+  #slide-leistungen .slide-inner {
+    width: 100% !important;
+    max-width: 1180px !important;
+    margin-inline: auto !important;
+    box-sizing: border-box;
+  }
+
+  /* Parallax split-world: Stage rechts, Karten enger */
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
+    left: 60% !important;
+    right: auto !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: min(52vw, 800px) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="left"] .mv-world-stage,
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="right"] .mv-world-stage {
+    left: 60% !important;
+    right: auto !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    transform: translate(-50%, -50%) translate(-28cqw, -26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    transform: translate(-50%, -50%) translate(28cqw, -26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    transform: translate(-50%, -50%) translate(-28cqw, 26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    transform: translate(-50%, -50%) translate(28cqw, 26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage,
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="overview"] .mv-world-stage {
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%) !important;
+    width: min(96vw, 1280px) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(520px, 42vw) !important;
+  }
+}
+

@@ -61,6 +61,16 @@
   function patchSideNav() {
     var rail = document.querySelector(".experience-rail");
     if (!rail || !document.getElementById("mvParallaxHero")) return;
+
+    /* Laptop/Tablet: Rail aus — wie Inline-CSS max-width 2559px */
+    if (window.matchMedia("(max-width: 2559px)").matches) {
+      rail.style.setProperty("display", "none", "important");
+      rail.style.setProperty("opacity", "0", "important");
+      rail.style.setProperty("visibility", "hidden", "important");
+      rail.style.setProperty("pointer-events", "none", "important");
+      return;
+    }
+
     rail.style.removeProperty("display");
     rail.style.removeProperty("opacity");
     rail.style.removeProperty("visibility");

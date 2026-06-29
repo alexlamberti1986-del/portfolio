@@ -126,8 +126,8 @@ body[data-mv-v4-test="1"] .mv-scroll-vignette {
   background: radial-gradient(ellipse 92% 82% at 50% 48%, transparent 56%, rgba(2, 4, 10, 0.48) 100%);
 }
 
-/* Side-Nav als Overlay */
-@media (min-width: 1100px) {
+/* Side-Nav nur auf 27″-Desktop (≥2560px); Laptop wie Tablet ohne Rail */
+@media (min-width: 2560px) {
   body[data-mv-v4-test="1"][data-world="general"]:has(#mvParallaxHero) .experience-rail {
     display: grid !important;
     opacity: 1 !important;
@@ -450,28 +450,31 @@ body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zon
   pointer-events: auto !important;
 }
 
-body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
-  width: min(64vw, 1000px);
-}
-
 body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage .mv-world-zones {
   inset: clamp(28px, 5vh, 56px) clamp(6px, 1.2vw, 16px);
 }
 
-body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
-  transform: translate(-50%, -50%) translate(-42cqw, -34cqh) !important;
-}
+/* Split-World Karten/Stage: volle Desktop-Orbits nur ab 27″-Referenz */
+@media (min-width: 2560px) {
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
+    width: min(64vw, 1000px);
+  }
 
-body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
-  transform: translate(-50%, -50%) translate(42cqw, -34cqh) !important;
-}
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    transform: translate(-50%, -50%) translate(-42cqw, -34cqh) !important;
+  }
 
-body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
-  transform: translate(-50%, -50%) translate(-42cqw, 34cqh) !important;
-}
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    transform: translate(-50%, -50%) translate(42cqw, -34cqh) !important;
+  }
 
-body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
-  transform: translate(-50%, -50%) translate(42cqw, 34cqh) !important;
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    transform: translate(-50%, -50%) translate(-42cqw, 34cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    transform: translate(-50%, -50%) translate(42cqw, 34cqh) !important;
+  }
 }
 
 body[data-mv-v4-test="1"] .mv-world-stage__ring {
