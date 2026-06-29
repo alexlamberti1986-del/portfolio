@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var V = "20260623svc1";
+  var V = "20260629vk1";
 
   var ACCORDION_SERVICES = {
     websites: "web",

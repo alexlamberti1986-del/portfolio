@@ -9,7 +9,7 @@
   var FILES = {
     general: {
       logo: "03_html_05_general_logo.webp",
-      qr: "04_html_06_general_qr.webp",
+      qr: "04_html_06_general_qr.png",
       form: "05_html_07_general_form.webp",
       web: "06_html_08_general_web.webp",
       seo: "07_html_09_general_seo.webp",
@@ -19,7 +19,7 @@
     },
     nexora: {
       logo: "11_html_13_nexora_logo.webp",
-      qr: "12_html_14_nexora_qr.webp",
+      qr: "12_html_14_nexora_qr.png",
       form: "13_html_15_nexora_form.webp",
       web: "14_html_16_nexora_web.webp",
       seo: "15_html_17_nexora_seo.webp",
@@ -29,7 +29,7 @@
     },
     professional: {
       logo: "21_html_21_professional_logo.webp",
-      qr: "22_html_22_professional_qr.webp",
+      qr: "22_html_22_professional_qr.png",
       form: "23_html_23_professional_form.webp",
       web: "24_html_24_professional_web.webp",
       seo: "25_html_25_professional_seo.webp",
@@ -39,7 +39,7 @@
     },
     freiraum: {
       logo: "21_html_29_freiraum_logo.webp",
-      qr: "22_html_30_freiraum_qr.webp",
+      qr: "22_html_30_freiraum_qr.png",
       form: "23_html_31_freiraum_form.webp",
       web: "24_html_32_freiraum_web.webp",
       seo: "25_html_33_freiraum_seo.webp",
