@@ -1,0 +1,522 @@
+/**
+ * MULTIVERSUM V4 — lokaler Parallax-Test (vier Welten)
+ */
+body[data-mv-v4-test="1"] {
+  --mv-v4-orb-size: clamp(168px, 14.5vw, 248px);
+  --mv-v4-focus-stage: min(580px, 52vw, 74vh);
+  overflow-x: hidden;
+}
+
+html:has(body[data-mv-v4-test="1"]) {
+  overflow-x: hidden;
+}
+
+/* Vollflächig bis zum Bildschirmrand */
+body[data-mv-v4-test="1"] #slide-home,
+body[data-mv-v4-test="1"] #slide-home.slide,
+body[data-mv-v4-test="1"] #slide-home .slide-inner--home,
+body[data-mv-v4-test="1"] main.slides-root {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  background: #020610 !important;
+  overflow-x: clip !important;
+}
+
+body[data-mv-v4-test="1"] #mvParallaxHero.mv-scroll-story {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: #020610;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-sticky {
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+/* Bookend-Hintergrund wie Live (deep space), randlos */
+body[data-mv-v4-test="1"]:has(#mvParallaxHero) .bg-root,
+body[data-mv-v4-test="1"]:has(#mvParallaxHero) .bg-grid,
+body[data-mv-v4-test="1"]:has(#mvParallaxHero) #particle-canvas {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="intro"] .mv-scroll-bg[data-bg="multiverse"],
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="finale"] .mv-scroll-bg[data-bg="multiverse"],
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="portfolio"] .mv-scroll-bg[data-bg="multiverse"] {
+  left: 50% !important;
+  right: auto !important;
+  width: 100vw !important;
+  margin-left: -50vw !important;
+  transform: none !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="intro"] .mv-scroll-bg[data-bg="multiverse"] img,
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="finale"] .mv-scroll-bg[data-bg="multiverse"] img,
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="portfolio"] .mv-scroll-bg[data-bg="multiverse"] img {
+  left: 50% !important;
+  top: 50% !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-width: 100vw !important;
+  min-height: 100vh !important;
+  max-width: none !important;
+  transform: translate(-50%, -50%) !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
+body[data-mv-v4-test="1"] .mv-layer--1 {
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-bg {
+  left: 0;
+  right: 0;
+  width: 100%;
+  transform: none;
+  transition: opacity 0.4s ease;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-bg[style*="opacity: 0"],
+body[data-mv-v4-test="1"] .mv-scroll-bg[style*="opacity:0"] {
+  visibility: hidden !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story.is-portfolio-frame-visible .mv-scroll-portfolio {
+  padding: 0 !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+body[data-mv-v4-test="1"] .mv-atmo {
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-deco-set {
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-bg img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 120%;
+  max-width: none;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  object-position: center center;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-vignette {
+  left: 0;
+  right: 0;
+  width: 100%;
+  transform: none;
+  background: radial-gradient(ellipse 92% 82% at 50% 48%, transparent 56%, rgba(2, 4, 10, 0.48) 100%);
+}
+
+/* Side-Nav als Overlay */
+@media (min-width: 1100px) {
+  body[data-mv-v4-test="1"][data-world="general"]:has(#mvParallaxHero) .experience-rail {
+    display: grid !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 600 !important;
+  }
+}
+
+/* Intro: Titel oben, Welten darunter im Bogen */
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="intro"] .mv-scroll-slide[data-slide="0"] {
+  top: 24% !important;
+  z-index: 12 !important;
+  pointer-events: none;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="intro"] .mv-scroll-slide[data-slide="0"] .world-copy h2 {
+  font-size: clamp(1.55rem, 3.2vw, 2.65rem) !important;
+  line-height: 1.12 !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  left: 50%;
+  top: 66%;
+  width: min(96vw, 1280px);
+  height: min(46vh, 500px);
+  transform: translate(-50%, -50%);
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage .mv-world-zones {
+  inset: clamp(20px, 4vh, 40px) clamp(2px, 0.8vw, 10px);
+}
+
+/* Freistehende Weltenkugeln + 3D-Nebel/Glow wie Live */
+body[data-mv-v4-test="1"] .mv-scroll-orb.world-zone {
+  background: transparent !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 28px 60px rgba(0, 0, 0, 0.45));
+  transition: filter 0.5s ease;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-orb.world-zone.is-dominant {
+  filter: drop-shadow(0 40px 90px rgba(0, 0, 0, 0.5));
+}
+
+body[data-mv-v4-test="1"] .world-core {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: var(--mv-v4-orb-size) !important;
+  height: var(--mv-v4-orb-size) !important;
+  transform: translate(-50%, -50%) !important;
+  inset: auto !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  z-index: 6 !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  transform-style: preserve-3d;
+  transition: transform 0.55s ease, filter 0.35s ease;
+}
+
+/* Äussere Nebelwolke */
+body[data-mv-v4-test="1"] .world-core::before {
+  content: "";
+  position: absolute;
+  inset: -32%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.82;
+  filter: blur(20px);
+  background:
+    radial-gradient(circle at 42% 38%, rgba(255, 255, 255, 0.2) 0%, transparent 34%),
+    radial-gradient(circle at 58% 62%, rgba(104, 231, 255, 0.16) 0%, transparent 48%),
+    radial-gradient(circle at 50% 50%, rgba(120, 160, 255, 0.12) 0%, transparent 72%);
+  animation: mvV4OrbMist 10s ease-in-out infinite;
+}
+
+/* Leuchtender Rand / Glasring */
+body[data-mv-v4-test="1"] .world-core::after {
+  content: "";
+  position: absolute;
+  inset: -7%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 3;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset 0 0 30px rgba(255, 255, 255, 0.1),
+    0 0 52px rgba(104, 231, 255, 0.18),
+    0 0 90px rgba(104, 231, 255, 0.08);
+}
+
+body[data-mv-v4-test="1"] .world-core img.mv-orb-bubble__standalone {
+  display: block;
+  position: relative;
+  z-index: 2;
+  object-fit: contain !important;
+  object-position: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  clip-path: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  filter:
+    drop-shadow(0 34px 90px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 44px rgba(104, 231, 255, 0.14))
+    contrast(1.04)
+    saturate(1.08);
+  transition: transform 0.45s ease, filter 0.35s ease;
+}
+
+body[data-mv-v4-test="1"] .world-zone.is-focus .world-core img.mv-orb-bubble__standalone {
+  animation: mvOrbBreath 8s ease-in-out infinite;
+}
+
+body[data-mv-v4-test="1"] .world-zone.is-focus .world-core::before {
+  inset: -38%;
+  opacity: 0.95;
+  filter: blur(24px);
+}
+
+body[data-mv-v4-test="1"] .world-zone.is-focus:hover .world-core img.mv-orb-bubble__standalone,
+body[data-mv-v4-test="1"] .world-core:hover img.mv-orb-bubble__standalone,
+body[data-mv-v4-test="1"] .world-core:focus-visible img.mv-orb-bubble__standalone {
+  transform: scale(1.05);
+  filter: brightness(1.08) saturate(1.1)
+    drop-shadow(0 38px 96px rgba(0, 0, 0, 0.62))
+    drop-shadow(0 0 56px rgba(104, 231, 255, 0.22));
+  animation-play-state: paused;
+}
+
+/* Welt-Farben */
+body[data-mv-v4-test="1"] .world-zone--multiversum .world-core::before {
+  background:
+    radial-gradient(circle at 40% 36%, rgba(255, 180, 220, 0.22) 0%, transparent 36%),
+    radial-gradient(circle at 62% 64%, rgba(155, 107, 255, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 89, 178, 0.1) 0%, transparent 72%);
+}
+
+body[data-mv-v4-test="1"] .world-zone--multiversum .world-core::after {
+  border-color: rgba(200, 160, 255, 0.34);
+  box-shadow:
+    inset 0 0 30px rgba(200, 160, 255, 0.12),
+    0 0 58px rgba(155, 107, 255, 0.28),
+    0 0 100px rgba(255, 89, 178, 0.12);
+}
+
+body[data-mv-v4-test="1"] .world-zone--multiversum .world-core img.mv-orb-bubble__standalone {
+  filter:
+    drop-shadow(0 34px 90px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 48px rgba(155, 107, 255, 0.32))
+    drop-shadow(0 0 24px rgba(255, 89, 178, 0.16))
+    contrast(1.05)
+    saturate(1.1);
+}
+
+body[data-mv-v4-test="1"] .world-zone--nexora .world-core::before {
+  background:
+    radial-gradient(circle at 38% 40%, rgba(180, 240, 255, 0.22) 0%, transparent 34%),
+    radial-gradient(circle at 60% 58%, rgba(0, 168, 255, 0.18) 0%, transparent 48%),
+    radial-gradient(circle at 50% 50%, rgba(0, 120, 255, 0.1) 0%, transparent 72%);
+}
+
+body[data-mv-v4-test="1"] .world-zone--nexora .world-core::after {
+  border-color: rgba(104, 231, 255, 0.36);
+  box-shadow:
+    inset 0 0 28px rgba(104, 231, 255, 0.12),
+    0 0 58px rgba(0, 168, 255, 0.26),
+    0 0 96px rgba(0, 120, 255, 0.1);
+}
+
+body[data-mv-v4-test="1"] .world-zone--nexora .world-core img.mv-orb-bubble__standalone {
+  filter:
+    drop-shadow(0 34px 90px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 50px rgba(0, 168, 255, 0.28))
+    contrast(1.05)
+    saturate(1.08);
+}
+
+body[data-mv-v4-test="1"] .world-zone--professional .world-core::before {
+  background:
+    radial-gradient(circle at 42% 38%, rgba(255, 255, 255, 0.16) 0%, transparent 34%),
+    radial-gradient(circle at 58% 62%, rgba(207, 213, 223, 0.14) 0%, transparent 48%),
+    radial-gradient(circle at 50% 50%, rgba(201, 162, 39, 0.08) 0%, transparent 72%);
+}
+
+body[data-mv-v4-test="1"] .world-zone--professional .world-core::after {
+  border-color: rgba(220, 226, 236, 0.3);
+  box-shadow:
+    inset 0 0 26px rgba(255, 255, 255, 0.1),
+    0 0 52px rgba(207, 213, 223, 0.22),
+    0 0 88px rgba(201, 162, 39, 0.08);
+}
+
+body[data-mv-v4-test="1"] .world-zone--professional.is-focus .world-core img.mv-orb-bubble__standalone {
+  animation: mvOrbBreathCalm 10s ease-in-out infinite;
+}
+
+body[data-mv-v4-test="1"] .world-zone--professional .world-core img.mv-orb-bubble__standalone {
+  filter:
+    drop-shadow(0 34px 90px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 40px rgba(207, 213, 223, 0.24))
+    contrast(1.03)
+    saturate(0.98);
+}
+
+body[data-mv-v4-test="1"] .world-zone--freiraum .world-core::before {
+  background:
+    radial-gradient(circle at 36% 42%, rgba(255, 200, 120, 0.2) 0%, transparent 34%),
+    radial-gradient(circle at 64% 58%, rgba(255, 75, 163, 0.18) 0%, transparent 48%),
+    radial-gradient(circle at 50% 50%, rgba(255, 138, 61, 0.1) 0%, transparent 72%);
+}
+
+body[data-mv-v4-test="1"] .world-zone--freiraum .world-core::after {
+  border-color: rgba(255, 140, 190, 0.34);
+  box-shadow:
+    inset 0 0 28px rgba(255, 180, 210, 0.12),
+    0 0 58px rgba(255, 75, 163, 0.24),
+    0 0 96px rgba(255, 138, 61, 0.1);
+}
+
+body[data-mv-v4-test="1"] .world-zone--freiraum.is-focus .world-core img.mv-orb-bubble__standalone {
+  animation: mvOrbBreathCreative 7s ease-in-out infinite;
+}
+
+body[data-mv-v4-test="1"] .world-zone--freiraum .world-core img.mv-orb-bubble__standalone {
+  filter:
+    drop-shadow(0 34px 90px rgba(0, 0, 0, 0.58))
+    drop-shadow(0 0 52px rgba(255, 75, 163, 0.26))
+    drop-shadow(0 0 24px rgba(255, 138, 61, 0.14))
+    contrast(1.05)
+    saturate(1.12);
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="multiversum"] .world-zone--multiversum.is-dominant {
+  filter: drop-shadow(0 0 48px rgba(155, 107, 255, 0.4)) drop-shadow(0 36px 80px rgba(0, 0, 0, 0.42));
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="nexora"] .world-zone--nexora.is-dominant,
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="nexora"] .mv-scroll-orb--nexora.is-dominant {
+  filter: drop-shadow(0 0 48px rgba(0, 168, 255, 0.45)) drop-shadow(0 36px 80px rgba(0, 0, 0, 0.42));
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="professional"] .world-zone--professional.is-dominant,
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="professional"] .mv-scroll-orb--professional.is-dominant {
+  filter: drop-shadow(0 0 36px rgba(207, 213, 223, 0.35)) drop-shadow(0 36px 80px rgba(0, 0, 0, 0.42));
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="freiraum"] .world-zone--freiraum.is-dominant,
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="freiraum"] .mv-scroll-orb--freiraum.is-dominant {
+  filter: drop-shadow(0 0 52px rgba(255, 75, 163, 0.42)) drop-shadow(0 36px 80px rgba(0, 0, 0, 0.42));
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-dominant-orb="multiversum"] .mv-world-stage__glow {
+  background: radial-gradient(circle, rgba(155, 107, 255, 0.52) 0%, rgba(255, 89, 178, 0.22) 42%, transparent 72%);
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-active-world="multiversum"] .mv-world-tint {
+  opacity: 1;
+  background:
+    radial-gradient(ellipse 70% 56% at 30% 46%, rgba(155, 107, 255, 0.14), transparent 68%),
+    radial-gradient(ellipse 42% 38% at 82% 28%, rgba(255, 89, 178, 0.1), transparent 72%);
+}
+
+@keyframes mvV4OrbMist {
+  0%, 100% { transform: scale(1); opacity: 0.72; }
+  50% { transform: scale(1.07); opacity: 0.95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-mv-v4-test="1"] .world-core::before,
+  body[data-mv-v4-test="1"] .world-zone.is-focus .world-core img.mv-orb-bubble__standalone {
+    animation: none !important;
+  }
+}
+
+/* Intro/Overview: gleiche Kugelgrösse */
+body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-scroll-orb.world-zone,
+body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="overview"] .mv-scroll-orb.world-zone {
+  width: var(--mv-v4-orb-size) !important;
+  height: var(--mv-v4-orb-size) !important;
+}
+
+/* Split-World: Kugel exakt mittig zwischen 4 Karten */
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus {
+  width: var(--mv-v4-focus-stage) !important;
+  height: var(--mv-v4-focus-stage) !important;
+  max-width: min(580px, 94vw) !important;
+  max-height: min(580px, 74vh) !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 8 !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-collage {
+  z-index: 14 !important;
+  pointer-events: none !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
+  z-index: 22 !important;
+  pointer-events: auto !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
+  width: min(64vw, 1000px);
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage .mv-world-zones {
+  inset: clamp(28px, 5vh, 56px) clamp(6px, 1.2vw, 16px);
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
+  transform: translate(-50%, -50%) translate(-42cqw, -34cqh) !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+  transform: translate(-50%, -50%) translate(42cqw, -34cqh) !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+  transform: translate(-50%, -50%) translate(-42cqw, 34cqh) !important;
+}
+
+body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+  transform: translate(-50%, -50%) translate(42cqw, 34cqh) !important;
+}
+
+body[data-mv-v4-test="1"] .mv-world-stage__ring {
+  filter: blur(0.2px);
+}
+
+body[data-mv-v4-test="1"] .mv-world-stage__radial {
+  filter: drop-shadow(0 0 36px rgba(104, 231, 255, 0.16));
+}
+
+@media (max-width: 1024px) {
+  body[data-mv-v4-test="1"] {
+    --mv-v4-orb-size: clamp(140px, 20vw, 210px);
+    --mv-v4-focus-stage: min(460px, 90vw, 66vh);
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage {
+    top: 68%;
+    height: min(42vh, 440px);
+  }
+}
+
+@media (max-width: 640px) {
+  body[data-mv-v4-test="1"] {
+    --mv-v4-orb-size: clamp(118px, 27vw, 170px);
+    --mv-v4-focus-stage: min(360px, 94vw, 58vh);
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="intro"] .mv-scroll-slide[data-slide="0"] {
+    top: 20% !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    transform: translate(-50%, -50%) translate(-38cqw, -30cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    transform: translate(-50%, -50%) translate(38cqw, -30cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    transform: translate(-50%, -50%) translate(-38cqw, 30cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    transform: translate(-50%, -50%) translate(38cqw, 30cqh) !important;
+  }
+}
