@@ -111,6 +111,8 @@
   var onScrollHandler = null;
 
   function asset(path) {
+    if (!path || typeof path !== "string") return path;
+    if (path.indexOf("?") !== -1) return path;
     return path + V;
   }
 
