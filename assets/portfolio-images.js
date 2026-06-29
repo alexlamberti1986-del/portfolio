@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var PORTRAIT_V = "20260626-prof-neu";
+  var PORTRAIT_V = "20260629-prof-portrait";
   var BASE = "assets/images/4welten-preview/";
 
   var PORTRAIT_FILES = {

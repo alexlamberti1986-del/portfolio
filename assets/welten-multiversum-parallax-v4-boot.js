@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var V = "?v=20260629mv-v4live";
+  var V = "?v=20260629mv-prof-portrait";
   var ORBS = {
     multiversum: "assets/multiversum-parallax-v4/orbs/Multiversum.png" + V,
     nexora: "assets/multiversum-parallax-v4/orbs/Nexora.png" + V,
@@ -40,12 +40,22 @@
     if (tag && /Drei|drei|3/.test(tag.textContent)) tag.textContent = "Vier Welten.";
   }
 
+  var PROFESSIONAL_PORTRAIT =
+    "assets/images/4welten-preview/professional/" +
+    encodeURIComponent("PROFESSIONAL PROFILBILD für HOME und Kontakt.png") +
+    V;
+
   function patchProfessionalPortraits() {
-    var src = ORBS.professional;
-    document.querySelectorAll('.home-portrait-card img, #contactPhoto, .contact-photo, #heroPhoto, img[src*="PROFESSIONAL PROFILBILD"]').forEach(function (img) {
-      img.src = src;
-      img.removeAttribute("srcset");
-    });
+    document
+      .querySelectorAll(
+        '.home-portrait-card img, #contactPhoto, .contact-photo, #heroPhoto, img[src*="PROFESSIONAL PROFILBILD"], img[src*="Professional_new"], img[src*="multiversum-parallax-v4/orbs/Professional"]'
+      )
+      .forEach(function (img) {
+        if (document.body.getAttribute("data-world") !== "vertex") return;
+        img.src = PROFESSIONAL_PORTRAIT;
+        img.removeAttribute("srcset");
+        img.alt = "Alex Lamberti Professional Portrait";
+      });
   }
 
   function patchSideNav() {
