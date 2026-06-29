@@ -529,6 +529,11 @@
     return chapterRange("freiraumFocus", [0.7, 0.8])[1];
   }
 
+  function introChapterEnd() {
+    var ch = (config && config.chapters) || {};
+    return (ch.introToMultiversum && ch.introToMultiversum[1]) || (ch.intro && ch.intro[1]) || 0.18;
+  }
+
   function isPostWorldPhase(phaseP, layoutMode) {
     if (layoutMode === "finale" || layoutMode === "portfolio") return true;
     return phaseP >= freiraumChapterEnd();
@@ -1095,6 +1100,10 @@
     el.style.opacity = String((cfg.opacity || 0) * ent);
     el.style.filter = blur > 0.1 ? "blur(" + blur + "px)" : "";
     el.style.zIndex = String(Math.round(cfg.z || 0));
+    var shown = (cfg.opacity || 0) * ent > 0.03;
+    el.style.display = shown ? "" : "none";
+    el.style.visibility = shown ? "visible" : "hidden";
+    el.style.pointerEvents = shown ? "auto" : "none";
     el.classList.toggle("is-dominant", !!dominant && cfg.opacity > 0.42);
     el.classList.toggle("is-labeled", cfg.opacity > 0.34);
   }
@@ -1226,6 +1235,23 @@
     });
   }
 
+  function clearOrbPresentationLocks() {
+    if (!dom.orbs) return;
+    WORLD_KEYS.forEach(function (world) {
+      var zone = dom.orbs[world];
+      if (!zone) return;
+      zone.style.removeProperty("display");
+      zone.style.removeProperty("visibility");
+      zone.style.removeProperty("pointer-events");
+      var core = zone.querySelector(".world-core");
+      if (core) {
+        core.style.removeProperty("display");
+        core.style.removeProperty("visibility");
+        core.style.removeProperty("pointer-events");
+      }
+    });
+  }
+
   function syncWorldZoneOrbs(state, layoutMode, activeSlide, phases, stageOp, postWorld) {
     if (postWorld) {
       forceHideAllWorldZones();
@@ -1273,6 +1299,8 @@
         ? 1
         : 0;
     var orbEntrance = layoutMode === "intro" ? orbPhase : orbPhase * stageOp;
+
+    clearOrbPresentationLocks();
 
     function orbWithPhase(cfg) {
       if (!cfg) return cfg;
@@ -1499,6 +1527,8 @@
     var rawP = getProgress();
     if (reducedMotion || mobileLayout) {
       animProgress = rawP;
+    } else if (rawP <= introChapterEnd()) {
+      animProgress = rawP;
     } else if (rawP >= freiraumChapterEnd() - 0.05) {
       animProgress += (rawP - animProgress) * 0.28;
       if (Math.abs(rawP - animProgress) < 0.00035) animProgress = rawP;
@@ -1644,11 +1674,18 @@
     heroEl.setAttribute("data-collage-focus", collageFocus);
     heroEl.setAttribute("data-reveal-step", String(revealed.length));
     var wasPostWorld = heroEl.classList.contains("is-post-world");
+    var prevLayout = heroEl.getAttribute("data-layout") || "";
     heroEl.classList.toggle("is-post-world", postWorld);
     if (postWorld) {
       forceHideAllWorldZones();
     } else {
-      if (wasPostWorld) resetWorldZoneInlineStyles();
+      if (
+        wasPostWorld ||
+        (layoutMode === "intro" &&
+          (prevLayout === "split-world" || prevLayout === "finale" || prevLayout === "portfolio"))
+      ) {
+        resetWorldZoneInlineStyles();
+      }
       applyWorldZoneStates(activeSlide, phases);
     }
 
