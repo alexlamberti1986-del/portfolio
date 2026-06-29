@@ -64,7 +64,7 @@
   -ms-overflow-style: none;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   #slide-contact .slide-inner.contact-layout--form {
     display: flex !important;
     flex-direction: column !important;
@@ -73,24 +73,15 @@
     max-width: min(720px, calc(100vw - 20px)) !important;
   }
 
-  #slide-contact .contact-layout--form .welten-leadform-wrap {
-    order: 1 !important;
-    grid-column: auto !important;
-    grid-row: auto !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    border-radius: 16px !important;
-  }
-
   #slide-contact .contact-layout--form .contact-copy {
-    order: 2 !important;
+    order: 1 !important;
     grid-column: auto !important;
     grid-row: auto !important;
     padding: 16px !important;
   }
 
   #slide-contact .contact-layout--form .contact-visual {
-    order: 3 !important;
+    order: 2 !important;
     grid-column: auto !important;
     grid-row: auto !important;
     max-width: min(280px, 72vw) !important;
@@ -98,6 +89,15 @@
     min-height: 0 !important;
     aspect-ratio: 4 / 5 !important;
     margin-inline: auto !important;
+  }
+
+  #slide-contact .contact-layout--form .welten-leadform-wrap {
+    order: 3 !important;
+    grid-column: auto !important;
+    grid-row: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 16px !important;
   }
 
   #slide-contact .contact-copy .prose:not(.contact-lead-emphasis) {
@@ -131,9 +131,7 @@
     min-height: 0 !important;
     max-height: none !important;
   }
-}
 
-@media (max-width: 960px) {
   #slide-contact .slide-inner.contact-layout {
     grid-template-columns: 1fr !important;
   }
@@ -143,18 +141,6 @@
   #slide-contact .welten-leadform-wrap {
     grid-column: 1;
     grid-row: auto;
-  }
-
-  #slide-contact .contact-layout--form .contact-visual {
-    order: 3;
-  }
-
-  #slide-contact .welten-leadform-wrap {
-    order: 1;
-  }
-
-  #slide-contact .contact-layout--form .contact-copy {
-    order: 2;
   }
 }
 
@@ -346,13 +332,13 @@ body[data-world="freiraum"] #slide-contact .welten-leadform-frame {
   box-shadow: 0 20px 48px rgba(255, 92, 163, 0.12);
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1024px) {
   #slide-contact .slide-inner.contact-layout {
     padding-bottom: clamp(16px, 3vw, 24px) !important;
   }
 
   #slide-contact .welten-leadform-wrap {
-    margin-top: 20px;
+    margin-top: 0;
     min-width: 0;
   }
 

@@ -1,0 +1,128 @@
+/**
+ * Leadformular — Auswahl/Hover füllt immer die volle Kartenhöhe (alle Schritte & Welten)
+ */
+.cards,
+.opt-grid,
+.image-choice-grid {
+  align-items: stretch !important;
+}
+
+.service-card {
+  height: 100%;
+  min-height: 280px;
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 18%, rgba(255, 255, 255, 0.045)),
+    rgba(255, 255, 255, 0.03)
+  );
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.service-card:hover::before {
+  opacity: 0.42;
+}
+
+.service-card.selected::before {
+  opacity: 1;
+}
+
+.service-card.selected {
+  background: transparent !important;
+}
+
+.service-card.selected .service-body {
+  background: transparent !important;
+}
+
+.service-banner,
+.service-body {
+  position: relative;
+  z-index: 1;
+}
+
+.service-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.option-card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.option-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--accent) 14%, rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.03)
+  );
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.option-card:hover::before {
+  opacity: 0.48;
+}
+
+.option-card.selected::before {
+  opacity: 1;
+}
+
+.option-card.selected {
+  background: transparent !important;
+}
+
+.option-card.selected .option-card-body {
+  background: transparent !important;
+}
+
+.option-card-media,
+.option-card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.option-card-body {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+}
+
+.opt-grid .check,
+.opt-grid .radio {
+  height: 100%;
+  min-height: 60px;
+}
+
+@media (max-width: 1120px) {
+  .service-card {
+    min-height: 0;
+    height: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-card {
+    min-height: 0 !important;
+    height: 100%;
+  }
+}

@@ -42,7 +42,7 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260628form-mobile"
+      "&v=20260629form-layout"
     );
   }
 
