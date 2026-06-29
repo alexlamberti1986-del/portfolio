@@ -1,0 +1,148 @@
+/**
+ * Desktop-Breiten (14″ Laptop bis Grossbild) — nur ab 1366px.
+ * Tablet/Mobil (<1024px) und bestehende Nav-Breakpoints bleiben unberührt.
+ */
+@media (min-width: 1366px) {
+  :root {
+    --welten-content-max: 1320px;
+    --welten-content-gutter: 32px;
+    --welten-rail-gap: 80px;
+    --welten-projects-max: 1240px;
+  }
+
+  /* ── Zentrale Inhaltsbreite (alle Kapitel ausser Full-Bleed-Hero) ── */
+  .slide-inner:not(.slide-inner--home) {
+    width: min(100% - 64px, var(--welten-content-max)) !important;
+    max-width: var(--welten-content-max) !important;
+    margin-inline: auto !important;
+  }
+
+  .home-main-block {
+    width: min(100% - 64px, var(--welten-content-max)) !important;
+    max-width: var(--welten-content-max) !important;
+    margin-inline: auto !important;
+    padding-inline: var(--welten-content-gutter);
+    box-sizing: border-box;
+  }
+
+  /* ── Header: gleiche seitliche Achse wie Inhalt ── */
+  .site-header {
+    padding-left: max(var(--welten-content-gutter), calc((100vw - var(--welten-content-max)) / 2)) !important;
+    padding-right: max(var(--welten-content-gutter), calc((100vw - var(--welten-content-max)) / 2)) !important;
+  }
+
+  /* ── Projekte: etwas schmaler, zentriert ── */
+  #slide-projects .slide-inner,
+  #slide-projects .projects-accordion {
+    max-width: var(--welten-projects-max) !important;
+    margin-inline: auto;
+  }
+
+  #slide-projects .projects-intro {
+    max-width: min(52rem, calc(var(--welten-projects-max) - 80px));
+  }
+
+  /* ── Parallax-Weltboxen: auf Ultrawide nicht zu breit ── */
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(600px, 38vw) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage {
+    width: min(94vw, var(--welten-content-max)) !important;
+  }
+
+  /* ── Typo: vw-Wachstum auf grossen Screens begrenzen ── */
+  .section-title,
+  h2.section-title {
+    font-size: clamp(1.85rem, 2.6vw, 2.75rem);
+  }
+
+  .home-copy h1 {
+    font-size: clamp(2rem, 3.1vw, 3.5rem) !important;
+  }
+
+  body[data-world="nexora"] .dna-unified-scene::after,
+  body[data-world="freiraum"] .dna-unified-scene::after {
+    font-size: clamp(2.4rem, 4.2vw, 5rem) !important;
+  }
+}
+
+/* Experience-Rail: erst sichtbar ab 1401px (bestehend) — Position an Inhalt koppeln */
+@media (min-width: 1401px) {
+  .experience-rail {
+    right: max(24px, calc((100vw - var(--welten-content-max, 1320px)) / 2 - var(--welten-rail-gap, 80px))) !important;
+  }
+
+  .slide:not(#slide-home) {
+    padding-left: max(32px, calc((100vw - var(--welten-content-max, 1320px)) / 2)) !important;
+    padding-right: max(48px, calc((100vw - var(--welten-content-max, 1320px)) / 2 + 24px)) !important;
+  }
+}
+
+/* 24″ / Full-HD gross */
+@media (min-width: 1920px) {
+  :root {
+    --welten-content-max: 1400px;
+    --welten-projects-max: 1320px;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(640px, 34vw) !important;
+    padding: 36px 38px !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead strong {
+    font-size: clamp(2rem, 2.1vw, 3.1rem) !important;
+  }
+
+  .mv-scroll-slide--nexora .mv-scroll-slide__lead strong,
+  .mv-scroll-slide--freiraum .mv-scroll-slide__lead strong {
+    font-size: clamp(1.75rem, 2vw, 2.85rem) !important;
+  }
+
+  #slide-home .nexora-orbit-buttons {
+    width: min(var(--welten-content-max), 86vw) !important;
+  }
+}
+
+/* 27″+ / 2K */
+@media (min-width: 2560px) {
+  :root {
+    --welten-content-max: 1480px;
+    --welten-projects-max: 1400px;
+  }
+
+  .section-title,
+  h2.section-title {
+    font-size: clamp(2rem, 2.2vw, 3rem);
+  }
+
+  .home-copy h1 {
+    font-size: clamp(2.2rem, 2.8vw, 3.6rem) !important;
+  }
+}
+
+/* Master-Shell (Preview / Live-Iframe) */
+@media (min-width: 1366px) {
+  .mv4-bar {
+    padding-left: max(20px, calc((100vw - var(--welten-content-max, 1320px)) / 2)) !important;
+    padding-right: max(20px, calc((100vw - var(--welten-content-max, 1320px)) / 2)) !important;
+  }
+
+  .mv4-worlds {
+    flex: 1 1 auto;
+    justify-content: center;
+    max-width: min(920px, 58vw);
+    margin-inline: auto;
+  }
+
+  .mv4-logo img {
+    width: clamp(140px, 14vw, 200px);
+  }
+}
+
+@media (min-width: 1920px) {
+  .mv4-worlds {
+    max-width: min(980px, 52vw);
+  }
+}
