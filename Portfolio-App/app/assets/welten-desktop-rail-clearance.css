@@ -1,0 +1,31 @@
+/**
+ * Desktop/Laptop: Abstand zur seitlichen Navigation (ab 1401px, Rail sichtbar).
+ * Tablet/Mobil (<1401px) unverändert — dort ist die Rail ausgeblendet.
+ * Ab 2400px: bestehende 27″-Proportionen (7vw / max 128px).
+ */
+@media (min-width: 1401px) and (max-width: 2399px) {
+  :root {
+    --welten-rail-zone: clamp(158px, calc(72px + 6.8vw), 192px);
+    --welten-content-max: min(1180px, calc(100vw - var(--welten-rail-zone) - clamp(48px, 7vw, 112px)));
+  }
+
+  .slide:not(#slide-home) {
+    padding-right: var(--welten-rail-zone) !important;
+    padding-left: clamp(20px, 3.6vw, 64px) !important;
+  }
+
+  .slide:not(#slide-home) .slide-inner {
+    width: 100% !important;
+    max-width: var(--welten-content-max) !important;
+    margin-inline: auto !important;
+    box-sizing: border-box;
+  }
+}
+
+/* Sehr breite Monitore: Inhalt zentriert halten wie auf 27″ */
+@media (min-width: 2400px) {
+  .slide:not(#slide-home) .slide-inner {
+    max-width: 1180px !important;
+    margin-inline: auto !important;
+  }
+}
