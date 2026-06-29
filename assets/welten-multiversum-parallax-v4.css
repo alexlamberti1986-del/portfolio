@@ -454,26 +454,127 @@ body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"
   inset: clamp(28px, 5vh, 56px) clamp(6px, 1.2vw, 16px);
 }
 
-/* Split-World Karten/Stage: volle Desktop-Orbits nur ab 27″-Referenz */
+/*
+ * Split-World Layout
+ * Text links  → Welt + Hover-Karten rechts (world-side=right)
+ * Text rechts → Welt + Hover-Karten links  (world-side=left)
+ * Karten zur Textbox hin enger, weg von der Textbox weiter — kein Überlappen.
+ */
+@media (min-width: 1100px) {
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: min(50vw, 820px) !important;
+    height: min(70vh, 800px) !important;
+  }
+
+  /* Textbox links → Welt rechts */
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="right"] .mv-world-stage {
+    left: auto !important;
+    right: clamp(28px, 4.5vw, 72px) !important;
+  }
+
+  /* Textbox rechts → Welt links */
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="left"] .mv-world-stage {
+    left: clamp(28px, 4.5vw, 72px) !important;
+    right: auto !important;
+  }
+
+  /* Text links: linke Karten (zur Box) enger */
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    transform: translate(-50%, -50%) translate(-27cqw, -26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    transform: translate(-50%, -50%) translate(-27cqw, 26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    transform: translate(-50%, -50%) translate(33cqw, -26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    transform: translate(-50%, -50%) translate(33cqw, 26cqh) !important;
+  }
+
+  /* Text rechts: rechte Karten (zur Box) enger */
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    transform: translate(-50%, -50%) translate(-33cqw, -26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    transform: translate(-50%, -50%) translate(-33cqw, 26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    transform: translate(-50%, -50%) translate(27cqw, -26cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    transform: translate(-50%, -50%) translate(27cqw, 26cqh) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(480px, 38vw) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-core {
+    z-index: 18 !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card {
+    z-index: 22 !important;
+  }
+}
+
+/* 27″ Desktop: etwas mehr Luft zur Rail, äussere Karten etwas weiter */
 @media (min-width: 2560px) {
   body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
-    width: min(64vw, 1000px);
+    width: min(54vw, 920px) !important;
   }
 
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
-    transform: translate(-50%, -50%) translate(-42cqw, -34cqh) !important;
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="right"] .mv-world-stage {
+    right: clamp(120px, 8.5vw, 168px) !important;
   }
 
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
-    transform: translate(-50%, -50%) translate(42cqw, -34cqh) !important;
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="left"] .mv-world-stage {
+    left: clamp(48px, 4vw, 88px) !important;
   }
 
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
-    transform: translate(-50%, -50%) translate(-42cqw, 34cqh) !important;
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    transform: translate(-50%, -50%) translate(36cqw, -28cqh) !important;
   }
 
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
-    transform: translate(-50%, -50%) translate(42cqw, 34cqh) !important;
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    transform: translate(-50%, -50%) translate(36cqw, 28cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    transform: translate(-50%, -50%) translate(-29cqw, -28cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="right"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    transform: translate(-50%, -50%) translate(-29cqw, 28cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="projekte"] {
+    transform: translate(-50%, -50%) translate(-36cqw, -28cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
+    transform: translate(-50%, -50%) translate(-36cqw, 28cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="leistungen"] {
+    transform: translate(-50%, -50%) translate(29cqw, -28cqh) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"][data-world-side="left"] .world-zone.is-focus .world-card[data-card="kontakt"] {
+    transform: translate(-50%, -50%) translate(29cqw, 28cqh) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(560px, 40vw) !important;
   }
 }
 

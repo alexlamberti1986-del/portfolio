@@ -1,7 +1,7 @@
 /**
- * Laptop/Tablet (≤2559px): Seitliche Navigation aus, Inhalte ohne Rail-Reserve.
- * Parallax-Welten nach rechts, Karten enger — kein Überlappen mit Textbox.
- * 27″ Desktop (≥2560px): Rail sichtbar (Inline-CSS).
+ * Laptop/Tablet (≤2559px): Seitliche Navigation aus — wie Handy/Tablet.
+ * 27″ Desktop (≥2560px): Rail bleibt sichtbar.
+ * Parallax-Layout: welten-multiversum-parallax-v4.css
  */
 @media (max-width: 2559px) {
   .experience-rail,
@@ -44,49 +44,6 @@
     max-width: 1180px !important;
     margin-inline: auto !important;
     box-sizing: border-box;
-  }
-
-  /* Parallax split-world: Stage rechts, Karten enger */
-  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
-    left: 60% !important;
-    right: auto !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: min(52vw, 800px) !important;
-  }
-
-  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="left"] .mv-world-stage,
-  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"][data-world-side="right"] .mv-world-stage {
-    left: 60% !important;
-    right: auto !important;
-  }
-
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="projekte"] {
-    transform: translate(-50%, -50%) translate(-28cqw, -26cqh) !important;
-  }
-
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="leistungen"] {
-    transform: translate(-50%, -50%) translate(28cqw, -26cqh) !important;
-  }
-
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="ueber-mich"] {
-    transform: translate(-50%, -50%) translate(-28cqw, 26cqh) !important;
-  }
-
-  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card[data-card="kontakt"] {
-    transform: translate(-50%, -50%) translate(28cqw, 26cqh) !important;
-  }
-
-  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage,
-  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="overview"] .mv-world-stage {
-    left: 50% !important;
-    right: auto !important;
-    transform: translate(-50%, -50%) !important;
-    width: min(96vw, 1280px) !important;
-  }
-
-  body[data-world="general"] .mv-scroll-slide--world .world-copy {
-    max-width: min(520px, 42vw) !important;
   }
 }
 
