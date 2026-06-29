@@ -279,6 +279,21 @@ body[data-world="general"] .project-card .block strong {
   text-shadow: none !important;
 }
 
+body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead,
+body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead strong {
+  margin: 0 0 12px;
+  font-size: var(--title-md, clamp(1.55rem, 3.2vw, 2.65rem));
+  line-height: 1.18;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--mv-gradient-text) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+}
+
 body[data-world="general"] .section-title,
 body[data-world="general"] h2.section-title,
 body[data-world="general"] .home-copy h1,

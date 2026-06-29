@@ -48,6 +48,8 @@
   var effectsOn = true;
   var currentLang = "de";
   var PREVIEW_MOBILE_CSS = "assets/welten-multiversum-preview-mobile.css?v=20260623mv2";
+  var FONT_SYSTEM_CSS = "assets/welten-font-system.css?v=20260629fonts3";
+  var TITLE_COLORS_CSS = "assets/welten-world-title-colors.css?v=20260629title3";
   var isLiveShell = document.body && document.body.getAttribute("data-live-shell") === "1";
   var defaultWorld = 0;
   if (document.body && document.body.getAttribute("data-live-default")) {
@@ -63,12 +65,27 @@
       if (!d || !d.documentElement) return;
       d.documentElement.classList.add("mv4-preview-shell");
       if (isLiveShell) d.documentElement.classList.add("welten-live-shell");
-      if (d.getElementById("mv4-preview-mobile-css")) return;
-      var link = d.createElement("link");
-      link.id = "mv4-preview-mobile-css";
-      link.rel = "stylesheet";
-      link.href = PREVIEW_MOBILE_CSS;
-      (d.head || d.documentElement).appendChild(link);
+      if (!d.getElementById("mv4-preview-mobile-css")) {
+        var link = d.createElement("link");
+        link.id = "mv4-preview-mobile-css";
+        link.rel = "stylesheet";
+        link.href = PREVIEW_MOBILE_CSS;
+        (d.head || d.documentElement).appendChild(link);
+      }
+      if (!d.getElementById("mv4-font-system-css") && !d.querySelector('link[href*="welten-font-system.css"]')) {
+        var fontLink = d.createElement("link");
+        fontLink.id = "mv4-font-system-css";
+        fontLink.rel = "stylesheet";
+        fontLink.href = FONT_SYSTEM_CSS;
+        (d.head || d.documentElement).appendChild(fontLink);
+      }
+      if (!d.getElementById("mv4-title-colors-css") && !d.querySelector('link[href*="welten-world-title-colors.css"]')) {
+        var titleLink = d.createElement("link");
+        titleLink.id = "mv4-title-colors-css";
+        titleLink.rel = "stylesheet";
+        titleLink.href = TITLE_COLORS_CSS;
+        (d.head || d.documentElement).appendChild(titleLink);
+      }
     } catch (e) {}
   }
 

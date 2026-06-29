@@ -1,5 +1,5 @@
 /**
- * Welten Cleanup — Kontakt premium, Leistungen, FAQ, NEXORA Orbit, Home Story
+ * Welten Cleanup · Kontakt premium, Leistungen, FAQ, NEXORA Orbit, Home Story
  */
 (function () {
   "use strict";
@@ -44,7 +44,7 @@
     {
       title: "Webdesign",
       desc: "Ich gestalte Websites mit klarer Struktur, starker Typografie und durchdachter Nutzerführung.",
-      benefit: "Nutzen: Besucher verstehen schnell, worum es geht — und finden den Weg zur Anfrage.",
+      benefit: "Nutzen: Besucher verstehen schnell, worum es geht · und finden den Weg zur Anfrage.",
       bullets: [
         "UX-orientierte Seitenstruktur",
         "responsive Layouts für alle Geräte",
@@ -82,7 +82,7 @@
     },
     {
       title: "Strategie",
-      desc: "Ich denke Projekte vom Ziel her — mit klarer Struktur, Prioritäten und Umsetzungsplan.",
+      desc: "Ich denke Projekte vom Ziel her · mit klarer Struktur, Prioritäten und Umsetzungsplan.",
       benefit: "Nutzen: Weniger Unsicherheit, mehr Klarheit und ein roter Faden vom Konzept bis live.",
       bullets: [
         "Zieldefinition und Positionierung",
@@ -96,7 +96,7 @@
     {
       title: "Content",
       desc: "Ich erstelle Inhalte, die gefunden werden, verstanden werden und Vertrauen aufbauen.",
-      benefit: "Nutzen: Ihre Website spricht die richtige Sprache — für Menschen und für Google.",
+      benefit: "Nutzen: Ihre Website spricht die richtige Sprache · für Menschen und für Google.",
       bullets: [
         "SEO-orientierte Texte",
         "klare Botschaften und Tonalität",
@@ -111,11 +111,11 @@
   var FAQ = [
     {
       q: "Wie läuft ein Projekt ab?",
-      a: "Zuerst klären wir Ziel, Umfang und Erwartungen. Danach folgen Struktur, Design und Umsetzung — transparent, schrittweise und mit klaren Feedback-Schleifen.",
+      a: "Zuerst klären wir Ziel, Umfang und Erwartungen. Danach folgen Struktur, Design und Umsetzung · transparent, schrittweise und mit klaren Feedback-Schleifen.",
     },
     {
       q: "Für wen sind die Leistungen geeignet?",
-      a: "Für Unternehmen, Selbstständige und Marken, die einen professionellen digitalen Auftritt wollen — von Website und Branding bis Marketing und Optimierung.",
+      a: "Für Unternehmen, Selbstständige und Marken, die einen professionellen digitalen Auftritt wollen · von Website und Branding bis Marketing und Optimierung.",
     },
     {
       q: "Wie lange dauert eine Website-Umsetzung?",
@@ -161,8 +161,8 @@
       w === "vertex"
         ? "Alex Lamberti"
         : w === "freiraum"
-          ? "Alex Lamberti — Freiraum"
-          : "Alex Lamberti — Nexora";
+          ? "Alex Lamberti · Freiraum"
+          : "Alex Lamberti · Nexora";
     document
       .querySelectorAll(".welten-portrait-img, #heroPhoto, #contactPhoto, #contactPhotoHero, #contactPhotoOutro, #homeClosingPhoto")
       .forEach(function (img) {
@@ -175,7 +175,7 @@
   }
 
   function rebuildContactPremium() {
-    /* FINAL contact-layout — siehe welten-final-restore.js */
+    /* FINAL contact-layout · siehe welten-final-restore.js */
   }
 
   function removeHomeClosing() {
@@ -204,7 +204,7 @@
     var intro = slide.querySelector(".prose");
     if (intro) {
       intro.textContent =
-        "Branding, Webdesign, Optimierung, Marketing, Strategie und Content — professionell ausgearbeitet und auf messbare Ergebnisse ausgerichtet.";
+        "Branding, Webdesign, Optimierung, Marketing, Strategie und Content · professionell ausgearbeitet und auf messbare Ergebnisse ausgerichtet.";
     }
 
     var lanes = slide.querySelector("[data-welten-leistungen-lanes]");

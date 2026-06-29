@@ -1,5 +1,5 @@
 /**
- * Welten Site IA — 5 Hauptseiten, URL-Routing, Content-Merge
+ * Welten Site IA · 5 Hauptseiten, URL-Routing, Content-Merge
  */
 (function () {
   "use strict";
@@ -41,7 +41,7 @@
     { title: "Branding", desc: "Markenauftritte mit klarer Positionierung und Wiedererkennung." },
     { title: "Webdesign", desc: "Websites mit Nutzerführung, Struktur und Conversion-Fokus." },
     { title: "Marketing", desc: "Digitale Kampagnen, Content und Sichtbarkeit." },
-    { title: "Strategie", desc: "Vom Ziel zur Umsetzung — durchdacht und messbar." },
+    { title: "Strategie", desc: "Vom Ziel zur Umsetzung · durchdacht und messbar." },
     { title: "Content", desc: "SEO-orientierte Inhalte, die gefunden und verstanden werden." },
     { title: "Optimierung", desc: "Performance, SEO und Conversion kontinuierlich verbessern." },
   ];
@@ -99,7 +99,7 @@
   }
 
   function injectHomeExtras() {
-    /* Home endet nach Hero + 2 Buttons — keine Zusatzsektionen */
+    /* Home endet nach Hero + 2 Buttons · keine Zusatzsektionen */
   }
 
   function injectLeistungenGrid() {
@@ -160,7 +160,7 @@
   }
 
   function enhanceContact() {
-    /* Kontakt aus FINAL HTML — kein Map-Embed */
+    /* Kontakt aus FINAL HTML · kein Map-Embed */
   }
 
   function patchNavigationClicks() {

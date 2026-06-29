@@ -1,5 +1,5 @@
 /**
- * Welten SEO — Meta, Open Graph, JSON-LD pro Kapitel
+ * Welten SEO · Meta, Open Graph, JSON-LD pro Kapitel
  */
 (function () {
   "use strict";
@@ -11,29 +11,29 @@
     home: {
       title: "Alex Lamberti | Branding, Websites & digitale Erlebnisse",
       description:
-        "Alex Lamberti gestaltet Branding, Websites, digitale Erlebnisse und Strategie — als hochwertige digitale Markenwelt in drei Welten.",
+        "Alex Lamberti gestaltet Branding, Websites, digitale Erlebnisse und Strategie · als hochwertige digitale Markenwelt in drei Welten.",
       path: "/",
     },
     projects: {
-      title: "Projekte | Alex Lamberti — Websites, Leadformulare & Visitenkarten",
+      title: "Projekte | Alex Lamberti · Websites, Leadformulare & Visitenkarten",
       description:
         "Ausgewählte Projekte von Alex Lamberti: Websites, Leadformulare und digitale Visitenkarten mit klarer Handschrift.",
       path: "/projekte",
     },
     leistungen: {
-      title: "Leistungen | Alex Lamberti — Branding, Webdesign & Marketing",
+      title: "Leistungen | Alex Lamberti · Branding, Webdesign & Marketing",
       description:
         "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Websites-Optimierung.",
       path: "/leistungen",
     },
     about: {
-      title: "Über mich | Alex Lamberti — Digital Marketing Spezialist",
+      title: "Über mich | Alex Lamberti · Digital Marketing Spezialist",
       description:
         "Wer ist Alex Lamberti? Werdegang, Arbeitsweise, Werte und Kompetenzen im Digital Marketing.",
       path: "/ueber-mich",
     },
     contact: {
-      title: "Kontakt | Alex Lamberti — Telefon, E-Mail & Standort",
+      title: "Kontakt | Alex Lamberti · Telefon, E-Mail & Standort",
       description:
         "Kontakt zu Alex Lamberti: Telefon 079 667 82 11, E-Mail alex.lamberti@hotmail.ch, Standort Full-Reuenthal.",
       path: "/kontakt",
@@ -151,7 +151,7 @@
     upsertMeta("property", "og:image", OG_IMAGE);
     upsertMeta("property", "og:image:width", "1200");
     upsertMeta("property", "og:image:height", "630");
-    upsertMeta("property", "og:image:alt", "Alex Lamberti — Branding, Websites und digitale Erlebnisse");
+    upsertMeta("property", "og:image:alt", "Alex Lamberti · Branding, Websites und digitale Erlebnisse");
 
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", page.title);

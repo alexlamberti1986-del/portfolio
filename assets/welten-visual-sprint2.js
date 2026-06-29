@@ -1,5 +1,5 @@
 /**
- * Sprint 2 — Scroll-Reveal, Page Heroes, visuelle Enhancements
+ * Sprint 2 · Scroll-Reveal, Page Heroes, visuelle Enhancements
  */
 (function () {
   "use strict";
@@ -21,12 +21,12 @@
     projects: {
       kicker: "Portfolio",
       title: "Projekte",
-      lead: "Websites, Leadformulare und digitale Visitenkarten — visuell kuratiert und klar strukturiert.",
+      lead: "Websites, Leadformulare und digitale Visitenkarten · visuell kuratiert und klar strukturiert.",
     },
     leistungen: {
       kicker: "Leistungen",
       title: "Was ich anbiete",
-      lead: "Branding, Webdesign, Marketing, Strategie, Content und Optimierung — aus einer Hand.",
+      lead: "Branding, Webdesign, Marketing, Strategie, Content und Optimierung · aus einer Hand.",
     },
     about: {
       kicker: "Über mich",
@@ -36,7 +36,7 @@
     contact: {
       kicker: "Kontakt",
       title: "Lassen Sie uns sprechen",
-      lead: "Telefon, E-Mail oder Standort — direkt, unkompliziert und ohne Formular.",
+      lead: "Telefon, E-Mail oder Standort · direkt, unkompliziert und ohne Formular.",
     },
   };
 
@@ -105,7 +105,7 @@
   }
 
   function enhanceHomeExtras() {
-    /* Home endet nach Hero + 2 Buttons — keine Zusatzsektionen */
+    /* Home endet nach Hero + 2 Buttons · keine Zusatzsektionen */
   }
 
   function enhanceLeistungen() {
@@ -131,7 +131,7 @@
 
     var wrap = document.createElement("section");
     wrap.className = "welten-process welten-reveal";
-    wrap.innerHTML = "<h3>Arbeitsweise — in fünf Schritten</h3>";
+    wrap.innerHTML = "<h3>Arbeitsweise · in fünf Schritten</h3>";
     var steps = document.createElement("div");
     steps.className = "welten-process-steps";
 

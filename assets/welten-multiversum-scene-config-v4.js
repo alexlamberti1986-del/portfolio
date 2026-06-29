@@ -1,5 +1,5 @@
 /**
- * MULTIVERSUM V4 — Scene-Config Patch (vier Welten, lokaler Test)
+ * MULTIVERSUM V4  · Scene-Config Patch (vier Welten, lokaler Test)
  */
 (function () {
   "use strict";
@@ -40,13 +40,13 @@
     {
       id: "intro-all-worlds",
       title: "Vier Welten. Ein Portfolio.",
-      body: "MULTIVERSUM, Technologie, Struktur und kreative Freiheit — verbunden in einem digitalen Universum.",
+      body: "MULTIVERSUM, Technologie, Struktur und kreative Freiheit · verbunden in einem digitalen Universum.",
       copyPos: "copy--center-top",
       sceneKind: "intro",
     },
     {
       id: "multiversum-focus",
-      lead: "Die Übersichtswelt — alles verbunden.",
+      lead: "Die Übersichtswelt · alles verbunden.",
       body: "MULTIVERSUM ist der kosmische Startpunkt: vier Perspektiven, ein roter Faden. Hier beginnt die Reise durch Technologie, Business und Kreativität.",
       copyPos: "copy--left-mid",
       worldType: "multiversum",

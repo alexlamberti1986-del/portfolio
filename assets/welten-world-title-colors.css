@@ -1,0 +1,303 @@
+/**
+ * Welt-Titel-Farben — NEXORA leuchtend blau, FREIRAUM gold.
+ * MULTIVERSUM & PROFESSIONAL unverändert.
+ */
+:root {
+  --nexora-title: #00d5ff;
+  --nexora-title-glow: rgba(0, 213, 255, 0.48);
+  --freiraum-title: #ffd166;
+  --freiraum-title-deep: #ff9b37;
+  --freiraum-title-glow: rgba(255, 209, 102, 0.42);
+}
+
+/* ── NEXORA: Seiten & Home ── */
+body[data-world="nexora"] h1,
+body[data-world="nexora"] h2,
+body[data-world="nexora"] h3.section-title,
+body[data-world="nexora"] h3.exp-block-title,
+body[data-world="nexora"] .home-copy h1,
+body[data-world="nexora"] .section-title,
+body[data-world="nexora"] .welten-mobile-hero-title {
+  color: var(--nexora-title) !important;
+  -webkit-text-fill-color: var(--nexora-title) !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  text-shadow:
+    0 0 24px var(--nexora-title-glow),
+    0 0 48px rgba(0, 168, 255, 0.22) !important;
+}
+
+/* ── FREIRAUM: Seiten & Home ── */
+body[data-world="freiraum"] h1,
+body[data-world="freiraum"] h2,
+body[data-world="freiraum"] h3.section-title,
+body[data-world="freiraum"] h3.exp-block-title,
+body[data-world="freiraum"] .home-copy h1,
+body[data-world="freiraum"] .section-title,
+body[data-world="freiraum"] .welten-mobile-hero-title {
+  background: linear-gradient(135deg, #ffe08a 0%, var(--freiraum-title) 42%, var(--freiraum-title-deep) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 18px var(--freiraum-title-glow));
+}
+
+/* Kapitel-Boxen (Unterseiten) */
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box h2,
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box h3,
+body.welten-chapter-visuals--on[data-world="nexora"] .welten-chapter-box .section-title {
+  color: var(--nexora-title) !important;
+  -webkit-text-fill-color: var(--nexora-title) !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  text-shadow: 0 0 22px var(--nexora-title-glow) !important;
+}
+
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box h2,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box h3,
+body.welten-chapter-visuals--on[data-world="freiraum"] .welten-chapter-box .section-title {
+  color: var(--freiraum-title) !important;
+  -webkit-text-fill-color: unset !important;
+  background: linear-gradient(135deg, #ffe08a, var(--freiraum-title), var(--freiraum-title-deep)) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  filter: drop-shadow(0 0 14px var(--freiraum-title-glow));
+}
+
+/* ── Parallax (MULTIVERSUM): NEXORA & FREIRAUM grosse Titel ── */
+.mv-scroll-slide--nexora h2,
+.mv-scroll-slide--nexora .world-copy h2,
+.world-zone--nexora .world-copy h2,
+.world-zone--nexora .mv-scroll-slide h2,
+body[data-mv-v4-test="1"] .world-zone--nexora .world-copy h2,
+body[data-mv-v4-test="1"] .mv-scroll-slide--nexora h2 {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--nexora-title) !important;
+  -webkit-text-fill-color: var(--nexora-title) !important;
+  text-shadow:
+    0 0 28px var(--nexora-title-glow),
+    0 0 56px rgba(0, 168, 255, 0.24) !important;
+}
+
+.mv-scroll-slide--nexora .mv-scroll-slide__eyebrow,
+.world-zone--nexora .mv-scroll-slide__eyebrow {
+  color: #68e7ff !important;
+}
+
+.mv-scroll-slide--freiraum h2,
+.mv-scroll-slide--freiraum .world-copy h2,
+.world-zone--freiraum .world-copy h2,
+.world-zone--freiraum .mv-scroll-slide h2,
+body[data-mv-v4-test="1"] .world-zone--freiraum .world-copy h2,
+body[data-mv-v4-test="1"] .mv-scroll-slide--freiraum h2,
+#mvParallaxHero[data-fr-phase="settle"] [data-slide="3"] .world-copy h2,
+#mvParallaxHero[data-fr-phase="freiraum"] [data-slide="3"] .world-copy h2 {
+  background: linear-gradient(120deg, #ffe08a 0%, var(--freiraum-title) 38%, var(--freiraum-title-deep) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 0 20px var(--freiraum-title-glow));
+  text-shadow: none !important;
+}
+
+.mv-scroll-slide--freiraum .mv-scroll-slide__eyebrow,
+.world-zone--freiraum .mv-scroll-slide__eyebrow {
+  color: var(--freiraum-title) !important;
+}
+
+/* Parallax: aktive Welt — Titel in world-copy */
+.mv-scroll-story[data-active-world="nexora"] .world-copy h2,
+.mv-scroll-story[data-active-world="nexora"] .mv-scroll-slide--nexora h2 {
+  background: none !important;
+  color: var(--nexora-title) !important;
+  -webkit-text-fill-color: var(--nexora-title) !important;
+  text-shadow: 0 0 28px var(--nexora-title-glow) !important;
+}
+
+.mv-scroll-story[data-active-world="freiraum"] .world-copy h2,
+.mv-scroll-story[data-active-world="freiraum"] .mv-scroll-slide--freiraum h2 {
+  background: linear-gradient(120deg, #ffe08a, var(--freiraum-title), var(--freiraum-title-deep)) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 0 18px var(--freiraum-title-glow));
+}
+
+/* Intro-Slide: Welten-Titel im Bogen */
+body[data-mv-v4-test="1"] .world-zone--nexora .world-card-label,
+body[data-mv-v4-test="1"] .mv-scroll-orb.world-zone--nexora .world-card-label {
+  color: var(--nexora-title) !important;
+  text-shadow: 0 0 16px var(--nexora-title-glow) !important;
+}
+
+body[data-mv-v4-test="1"] .world-zone--freiraum .world-card-label,
+body[data-mv-v4-test="1"] .mv-scroll-orb.world-zone--freiraum .world-card-label {
+  color: var(--freiraum-title) !important;
+  text-shadow: 0 0 14px var(--freiraum-title-glow) !important;
+}
+
+/* ── Parallax: Welt-Boxen (Größe, Typo, Button) ── */
+body[data-world="general"] .mv-scroll-slide--world .world-copy {
+  max-width: min(560px, 46vw) !important;
+  padding: clamp(26px, 3vw, 38px) !important;
+  border-radius: 24px !important;
+}
+
+body[data-world="general"] .mv-scroll-slide--world .scene-copy {
+  gap: 16px !important;
+}
+
+body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead,
+body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead strong {
+  font-size: clamp(1.75rem, 3.1vw, 2.9rem) !important;
+  line-height: 1.14 !important;
+  letter-spacing: 0.07em !important;
+}
+
+body[data-world="general"] .mv-scroll-slide--world .mv-scroll-slide__body {
+  font-size: clamp(1.02rem, 1.25vw, 1.22rem) !important;
+  line-height: 1.68 !important;
+  color: rgba(238, 243, 255, 0.82) !important;
+}
+
+body[data-world="general"] .mv-scroll-slide--world .mv-scroll-slide__enter.mv-form-btn {
+  margin-top: 24px !important;
+  min-height: 54px !important;
+  padding: 14px 30px !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.14em !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__enter.mv-form-btn {
+  border-color: rgba(255, 89, 178, 0.38) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__enter.mv-form-btn:hover,
+body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__enter.mv-form-btn:focus-visible {
+  border-color: rgba(255, 89, 178, 0.55) !important;
+  background: linear-gradient(135deg, rgba(94, 196, 255, 0.14), rgba(155, 107, 255, 0.12), rgba(255, 89, 178, 0.14)) !important;
+  box-shadow: 0 12px 32px rgba(255, 89, 178, 0.2) !important;
+}
+
+/* Parallax NEXORA: Lead-Titel leuchtend blau (wie Welt-Seiten) */
+.mv-scroll-slide--nexora .mv-scroll-slide__lead,
+.mv-scroll-slide--nexora .mv-scroll-slide__lead strong {
+  font-size: clamp(1.65rem, 2.85vw, 2.75rem) !important;
+  line-height: 1.14 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--nexora-title) !important;
+  -webkit-text-fill-color: var(--nexora-title) !important;
+  text-shadow:
+    0 0 28px var(--nexora-title-glow),
+    0 0 52px rgba(0, 168, 255, 0.22) !important;
+}
+
+/* Parallax FREIRAUM: Lead-Titel gold (wie Welt-Seiten) */
+.mv-scroll-slide--freiraum .mv-scroll-slide__lead,
+.mv-scroll-slide--freiraum .mv-scroll-slide__lead strong {
+  font-size: clamp(1.65rem, 2.85vw, 2.75rem) !important;
+  line-height: 1.14 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: none !important;
+  background: linear-gradient(135deg, #ffe08a 0%, var(--freiraum-title) 42%, var(--freiraum-title-deep) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 20px var(--freiraum-title-glow));
+}
+
+@media (max-width: 900px) {
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(92vw, 520px) !important;
+    padding: 22px 20px !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead strong,
+  .mv-scroll-slide--nexora .mv-scroll-slide__lead strong,
+  .mv-scroll-slide--freiraum .mv-scroll-slide__lead strong {
+    font-size: clamp(1.45rem, 6.2vw, 2rem) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .mv-scroll-slide__body {
+    font-size: clamp(0.98rem, 3.8vw, 1.12rem) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .mv-scroll-slide__enter.mv-form-btn {
+    min-height: 50px !important;
+    font-size: 0.82rem !important;
+    padding: 12px 22px !important;
+  }
+
+  body[data-world="nexora"] h1,
+  body[data-world="nexora"] h2,
+  body[data-world="nexora"] .section-title,
+  body[data-world="freiraum"] h1,
+  body[data-world="freiraum"] h2,
+  body[data-world="freiraum"] .section-title {
+    line-height: 1.12 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: 94vw !important;
+    padding: 18px 16px !important;
+    border-radius: 20px !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead strong,
+  .mv-scroll-slide--nexora .mv-scroll-slide__lead strong,
+  .mv-scroll-slide--freiraum .mv-scroll-slide__lead strong {
+    font-size: clamp(1.22rem, 7vw, 1.65rem) !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .mv-scroll-slide__body {
+    font-size: 0.95rem !important;
+    line-height: 1.62 !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .mv-scroll-slide__enter.mv-form-btn {
+    min-height: 48px !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  body[data-world="nexora"] h1,
+  body[data-world="nexora"] .home-copy h1,
+  body[data-world="freiraum"] h1,
+  body[data-world="freiraum"] .home-copy h1 {
+    font-size: clamp(1.55rem, 8vw, 2rem) !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(600px, 40vw) !important;
+    padding: 34px 36px !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__lead strong {
+    font-size: clamp(2rem, 2.4vw, 3.1rem) !important;
+  }
+}

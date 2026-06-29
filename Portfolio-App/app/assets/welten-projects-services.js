@@ -1,5 +1,5 @@
 /**
- * Projekte — zusätzliche Leistungskarten (Logo, QR, SEO, 3D, Präsentationen)
+ * Projekte · zusätzliche Leistungskarten (Logo, QR, SEO, 3D, Präsentationen)
  */
 (function () {
   "use strict";
@@ -25,7 +25,7 @@
     de: {
       sectionTitle: "Weitere Leistungen",
       sectionIntro:
-        "Diese Bereiche ergänzen die Projektbeispiele oben — mit Bildern und Kurzbeschreibungen passend zur jeweiligen Welt.",
+        "Diese Bereiche ergänzen die Projektbeispiele oben · mit Bildern und Kurzbeschreibungen passend zur jeweiligen Welt.",
       logo: {
         title: "Logo Design",
         desc: "Entwicklung neuer Logos, Markenauftritte und visuelle Identitäten für Unternehmen und Projekte.",
@@ -40,7 +40,7 @@
       },
       print: {
         title: "Printmedien",
-        desc: "Flyer, Visitenkarten, Poster, Broschüren oder Roll-ups — gestaltet und druckfertig aufbereitet.",
+        desc: "Flyer, Visitenkarten, Poster, Broschüren oder Roll-ups · gestaltet und druckfertig aufbereitet.",
       },
       layout3d: {
         title: "3D Layouts",
@@ -54,7 +54,7 @@
     en: {
       sectionTitle: "More services",
       sectionIntro:
-        "These areas complement the project examples above — with images and short descriptions matching each world.",
+        "These areas complement the project examples above · with images and short descriptions matching each world.",
       logo: {
         title: "Logo design",
         desc: "Development of new logos, brand presences and visual identities for companies and projects.",
@@ -69,7 +69,7 @@
       },
       print: {
         title: "Print media",
-        desc: "Flyers, business cards, posters, brochures or roll-ups — designed and prepared for print.",
+        desc: "Flyers, business cards, posters, brochures or roll-ups · designed and prepared for print.",
       },
       layout3d: {
         title: "3D layouts",
@@ -83,7 +83,7 @@
     it: {
       sectionTitle: "Altri servizi",
       sectionIntro:
-        "Queste aree completano gli esempi di progetto sopra — con immagini e brevi descrizioni per ogni mondo.",
+        "Queste aree completano gli esempi di progetto sopra · con immagini e brevi descrizioni per ogni mondo.",
       logo: {
         title: "Logo design",
         desc: "Sviluppo di nuovi loghi, presenze di marca e identità visive per aziende e progetti.",
@@ -98,7 +98,7 @@
       },
       print: {
         title: "Materiale stampato",
-        desc: "Flyer, biglietti da visita, poster, brochure o roll-up — progettati e pronti per la stampa.",
+        desc: "Flyer, biglietti da visita, poster, brochure o roll-up · progettati e pronti per la stampa.",
       },
       layout3d: {
         title: "Layout 3D",
