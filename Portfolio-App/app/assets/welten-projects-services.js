@@ -4,12 +4,12 @@
 (function () {
   "use strict";
 
-  var V = "20260629vk1";
+  var V = "20260629vk2";
 
   var ACCORDION_SERVICES = {
     websites: "web",
     leadformulare: "form",
-    visitenkarten: "qr",
+    visitenkarten: "visitenkarten",
   };
 
   var SERVICES = [
