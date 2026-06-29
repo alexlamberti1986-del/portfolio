@@ -53,9 +53,16 @@
 }
 
 .welten-world-switch[data-world="freiraum"] .welten-world-switch__canvas {
-  filter: saturate(1.08) contrast(1.05);
+  filter: saturate(1.12) contrast(1.04);
   opacity: 1;
   z-index: 4;
+  background: transparent;
+}
+
+.welten-world-switch[data-world="freiraum"].wws-staged.is-entering .welten-world-switch__bg {
+  opacity: 1;
+  animation: wwsFreiraumBgPulse 2.8s ease-in-out infinite alternate;
+  filter: saturate(1.28) brightness(1.06);
 }
 
 .welten-world-switch[data-world="freiraum"].wws-staged .welten-world-switch__fx {

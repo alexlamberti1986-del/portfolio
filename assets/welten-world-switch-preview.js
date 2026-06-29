@@ -35,9 +35,9 @@
     }
     if (worldKey === "freiraum") {
       return Object.assign({}, WWS_TIMING, {
-        WORLD_TRANSITION_DURATION: 4000,
-        EFFECT_MS: 2400,
-        TITLE_REVEAL_AT: 1880,
+        WORLD_TRANSITION_DURATION: 4200,
+        EFFECT_MS: 3400,
+        TITLE_REVEAL_AT: 2500,
         TITLE_FADE_IN: 560,
         TITLE_HOLD: 1300,
         COVER_MS: 1250,
@@ -1490,6 +1490,24 @@
   }
 
   function startFreiraumBrushCanvas(overlay) {
+    if (
+      typeof window.__wwsFreiraumSprayPngStart === "function" &&
+      document.body.getAttribute("data-freiraum-spray-test")
+    ) {
+      window.__wwsFreiraumSprayPngStart(overlay);
+      return;
+    }
+    overlay._wwsRevealTitleFn = function () {
+      revealStagedTitle(overlay);
+    };
+    if (typeof window.__wwsFreiraumBrushV3 === "function") {
+      window.__wwsFreiraumBrushV3(overlay);
+      return;
+    }
+    if (typeof window.__wwsFreiraumPaintV2 === "function") {
+      window.__wwsFreiraumPaintV2(overlay);
+      return;
+    }
     startFreiraumPaintCanvas(overlay);
   }
 
