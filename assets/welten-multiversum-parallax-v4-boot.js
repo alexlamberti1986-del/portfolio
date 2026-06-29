@@ -62,8 +62,8 @@
     var rail = document.querySelector(".experience-rail");
     if (!rail || !document.getElementById("mvParallaxHero")) return;
 
-    /* Laptop/Tablet: Rail aus — wie Inline-CSS max-width 2559px */
-    if (window.matchMedia("(max-width: 2559px)").matches) {
+    /* Laptop/Tablet/Handy: Rail aus — Desktop ab 1920px */
+    if (window.matchMedia("(max-width: 1919px)").matches) {
       rail.style.setProperty("display", "none", "important");
       rail.style.setProperty("opacity", "0", "important");
       rail.style.setProperty("visibility", "hidden", "important");

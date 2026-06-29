@@ -126,8 +126,8 @@ body[data-mv-v4-test="1"] .mv-scroll-vignette {
   background: radial-gradient(ellipse 92% 82% at 50% 48%, transparent 56%, rgba(2, 4, 10, 0.48) 100%);
 }
 
-/* Side-Nav nur auf 27″-Desktop (≥2560px); Laptop wie Tablet ohne Rail */
-@media (min-width: 2560px) {
+/* Side-Nav auf Desktop (≥1920px); Laptop/Tablet/Handy ohne Rail */
+@media (min-width: 1920px) {
   body[data-mv-v4-test="1"][data-world="general"]:has(#mvParallaxHero) .experience-rail {
     display: grid !important;
     opacity: 1 !important;
@@ -528,7 +528,7 @@ body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"
 }
 
 /* 27″ Desktop: etwas mehr Luft zur Rail, äussere Karten etwas weiter */
-@media (min-width: 2560px) {
+@media (min-width: 1920px) {
   body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
     width: min(54vw, 920px) !important;
   }
