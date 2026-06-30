@@ -2905,14 +2905,57 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
 
   .mv-scroll-slide--world .world-copy,
   .mv-scroll-slide--world .world-step--split .world-copy {
-    width: min(400px, 34vw);
-    max-width: min(400px, 34vw);
+    width: min(370px, 32vw);
+    max-width: min(370px, 32vw);
   }
 
   .mv-scroll-slide--multiversum .world-copy,
-  .mv-scroll-slide--multiversum .world-step--split .world-copy {
-    width: min(440px, 38vw);
-    max-width: min(440px, 38vw);
+  .mv-scroll-slide--multiversum .world-step--split .world-copy,
+  .mv-scroll-slide--nexora .world-copy,
+  .mv-scroll-slide--nexora .world-step--split .world-copy {
+    width: min(350px, 30vw);
+    max-width: min(350px, 30vw);
+  }
+
+  .mv-scroll-slide--multiversum .scene-copy--world-explainer.scene-copy,
+  .mv-scroll-slide--nexora .scene-copy--world-explainer.scene-copy {
+    padding: clamp(10px, 1.2vw, 14px);
+    gap: 6px;
+    border-radius: 14px;
+  }
+
+  .mv-scroll-slide--multiversum .scene-copy--world-explainer,
+  .mv-scroll-slide--nexora .scene-copy--world-explainer {
+    gap: 6px;
+  }
+
+  .mv-scroll-slide--multiversum .scene-copy--world-explainer .mv-scroll-slide__eyebrow,
+  .mv-scroll-slide--nexora .scene-copy--world-explainer .mv-scroll-slide__eyebrow {
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+  }
+
+  .mv-scroll-slide--multiversum .mv-scroll-slide__what,
+  .mv-scroll-slide--multiversum .mv-scroll-slide__purpose,
+  .mv-scroll-slide--multiversum .mv-scroll-slide__diff,
+  .mv-scroll-slide--nexora .mv-scroll-slide__what,
+  .mv-scroll-slide--nexora .mv-scroll-slide__purpose,
+  .mv-scroll-slide--nexora .mv-scroll-slide__diff {
+    font-size: 0.8em;
+    line-height: 1.38;
+  }
+
+  .mv-scroll-slide--multiversum .mv-scroll-slide__purpose,
+  .mv-scroll-slide--multiversum .mv-scroll-slide__diff,
+  .mv-scroll-slide--nexora .mv-scroll-slide__purpose,
+  .mv-scroll-slide--nexora .mv-scroll-slide__diff {
+    font-size: 0.76em;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--multiversum .scene-copy .mv-scroll-slide__lead strong,
+  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--nexora .scene-copy .mv-scroll-slide__lead strong {
+    font-size: clamp(17px, 1.5vw, 24px);
+    line-height: 1.06;
   }
 
   .mv-scroll-slide--world .scene-copy--world-explainer.scene-copy {

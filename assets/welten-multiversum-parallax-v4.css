@@ -531,7 +531,12 @@ body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"
 @media (min-width: 1100px) and (max-width: 1919px),
   (min-width: 1100px) and (max-height: 920px) {
   body[data-world="general"] .mv-scroll-slide--world .world-copy {
-    max-width: min(400px, 34vw) !important;
+    max-width: min(370px, 32vw) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--multiversum .world-copy,
+  body[data-world="general"] .mv-scroll-slide--nexora .world-copy {
+    max-width: min(350px, 30vw) !important;
   }
 
   body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
