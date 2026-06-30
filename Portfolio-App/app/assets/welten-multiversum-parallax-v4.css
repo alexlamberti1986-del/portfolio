@@ -527,6 +527,18 @@ body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"
   }
 }
 
+/* Laptop: kompaktere Textboxen */
+@media (min-width: 1100px) and (max-width: 1919px),
+  (min-width: 1100px) and (max-height: 920px) {
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(400px, 34vw) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
+    height: min(62vh, 680px) !important;
+  }
+}
+
 /* 27″ Desktop: etwas mehr Luft zur Rail, äussere Karten etwas weiter */
 @media (min-width: 1920px) {
   body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {

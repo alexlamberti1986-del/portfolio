@@ -2891,3 +2891,75 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
   --mv-copy-shadow: 0 22px 56px rgba(255, 75, 163, 0.16);
   --mv-accent: #ff8ab8;
 }
+
+/* Laptop (~14″): Textboxen proportional kompakter — oben/unten nichts abschneiden */
+@media (min-width: 1100px) and (max-width: 1919px),
+  (min-width: 1100px) and (max-height: 920px) {
+  .mv-scroll-story {
+    --mv-copy-w: clamp(300px, 30vw, 420px);
+  }
+
+  .world-step {
+    padding: clamp(32px, 5vh, 56px) clamp(16px, 1.8vw, 20px);
+  }
+
+  .mv-scroll-slide--world .world-copy,
+  .mv-scroll-slide--world .world-step--split .world-copy {
+    width: min(400px, 34vw);
+    max-width: min(400px, 34vw);
+  }
+
+  .mv-scroll-slide--multiversum .world-copy,
+  .mv-scroll-slide--multiversum .world-step--split .world-copy {
+    width: min(440px, 38vw);
+    max-width: min(440px, 38vw);
+  }
+
+  .mv-scroll-slide--world .scene-copy--world-explainer.scene-copy {
+    padding: clamp(12px, 1.5vw, 18px);
+    gap: 8px;
+    border-radius: 16px;
+  }
+
+  .mv-scroll-slide--world .scene-copy--world-explainer {
+    gap: 8px;
+  }
+
+  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__eyebrow {
+    margin: 0 0 4px;
+    font-size: 0.72rem;
+    letter-spacing: 0.26em;
+  }
+
+  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__lead {
+    line-height: 1.1;
+  }
+
+  .mv-scroll-slide--world .mv-scroll-slide__what,
+  .mv-scroll-slide--world .mv-scroll-slide__purpose,
+  .mv-scroll-slide--world .mv-scroll-slide__diff,
+  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__lead {
+    line-height: 1.42;
+  }
+
+  .mv-scroll-slide--world .mv-scroll-slide__purpose,
+  .mv-scroll-slide--world .mv-scroll-slide__diff {
+    font-size: 0.82em;
+  }
+
+  .mv-scroll-slide--world .mv-scroll-slide__enter.mv-form-btn {
+    margin-top: 4px;
+    font-size: 0.72rem;
+    padding: 0.62em 1.1em;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .scene-copy .mv-scroll-slide__lead strong {
+    font-size: clamp(20px, 1.75vw, 30px);
+    line-height: 1.08;
+  }
+
+  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .mv-scroll-slide__body {
+    font-size: clamp(14px, 1vw, 17px);
+    line-height: 1.5;
+  }
+}
