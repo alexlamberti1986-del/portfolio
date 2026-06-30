@@ -2702,17 +2702,6 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
     max-width: min(var(--mv-copy-w), 40vw);
   }
 
-  .mv-scroll-slide--multiversum .world-copy,
-  .mv-scroll-slide--multiversum .world-step--split .world-copy {
-    width: min(600px, 48vw);
-    max-width: min(600px, 48vw);
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .scene-copy .mv-scroll-slide__lead strong {
-    font-size: clamp(25px, 2.2vw, 44px);
-    line-height: 1.12;
-  }
-
   .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .mv-scroll-slide__body {
     font-size: clamp(16px, 1.15vw, 21px);
     line-height: 1.65;
@@ -2809,6 +2798,61 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
   font-size: 0.94em;
 }
 
+/* Einheitliche Typo & Boxbreite — Referenz PROFESSIONAL, alle vier Welten gleich */
+@media (min-width: 1100px) {
+  .mv-scroll-slide--world .scene-copy--world-explainer {
+    --mv-explainer-title: clamp(1.125rem, 1.75vw, 1.625rem);
+    --mv-explainer-body: clamp(0.9375rem, 1.05vw, 1.0625rem);
+    --mv-explainer-meta: clamp(0.875rem, 0.95vw, 1rem);
+    --mv-explainer-eyebrow: 0.7rem;
+    --mv-explainer-box-w: min(480px, 40vw);
+  }
+
+  .mv-scroll-slide--world .world-copy,
+  .mv-scroll-slide--world .world-step--split .world-copy {
+    width: var(--mv-explainer-box-w);
+    max-width: var(--mv-explainer-box-w);
+  }
+
+  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__eyebrow {
+    font-size: var(--mv-explainer-eyebrow);
+    letter-spacing: 0.28em;
+    margin: 0 0 6px;
+  }
+
+  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__lead,
+  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__lead strong {
+    font-size: var(--mv-explainer-title) !important;
+    line-height: 1.12 !important;
+    letter-spacing: 0.03em !important;
+    text-transform: none !important;
+    margin: 0 !important;
+    font-weight: 700;
+  }
+
+  .mv-scroll-slide--world .mv-scroll-slide__what {
+    font-size: var(--mv-explainer-body) !important;
+    line-height: 1.5 !important;
+  }
+
+  .mv-scroll-slide--world .mv-scroll-slide__purpose,
+  .mv-scroll-slide--world .mv-scroll-slide__diff {
+    font-size: var(--mv-explainer-meta) !important;
+    line-height: 1.45 !important;
+  }
+
+  .mv-scroll-slide--world .mv-scroll-slide__enter.mv-form-btn {
+    font-size: 0.75rem;
+    margin-top: 6px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .mv-scroll-slide--world .scene-copy--world-explainer {
+    --mv-explainer-box-w: min(520px, 42vw);
+  }
+}
+
 .mv-scroll-slide--world .world-copy {
   width: min(480px, 40vw);
   max-width: min(480px, 40vw);
@@ -2854,12 +2898,6 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
   margin-top: 8px;
 }
 
-.mv-scroll-slide--multiversum .world-copy,
-.mv-scroll-slide--multiversum .world-step--split .world-copy {
-  width: min(560px, 46vw);
-  max-width: min(560px, 46vw);
-}
-
 .mv-scroll-slide--multiversum .scene-copy--world-explainer {
   --mv-copy-bg: linear-gradient(155deg, rgba(32, 20, 72, 0.78), rgba(14, 24, 58, 0.7));
   --mv-copy-border: rgba(167, 139, 250, 0.34);
@@ -2892,7 +2930,7 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
   --mv-accent: #ff8ab8;
 }
 
-/* Laptop (~14″): Textboxen proportional kompakter — oben/unten nichts abschneiden */
+/* Laptop (~14″): gleiche Typo, etwas kompaktere Box */
 @media (min-width: 1100px) and (max-width: 1919px),
   (min-width: 1100px) and (max-height: 920px) {
   .mv-scroll-story {
@@ -2903,63 +2941,22 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
     padding: clamp(32px, 5vh, 56px) clamp(16px, 1.8vw, 20px);
   }
 
+  .mv-scroll-slide--world .scene-copy--world-explainer {
+    --mv-explainer-title: clamp(1.05rem, 1.55vw, 1.35rem);
+    --mv-explainer-body: clamp(0.875rem, 0.98vw, 0.98rem);
+    --mv-explainer-meta: clamp(0.8125rem, 0.9vw, 0.9375rem);
+    --mv-explainer-eyebrow: 0.66rem;
+    --mv-explainer-box-w: min(390px, 34vw);
+  }
+
   .mv-scroll-slide--world .world-copy,
   .mv-scroll-slide--world .world-step--split .world-copy {
-    width: min(370px, 32vw);
-    max-width: min(370px, 32vw);
-  }
-
-  .mv-scroll-slide--multiversum .world-copy,
-  .mv-scroll-slide--multiversum .world-step--split .world-copy,
-  .mv-scroll-slide--nexora .world-copy,
-  .mv-scroll-slide--nexora .world-step--split .world-copy {
-    width: min(350px, 30vw);
-    max-width: min(350px, 30vw);
-  }
-
-  .mv-scroll-slide--multiversum .scene-copy--world-explainer.scene-copy,
-  .mv-scroll-slide--nexora .scene-copy--world-explainer.scene-copy {
-    padding: clamp(10px, 1.2vw, 14px);
-    gap: 6px;
-    border-radius: 14px;
-  }
-
-  .mv-scroll-slide--multiversum .scene-copy--world-explainer,
-  .mv-scroll-slide--nexora .scene-copy--world-explainer {
-    gap: 6px;
-  }
-
-  .mv-scroll-slide--multiversum .scene-copy--world-explainer .mv-scroll-slide__eyebrow,
-  .mv-scroll-slide--nexora .scene-copy--world-explainer .mv-scroll-slide__eyebrow {
-    font-size: 0.66rem;
-    letter-spacing: 0.22em;
-  }
-
-  .mv-scroll-slide--multiversum .mv-scroll-slide__what,
-  .mv-scroll-slide--multiversum .mv-scroll-slide__purpose,
-  .mv-scroll-slide--multiversum .mv-scroll-slide__diff,
-  .mv-scroll-slide--nexora .mv-scroll-slide__what,
-  .mv-scroll-slide--nexora .mv-scroll-slide__purpose,
-  .mv-scroll-slide--nexora .mv-scroll-slide__diff {
-    font-size: 0.8em;
-    line-height: 1.38;
-  }
-
-  .mv-scroll-slide--multiversum .mv-scroll-slide__purpose,
-  .mv-scroll-slide--multiversum .mv-scroll-slide__diff,
-  .mv-scroll-slide--nexora .mv-scroll-slide__purpose,
-  .mv-scroll-slide--nexora .mv-scroll-slide__diff {
-    font-size: 0.76em;
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--multiversum .scene-copy .mv-scroll-slide__lead strong,
-  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--nexora .scene-copy .mv-scroll-slide__lead strong {
-    font-size: clamp(17px, 1.5vw, 24px);
-    line-height: 1.06;
+    width: var(--mv-explainer-box-w);
+    max-width: var(--mv-explainer-box-w);
   }
 
   .mv-scroll-slide--world .scene-copy--world-explainer.scene-copy {
-    padding: clamp(12px, 1.5vw, 18px);
+    padding: clamp(12px, 1.4vw, 16px);
     gap: 8px;
     border-radius: 16px;
   }
@@ -2970,39 +2967,12 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
 
   .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__eyebrow {
     margin: 0 0 4px;
-    font-size: 0.72rem;
-    letter-spacing: 0.26em;
-  }
-
-  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__lead {
-    line-height: 1.1;
-  }
-
-  .mv-scroll-slide--world .mv-scroll-slide__what,
-  .mv-scroll-slide--world .mv-scroll-slide__purpose,
-  .mv-scroll-slide--world .mv-scroll-slide__diff,
-  .mv-scroll-slide--world .scene-copy--world-explainer .mv-scroll-slide__lead {
-    line-height: 1.42;
-  }
-
-  .mv-scroll-slide--world .mv-scroll-slide__purpose,
-  .mv-scroll-slide--world .mv-scroll-slide__diff {
-    font-size: 0.82em;
+    letter-spacing: 0.24em;
   }
 
   .mv-scroll-slide--world .mv-scroll-slide__enter.mv-form-btn {
     margin-top: 4px;
     font-size: 0.72rem;
     padding: 0.62em 1.1em;
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .scene-copy .mv-scroll-slide__lead strong {
-    font-size: clamp(20px, 1.75vw, 30px);
-    line-height: 1.08;
-  }
-
-  .mv-scroll-story[data-layout="split-world"] .mv-scroll-slide--world .mv-scroll-slide__body {
-    font-size: clamp(14px, 1vw, 17px);
-    line-height: 1.5;
   }
 }
