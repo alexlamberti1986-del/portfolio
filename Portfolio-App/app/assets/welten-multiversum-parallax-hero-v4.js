@@ -601,8 +601,20 @@
   }
 
   function worldScenePhases(local, slideIndex) {
-    var env = sceneEnvelope(local, slideIndex);
     var kind = slideKind(slideIndex);
+    if (kind === "world") {
+      var chapter = worldChapterPhases(local);
+      return {
+        orb: chapter.worldOpacity,
+        copy: chapter.textOpacity,
+        cards: chapter.worldIn,
+        hint: 0,
+        trail: 0,
+        env: chapter.worldOpacity,
+        chapter: chapter,
+      };
+    }
+    var env = sceneEnvelope(local, slideIndex);
     if (kind === "finale") {
       var copyOut = local > 0.55 ? easeInOutSine(clamp((local - 0.55) / 0.2, 0, 1)) : 0;
       return {
@@ -657,6 +669,88 @@
 
   function layerShift(p, factor, par) {
     return -p * factor * 28 * par;
+  }
+
+  var WORLD_CHAPTER = {
+    worldEnterEnd: 0.2,
+    textStart: 0.22,
+    holdEnd: 0.87,
+    fadeEnd: 1,
+  };
+
+  function worldChapterPhases(focusLocal) {
+    var worldIn = easeInOutSine(clamp(focusLocal / WORLD_CHAPTER.worldEnterEnd, 0, 1));
+    var fadeOut =
+      focusLocal > WORLD_CHAPTER.holdEnd
+        ? easeInOutSine(clamp((focusLocal - WORLD_CHAPTER.holdEnd) / (WORLD_CHAPTER.fadeEnd - WORLD_CHAPTER.holdEnd), 0, 1))
+        : 0;
+    var worldOpacity = worldIn * (1 - fadeOut);
+    var showText = focusLocal >= WORLD_CHAPTER.textStart && fadeOut < 0.98;
+    var textLocal = 0;
+    if (showText) {
+      textLocal =
+        focusLocal >= WORLD_CHAPTER.holdEnd
+          ? 1
+          : clamp((focusLocal - WORLD_CHAPTER.textStart) / (WORLD_CHAPTER.holdEnd - WORLD_CHAPTER.textStart), 0, 1);
+    }
+    return {
+      worldIn: worldIn,
+      worldOpacity: worldOpacity,
+      textOpacity: showText ? worldOpacity : 0,
+      textLocal: textLocal,
+      showText: showText,
+      hold: 1 - fadeOut,
+      fadeOut: fadeOut,
+    };
+  }
+
+  function worldChapterHold(slideLocal) {
+    return worldChapterPhases(slideLocal).hold;
+  }
+
+  function applyWorldExplainTexts(copyEl, textLocal, copyOpacity) {
+    if (!copyEl) return;
+    var eyebrowEl = copyEl.querySelector(".mv-scroll-slide__eyebrow");
+    var leadEl = copyEl.querySelector(".mv-scroll-slide__lead");
+    var whatEl = copyEl.querySelector(".mv-scroll-slide__what");
+    var purposeEl = copyEl.querySelector(".mv-scroll-slide__purpose");
+    var diffEl = copyEl.querySelector(".mv-scroll-slide__diff");
+    var enterBtn = copyEl.querySelector(".mv-scroll-slide__enter");
+    var t = textLocal;
+    function step(start, span) {
+      return easeInOutSine(clamp((t - start) / span, 0, 1)) * copyOpacity;
+    }
+    if (eyebrowEl) {
+      var eyebrowOp = step(0, 0.1);
+      eyebrowEl.style.opacity = String(eyebrowOp);
+    }
+    if (leadEl) {
+      leadEl.style.opacity = String(step(0.04, 0.1));
+      leadEl.style.transform = "translateY(" + lerp(12, 0, step(0.04, 0.1) / Math.max(copyOpacity, 0.001)) + "px)";
+    }
+    if (whatEl) {
+      whatEl.style.opacity = String(step(0.16, 0.12));
+      whatEl.style.transform = "translateY(" + lerp(14, 0, step(0.16, 0.12) / Math.max(copyOpacity, 0.001)) + "px)";
+    }
+    if (purposeEl) {
+      purposeEl.style.opacity = String(step(0.32, 0.12));
+      purposeEl.style.transform = "translateY(" + lerp(14, 0, step(0.32, 0.12) / Math.max(copyOpacity, 0.001)) + "px)";
+    }
+    if (diffEl) {
+      diffEl.style.opacity = String(step(0.48, 0.12));
+      diffEl.style.transform = "translateY(" + lerp(14, 0, step(0.48, 0.12) / Math.max(copyOpacity, 0.001)) + "px)";
+    }
+    if (enterBtn) {
+      enterBtn.style.opacity = String(step(0.62, 0.12));
+    }
+  }
+
+  function resetWorldExplainTexts(copyEl) {
+    if (!copyEl) return;
+    copyEl.querySelectorAll(".mv-scroll-slide__eyebrow, .mv-scroll-slide__lead, .mv-scroll-slide__what, .mv-scroll-slide__purpose, .mv-scroll-slide__diff, .mv-scroll-slide__enter").forEach(function (el) {
+      el.style.opacity = "";
+      el.style.transform = "";
+    });
   }
 
   function topicCardsMarkup(world, items) {
@@ -846,9 +940,12 @@
           copyInner = "";
         } else if (isWorld) {
           copyInner =
-            '<div class="scene-copy">' +
+            '<div class="scene-copy scene-copy--world-explainer">' +
+            (s.label ? '<p class="mv-scroll-slide__eyebrow">' + s.label + "</p>" : "") +
             (s.lead ? '<p class="mv-scroll-slide__lead"><strong>' + s.lead + "</strong></p>" : "") +
-            (s.body ? '<p class="mv-scroll-slide__body">' + s.body + "</p>" : "") +
+            (s.body ? '<p class="mv-scroll-slide__what">' + s.body + "</p>" : "") +
+            (s.purpose ? '<p class="mv-scroll-slide__purpose">' + s.purpose + "</p>" : "") +
+            (s.difference ? '<p class="mv-scroll-slide__diff">' + s.difference + "</p>" : "") +
             worldBtn +
             "</div>";
         } else {
@@ -1252,7 +1349,7 @@
     });
   }
 
-  function syncWorldZoneOrbs(state, layoutMode, activeSlide, phases, stageOp, postWorld) {
+  function syncWorldZoneOrbs(state, layoutMode, activeSlide, phases, stageOp, postWorld, worldHold) {
     if (postWorld) {
       forceHideAllWorldZones();
       return;
@@ -1262,12 +1359,16 @@
     if (layoutMode === "split-world") {
       var slide = config.slides[activeSlide];
       var focusWorld = slide && slide.worldType ? slide.worldType : "";
-      var fly = easeOutExpo(clamp((phases && phases.orb) || stageOp, 0, 1));
+      var hold = worldHold !== undefined ? worldHold : 1;
+      var chapter = phases && phases.chapter;
+      var worldIn = chapter ? chapter.worldIn : easeOutExpo(clamp((phases && phases.orb) || stageOp, 0, 1));
+      var unitOp = chapter ? chapter.worldOpacity * hold : easeOutExpo(clamp((phases && phases.orb) || stageOp, 0, 1)) * hold;
+      var fly = worldIn;
       WORLD_KEYS.forEach(function (world) {
         var zone = dom.orbs[world];
         if (!zone) return;
         var isFocus = focusWorld === world;
-        if (!isFocus || stageOp < 0.02) {
+        if (!isFocus || unitOp < 0.03) {
           zone.style.opacity = "0";
           zone.style.visibility = "hidden";
           zone.style.pointerEvents = "none";
@@ -1280,13 +1381,13 @@
         var cfg = state.orbs[world] || { x: 0, y: 0, scale: 1, opacity: 1, blur: 0, z: 50 };
         var flyCfg = {
           x: 0,
-          y: lerp(10, 0, fly),
-          scale: lerp(0.78, 1, fly),
-          opacity: (cfg.opacity || 1) * fly * stageOp,
-          blur: lerp(3.5, cfg.blur || 0, fly),
+          y: lerp(6, 0, fly),
+          scale: lerp(0.88, 1, easeInOutSine(fly)),
+          opacity: unitOp,
+          blur: lerp(1.5, 0, fly),
           z: cfg.z || 50,
         };
-        applyOrb(zone, flyCfg, 0, fly, true);
+        applyOrb(zone, flyCfg, 0, 1, true);
       });
       return;
     }
@@ -1324,7 +1425,7 @@
     return slide.worldSide === "left" ? "left" : slide.worldSide === "right" ? "right" : "";
   }
 
-  function applyWorldZoneStates(activeScene, phases) {
+  function applyWorldZoneStates(activeScene, phases, worldHold) {
     if (!dom.worldZones) return;
     var slide = config.slides[activeScene];
     var kind = slideKind(activeScene);
@@ -1334,7 +1435,10 @@
 
     setVisibleWorlds(visibleWorldsForScene(activeScene));
     var focusSide = worldFocusSide(activeScene);
-    var env = phases.env !== undefined ? phases.env : 1;
+    var hold = worldHold !== undefined ? worldHold : 1;
+    var chapter = phases && phases.chapter;
+    var env = (phases.env !== undefined ? phases.env : 1) * (kind === "world" ? hold : 1);
+    var cardFlyBase = kind === "world" && chapter ? chapter.worldIn : 1;
 
     WORLD_KEYS.forEach(function (world) {
       var zone = dom.worldZones[world];
@@ -1370,17 +1474,27 @@
         var collage = zone.querySelector(".world-collage");
         if (collage) {
           collage.style.setProperty("--card-orbit", orbit);
-          var cardEnv = isWorldFocus ? env : isRevealFocus ? env : Math.min(1, env * 0.9 + 0.1);
-          collage.style.opacity = String(cardEnv);
-          collage.style.transform = "scale(" + lerp(0.96, 1, cardEnv) + ")";
-          collage.style.visibility = cardEnv > 0.04 ? "visible" : "hidden";
+          if (isWorldFocus && chapter) {
+            collage.style.opacity = String(chapter.worldOpacity > 0.04 ? 1 : 0);
+            collage.style.transform = "scale(" + lerp(0.96, 1, chapter.worldIn) + ")";
+            collage.style.visibility = chapter.worldOpacity > 0.04 ? "visible" : "hidden";
+          } else {
+            var cardEnv = isWorldFocus ? env : isRevealFocus ? env : Math.min(1, env * 0.9 + 0.1);
+            collage.style.opacity = String(cardEnv);
+            collage.style.transform = "scale(" + lerp(0.96, 1, cardEnv) + ")";
+            collage.style.visibility = cardEnv > 0.04 ? "visible" : "hidden";
+          }
           collage.style.pointerEvents = "none";
           collage.querySelectorAll(".world-card").forEach(function (cardEl, cardIdx) {
-            var stagger = cardIdx * 0.08;
-            var cardT = clamp((cardEnv - stagger) / (1 - stagger), 0, 1);
-            var cardFly = easeOutExpo(cardT);
-            cardEl.style.opacity = String(cardFly);
-            cardEl.style.filter = cardFly < 1 ? "blur(" + lerp(2.5, 0, cardFly) + "px)" : "";
+            var stagger = isWorldFocus && chapter ? cardIdx * 0.04 : cardIdx * 0.08;
+            var cardT =
+              isWorldFocus && chapter
+                ? clamp((cardFlyBase - stagger) / Math.max(1 - stagger, 0.01), 0, 1)
+                : clamp((env - stagger) / (1 - stagger), 0, 1);
+            var cardReveal = easeOutExpo(cardT);
+            var cardOp = isWorldFocus && chapter ? cardReveal * chapter.worldOpacity : cardReveal;
+            cardEl.style.opacity = String(cardOp);
+            cardEl.style.filter = cardReveal < 1 ? "blur(" + lerp(2.5, 0, cardReveal) + "px)" : "";
             cardEl.style.pointerEvents = cardT > 0.18 ? "auto" : "none";
           });
         }
@@ -1676,6 +1790,9 @@
     var wasPostWorld = heroEl.classList.contains("is-post-world");
     var prevLayout = heroEl.getAttribute("data-layout") || "";
     heroEl.classList.toggle("is-post-world", postWorld);
+    var worldHold =
+      layoutMode === "split-world" && isWorldSlide(activeSlide) ? worldChapterHold(slideLocal) : 1;
+
     if (postWorld) {
       forceHideAllWorldZones();
     } else {
@@ -1686,7 +1803,7 @@
       ) {
         resetWorldZoneInlineStyles();
       }
-      applyWorldZoneStates(activeSlide, phases);
+      applyWorldZoneStates(activeSlide, phases, worldHold);
     }
 
     if (dom.transitionTrail) {
@@ -1703,7 +1820,7 @@
 
     var dominant = postWorld ? "" : dominantOrbKey(state);
 
-    syncWorldZoneOrbs(state, layoutMode, activeSlide, phases, stageOp, postWorld);
+    syncWorldZoneOrbs(state, layoutMode, activeSlide, phases, stageOp, postWorld, worldHold);
 
     applyWorldAccents();
 
@@ -1747,13 +1864,18 @@
       });
     }
     if (dom.worldStage) {
-      var effectiveStageOp = postWorld ? 0 : stageOp;
+      var effectiveStageOp = postWorld ? 0 : stageOp * worldHold;
+      var stageChapter = phases.chapter;
+      var stageScale =
+        layoutMode === "split-world" && stageChapter
+          ? lerp(0.94, 1, stageChapter.worldIn) * (1 - stageChapter.fadeOut * 0.06)
+          : lerp(0.96, 1, phases.orb || 1);
       dom.worldStage.style.opacity = String(effectiveStageOp);
       dom.worldStage.style.visibility = effectiveStageOp > 0.03 ? "visible" : "hidden";
       dom.worldStage.style.pointerEvents = effectiveStageOp > 0.2 ? "auto" : "none";
       dom.worldStage.style.transform =
         layoutMode === "split-world"
-          ? "translateY(-50%) scale(" + lerp(0.96, 1, phases.orb || 1) + ")"
+          ? "translateY(-50%) scale(" + stageScale + ")"
           : layoutMode === "overview"
           ? "translate(-50%, -50%) scale(" + lerp(0.94, 1, slideLocal) + ")"
           : "";
@@ -1797,19 +1919,28 @@
       var copyEl = slide.querySelector(".world-copy");
       var hintEl = slide.querySelector(".world-visual__hint");
       var isWorldChapter = isWorldSlide(i);
-      var copyOpacity = isWorldChapter ? vis.opacity * slidePhases.env : vis.opacity;
+      var chapterPh = isWorldChapter ? slidePhases.chapter || worldChapterPhases(slideLocal) : null;
+      var hold = isWorldChapter ? chapterPh.hold : 1;
+      var copyOpacity = isWorldChapter ? vis.opacity * (chapterPh ? chapterPh.textOpacity : slidePhases.env) : vis.opacity;
       var scale = lerp(0.98, 1, copyOpacity);
+      var worldVisible = chapterPh && chapterPh.worldOpacity > 0.03;
 
       if (isWorldChapter) {
-        slide.style.opacity = String(vis.opacity > 0.02 ? 1 : 0);
+        slide.style.opacity = String(vis.opacity > 0.02 && (worldVisible || copyOpacity > 0.02) ? 1 : 0);
         slide.style.transform = "translate3d(-50%, -50%, 0)";
         slide.style.pointerEvents = vis.active && copyOpacity > 0.2 ? "auto" : "none";
         if (copyEl) {
-          copyEl.style.opacity = String(copyOpacity);
-          copyEl.style.transform =
-            "translate3d(0, " + lerp(14, 0, easeInOutSine(copyOpacity)) + "px, 0) scale(" + scale + ")";
+          var textOp = chapterPh && chapterPh.showText ? vis.opacity * chapterPh.hold : 0;
+          copyEl.style.opacity = String(textOp);
+          copyEl.style.transform = "translate3d(0, " + lerp(14, 0, easeInOutSine(textOp)) + "px, 0)";
+          if (chapterPh && chapterPh.showText && textOp > 0.01) {
+            applyWorldExplainTexts(copyEl, chapterPh.textLocal, textOp);
+          } else {
+            resetWorldExplainTexts(copyEl);
+          }
         }
       } else {
+        if (copyEl) resetWorldExplainTexts(copyEl);
         slide.style.opacity = String(vis.opacity);
         slide.style.transform =
           "translate3d(-50%, calc(-50% + " + vis.y + "px), 0) scale(" + scale + ")";
@@ -1820,7 +1951,7 @@
         }
       }
 
-      slide.classList.toggle("is-active", vis.active && (isWorldChapter ? copyOpacity > 0.4 : vis.opacity > 0.45));
+      slide.classList.toggle("is-active", vis.active && (isWorldChapter ? copyOpacity > 0.35 || worldVisible : vis.opacity > 0.45));
       slide.classList.toggle("is-world-chapter", isWorldChapter && vis.active);
 
       if (hintEl) {
@@ -1884,7 +2015,7 @@
 
     if (dom.cue) dom.cue.style.opacity = String(p < 0.05 ? 1 : clamp(1 - (p - 0.05) / 0.04, 0, 1));
 
-    heroEl.setAttribute("data-active-world", state.activeWorld || "multiversum");
+    heroEl.setAttribute("data-active-world", layoutMode === "split-world" && config.slides[activeSlide] && config.slides[activeSlide].worldType ? config.slides[activeSlide].worldType : state.activeWorld || "multiversum");
     heroEl.setAttribute("data-scene", String(activeSlide + 1));
     heroEl.setAttribute("data-layout", layoutMode);
     heroEl.setAttribute("data-world-side", worldFocusSide(activeSlide));

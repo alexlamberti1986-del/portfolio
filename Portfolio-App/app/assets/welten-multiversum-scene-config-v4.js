@@ -9,8 +9,8 @@
 
   base.version = 4;
   base.skipPortfolioFrame = true;
-  base.scrollHeightVh = 720;
-  base.scrollHeightVhTablet = 640;
+  base.scrollHeightVh = 840;
+  base.scrollHeightVhTablet = 740;
   base.segmentHold = 0.66;
   base.timing = {
     enter: 0.2,
@@ -23,14 +23,14 @@
   base.chapters = {
     intro: [0.0, 0.12],
     introToMultiversum: [0.12, 0.18],
-    multiversumFocus: [0.18, 0.28],
-    multiversumToNexora: [0.28, 0.34],
-    nexoraFocus: [0.34, 0.48],
-    nexoraToProfessional: [0.48, 0.54],
-    professionalFocus: [0.54, 0.68],
-    professionalToFreiraum: [0.68, 0.74],
-    freiraumFocus: [0.74, 0.84],
-    finaleCopyOnly: [0.84, 0.9],
+    multiversumFocus: [0.18, 0.29],
+    multiversumToNexora: [0.29, 0.34],
+    nexoraFocus: [0.34, 0.5],
+    nexoraToProfessional: [0.5, 0.54],
+    professionalFocus: [0.54, 0.69],
+    professionalToFreiraum: [0.69, 0.74],
+    freiraumFocus: [0.74, 0.85],
+    finaleCopyOnly: [0.85, 0.9],
     portfolioFrame: [0.9, 0.94],
     portfolioButtons: [0.94, 0.97],
     releaseToNormalContent: [0.97, 1.0],
@@ -39,15 +39,18 @@
   base.slides = [
     {
       id: "intro-all-worlds",
-      title: "Vier Welten. Ein Portfolio.",
-      body: "MULTIVERSUM, Technologie, Struktur und kreative Freiheit · verbunden in einem digitalen Universum.",
+      title: "Reise durch das Multiversum",
+      body: "Scrollen startet den Flug durch ein digitales Universum. Unterwegs taucht jede Welt einzeln auf — mit Erklärung, Rolle und Unterschied zu den anderen Welten.",
       copyPos: "copy--center-top",
       sceneKind: "intro",
     },
     {
       id: "multiversum-focus",
-      lead: "Die Übersichtswelt · alles verbunden.",
-      body: "MULTIVERSUM ist der kosmische Startpunkt: vier Perspektiven, ein roter Faden. Hier beginnt die Reise durch Technologie, Business und Kreativität.",
+      label: "MULTIVERSUM",
+      lead: "Was ist MULTIVERSUM?",
+      body: "Die Übersichtswelt und das verbindende Portfolio-Universum. Hier sehen Sie das Gesamtbild, bevor die Reise in die einzelnen Spezialwelten geht.",
+      purpose: "Als Meta-Ebene: Strategie, Persönlichkeit und die passende Wirkung je nach Projekt — analytisch, klar oder emotional.",
+      difference: "Nicht eine Spezialwelt wie NEXORA, PROFESSIONAL oder FREIRAUM, sondern das übergeordnete System, das alle drei vereint.",
       copyPos: "copy--left-mid",
       worldType: "multiversum",
       worldSide: "right",
@@ -55,8 +58,11 @@
     },
     {
       id: "nexora-focus",
-      lead: "Technologie, Systeme und digitale Energie.",
-      body: "NEXORA ist der technische Kern für smarte Web-Erlebnisse. Hier verbinden sich Webdesign, Performance, Automatisierung und digitale Struktur zu skalierbaren Lösungen mit Wirkung.",
+      label: "NEXORA",
+      lead: "Was ist NEXORA?",
+      body: "Die Technologie-Welt für Systeme, Performance und smarte digitale Lösungen — Web, Automatisierung und technische Klarheit.",
+      purpose: "Wenn Projekte technisch anspruchsvoll sind: skalierbare Strukturen, präzise Umsetzung und messbare digitale Wirkung.",
+      difference: "Im Gegensatz zu PROFESSIONAL (Business-Klarheit) und FREIRAUM (Kreativität) fokussiert NEXORA auf Technologie, Logik und Systemdenken.",
       copyPos: "copy--left-mid",
       worldType: "nexora",
       worldSide: "right",
@@ -64,8 +70,11 @@
     },
     {
       id: "professional-focus",
-      lead: "Klarheit, Vertrauen und hochwertige Markenwirkung.",
-      body: "PROFESSIONAL steht für Business-Auftritte mit Struktur, Präzision und Überzeugungskraft. Präsentationen, Kommunikation und professionelle Markenführung werden hier klar inszeniert.",
+      label: "PROFESSIONAL",
+      lead: "Was ist PROFESSIONAL?",
+      body: "Die Business-Welt für Auftritt, Vertrauen und professionelle Markenführung — strukturiert, seriös und überzeugend.",
+      purpose: "Für Unternehmen und Persönlichkeiten, die Klarheit, Glaubwürdigkeit und einen hochwertigen professionellen Eindruck brauchen.",
+      difference: "Weniger technisch als NEXORA, weniger expressiv als FREIRAUM — hier steht Präzision, Ordnung und Business-Wirkung im Vordergrund.",
       copyPos: "copy--right-mid",
       worldType: "professional",
       worldSide: "left",
@@ -73,8 +82,11 @@
     },
     {
       id: "freiraum-focus",
-      lead: "Kreativität, Emotion und visuelle Freiheit.",
-      body: "FREIRAUM ist die Welt für Ideen mit Charakter. Hier entstehen Design, Kampagnen, visuelle Konzepte und Inhalte, die Wiedererkennung schaffen und emotional wirken.",
+      label: "FREIRAUM",
+      lead: "Was ist FREIRAUM?",
+      body: "Die Kreativ-Welt für Identität, Emotion und visuelle Freiheit — Design, Kampagnen und Inhalte mit Charakter.",
+      purpose: "Wenn Marken und Projekte Persönlichkeit, Tiefe und ein unverwechselbares Gefühl brauchen — mutig, expressiv, menschlich.",
+      difference: "Im Unterschied zu NEXORA (Technik) und PROFESSIONAL (Struktur) lebt FREIRAUM von Kreativität, Farbe und emotionaler Erzählung.",
       copyPos: "copy--left-mid",
       worldType: "freiraum",
       worldSide: "right",
