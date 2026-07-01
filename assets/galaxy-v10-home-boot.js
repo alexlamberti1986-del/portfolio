@@ -1,19 +1,21 @@
 /**
- * MULTIVERSUM Home — Galaxy V10 Embed (Desktop)
+ * MULTIVERSUM Home — Galaxy V10 Embed (grosser Desktop / 27"+ ab 1920px)
  */
 (function () {
   "use strict";
 
-  function isDesktop() {
+  var GALAXY_MIN_WIDTH = 1920;
+
+  function isLargeDesktop() {
     try {
-      return window.matchMedia("(min-width: 1100px)").matches;
+      return window.matchMedia("(min-width: " + GALAXY_MIN_WIDTH + "px)").matches;
     } catch (e) {
-      return window.innerWidth >= 1100;
+      return window.innerWidth >= GALAXY_MIN_WIDTH;
     }
   }
 
   function shouldUseGalaxy() {
-    return document.body.getAttribute("data-world") === "general" && isDesktop();
+    return document.body.getAttribute("data-world") === "general" && isLargeDesktop();
   }
 
   function mountGalaxy() {
@@ -37,7 +39,6 @@
     stage.parentNode.insertBefore(host, stage);
     stage.classList.add("mv-dna-hidden");
     stage.setAttribute("hidden", "hidden");
-    document.body.classList.add("galaxy-v10-home-active");
   }
 
   function onReleaseScroll() {
@@ -59,7 +60,6 @@
   /* Flag sofort setzen — defer-Skripte (Parallax) laufen vor DOMContentLoaded */
   if (shouldUseGalaxy()) {
     window.__galaxyV10HomeActive = true;
-    document.body.classList.add("galaxy-v10-home-active");
   }
 
   mountGalaxy();
