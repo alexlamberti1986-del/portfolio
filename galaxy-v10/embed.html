@@ -68,6 +68,16 @@
       pointer-events: none;
     }
 
+    .galaxy-start-poster {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: #03040f url("assets/galaxy-start-hero.png?v=20260702assets") center center / cover no-repeat;
+      opacity: var(--start-poster-opacity, 1);
+      transition: opacity 0.45s ease;
+    }
+
     .galaxy-wash {
       position: absolute;
       inset: -35%;
@@ -144,6 +154,7 @@
       aspect-ratio: 1;
       object-fit: contain;
       display: block;
+      background: transparent !important;
       animation: floatWorld 8s ease-in-out infinite;
     }
 
@@ -1279,6 +1290,7 @@
 
 .overview-sphere-link img,
 .world-sphere-link .world-sphere-img {
+  background: transparent !important;
   transition: transform 0.62s var(--live-ease), filter 0.45s var(--live-ease) !important;
   transform-origin: center center !important;
   will-change: transform;
@@ -2342,6 +2354,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 <body class="galaxy-v10-page galaxy-v10-embed mv-world-general" data-galaxy-v10="embed" data-master-world="general" data-world="general">
   <div class="galaxy-viewport" id="galaxyViewport">
   <main class="alex-live-galaxy" id="galaxyRoot">
+    <div class="galaxy-start-poster" id="galaxyStartPoster" aria-hidden="true"></div>
     <canvas id="galaxyCanvas" aria-hidden="true"></canvas>
     <div class="galaxy-wash" aria-hidden="true"></div>
     <div class="galaxy-vignette" aria-hidden="true"></div>
@@ -2354,7 +2367,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           </div>
         <article class="overview-card" data-world="multiversum" style="--a:#9B64FF;--b:#60DCFF;--c:#FFC973;--world-font:'Space Grotesk', sans-serif;">
           <div class="overview-glow"></div>
-          <a class="overview-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img src="assets/world-multiversum.png?v=20260702spheres" alt="MULTIVERSUM Welt" loading="eager"></a>
+          <a class="overview-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img src="assets/world-multiversum.png?v=20260702assets" alt="MULTIVERSUM Welt" loading="eager"></a>
           <div class="overview-label">
             <span>unten links</span>
             <strong>MULTIVERSUM</strong>
@@ -2381,7 +2394,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
         <article class="overview-card" data-world="freiraum" style="--a:#FFBA68;--b:#FF649C;--c:#FFE2A0;--world-font:'Syne', sans-serif;">
           <div class="overview-glow"></div>
-          <a class="overview-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img src="assets/world-freiraum.png?v=20260702spheres" alt="FREIRAUM Welt" loading="eager"></a>
+          <a class="overview-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img src="assets/world-freiraum.png?v=20260702assets" alt="FREIRAUM Welt" loading="eager"></a>
           <div class="overview-label">
             <span>rechts unten</span>
             <strong>FREIRAUM</strong>
@@ -2393,14 +2406,14 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         
         <article class="world-panel" data-world="multiversum" style="--a:#9B64FF;--b:#60DCFF;--c:#FFC973;--world-font:'Space Grotesk', sans-serif;--world-x:23.0%;--world-y:69.0%;--box-x:70%;--box-y:32%;">
           <div class="world-main-visual">
-            <a class="world-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img class="world-sphere-img" src="assets/world-multiversum.png?v=20260702spheres" alt="MULTIVERSUM Hauptwelt"></a>
+            <a class="world-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img class="world-sphere-img" src="assets/world-multiversum.png?v=20260702assets" alt="MULTIVERSUM Hauptwelt"></a>
             <div class="world-detail-label">MULTIVERSUM</div>
           </div>
 
           <div class="world-subpages">
             <a class="subpage-card subpage-1" href="../MULTIVERSUM.html#ueber-mich" data-world="multiversum" data-world-link="multiversum" data-go="about" data-target="#ueber-mich" data-chapter="about">
               <div class="subpage-card__media">
-                <img src="assets/multiversum-ueber-mich.png" alt="MULTIVERSUM Über mich">
+                <img src="assets/multiversum-ueber-mich.webp?v=20260702assets" alt="MULTIVERSUM Über mich">
               </div>
               <span>Über mich</span>
               <small>Persönlichkeit & Kompetenz</small>
@@ -2408,7 +2421,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-2" href="../MULTIVERSUM.html#leistungen" data-world="multiversum" data-world-link="multiversum" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
               <div class="subpage-card__media">
-                <img src="assets/multiversum-leistungen.webp" alt="MULTIVERSUM Leistungen">
+                <img src="assets/multiversum-leistungen.webp?v=20260702assets" alt="MULTIVERSUM Leistungen">
               </div>
               <span>Leistungen</span>
               <small>Was ich anbiete</small>
@@ -2416,7 +2429,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-3" href="../MULTIVERSUM.html#projekte" data-world="multiversum" data-world-link="multiversum" data-go="projects" data-target="#projekte" data-chapter="projects">
               <div class="subpage-card__media">
-                <img src="assets/multiversum-projekte.webp" alt="MULTIVERSUM Projekte">
+                <img src="assets/multiversum-projekte.webp?v=20260702assets" alt="MULTIVERSUM Projekte">
               </div>
               <span>Projekte</span>
               <small>Arbeit aus allen Welten</small>
@@ -2424,7 +2437,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-4" href="../MULTIVERSUM.html#kontakt" data-world="multiversum" data-world-link="multiversum" data-go="contact" data-target="#kontakt" data-chapter="contact">
               <div class="subpage-card__media">
-                <img src="assets/multiversum-kontakt.webp" alt="MULTIVERSUM Kontakt">
+                <img src="assets/multiversum-kontakt.webp?v=20260702assets" alt="MULTIVERSUM Kontakt">
               </div>
               <span>Kontakt</span>
               <small>Nächster Schritt</small>
@@ -2448,7 +2461,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           <div class="world-subpages">
             <a class="subpage-card subpage-1" href="../NEXORA.html#ueber-mich" data-world="nexora" data-world-link="nexora" data-go="about" data-target="#ueber-mich" data-chapter="about">
               <div class="subpage-card__media">
-                <img src="assets/nexora-ueber-mich.png" alt="NEXORA Über mich">
+                <img src="assets/nexora-ueber-mich.webp?v=20260702assets" alt="NEXORA Über mich">
               </div>
               <span>Über mich</span>
               <small>Persönlichkeit & Kompetenz</small>
@@ -2456,7 +2469,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-2" href="../NEXORA.html#leistungen" data-world="nexora" data-world-link="nexora" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
               <div class="subpage-card__media">
-                <img src="assets/nexora-leistungen.webp" alt="NEXORA Leistungen">
+                <img src="assets/nexora-leistungen.webp?v=20260702assets" alt="NEXORA Leistungen">
               </div>
               <span>Leistungen</span>
               <small>Was ich anbiete</small>
@@ -2464,7 +2477,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-3" href="../NEXORA.html#projekte" data-world="nexora" data-world-link="nexora" data-go="projects" data-target="#projekte" data-chapter="projects">
               <div class="subpage-card__media">
-                <img src="assets/nexora-projekte.webp" alt="NEXORA Projekte">
+                <img src="assets/nexora-projekte.webp?v=20260702assets" alt="NEXORA Projekte">
               </div>
               <span>Projekte</span>
               <small>Arbeit aus allen Welten</small>
@@ -2472,7 +2485,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-4" href="../NEXORA.html#kontakt" data-world="nexora" data-world-link="nexora" data-go="contact" data-target="#kontakt" data-chapter="contact">
               <div class="subpage-card__media">
-                <img src="assets/nexora-kontakt.webp" alt="NEXORA Kontakt">
+                <img src="assets/nexora-kontakt.webp?v=20260702assets" alt="NEXORA Kontakt">
               </div>
               <span>Kontakt</span>
               <small>Nächster Schritt</small>
@@ -2498,7 +2511,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           <div class="world-subpages">
             <a class="subpage-card subpage-1" href="../PROFESSIONAL.html#ueber-mich" data-world="professional" data-world-link="professional" data-go="about" data-target="#ueber-mich" data-chapter="about">
               <div class="subpage-card__media">
-                <img src="assets/professional-ueber-mich.png" alt="PROFESSIONAL Über mich">
+                <img src="assets/professional-ueber-mich.webp?v=20260702assets" alt="PROFESSIONAL Über mich">
               </div>
               <span>Über mich</span>
               <small>Persönlichkeit & Kompetenz</small>
@@ -2506,7 +2519,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-2" href="../PROFESSIONAL.html#leistungen" data-world="professional" data-world-link="professional" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
               <div class="subpage-card__media">
-                <img src="assets/professional-leistungen.webp" alt="PROFESSIONAL Leistungen">
+                <img src="assets/professional-leistungen.webp?v=20260702assets" alt="PROFESSIONAL Leistungen">
               </div>
               <span>Leistungen</span>
               <small>Was ich anbiete</small>
@@ -2514,7 +2527,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-3" href="../PROFESSIONAL.html#projekte" data-world="professional" data-world-link="professional" data-go="projects" data-target="#projekte" data-chapter="projects">
               <div class="subpage-card__media">
-                <img src="assets/professional-projekte.webp" alt="PROFESSIONAL Projekte">
+                <img src="assets/professional-projekte.webp?v=20260702assets" alt="PROFESSIONAL Projekte">
               </div>
               <span>Projekte</span>
               <small>Arbeit aus allen Welten</small>
@@ -2522,7 +2535,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-4" href="../PROFESSIONAL.html#kontakt" data-world="professional" data-world-link="professional" data-go="contact" data-target="#kontakt" data-chapter="contact">
               <div class="subpage-card__media">
-                <img src="assets/professional-kontakt.webp" alt="PROFESSIONAL Kontakt">
+                <img src="assets/professional-kontakt.webp?v=20260702assets" alt="PROFESSIONAL Kontakt">
               </div>
               <span>Kontakt</span>
               <small>Nächster Schritt</small>
@@ -2541,14 +2554,14 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
         <article class="world-panel" data-world="freiraum" style="--a:#FFBA68;--b:#FF649C;--c:#FFE2A0;--world-font:'Syne', sans-serif;--world-x:75.0%;--world-y:69.0%;--box-x:30%;--box-y:32%;">
           <div class="world-main-visual">
-            <a class="world-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img class="world-sphere-img" src="assets/world-freiraum.png?v=20260702spheres" alt="FREIRAUM Hauptwelt"></a>
+            <a class="world-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img class="world-sphere-img" src="assets/world-freiraum.png?v=20260702assets" alt="FREIRAUM Hauptwelt"></a>
             <div class="world-detail-label">FREIRAUM</div>
           </div>
 
           <div class="world-subpages">
             <a class="subpage-card subpage-1" href="../FREIRAUM.html#ueber-mich" data-world="freiraum" data-world-link="freiraum" data-go="about" data-target="#ueber-mich" data-chapter="about">
               <div class="subpage-card__media">
-                <img src="assets/freiraum-ueber-mich.png" alt="FREIRAUM Über mich">
+                <img src="assets/freiraum-ueber-mich.webp?v=20260702assets" alt="FREIRAUM Über mich">
               </div>
               <span>Über mich</span>
               <small>Persönlichkeit & Kompetenz</small>
@@ -2556,7 +2569,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-2" href="../FREIRAUM.html#leistungen" data-world="freiraum" data-world-link="freiraum" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
               <div class="subpage-card__media">
-                <img src="assets/freiraum-leistungen.webp" alt="FREIRAUM Leistungen">
+                <img src="assets/freiraum-leistungen.webp?v=20260702assets" alt="FREIRAUM Leistungen">
               </div>
               <span>Leistungen</span>
               <small>Was ich anbiete</small>
@@ -2564,7 +2577,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-3" href="../FREIRAUM.html#projekte" data-world="freiraum" data-world-link="freiraum" data-go="projects" data-target="#projekte" data-chapter="projects">
               <div class="subpage-card__media">
-                <img src="assets/freiraum-projekte.webp" alt="FREIRAUM Projekte">
+                <img src="assets/freiraum-projekte.webp?v=20260702assets" alt="FREIRAUM Projekte">
               </div>
               <span>Projekte</span>
               <small>Arbeit aus allen Welten</small>
@@ -2572,7 +2585,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
             <a class="subpage-card subpage-4" href="../FREIRAUM.html#kontakt" data-world="freiraum" data-world-link="freiraum" data-go="contact" data-target="#kontakt" data-chapter="contact">
               <div class="subpage-card__media">
-                <img src="assets/freiraum-kontakt.webp" alt="FREIRAUM Kontakt">
+                <img src="assets/freiraum-kontakt.webp?v=20260702assets" alt="FREIRAUM Kontakt">
               </div>
               <span>Kontakt</span>
               <small>Nächster Schritt</small>
@@ -2601,7 +2614,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         <nav class="final-buttons" aria-label="Welten Navigation">
           
           <a href="../MULTIVERSUM.html" style="--btn-a:#9B64FF;--btn-b:#60DCFF;--world-font:'Space Grotesk', sans-serif;">
-            <img src="assets/world-multiversum.png?v=20260702spheres" alt="MULTIVERSUM">
+            <img src="assets/world-multiversum.png?v=20260702assets" alt="MULTIVERSUM">
             <span>MULTIVERSUM</span>
           </a>
 
@@ -2616,31 +2629,31 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           </a>
 
           <a href="../FREIRAUM.html" style="--btn-a:#FFBA68;--btn-b:#FF649C;--world-font:'Syne', sans-serif;">
-            <img src="assets/world-freiraum.png?v=20260702spheres" alt="FREIRAUM">
+            <img src="assets/world-freiraum.png?v=20260702assets" alt="FREIRAUM">
             <span>FREIRAUM</span>
           </a>
         </nav>
         <nav class="next-final-buttons" aria-label="Nächste Schritte Navigation">
           <a class="dock-card" href="../MULTIVERSUM.html#projekte" data-world="multiversum" data-world-link="multiversum" data-go="projects" data-target="#projekte">
-            <img src="assets/multiversum-projekte.webp" alt="Projekte">
+            <img src="assets/multiversum-projekte.webp?v=20260702assets" alt="Projekte">
             <strong>Projekte</strong>
             <small>Arbeit aus allen Welten</small>
           </a>
 
           <a class="dock-card" href="../MULTIVERSUM.html#leistungen" data-world="multiversum" data-world-link="multiversum" data-go="leistungen" data-target="#leistungen">
-            <img src="assets/multiversum-leistungen.webp" alt="Leistungen">
+            <img src="assets/multiversum-leistungen.webp?v=20260702assets" alt="Leistungen">
             <strong>Leistungen</strong>
             <small>Was ich anbiete</small>
           </a>
 
           <a class="dock-card" href="../MULTIVERSUM.html#ueber-mich" data-world="multiversum" data-world-link="multiversum" data-go="about" data-target="#ueber-mich">
-            <img src="assets/multiversum-ueber-mich.png" alt="Über mich">
+            <img src="assets/multiversum-ueber-mich.webp?v=20260702assets" alt="Über mich">
             <strong>Über mich</strong>
             <small>Persönlichkeit & Kompetenz</small>
           </a>
 
           <a class="dock-card" href="../MULTIVERSUM.html#kontakt" data-world="multiversum" data-world-link="multiversum" data-go="contact" data-target="#kontakt">
-            <img src="assets/multiversum-kontakt.webp" alt="Kontakt">
+            <img src="assets/multiversum-kontakt.webp?v=20260702assets" alt="Kontakt">
             <strong>Kontakt</strong>
             <small>Nächster Schritt</small>
           </a>
@@ -2675,7 +2688,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           </div>
         </div>
         <figure class="galaxy-below-portrait" aria-label="Alex Lamberti">
-          <img src="assets/multiversum-ueber-mich.png" alt="Alex Lamberti" width="800" height="1000" decoding="async" />
+          <img src="assets/multiversum-ueber-mich.webp?v=20260702assets" alt="Alex Lamberti" width="800" height="1000" decoding="async" />
         </figure>
       </section>
       <nav class="galaxy-below-chapters" aria-label="Kapitel">
@@ -2697,9 +2710,9 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
       const root = document.documentElement;
 
       const referenceImage = new Image();
-      referenceImage.src = "assets/cinematic-galaxy-reference.png";
+      referenceImage.src = "assets/cinematic-galaxy-reference.png?v=20260702assets";
 
-      const worlds = [{"key":"freiraum","name":"FREIRAUM","font":"Syne","position":"rechts unten","accentA":"#FFBA68","accentB":"#FF649C","accentC":"#FFE2A0","route":{"x":0.75,"y":0.69,"z":2.08},"eyebrow":"FREIRAUM","title":"Was ist FREIRAUM?","text":"Die Kreativ-Welt für Identität, Emotion und visuelle Freiheit — Design, Kampagnen und Inhalte mit Charakter. Wenn Marken und Projekte Persönlichkeit, Tiefe und ein unverwechselbares Gefühl brauchen — mutig, expressiv, menschlich.","buttonText":"Welt öffnen","assets":{"sphere":"world-freiraum.png","ueber":"freiraum-ueber-mich.png","leistungen":"freiraum-leistungen.webp","projekte":"freiraum-projekte.webp","kontakt":"freiraum-kontakt.webp"}},{"key":"nexora","name":"NEXORA","font":"Orbitron","position":"links oben","accentA":"#347DFF","accentB":"#00F2FF","accentC":"#704EFF","route":{"x":0.22,"y":0.25,"z":2.12},"eyebrow":"NEXORA","title":"Was ist NEXORA?","text":"Die Technologie-Welt für Systeme, Performance und smarte digitale Lösungen — Web, Automatisierung und technische Klarheit. Wenn Projekte technisch anspruchsvoll sind: skalierbare Strukturen, präzise Umsetzung und messbare digitale Wirkung.","buttonText":"Welt öffnen","assets":{"sphere":"world-nexora.png","ueber":"nexora-ueber-mich.png","leistungen":"nexora-leistungen.webp","projekte":"nexora-projekte.webp","kontakt":"nexora-kontakt.webp"}},{"key":"professional","name":"PROFESSIONAL","font":"Manrope","position":"rechts oben","accentA":"#E6F4FF","accentB":"#7EBEFF","accentC":"#B8C4D6","route":{"x":0.73,"y":0.26,"z":2.08},"eyebrow":"PROFESSIONAL","title":"Was ist PROFESSIONAL?","text":"Die Business-Welt für Auftritt, Vertrauen und professionelle Markenführung — strukturiert, seriös und überzeugend. Für Unternehmen und Persönlichkeiten, die Klarheit, Glaubwürdigkeit und einen hochwertigen professionellen Eindruck brauchen.","buttonText":"Welt öffnen","assets":{"sphere":"world-professional.png","ueber":"professional-ueber-mich.png","leistungen":"professional-leistungen.webp","projekte":"professional-projekte.webp","kontakt":"professional-kontakt.webp"}},{"key":"multiversum","name":"MULTIVERSUM","font":"Space Grotesk","position":"unten links","accentA":"#9B64FF","accentB":"#60DCFF","accentC":"#FFC973","route":{"x":0.23,"y":0.69,"z":2.16},"eyebrow":"MULTIVERSUM","title":"Was ist MULTIVERSUM?","text":"Die Übersichtswelt und das verbindende Portfolio-Universum. Hier sehen Sie das Gesamtbild, bevor die Reise in die einzelnen Spezialwelten geht. Als Meta-Ebene: Strategie, Persönlichkeit und die passende Wirkung je nach Projekt — analytisch, klar oder emotional.","buttonText":"Zur Übersicht","assets":{"sphere":"world-multiversum.png","ueber":"multiversum-ueber-mich.png","leistungen":"multiversum-leistungen.webp","projekte":"multiversum-projekte.webp","kontakt":"multiversum-kontakt.webp"}}];
+      const worlds = [{"key":"freiraum","name":"FREIRAUM","font":"Syne","position":"rechts unten","accentA":"#FFBA68","accentB":"#FF649C","accentC":"#FFE2A0","route":{"x":0.75,"y":0.69,"z":2.08},"eyebrow":"FREIRAUM","title":"Was ist FREIRAUM?","text":"Die Kreativ-Welt für Identität, Emotion und visuelle Freiheit — Design, Kampagnen und Inhalte mit Charakter. Wenn Marken und Projekte Persönlichkeit, Tiefe und ein unverwechselbares Gefühl brauchen — mutig, expressiv, menschlich.","buttonText":"Welt öffnen","assets":{"sphere":"world-freiraum.png","ueber":"freiraum-ueber-mich.webp","leistungen":"freiraum-leistungen.webp","projekte":"freiraum-projekte.webp","kontakt":"freiraum-kontakt.webp"}},{"key":"nexora","name":"NEXORA","font":"Orbitron","position":"links oben","accentA":"#347DFF","accentB":"#00F2FF","accentC":"#704EFF","route":{"x":0.22,"y":0.25,"z":2.12},"eyebrow":"NEXORA","title":"Was ist NEXORA?","text":"Die Technologie-Welt für Systeme, Performance und smarte digitale Lösungen — Web, Automatisierung und technische Klarheit. Wenn Projekte technisch anspruchsvoll sind: skalierbare Strukturen, präzise Umsetzung und messbare digitale Wirkung.","buttonText":"Welt öffnen","assets":{"sphere":"world-nexora.png","ueber":"nexora-ueber-mich.webp?v=20260702assets","leistungen":"nexora-leistungen.webp?v=20260702assets","projekte":"nexora-projekte.webp?v=20260702assets","kontakt":"nexora-kontakt.webp?v=20260702assets"}},{"key":"professional","name":"PROFESSIONAL","font":"Manrope","position":"rechts oben","accentA":"#E6F4FF","accentB":"#7EBEFF","accentC":"#B8C4D6","route":{"x":0.73,"y":0.26,"z":2.08},"eyebrow":"PROFESSIONAL","title":"Was ist PROFESSIONAL?","text":"Die Business-Welt für Auftritt, Vertrauen und professionelle Markenführung — strukturiert, seriös und überzeugend. Für Unternehmen und Persönlichkeiten, die Klarheit, Glaubwürdigkeit und einen hochwertigen professionellen Eindruck brauchen.","buttonText":"Welt öffnen","assets":{"sphere":"world-professional.png","ueber":"professional-ueber-mich.webp?v=20260702assets","leistungen":"professional-leistungen.webp?v=20260702assets","projekte":"professional-projekte.webp?v=20260702assets","kontakt":"professional-kontakt.webp?v=20260702assets"}},{"key":"multiversum","name":"MULTIVERSUM","font":"Space Grotesk","position":"unten links","accentA":"#9B64FF","accentB":"#60DCFF","accentC":"#FFC973","route":{"x":0.23,"y":0.69,"z":2.16},"eyebrow":"MULTIVERSUM","title":"Was ist MULTIVERSUM?","text":"Die Übersichtswelt und das verbindende Portfolio-Universum. Hier sehen Sie das Gesamtbild, bevor die Reise in die einzelnen Spezialwelten geht. Als Meta-Ebene: Strategie, Persönlichkeit und die passende Wirkung je nach Projekt — analytisch, klar oder emotional.","buttonText":"Zur Übersicht","assets":{"sphere":"world-multiversum.png","ueber":"multiversum-ueber-mich.webp?v=20260702assets","leistungen":"multiversum-leistungen.webp?v=20260702assets","projekte":"multiversum-projekte.webp?v=20260702assets","kontakt":"multiversum-kontakt.webp?v=20260702assets"}}];
 
       const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
       const lerp = (a, b, t) => a + (b - a) * t;
@@ -2730,7 +2743,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
       };
 
       const stages = [
-        { name: "intro", start: 0.00, end: 0.12, camera: { x: .50, y: .50, z: 1.34 } },
+        { name: "intro", start: 0.00, end: 0.12, camera: { x: .50, y: .50, z: 1.02 } },
         { name: "overview", start: 0.12, end: 0.24, camera: { x: .50, y: .50, z: 1.12 } },
         { name: "multiversum", start: 0.24, end: 0.40, world: 3, camera: worlds[3].route },
         { name: "nexora", start: 0.40, end: 0.56, world: 1, camera: worlds[1].route },
@@ -2960,8 +2973,9 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         const dy = height / 2 - sy * scale;
 
         ctx.save();
-        ctx.globalAlpha = .70;
-        ctx.filter = "saturate(1.18) contrast(1.08)";
+        const introBoost = clamp(1 - p / 0.14, 0, 1);
+        ctx.globalAlpha = lerp(0.72, 1.0, introBoost);
+        ctx.filter = introBoost > 0.35 ? "none" : "saturate(1.18) contrast(1.08)";
         ctx.drawImage(referenceImage, dx, dy, imgW * scale, imgH * scale);
         ctx.filter = "none";
         ctx.restore();
@@ -2972,6 +2986,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         const b = hexRgbString(accent.b);
         const c = hexRgbString(accent.c);
         const focal = width < 740 ? 485 : 680;
+        const introDim = 1 - clamp(1 - p / 0.14, 0, 1) * 0.9;
 
         ctx.globalCompositeOperation = "lighter";
 
@@ -2980,7 +2995,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           if (pr.x < -80 || pr.x > width + 80 || pr.y < -80 || pr.y > height + 80) continue;
 
           const size = star.size * clamp(pr.scale * 1.45, .12, 2.36);
-          const alpha = star.alpha * clamp(pr.scale * 1.05, .05, .86);
+          const alpha = star.alpha * clamp(pr.scale * 1.05, .05, .86) * introDim;
           const color = star.hue === 0 ? a : star.hue === 1 ? b : star.hue === 2 ? c : "255,255,255";
 
           if (size > 1.4) radialGlow(pr.x, pr.y, size * 6.5, color, alpha * .15);
@@ -2996,6 +3011,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         const b = hexRgbString(accent.b);
         const c = hexRgbString(accent.c);
         const focal = width < 740 ? 485 : 680;
+        const introDim = 1 - clamp(1 - p / 0.14, 0, 1) * 0.92;
 
         ctx.globalCompositeOperation = "lighter";
 
@@ -3005,7 +3021,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
           const size = item.size * pr.scale;
           const len = item.len * pr.scale;
-          const alpha = item.alpha * clamp(pr.scale * 1.55, .07, .98);
+          const alpha = item.alpha * clamp(pr.scale * 1.55, .07, .98) * introDim;
           const rot = item.rot + time * .00022 + p * 2;
 
           ctx.save();
@@ -3040,7 +3056,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
           const len = comet.len * pr.scale;
           const w = comet.w * pr.scale;
-          const alpha = comet.alpha * clamp(pr.scale * 1.22, .08, .86);
+          const alpha = comet.alpha * clamp(pr.scale * 1.22, .08, .86) * introDim;
           const color = comet.type === 0 ? c : comet.type === 1 ? b : a;
 
           ctx.save();
@@ -3164,6 +3180,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         const stage = stages[idx];
 
         root.style.setProperty("--progress", p.toFixed(5));
+        root.style.setProperty("--start-poster-opacity", clamp(1 - p / 0.06, 0, 1).toFixed(4));
         root.style.setProperty("--accent-a", accent.a);
         root.style.setProperty("--accent-b", accent.b);
         root.style.setProperty("--accent-c", accent.c);
