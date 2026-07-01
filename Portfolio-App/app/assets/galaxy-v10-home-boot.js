@@ -37,6 +37,7 @@
     stage.parentNode.insertBefore(host, stage);
     stage.classList.add("mv-dna-hidden");
     stage.setAttribute("hidden", "hidden");
+    document.body.classList.add("galaxy-v10-home-active");
   }
 
   function onReleaseScroll() {
@@ -58,6 +59,7 @@
   /* Flag sofort setzen — defer-Skripte (Parallax) laufen vor DOMContentLoaded */
   if (shouldUseGalaxy()) {
     window.__galaxyV10HomeActive = true;
+    document.body.classList.add("galaxy-v10-home-active");
   }
 
   mountGalaxy();

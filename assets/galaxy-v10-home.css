@@ -4,7 +4,7 @@
   min-height: min(100svh, 920px);
   position: relative;
   z-index: 3;
-  background: #02030b;
+  background: #02030b url("../galaxy-v10/assets/cinematic-galaxy-reference.png") center center / cover no-repeat;
 }
 
 .galaxy-v10-home-frame {
@@ -21,11 +21,38 @@
   display: none !important;
 }
 
-/* Laptop: Galaxy-Host an kürzere Viewport-Höhe anpassen (27"+ unberührt) */
+/* Kein Flash der alten MULTIVERSUM-Hintergründe während Galaxy lädt */
+body.galaxy-v10-home-active .bg-root,
+body.galaxy-v10-home-active .bg-grid,
+body.galaxy-v10-home-active #particle-canvas,
+body.galaxy-v10-home-active .light-beams {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Laptop: Galaxy-Host + Seiten-Navigation */
 @media (min-width: 1100px) and (max-width: 1919px) {
   .galaxy-v10-home-host {
     min-height: 0;
     height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
+  }
+
+  body.galaxy-v10-home-active .experience-rail {
+    right: max(34px, env(safe-area-inset-right)) !important;
+    transform: translateY(-50%) scale(0.8);
+    transform-origin: right center;
+    gap: 11px !important;
+  }
+
+  body.galaxy-v10-home-active .experience-step {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  body.galaxy-v10-home-active .experience-step::after {
+    font-size: 0.6rem !important;
+    right: 28px !important;
   }
 }
 
@@ -33,5 +60,10 @@
   .galaxy-v10-home-host {
     height: calc(100svh - var(--header-h, 90px));
     min-height: calc(100svh - var(--header-h, 90px));
+  }
+
+  body.galaxy-v10-home-active .experience-rail {
+    right: max(30px, env(safe-area-inset-right)) !important;
+    transform: translateY(-50%) scale(0.74);
   }
 }

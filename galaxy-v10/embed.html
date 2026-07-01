@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preload" as="image" href="assets/cinematic-galaxy-reference.png" fetchpriority="high" />
   <title>Alex Lamberti · MULTIVERSUM Galaxy</title>
 
   <!--
@@ -53,6 +54,7 @@
       overflow: hidden;
       isolation: isolate;
       background:
+        url("assets/cinematic-galaxy-reference.png") center center / cover no-repeat,
         radial-gradient(circle at 50% 50%, rgba(255,255,255,.045), transparent 13%),
         linear-gradient(180deg, #03040f 0%, #01020a 52%, #070514 100%);
       cursor: ns-resize;
@@ -2336,7 +2338,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
   </style>
 
-  <link rel="stylesheet" href="galaxy-v10-laptop.css?v=20260702gv10-laptop" />
+  <link rel="stylesheet" href="galaxy-v10-laptop.css?v=20260702gv10-laptop2" />
   <link rel="stylesheet" href="../assets/welten-world-switch-preview.css" />
   <script src="../assets/welten-world-switch-freiraum-brush-v3.js" defer></script>
   <script src="../assets/welten-world-switch-preview.js" defer></script>
@@ -2702,6 +2704,24 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
       const referenceImage = new Image();
       referenceImage.src = "assets/cinematic-galaxy-reference.png";
+      referenceImage.decoding = "async";
+
+      function getViewportFit() {
+        const w = innerWidth;
+        if (w >= 1920 || w < 1100) return 1;
+        return 0.72 + ((w - 1100) / (1920 - 1100)) * 0.28;
+      }
+
+      function getViewportCenterBias() {
+        const w = innerWidth;
+        if (w >= 1920 || w < 1100) return 0;
+        return (1 - getViewportFit()) * 0.62;
+      }
+
+      let referenceReady = false;
+      referenceImage.addEventListener("load", function () {
+        referenceReady = true;
+      });
 
       const worlds = [{"key": "multiversum", "name": "MULTIVERSUM", "font": "Space Grotesk", "position": "unten links", "accentA": "#9B64FF", "accentB": "#60DCFF", "accentC": "#FFC973", "route": {"x": 0.23, "y": 0.69, "z": 2.08}, "eyebrow": "MULTIVERSUM", "title": "Was ist MULTIVERSUM?", "text": "Die Übersichtswelt und das verbindende Portfolio-Universum. Hier sehen Sie das Gesamtbild, bevor die Reise in die einzelnen Spezialwelten geht. Als Meta-Ebene: Strategie, Persönlichkeit und die passende Wirkung je nach Projekt — analytisch, klar oder emotional.", "buttonText": "Zur Übersicht", "assets": {"sphere": "world-multiversum.png", "ueber": "multiversum-ueber-mich.png", "leistungen": "multiversum-leistungen.webp", "projekte": "multiversum-projekte.webp", "kontakt": "multiversum-kontakt.webp"}}, {"key": "nexora", "name": "NEXORA", "font": "Orbitron", "position": "links oben", "accentA": "#347DFF", "accentB": "#00F2FF", "accentC": "#704EFF", "route": {"x": 0.22, "y": 0.25, "z": 2.12}, "eyebrow": "NEXORA", "title": "Was ist NEXORA?", "text": "Die Technologie-Welt für Systeme, Performance und smarte digitale Lösungen — Web, Automatisierung und technische Klarheit. Wenn Projekte technisch anspruchsvoll sind: skalierbare Strukturen, präzise Umsetzung und messbare digitale Wirkung.", "buttonText": "Welt öffnen", "assets": {"sphere": "world-nexora.png", "ueber": "nexora-ueber-mich.png", "leistungen": "nexora-leistungen.webp", "projekte": "nexora-projekte.webp", "kontakt": "nexora-kontakt.webp"}}, {"key": "professional", "name": "PROFESSIONAL", "font": "Manrope", "position": "rechts oben", "accentA": "#E6F4FF", "accentB": "#7EBEFF", "accentC": "#B8C4D6", "route": {"x": 0.73, "y": 0.26, "z": 2.08}, "eyebrow": "PROFESSIONAL", "title": "Was ist PROFESSIONAL?", "text": "Die Business-Welt für Auftritt, Vertrauen und professionelle Markenführung — strukturiert, seriös und überzeugend. Für Unternehmen und Persönlichkeiten, die Klarheit, Glaubwürdigkeit und einen hochwertigen professionellen Eindruck brauchen.", "buttonText": "Welt öffnen", "assets": {"sphere": "world-professional.png", "ueber": "professional-ueber-mich.png", "leistungen": "professional-leistungen.webp", "projekte": "professional-projekte.webp", "kontakt": "professional-kontakt.webp"}}, {"key": "freiraum", "name": "FREIRAUM", "font": "Syne", "position": "rechts unten", "accentA": "#FFBA68", "accentB": "#FF649C", "accentC": "#FFE2A0", "route": {"x": 0.75, "y": 0.69, "z": 2.16}, "eyebrow": "FREIRAUM", "title": "Was ist FREIRAUM?", "text": "Die Kreativ-Welt für Identität, Emotion und visuelle Freiheit — Design, Kampagnen und Inhalte mit Charakter. Wenn Marken und Projekte Persönlichkeit, Tiefe und ein unverwechselbares Gefühl brauchen — mutig, expressiv, menschlich.", "buttonText": "Welt öffnen", "assets": {"sphere": "world-freiraum.png", "ueber": "freiraum-ueber-mich.png", "leistungen": "freiraum-leistungen.webp", "projekte": "freiraum-projekte.webp", "kontakt": "freiraum-kontakt.webp"}}];
 
@@ -2953,13 +2973,19 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
       function drawReference(p, camera) {
         if (!referenceImage.complete || !referenceImage.naturalWidth) return;
 
+        const fit = getViewportFit();
+        const bias = getViewportCenterBias();
+        const camX = lerp(0.5, camera.x, 1 - bias);
+        const camY = lerp(0.5, camera.y, 1 - bias);
+        const camZ = camera.z * fit;
+
         const imgW = referenceImage.naturalWidth;
         const imgH = referenceImage.naturalHeight;
         const base = Math.max(width / imgW, height / imgH);
-        const scale = base * camera.z * (1 + (p % .14) * .10);
+        const scale = base * camZ * (1 + (p % .14) * .10);
 
-        const sx = camera.x * imgW;
-        const sy = camera.y * imgH;
+        const sx = camX * imgW;
+        const sy = camY * imgH;
         const dx = width / 2 - sx * scale;
         const dy = height / 2 - sy * scale;
 
@@ -3235,10 +3261,6 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         const cameraZ = p * CAMERA_TRAVEL + time * 4.8;
 
         ctx.clearRect(0, 0, width, height);
-
-        const bg = hexToRgb(accent.a);
-        ctx.fillStyle = `rgb(${Math.round(bg[0] * .035)}, ${Math.round(bg[1] * .035)}, ${Math.round(bg[2] * .055 + 9)})`;
-        ctx.fillRect(0, 0, width, height);
 
         drawReference(p, camera);
         drawStars(p, cameraZ, accent);
