@@ -2166,6 +2166,7 @@
   }
 
   function buildParallaxHero(goChapter) {
+    if (window.__galaxyV10HomeActive) return null;
     if (document.getElementById("mvParallaxHero") || document.body.getAttribute("data-world") !== "general") return null;
     if (!isDesktopParallaxHero()) return null;
     if (!window.MVSceneConfig || !window.MVSceneConfig.keyframes) return null;

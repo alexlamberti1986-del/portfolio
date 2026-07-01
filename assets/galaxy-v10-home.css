@@ -1,0 +1,22 @@
+.galaxy-v10-home-host {
+  width: 100%;
+  height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
+  min-height: min(100svh, 920px);
+  position: relative;
+  z-index: 3;
+  background: #02030b;
+}
+
+.galaxy-v10-home-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #02030b;
+}
+
+#dnaStage.mv-dna-hidden {
+  display: none !important;
+}
