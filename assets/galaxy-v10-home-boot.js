@@ -12,15 +12,16 @@
     }
   }
 
+  function shouldUseGalaxy() {
+    return document.body.getAttribute("data-world") === "general" && isDesktop();
+  }
+
   function mountGalaxy() {
-    if (document.body.getAttribute("data-world") !== "general") return;
-    if (!isDesktop()) return;
+    if (!shouldUseGalaxy()) return;
     if (document.getElementById("galaxyV10HomeHost")) return;
 
     var stage = document.getElementById("dnaStage");
     if (!stage) return;
-
-    window.__galaxyV10HomeActive = true;
 
     var host = document.createElement("div");
     host.className = "galaxy-v10-home-host";
@@ -54,9 +55,13 @@
     onReleaseScroll();
   });
 
+  /* Flag sofort setzen — defer-Skripte (Parallax) laufen vor DOMContentLoaded */
+  if (shouldUseGalaxy()) {
+    window.__galaxyV10HomeActive = true;
+  }
+
+  mountGalaxy();
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mountGalaxy);
-  } else {
-    mountGalaxy();
   }
 })();

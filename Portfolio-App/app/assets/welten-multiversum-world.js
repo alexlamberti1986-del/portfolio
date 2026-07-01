@@ -102,6 +102,7 @@
   }
 
   function buildHero() {
+    if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return;
     if (document.getElementById("mvParallaxHero") || document.getElementById("mvStaticHero")) return;
     if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
       var built = window.MVParallaxHero.build(goChapter);
