@@ -630,7 +630,7 @@
   --world-x: 30% !important;
   --world-y: 32% !important;
   --box-x: 70% !important;
-  --box-y: 70% !important;
+  --box-y: 62% !important;
 }
 
 .world-panel[data-world="professional"] {
@@ -1273,6 +1273,8 @@
   cursor: pointer;
   border-radius: 999px;
   overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.35s var(--live-ease), box-shadow 0.35s var(--live-ease) !important;
 }
 
 .overview-sphere-link img,
@@ -1382,17 +1384,35 @@
 .world-panel .subpage-card {
   transform: translate(-50%, -50%) !important;
 }
-.world-panel .subpage-card:hover {
-  transform: translate(-50%, -50%) translateY(-8px) scale(1.02) !important;
-  border-color: rgba(255, 255, 255, 0.34) !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42), 0 0 56px rgba(120, 185, 255, 0.18) !important;
+
+/* Einheitlicher Hover: ganze Karte (Bild + Titel) — Zoom + leichter Rahmen-Glow */
+.world-panel .subpage-card span,
+.world-panel .subpage-card small,
+.next-final-buttons a.dock-card strong,
+.next-final-buttons a.dock-card small,
+.final-buttons a span {
+  pointer-events: none !important;
 }
 
-/* Einheitlicher Bild-Zoom für alle Unterseiten */
+.world-panel .subpage-card:hover,
+.next-final-buttons a.dock-card:hover,
+.final-buttons a:hover,
+.overview-sphere-link:hover,
+.world-sphere-link:hover {
+  border-color: rgba(200, 220, 255, 0.42) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42), 0 0 40px rgba(180, 210, 255, 0.24) !important;
+}
+
+.world-panel .subpage-card:hover {
+  transform: translate(-50%, -50%) translateY(-8px) scale(1.02) !important;
+}
+
 .world-panel .subpage-card:hover .subpage-card__media img,
 .world-panel .subpage-card:hover > img,
+.next-final-buttons a.dock-card:hover img,
 .final-buttons a:hover img,
-.next-final-buttons a:hover img {
+.overview-sphere-link:hover img,
+.world-sphere-link:hover .world-sphere-img {
   transform: scale(1.18) !important;
   filter: brightness(1.12) saturate(1.08) !important;
 }
@@ -1448,6 +1468,7 @@
 /* Multiversum — Farbverlauf wie Live-Seite (Brand-Mark) */
 .overview-card[data-world="multiversum"] .overview-label strong,
 .world-panel[data-world="multiversum"] .world-detail-label,
+.world-panel[data-world="multiversum"] .world-explainer-textbox h2,
 .final-buttons a[href*="MULTIVERSUM"] span,
 .final-textbox h2 {
   background: linear-gradient(90deg, #5ec4ff, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a) !important;
@@ -1457,14 +1478,6 @@
   -webkit-text-fill-color: transparent !important;
   text-shadow: none !important;
   filter: drop-shadow(0 0 16px rgba(255, 89, 178, 0.18)) drop-shadow(0 0 28px rgba(94, 196, 255, 0.12)) !important;
-}
-
-.world-panel[data-world="multiversum"] .world-explainer-textbox h2 {
-  color: #eef3ff !important;
-  text-shadow: 0 0 24px rgba(255, 89, 178, 0.14) !important;
-  filter: none !important;
-  background: none !important;
-  -webkit-text-fill-color: #eef3ff !important;
 }
 
 .overview-card[data-world="nexora"] .overview-label strong,
@@ -1552,8 +1565,6 @@
 .next-final-buttons a.dock-card:hover {
   opacity: 1 !important;
   transform: translateZ(26px) rotateX(4deg) scale(1.06) !important;
-  border-color: rgba(142, 197, 255, 0.55) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 24px rgba(120, 185, 255, 0.22) !important;
 }
 
 @media (max-width: 860px) {
@@ -1601,7 +1612,7 @@
 
 .world-panel[data-world="nexora"] {
   --box-x: 72% !important;
-  --box-y: 66% !important;
+  --box-y: 58% !important;
 }
 
 .world-panel[data-world="professional"] {
@@ -2343,7 +2354,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           </div>
         <article class="overview-card" data-world="multiversum" style="--a:#9B64FF;--b:#60DCFF;--c:#FFC973;--world-font:'Space Grotesk', sans-serif;">
           <div class="overview-glow"></div>
-          <a class="overview-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img src="assets/world-multiversum.png" alt="MULTIVERSUM Welt" loading="eager"></a>
+          <a class="overview-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img src="assets/world-multiversum.png?v=20260702spheres" alt="MULTIVERSUM Welt" loading="eager"></a>
           <div class="overview-label">
             <span>unten links</span>
             <strong>MULTIVERSUM</strong>
@@ -2370,7 +2381,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
         <article class="overview-card" data-world="freiraum" style="--a:#FFBA68;--b:#FF649C;--c:#FFE2A0;--world-font:'Syne', sans-serif;">
           <div class="overview-glow"></div>
-          <a class="overview-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img src="assets/world-freiraum.png" alt="FREIRAUM Welt" loading="eager"></a>
+          <a class="overview-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img src="assets/world-freiraum.png?v=20260702spheres" alt="FREIRAUM Welt" loading="eager"></a>
           <div class="overview-label">
             <span>rechts unten</span>
             <strong>FREIRAUM</strong>
@@ -2382,7 +2393,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         
         <article class="world-panel" data-world="multiversum" style="--a:#9B64FF;--b:#60DCFF;--c:#FFC973;--world-font:'Space Grotesk', sans-serif;--world-x:23.0%;--world-y:69.0%;--box-x:70%;--box-y:32%;">
           <div class="world-main-visual">
-            <a class="world-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img class="world-sphere-img" src="assets/world-multiversum.png" alt="MULTIVERSUM Hauptwelt"></a>
+            <a class="world-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img class="world-sphere-img" src="assets/world-multiversum.png?v=20260702spheres" alt="MULTIVERSUM Hauptwelt"></a>
             <div class="world-detail-label">MULTIVERSUM</div>
           </div>
 
@@ -2428,7 +2439,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           </div>
         </article>
 
-        <article class="world-panel" data-world="nexora" style="--a:#347DFF;--b:#00F2FF;--c:#704EFF;--world-font:'Orbitron', sans-serif;--world-x:22.0%;--world-y:25.0%;--box-x:70%;--box-y:72%;">
+        <article class="world-panel" data-world="nexora" style="--a:#347DFF;--b:#00F2FF;--c:#704EFF;--world-font:'Orbitron', sans-serif;--world-x:22.0%;--world-y:25.0%;--box-x:70%;--box-y:64%;">
           <div class="world-main-visual">
             <a class="world-sphere-link" href="../NEXORA.html" aria-label="NEXORA Startseite"><img class="world-sphere-img" src="assets/world-nexora.png" alt="NEXORA Hauptwelt"></a>
             <div class="world-detail-label">NEXORA</div>
@@ -2530,7 +2541,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
 
         <article class="world-panel" data-world="freiraum" style="--a:#FFBA68;--b:#FF649C;--c:#FFE2A0;--world-font:'Syne', sans-serif;--world-x:75.0%;--world-y:69.0%;--box-x:30%;--box-y:32%;">
           <div class="world-main-visual">
-            <a class="world-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img class="world-sphere-img" src="assets/world-freiraum.png" alt="FREIRAUM Hauptwelt"></a>
+            <a class="world-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img class="world-sphere-img" src="assets/world-freiraum.png?v=20260702spheres" alt="FREIRAUM Hauptwelt"></a>
             <div class="world-detail-label">FREIRAUM</div>
           </div>
 
@@ -2590,7 +2601,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         <nav class="final-buttons" aria-label="Welten Navigation">
           
           <a href="../MULTIVERSUM.html" style="--btn-a:#9B64FF;--btn-b:#60DCFF;--world-font:'Space Grotesk', sans-serif;">
-            <img src="assets/world-multiversum.png" alt="MULTIVERSUM">
+            <img src="assets/world-multiversum.png?v=20260702spheres" alt="MULTIVERSUM">
             <span>MULTIVERSUM</span>
           </a>
 
@@ -2605,7 +2616,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
           </a>
 
           <a href="../FREIRAUM.html" style="--btn-a:#FFBA68;--btn-b:#FF649C;--world-font:'Syne', sans-serif;">
-            <img src="assets/world-freiraum.png" alt="FREIRAUM">
+            <img src="assets/world-freiraum.png?v=20260702spheres" alt="FREIRAUM">
             <span>FREIRAUM</span>
           </a>
         </nav>
