@@ -1,0 +1,3399 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alex Lamberti · Galaxy Reise Vorschau</title>
+
+  <!--
+    Variante mit echten hochgeladenen Live Assets:
+    - Galaxy Reiseeffekt und fliegende Elemente aus dem HTML
+    - Weltbilder, Unterseitenbilder und farbliche Textboxen aus den gelieferten Assets
+    - Fonts per CSS: Space Grotesk, Orbitron, Manrope, Syne, Inter
+    Hinweis: Falls die Fonts lokal in der Live Seite bereits eingebunden sind, kann der Google Import entfernt werden.
+  -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Manrope:wght@400;600;700;800&family=Orbitron:wght@500;700;800;900&family=Space+Grotesk:wght@400;600;700&family=Syne:wght@500;700;800&display=swap');
+
+    :root {
+      --progress: 0;
+      --accent-a: #9B64FF;
+      --accent-b: #60DCFF;
+      --accent-c: #FFC973;
+      --overview-opacity: 0;
+      --detail-opacity: 0;
+      --final-opacity: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #02030b;
+      color: #fff;
+      overscroll-behavior: none;
+      font-family: Inter, Manrope, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      position: fixed;
+      inset: 0;
+      touch-action: none;
+    }
+
+    .alex-live-galaxy {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.045), transparent 13%),
+        linear-gradient(180deg, #03040f 0%, #01020a 52%, #070514 100%);
+      cursor: ns-resize;
+    }
+
+    #galaxyCanvas {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+    }
+
+    .galaxy-wash {
+      position: absolute;
+      inset: -35%;
+      z-index: 2;
+      opacity: .82;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.08), transparent 0 5%, transparent 12%, color-mix(in srgb, var(--accent-b) 18%, transparent) 18%, transparent 44%),
+        radial-gradient(ellipse at 30% 35%, color-mix(in srgb, var(--accent-a) 20%, transparent), transparent 36%),
+        radial-gradient(ellipse at 75% 66%, color-mix(in srgb, var(--accent-c) 18%, transparent), transparent 40%);
+      filter: blur(28px);
+      transform: rotate(calc(var(--progress) * 72deg)) scale(calc(1 + var(--progress) * .74));
+      mix-blend-mode: screen;
+    }
+
+    .galaxy-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 50%, transparent 0 34%, rgba(0,0,0,.25) 64%, rgba(0,0,0,.94) 100%),
+        linear-gradient(90deg, rgba(0,0,0,.70), transparent 16% 84%, rgba(0,0,0,.70));
+    }
+
+    .content-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      pointer-events: none;
+    }
+
+    .content-layer a {
+      pointer-events: auto;
+    }
+
+    .overview-layer {
+      position: absolute;
+      inset: 0;
+      opacity: var(--overview-opacity);
+      transform: scale(calc(.94 + var(--overview-opacity) * .06));
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .overview-card {
+      position: absolute;
+      width: min(24vw, 310px);
+      min-width: 210px;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      filter: drop-shadow(0 28px 60px rgba(0,0,0,.55));
+    }
+
+    .overview-card[data-world="multiversum"] { left: 23%; top: 69%; }
+    .overview-card[data-world="nexora"] { left: 23%; top: 25%; }
+    .overview-card[data-world="professional"] { left: 73%; top: 26%; }
+    .overview-card[data-world="freiraum"] { left: 75%; top: 69%; }
+
+    .overview-glow {
+      position: absolute;
+      inset: 10% 3%;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--a) 44%, transparent), transparent 55%),
+        radial-gradient(circle at 58% 55%, color-mix(in srgb, var(--b) 28%, transparent), transparent 65%);
+      filter: blur(18px);
+      transform: scale(1.1);
+    }
+
+    .overview-card img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      display: block;
+      animation: floatWorld 8s ease-in-out infinite;
+    }
+
+    .overview-card:nth-child(2) img { animation-delay: -1.4s; }
+    .overview-card:nth-child(3) img { animation-delay: -2.8s; }
+    .overview-card:nth-child(4) img { animation-delay: -4.2s; }
+
+    @keyframes floatWorld {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.025); }
+    }
+
+    .overview-label {
+      position: relative;
+      z-index: 2;
+      margin-top: -6px;
+    }
+
+    .overview-label span {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 11px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.56);
+    }
+
+    .overview-label strong {
+      font-family: var(--world-font);
+      font-size: clamp(16px, 1.6vw, 24px);
+      letter-spacing: .16em;
+      text-shadow: 0 0 22px color-mix(in srgb, var(--b) 70%, transparent);
+    }
+
+    .detail-layer {
+      position: absolute;
+      inset: 0;
+      opacity: var(--detail-opacity);
+      transform: scale(calc(.96 + var(--detail-opacity) * .04));
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .world-panel {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(.96);
+      transition: opacity .36s ease, transform .36s ease;
+    }
+
+    .world-panel.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .world-main-visual {
+      position: absolute;
+      left: var(--world-x);
+      top: var(--world-y);
+      width: min(42vw, 560px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      filter:
+        drop-shadow(0 0 42px color-mix(in srgb, var(--a) 40%, transparent))
+        drop-shadow(0 26px 80px rgba(0,0,0,.58));
+    }
+
+    .world-main-visual::before {
+      content: "";
+      position: absolute;
+      inset: 6%;
+      border-radius: inherit;
+      background:
+        radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--b) 34%, transparent), transparent 62%);
+      filter: blur(30px);
+      transform: scale(1.12);
+    }
+
+    .world-sphere-img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      animation: worldBreath 9s ease-in-out infinite;
+    }
+
+    @keyframes worldBreath {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.035) rotate(1.4deg); }
+    }
+
+    .world-subpages {
+      position: absolute;
+      inset: 0;
+    }
+
+    .subpage-card {
+      position: absolute;
+      width: min(17vw, 230px);
+      min-width: 145px;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(6,8,20,.48);
+      backdrop-filter: blur(16px);
+      box-shadow:
+        0 18px 52px rgba(0,0,0,.36),
+        0 0 48px color-mix(in srgb, var(--a) 18%, transparent);
+      transform: translate(-50%, -50%);
+      transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
+    }
+
+    .subpage-card:hover {
+      transform: translate(-50%, -50%) translateY(-4px);
+      border-color: color-mix(in srgb, var(--b) 55%, rgba(255,255,255,.2));
+      box-shadow:
+        0 24px 66px rgba(0,0,0,.42),
+        0 0 70px color-mix(in srgb, var(--b) 28%, transparent);
+    }
+
+    .subpage-card img {
+      width: 100%;
+      aspect-ratio: 1.62;
+      display: block;
+      object-fit: cover;
+      opacity: .84;
+    }
+
+    .subpage-card span {
+      display: block;
+      padding: 11px 13px 3px;
+      font-family: var(--world-font);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .subpage-card small {
+      display: block;
+      padding: 0 13px 12px;
+      font-size: 11px;
+      line-height: 1.35;
+      color: rgba(255,255,255,.58);
+    }
+
+    .subpage-1 { left: calc(var(--world-x) - 24vw); top: calc(var(--world-y) - 17vh); }
+    .subpage-2 { left: calc(var(--world-x) + 24vw); top: calc(var(--world-y) - 14vh); }
+    .subpage-3 { left: calc(var(--world-x) - 22vw); top: calc(var(--world-y) + 20vh); }
+    .subpage-4 { left: calc(var(--world-x) + 23vw); top: calc(var(--world-y) + 19vh); }
+
+    .live-textbox {
+      position: absolute;
+      left: var(--box-x);
+      top: var(--box-y);
+      transform: translate(-50%, -50%);
+      width: fit-content;
+      min-width: min(340px, calc(100vw - 36px));
+      max-width: min(520px, calc(100vw - 36px));
+      height: auto;
+      min-height: 0;
+      padding: 20px 22px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 20% 15%, color-mix(in srgb, var(--a) 24%, transparent), transparent 44%),
+        linear-gradient(145deg, rgba(9,12,30,.78), rgba(9,12,30,.42));
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.52),
+        inset 0 1px 0 rgba(255,255,255,.14),
+        0 0 80px color-mix(in srgb, var(--a) 20%, transparent);
+      backdrop-filter: blur(22px);
+    }
+
+    .world-eyebrow {
+      margin: 0 0 9px;
+      color: color-mix(in srgb, var(--b) 76%, white 24%);
+      font-family: var(--world-font);
+      font-size: 11px;
+      letter-spacing: .18em;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .live-textbox h2 {
+      margin: 0 0 11px;
+      font-family: var(--world-font);
+      font-size: clamp(23px, 2.7vw, 38px);
+      line-height: 1.02;
+      letter-spacing: -.035em;
+    }
+
+    .live-textbox p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.62;
+      color: rgba(255,255,255,.75);
+    }
+
+    .world-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 11px 15px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #fff;
+      font-family: var(--world-font);
+      font-size: 11px;
+      letter-spacing: .12em;
+      font-weight: 900;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,.18);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--a) 34%, rgba(255,255,255,.06)), rgba(255,255,255,.04));
+      box-shadow: 0 14px 34px rgba(0,0,0,.25), 0 0 45px color-mix(in srgb, var(--b) 18%, transparent);
+    }
+
+    .final-layer {
+      position: absolute;
+      left: 50%;
+      top: 66%;
+      width: min(760px, calc(100vw - 36px));
+      transform: translate(-50%, -50%);
+      opacity: var(--final-opacity);
+      transition: opacity .25s ease;
+      pointer-events: none;
+    }
+
+    .final-layer.is-active {
+      pointer-events: auto;
+    }
+
+    .final-textbox {
+      width: fit-content;
+      min-width: min(340px, calc(100vw - 36px));
+      max-width: min(560px, calc(100vw - 36px));
+      margin: 0 auto 18px;
+      padding: 20px 22px;
+      border-radius: 28px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 15%, color-mix(in srgb, var(--accent-a) 24%, transparent), transparent 45%),
+        linear-gradient(145deg, rgba(9,12,30,.80), rgba(9,12,30,.42));
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 30px 80px rgba(0,0,0,.52);
+      backdrop-filter: blur(22px);
+    }
+
+    .final-textbox h2 {
+      margin: 0 0 10px;
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: clamp(26px, 3vw, 42px);
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+
+    .final-textbox p {
+      margin: 0;
+      color: rgba(255,255,255,.72);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .final-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .final-buttons a {
+      position: relative;
+      min-height: 96px;
+      overflow: hidden;
+      border-radius: 24px;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background:
+        radial-gradient(circle at 40% 26%, color-mix(in srgb, var(--btn-a) 42%, transparent), transparent 55%),
+        linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.045));
+      box-shadow: 0 20px 50px rgba(0,0,0,.32), 0 0 64px color-mix(in srgb, var(--btn-b) 18%, transparent);
+      backdrop-filter: blur(16px);
+      transition: transform .28s ease, box-shadow .28s ease;
+    }
+
+    .final-buttons a:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 68px rgba(0,0,0,.4), 0 0 84px color-mix(in srgb, var(--btn-b) 30%, transparent);
+    }
+
+    .final-buttons img {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+      transform: translateX(-50%);
+      opacity: .76;
+    }
+
+    .final-buttons span {
+      position: relative;
+      z-index: 2;
+      font-family: var(--world-font);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-align: center;
+    }
+
+    .progress-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 22px;
+      z-index: 9;
+      display: flex;
+      gap: 8px;
+      transform: translateX(-50%);
+      opacity: .72;
+      pointer-events: none;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.26);
+      box-shadow: 0 0 20px rgba(255,255,255,.25);
+    }
+
+    .dot.is-active {
+      background: var(--accent-b);
+      box-shadow: 0 0 24px var(--accent-b);
+    }
+
+    @media (max-width: 860px) {
+      .overview-card {
+        width: 38vw;
+        min-width: 138px;
+      }
+
+      .overview-card[data-world="multiversum"] { left: 27%; top: 69%; }
+      .overview-card[data-world="nexora"] { left: 27%; top: 24%; }
+      .overview-card[data-world="professional"] { left: 73%; top: 25%; }
+      .overview-card[data-world="freiraum"] { left: 70%; top: 66%; }
+
+      .overview-label strong {
+        font-size: 12px;
+        letter-spacing: .10em;
+      }
+
+      .world-main-visual {
+        width: 70vw;
+      }
+
+      .subpage-card {
+        width: 38vw;
+        min-width: 120px;
+        border-radius: 16px;
+      }
+
+      .subpage-card img {
+        aspect-ratio: 1.7;
+      }
+
+      .subpage-card span {
+        font-size: 10px;
+        padding: 8px 10px 2px;
+      }
+
+      .subpage-card small {
+        display: none;
+      }
+
+      .subpage-1 { left: 25%; top: 26%; }
+      .subpage-2 { left: 75%; top: 28%; }
+      .subpage-3 { left: 25%; top: 70%; }
+      .subpage-4 { left: 75%; top: 72%; }
+
+      .live-textbox {
+        left: 50% !important;
+        top: 80% !important;
+        padding: 17px 18px;
+      }
+
+      .final-layer {
+        top: 62%;
+      }
+
+      .final-buttons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .final-buttons a {
+        min-height: 82px;
+      }
+
+      .final-buttons img {
+        width: 58px;
+        height: 58px;
+      }
+    }
+  
+/* =========================================================
+   DigitalPlus V6 Clean Fit
+   Nur diese Anpassungen:
+   - Positions-Schriftzüge in der Vier-Welten-Übersicht ausblenden
+   - Welten und Unterseitenbilder proportional verkleinern
+   - Elemente von den Rändern wegziehen, damit nichts abgeschnitten wird
+   ========================================================= */
+
+.overview-label span {
+  display: none !important;
+}
+
+.overview-card {
+  width: min(21vw, 270px) !important;
+  min-width: 175px !important;
+}
+
+.world-main-visual {
+  width: min(32vw, 430px) !important;
+}
+
+.subpage-card {
+  width: min(12.5vw, 165px) !important;
+  min-width: 108px !important;
+  border-radius: 18px !important;
+}
+
+.subpage-card span {
+  padding: 8px 10px 2px !important;
+  font-size: 10px !important;
+  letter-spacing: .09em !important;
+}
+
+.subpage-card small {
+  padding: 0 10px 9px !important;
+  font-size: 10px !important;
+}
+
+/* Karten näher zur Welt */
+.subpage-1 {
+  left: calc(var(--world-x) - 13.5vw) !important;
+  top: calc(var(--world-y) - 10.5vh) !important;
+}
+
+.subpage-2 {
+  left: calc(var(--world-x) + 13.5vw) !important;
+  top: calc(var(--world-y) - 9.5vh) !important;
+}
+
+.subpage-3 {
+  left: calc(var(--world-x) - 12.8vw) !important;
+  top: calc(var(--world-y) + 12vh) !important;
+}
+
+.subpage-4 {
+  left: calc(var(--world-x) + 12.8vw) !important;
+  top: calc(var(--world-y) + 11.5vh) !important;
+}
+
+/* Ganze Eck-Welten von den Rändern Richtung Mitte ziehen */
+.world-panel[data-world="multiversum"] {
+  --world-x: 30% !important;
+  --world-y: 62% !important;
+  --box-x: 70% !important;
+  --box-y: 34% !important;
+}
+
+.world-panel[data-world="nexora"] {
+  --world-x: 30% !important;
+  --world-y: 32% !important;
+  --box-x: 70% !important;
+  --box-y: 70% !important;
+}
+
+.world-panel[data-world="professional"] {
+  --world-x: 66% !important;
+  --world-y: 33% !important;
+  --box-x: 31% !important;
+  --box-y: 58% !important;
+}
+
+.world-panel[data-world="freiraum"] {
+  --world-x: 68% !important;
+  --world-y: 62% !important;
+  --box-x: 31% !important;
+  --box-y: 40% !important;
+}
+
+/* Übersicht bleibt gleich aufgebaut, nur etwas kleiner und ohne Positionsschrift */
+@media (max-width: 860px) {
+  .overview-card {
+    width: 32vw !important;
+    min-width: 112px !important;
+  }
+
+  .world-main-visual {
+    width: 54vw !important;
+  }
+
+  .subpage-card {
+    width: 28vw !important;
+    min-width: 96px !important;
+    border-radius: 15px !important;
+  }
+
+  .subpage-1 {
+    left: 34% !important;
+    top: 29% !important;
+  }
+
+  .subpage-2 {
+    left: 66% !important;
+    top: 30% !important;
+  }
+
+  .subpage-3 {
+    left: 34% !important;
+    top: 66% !important;
+  }
+
+  .subpage-4 {
+    left: 66% !important;
+    top: 67% !important;
+  }
+
+  .live-textbox {
+    left: 50% !important;
+    top: 80% !important;
+  }
+}
+
+  
+/* =========================================================
+   DigitalPlus V8 Final Sequence
+   Reihenfolge:
+   1. Zurück im Zentrum + 4 Welt-Buttons bleiben sichtbar.
+   2. Danach erscheinen Projekte, Leistungen, Über mich, Kontakt.
+   3. Beim Weiterscrollen verschwinden diese Zusatzbuttons wieder langsam.
+   ========================================================= */
+
+:root {
+  --next-buttons-opacity: 0;
+}
+
+.final-layer {
+  top: 61% !important;
+}
+
+.final-buttons {
+  margin-bottom: 16px !important;
+}
+
+/* Zusatzbuttons erscheinen erst nach den 4 Weltbuttons */
+.next-final-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  opacity: var(--next-buttons-opacity) !important;
+  transform: translateY(calc((1 - var(--next-buttons-opacity)) * 18px)) scale(calc(.96 + var(--next-buttons-opacity) * .04)) !important;
+  pointer-events: none !important;
+  transition: opacity .35s ease, transform .35s ease !important;
+}
+
+.final-layer.is-next-active .next-final-buttons {
+  pointer-events: auto !important;
+}
+
+.next-final-buttons a {
+  position: relative !important;
+  min-height: 96px !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  gap: 7px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  background:
+    radial-gradient(circle at 24% 18%, color-mix(in srgb, var(--btn-a) 38%, transparent), transparent 52%),
+    linear-gradient(145deg, rgba(12,15,34,.72), rgba(8,10,24,.42)) !important;
+  box-shadow:
+    0 22px 55px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 0 66px color-mix(in srgb, var(--btn-b) 18%, transparent) !important;
+  backdrop-filter: blur(18px) !important;
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease !important;
+}
+
+.next-final-buttons a::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: -36% !important;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255,255,255,.28), transparent 13%),
+    conic-gradient(from 130deg, transparent, color-mix(in srgb, var(--btn-b) 24%, transparent), transparent 42%) !important;
+  opacity: .42 !important;
+  mix-blend-mode: screen !important;
+}
+
+.next-final-buttons a:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(255,255,255,.34) !important;
+  box-shadow:
+    0 28px 72px rgba(0,0,0,.42),
+    0 0 90px color-mix(in srgb, var(--btn-b) 30%, transparent) !important;
+}
+
+.next-final-buttons strong,
+.next-final-buttons small {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.next-final-buttons strong {
+  font-family: "Space Grotesk", Inter, sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  letter-spacing: .16em !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+
+.next-final-buttons small {
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  color: rgba(255,255,255,.66) !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 860px) {
+  .final-layer {
+    top: 58% !important;
+  }
+
+  .next-final-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .next-final-buttons a {
+    min-height: 82px !important;
+    border-radius: 20px !important;
+    padding: 13px !important;
+  }
+
+  .next-final-buttons strong {
+    font-size: 11px !important;
+    letter-spacing: .13em !important;
+  }
+
+  .next-final-buttons small {
+    font-size: 11px !important;
+  }
+}
+
+  
+/* =========================================================
+   DigitalPlus V9 Final Clean Sequence
+   - Zusatzbuttons erst nachdem Zentrum-Textbox + Weltbuttons weg sind
+   - Einzelwelt Name unter der Welt sichtbar
+   - Hoverbilder mit mehr Abstand zur Welt
+   ========================================================= */
+
+:root {
+  --center-final-opacity: 0;
+  --final-layer-opacity: 0;
+  --next-buttons-opacity: 0;
+}
+
+/* Final Layer wird über neue Sequenz gesteuert */
+.final-layer {
+  opacity: var(--final-layer-opacity) !important;
+  transform: translate(-50%, -50%) translateY(calc((1 - var(--final-layer-opacity)) * 18px)) !important;
+}
+
+/* Erste finale Ebene: Textbox + 4 Weltbuttons */
+.final-textbox,
+.final-buttons {
+  opacity: var(--center-final-opacity) !important;
+  transform: translateY(calc((1 - var(--center-final-opacity)) * 14px)) scale(calc(.96 + var(--center-final-opacity) * .04)) !important;
+  transition: opacity .35s ease, transform .35s ease !important;
+  pointer-events: none !important;
+}
+
+.final-layer.is-center-active .final-textbox,
+.final-layer.is-center-active .final-buttons {
+  pointer-events: auto !important;
+}
+
+/* Zweite finale Ebene: Projekte / Leistungen / Über mich / Kontakt */
+.next-final-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  opacity: var(--next-buttons-opacity) !important;
+  transform: translateY(calc((1 - var(--next-buttons-opacity)) * 18px)) scale(calc(.96 + var(--next-buttons-opacity) * .04)) !important;
+  pointer-events: none !important;
+  transition: opacity .35s ease, transform .35s ease !important;
+}
+
+.final-layer.is-next-active .next-final-buttons {
+  pointer-events: auto !important;
+}
+
+/* Damit sich die beiden Ebenen nicht überschneiden */
+.final-buttons {
+  margin-bottom: 0 !important;
+}
+
+.next-final-buttons {
+  margin-top: 0 !important;
+}
+
+/* Name unter der einzelnen Welt */
+.world-detail-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 12px);
+  z-index: 3;
+  transform: translateX(-50%);
+  font-family: var(--world-font);
+  font-size: clamp(17px, 1.55vw, 25px);
+  line-height: 1;
+  letter-spacing: .22em;
+  font-weight: 900;
+  color: rgba(255,255,255,.90);
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 18px color-mix(in srgb, var(--b) 70%, transparent),
+    0 0 34px color-mix(in srgb, var(--a) 44%, transparent);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Hoverbilder etwas weiter weg von der Welt, aber weiterhin innerhalb des Bildschirms */
+.subpage-1 {
+  left: calc(var(--world-x) - 18.5vw) !important;
+  top: calc(var(--world-y) - 14vh) !important;
+}
+
+.subpage-2 {
+  left: calc(var(--world-x) + 18.5vw) !important;
+  top: calc(var(--world-y) - 13vh) !important;
+}
+
+.subpage-3 {
+  left: calc(var(--world-x) - 17.5vw) !important;
+  top: calc(var(--world-y) + 15.5vh) !important;
+}
+
+.subpage-4 {
+  left: calc(var(--world-x) + 17.5vw) !important;
+  top: calc(var(--world-y) + 15vh) !important;
+}
+
+.next-final-buttons a {
+  position: relative !important;
+  min-height: 96px !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  gap: 7px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  background:
+    radial-gradient(circle at 24% 18%, color-mix(in srgb, var(--btn-a) 38%, transparent), transparent 52%),
+    linear-gradient(145deg, rgba(12,15,34,.72), rgba(8,10,24,.42)) !important;
+  box-shadow:
+    0 22px 55px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.14),
+    0 0 66px color-mix(in srgb, var(--btn-b) 18%, transparent) !important;
+  backdrop-filter: blur(18px) !important;
+  transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease !important;
+}
+
+.next-final-buttons a:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(255,255,255,.34) !important;
+  box-shadow:
+    0 28px 72px rgba(0,0,0,.42),
+    0 0 90px color-mix(in srgb, var(--btn-b) 30%, transparent) !important;
+}
+
+.next-final-buttons strong,
+.next-final-buttons small {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.next-final-buttons strong {
+  font-family: "Space Grotesk", Inter, sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  letter-spacing: .16em !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+}
+
+.next-final-buttons small {
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  color: rgba(255,255,255,.66) !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 860px) {
+  .world-detail-label {
+    top: calc(100% + 8px);
+    font-size: 12px;
+    letter-spacing: .14em;
+  }
+
+  .subpage-1 {
+    left: 29% !important;
+    top: 26% !important;
+  }
+
+  .subpage-2 {
+    left: 71% !important;
+    top: 27% !important;
+  }
+
+  .subpage-3 {
+    left: 29% !important;
+    top: 69% !important;
+  }
+
+  .subpage-4 {
+    left: 71% !important;
+    top: 70% !important;
+  }
+
+  .next-final-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .next-final-buttons a {
+    min-height: 82px !important;
+    border-radius: 20px !important;
+    padding: 13px !important;
+  }
+
+  .next-final-buttons strong {
+    font-size: 11px !important;
+    letter-spacing: .13em !important;
+  }
+
+  .next-final-buttons small {
+    font-size: 11px !important;
+  }
+}
+
+  
+/* =========================================================
+   V10 Live-Style — Tokens & Komponenten von alexlamberti.ch
+   ========================================================= */
+:root {
+  --live-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --live-radius-lg: 28px;
+  --live-radius-md: 18px;
+}
+
+.live-textbox,
+.final-textbox {
+  width: fit-content !important;
+  min-width: min(340px, calc(100vw - 36px)) !important;
+  max-width: min(520px, calc(100vw - 36px)) !important;
+  padding: clamp(18px, 3vw, 28px) !important;
+  border-radius: var(--live-radius-lg) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45) !important;
+}
+
+.world-eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 0 18px !important;
+  padding: 8px 13px !important;
+  border-radius: 999px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.world-eyebrow::before {
+  content: "" !important;
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+
+.live-textbox h2,
+.final-textbox h2 {
+  margin: 0 0 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 1.08 !important;
+  font-size: clamp(1.55rem, 2.5vw, 2.15rem) !important;
+  max-width: 14ch !important;
+}
+
+.live-lead {
+  font-size: clamp(1.02rem, 1.8vw, 1.2rem) !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+  margin: 0 0 12px !important;
+  max-width: 28ch !important;
+}
+
+.live-more {
+  font-size: 0.98rem !important;
+  line-height: 1.75 !important;
+  margin: 0 0 14px !important;
+  max-width: 40em !important;
+}
+
+.live-more--secondary {
+  margin-bottom: 22px !important;
+}
+
+.live-textbox .cta-row,
+.final-textbox .cta-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+}
+
+.world-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 48px !important;
+  padding: 0 22px !important;
+  border-radius: 999px !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: transform 0.25s var(--live-ease), background 0.25s, border-color 0.25s, box-shadow 0.25s !important;
+}
+
+.world-cta:hover {
+  transform: translateY(-2px) !important;
+}
+
+.world-cta--ghost {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* MULTIVERSUM */
+.world-panel[data-world="multiversum"] .live-textbox,
+.final-textbox {
+  background: rgba(18, 32, 56, 0.42) !important;
+  border: 1px solid rgba(255, 89, 178, 0.22) !important;
+  color: #eef3ff !important;
+}
+.world-panel[data-world="multiversum"] .world-eyebrow,
+.final-textbox .world-eyebrow {
+  color: rgba(255, 155, 194, 0.82) !important;
+  border: 1px solid rgba(255, 89, 178, 0.22) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+}
+.world-panel[data-world="multiversum"] .world-eyebrow::before,
+.final-textbox .world-eyebrow::before {
+  background: linear-gradient(135deg, #5ec4ff, #9b6bff, #ff59b2, #ff9b37) !important;
+  box-shadow: 0 0 14px rgba(255, 89, 178, 0.35) !important;
+}
+.world-panel[data-world="multiversum"] .live-textbox h2,
+.final-textbox h2 {
+  font-family: "Space Grotesk", Inter, sans-serif !important;
+}
+.world-panel[data-world="multiversum"] .live-lead,
+.final-textbox .live-lead { color: #eef3ff !important; }
+.world-panel[data-world="multiversum"] .live-more,
+.final-textbox .live-more { color: rgba(170, 181, 207, 0.92) !important; }
+.world-panel[data-world="multiversum"] .world-cta {
+  color: #eef3ff !important;
+  border: 1px solid rgba(255, 89, 178, 0.45) !important;
+  background: linear-gradient(135deg, rgba(255, 89, 178, 0.28), rgba(155, 107, 255, 0.12)) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35) !important;
+}
+.world-panel[data-world="multiversum"] .world-cta--ghost {
+  border-color: rgba(255, 89, 178, 0.22) !important;
+  color: #eef3ff !important;
+}
+
+/* NEXORA */
+.world-panel[data-world="nexora"] .live-textbox {
+  background: linear-gradient(145deg, rgba(7, 26, 58, 0.62), rgba(2, 9, 22, 0.38)) !important;
+  border: 1px solid rgba(101, 217, 255, 0.24) !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42), inset 0 0 24px rgba(101, 217, 255, 0.035) !important;
+  color: #edfaff !important;
+}
+.world-panel[data-world="nexora"] .world-eyebrow {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  letter-spacing: 0.22em !important;
+  color: rgba(237, 250, 255, 0.72) !important;
+  border-color: rgba(101, 217, 255, 0.24) !important;
+  background: rgba(5, 20, 44, 0.35) !important;
+}
+.world-panel[data-world="nexora"] .world-eyebrow::before {
+  background: #65d9ff !important;
+  box-shadow: 0 0 14px rgba(0, 200, 255, 0.42) !important;
+}
+.world-panel[data-world="nexora"] .live-textbox h2 {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  letter-spacing: -0.06em !important;
+  color: #68e7ff !important;
+  text-shadow: 0 0 28px rgba(101, 217, 255, 0.28) !important;
+  max-width: 16ch !important;
+}
+.world-panel[data-world="nexora"] .live-lead { color: #edfaff !important; }
+.world-panel[data-world="nexora"] .live-more { color: rgba(237, 250, 255, 0.72) !important; }
+.world-panel[data-world="nexora"] .world-cta {
+  color: #edfaff !important;
+  border-color: rgba(101, 217, 255, 0.45) !important;
+  background: linear-gradient(135deg, rgba(101, 217, 255, 0.22), rgba(5, 20, 44, 0.2)) !important;
+}
+
+/* PROFESSIONAL */
+.world-panel[data-world="professional"] .live-textbox {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08) !important;
+  color: #111 !important;
+  border-radius: 0 !important;
+}
+.world-panel[data-world="professional"] .world-eyebrow {
+  border-radius: 0 !important;
+  background: transparent !important;
+  border-color: rgba(0, 0, 0, 0.18) !important;
+  color: rgba(17, 17, 17, 0.68) !important;
+}
+.world-panel[data-world="professional"] .world-eyebrow::before {
+  background: #111 !important;
+  box-shadow: none !important;
+}
+.world-panel[data-world="professional"] .live-textbox h2 {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-weight: 500 !important;
+  color: #5c6370 !important;
+  max-width: 16ch !important;
+}
+.world-panel[data-world="professional"] .live-lead,
+.world-panel[data-world="professional"] .live-more { color: rgba(17, 17, 17, 0.72) !important; }
+.world-panel[data-world="professional"] .world-cta {
+  color: #111 !important;
+  border-color: rgba(0, 0, 0, 0.18) !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+}
+.world-panel[data-world="professional"] .world-cta--ghost {
+  background: transparent !important;
+}
+
+/* FREIRAUM */
+.world-panel[data-world="freiraum"] .live-textbox {
+  background: linear-gradient(145deg, rgba(38, 22, 42, 0.55), rgba(16, 11, 22, 0.38)) !important;
+  border: 1px solid rgba(255, 198, 111, 0.2) !important;
+  border-radius: 28px 18px 32px 20px !important;
+  color: #fff7ec !important;
+}
+.world-panel[data-world="freiraum"] .world-eyebrow {
+  border-radius: 18px 999px 999px 18px !important;
+  transform: rotate(-0.6deg) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 198, 111, 0.2) !important;
+  color: #ffd166 !important;
+}
+.world-panel[data-world="freiraum"] .world-eyebrow::before {
+  background: #ffc66f !important;
+  box-shadow: 0 0 14px rgba(255, 138, 108, 0.22) !important;
+}
+.world-panel[data-world="freiraum"] .live-textbox h2 {
+  font-family: "Syne", Inter, sans-serif !important;
+  color: #ffd166 !important;
+  text-shadow: 0 0 24px rgba(255, 209, 102, 0.28), 0 8px 32px rgba(0, 0, 0, 0.18) !important;
+}
+.world-panel[data-world="freiraum"] .live-lead { color: #fff7ec !important; }
+.world-panel[data-world="freiraum"] .live-more { color: rgba(255, 247, 236, 0.72) !important; }
+.world-panel[data-world="freiraum"] .world-cta {
+  color: #fff7ec !important;
+  border-color: rgba(255, 198, 111, 0.35) !important;
+  background: linear-gradient(135deg, rgba(255, 198, 111, 0.2), rgba(255, 139, 189, 0.1)) !important;
+}
+
+/* Klickbare Elemente in der Scroll-Schicht */
+.content-layer a,
+.content-layer button {
+  pointer-events: auto !important;
+}
+
+.world-sphere-link,
+.overview-sphere-link {
+  position: relative;
+  z-index: 2;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.subpage-card {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-rows: auto auto auto !important;
+  padding: 0 !important;
+  border-radius: var(--live-radius-md) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  transition: transform 0.5s var(--live-ease), border-color 0.35s, box-shadow 0.35s !important;
+  will-change: transform, box-shadow;
+  z-index: 5 !important;
+}
+
+.world-subpages {
+  pointer-events: none !important;
+  z-index: 4 !important;
+}
+
+.world-subpages .subpage-card {
+  pointer-events: auto !important;
+}
+
+.world-panel .world-main-visual {
+  z-index: 2 !important;
+}
+
+.world-panel[data-world="multiversum"] .subpage-card {
+  border: 1px solid rgba(142, 197, 255, 0.18) !important;
+  background: rgba(12, 20, 38, 0.78) !important;
+}
+.world-panel[data-world="nexora"] .subpage-card {
+  border: 1px solid rgba(101, 217, 255, 0.24) !important;
+  background: linear-gradient(145deg, rgba(7, 26, 58, 0.62), rgba(2, 9, 22, 0.38)) !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42), inset 0 0 24px rgba(101, 217, 255, 0.035) !important;
+}
+.world-panel[data-world="professional"] .subpage-card {
+  border-radius: 0 !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08) !important;
+}
+.world-panel[data-world="professional"] .subpage-card span,
+.world-panel[data-world="professional"] .subpage-card small {
+  color: #111 !important;
+}
+.world-panel[data-world="freiraum"] .subpage-card {
+  border-radius: 28px 18px 32px 20px !important;
+  border: 1px solid rgba(255, 209, 102, 0.26) !important;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.035)) !important;
+}
+
+.subpage-card__media {
+  position: relative !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  aspect-ratio: 1.62 !important;
+  background: rgba(0, 0, 0, 0.18) !important;
+}
+
+.subpage-card__media::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  background: linear-gradient(180deg, rgba(5, 7, 13, 0.08) 0%, rgba(5, 7, 13, 0.52) 100%) !important;
+  opacity: 0.72 !important;
+  transition: opacity 0.35s var(--live-ease) !important;
+}
+
+.subpage-card:hover .subpage-card__media::after {
+  opacity: 0.14 !important;
+}
+
+.subpage-card__media img,
+.subpage-card > img {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  display: block !important;
+  object-fit: cover !important;
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  transform-origin: center center !important;
+  transition: transform 0.62s var(--live-ease), filter 0.45s var(--live-ease) !important;
+  will-change: transform !important;
+}
+
+.world-panel .subpage-card {
+  transform: translate(-50%, -50%) !important;
+}
+.world-panel .subpage-card:hover {
+  transform: translate(-50%, -50%) translateY(-8px) scale(1.02) !important;
+  border-color: rgba(255, 255, 255, 0.34) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42), 0 0 56px rgba(120, 185, 255, 0.18) !important;
+}
+
+/* Einheitlicher Bild-Zoom für alle Unterseiten */
+.world-panel .subpage-card:hover .subpage-card__media img,
+.world-panel .subpage-card:hover > img {
+  transform: scale(1.18) !important;
+  filter: brightness(1.12) saturate(1.08) !important;
+}
+
+.world-panel[data-world="nexora"] .subpage-card:hover {
+  border-color: rgba(101, 217, 255, 0.45) !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42), 0 0 48px rgba(101, 217, 255, 0.22) !important;
+}
+.world-panel[data-world="nexora"] .subpage-card:hover .subpage-card__media img,
+.world-panel[data-world="nexora"] .subpage-card:hover > img {
+  filter: brightness(1.14) saturate(1.12) !important;
+}
+.world-panel[data-world="professional"] .subpage-card:hover {
+  border-color: rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.14), 0 0 36px rgba(126, 190, 255, 0.12) !important;
+}
+.world-panel[data-world="professional"] .subpage-card:hover .subpage-card__media img,
+.world-panel[data-world="professional"] .subpage-card:hover > img {
+  filter: brightness(1.06) contrast(1.04) !important;
+}
+.world-panel[data-world="freiraum"] .subpage-card:hover {
+  border-color: rgba(255, 209, 102, 0.42) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.38), 0 0 40px rgba(255, 155, 55, 0.18) !important;
+}
+.world-panel[data-world="freiraum"] .subpage-card:hover .subpage-card__media img,
+.world-panel[data-world="freiraum"] .subpage-card:hover > img {
+  filter: brightness(1.16) saturate(1.14) !important;
+}
+.world-panel[data-world="multiversum"] .subpage-card:hover {
+  border-color: rgba(255, 89, 178, 0.38) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.42), 0 0 48px rgba(255, 89, 178, 0.16) !important;
+}
+.world-panel[data-world="multiversum"] .subpage-card:hover .subpage-card__media img,
+.world-panel[data-world="multiversum"] .subpage-card:hover > img {
+  filter: brightness(1.14) saturate(1.1) !important;
+}
+
+/* Bildfokus: Landscape (Projekte-Referenz) */
+.world-panel .subpage-card.subpage-2 .subpage-card__media img,
+.world-panel .subpage-card.subpage-3 .subpage-card__media img,
+.world-panel .subpage-card.subpage-4 .subpage-card__media img,
+.world-panel .subpage-card.subpage-2 > img,
+.world-panel .subpage-card.subpage-3 > img,
+.world-panel .subpage-card.subpage-4 > img,
+.world-panel[data-world="multiversum"] .subpage-card.subpage-1 .subpage-card__media img,
+.world-panel[data-world="multiversum"] .subpage-card.subpage-1 > img {
+  object-position: center center !important;
+  transform-origin: center center !important;
+}
+
+/* Bildfokus: Portrait (Über-mich-Referenz) */
+.world-panel .subpage-card.subpage-1:not([data-world="multiversum"]) .subpage-card__media img,
+.world-panel .subpage-card.subpage-1:not([data-world="multiversum"]) > img {
+  object-position: center 18% !important;
+  transform-origin: center 18% !important;
+}
+
+.world-panel .subpage-card.subpage-1:not([data-world="multiversum"]):hover .subpage-card__media img,
+.world-panel .subpage-card.subpage-1:not([data-world="multiversum"]):hover > img {
+  transform: scale(1.14) !important;
+}
+.subpage-card span {
+  position: relative !important;
+  z-index: 2 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  color: #e8eef8 !important;
+}
+.subpage-card small {
+  position: relative !important;
+  z-index: 2 !important;
+  color: rgba(232, 238, 248, 0.68) !important;
+  font-size: 0.68rem !important;
+}
+
+.world-panel .world-detail-label {
+  font-size: clamp(16px, 1.6vw, 24px) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.16em !important;
+}
+
+/* Multiversum — Farbverlauf wie Live-Seite (Brand-Mark) */
+.overview-card[data-world="multiversum"] .overview-label strong,
+.world-panel[data-world="multiversum"] .world-detail-label,
+.final-buttons a[href*="MULTIVERSUM"] span,
+.final-textbox h2 {
+  background: linear-gradient(90deg, #5ec4ff, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 16px rgba(255, 89, 178, 0.18)) drop-shadow(0 0 28px rgba(94, 196, 255, 0.12)) !important;
+}
+
+.world-panel[data-world="multiversum"] .world-explainer-textbox h2 {
+  color: #eef3ff !important;
+  text-shadow: 0 0 24px rgba(255, 89, 178, 0.14) !important;
+  filter: none !important;
+  background: none !important;
+  -webkit-text-fill-color: #eef3ff !important;
+}
+
+.overview-card[data-world="nexora"] .overview-label strong,
+.world-panel[data-world="nexora"] .world-detail-label,
+.final-buttons a[href*="NEXORA"] span {
+  color: #68e7ff !important;
+  text-shadow: 0 0 18px rgba(101, 217, 255, 0.42), 0 0 34px rgba(0, 168, 255, 0.24) !important;
+}
+
+.overview-card[data-world="professional"] .overview-label strong,
+.world-panel[data-world="professional"] .world-detail-label,
+.final-buttons a[href*="PROFESSIONAL"] span {
+  color: #c5cdd8 !important;
+  text-shadow: 0 0 18px rgba(207, 213, 223, 0.28), 0 0 30px rgba(126, 190, 255, 0.12) !important;
+}
+
+.overview-card[data-world="freiraum"] .overview-label strong,
+.world-panel[data-world="freiraum"] .world-detail-label,
+.final-buttons a[href*="FREIRAUM"] span {
+  color: #ffd166 !important;
+  text-shadow: 0 0 18px rgba(255, 209, 102, 0.38), 0 0 34px rgba(255, 155, 55, 0.22) !important;
+}
+
+.next-final-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+  perspective: 900px !important;
+}
+
+.next-final-buttons a.dock-card {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(142, 197, 255, 0.12) !important;
+  background: rgba(12, 20, 38, 0.78) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  text-decoration: none !important;
+  color: #e8eef8 !important;
+  text-align: center !important;
+  line-height: 1.25 !important;
+  transform: translateZ(-30px) rotateX(12deg) scale(0.92) !important;
+  transform-style: preserve-3d !important;
+  opacity: 0.88 !important;
+  transition: transform 0.5s var(--live-ease), opacity 0.45s, border-color 0.35s, box-shadow 0.35s !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  display: block !important;
+}
+
+.next-final-buttons a.dock-card::before {
+  display: none !important;
+}
+
+.next-final-buttons a.dock-card img {
+  width: 100% !important;
+  aspect-ratio: 1.62 !important;
+  object-fit: cover !important;
+  display: block !important;
+  opacity: 0.88 !important;
+}
+
+.next-final-buttons a.dock-card strong {
+  display: block !important;
+  padding: 9px 8px 2px !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  color: #e8eef8 !important;
+}
+
+.next-final-buttons a.dock-card small {
+  display: block !important;
+  padding: 0 8px 9px !important;
+  font-size: 0.62rem !important;
+  color: rgba(232, 238, 248, 0.68) !important;
+  line-height: 1.25 !important;
+}
+
+.next-final-buttons a.dock-card:hover {
+  opacity: 1 !important;
+  transform: translateZ(26px) rotateX(4deg) scale(1.06) !important;
+  border-color: rgba(142, 197, 255, 0.55) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 24px rgba(120, 185, 255, 0.22) !important;
+}
+
+@media (max-width: 860px) {
+  .next-final-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+.final-buttons a {
+  border-radius: var(--live-radius-md) !important;
+  border: 1px solid rgba(142, 197, 255, 0.18) !important;
+  background: rgba(12, 20, 38, 0.78) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+.preview-badge {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 9998;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(8, 12, 24, 0.72);
+  border: 1px solid rgba(142, 197, 255, 0.22);
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+/* Textboxen: vollständiger Inhalt, über Unterseiten-Karten */
+.live-textbox {
+  z-index: 5 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.live-textbox h2,
+.final-textbox h2 {
+  max-width: 22ch !important;
+}
+
+.world-panel[data-world="nexora"] {
+  --box-x: 72% !important;
+  --box-y: 66% !important;
+}
+
+.world-panel[data-world="professional"] {
+  --box-x: 29% !important;
+  --box-y: 58% !important;
+}
+
+.world-panel[data-world="multiversum"] {
+  --box-y: 30% !important;
+}
+
+.world-panel[data-world="freiraum"] {
+  --box-y: 40% !important;
+}
+
+.subpage-card {
+  z-index: 3 !important;
+}
+
+/* Finale 4 Unterseiten-Buttons höher im Viewport */
+.final-layer.is-next-active {
+  top: 48% !important;
+  transform: translate(-50%, -50%) translateY(-4vh) !important;
+}
+
+.final-layer.is-next-active .final-textbox,
+.final-layer.is-next-active .final-buttons {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+@media (max-width: 860px) {
+  .final-layer.is-next-active {
+    top: 44% !important;
+    transform: translate(-50%, -50%) translateY(-2vh) !important;
+  }
+
+  .live-textbox {
+    top: 76% !important;
+    max-width: min(480px, calc(100vw - 28px)) !important;
+  }
+
+  .world-panel[data-world="professional"] .live-textbox,
+  .world-panel[data-world="professional"] .world-explainer-textbox {
+    top: 72% !important;
+  }
+
+  .world-panel[data-world="freiraum"] .live-textbox,
+  .world-panel[data-world="freiraum"] .world-explainer-textbox {
+    top: 44% !important;
+  }
+
+  .overview-center-textbox {
+    top: 47% !important;
+    max-width: min(460px, calc(100vw - 28px)) !important;
+  }
+}
+
+/* Übersicht: PROFESSIONAL exakt über FREIRAUM */
+.overview-card[data-world="professional"] {
+  left: 75% !important;
+}
+
+@media (max-width: 860px) {
+  .overview-card[data-world="professional"] {
+    left: 70% !important;
+  }
+}
+
+/* Gestaffelte Text-Einblendung wie Live-Parallax */
+[data-reveal] {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.overview-intro-textbox {
+  background: rgba(18, 32, 56, 0.42) !important;
+  border: 1px solid rgba(255, 89, 178, 0.22) !important;
+  color: #eef3ff !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45) !important;
+}
+
+.overview-intro-textbox h2 {
+  background: linear-gradient(90deg, #5ec4ff, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 16px rgba(255, 89, 178, 0.18)) drop-shadow(0 0 28px rgba(94, 196, 255, 0.12)) !important;
+  max-width: 16ch !important;
+  margin: 0 0 14px !important;
+}
+
+.overview-intro-body {
+  color: rgba(170, 181, 207, 0.95) !important;
+  margin: 0 !important;
+  max-width: 36em !important;
+}
+
+.world-explainer-textbox h2 {
+  max-width: 18ch !important;
+}
+
+.live-more--diff {
+  margin-bottom: 0 !important;
+}
+
+.overview-center-textbox {
+  position: absolute !important;
+  left: 50% !important;
+  top: 46% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 4 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+}
+
+/* Live-Shell + Site-Chrome + Scroll-Ausstieg */
+html.galaxy-v10-page {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body.galaxy-v10-page {
+  --galaxy-bar-h: 56px;
+  --site-header-h: 90px;
+  --galaxy-chrome-h: calc(var(--galaxy-bar-h) + var(--site-header-h));
+  --navy-0: #050810;
+  --ice: #8ec5ff;
+  --ice-dim: rgba(142, 197, 255, 0.45);
+  --text: #e8eef8;
+  --glass: rgba(18, 32, 56, 0.42);
+  --glass-border: rgba(142, 197, 255, 0.18);
+  --radius-lg: 28px;
+  --header-air-top: 22px;
+  --header-air-bottom: 16px;
+  --header-inner-row: 52px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.galaxy-v10-page:not(.galaxy-released) {
+  overflow: hidden !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+}
+
+body.galaxy-v10-page .mv4-bar {
+  position: fixed;
+  top: 0;
+  z-index: 2147483000;
+}
+
+body.galaxy-v10-page .site-header {
+  position: fixed;
+  top: var(--galaxy-bar-h, 56px);
+  left: 0;
+  right: 0;
+  z-index: 2147482900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  box-sizing: border-box;
+  padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-air-top));
+  padding-bottom: var(--header-air-bottom);
+  padding-left: max(clamp(12px, 3vw, 32px), env(safe-area-inset-left));
+  padding-right: max(clamp(8px, 2.2vw, 22px), env(safe-area-inset-right));
+  pointer-events: none;
+}
+
+body.galaxy-v10-page .site-header > * {
+  pointer-events: auto;
+}
+
+body.galaxy-v10-page .header-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: clamp(24px, 3.5vw, 32px);
+  row-gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+body.galaxy-v10-page .brand-mark,
+body.galaxy-v10-page .header-meta {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-size: clamp(0.82rem, 2vw, 0.92rem);
+  line-height: 1.25;
+  color: var(--text);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+body.galaxy-v10-page .brand-mark span {
+  background: linear-gradient(90deg, #5ec4ff, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  font-weight: 600;
+}
+
+body.galaxy-v10-page .header-meta {
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+body.galaxy-v10-page .header-meta:hover,
+body.galaxy-v10-page .header-meta:focus-visible {
+  color: #ff59b2;
+}
+
+body.galaxy-v10-page .btn-menu {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-weight: 600;
+  font-size: clamp(0.84rem, 2vw, 0.92rem);
+  flex-shrink: 0;
+  margin-right: 4px;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+body.galaxy-v10-page .btn-menu:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 89, 178, 0.48);
+  box-shadow: 0 14px 28px rgba(255, 89, 178, 0.14);
+}
+
+body.galaxy-v10-page .btn-menu-lines {
+  display: grid;
+  gap: 4px;
+  width: 19px;
+}
+
+body.galaxy-v10-page .btn-menu-lines span {
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+body.galaxy-v10-page .menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483100;
+  background: rgba(4, 8, 14, 0.72);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  padding: 32px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.45s var(--ease), visibility 0.45s;
+}
+
+body.galaxy-v10-page .menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.galaxy-v10-page .menu-panel {
+  width: min(520px, 100%);
+  border-radius: 28px 14px 34px 20px / 26px 18px 30px 22px;
+  border: 1px solid rgba(255, 89, 178, 0.16);
+  background: rgba(10, 14, 24, 0.92);
+  padding: clamp(28px, 5vw, 40px);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.5s var(--ease);
+}
+
+body.galaxy-v10-page .menu-overlay.open .menu-panel {
+  transform: translateY(0) scale(1);
+}
+
+body.galaxy-v10-page .menu-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+body.galaxy-v10-page .menu-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+body.galaxy-v10-page .btn-close {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--text);
+  background: transparent;
+  cursor: pointer;
+}
+
+body.galaxy-v10-page .btn-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+body.galaxy-v10-page .menu-links {
+  display: grid;
+  gap: 4px;
+}
+
+body.galaxy-v10-page .menu-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #aab5cf;
+  text-decoration: none;
+  transition: color 0.2s, padding-left 0.25s var(--ease);
+}
+
+body.galaxy-v10-page .menu-links a::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5ec4ff, #9b6bff, #ff59b2, #ff9b37, #ffd86a);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.2s, transform 0.25s var(--ease);
+}
+
+body.galaxy-v10-page .menu-links a:hover,
+body.galaxy-v10-page .menu-links a.active {
+  color: #ff59b2;
+  padding-left: 6px;
+}
+
+body.galaxy-v10-page .menu-links a.active::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+body.galaxy-v10-page .experience-rail {
+  position: fixed;
+  right: max(22px, env(safe-area-inset-right));
+  top: 50%;
+  z-index: 2147482950;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+body.galaxy-v10-page .experience-rail::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 11px;
+  width: 1px;
+  background: rgba(255, 89, 178, 0.18);
+}
+
+body.galaxy-v10-page .experience-step {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 89, 178, 0.32);
+  background: rgba(255, 255, 255, 0.04);
+  color: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: transform 0.35s var(--ease), border-color 0.35s, background 0.35s, box-shadow 0.35s;
+}
+
+body.galaxy-v10-page .experience-step::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 34px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  color: #eef3ff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0;
+  white-space: nowrap;
+  transition: opacity 0.25s, transform 0.35s var(--ease);
+  pointer-events: none;
+}
+
+body.galaxy-v10-page .experience-step:hover::after,
+body.galaxy-v10-page .experience-step.is-active::after {
+  opacity: 0.9;
+  transform: translateY(-50%) translateX(0);
+}
+
+body.galaxy-v10-page .experience-step.is-active {
+  transform: scale(1.28);
+  border-color: transparent;
+  background: linear-gradient(135deg, #5ec4ff, #9b6bff 24%, #ff59b2 50%, #ff9b37 76%, #ffd86a);
+  box-shadow: 0 0 24px rgba(255, 89, 178, 0.32);
+}
+
+@media (max-width: 1919px) {
+  body.galaxy-v10-page .experience-rail {
+    display: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  body.galaxy-v10-page .header-meta {
+    display: none;
+  }
+}
+
+body.galaxy-v10-page .alex-live-galaxy {
+  top: var(--galaxy-chrome-h, 146px) !important;
+  height: calc(100vh - var(--galaxy-chrome-h, 146px)) !important;
+  bottom: auto !important;
+}
+
+.galaxy-viewport {
+  position: relative;
+  width: 100%;
+}
+
+body.galaxy-v10-page:not(.galaxy-released) .galaxy-viewport {
+  height: calc(100vh - var(--galaxy-chrome-h, 146px));
+}
+
+body.galaxy-released {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100vh;
+  touch-action: auto;
+}
+
+body.galaxy-released .galaxy-viewport {
+  height: 100vh;
+  min-height: calc(100vh - var(--galaxy-chrome-h, 146px));
+}
+
+body.galaxy-released .alex-live-galaxy {
+  position: fixed !important;
+  top: var(--galaxy-chrome-h, 146px) !important;
+  left: 0;
+  right: 0;
+  height: calc(100vh - var(--galaxy-chrome-h, 146px)) !important;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--galaxy-exit-opacity, 1);
+  transition: opacity 0.35s ease;
+}
+
+.galaxy-below-page {
+  position: relative;
+  z-index: 3;
+  background: #040812;
+  color: #e8eef8;
+}
+
+.galaxy-below-page[hidden] {
+  display: none !important;
+}
+
+.galaxy-below-inner {
+  max-width: min(1180px, calc(100vw - 48px));
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 96px) 0 clamp(80px, 12vw, 140px);
+}
+
+.galaxy-below-section {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(28px, 5vw, 56px);
+  align-items: center;
+}
+
+.galaxy-below-copy .world-intro {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(142, 197, 255, 0.82);
+  margin: 0 0 14px;
+  font-weight: 700;
+}
+
+.galaxy-below-copy h1 {
+  margin: 0 0 16px;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+  max-width: 16ch;
+}
+
+.galaxy-below-copy .lead {
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  line-height: 1.45;
+  margin: 0 0 14px;
+  color: rgba(232, 238, 248, 0.94);
+}
+
+.galaxy-below-copy .more {
+  font-size: 1rem;
+  line-height: 1.72;
+  margin: 0 0 12px;
+  color: rgba(170, 181, 207, 0.92);
+  max-width: 42em;
+}
+
+.galaxy-below-copy .prose {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.galaxy-below-copy .prose li {
+  position: relative;
+  padding-left: 18px;
+  color: rgba(198, 208, 228, 0.9);
+  line-height: 1.55;
+}
+
+.galaxy-below-copy .prose li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5ec4ff, #9b6bff, #ff59b2);
+}
+
+.galaxy-below-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.galaxy-below-cta .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 197, 255, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+  color: #e8eef8;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.25s var(--live-ease), border-color 0.25s, background 0.25s;
+}
+
+.galaxy-below-cta .btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(142, 197, 255, 0.45);
+}
+
+.galaxy-below-cta .btn-primary {
+  border-color: rgba(255, 89, 178, 0.45);
+  background: linear-gradient(135deg, rgba(255, 89, 178, 0.28), rgba(155, 107, 255, 0.12));
+}
+
+.galaxy-below-portrait {
+  margin: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(142, 197, 255, 0.18);
+  background: rgba(12, 22, 40, 0.55);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+}
+
+.galaxy-below-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.galaxy-below-chapters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: clamp(40px, 7vw, 72px);
+}
+
+.galaxy-below-chapters a {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(142, 197, 255, 0.14);
+  background: rgba(12, 20, 38, 0.72);
+  color: #e8eef8;
+  text-decoration: none;
+  transition: transform 0.25s var(--live-ease), border-color 0.25s;
+}
+
+.galaxy-below-chapters a:hover {
+  transform: translateY(-3px);
+  border-color: rgba(142, 197, 255, 0.32);
+}
+
+.galaxy-below-chapters strong {
+  font-size: 1rem;
+}
+
+.galaxy-below-chapters span {
+  font-size: 0.82rem;
+  color: rgba(170, 181, 207, 0.88);
+}
+
+.galaxy-below-footer {
+  margin-top: clamp(36px, 6vw, 64px);
+  padding-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(170, 181, 207, 0.88);
+  font-size: 0.92rem;
+}
+
+.galaxy-below-footer a {
+  color: #8ec5ff;
+  text-decoration: none;
+}
+
+.galaxy-below-footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .galaxy-below-section {
+    grid-template-columns: 1fr;
+  }
+  .galaxy-below-chapters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .galaxy-below-chapters {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Embed-Modus (Galaxy in MULTIVERSUM-iframe) */
+body.galaxy-v10-embed {
+  --galaxy-bar-h: 0px !important;
+  --site-header-h: 0px !important;
+  --galaxy-chrome-h: 0px !important;
+}
+
+body.galaxy-v10-embed .mv4-bar,
+body.galaxy-v10-embed .site-header,
+body.galaxy-v10-embed .experience-rail,
+body.galaxy-v10-embed .menu-overlay,
+body.galaxy-v10-embed .preview-badge {
+  display: none !important;
+}
+
+body.galaxy-v10-embed #galaxyBelowPage {
+  display: none !important;
+}
+
+body.galaxy-v10-embed:not(.galaxy-released) .alex-live-galaxy {
+  top: 0 !important;
+  height: 100vh !important;
+}
+
+body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
+  height: 100vh !important;
+}
+
+  </style>
+
+  <link rel="stylesheet" href="../assets/welten-multiversum-master.css" />
+  <link rel="stylesheet" href="../assets/welten-world-switch-preview.css" />
+  <script src="../assets/welten-world-switch-freiraum-brush-v3.js" defer></script>
+  <script src="../assets/welten-world-switch-preview.js" defer></script>
+  <script src="galaxy-v10-exit-bridge.js" defer></script>
+  <script src="galaxy-v10-shell.js" defer></script>
+</head>
+
+<body class="galaxy-v10-page mv-world-general" data-galaxy-v10="1" data-master-world="general" data-world="general">
+  <header class="mv4-bar" role="group" aria-label="Welten &amp; Steuerung">
+    <nav class="mv4-worlds" aria-label="Welten wechseln">
+      <button type="button" class="is-active" data-world-key="general">MULTIVERSUM</button>
+      <button type="button" data-world-key="nexora">NEXORA</button>
+      <button type="button" data-world-key="vertex">PROFESSIONAL</button>
+      <button type="button" data-world-key="freiraum">FREIRAUM</button>
+    </nav>
+    <div class="mv4-actions">
+      <button type="button" class="mv4-fx is-on" id="mv4-fx" aria-pressed="true" title="Weltwechsel-Effekte &amp; Sound">EFFEKTE ON</button>
+      <div class="mv4-flags" aria-label="Sprache">
+        <button type="button" class="mv4-flag is-active" data-lang="de" title="Deutsch" aria-label="Deutsch" aria-pressed="true">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjEzLjMzMyIgZmlsbD0iIzAwMCIvPjxyZWN0IHk9IjEzLjMzMyIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEzLjMzNCIgZmlsbD0iI2RkMDAwMCIvPjxyZWN0IHk9IjI2LjY2NyIgd2lkdGg9IjYwIiBoZWlnaHQ9IjEzLjMzMyIgZmlsbD0iI2ZmY2UwMCIvPjwvc3ZnPg==" alt="" />
+        </button>
+        <button type="button" class="mv4-flag" data-lang="en" title="English" aria-label="English" aria-pressed="false">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDEyMTY5Ii8+PHBhdGggZD0iTTAgMGw2MCA0ME02MCAwTDAgNDAiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI4Ii8+PHBhdGggZD0iTTAgMGw2MCA0ME02MCAwTDAgNDAiIHN0cm9rZT0iI0M4MTAyRSIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHBhdGggZD0iTTMwIDB2NDBNMCAyMGg2MCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjE0Ii8+PHBhdGggZD0iTTMwIDB2NDBNMCAyMGg2MCIgc3Ryb2tlPSIjQzgxMDJFIiBzdHJva2Utd2lkdGg9IjgiLz48L3N2Zz4=" alt="" />
+        </button>
+        <button type="button" class="mv4-flag" data-lang="it" title="Italiano" aria-label="Italiano" aria-pressed="false">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MCA0MCI+PHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMDA5MjQ2Ii8+PHJlY3QgeD0iMjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2ZmZiIvPjxyZWN0IHg9IjQwIiB3aWR0aD0iMjAiIGhlaWdodD0iNDAiIGZpbGw9IiNjZTJiMzciLz48L3N2Zz4=" alt="" />
+        </button>
+      </div>
+    </div>
+  </header>
+  <header class="site-header">
+    <div class="header-left">
+      <a href="../MULTIVERSUM.html" class="brand-mark galaxy-stay" data-go="home" aria-label="Zur Startseite">Alex <span>Lamberti</span></a>
+      <a href="mailto:alex.lamberti@hotmail.ch" class="header-meta galaxy-stay">E-Mail: alex.lamberti@hotmail.ch</a>
+      <a href="tel:+41796678211" class="header-meta galaxy-stay">Tel: 079 667 82 11</a>
+    </div>
+    <button type="button" class="btn-menu" id="openMenu" aria-expanded="false" aria-controls="mainMenu">
+      <span>Menü</span>
+      <span class="btn-menu-lines" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </header>
+  <nav class="experience-rail" aria-label="Hauptnavigation">
+    <button type="button" class="experience-step is-active" data-go="home" data-label="Home">Home</button>
+    <button type="button" class="experience-step" data-go="projects" data-label="Projekte">Projekte</button>
+    <button type="button" class="experience-step" data-go="leistungen" data-label="Leistungen">Leistungen</button>
+    <button type="button" class="experience-step" data-go="about" data-label="Über mich">Über mich</button>
+    <button type="button" class="experience-step" data-go="contact" data-label="Kontakt">Kontakt</button>
+  </nav>
+  <div class="menu-overlay" id="mainMenu" role="dialog" aria-modal="true" aria-label="Hauptmenü" hidden>
+    <div class="menu-panel">
+      <div class="menu-head">
+        <div><p class="menu-title">Menü</p></div>
+        <button type="button" class="btn-close" id="closeMenu">Schliessen</button>
+      </div>
+      <nav class="menu-links" aria-label="Hauptnavigation">
+        <a href="../MULTIVERSUM.html" class="active galaxy-stay" data-go="home">Home</a>
+        <a href="../MULTIVERSUM.html#projekte" data-go="projects">Projekte</a>
+        <a href="../MULTIVERSUM.html#leistungen" data-go="leistungen">Leistungen</a>
+        <a href="../MULTIVERSUM.html#ueber-mich" data-go="about">Über mich</a>
+        <a href="../MULTIVERSUM.html#kontakt" data-go="contact">Kontakt</a>
+      </nav>
+    </div>
+  </div>
+  <div class="galaxy-viewport" id="galaxyViewport">
+  <main class="alex-live-galaxy" id="galaxyRoot">
+    <canvas id="galaxyCanvas" aria-hidden="true"></canvas>
+    <div class="galaxy-wash" aria-hidden="true"></div>
+    <div class="galaxy-vignette" aria-hidden="true"></div>
+
+    <section class="content-layer" aria-label="Alex Lamberti Galaxy Reise">
+      <div class="overview-layer" id="overviewLayer">
+        <div class="overview-center-textbox overview-intro-textbox live-textbox" aria-label="Vier Welten Übersicht">
+            <h2 data-reveal="title">Reise durch das Multiversum</h2>
+            <p class="live-more overview-intro-body" data-reveal="body">Scrollen startet den Flug durch ein digitales Universum. Unterwegs taucht jede Welt einzeln auf — mit Erklärung, Rolle und Unterschied zu den anderen Welten.</p>
+          </div>
+        <article class="overview-card" data-world="multiversum" style="--a:#9B64FF;--b:#60DCFF;--c:#FFC973;--world-font:'Space Grotesk', sans-serif;">
+          <div class="overview-glow"></div>
+          <a class="overview-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img src="assets/world-multiversum.png" alt="MULTIVERSUM Welt" loading="eager"></a>
+          <div class="overview-label">
+            <span>unten links</span>
+            <strong>MULTIVERSUM</strong>
+          </div>
+        </article>
+
+        <article class="overview-card" data-world="nexora" style="--a:#347DFF;--b:#00F2FF;--c:#704EFF;--world-font:'Orbitron', sans-serif;">
+          <div class="overview-glow"></div>
+          <a class="overview-sphere-link" href="../NEXORA.html" aria-label="NEXORA Startseite"><img src="assets/world-nexora.png" alt="NEXORA Welt" loading="eager"></a>
+          <div class="overview-label">
+            <span>links oben</span>
+            <strong>NEXORA</strong>
+          </div>
+        </article>
+
+        <article class="overview-card" data-world="professional" style="--a:#E6F4FF;--b:#7EBEFF;--c:#B8C4D6;--world-font:'Manrope', sans-serif;">
+          <div class="overview-glow"></div>
+          <a class="overview-sphere-link" href="../PROFESSIONAL.html" aria-label="PROFESSIONAL Startseite"><img src="assets/world-professional.png" alt="PROFESSIONAL Welt" loading="eager"></a>
+          <div class="overview-label">
+            <span>rechts oben</span>
+            <strong>PROFESSIONAL</strong>
+          </div>
+        </article>
+
+        <article class="overview-card" data-world="freiraum" style="--a:#FFBA68;--b:#FF649C;--c:#FFE2A0;--world-font:'Syne', sans-serif;">
+          <div class="overview-glow"></div>
+          <a class="overview-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img src="assets/world-freiraum.png" alt="FREIRAUM Welt" loading="eager"></a>
+          <div class="overview-label">
+            <span>rechts unten</span>
+            <strong>FREIRAUM</strong>
+          </div>
+        </article>
+      </div>
+
+      <div class="detail-layer" id="detailLayer">
+        
+        <article class="world-panel" data-world="multiversum" style="--a:#9B64FF;--b:#60DCFF;--c:#FFC973;--world-font:'Space Grotesk', sans-serif;--world-x:23.0%;--world-y:69.0%;--box-x:70%;--box-y:32%;">
+          <div class="world-main-visual">
+            <a class="world-sphere-link" href="../MULTIVERSUM.html" aria-label="MULTIVERSUM Startseite"><img class="world-sphere-img" src="assets/world-multiversum.png" alt="MULTIVERSUM Hauptwelt"></a>
+            <div class="world-detail-label">MULTIVERSUM</div>
+          </div>
+
+          <div class="world-subpages">
+            <a class="subpage-card subpage-1" href="../MULTIVERSUM.html#ueber-mich" data-world="multiversum" data-world-link="multiversum" data-go="about" data-target="#ueber-mich" data-chapter="about">
+              <div class="subpage-card__media">
+                <img src="assets/multiversum-ueber-mich.png" alt="MULTIVERSUM Über mich">
+              </div>
+              <span>Über mich</span>
+              <small>Persönlichkeit & Kompetenz</small>
+            </a>
+
+            <a class="subpage-card subpage-2" href="../MULTIVERSUM.html#leistungen" data-world="multiversum" data-world-link="multiversum" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
+              <div class="subpage-card__media">
+                <img src="assets/multiversum-leistungen.webp" alt="MULTIVERSUM Leistungen">
+              </div>
+              <span>Leistungen</span>
+              <small>Was ich anbiete</small>
+            </a>
+
+            <a class="subpage-card subpage-3" href="../MULTIVERSUM.html#projekte" data-world="multiversum" data-world-link="multiversum" data-go="projects" data-target="#projekte" data-chapter="projects">
+              <div class="subpage-card__media">
+                <img src="assets/multiversum-projekte.webp" alt="MULTIVERSUM Projekte">
+              </div>
+              <span>Projekte</span>
+              <small>Arbeit aus allen Welten</small>
+            </a>
+
+            <a class="subpage-card subpage-4" href="../MULTIVERSUM.html#kontakt" data-world="multiversum" data-world-link="multiversum" data-go="contact" data-target="#kontakt" data-chapter="contact">
+              <div class="subpage-card__media">
+                <img src="assets/multiversum-kontakt.webp" alt="MULTIVERSUM Kontakt">
+              </div>
+              <span>Kontakt</span>
+              <small>Nächster Schritt</small>
+            </a>
+          </div><div class="live-textbox world-explainer-textbox">
+            <p class="world-eyebrow" data-reveal="eyebrow">MULTIVERSUM</p>
+            <h2 data-reveal="lead">Was ist MULTIVERSUM?</h2>
+            <p class="live-more" data-reveal="what">Die Übersichtswelt und das verbindende Portfolio-Universum. Hier sehen Sie das Gesamtbild, bevor die Reise in die einzelnen Spezialwelten geht.</p>
+            <p class="live-more live-more--secondary" data-reveal="purpose">Als Meta-Ebene: Strategie, Persönlichkeit und die passende Wirkung je nach Projekt — analytisch, klar oder emotional.</p>
+            <p class="live-more live-more--diff" data-reveal="diff">Nicht eine Spezialwelt wie NEXORA, PROFESSIONAL oder FREIRAUM, sondern das übergeordnete System, das alle drei vereint.</p>
+            
+          </div>
+        </article>
+
+        <article class="world-panel" data-world="nexora" style="--a:#347DFF;--b:#00F2FF;--c:#704EFF;--world-font:'Orbitron', sans-serif;--world-x:22.0%;--world-y:25.0%;--box-x:70%;--box-y:72%;">
+          <div class="world-main-visual">
+            <a class="world-sphere-link" href="../NEXORA.html" aria-label="NEXORA Startseite"><img class="world-sphere-img" src="assets/world-nexora.png" alt="NEXORA Hauptwelt"></a>
+            <div class="world-detail-label">NEXORA</div>
+          </div>
+
+          <div class="world-subpages">
+            <a class="subpage-card subpage-1" href="../NEXORA.html#ueber-mich" data-world="nexora" data-world-link="nexora" data-go="about" data-target="#ueber-mich" data-chapter="about">
+              <div class="subpage-card__media">
+                <img src="assets/nexora-ueber-mich.png" alt="NEXORA Über mich">
+              </div>
+              <span>Über mich</span>
+              <small>Persönlichkeit & Kompetenz</small>
+            </a>
+
+            <a class="subpage-card subpage-2" href="../NEXORA.html#leistungen" data-world="nexora" data-world-link="nexora" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
+              <div class="subpage-card__media">
+                <img src="assets/nexora-leistungen.webp" alt="NEXORA Leistungen">
+              </div>
+              <span>Leistungen</span>
+              <small>Was ich anbiete</small>
+            </a>
+
+            <a class="subpage-card subpage-3" href="../NEXORA.html#projekte" data-world="nexora" data-world-link="nexora" data-go="projects" data-target="#projekte" data-chapter="projects">
+              <div class="subpage-card__media">
+                <img src="assets/nexora-projekte.webp" alt="NEXORA Projekte">
+              </div>
+              <span>Projekte</span>
+              <small>Arbeit aus allen Welten</small>
+            </a>
+
+            <a class="subpage-card subpage-4" href="../NEXORA.html#kontakt" data-world="nexora" data-world-link="nexora" data-go="contact" data-target="#kontakt" data-chapter="contact">
+              <div class="subpage-card__media">
+                <img src="assets/nexora-kontakt.webp" alt="NEXORA Kontakt">
+              </div>
+              <span>Kontakt</span>
+              <small>Nächster Schritt</small>
+            </a>
+          </div><div class="live-textbox world-explainer-textbox">
+            <p class="world-eyebrow" data-reveal="eyebrow">NEXORA</p>
+            <h2 data-reveal="lead">Was ist NEXORA?</h2>
+            <p class="live-more" data-reveal="what">Die Technologie-Welt für Systeme, Performance und smarte digitale Lösungen — Web, Automatisierung und technische Klarheit.</p>
+            <p class="live-more live-more--secondary" data-reveal="purpose">Wenn Projekte technisch anspruchsvoll sind: skalierbare Strukturen, präzise Umsetzung und messbare digitale Wirkung.</p>
+            <p class="live-more live-more--diff" data-reveal="diff">Im Gegensatz zu PROFESSIONAL (Business-Klarheit) und FREIRAUM (Kreativität) fokussiert NEXORA auf Technologie, Logik und Systemdenken.</p>
+            <div class="cta-row" data-reveal="cta">
+              <a class="world-cta world-cta--primary" href="../NEXORA.html">Welt öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="world-panel" data-world="professional" style="--a:#E6F4FF;--b:#7EBEFF;--c:#B8C4D6;--world-font:'Manrope', sans-serif;--world-x:73.0%;--world-y:26.0%;--box-x:30%;--box-y:72%;">
+          <div class="world-main-visual">
+            <a class="world-sphere-link" href="../PROFESSIONAL.html" aria-label="PROFESSIONAL Startseite"><img class="world-sphere-img" src="assets/world-professional.png" alt="PROFESSIONAL Hauptwelt"></a>
+            <div class="world-detail-label">PROFESSIONAL</div>
+          </div>
+
+          <div class="world-subpages">
+            <a class="subpage-card subpage-1" href="../PROFESSIONAL.html#ueber-mich" data-world="professional" data-world-link="professional" data-go="about" data-target="#ueber-mich" data-chapter="about">
+              <div class="subpage-card__media">
+                <img src="assets/professional-ueber-mich.png" alt="PROFESSIONAL Über mich">
+              </div>
+              <span>Über mich</span>
+              <small>Persönlichkeit & Kompetenz</small>
+            </a>
+
+            <a class="subpage-card subpage-2" href="../PROFESSIONAL.html#leistungen" data-world="professional" data-world-link="professional" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
+              <div class="subpage-card__media">
+                <img src="assets/professional-leistungen.webp" alt="PROFESSIONAL Leistungen">
+              </div>
+              <span>Leistungen</span>
+              <small>Was ich anbiete</small>
+            </a>
+
+            <a class="subpage-card subpage-3" href="../PROFESSIONAL.html#projekte" data-world="professional" data-world-link="professional" data-go="projects" data-target="#projekte" data-chapter="projects">
+              <div class="subpage-card__media">
+                <img src="assets/professional-projekte.webp" alt="PROFESSIONAL Projekte">
+              </div>
+              <span>Projekte</span>
+              <small>Arbeit aus allen Welten</small>
+            </a>
+
+            <a class="subpage-card subpage-4" href="../PROFESSIONAL.html#kontakt" data-world="professional" data-world-link="professional" data-go="contact" data-target="#kontakt" data-chapter="contact">
+              <div class="subpage-card__media">
+                <img src="assets/professional-kontakt.webp" alt="PROFESSIONAL Kontakt">
+              </div>
+              <span>Kontakt</span>
+              <small>Nächster Schritt</small>
+            </a>
+          </div><div class="live-textbox world-explainer-textbox">
+            <p class="world-eyebrow" data-reveal="eyebrow">PROFESSIONAL</p>
+            <h2 data-reveal="lead">Was ist PROFESSIONAL?</h2>
+            <p class="live-more" data-reveal="what">Die Business-Welt für Auftritt, Vertrauen und professionelle Markenführung — strukturiert, seriös und überzeugend.</p>
+            <p class="live-more live-more--secondary" data-reveal="purpose">Für Unternehmen und Persönlichkeiten, die Klarheit, Glaubwürdigkeit und einen hochwertigen professionellen Eindruck brauchen.</p>
+            <p class="live-more live-more--diff" data-reveal="diff">Weniger technisch als NEXORA, weniger expressiv als FREIRAUM — hier steht Präzision, Ordnung und Business-Wirkung im Vordergrund.</p>
+            <div class="cta-row" data-reveal="cta">
+              <a class="world-cta world-cta--primary" href="../PROFESSIONAL.html">Welt öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="world-panel" data-world="freiraum" style="--a:#FFBA68;--b:#FF649C;--c:#FFE2A0;--world-font:'Syne', sans-serif;--world-x:75.0%;--world-y:69.0%;--box-x:30%;--box-y:32%;">
+          <div class="world-main-visual">
+            <a class="world-sphere-link" href="../FREIRAUM.html" aria-label="FREIRAUM Startseite"><img class="world-sphere-img" src="assets/world-freiraum.png" alt="FREIRAUM Hauptwelt"></a>
+            <div class="world-detail-label">FREIRAUM</div>
+          </div>
+
+          <div class="world-subpages">
+            <a class="subpage-card subpage-1" href="../FREIRAUM.html#ueber-mich" data-world="freiraum" data-world-link="freiraum" data-go="about" data-target="#ueber-mich" data-chapter="about">
+              <div class="subpage-card__media">
+                <img src="assets/freiraum-ueber-mich.png" alt="FREIRAUM Über mich">
+              </div>
+              <span>Über mich</span>
+              <small>Persönlichkeit & Kompetenz</small>
+            </a>
+
+            <a class="subpage-card subpage-2" href="../FREIRAUM.html#leistungen" data-world="freiraum" data-world-link="freiraum" data-go="leistungen" data-target="#leistungen" data-chapter="leistungen">
+              <div class="subpage-card__media">
+                <img src="assets/freiraum-leistungen.webp" alt="FREIRAUM Leistungen">
+              </div>
+              <span>Leistungen</span>
+              <small>Was ich anbiete</small>
+            </a>
+
+            <a class="subpage-card subpage-3" href="../FREIRAUM.html#projekte" data-world="freiraum" data-world-link="freiraum" data-go="projects" data-target="#projekte" data-chapter="projects">
+              <div class="subpage-card__media">
+                <img src="assets/freiraum-projekte.webp" alt="FREIRAUM Projekte">
+              </div>
+              <span>Projekte</span>
+              <small>Arbeit aus allen Welten</small>
+            </a>
+
+            <a class="subpage-card subpage-4" href="../FREIRAUM.html#kontakt" data-world="freiraum" data-world-link="freiraum" data-go="contact" data-target="#kontakt" data-chapter="contact">
+              <div class="subpage-card__media">
+                <img src="assets/freiraum-kontakt.webp" alt="FREIRAUM Kontakt">
+              </div>
+              <span>Kontakt</span>
+              <small>Nächster Schritt</small>
+            </a>
+          </div><div class="live-textbox world-explainer-textbox">
+            <p class="world-eyebrow" data-reveal="eyebrow">FREIRAUM</p>
+            <h2 data-reveal="lead">Was ist FREIRAUM?</h2>
+            <p class="live-more" data-reveal="what">Die Kreativ-Welt für Identität, Emotion und visuelle Freiheit — Design, Kampagnen und Inhalte mit Charakter.</p>
+            <p class="live-more live-more--secondary" data-reveal="purpose">Wenn Marken und Projekte Persönlichkeit, Tiefe und ein unverwechselbares Gefühl brauchen — mutig, expressiv, menschlich.</p>
+            <p class="live-more live-more--diff" data-reveal="diff">Im Unterschied zu NEXORA (Technik) und PROFESSIONAL (Struktur) lebt FREIRAUM von Kreativität, Farbe und emotionaler Erzählung.</p>
+            <div class="cta-row" data-reveal="cta">
+              <a class="world-cta world-cta--primary" href="../FREIRAUM.html">Welt öffnen</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="final-layer" id="finalLayer">
+        <div class="final-textbox">
+            <p class="world-eyebrow">MULTIVERSUM · Mix · Strategie · Begeisterung</p>
+            <h2>Digitale Welten. Ein Portfolio. Unendliche Möglichkeiten.</h2>
+            <p class="live-lead">NEXORA, PROFESSIONAL und FREIRAUM vereint · ein Auftritt für jede Situation.</p>
+            <p class="live-more">Von hier aus öffnen sich alle vier Bereiche — wähle eine Welt oder gehe direkt zu Projekten, Leistungen, Über mich oder Kontakt.</p>
+            
+          </div>
+        <nav class="final-buttons" aria-label="Welten Navigation">
+          
+          <a href="../MULTIVERSUM.html" style="--btn-a:#9B64FF;--btn-b:#60DCFF;--world-font:'Space Grotesk', sans-serif;">
+            <img src="assets/world-multiversum.png" alt="MULTIVERSUM">
+            <span>MULTIVERSUM</span>
+          </a>
+
+          <a href="../NEXORA.html" style="--btn-a:#347DFF;--btn-b:#00F2FF;--world-font:'Orbitron', sans-serif;">
+            <img src="assets/world-nexora.png" alt="NEXORA">
+            <span>NEXORA</span>
+          </a>
+
+          <a href="../PROFESSIONAL.html" style="--btn-a:#E6F4FF;--btn-b:#7EBEFF;--world-font:'Manrope', sans-serif;">
+            <img src="assets/world-professional.png" alt="PROFESSIONAL">
+            <span>PROFESSIONAL</span>
+          </a>
+
+          <a href="../FREIRAUM.html" style="--btn-a:#FFBA68;--btn-b:#FF649C;--world-font:'Syne', sans-serif;">
+            <img src="assets/world-freiraum.png" alt="FREIRAUM">
+            <span>FREIRAUM</span>
+          </a>
+        </nav>
+        <nav class="next-final-buttons" aria-label="Nächste Schritte Navigation">
+          <a class="dock-card" href="../MULTIVERSUM.html#projekte" data-world="multiversum" data-world-link="multiversum" data-go="projects" data-target="#projekte">
+            <img src="assets/multiversum-projekte.webp" alt="Projekte">
+            <strong>Projekte</strong>
+            <small>Arbeit aus allen Welten</small>
+          </a>
+
+          <a class="dock-card" href="../MULTIVERSUM.html#leistungen" data-world="multiversum" data-world-link="multiversum" data-go="leistungen" data-target="#leistungen">
+            <img src="assets/multiversum-leistungen.webp" alt="Leistungen">
+            <strong>Leistungen</strong>
+            <small>Was ich anbiete</small>
+          </a>
+
+          <a class="dock-card" href="../MULTIVERSUM.html#ueber-mich" data-world="multiversum" data-world-link="multiversum" data-go="about" data-target="#ueber-mich">
+            <img src="assets/multiversum-ueber-mich.png" alt="Über mich">
+            <strong>Über mich</strong>
+            <small>Persönlichkeit & Kompetenz</small>
+          </a>
+
+          <a class="dock-card" href="../MULTIVERSUM.html#kontakt" data-world="multiversum" data-world-link="multiversum" data-go="contact" data-target="#kontakt">
+            <img src="assets/multiversum-kontakt.webp" alt="Kontakt">
+            <strong>Kontakt</strong>
+            <small>Nächster Schritt</small>
+          </a>
+        </nav>
+      </div>
+
+      <div class="progress-dots" id="progressDots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
+  </main>
+  </div>
+  <div id="galaxyBelowPage" class="galaxy-below-page" hidden>
+    <div class="galaxy-below-inner">
+      <section class="galaxy-below-section" aria-label="Portfolio Startseite">
+        <div class="galaxy-below-copy">
+          <p class="world-intro">MULTIVERSUM · Mix · Strategie · Begeisterung</p>
+          <h1>Digitale Welten. Ein Portfolio. Unendliche Möglichkeiten.</h1>
+          <p class="lead">NEXORA, PROFESSIONAL und FREIRAUM vereint · ein Auftritt für jede Situation.</p>
+          <p class="more">MULTIVERSUM ist mein übergeordnetes Portfolio: analytisch wie NEXORA, klar wie PROFESSIONAL, emotional wie FREIRAUM — je nach Projekt die passende Wirkung.</p>
+          <p class="more">Ich verbinde Strategie, Technologie, Design und Umsetzung in einem System, das Marken sichtbar macht und Menschen zur richtigen Entscheidung führt.</p>
+          <ul class="prose"><li>Digitale Markenauftritte mit klarer Positionierung</li><li>Websites mit Fokus auf Nutzerführung, Struktur und Conversion</li><li>SEO-orientierte Inhalte, die gefunden und verstanden werden</li><li>Kampagnen, die Strategie, Design und Umsetzung verbinden</li></ul>
+          <div class="galaxy-below-cta">
+            <a class="btn btn-primary" href="../MULTIVERSUM.html#projekte" data-go="projects">Projekte ansehen</a>
+            <a class="btn" href="../MULTIVERSUM.html#ueber-mich" data-go="about">Über mich</a>
+          </div>
+        </div>
+        <figure class="galaxy-below-portrait" aria-label="Alex Lamberti">
+          <img src="assets/multiversum-ueber-mich.png" alt="Alex Lamberti" width="800" height="1000" decoding="async" />
+        </figure>
+      </section>
+      <nav class="galaxy-below-chapters" aria-label="Kapitel">
+        <a href="../MULTIVERSUM.html#projekte" data-go="projects"><strong>Projekte</strong><span>Arbeit aus allen Welten</span></a>
+        <a href="../MULTIVERSUM.html#leistungen" data-go="leistungen"><strong>Leistungen</strong><span>Was ich anbiete</span></a>
+        <a href="../MULTIVERSUM.html#ueber-mich" data-go="about"><strong>Über mich</strong><span>Persönlichkeit &amp; Kompetenz</span></a>
+        <a href="../MULTIVERSUM.html#kontakt" data-go="contact"><strong>Kontakt</strong><span>Nächster Schritt</span></a>
+      </nav>
+      <div class="galaxy-below-footer">
+        <span>Weiter auf der vollständigen MULTIVERSUM-Seite</span>
+        <a href="../MULTIVERSUM.html">MULTIVERSUM.html öffnen</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const canvas = document.getElementById("galaxyCanvas");
+      const ctx = canvas.getContext("2d", { alpha: true });
+      const root = document.documentElement;
+
+      const referenceImage = new Image();
+      referenceImage.src = "assets/cinematic-galaxy-reference.png";
+
+      const worlds = [{"key": "multiversum", "name": "MULTIVERSUM", "font": "Space Grotesk", "position": "unten links", "accentA": "#9B64FF", "accentB": "#60DCFF", "accentC": "#FFC973", "route": {"x": 0.23, "y": 0.69, "z": 2.08}, "eyebrow": "MULTIVERSUM", "title": "Was ist MULTIVERSUM?", "text": "Die Übersichtswelt und das verbindende Portfolio-Universum. Hier sehen Sie das Gesamtbild, bevor die Reise in die einzelnen Spezialwelten geht. Als Meta-Ebene: Strategie, Persönlichkeit und die passende Wirkung je nach Projekt — analytisch, klar oder emotional.", "buttonText": "Zur Übersicht", "assets": {"sphere": "world-multiversum.png", "ueber": "multiversum-ueber-mich.png", "leistungen": "multiversum-leistungen.webp", "projekte": "multiversum-projekte.webp", "kontakt": "multiversum-kontakt.webp"}}, {"key": "nexora", "name": "NEXORA", "font": "Orbitron", "position": "links oben", "accentA": "#347DFF", "accentB": "#00F2FF", "accentC": "#704EFF", "route": {"x": 0.22, "y": 0.25, "z": 2.12}, "eyebrow": "NEXORA", "title": "Was ist NEXORA?", "text": "Die Technologie-Welt für Systeme, Performance und smarte digitale Lösungen — Web, Automatisierung und technische Klarheit. Wenn Projekte technisch anspruchsvoll sind: skalierbare Strukturen, präzise Umsetzung und messbare digitale Wirkung.", "buttonText": "Welt öffnen", "assets": {"sphere": "world-nexora.png", "ueber": "nexora-ueber-mich.png", "leistungen": "nexora-leistungen.webp", "projekte": "nexora-projekte.webp", "kontakt": "nexora-kontakt.webp"}}, {"key": "professional", "name": "PROFESSIONAL", "font": "Manrope", "position": "rechts oben", "accentA": "#E6F4FF", "accentB": "#7EBEFF", "accentC": "#B8C4D6", "route": {"x": 0.73, "y": 0.26, "z": 2.08}, "eyebrow": "PROFESSIONAL", "title": "Was ist PROFESSIONAL?", "text": "Die Business-Welt für Auftritt, Vertrauen und professionelle Markenführung — strukturiert, seriös und überzeugend. Für Unternehmen und Persönlichkeiten, die Klarheit, Glaubwürdigkeit und einen hochwertigen professionellen Eindruck brauchen.", "buttonText": "Welt öffnen", "assets": {"sphere": "world-professional.png", "ueber": "professional-ueber-mich.png", "leistungen": "professional-leistungen.webp", "projekte": "professional-projekte.webp", "kontakt": "professional-kontakt.webp"}}, {"key": "freiraum", "name": "FREIRAUM", "font": "Syne", "position": "rechts unten", "accentA": "#FFBA68", "accentB": "#FF649C", "accentC": "#FFE2A0", "route": {"x": 0.75, "y": 0.69, "z": 2.16}, "eyebrow": "FREIRAUM", "title": "Was ist FREIRAUM?", "text": "Die Kreativ-Welt für Identität, Emotion und visuelle Freiheit — Design, Kampagnen und Inhalte mit Charakter. Wenn Marken und Projekte Persönlichkeit, Tiefe und ein unverwechselbares Gefühl brauchen — mutig, expressiv, menschlich.", "buttonText": "Welt öffnen", "assets": {"sphere": "world-freiraum.png", "ueber": "freiraum-ueber-mich.png", "leistungen": "freiraum-leistungen.webp", "projekte": "freiraum-projekte.webp", "kontakt": "freiraum-kontakt.webp"}}];
+
+      const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const smoother = (t) => t * t * t * (t * (t * 6 - 15) + 10);
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let progress = 0;
+      let target = 0;
+      let visual = 0;
+      let lastTouchY = 0;
+      let time = 0;
+
+      let stars = [];
+      let particles = [];
+      let comets = [];
+
+      const WHEEL_STEP = 1 / 155;
+      const TOUCH_SENSITIVITY = 0.00022;
+      const DEPTH = 16000;
+      const CAMERA_TRAVEL = 122000;
+
+      const ui = {
+        panels: [...document.querySelectorAll(".world-panel")],
+        final: document.getElementById("finalLayer"),
+        dots: [...document.querySelectorAll(".dot")]
+      };
+
+      const stages = [
+        { name: "intro", start: 0.00, end: 0.12, camera: { x: .50, y: .50, z: 1.34 } },
+        { name: "overview", start: 0.12, end: 0.24, camera: { x: .50, y: .50, z: 1.12 } },
+        { name: "multiversum", start: 0.24, end: 0.40, world: 0, camera: worlds[0].route },
+        { name: "nexora", start: 0.40, end: 0.56, world: 1, camera: worlds[1].route },
+        { name: "professional", start: 0.56, end: 0.72, world: 2, camera: worlds[2].route },
+        { name: "freiraum", start: 0.72, end: 0.88, world: 3, camera: worlds[3].route },
+        { name: "final", start: 0.88, end: 1.00, camera: { x: .50, y: .50, z: 1.62 } }
+      ];
+
+      function stageWeight(index, p, widen = 1.45) {
+        const s = stages[index];
+        const center = (s.start + s.end) / 2;
+        const half = (s.end - s.start) / 2;
+        return smoother(clamp(1 - Math.abs(p - center) / (half * widen)));
+      }
+
+      function getStageIndex(p) {
+        let best = 0;
+        let bestWeight = -1;
+        stages.forEach((_, i) => {
+          const w = stageWeight(i, p, 1.0);
+          if (w > bestWeight) {
+            bestWeight = w;
+            best = i;
+          }
+        });
+        return best;
+      }
+
+      function getCamera(p) {
+        const weights = stages.map((_, i) => stageWeight(i, p, 1.72));
+        const total = weights.reduce((a,b) => a + b, 0) || 1;
+        const cam = { x: 0, y: 0, z: 0 };
+
+        stages.forEach((s, i) => {
+          cam.x += s.camera.x * weights[i];
+          cam.y += s.camera.y * weights[i];
+          cam.z += s.camera.z * weights[i];
+        });
+
+        cam.x /= total;
+        cam.y /= total;
+        cam.z /= total;
+
+        if (p > .90) {
+          const deep = smoother((p - .90) / .10);
+          cam.x = lerp(cam.x, .50, deep);
+          cam.y = lerp(cam.y, .50, deep);
+          cam.z = lerp(cam.z, 2.42, deep);
+        }
+
+        return cam;
+      }
+
+      function hexToRgb(hex) {
+        const value = hex.replace("#", "");
+        return [
+          parseInt(value.slice(0, 2), 16),
+          parseInt(value.slice(2, 4), 16),
+          parseInt(value.slice(4, 6), 16)
+        ];
+      }
+
+      function rgbToHex(rgb) {
+        return "#" + rgb.map(v => Math.round(clamp(v, 0, 255)).toString(16).padStart(2, "0")).join("");
+      }
+
+      function hexRgbString(hex) {
+        return hexToRgb(hex).join(",");
+      }
+
+      function getAccent(p) {
+        const weights = [0,0,0,0];
+
+        stages.forEach((s, i) => {
+          if (typeof s.world === "number") weights[s.world] += stageWeight(i, p, 1.9);
+        });
+
+        const overviewW = stageWeight(1, p, 1.8);
+        const introW = stageWeight(0, p, 1.5);
+        const finalW = stageWeight(6, p, 1.7);
+
+        weights[0] += introW + overviewW * .65 + finalW * .4;
+        weights[1] += overviewW * .4 + finalW * .25;
+        weights[2] += overviewW * .4 + finalW * .25;
+        weights[3] += overviewW * .4 + finalW * .25;
+
+        const total = weights.reduce((a,b) => a + b, 0) || 1;
+        const a = [0,0,0];
+        const b = [0,0,0];
+        const c = [0,0,0];
+
+        worlds.forEach((w, i) => {
+          const ca = hexToRgb(w.accentA);
+          const cb = hexToRgb(w.accentB);
+          const cc = hexToRgb(w.accentC);
+          a[0] += ca[0] * weights[i]; a[1] += ca[1] * weights[i]; a[2] += ca[2] * weights[i];
+          b[0] += cb[0] * weights[i]; b[1] += cb[1] * weights[i]; b[2] += cb[2] * weights[i];
+          c[0] += cc[0] * weights[i]; c[1] += cc[1] * weights[i]; c[2] += cc[2] * weights[i];
+        });
+
+        return {
+          a: rgbToHex([a[0]/total, a[1]/total, a[2]/total]),
+          b: rgbToHex([b[0]/total, b[1]/total, b[2]/total]),
+          c: rgbToHex([c[0]/total, c[1]/total, c[2]/total])
+        };
+      }
+
+      function resize() {
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        width = innerWidth;
+        height = innerHeight;
+
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        buildScene();
+      }
+
+      function rand(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function buildScene() {
+        const max = Math.max(width, height);
+
+        stars = Array.from({ length: width < 740 ? 1150 : 2300 }, (_, i) => {
+          const angle = rand(0, Math.PI * 2);
+          const radius = Math.pow(rand(0, 1), .54) * max * 3.35;
+          return {
+            x: Math.cos(angle) * radius,
+            y: Math.sin(angle) * radius,
+            z: rand(80, DEPTH),
+            size: rand(.22, 2.7),
+            alpha: rand(.14, 1),
+            hue: i % 7
+          };
+        });
+
+        particles = Array.from({ length: width < 740 ? 160 : 350 }, (_, i) => {
+          const angle = rand(0, Math.PI * 2);
+          const radius = Math.pow(rand(0, 1), .50) * max * 3.2;
+          return {
+            x: Math.cos(angle) * radius,
+            y: Math.sin(angle) * radius * rand(.38, .96),
+            z: rand(70, DEPTH),
+            size: rand(12, 90),
+            len: rand(60, 300),
+            rot: rand(0, Math.PI * 2),
+            alpha: rand(.035, .18),
+            type: i % 5
+          };
+        });
+
+        comets = Array.from({ length: width < 740 ? 24 : 50 }, (_, i) => {
+          const angle = rand(0, Math.PI * 2);
+          const radius = Math.pow(rand(0, 1), .50) * max * 2.9;
+          return {
+            x: Math.cos(angle) * radius,
+            y: Math.sin(angle) * radius * rand(.35, .9),
+            z: rand(100, DEPTH),
+            len: rand(160, 520),
+            w: rand(7, 28),
+            rot: rand(-Math.PI, Math.PI),
+            alpha: rand(.05, .18),
+            type: i % 4
+          };
+        });
+      }
+
+      function project(item, cameraZ, focal) {
+        let z = (item.z - cameraZ) % DEPTH;
+        if (z < 50) z += DEPTH;
+        const scale = focal / z;
+        return {
+          x: width / 2 + item.x * scale,
+          y: height / 2 + item.y * scale,
+          z,
+          scale
+        };
+      }
+
+      function radialGlow(x, y, radius, color, alpha) {
+        if (radius <= 0 || alpha <= 0) return;
+        const g = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        g.addColorStop(0, `rgba(${color}, ${alpha})`);
+        g.addColorStop(.26, `rgba(${color}, ${alpha * .55})`);
+        g.addColorStop(.68, `rgba(${color}, ${alpha * .18})`);
+        g.addColorStop(1, `rgba(${color}, 0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function ellipseGlow(x, y, rx, ry, rot, color, alpha) {
+        if (rx <= 0 || ry <= 0 || alpha <= 0) return;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rot);
+        ctx.scale(1, ry / rx);
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+        g.addColorStop(0, `rgba(${color}, ${alpha})`);
+        g.addColorStop(.28, `rgba(${color}, ${alpha * .58})`);
+        g.addColorStop(.68, `rgba(${color}, ${alpha * .18})`);
+        g.addColorStop(1, `rgba(${color}, 0)`);
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(0, 0, rx, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawReference(p, camera) {
+        if (!referenceImage.complete || !referenceImage.naturalWidth) return;
+
+        const imgW = referenceImage.naturalWidth;
+        const imgH = referenceImage.naturalHeight;
+        const base = Math.max(width / imgW, height / imgH);
+        const scale = base * camera.z * (1 + (p % .14) * .10);
+
+        const sx = camera.x * imgW;
+        const sy = camera.y * imgH;
+        const dx = width / 2 - sx * scale;
+        const dy = height / 2 - sy * scale;
+
+        ctx.save();
+        ctx.globalAlpha = .70;
+        ctx.filter = "saturate(1.18) contrast(1.08)";
+        ctx.drawImage(referenceImage, dx, dy, imgW * scale, imgH * scale);
+        ctx.filter = "none";
+        ctx.restore();
+      }
+
+      function drawStars(p, cameraZ, accent) {
+        const a = hexRgbString(accent.a);
+        const b = hexRgbString(accent.b);
+        const c = hexRgbString(accent.c);
+        const focal = width < 740 ? 485 : 680;
+
+        ctx.globalCompositeOperation = "lighter";
+
+        for (const star of stars) {
+          const pr = project(star, cameraZ, focal);
+          if (pr.x < -80 || pr.x > width + 80 || pr.y < -80 || pr.y > height + 80) continue;
+
+          const size = star.size * clamp(pr.scale * 1.45, .12, 2.36);
+          const alpha = star.alpha * clamp(pr.scale * 1.05, .05, .86);
+          const color = star.hue === 0 ? a : star.hue === 1 ? b : star.hue === 2 ? c : "255,255,255";
+
+          if (size > 1.4) radialGlow(pr.x, pr.y, size * 6.5, color, alpha * .15);
+          ctx.fillStyle = `rgba(${color}, ${alpha})`;
+          ctx.beginPath();
+          ctx.arc(pr.x, pr.y, Math.max(.22, size), 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function drawAmbient(p, cameraZ, accent) {
+        const a = hexRgbString(accent.a);
+        const b = hexRgbString(accent.b);
+        const c = hexRgbString(accent.c);
+        const focal = width < 740 ? 485 : 680;
+
+        ctx.globalCompositeOperation = "lighter";
+
+        for (const item of particles) {
+          const pr = project(item, cameraZ * 1.18 + time * 22, focal);
+          if (pr.x < -260 || pr.x > width + 260 || pr.y < -260 || pr.y > height + 260) continue;
+
+          const size = item.size * pr.scale;
+          const len = item.len * pr.scale;
+          const alpha = item.alpha * clamp(pr.scale * 1.55, .07, .98);
+          const rot = item.rot + time * .00022 + p * 2;
+
+          ctx.save();
+          ctx.translate(pr.x, pr.y);
+          ctx.rotate(rot);
+
+          if (item.type % 3 === 0) {
+            const g = ctx.createRadialGradient(0, 0, 0, 0, 0, size);
+            g.addColorStop(0, `rgba(255,255,255, ${alpha * .30})`);
+            g.addColorStop(.36, `rgba(${c}, ${alpha})`);
+            g.addColorStop(1, `rgba(${b}, 0)`);
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, size * .54, size * .18, 0, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            const g = ctx.createLinearGradient(-len/2, 0, len/2, 0);
+            g.addColorStop(0, `rgba(${a},0)`);
+            g.addColorStop(.5, `rgba(${b},${alpha * .8})`);
+            g.addColorStop(1, `rgba(${c},0)`);
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, len * .28, Math.max(1, size * .065), 0, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+
+        for (const comet of comets) {
+          const pr = project(comet, cameraZ * 1.24 + time * 34, focal);
+          if (pr.x < -360 || pr.x > width + 360 || pr.y < -360 || pr.y > height + 360) continue;
+
+          const len = comet.len * pr.scale;
+          const w = comet.w * pr.scale;
+          const alpha = comet.alpha * clamp(pr.scale * 1.22, .08, .86);
+          const color = comet.type === 0 ? c : comet.type === 1 ? b : a;
+
+          ctx.save();
+          ctx.translate(pr.x, pr.y);
+          ctx.rotate(comet.rot + p * 1.4);
+          const g = ctx.createLinearGradient(-len/2, 0, len/2, 0);
+          g.addColorStop(0, `rgba(${color},0)`);
+          g.addColorStop(.28, `rgba(${color},${alpha*.16})`);
+          g.addColorStop(.68, `rgba(${color},${alpha})`);
+          g.addColorStop(1, "rgba(255,255,255,0)");
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.ellipse(-len * .10, 0, len * .55, w * .58, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        ctx.globalCompositeOperation = "source-over";
+      }
+
+      function drawCenterPortal(p, accent) {
+        const intro = stageWeight(0, p, 1.25) + stageWeight(1, p, 1.1) * .65 + stageWeight(6, p, 1.35);
+        if (intro < .02) return;
+
+        const cx = width/2;
+        const cy = height/2;
+        const max = Math.max(width, height);
+        const a = hexRgbString(accent.a);
+        const b = hexRgbString(accent.b);
+        const c = hexRgbString(accent.c);
+
+        ctx.globalCompositeOperation = "lighter";
+        radialGlow(cx, cy, max * .18, "255,255,255", .10 * intro);
+        radialGlow(cx, cy, max * .34, b, .08 * intro);
+        radialGlow(cx, cy, max * .55, a, .055 * intro);
+
+        for (let i = 0; i < 9; i++) {
+          const rot = p * 3.6 + i * .28 + time * .00008;
+          ellipseGlow(cx, cy, max * (.08 + i * .026), max * (.032 + i * .010), rot, i % 2 ? c : b, (.030 - i * .0022) * intro);
+        }
+        ctx.globalCompositeOperation = "source-over";
+      }
+
+      function easeInOutSine(t) {
+        return 0.5 - Math.cos(Math.PI * clamp(t, 0, 1)) / 2;
+      }
+
+      function stageLocalProgress(stageIndex, p) {
+        const s = stages[stageIndex];
+        if (!s) return 0;
+        return clamp((p - s.start) / Math.max(s.end - s.start, 0.0001), 0, 1);
+      }
+
+      function revealStep(t, start, span, amount) {
+        return easeInOutSine(clamp((t - start) / span, 0, 1)) * amount;
+      }
+
+      function resetReveal(copyEl) {
+        if (!copyEl) return;
+        copyEl.querySelectorAll("[data-reveal]").forEach((el) => {
+          el.style.opacity = "";
+          el.style.transform = "";
+        });
+      }
+
+      function worldRevealTimeline(local) {
+        return clamp(local / 0.52, 0, 1);
+      }
+
+      function worldCopyHoldOpacity(stageIndex, p) {
+        const local = stageLocalProgress(stageIndex, p);
+        const holdUntil = 0.8;
+        if (local <= holdUntil) return 1;
+        return 1 - smoother(clamp((local - holdUntil) / (1 - holdUntil), 0, 1));
+      }
+
+      function applyIntroReveal(copyEl, textLocal, copyOpacity) {
+        if (!copyEl) return;
+        const title = copyEl.querySelector('[data-reveal="title"]');
+        const body = copyEl.querySelector('[data-reveal="body"]');
+        if (title) {
+          const op = revealStep(textLocal, 0, 0.12, copyOpacity);
+          title.style.opacity = String(op);
+          title.style.transform = "translateY(" + lerp(14, 0, op / Math.max(copyOpacity, 0.001)) + "px)";
+        }
+        if (body) {
+          const op = revealStep(textLocal, 0.14, 0.16, copyOpacity);
+          body.style.opacity = String(op);
+          body.style.transform = "translateY(" + lerp(14, 0, op / Math.max(copyOpacity, 0.001)) + "px)";
+        }
+      }
+
+      function applyWorldReveal(copyEl, stageIndex, p) {
+        if (!copyEl) return;
+        const local = stageLocalProgress(stageIndex, p);
+        const timeline = worldRevealTimeline(local);
+        const hold = worldCopyHoldOpacity(stageIndex, p);
+        const parts = {
+          eyebrow: [0, 0.1, 0],
+          lead: [0.05, 0.11, 12],
+          what: [0.17, 0.12, 14],
+          purpose: [0.32, 0.12, 14],
+          diff: [0.47, 0.12, 14],
+          cta: [0.62, 0.14, 10],
+        };
+        Object.keys(parts).forEach((key) => {
+          const el = copyEl.querySelector('[data-reveal="' + key + '"]');
+          if (!el) return;
+          const [start, span, shift] = parts[key];
+          const op = revealStep(timeline, start, span, 1) * hold;
+          el.style.opacity = String(op);
+          if (shift) el.style.transform = "translateY(" + lerp(shift, 0, op / Math.max(hold, 0.001)) + "px)";
+        });
+      }
+
+      const worldStageByKey = { multiversum: 2, nexora: 3, professional: 4, freiraum: 5 };
+
+      function updateUI(p) {
+        const accent = getAccent(p);
+        const idx = getStageIndex(p);
+        const stage = stages[idx];
+
+        root.style.setProperty("--progress", p.toFixed(5));
+        root.style.setProperty("--accent-a", accent.a);
+        root.style.setProperty("--accent-b", accent.b);
+        root.style.setProperty("--accent-c", accent.c);
+
+        const overviewOpacity = clamp(stageWeight(1, p, 1.02));
+        const detailOpacity = clamp(stageWeight(2, p, .82) + stageWeight(3, p, .82) + stageWeight(4, p, .82) + stageWeight(5, p, .82));
+        const finalOpacity = clamp(stageWeight(6, p, 1.0));
+
+        root.style.setProperty("--overview-opacity", overviewOpacity);
+        root.style.setProperty("--detail-opacity", detailOpacity);
+        root.style.setProperty("--final-opacity", finalOpacity);
+
+        const centerFinalIn = smoother(clamp((p - 0.835) / 0.035));
+        const centerFinalOut = 1 - smoother(clamp((p - 0.895) / 0.048));
+        const centerFinalOpacity = clamp(centerFinalIn * centerFinalOut);
+
+        const nextButtonsIn = smoother(clamp((p - 0.958) / 0.020));
+        const nextButtonsOut = 1 - smoother(clamp((p - 0.988) / 0.012));
+        const nextButtonsRaw = clamp(nextButtonsIn * nextButtonsOut);
+        const nextButtonsOpacity = centerFinalOpacity > 0.03 ? 0 : nextButtonsRaw;
+
+        const finalLayerOpacity = Math.max(centerFinalOpacity, nextButtonsOpacity);
+
+        root.style.setProperty("--center-final-opacity", centerFinalOpacity.toFixed(4));
+        root.style.setProperty("--next-buttons-opacity", nextButtonsOpacity.toFixed(4));
+        root.style.setProperty("--final-layer-opacity", finalLayerOpacity.toFixed(4));
+
+        ui.final.classList.toggle("is-active", finalLayerOpacity > 0.05);
+        ui.final.classList.toggle("is-center-active", centerFinalOpacity > 0.08);
+        ui.final.classList.toggle("is-next-active", nextButtonsOpacity > 0.08);
+
+        let activeWorld = null;
+        if (typeof stage.world === "number") activeWorld = worlds[stage.world];
+
+        ui.panels.forEach(panel => {
+          const isActive = activeWorld && panel.dataset.world === activeWorld.key;
+          panel.classList.toggle("is-active", !!isActive);
+          const box = panel.querySelector(".world-explainer-textbox");
+          if (box && isActive) {
+            const si = worldStageByKey[panel.dataset.world];
+            applyWorldReveal(box, si, p);
+          } else if (box) {
+            resetReveal(box);
+          }
+        });
+
+        const overviewCopy = document.querySelector(".overview-center-textbox");
+        if (overviewCopy) {
+          applyIntroReveal(overviewCopy, stageLocalProgress(1, p), overviewOpacity);
+        } else {
+          resetReveal(overviewCopy);
+        }
+
+        ui.dots.forEach((dot, i) => dot.classList.toggle("is-active", i === idx));
+      }
+
+      function render(now = 0) {
+        time = now || performance.now();
+        progress = lerp(progress, target, .075);
+        visual = lerp(visual, progress, .10);
+
+        const p = visual;
+        const camera = getCamera(p);
+        const accent = getAccent(p);
+        const cameraZ = p * CAMERA_TRAVEL + time * 4.8;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const bg = hexToRgb(accent.a);
+        ctx.fillStyle = `rgb(${Math.round(bg[0] * .035)}, ${Math.round(bg[1] * .035)}, ${Math.round(bg[2] * .055 + 9)})`;
+        ctx.fillRect(0, 0, width, height);
+
+        drawReference(p, camera);
+        drawStars(p, cameraZ, accent);
+        drawAmbient(p, cameraZ, accent);
+        drawCenterPortal(p, accent);
+        updateUI(p);
+
+        requestAnimationFrame(render);
+      }
+
+      
+      let galaxyReleased = false;
+      let postReleaseBuffer = 0;
+      const POST_RELEASE_STEPS = 2.6;
+
+      function updateGalaxyExitOpacity() {
+        if (!galaxyReleased) return;
+        const viewport = document.getElementById("galaxyViewport");
+        const vh = viewport ? viewport.offsetHeight : window.innerHeight;
+        const fade = clamp(window.scrollY / Math.max(vh * 0.55, 1), 0, 1);
+        document.documentElement.style.setProperty("--galaxy-exit-opacity", String(1 - fade * 0.92));
+      }
+
+      function releaseToPage() {
+        if (galaxyReleased) return;
+        galaxyReleased = true;
+        document.body.classList.add("galaxy-released");
+        document.documentElement.classList.add("galaxy-released");
+        const below = document.getElementById("galaxyBelowPage");
+        if (below) below.removeAttribute("hidden");
+        requestAnimationFrame(function () {
+          const viewport = document.getElementById("galaxyViewport");
+          const top = viewport ? viewport.offsetTop : 0;
+          window.scrollTo({ top: top, behavior: "auto" });
+          updateGalaxyExitOpacity();
+        });
+      }
+
+      function move(delta) {
+        if (galaxyReleased) return;
+        const next = target + delta;
+        if (next > 1 && target < 1) {
+          target = 1;
+          return;
+        }
+        if (target >= 1) {
+          if (delta > 0) {
+            postReleaseBuffer += Math.max(Math.abs(delta), 0.22);
+            if (postReleaseBuffer >= POST_RELEASE_STEPS) releaseToPage();
+          } else {
+            postReleaseBuffer = Math.max(0, postReleaseBuffer + delta);
+          }
+          return;
+        }
+        target = clamp(next, 0, 1);
+      }
+
+      addEventListener("wheel", (event) => {
+        if (galaxyReleased) return;
+        event.preventDefault();
+        const direction = Math.sign(event.deltaY);
+        const strength = Math.min(Math.max(Math.abs(event.deltaY) / 100, .18), 1.0);
+        move(direction * WHEEL_STEP * strength);
+      }, { passive: false });
+
+      addEventListener("scroll", () => {
+        updateGalaxyExitOpacity();
+      }, { passive: true });
+
+      addEventListener("keydown", (event) => {
+        if (galaxyReleased) return;
+        if (["ArrowDown", "PageDown", " "].includes(event.key)) {
+          event.preventDefault();
+          move(.010);
+        }
+        if (["ArrowUp", "PageUp"].includes(event.key)) {
+          event.preventDefault();
+          move(-.010);
+        }
+      }, { passive: false });
+
+      addEventListener("touchstart", (event) => {
+        lastTouchY = event.touches[0].clientY;
+      }, { passive: false });
+
+      addEventListener("touchmove", (event) => {
+        if (galaxyReleased) return;
+        event.preventDefault();
+        const y = event.touches[0].clientY;
+        const delta = lastTouchY - y;
+        lastTouchY = y;
+        move(delta * TOUCH_SENSITIVITY);
+      }, { passive: false });
+
+      addEventListener("resize", resize, { passive: true });
+
+      resize();
+      requestAnimationFrame(render);
+    })();
+  </script>
+</body>
+</html>
