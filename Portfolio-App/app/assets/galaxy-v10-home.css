@@ -20,3 +20,18 @@
 #dnaStage.mv-dna-hidden {
   display: none !important;
 }
+
+/* Laptop: Galaxy-Host an kürzere Viewport-Höhe anpassen (27"+ unberührt) */
+@media (min-width: 1100px) and (max-width: 1919px) {
+  .galaxy-v10-home-host {
+    min-height: 0;
+    height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1919px) and (max-height: 860px) {
+  .galaxy-v10-home-host {
+    height: calc(100svh - var(--header-h, 90px));
+    min-height: calc(100svh - var(--header-h, 90px));
+  }
+}
