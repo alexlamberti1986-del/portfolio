@@ -59,7 +59,12 @@
     if (!isFinite(defaultWorld) || defaultWorld < 0 || defaultWorld > 3) defaultWorld = 0;
   }
   var loaded = {};
+  var resetAttempts = {};
   loaded[defaultWorld] = true;
+  var SHELL_CHROME_CSS =
+    "html.welten-live-shell .mv4-bar,html.welten-live-shell .site-header{display:none!important}" +
+    "html.welten-live-shell .experience-rail{display:none!important}" +
+    "html.welten-live-shell #slide-home{padding-top:0!important}";
 
   function injectPreviewShellCss(f) {
     try {
@@ -87,6 +92,12 @@
         titleLink.rel = "stylesheet";
         titleLink.href = TITLE_COLORS_CSS;
         (d.head || d.documentElement).appendChild(titleLink);
+      }
+      if (isLiveShell && !d.getElementById("mv4-shell-chrome-css")) {
+        var chrome = d.createElement("style");
+        chrome.id = "mv4-shell-chrome-css";
+        chrome.textContent = SHELL_CHROME_CSS;
+        (d.head || d.documentElement).appendChild(chrome);
       }
     } catch (e) {}
   }
@@ -173,6 +184,8 @@
   function resetFrame(i) {
     var f = frames[i];
     if (!f) return;
+    resetAttempts[i] = (resetAttempts[i] || 0) + 1;
+    if (resetAttempts[i] > 2) return;
     f.src = FRAME_PAGES[i];
     loaded[i] = false;
   }
@@ -374,7 +387,7 @@
     });
     setMaster(i);
     broadcastLang();
-    unlockShell();
+    if (!switching) unlockShell();
     setTimeout(function () {
       var f = frames[i];
       if (f) injectProfiles(f, i);
@@ -454,9 +467,17 @@
     var wKey = worldSwitchKey(i);
 
     if (!effectsOn) {
-      switchToWorldIndex(i);
+      switchToWorldIndex(i).then(function () {
+        unlockShell();
+      });
       return;
     }
+
+    window.__wwsOnTransitionEnd = function () {
+      unlockShell();
+      clearSwitchLock();
+      window.__wwsOnTransitionEnd = null;
+    };
 
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
       window.WeltenWorldSwitchPreview.playSwitch(wKey, i);
@@ -594,6 +615,7 @@
           resetFrame(j);
           return;
         }
+        resetAttempts[j] = 0;
       } catch (e) {}
       ensureSingleBar();
       injectProfiles(f, j);
@@ -608,11 +630,9 @@
   broadcastLang();
   applyShellRoute();
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
-    window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame);
+    window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
   } else {
-    [0, 1, 2, 3].forEach(function (i) {
-      if (i !== defaultWorld) preloadFrame(i);
-    });
+    preloadFrame(1);
   }
   window.mv4SwitchWorld = switchTo;
 })();

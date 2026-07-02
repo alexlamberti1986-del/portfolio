@@ -5,6 +5,7 @@
   "use strict";
 
   var GALAXY_MIN_WIDTH = 1920;
+  var CACHE = "20260703perf";
 
   function isLargeDesktop() {
     try {
@@ -18,12 +19,40 @@
     return document.body.getAttribute("data-world") === "general" && isLargeDesktop();
   }
 
-  function mountGalaxy() {
-    if (!shouldUseGalaxy()) return;
-    if (document.getElementById("galaxyV10HomeHost")) return;
-
+  function restoreStage() {
     var stage = document.getElementById("dnaStage");
     if (!stage) return;
+    stage.classList.remove("mv-dna-hidden");
+    stage.removeAttribute("hidden");
+  }
+
+  function teardownGalaxy() {
+    var host = document.getElementById("galaxyV10HomeHost");
+    if (host) host.remove();
+    window.__galaxyV10HomeActive = false;
+    restoreStage();
+    if (window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
+      try {
+        window.MVParallaxHero.build();
+      } catch (e) {}
+    } else if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
+      var evt = new CustomEvent("mv-restore-hero");
+      document.dispatchEvent(evt);
+    }
+  }
+
+  function mountGalaxy() {
+    if (!shouldUseGalaxy()) {
+      teardownGalaxy();
+      return false;
+    }
+    if (document.getElementById("galaxyV10HomeHost")) {
+      window.__galaxyV10HomeActive = true;
+      return true;
+    }
+
+    var stage = document.getElementById("dnaStage");
+    if (!stage) return false;
 
     var host = document.createElement("div");
     host.className = "galaxy-v10-home-host";
@@ -32,13 +61,20 @@
     var frame = document.createElement("iframe");
     frame.className = "galaxy-v10-home-frame";
     frame.title = "Reise durch das Multiversum";
-    frame.src = "galaxy-v10/embed.html?v=20260702shellfix";
+    frame.src = "galaxy-v10/embed.html?v=" + CACHE;
     frame.loading = "eager";
 
     host.appendChild(frame);
     stage.parentNode.insertBefore(host, stage);
     stage.classList.add("mv-dna-hidden");
     stage.setAttribute("hidden", "hidden");
+    window.__galaxyV10HomeActive = true;
+    return true;
+  }
+
+  function remountGalaxyIfNeeded() {
+    if (shouldUseGalaxy()) mountGalaxy();
+    else teardownGalaxy();
   }
 
   function onReleaseScroll() {
@@ -57,25 +93,20 @@
     onReleaseScroll();
   });
 
-  /* Flag sofort setzen — defer-Skripte (Parallax) laufen vor DOMContentLoaded */
-  if (shouldUseGalaxy()) {
-    window.__galaxyV10HomeActive = true;
+  var resizeTimer = 0;
+  function onResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(remountGalaxyIfNeeded, 180);
   }
 
-  function remountGalaxyIfNeeded() {
-    if (!shouldUseGalaxy()) {
-      var host = document.getElementById("galaxyV10HomeHost");
-      if (host) host.remove();
-      window.__galaxyV10HomeActive = false;
-      return;
-    }
-    window.__galaxyV10HomeActive = true;
-    mountGalaxy();
-  }
-
-  mountGalaxy();
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", remountGalaxyIfNeeded);
+  } else {
+    remountGalaxyIfNeeded();
   }
   window.addEventListener("pageshow", remountGalaxyIfNeeded);
+  window.addEventListener("resize", onResize, { passive: true });
+  try {
+    window.matchMedia("(min-width: " + GALAXY_MIN_WIDTH + "px)").addEventListener("change", remountGalaxyIfNeeded);
+  } catch (e) {}
 })();

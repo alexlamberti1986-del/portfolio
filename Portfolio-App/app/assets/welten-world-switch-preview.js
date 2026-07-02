@@ -18,6 +18,21 @@
   };
 
   function getTimingForWorld(worldKey) {
+    var mobile = false;
+    try {
+      mobile = window.matchMedia("(max-width: 768px)").matches;
+    } catch (e) {}
+    if (mobile) {
+      return Object.assign({}, WWS_TIMING, {
+        WORLD_TRANSITION_DURATION: 1400,
+        EFFECT_MS: 700,
+        TITLE_REVEAL_AT: 520,
+        TITLE_FADE_IN: 280,
+        TITLE_HOLD: 500,
+        COVER_MS: 420,
+        EXIT_MS: 280,
+      });
+    }
     if (worldKey === "general") {
       return Object.assign({}, WWS_TIMING, {
         WORLD_TRANSITION_DURATION: 3800,
@@ -1612,6 +1627,11 @@
         running = false;
         window.__wwsPreviewOwnsSound = false;
         wwsClearTimers();
+        if (typeof window.__wwsOnTransitionEnd === "function") {
+          try {
+            window.__wwsOnTransitionEnd();
+          } catch (eEnd) {}
+        }
       }, exitMs);
     }
 

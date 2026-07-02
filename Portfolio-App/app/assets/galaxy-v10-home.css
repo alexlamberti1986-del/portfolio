@@ -4,7 +4,7 @@
   min-height: min(100svh, 920px);
   position: relative;
   z-index: 3;
-  background: #02030b;
+  background: #02030b url("../galaxy-v10/assets/galaxy-start-hero.png") center/cover no-repeat;
 }
 
 .galaxy-v10-home-frame {

@@ -114,9 +114,13 @@
 
     var obs = typeof MutationObserver !== "undefined"
       ? new MutationObserver(function () {
-          apply(currentLang());
+          if (obsTimer) clearTimeout(obsTimer);
+          obsTimer = setTimeout(function () {
+            apply(currentLang());
+          }, 200);
         })
       : null;
+    var obsTimer = 0;
     if (obs) {
       obs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
     }
