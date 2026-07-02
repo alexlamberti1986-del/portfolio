@@ -563,7 +563,7 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
 .world-core:hover img.mv-orb-bubble__standalone,
 .world-core:focus-visible img.mv-orb-bubble__standalone,
 .world-core.is-pressed img.mv-orb-bubble__standalone {
-  transform: scale(1.06);
+  transform: scale(1.05);
   filter: brightness(1.08) saturate(1.08);
   animation-play-state: paused;
 }
@@ -788,7 +788,7 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 .world-card:hover .world-card__image,
 .world-card:focus-visible .world-card__image,
 .world-card.is-pressed .world-card__image {
-  transform: scale(1.07);
+  transform: scale(1.04);
   filter: brightness(1.08) saturate(1.06);
 }
 
@@ -1535,8 +1535,9 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   backdrop-filter: blur(16px);
   text-align: center;
   color: #f7f4ff;
+  text-decoration: none;
   cursor: pointer;
-  transition: transform 0.35s ease, border-color 0.35s ease, opacity 0.35s ease;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, opacity 0.35s ease;
 }
 
 .mv-scroll-story.is-portfolio-visible .mv-scroll-card {
@@ -1565,9 +1566,11 @@ body.is-world-focus .mv-scroll-story .world-copy button {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.mv-scroll-card:hover {
-  transform: translateY(-3px);
+.mv-scroll-card:hover,
+.mv-scroll-card:focus-visible {
+  transform: scale(1.02);
   border-color: rgba(104, 231, 255, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.38), 0 0 32px rgba(104, 231, 255, 0.22);
 }
 
 .mv-scroll-card__label {
@@ -2312,7 +2315,7 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 
 .mv-scroll-slide--nexora .mv-scroll-slide__enter.mv-form-btn:hover,
 .mv-scroll-slide--nexora .mv-scroll-slide__enter.mv-form-btn:focus-visible {
-  transform: translateY(-2px);
+  transform: scale(1.02);
   border-color: rgba(104, 231, 255, 0.82) !important;
   color: #9ee8ff !important;
   background: rgba(0, 56, 112, 0.48) !important;
@@ -2328,7 +2331,7 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 
 .mv-scroll-slide--professional .mv-scroll-slide__enter.mv-form-btn:hover,
 .mv-scroll-slide--professional .mv-scroll-slide__enter.mv-form-btn:focus-visible {
-  transform: translateY(-2px);
+  transform: scale(1.02);
   border-color: rgba(232, 236, 242, 0.72) !important;
   color: #f5f7fa !important;
   background: rgba(255, 255, 255, 0.12) !important;
@@ -2344,7 +2347,7 @@ body.is-world-focus .mv-scroll-story .world-copy button {
 
 .mv-scroll-slide--freiraum .mv-scroll-slide__enter.mv-form-btn:hover,
 .mv-scroll-slide--freiraum .mv-scroll-slide__enter.mv-form-btn:focus-visible {
-  transform: translateY(-2px);
+  transform: scale(1.02);
   border-color: rgba(255, 216, 106, 0.82) !important;
   color: #ffe08a !important;
   background: rgba(56, 42, 10, 0.46) !important;
@@ -2673,8 +2676,8 @@ body[data-world="general"] .mv-scroll-story .mv-scroll-slide--freiraum .mv-scrol
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:hover .world-card__image,
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card:focus-visible .world-card__image,
   .mv-scroll-story[data-layout="split-world"] .world-zone.is-focus .world-card.is-pressed .world-card__image {
-    transform: scale(1.08);
-    filter: brightness(1.1) saturate(1.08);
+    transform: scale(1.04);
+    filter: brightness(1.08) saturate(1.06);
   }
 
   .world-core:focus-visible,

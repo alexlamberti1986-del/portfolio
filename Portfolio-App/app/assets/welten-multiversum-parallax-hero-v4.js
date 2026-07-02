@@ -447,6 +447,7 @@
   function bindGoButtons(root, goChapter) {
     root.querySelectorAll(".mv-scroll-portfolio [data-go]").forEach(function (btn) {
       btn.addEventListener("click", function (e) {
+        e.preventDefault();
         e.stopPropagation();
         if (typeof goChapter === "function") goChapter(btn.getAttribute("data-go"));
       });
@@ -984,16 +985,31 @@
       .join("");
   }
 
+  function portfolioHref(go) {
+    var hashMap = {
+      projects: "#projekte",
+      leistungen: "#leistungen",
+      about: "#ueber-mich",
+      contact: "#kontakt",
+    };
+    var hash = hashMap[go] || "#home";
+    return hash === "#home" ? "MULTIVERSUM.html" : "MULTIVERSUM.html" + hash;
+  }
+
   function portfolioMarkup() {
     return PORTFOLIO_CARDS.map(function (c) {
       return (
-        '<button type="button" class="mv-scroll-card mv-form-btn" data-go="' +
+        '<a href="' +
+        portfolioHref(c.go) +
+        '" class="mv-scroll-card mv-form-btn" data-go="' +
         c.go +
-        '"><span class="mv-scroll-card__label">' +
+        '" aria-label="' +
+        c.label +
+        ' öffnen"><span class="mv-scroll-card__label">' +
         c.label +
         '</span><span class="mv-scroll-card__sub">' +
         c.sub +
-        "</span></button>"
+        "</span></a>"
       );
     }).join("");
   }

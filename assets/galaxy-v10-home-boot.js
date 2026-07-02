@@ -32,7 +32,7 @@
     var frame = document.createElement("iframe");
     frame.className = "galaxy-v10-home-frame";
     frame.title = "Reise durch das Multiversum";
-    frame.src = "galaxy-v10/embed.html";
+    frame.src = "galaxy-v10/embed.html?v=20260702unified";
     frame.loading = "eager";
 
     host.appendChild(frame);

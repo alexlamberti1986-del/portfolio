@@ -636,3 +636,92 @@ body[data-mv-v4-test="1"] .mv-world-stage__radial {
     transform: translate(-50%, -50%) translate(38cqw, 30cqh) !important;
   }
 }
+
+/* ── Einheitliche Interaktion: Scale + Welt-Glow (Parallax + Galaxy) ── */
+.mv-scroll-story {
+  --mv-hover-scale: 1.04;
+  --mv-hover-orb-scale: 1.05;
+  --mv-hover-btn-scale: 1.02;
+  --mv-hover-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.world-core,
+.world-card,
+.mv-scroll-card,
+.mv-scroll-slide__enter.mv-form-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.world-zone--nexora .world-card:hover,
+.world-zone--nexora .world-card:focus-visible {
+  filter: drop-shadow(0 0 18px rgba(104, 231, 255, 0.28));
+}
+
+.world-zone--professional .world-card:hover,
+.world-zone--professional .world-card:focus-visible {
+  filter: drop-shadow(0 0 16px rgba(207, 213, 223, 0.22));
+}
+
+.world-zone--freiraum .world-card:hover,
+.world-zone--freiraum .world-card:focus-visible {
+  filter: drop-shadow(0 0 18px rgba(255, 209, 102, 0.26));
+}
+
+.world-zone--multiversum .world-card:hover,
+.world-zone--multiversum .world-card:focus-visible {
+  filter: drop-shadow(0 0 18px rgba(155, 107, 255, 0.24));
+}
+
+.world-zone--nexora .world-core:hover img.mv-orb-bubble__standalone,
+.world-zone--nexora .world-core:focus-visible img.mv-orb-bubble__standalone {
+  filter: brightness(1.08) saturate(1.08) drop-shadow(0 0 40px rgba(104, 231, 255, 0.3));
+}
+
+.world-zone--professional .world-core:hover img.mv-orb-bubble__standalone,
+.world-zone--professional .world-core:focus-visible img.mv-orb-bubble__standalone {
+  filter: brightness(1.06) saturate(1.02) drop-shadow(0 0 36px rgba(207, 213, 223, 0.26));
+}
+
+.world-zone--freiraum .world-core:hover img.mv-orb-bubble__standalone,
+.world-zone--freiraum .world-core:focus-visible img.mv-orb-bubble__standalone {
+  filter: brightness(1.1) saturate(1.1) drop-shadow(0 0 40px rgba(255, 209, 102, 0.28));
+}
+
+.world-zone--multiversum .world-core:hover img.mv-orb-bubble__standalone,
+.world-zone--multiversum .world-core:focus-visible img.mv-orb-bubble__standalone {
+  filter: brightness(1.08) saturate(1.08) drop-shadow(0 0 40px rgba(155, 107, 255, 0.28));
+}
+
+@media (max-width: 767px) {
+  .world-card {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .world-core {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .mv-scroll-card {
+    min-height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-card,
+  .world-card__image,
+  .world-core img,
+  .mv-scroll-card,
+  .mv-scroll-slide__enter.mv-form-btn {
+    transition-duration: 0.01ms !important;
+    animation: none !important;
+  }
+
+  .world-card:hover,
+  .world-card:focus-visible,
+  .world-core:hover img,
+  .mv-scroll-card:hover {
+    transform: none !important;
+  }
+}
