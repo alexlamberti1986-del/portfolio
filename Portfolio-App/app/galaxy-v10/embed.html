@@ -3283,6 +3283,7 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
       }
 
       let galaxyPaused = false;
+      let bootPaintFrames = 0;
 
       document.addEventListener("visibilitychange", function () {
         galaxyPaused = document.hidden;
@@ -3313,6 +3314,15 @@ body.galaxy-v10-embed:not(.galaxy-released) .galaxy-viewport {
         drawAmbient(p, cameraZ, accent);
         drawCenterPortal(p, accent);
         updateUI(p);
+
+        if (bootPaintFrames < 2) {
+          bootPaintFrames += 1;
+          if (bootPaintFrames === 2) {
+            try {
+              window.parent.postMessage({ type: "galaxy-v10:painted" }, "*");
+            } catch (paintErr) {}
+          }
+        }
 
         requestAnimationFrame(render);
       }

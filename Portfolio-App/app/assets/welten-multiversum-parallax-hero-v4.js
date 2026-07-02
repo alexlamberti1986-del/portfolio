@@ -2241,9 +2241,11 @@
         } catch (e) {}
       }
       requestAnimationFrame(function () {
-        if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
-          window.MVHeroReady.mark();
-        }
+        requestAnimationFrame(function () {
+          if (!window.__galaxyV10HomeActive && window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
+            window.MVHeroReady.mark();
+          }
+        });
       });
       window.__mvParallaxHeroReady = true;
       return heroEl;

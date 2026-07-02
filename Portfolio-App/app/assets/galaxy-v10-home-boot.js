@@ -5,7 +5,7 @@
   "use strict";
 
   var GALAXY_MIN_WIDTH = 1920;
-  var CACHE = "20260704instant";
+  var CACHE = "20260704poster";
   var bootedAt = Date.now();
   var resizeTimer = 0;
 
@@ -78,7 +78,6 @@
     frame.addEventListener(
       "load",
       function () {
-        frame.classList.add("is-loaded");
         var lang = "de";
         try {
           lang = localStorage.getItem("mv-preview-lang") || "de";
@@ -88,7 +87,6 @@
             frame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: lang }, "*");
           } catch (err) {}
         }
-        markReady();
       },
       { once: true }
     );
@@ -112,7 +110,7 @@
     if (!stage || !stage.parentNode) return false;
 
     host = document.createElement("div");
-    host.className = "galaxy-v10-home-host mv-hero-host-pending";
+    host.className = "galaxy-v10-home-host";
     host.id = "galaxyV10HomeHost";
 
     var frame = document.createElement("iframe");
@@ -158,8 +156,14 @@
   };
 
   window.addEventListener("message", function (e) {
-    if (!e.data || e.data.type !== "galaxy-v10:release-scroll") return;
-    onReleaseScroll();
+    if (!e.data) return;
+    if (e.data.type === "galaxy-v10:release-scroll") {
+      onReleaseScroll();
+      return;
+    }
+    if (e.data.type === "galaxy-v10:painted") {
+      markReady();
+    }
   });
 
   function onResize() {

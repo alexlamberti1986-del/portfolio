@@ -5,7 +5,7 @@
   --mv-hero-poster: url("galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified");
 }
 
-html.mv-hero-boot-pending,
+html.mv-hero-boot-pending body[data-world="general"] #slide-home,
 html:not(.mv-hero-ready) body[data-world="general"] #slide-home {
   background: #02030b;
 }
@@ -13,7 +13,7 @@ html:not(.mv-hero-ready) body[data-world="general"] #slide-home {
 .mv-hero-instant-poster {
   position: absolute;
   inset: 0;
-  z-index: 5;
+  z-index: 10;
   pointer-events: none;
   background: #02030b var(--mv-hero-poster) center/cover no-repeat;
 }
@@ -38,28 +38,17 @@ html:not(.mv-hero-ready) body[data-world="general"] #slide-home .slide-inner--ho
   min-height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
 }
 
-.galaxy-v10-home-host.mv-hero-host-pending {
+.galaxy-v10-home-host {
   position: relative;
-  width: 100%;
-  height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
-  min-height: min(100svh, 920px);
   z-index: 3;
-  background: #02030b var(--mv-hero-poster) center/cover no-repeat;
 }
 
-.galaxy-v10-home-host.mv-hero-host-pending .galaxy-v10-home-frame {
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-
-body.mv-hero-ready .galaxy-v10-home-host.mv-hero-host-pending .galaxy-v10-home-frame.is-loaded {
-  opacity: 1;
-}
-
-body.mv-hero-ready .mv-hero-instant-poster {
-  opacity: 0;
+.galaxy-v10-home-frame {
   visibility: hidden;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.galaxy-v10-home-frame.is-visible {
+  visibility: visible;
 }
 
 body.mv-hero-ready #slide-home .home-main-block {
@@ -70,10 +59,6 @@ body.mv-hero-ready #slide-home .home-main-block {
 
 @media (max-width: 1919px) {
   .mv-hero-instant-poster {
-    display: none !important;
-  }
-
-  .galaxy-v10-home-host.mv-hero-host-pending {
     display: none !important;
   }
 
