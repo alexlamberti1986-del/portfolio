@@ -2237,10 +2237,6 @@
       bindScroll();
       heroEl.classList.add("is-js-ready");
       updateFrame();
-      if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
-        window.MVHeroReady.mark();
-        bootPaintDone = true;
-      }
       if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
         try {
           var langKey = "mv-preview-lang";
@@ -2249,6 +2245,16 @@
         } catch (e) {}
       }
       window.__mvParallaxHeroReady = true;
+      bootPaintDone = true;
+      var markReady = function () {
+        if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
+          window.MVHeroReady.mark();
+        }
+      };
+      requestAnimationFrame(function () {
+        updateFrame();
+        requestAnimationFrame(markReady);
+      });
       return heroEl;
     } finally {
       window.__mvParallaxBuilding = false;

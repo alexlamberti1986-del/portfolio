@@ -1,5 +1,5 @@
 /**
- * MULTIVERSUM — Boot-Veil: nur Hero-Bereich bis Parallax-Start bereit ist
+ * MULTIVERSUM — Startposter + Crossfade zum Parallax-Hero
  */
 .mv-boot-veil {
   position: fixed;
@@ -7,77 +7,43 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 3;
+  z-index: 4;
   background: #02030b var(--mv-hero-poster) center/cover no-repeat;
-  display: grid;
-  place-items: center;
-  pointer-events: all;
-  touch-action: none;
-}
-
-.mv-boot-veil.is-released {
-  display: none !important;
-}
-
-.mv-boot-veil__loader {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(48px, 12vh, 120px);
-  transform: translateX(-50%);
-  width: min(320px, 72vw);
-  text-align: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
-}
-
-.mv-boot-veil.is-loading .mv-boot-veil__loader {
   opacity: 1;
   visibility: visible;
+  pointer-events: none;
+  touch-action: none;
+  transition: opacity 0.38s ease, visibility 0.38s ease;
 }
 
-.mv-boot-veil__eyebrow {
-  margin: 0 0 6px;
-  font: 600 11px/1.2 "Space Grotesk", system-ui, sans-serif;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(238, 243, 255, 0.55);
+.mv-boot-veil.is-releasing {
+  opacity: 0;
+  visibility: hidden;
 }
 
-.mv-boot-veil__title {
-  margin: 0 0 18px;
-  font: 700 clamp(18px, 2.4vw, 24px)/1.1 "Space Grotesk", system-ui, sans-serif;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, #5ec4ff 0%, #9b6bff 35%, #ff59b2 70%, #ffd86a 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+html.mv-hero-boot-pending body[data-world="general"] #mvParallaxHero {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
-.mv-boot-veil__track {
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-  box-shadow: 0 0 0 1px rgba(255, 89, 178, 0.12);
-}
-
-.mv-boot-veil__bar {
-  display: block;
-  height: 100%;
-  width: 0%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #5ec4ff, #9b6bff 40%, #ff59b2 75%, #ffd166);
-  box-shadow: 0 0 16px rgba(255, 89, 178, 0.45);
-  transition: width 0.22s ease;
+html.mv-hero-ready body[data-world="general"] #mvParallaxHero {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transition: opacity 0.38s ease;
 }
 
 html.mv-hero-boot-pending body[data-world="general"] #dnaStage,
 html.mv-hero-boot-pending body[data-world="general"] .bg-root,
 html.mv-hero-boot-pending body[data-world="general"] .bg-grid,
 html.mv-hero-boot-pending body[data-world="general"] .light-beams,
-html.mv-hero-boot-pending body[data-world="general"] #particle-canvas {
+html.mv-hero-boot-pending body[data-world="general"] #particle-canvas,
+body[data-world="general"]:has(#mvParallaxHero) .bg-root,
+body[data-world="general"]:has(#mvParallaxHero) .bg-grid,
+body[data-world="general"]:has(#mvParallaxHero) .light-beams,
+body[data-world="general"]:has(#mvParallaxHero) #particle-canvas {
+  display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;

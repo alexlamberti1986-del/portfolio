@@ -1,5 +1,5 @@
 /**
- * Legacy hooks — Boot-Veil übernimmt Startbild
+ * Startposter — gleiches Bild wie Parallax-Intro
  */
 :root {
   --mv-hero-poster: url("assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live");
@@ -7,7 +7,7 @@
 
 html.mv-hero-boot-pending,
 html.mv-hero-boot-pending body {
-  background: #02030b !important;
+  background: #02030b var(--mv-hero-poster) center top / cover no-repeat !important;
 }
 
 body.mv-hero-ready #slide-home .home-main-block {

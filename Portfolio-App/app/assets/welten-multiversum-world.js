@@ -210,6 +210,8 @@
   function boot() {
     applyTheme();
     stripDecor();
+    var bgRoot = document.querySelector(".bg-root");
+    if (bgRoot && isDesktopParallaxHero()) bgRoot.remove();
     var finishBoot = function () {
       buildHero();
       applyProfiles();

@@ -36,3 +36,13 @@ html.welten-live-shell .btn-menu {
   opacity: 1 !important;
   pointer-events: auto !important;
 }
+
+@media (min-width: 1920px) {
+  html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero) .experience-rail,
+  html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
