@@ -133,10 +133,11 @@
     var FT =
       window.WeltenWorldSwitchPreview && window.WeltenWorldSwitchPreview.getTimingForWorld
         ? window.WeltenWorldSwitchPreview.getTimingForWorld("freiraum")
-        : { EFFECT_MS: 3400, TITLE_REVEAL_AT: 2500 };
+        : { EFFECT_MS: 3400, TITLE_REVEAL_AT: 1700 };
 
     var totalMs = FT.EFFECT_MS || 3400;
-    var titleAtMs = FT.TITLE_REVEAL_AT || 2500;
+    var titleAtMs = FT.TITLE_REVEAL_AT || Math.round(totalMs * 0.5);
+    var dissolveStartMs = Math.round(totalMs * 0.85);
     var strokeTotalMs = totalMs * (2500 / 2950);
 
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -468,11 +469,11 @@
       var raw = clamp(elapsed / totalMs, 0, 1);
       var p = easeInOut(raw);
       var dissolve =
-        elapsed < titleAtMs + 340 ? 1 : Math.max(0, 1 - (elapsed - titleAtMs - 340) / 440);
+        elapsed < dissolveStartMs ? 1 : Math.max(0, 1 - (elapsed - dissolveStartMs) / 440);
 
       render(p, dissolve);
 
-      if (elapsed >= titleAtMs) overlay._wwsTitleReveal();
+      if (elapsed >= titleAtMs || p >= 0.48) overlay._wwsTitleReveal();
 
       if (elapsed > totalMs + 120) {
         running = false;
