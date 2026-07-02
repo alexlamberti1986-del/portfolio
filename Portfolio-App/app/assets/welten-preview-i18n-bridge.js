@@ -107,7 +107,9 @@
 
     if (!isPreviewContext() && !inShell) return;
     active = true;
-    apply(currentLang());
+    requestAnimationFrame(function () {
+      apply(currentLang());
+    });
 
     window.addEventListener("message", function (e) {
       if (!e.data) return;
@@ -118,25 +120,6 @@
         apply(e.data.lang);
       }
     });
-
-    document.addEventListener("click", function () {
-      setTimeout(function () {
-        apply(currentLang());
-      }, 120);
-    });
-
-    var obs = typeof MutationObserver !== "undefined"
-      ? new MutationObserver(function () {
-          if (obsTimer) clearTimeout(obsTimer);
-          obsTimer = setTimeout(function () {
-            apply(currentLang());
-          }, 200);
-        })
-      : null;
-    var obsTimer = 0;
-    if (obs) {
-      obs.observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"] });
-    }
   }
 
   if (document.readyState === "loading") {

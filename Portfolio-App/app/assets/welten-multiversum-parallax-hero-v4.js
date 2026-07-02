@@ -2182,59 +2182,69 @@
   }
 
   function buildParallaxHero(goChapter) {
-    if (window.__galaxyV10HomeActive) return null;
-    if (document.getElementById("mvParallaxHero") || document.body.getAttribute("data-world") !== "general") return null;
+    if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return null;
+    if (window.__mvParallaxBuilding || document.getElementById("mvParallaxHero")) return document.getElementById("mvParallaxHero");
+    if (document.body.getAttribute("data-world") !== "general") return null;
     if (!isDesktopParallaxHero()) return null;
     if (!window.MVSceneConfig || !window.MVSceneConfig.keyframes) return null;
-
-    config = window.MVSceneConfig;
-    mobileLayout = false;
-    tabletLayout = false;
-
-    var stage = document.getElementById("dnaStage");
-    if (!stage) return null;
-    scrollRoot = document.getElementById("slide-home");
-    if (!scrollRoot) return null;
-
-    if ("scrollRestoration" in window.history) {
-      try {
-        window.history.scrollRestoration = "manual";
-      } catch (e) {}
+    if (window.MVGalaxyV10Home && typeof window.MVGalaxyV10Home.shouldUse === "function" && window.MVGalaxyV10Home.shouldUse()) {
+      return null;
     }
-    scrollRoot.scrollTop = 0;
-    animProgress = 0;
 
-    var wrap = document.createElement("div");
-    wrap.innerHTML = heroMarkup();
-    heroEl = wrap.firstElementChild;
-    heroEl.style.setProperty("--mv-scroll-vh", String(config.scrollHeightVh || 820));
+    window.__mvParallaxBuilding = true;
+    try {
+      config = window.MVSceneConfig;
+      mobileLayout = false;
+      tabletLayout = false;
 
-    stage.parentNode.insertBefore(heroEl, stage);
-    stage.classList.add("mv-dna-hidden");
-    stage.remove();
+      var stage = document.getElementById("dnaStage");
+      if (!stage) return null;
+      scrollRoot = document.getElementById("slide-home");
+      if (!scrollRoot) return null;
 
-    cacheDom();
-    Object.keys(dom.particleFields || {}).forEach(function (theme) {
-      var src = ASSETS.deco[theme] && ASSETS.deco[theme].particles;
-      if (src && dom.particleFields[theme]) {
-        dom.particleFields[theme].style.backgroundImage = "url(" + asset(src) + ")";
+      if ("scrollRestoration" in window.history) {
+        try {
+          window.history.scrollRestoration = "manual";
+        } catch (e) {}
       }
-    });
-    bindGoButtons(heroEl, goChapter);
-    bindCollageInteractions();
-    bindPortfolioScrollHold();
-    onResize();
-    bindScroll();
-    updateFrame();
-    heroEl.classList.add("is-js-ready");
-    if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
-      try {
-        var langKey = "mv-preview-lang";
-        var lang = localStorage.getItem(langKey) || sessionStorage.getItem(langKey) || "de";
-        window.WeltenPreviewI18n.applyParallax(document, lang);
-      } catch (e) {}
+      scrollRoot.scrollTop = 0;
+      animProgress = 0;
+
+      var wrap = document.createElement("div");
+      wrap.innerHTML = heroMarkup();
+      heroEl = wrap.firstElementChild;
+      heroEl.style.setProperty("--mv-scroll-vh", String(config.scrollHeightVh || 820));
+
+      stage.parentNode.insertBefore(heroEl, stage);
+      stage.classList.add("mv-dna-hidden");
+      stage.remove();
+
+      cacheDom();
+      Object.keys(dom.particleFields || {}).forEach(function (theme) {
+        var src = ASSETS.deco[theme] && ASSETS.deco[theme].particles;
+        if (src && dom.particleFields[theme]) {
+          dom.particleFields[theme].style.backgroundImage = "url(" + asset(src) + ")";
+        }
+      });
+      bindGoButtons(heroEl, goChapter);
+      bindCollageInteractions();
+      bindPortfolioScrollHold();
+      onResize();
+      bindScroll();
+      updateFrame();
+      heroEl.classList.add("is-js-ready");
+      if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
+        try {
+          var langKey = "mv-preview-lang";
+          var lang = localStorage.getItem(langKey) || sessionStorage.getItem(langKey) || "de";
+          window.WeltenPreviewI18n.applyParallax(document, lang);
+        } catch (e) {}
+      }
+      window.__mvParallaxHeroReady = true;
+      return heroEl;
+    } finally {
+      window.__mvParallaxBuilding = false;
     }
-    return heroEl;
   }
 
   function destroy() {

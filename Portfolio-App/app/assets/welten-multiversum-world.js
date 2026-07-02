@@ -102,13 +102,23 @@
   }
 
   function buildHero() {
+    if (window.__mvHeroBootLock) return;
     if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return;
     if (document.getElementById("mvParallaxHero") || document.getElementById("mvStaticHero")) return;
-    if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
-      var built = window.MVParallaxHero.build(goChapter);
-      if (built) return;
+
+    window.__mvHeroBootLock = true;
+    try {
+      if (window.MVGalaxyV10Home && typeof window.MVGalaxyV10Home.shouldUse === "function" && window.MVGalaxyV10Home.shouldUse()) {
+        if (window.MVGalaxyV10Home.mount && window.MVGalaxyV10Home.mount()) return;
+      }
+      if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
+        var built = window.MVParallaxHero.build(goChapter);
+        if (built) return;
+      }
+      buildStaticHero();
+    } finally {
+      window.__mvHeroBootLock = false;
     }
-    buildStaticHero();
   }
 
   document.addEventListener("mv-restore-hero", function () {
@@ -180,15 +190,6 @@
     if (window.WeltenPreviewImages) {
       window.WeltenPreviewImages.patchChapterBoxes();
     }
-    setTimeout(function () {
-      applyTheme();
-      styleMvButtons();
-      stripDecor();
-    }, 100);
-    setTimeout(function () {
-      applyTheme();
-      styleMvButtons();
-    }, 600);
   }
 
   function stripDecor() {

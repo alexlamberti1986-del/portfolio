@@ -5,7 +5,9 @@
   "use strict";
 
   var GALAXY_MIN_WIDTH = 1920;
-  var CACHE = "20260704i18n";
+  var CACHE = "20260704boot";
+  var bootedAt = Date.now();
+  var resizeTimer = 0;
 
   function isLargeDesktop() {
     try {
@@ -20,26 +22,50 @@
     return document.body.getAttribute("data-world") === "general" && isLargeDesktop();
   }
 
+  function ensureDnaStage() {
+    if (document.getElementById("dnaStage")) return document.getElementById("dnaStage");
+    var slideHome = document.getElementById("slide-home");
+    if (!slideHome) return null;
+    var inner = slideHome.querySelector(".slide-inner--home") || slideHome;
+    var stage = document.createElement("div");
+    stage.className = "home-hero-experience mv-dna-hidden";
+    stage.id = "dnaStage";
+    stage.setAttribute("aria-hidden", "true");
+    stage.setAttribute("hidden", "hidden");
+    inner.insertBefore(stage, inner.firstChild);
+    return stage;
+  }
+
   function restoreStage() {
     var stage = document.getElementById("dnaStage");
+    if (!stage) stage = ensureDnaStage();
     if (!stage) return;
     stage.classList.remove("mv-dna-hidden");
     stage.removeAttribute("hidden");
   }
 
+  function removeParallaxHero() {
+    var hero = document.getElementById("mvParallaxHero");
+    if (!hero) return;
+    if (window.MVParallaxHero && typeof window.MVParallaxHero.destroy === "function") {
+      try {
+        window.MVParallaxHero.destroy();
+      } catch (e) {}
+    }
+    hero.remove();
+    ensureDnaStage();
+  }
+
   function teardownGalaxy() {
     var host = document.getElementById("galaxyV10HomeHost");
-    if (host) host.remove();
+    if (!host) {
+      window.__galaxyV10HomeActive = false;
+      return;
+    }
+    host.remove();
     window.__galaxyV10HomeActive = false;
     restoreStage();
-    if (window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
-      try {
-        window.MVParallaxHero.build();
-      } catch (e) {}
-    } else if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
-      var evt = new CustomEvent("mv-restore-hero");
-      document.dispatchEvent(evt);
-    }
+    document.dispatchEvent(new CustomEvent("mv-restore-hero"));
   }
 
   function mountGalaxy() {
@@ -47,13 +73,17 @@
       teardownGalaxy();
       return false;
     }
-    if (document.getElementById("galaxyV10HomeHost")) {
+
+    var existing = document.getElementById("galaxyV10HomeHost");
+    if (existing) {
       window.__galaxyV10HomeActive = true;
       return true;
     }
 
-    var stage = document.getElementById("dnaStage");
-    if (!stage) return false;
+    removeParallaxHero();
+
+    var stage = document.getElementById("dnaStage") || ensureDnaStage();
+    if (!stage || !stage.parentNode) return false;
 
     var host = document.createElement("div");
     host.className = "galaxy-v10-home-host";
@@ -64,17 +94,21 @@
     frame.title = "Reise durch das Multiversum";
     frame.src = "galaxy-v10/embed.html?v=" + CACHE;
     frame.loading = "eager";
-    frame.addEventListener("load", function () {
-      var lang = "de";
-      try {
-        lang = localStorage.getItem("mv-preview-lang") || "de";
-      } catch (e) {}
-      if (frame.contentWindow) {
+    frame.addEventListener(
+      "load",
+      function () {
+        var lang = "de";
         try {
-          frame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: lang }, "*");
-        } catch (err) {}
-      }
-    });
+          lang = localStorage.getItem("mv-preview-lang") || "de";
+        } catch (e) {}
+        if (frame.contentWindow) {
+          try {
+            frame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: lang }, "*");
+          } catch (err) {}
+        }
+      },
+      { once: true }
+    );
 
     host.appendChild(frame);
     stage.parentNode.insertBefore(host, stage);
@@ -85,6 +119,7 @@
   }
 
   function remountGalaxyIfNeeded() {
+    if (window.__mvHeroBootLock) return;
     if (shouldUseGalaxy()) mountGalaxy();
     else teardownGalaxy();
   }
@@ -100,25 +135,32 @@
     slideHome.scrollTo({ top: slideHome.scrollHeight, behavior: "smooth" });
   }
 
+  window.MVGalaxyV10Home = {
+    shouldUse: shouldUseGalaxy,
+    mount: mountGalaxy,
+    teardown: teardownGalaxy,
+    remountIfNeeded: remountGalaxyIfNeeded,
+  };
+
   window.addEventListener("message", function (e) {
     if (!e.data || e.data.type !== "galaxy-v10:release-scroll") return;
     onReleaseScroll();
   });
 
-  var resizeTimer = 0;
   function onResize() {
+    if (Date.now() - bootedAt < 900) return;
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(remountGalaxyIfNeeded, 180);
+    resizeTimer = setTimeout(remountGalaxyIfNeeded, 320);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", remountGalaxyIfNeeded);
-  } else {
-    remountGalaxyIfNeeded();
-  }
-  window.addEventListener("pageshow", remountGalaxyIfNeeded);
   window.addEventListener("resize", onResize, { passive: true });
+  window.addEventListener("pageshow", function (e) {
+    if (e.persisted) remountGalaxyIfNeeded();
+  });
   try {
-    window.matchMedia("(min-width: " + GALAXY_MIN_WIDTH + "px)").addEventListener("change", remountGalaxyIfNeeded);
+    window.matchMedia("(min-width: " + GALAXY_MIN_WIDTH + "px)").addEventListener("change", function () {
+      if (Date.now() - bootedAt < 900) return;
+      remountGalaxyIfNeeded();
+    });
   } catch (e) {}
 })();

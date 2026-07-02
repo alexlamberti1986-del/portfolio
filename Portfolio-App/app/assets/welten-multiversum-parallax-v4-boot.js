@@ -62,7 +62,6 @@
     var rail = document.querySelector(".experience-rail");
     if (!rail || !document.getElementById("mvParallaxHero")) return;
 
-    /* Laptop/Tablet/Handy: Rail aus — Desktop ab 1920px */
     if (window.matchMedia("(max-width: 1919px)").matches) {
       rail.style.setProperty("display", "none", "important");
       rail.style.setProperty("opacity", "0", "important");
@@ -81,29 +80,18 @@
     });
   }
 
-  function boot() {
-    document.body.setAttribute("data-mv-v4-test", "1");
+  function patchAll() {
     patchOrbImages();
     patchCopy();
     patchProfessionalPortraits();
     patchSideNav();
+  }
 
-    var hero = document.getElementById("mvParallaxHero") || document.getElementById("dnaStage");
-    if (hero) {
-      try {
-        new MutationObserver(function () {
-          patchOrbImages();
-        }).observe(hero, { childList: true, subtree: true, attributes: true, attributeFilter: ["src"] });
-      } catch (e) {}
-    }
-
-    [120, 600, 1400, 2800].forEach(function (ms) {
-      window.setTimeout(function () {
-        patchOrbImages();
-        patchCopy();
-        patchProfessionalPortraits();
-        patchSideNav();
-      }, ms);
+  function boot() {
+    document.body.setAttribute("data-mv-v4-test", "1");
+    patchAll();
+    requestAnimationFrame(function () {
+      requestAnimationFrame(patchAll);
     });
   }
 
@@ -113,5 +101,5 @@
     boot();
   }
 
-  window.MVV4Test = { patchOrbImages: patchOrbImages };
+  window.MVV4Test = { patchOrbImages: patchOrbImages, patchAll: patchAll };
 })();
