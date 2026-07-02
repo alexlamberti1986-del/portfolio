@@ -1,5 +1,5 @@
 /**
- * MULTIVERSUM — Boot-Veil bis Parallax-Start wirklich gerendert ist
+ * MULTIVERSUM — Boot-Veil bis Galaxy-Start wirklich gerendert ist
  */
 (function () {
   "use strict";

@@ -63,9 +63,7 @@
   var resetAttempts = {};
   loaded[defaultWorld] = true;
   var SHELL_CHROME_CSS =
-    "html.welten-live-shell .mv4-bar,html.welten-live-shell .site-header{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important}" +
-    "html.welten-live-shell .experience-rail{display:none!important;visibility:hidden!important}" +
-    "html.welten-live-shell #slide-home{padding-top:0!important}";
+    "html.welten-live-shell .mv4-bar{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}";
 
   function injectPreviewShellCss(f) {
     try {
@@ -94,11 +92,16 @@
         titleLink.href = TITLE_COLORS_CSS;
         (d.head || d.documentElement).appendChild(titleLink);
       }
-      if (isLiveShell && !d.getElementById("mv4-shell-chrome-css")) {
-        var chrome = d.createElement("style");
-        chrome.id = "mv4-shell-chrome-css";
+      if (isLiveShell) {
+        var chrome = d.getElementById("mv4-shell-chrome-css-v2") || d.getElementById("mv4-shell-chrome-css");
+        if (!chrome) {
+          chrome = d.createElement("style");
+          chrome.id = "mv4-shell-chrome-css-v2";
+          (d.head || d.documentElement).appendChild(chrome);
+        } else {
+          chrome.id = "mv4-shell-chrome-css-v2";
+        }
         chrome.textContent = SHELL_CHROME_CSS;
-        (d.head || d.documentElement).appendChild(chrome);
       }
     } catch (e) {}
   }

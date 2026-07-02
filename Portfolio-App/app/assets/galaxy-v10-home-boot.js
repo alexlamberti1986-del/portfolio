@@ -5,7 +5,7 @@
   "use strict";
 
   var GALAXY_MIN_WIDTH = 1920;
-  var CACHE = "20260704poster";
+  var CACHE = "20260704galaxy";
   var bootedAt = Date.now();
   var resizeTimer = 0;
 
@@ -24,7 +24,6 @@
   }
 
   function shouldUseGalaxy() {
-    if (!/\bgalaxy=1\b/.test(location.search)) return false;
     if (window.__mvFlightTest || /\bmv-flight-test=1\b/.test(location.search)) return false;
     return document.body.getAttribute("data-world") === "general" && isLargeDesktop();
   }

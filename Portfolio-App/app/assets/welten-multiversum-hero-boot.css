@@ -1,10 +1,13 @@
 /**
- * MULTIVERSUM — Boot-Veil: deckt alles ab bis Parallax-Start bereit ist
+ * MULTIVERSUM — Boot-Veil: nur Hero-Bereich bis Galaxy-Start bereit ist
  */
 .mv-boot-veil {
   position: fixed;
-  inset: 0;
-  z-index: 2147483646;
+  top: var(--header-h, 90px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
   background: #02030b var(--mv-hero-poster) center/cover no-repeat;
   display: grid;
   place-items: center;

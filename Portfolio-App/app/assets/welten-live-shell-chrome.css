@@ -8,3 +8,31 @@ html.welten-live-shell .mv4-bar {
   overflow: hidden !important;
   opacity: 0 !important;
 }
+
+html.welten-live-shell .site-header {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: auto !important;
+  min-height: unset !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
+html.welten-live-shell .site-header > * {
+  pointer-events: auto !important;
+}
+
+html.welten-live-shell .experience-rail {
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+html.welten-live-shell .btn-menu {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}

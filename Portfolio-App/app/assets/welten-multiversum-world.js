@@ -58,12 +58,20 @@
     if (link) link.click();
   }
 
-  function isDesktopParallaxHero() {
+  function isGalaxyDesktop() {
     try {
       return window.matchMedia("(min-width: 1920px)").matches;
     } catch (e) {
       return window.innerWidth >= 1920;
     }
+  }
+
+  function shouldUseGalaxyHero() {
+    return (
+      window.MVGalaxyV10Home &&
+      typeof window.MVGalaxyV10Home.shouldUse === "function" &&
+      window.MVGalaxyV10Home.shouldUse()
+    );
   }
 
   function buildStaticHero() {
@@ -104,12 +112,7 @@
     }
   }
 
-  var PARALLAX_PRELOAD = [
-    "assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp?v=20260629mv-v4live",
-    "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live",
-    "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
-    "galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified",
-  ];
+  var GALAXY_PRELOAD = ["galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified"];
 
   function preloadUrls(urls, done) {
     var left = urls.length;
@@ -141,17 +144,8 @@
       if (window.MVHeroReady && window.MVHeroReady.setProgress) {
         window.MVHeroReady.setProgress(68);
       }
-      if (window.MVGalaxyV10Home && typeof window.MVGalaxyV10Home.shouldUse === "function" && window.MVGalaxyV10Home.shouldUse()) {
+      if (shouldUseGalaxyHero()) {
         if (window.MVGalaxyV10Home.mount && window.MVGalaxyV10Home.mount()) return;
-      }
-      if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
-        var built = window.MVParallaxHero.build(goChapter);
-        if (built) {
-          if (window.MVHeroReady && window.MVHeroReady.setProgress) {
-            window.MVHeroReady.setProgress(85);
-          }
-          return;
-        }
       }
       buildStaticHero();
     } finally {
@@ -230,11 +224,11 @@
         window.WeltenPreviewImages.patchChapterBoxes();
       }
     };
-    if (isDesktopParallaxHero()) {
+    if (isGalaxyDesktop()) {
       if (window.MVHeroReady && window.MVHeroReady.setProgress) {
         window.MVHeroReady.setProgress(8);
       }
-      preloadUrls(PARALLAX_PRELOAD, finishBoot);
+      preloadUrls(GALAXY_PRELOAD, finishBoot);
     } else {
       finishBoot();
     }
