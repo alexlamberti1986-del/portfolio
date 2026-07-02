@@ -22,19 +22,11 @@
     try {
       mobile = window.matchMedia("(max-width: 768px)").matches;
     } catch (e) {}
-    if (mobile) {
-      return Object.assign({}, WWS_TIMING, {
-        WORLD_TRANSITION_DURATION: 1400,
-        EFFECT_MS: 700,
-        TITLE_REVEAL_AT: 520,
-        TITLE_FADE_IN: 280,
-        TITLE_HOLD: 500,
-        COVER_MS: 420,
-        EXIT_MS: 280,
-      });
-    }
+
+    var timing = Object.assign({}, WWS_TIMING);
+
     if (worldKey === "general") {
-      return Object.assign({}, WWS_TIMING, {
+      timing = Object.assign(timing, {
         WORLD_TRANSITION_DURATION: 3800,
         EFFECT_MS: 2000,
         TITLE_REVEAL_AT: 1720,
@@ -42,14 +34,19 @@
         TITLE_HOLD: 1400,
         COVER_MS: 1300,
       });
-    }
-    if (worldKey === "nexora") {
-      return Object.assign({}, WWS_TIMING, {
+    } else if (worldKey === "nexora") {
+      var nexEffect = WWS_TIMING.EFFECT_MS;
+      timing = Object.assign(timing, {
+        TITLE_REVEAL_AT: Math.round(
+          nexEffect * 0.6 +
+            5 * (nexEffect * 0.24) +
+            nexEffect * 0.48 +
+            Math.max(600, nexEffect * 0.5)
+        ),
         TITLE_HOLD: 1000,
       });
-    }
-    if (worldKey === "freiraum") {
-      return Object.assign({}, WWS_TIMING, {
+    } else if (worldKey === "freiraum") {
+      timing = Object.assign(timing, {
         WORLD_TRANSITION_DURATION: 4200,
         EFFECT_MS: 3400,
         TITLE_REVEAL_AT: 1700,
@@ -57,8 +54,28 @@
         TITLE_HOLD: 1300,
         COVER_MS: 1250,
       });
+    } else if (worldKey === "vertex") {
+      timing = Object.assign(timing, {
+        TITLE_REVEAL_AT: Math.round(WWS_TIMING.EFFECT_MS * 0.84),
+      });
     }
-    return WWS_TIMING;
+
+    if (mobile) {
+      var mobileScale = 700 / WWS_TIMING.EFFECT_MS;
+      timing = Object.assign({}, timing, {
+        WORLD_TRANSITION_DURATION: Math.round(timing.WORLD_TRANSITION_DURATION * mobileScale),
+        EFFECT_MS: Math.round(timing.EFFECT_MS * mobileScale),
+        TITLE_REVEAL_AT: Math.round(timing.TITLE_REVEAL_AT * mobileScale),
+        TITLE_FADE_IN: Math.round(timing.TITLE_FADE_IN * mobileScale),
+        TITLE_HOLD: Math.round(timing.TITLE_HOLD * mobileScale),
+        TITLE_FADE_OUT: Math.round(timing.TITLE_FADE_OUT * mobileScale),
+        COVER_MS: Math.round(timing.COVER_MS * mobileScale),
+        EXIT_MS: Math.round(timing.EXIT_MS * mobileScale),
+      });
+    }
+
+    timing.SOUND_DURATION_MS = timing.COVER_MS + timing.EFFECT_MS + 320;
+    return timing;
   }
 
   function getOrbPhaseMs(worldKey, effectMs) {
@@ -82,12 +99,8 @@
 
   var WWS_SEQUENCE_MS = WWS_TIMING.WORLD_TRANSITION_DURATION;
 
-  function wwsScale(ms) {
-    return Math.round(ms * (WWS_TIMING.WORLD_TRANSITION_DURATION / 2000));
-  }
-
   function wwsSoundAt(gen, ms, fn) {
-    wwsAt(gen, wwsScale(ms), fn);
+    wwsAt(gen, Math.round(ms), fn);
   }
 
   function applyTimingCssVars(worldKey) {
@@ -559,8 +572,8 @@
 
   function playNexoraSwitchSound(gen) {
     var NT = getTimingForWorld("nexora");
-    wwsScheduleRobotCodeReading(gen, NT.WORLD_TRANSITION_DURATION);
-    wwsSoundAt(gen, NT.TITLE_REVEAL_AT - 10, function (ctx, t) {
+    wwsScheduleRobotCodeReading(gen, Math.max(NT.WORLD_TRANSITION_DURATION, NT.TITLE_REVEAL_AT + 380));
+    wwsSoundAt(gen, Math.max(0, NT.TITLE_REVEAL_AT - 12), function (ctx, t) {
       wwsRobotSayNexora(ctx, t);
     });
   }
@@ -629,7 +642,7 @@
   function playProfessionalSwitchSound(gen) {
     var PT = getTimingForWorld("vertex");
     var wipeDur = PT.EFFECT_MS * 0.39 / 1000;
-    wwsSoundAt(gen, 20, function (ctx, t) {
+    wwsSoundAt(gen, Math.round(PT.EFFECT_MS * 0.37), function (ctx, t) {
       wwsSliderWipe(ctx, t, {
         dur: wipeDur,
         vol: 0.085,
@@ -641,7 +654,7 @@
       });
     });
 
-    wwsSoundAt(gen, PT.COVER_MS, function (ctx, t) {
+    wwsSoundAt(gen, Math.round(PT.EFFECT_MS * 0.76), function (ctx, t) {
       wwsSliderWipe(ctx, t, {
         dur: wipeDur,
         vol: 0.088,
@@ -656,6 +669,9 @@
 
   function playFreiraumSwitchSound(gen) {
     var FT = getTimingForWorld("freiraum");
+    var strokeDelays = [0, 180, 360, 540, 760, 930, 1120, 1320];
+    var strokeSpan = 2140;
+
     wwsSoundAt(gen, 0, function (ctx, t) {
       wwsNoise(ctx, t, {
         dur: 0.22,
@@ -667,14 +683,15 @@
       });
     });
 
-    [40, 155, 270, 385, 500, 615, 730, 845, 960, 1080, 1200, 1320, 1440, 1560, 1680, 1800].forEach(function (ms, i) {
-      if (ms > FT.EFFECT_MS + 120) return;
+    strokeDelays.forEach(function (delay, i) {
+      var ms = Math.round(delay * (FT.EFFECT_MS / strokeSpan));
+      if (ms > FT.EFFECT_MS + 80) return;
       wwsSoundAt(gen, ms, function (ctx, t) {
         wwsBrushSwish(ctx, t, {
-          dur: 0.28 + (i % 3) * 0.06,
+          dur: 0.26 + (i % 3) * 0.05,
           vol: 0.044 + (i % 2) * 0.012,
-          freqStart: 190 + i * 28,
-          freqEnd: 1180 + i * 88,
+          freqStart: 190 + i * 32,
+          freqEnd: 1100 + i * 95,
           q: 0.58 + (i % 2) * 0.16,
         });
       });
@@ -938,7 +955,10 @@
       drawRain(rainIntensity);
       drawLetters(elapsed);
 
-      if (!titleRevealed && allLettersArrived(elapsed)) {
+      if (!titleRevealed && elapsed >= NT.TITLE_REVEAL_AT) {
+        titleRevealed = true;
+        revealStagedTitle(overlay);
+      } else if (!titleRevealed && allLettersArrived(elapsed)) {
         if (elapsed >= FIRST_LETTER_MS + (WORD.length - 1) * LETTER_STAGGER_MS + LETTER_FLIGHT_MS + HOLD_AFTER_MS) {
           titleRevealed = true;
           revealStagedTitle(overlay);
@@ -1124,12 +1144,9 @@
         ctx.beginPath();
         ctx.arc(cx, cy, flashR, 0, Math.PI * 2);
         ctx.fill();
-        if (isGeneral) {
-          if (mt > 0.42) revealStagedTitle(overlay);
-        } else if (mt > 0.96) {
-          revealStagedTitle(overlay);
-        }
-      } else {
+      }
+
+      if (!overlay._wwsTitleShown && elapsed >= OT.TITLE_REVEAL_AT) {
         revealStagedTitle(overlay);
       }
 
@@ -1544,7 +1561,6 @@
       timing.COVER_MS +
       timing.EFFECT_MS +
       timing.TITLE_FADE_IN +
-      timing.TITLE_HOLD +
       timing.TITLE_HOLD +
       timing.EXIT_MS +
       700
