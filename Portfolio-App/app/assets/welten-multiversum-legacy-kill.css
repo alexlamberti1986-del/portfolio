@@ -1,0 +1,57 @@
+/**
+ * MULTIVERSUM — Legacy NEXORA/DNA-Home darf auf data-world=general nie sichtbar werden.
+ * Lädt zuletzt, damit späte NEXORA-Overrides in MULTIVERSUM.html wirkungslos bleiben.
+ */
+body[data-world="general"] .bg-root,
+body[data-world="general"] .bg-grid,
+body[data-world="general"] .light-beams,
+body[data-world="general"] #particle-canvas,
+body[data-world="general"] #dnaStage,
+body[data-world="general"] #slide-home .home-hero-experience,
+body[data-world="general"] #slide-home .home-hero-experience::before,
+body[data-world="general"] #slide-home .home-hero-experience::after,
+body[data-world="general"] #slide-home .neuro-core,
+body[data-world="general"] #slide-home .neuro-core::before,
+body[data-world="general"] #slide-home .neuro-core::after,
+body[data-world="general"] #slide-home .dna-unified-scene,
+body[data-world="general"] #slide-home .dna-orbit-group,
+body[data-world="general"] #slide-home .dna-ring-scene,
+body[data-world="general"] #slide-home .nexora-orbit-buttons,
+body[data-world="general"] #slide-home .nexora-orbit-button,
+body[data-world="general"] #slide-home .nexora-orbit-ring,
+body[data-world="general"] #slide-home .dna-slide,
+body[data-world="general"] #dnaPremiumCanvas,
+body[data-world="general"] #dnaParticlesCanvas {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  animation: none !important;
+  transition: none !important;
+  background: none !important;
+  background-image: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+  content: none !important;
+}
+
+body[data-world="general"] #slide-home.slide,
+body[data-world="general"] #slide-home .slide-inner--home {
+  background: #02030b !important;
+}
+
+body[data-world="general"].is-home .bg-root,
+body[data-world="general"]:not(.is-subpage) .bg-root,
+body[data-world="general"] .bg-root::before,
+body[data-world="general"] .bg-root::after {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  background: none !important;
+  background-image: none !important;
+  animation: none !important;
+}

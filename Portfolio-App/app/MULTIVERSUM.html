@@ -22,12 +22,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <style id="mv-boot-critical">html,body{background:#02030b!important}@media (max-width:640px){body[data-world="general"] .site-header .brand-mark{font-size:0!important;line-height:1.2!important}body[data-world="general"] .site-header .brand-mark span{display:none!important}body[data-world="general"] .site-header .brand-mark::after{content:"E-Mail: alex.lamberti@hotmail.ch";font-size:.7rem;font-weight:500;color:rgba(232,238,248,.9);white-space:normal;word-break:break-word}body[data-world="general"] .site-header .header-meta[href^="mailto:"]{display:none!important}}@media (max-width:1023px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience,body[data-world="general"] .home-hero-experience::before,body[data-world="general"] .home-hero-experience::after,body[data-world="general"] .neuro-core,body[data-world="general"] .neuro-core::before,body[data-world="general"] .neuro-core::after,body[data-world="general"] .dna-unified-scene,body[data-world="general"] .dna-holo-arm,body[data-world="general"] .dna-visual-stack,body[data-world="general"] #dnaPremiumCanvas,body[data-world="general"] #dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;max-height:0!important;overflow:hidden!important;background:none!important}body[data-world="general"] #slide-home.slide,body[data-world="general"] #slide-home .slide-inner--home{background:#05070d!important}}@media (min-width:1024px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{visibility:hidden!important;opacity:0!important;pointer-events:none!important}#mvParallaxHero:not(.is-boot-painted){opacity:0!important;visibility:hidden!important;pointer-events:none!important}}</style>
-  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260706boot-clean" />
+  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260706boot-clean2" />
   <link rel="preload" as="image" href="assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp?v=20260629mv-v4live" fetchpriority="high" media="(min-width: 1024px)" />
   <link rel="preload" as="image" href="assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live" fetchpriority="high" media="(min-width: 1024px)" />
   <link rel="preload" href="assets/welten-multiversum-scene-config-v4.js?v=20260701mv-flow" as="script" media="(min-width: 1024px)" />
   <link rel="preload" href="assets/welten-multiversum-parallax-hero-v4.js?v=20260706perf" as="script" media="(min-width: 1024px)" />
-  <link rel="preload" href="assets/welten-multiversum-world.js?v=20260706boot-clean" as="script" />
+  <link rel="preload" href="assets/welten-multiversum-world.js?v=20260706boot-clean2" as="script" />
   <script src="assets/welten-live-shell-early.js?v=20260704restore"></script>
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260704restore" />
   <title>Alex Lamberti Multiversum für digitale Welten</title>
@@ -5198,7 +5198,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     var s = document.createElement("style");
     s.id = "mv-boot-inline-hide";
     s.textContent =
-      "body[data-world=general]:not(.mv-home-ready) .site-header,body[data-world=general]:not(.mv-home-ready) #slidesRoot,body[data-world=general]:not(.mv-home-ready) .experience-rail,body[data-world=general]:not(.mv-home-ready) .bg-root,body[data-world=general]:not(.mv-home-ready) .bg-grid,body[data-world=general]:not(.mv-home-ready) .light-beams,body[data-world=general]:not(.mv-home-ready) #particle-canvas{display:none!important;visibility:hidden!important;opacity:0!important}#dnaStage,.home-hero-experience,.home-hero-experience::before,.home-hero-experience::after,.neuro-core,.neuro-core::before,.neuro-core::after,.dna-unified-scene,.dna-holo-arm,#dnaPremiumCanvas,#dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;overflow:hidden!important;background:none!important}#slide-home.slide,#slide-home .slide-inner--home{background:#02030b!important}";
+      "body[data-world=general] .bg-root,body[data-world=general] .bg-grid,body[data-world=general] .light-beams,body[data-world=general] #particle-canvas{display:none!important;visibility:hidden!important;opacity:0!important}body[data-world=general]:not(.mv-home-ready) .site-header,body[data-world=general]:not(.mv-home-ready) #slidesRoot,body[data-world=general]:not(.mv-home-ready) .experience-rail{display:none!important;visibility:hidden!important;opacity:0!important}#dnaStage,.home-hero-experience,.home-hero-experience::before,.home-hero-experience::after,.neuro-core,.neuro-core::before,.neuro-core::after,.dna-unified-scene,.dna-holo-arm,#dnaPremiumCanvas,#dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;overflow:hidden!important;background:none!important}#slide-home.slide,#slide-home .slide-inner--home{background:#02030b!important}";
     (document.head || document.documentElement).appendChild(s);
   } catch (e) {}
 })();
@@ -6242,7 +6242,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       var touchUI =
         (window.WeltenTouchEnv && window.WeltenTouchEnv.isTouch()) ||
         reduceMotion;
-      if (dnaStage && dnaOrbitGroup && !dnaStage.dataset.dnaDragInit && !touchUI) {
+      if (dnaStage && dnaOrbitGroup && !dnaStage.dataset.dnaDragInit && !touchUI && document.body.getAttribute("data-world") !== "general") {
         dnaStage.dataset.dnaDragInit = "1";
         updateDnaSlideDepths(0);
 
@@ -6497,6 +6497,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 
       /* --- Hero-Partikel: nur im DNA-Bereich, ruhige Bewegung (kein Parallax auf der Bühne · vermeidet Konflikt mit 3D-Drehung) --- */
       (function initDnaHeroParticles() {
+        if (document.body.getAttribute("data-world") === "general") return;
         var pc = document.getElementById("dnaParticlesCanvas");
         var stage = document.getElementById("dnaStage");
         if (!pc || !stage || reduceMotion) return;
@@ -7638,6 +7639,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   }
 
   function initOrbit() {
+    if (document.body.getAttribute("data-world") === "general") return;
     if (isTouchUI()) {
       initMobileOrbitShell();
       var heroTouch = document.querySelector("#slide-home .home-hero-experience");
@@ -7939,6 +7941,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <!-- FINAL PATCH v6: robuste Klick-Navigation fuer Orbit-Buttons auch waehrend der Rotation -->
 <script id="nexora-orbit-click-navigation-v6">
 (function () {
+  if (document.body.getAttribute("data-world") === "general") return;
   if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function" && window.WeltenTouchEnv.isTouch()) return;
   if (window.matchMedia("(max-width: 1024px)").matches) return;
 
@@ -8654,13 +8657,14 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260629mv-cards1" defer></script>
 <script src="assets/welten-multiversum-scene-config.js?v=20260629mv-title1" defer></script>
 <script src="assets/welten-multiversum-scene-config-v4.js?v=20260701mv-flow" defer></script>
-<script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260706boot-clean" defer></script>
-<script src="assets/welten-multiversum-world.js?v=20260706boot-clean" defer></script>
+<script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260706boot-clean2" defer></script>
+<script src="assets/welten-multiversum-world.js?v=20260706boot-clean2" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260704restore" defer></script>
 <link rel="stylesheet" href="assets/welten-font-system.css?v=20260629fonts3" />
 <link rel="stylesheet" href="assets/welten-world-title-colors.css?v=20260705bootfix" />
 <link rel="stylesheet" href="assets/welten-desktop-rail-clearance.css?v=20260629rail6" />
 <script src="assets/welten-portraits-apply.js?v=20260629-prof-portrait" defer></script>
 <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
+<link rel="stylesheet" href="assets/welten-multiversum-legacy-kill.css?v=20260706boot-clean2" />
 </body>
 </html>

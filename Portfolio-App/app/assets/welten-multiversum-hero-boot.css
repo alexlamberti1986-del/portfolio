@@ -43,6 +43,16 @@ body[data-world="general"].mv-home-ready .site-header {
   opacity: 1 !important;
 }
 
+body[data-world="general"] .bg-root,
+body[data-world="general"] .bg-grid,
+body[data-world="general"] .light-beams,
+body[data-world="general"] #particle-canvas {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 body[data-world="general"].mv-home-ready .site-header {
   display: flex !important;
   pointer-events: none !important;

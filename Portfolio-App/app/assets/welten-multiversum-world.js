@@ -20,12 +20,12 @@
     document.querySelectorAll(".world-switch").forEach(function (el) {
       el.style.display = "none";
     });
+    document.querySelectorAll(".bg-root, .bg-grid, .light-beams").forEach(function (el) {
+      el.remove();
+    });
     ["#particle-canvas", "#dnaPremiumCanvas", "#dnaParticlesCanvas", "#weltenMousePaintCanvas"].forEach(function (sel) {
       var el = document.querySelector(sel);
       if (el) el.remove();
-    });
-    document.querySelectorAll(".bg-grid, .light-beams").forEach(function (el) {
-      el.remove();
     });
   }
 
@@ -240,8 +240,6 @@
     patchMobileHeader();
     if (!isDesktopParallaxHero()) buildStaticHero();
     stripDecor();
-    var bgRoot = document.querySelector(".bg-root");
-    if (bgRoot && isDesktopParallaxHero()) bgRoot.remove();
     finishBoot();
     if (isDesktopParallaxHero()) preloadUrls(PARALLAX_PRELOAD);
   }
