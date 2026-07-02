@@ -140,7 +140,7 @@
     var dissolveStartMs = Math.round(totalMs * 0.85);
     var strokeTotalMs = totalMs * (2500 / 2950);
 
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     var w = 0;
     var h = 0;
     var mask = null;

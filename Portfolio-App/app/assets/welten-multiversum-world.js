@@ -66,6 +66,32 @@
     }
   }
 
+  var PARALLAX_PRELOAD = [
+    "assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp?v=20260629mv-v4live",
+    "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live",
+    "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
+  ];
+
+  function notifyHeroReady() {
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: "mv-hero-ready" }, "*");
+      }
+    } catch (e) {}
+  }
+
+  function preloadUrls(urls) {
+    urls.forEach(function (url) {
+      var img = new Image();
+      img.decoding = "async";
+      img.src = url;
+    });
+  }
+
+  if (document.body && document.body.getAttribute("data-world") === "general") {
+    preloadUrls(PARALLAX_PRELOAD);
+  }
+
   function buildStaticHero() {
     if (document.getElementById("mvStaticHero")) return;
     var stage = document.getElementById("dnaStage");
@@ -99,19 +125,8 @@
         goChapter(btn.getAttribute("data-go"));
       });
     });
-  }
-
-  var PARALLAX_PRELOAD = [
-    "assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp?v=20260629mv-v4live",
-    "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live",
-    "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
-  ];
-
-  function preloadUrls(urls) {
-    urls.forEach(function (url) {
-      var img = new Image();
-      img.src = url;
-    });
+    window.__mvParallaxHeroReady = true;
+    notifyHeroReady();
   }
 
   function parallaxDepsReady() {

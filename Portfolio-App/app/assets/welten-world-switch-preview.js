@@ -27,12 +27,12 @@
 
     if (worldKey === "general") {
       timing = Object.assign(timing, {
-        WORLD_TRANSITION_DURATION: 3800,
-        EFFECT_MS: 2000,
-        TITLE_REVEAL_AT: 1720,
-        TITLE_FADE_IN: 520,
-        TITLE_HOLD: 1400,
-        COVER_MS: 1300,
+        WORLD_TRANSITION_DURATION: 3200,
+        EFFECT_MS: 1600,
+        TITLE_REVEAL_AT: 1380,
+        TITLE_FADE_IN: 480,
+        TITLE_HOLD: 1100,
+        COVER_MS: 1100,
       });
     } else if (worldKey === "nexora") {
       var nexEffect = WWS_TIMING.EFFECT_MS;
@@ -138,6 +138,18 @@
     return id;
   }
 
+  function wwsCanvasSize(canvas, ctx) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var w = Math.floor(window.innerWidth);
+    var h = Math.floor(window.innerHeight);
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { w: w, h: h };
+  }
+
   function wwsAbortTransition() {
     wwsSoundGen += 1;
     wwsClearTimers();
@@ -154,7 +166,7 @@
   var WORLD_ORB_THEMES = {
     general: {
       bgTrail: "rgba(6, 4, 16, 0.38)",
-      orbCount: 40,
+      orbCount: 26,
       palette: [
         ["255, 210, 255", "255, 89, 178", "200, 40, 140"],
         ["200, 235, 255", "94, 196, 255", "30, 120, 220"],
@@ -870,8 +882,9 @@
     }
 
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      var size = wwsCanvasSize(canvas, ctx);
+      w = size.w;
+      h = size.h;
       cx = w * 0.5;
       cy = h * 0.5;
       fontSize = Math.max(14, Math.min(18, Math.round(w / 72)));
@@ -1001,8 +1014,9 @@
     var isGeneral = worldKey === "general";
 
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      var size = wwsCanvasSize(canvas, ctx);
+      w = size.w;
+      h = size.h;
       cx = w * 0.5;
       cy = h * 0.42;
     }
@@ -1666,7 +1680,7 @@
             var maxHold = getTransitionFailsafeMs(timing);
             if (!overlay._wwsTitleShownAt) {
               if (elapsed < maxHold) {
-                wwsLater(scheduleExit, 50);
+                wwsLater(scheduleExit, 32);
                 return;
               }
               revealStagedTitle(overlay);

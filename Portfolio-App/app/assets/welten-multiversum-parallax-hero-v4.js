@@ -2255,6 +2255,11 @@
       }
       window.__mvParallaxHeroReady = true;
       bootPaintDone = true;
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "mv-hero-ready" }, "*");
+        }
+      } catch (eReady) {}
       return heroEl;
     } finally {
       window.__mvParallaxBuilding = false;
