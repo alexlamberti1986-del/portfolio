@@ -32,7 +32,7 @@
     var frame = document.createElement("iframe");
     frame.className = "galaxy-v10-home-frame";
     frame.title = "Reise durch das Multiversum";
-    frame.src = "galaxy-v10/embed.html?v=20260702unified";
+    frame.src = "galaxy-v10/embed.html?v=20260702shellfix";
     frame.loading = "eager";
 
     host.appendChild(frame);
@@ -62,8 +62,20 @@
     window.__galaxyV10HomeActive = true;
   }
 
+  function remountGalaxyIfNeeded() {
+    if (!shouldUseGalaxy()) {
+      var host = document.getElementById("galaxyV10HomeHost");
+      if (host) host.remove();
+      window.__galaxyV10HomeActive = false;
+      return;
+    }
+    window.__galaxyV10HomeActive = true;
+    mountGalaxy();
+  }
+
   mountGalaxy();
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mountGalaxy);
+    document.addEventListener("DOMContentLoaded", remountGalaxyIfNeeded);
   }
+  window.addEventListener("pageshow", remountGalaxyIfNeeded);
 })();

@@ -106,13 +106,37 @@
 
   function assignLocation(href) {
     var targetHref = normalizeHref(href);
+    var abs = targetHref;
     try {
-      var abs = new URL(targetHref, window.location.href).href;
-      if (isEmbed()) {
+      abs = new URL(targetHref, window.location.href).href;
+    } catch (e) {}
+
+    if (isEmbed()) {
+      try {
+        if (window.top && window.top !== window) {
+          var world = worldFromHref(abs);
+          var hash = "";
+          try {
+            hash = new URL(abs).hash || "";
+          } catch (e2) {}
+          window.top.postMessage(
+            {
+              type: "alex:switch-world",
+              world: world,
+              href: abs,
+              targetHash: hash,
+              go: hash.replace(/^#/, "") || "home",
+            },
+            "*"
+          );
+          return;
+        }
+      } catch (e3) {}
+      try {
         window.parent.location.assign(abs);
         return;
-      }
-    } catch (e) {}
+      } catch (e4) {}
+    }
     window.location.assign(targetHref);
   }
 

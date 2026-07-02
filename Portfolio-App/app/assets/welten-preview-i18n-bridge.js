@@ -10,7 +10,10 @@
   function isPreviewContext() {
     if (window.parent === window) return false;
     try {
-      return /multiversum-preview\.html/i.test(window.parent.location.pathname || "");
+      var parentPath = window.parent.location.pathname || "";
+      if (/multiversum-preview\.html/i.test(parentPath)) return true;
+      var parentBody = window.parent.document && window.parent.document.body;
+      return !!(parentBody && parentBody.getAttribute("data-live-shell") === "1");
     } catch (e) {
       return true;
     }
@@ -67,7 +70,29 @@
   }
 
   function boot() {
-    if (!isPreviewContext()) return;
+    var inShell = false;
+    try {
+      inShell =
+        window.parent !== window &&
+        window.parent.document &&
+        window.parent.document.body &&
+        window.parent.document.body.getAttribute("data-live-shell") === "1";
+    } catch (e) {
+      inShell = window.parent !== window;
+    }
+
+    if (!isPreviewContext() && !inShell && window.parent === window) {
+      apply(currentLang());
+      window.addEventListener("message", function (e) {
+        if (!e.data) return;
+        if (e.data.type === "portfolio-preview-lang" && e.data.lang) apply(e.data.lang);
+        if (e.data.type === "alx-preview-sync" && e.data.lang) apply(e.data.lang);
+      });
+      window.WeltenPreviewI18nBridge = { apply: apply, isActive: function () { return true; } };
+      return;
+    }
+
+    if (!isPreviewContext() && !inShell) return;
     active = true;
     apply(currentLang());
 
