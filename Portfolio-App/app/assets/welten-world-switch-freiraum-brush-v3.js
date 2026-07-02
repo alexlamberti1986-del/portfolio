@@ -1,112 +1,116 @@
 /**
- * FREIRAUM Weltwechsel — Pinsel v3
- * Breite Hand-Wischstriche, ein Verlauf nach dem anderen (Leinwand wisch).
+ * FREIRAUM Weltwechsel — breite Pinsel-Maske (Broad Brush Reveal)
+ * 8 kubische Striche enthüllen das FREIRAUM-Gemälde durch eine Mask-Canvas.
  */
 (function () {
   "use strict";
 
-  var PALETTE = [
-    [188, 77, 255],
-    [255, 196, 106],
-    [255, 87, 190],
-    [255, 155, 55],
-    [155, 107, 255],
-    [255, 47, 146],
-  ];
+  var REVEAL_IMG_SRC = "assets/images/world-switch/freiraum-broad-brush-reveal.png";
+  var REVEAL_IMG = null;
+  var REVEAL_IMG_READY = false;
+  var REVEAL_IMG_FAILED = false;
 
-  var STROKE_IMG = null;
-  var STROKE_SOFT = null;
-
-  function rgba(rgb, a) {
-    return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + a + ")";
-  }
-
-  function pickColor(i) {
-    return PALETTE[i % PALETTE.length];
-  }
-
-  function seededRand(seed) {
-    var x = Math.sin(seed * 127.1 + seed * seed * 0.017) * 43758.5453;
-    return x - Math.floor(x);
-  }
-
-  function easeInOutSine(t) {
-    return 0.5 - Math.cos(Math.PI * t) / 2;
-  }
-
-  function quadPoint(x1, y1, qx, qy, x2, y2, t) {
-    var u = 1 - t;
-    return {
-      x: u * u * x1 + 2 * u * t * qx + t * t * x2,
-      y: u * u * y1 + 2 * u * t * qy + t * t * y2,
+  function mulberry32(seed) {
+    return function () {
+      var t = (seed += 0x6d2b79f5);
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
   }
 
-  function quadTangent(x1, y1, qx, qy, x2, y2, t) {
-    var u = 1 - t;
-    return {
-      x: 2 * u * (qx - x1) + 2 * t * (x2 - qx),
-      y: 2 * u * (qy - y1) + 2 * t * (y2 - qy),
-    };
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
   }
 
-  function makeStrokeRibbon(w, h, seed, rough) {
-    var c = document.createElement("canvas");
-    c.width = w;
-    c.height = h;
-    var g = c.getContext("2d");
+  function clamp(n, min, max) {
+    return Math.max(min, Math.min(max, n));
+  }
+
+  function easeOutCubic(t) {
+    return 1 - Math.pow(1 - t, 3);
+  }
+
+  function easeInOut(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function coverImageRect(image, cw, ch) {
+    var iw = image.naturalWidth || image.width;
+    var ih = image.naturalHeight || image.height;
+    var scale = Math.max(cw / iw, ch / ih);
+    var nw = iw * scale;
+    var nh = ih * scale;
+    return { x: (cw - nw) / 2, y: (ch - nh) / 2, w: nw, h: nh };
+  }
+
+  function drawProceduralReveal(ctx, w, h) {
+    var g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, "#6e279c");
+    g.addColorStop(0.22, "#ea1689");
+    g.addColorStop(0.42, "#f7b617");
+    g.addColorStop(0.58, "#f06e00");
+    g.addColorStop(0.72, "#009fb1");
+    g.addColorStop(0.88, "#005197");
+    g.addColorStop(1, "#061833");
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    ctx.globalAlpha = 0.35;
+    var blobs = [
+      [0.18, 0.28, 0.34, "#ff2ba6"],
+      [0.72, 0.22, 0.28, "#f7b617"],
+      [0.48, 0.62, 0.38, "#009fb1"],
+      [0.82, 0.68, 0.24, "#ea1689"],
+    ];
     var i;
-    g.clearRect(0, 0, w, h);
-
-    g.save();
-    g.filter = "blur(" + (rough ? 10 : 14) + "px)";
-    g.fillStyle = "rgba(255,255,255,0.95)";
-    g.beginPath();
-    g.moveTo(0, h * 0.5);
-    g.bezierCurveTo(w * 0.12, h * 0.28, w * 0.25, h * 0.72, w * 0.4, h * 0.48);
-    g.bezierCurveTo(w * 0.55, h * 0.26, w * 0.7, h * 0.7, w * 0.85, h * 0.46);
-    g.lineTo(w, h * 0.54);
-    g.lineTo(w, h * 0.62);
-    g.bezierCurveTo(w * 0.72, h * 0.78, w * 0.5, h * 0.3, w * 0.32, h * 0.6);
-    g.bezierCurveTo(w * 0.16, h * 0.8, w * 0.06, h * 0.38, 0, h * 0.56);
-    g.closePath();
-    g.fill();
-    g.restore();
-
-    for (i = 0; i < (rough ? 70 : 50); i++) {
-      var t = i / 70;
-      var x = t * w + (seededRand(seed + i) - 0.5) * w * 0.06;
-      var y = h * 0.5 + (seededRand(seed + i * 2) - 0.5) * h * 0.62;
-      var rx = 3 + seededRand(seed + i * 3) * (rough ? 18 : 12);
-      var ry = 2 + seededRand(seed + i * 4) * (rough ? 10 : 7);
-      g.fillStyle = "rgba(255,255,255," + (0.1 + seededRand(seed + i * 5) * 0.4) + ")";
-      g.beginPath();
-      g.ellipse(x, y, rx, ry, (seededRand(seed + i * 6) - 0.5) * 0.5, 0, Math.PI * 2);
-      g.fill();
+    for (i = 0; i < blobs.length; i++) {
+      var b = blobs[i];
+      var rg = ctx.createRadialGradient(b[0] * w, b[1] * h, 0, b[0] * w, b[1] * h, b[2] * Math.min(w, h));
+      rg.addColorStop(0, b[3]);
+      rg.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = rg;
+      ctx.beginPath();
+      ctx.arc(b[0] * w, b[1] * h, b[2] * Math.min(w, h), 0, Math.PI * 2);
+      ctx.fill();
     }
-    return c;
+    ctx.restore();
   }
 
-  function tintImage(img, color) {
-    var c = document.createElement("canvas");
-    c.width = img.width;
-    c.height = img.height;
-    var g = c.getContext("2d");
-    g.drawImage(img, 0, 0);
-    g.globalCompositeOperation = "source-in";
-    g.fillStyle = rgba(color, 1);
-    g.fillRect(0, 0, c.width, c.height);
-    return c;
-  }
-
-  function loadStrokeAssets(cb) {
-    if (STROKE_IMG && STROKE_SOFT) {
+  function ensureRevealImage(cb) {
+    if (REVEAL_IMG_READY || REVEAL_IMG_FAILED) {
       cb();
       return;
     }
-    STROKE_IMG = makeStrokeRibbon(960, 220, 17, false);
-    STROKE_SOFT = makeStrokeRibbon(960, 220, 41, true);
-    cb();
+    if (REVEAL_IMG) {
+      if (REVEAL_IMG.complete) {
+        REVEAL_IMG_READY = true;
+        cb();
+        return;
+      }
+      REVEAL_IMG.onload = function () {
+        REVEAL_IMG_READY = true;
+        cb();
+      };
+      REVEAL_IMG.onerror = function () {
+        REVEAL_IMG_FAILED = true;
+        cb();
+      };
+      return;
+    }
+    REVEAL_IMG = new Image();
+    REVEAL_IMG.decoding = "async";
+    REVEAL_IMG.onload = function () {
+      REVEAL_IMG_READY = true;
+      cb();
+    };
+    REVEAL_IMG.onerror = function () {
+      REVEAL_IMG_FAILED = true;
+      cb();
+    };
+    REVEAL_IMG.src = REVEAL_IMG_SRC;
   }
 
   window.__wwsFreiraumBrushV3 = function startFreiraumBrushV3(overlay) {
@@ -114,265 +118,39 @@
     if (!canvas) return;
     var ctx = canvas.getContext("2d");
     if (!ctx) return;
-    loadStrokeAssets(function () {
-      runBrush(overlay, canvas, ctx);
+
+    ensureRevealImage(function () {
+      runBroadBrush(overlay, canvas, ctx);
     });
   };
 
-  function runBrush(overlay, canvas, ctx) {
-    var paintCanvas = document.createElement("canvas");
-    var paintCtx = paintCanvas.getContext("2d");
-
-    var w = 0;
-    var h = 0;
-    var cx = 0;
-    var cy = 0;
-    var mobile = false;
-    var running = true;
-    var startTime = performance.now();
-    var lastFrame = startTime;
-    var titleRevealed = false;
-    var strokeU = [];
-    var brushes = [];
-    var tip = null;
-    var tintCache = { hard: {}, soft: {} };
-    var paintEndMs = 0;
-    var titleAtMs = 0;
-    var finalFillDone = false;
+  function runBroadBrush(overlay, canvas, ctx) {
+    var reduceMotion = false;
+    try {
+      reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (e) {}
 
     var FT =
       window.WeltenWorldSwitchPreview && window.WeltenWorldSwitchPreview.getTimingForWorld
         ? window.WeltenWorldSwitchPreview.getTimingForWorld("freiraum")
-        : { EFFECT_MS: 3600, TITLE_REVEAL_AT: 2600 };
-    var totalMs = FT.EFFECT_MS || 3600;
-    var revealMs = FT.TITLE_REVEAL_AT || 2600;
+        : { EFFECT_MS: 3400, TITLE_REVEAL_AT: 2500 };
 
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      paintCanvas.width = w;
-      paintCanvas.height = h;
-      cx = w * 0.5;
-      cy = h * 0.46;
-      mobile = w < 768;
-      initBrushes();
-      strokeU = [];
-      finalFillDone = false;
-      seedVeil();
-    }
+    var totalMs = FT.EFFECT_MS || 3400;
+    var titleAtMs = FT.TITLE_REVEAL_AT || 2500;
+    var strokeTotalMs = totalMs * (2500 / 2950);
 
-    function seedVeil() {
-      var g = paintCtx.createLinearGradient(0, 0, w, h);
-      g.addColorStop(0, "rgba(12, 6, 18, 0.62)");
-      g.addColorStop(0.5, "rgba(18, 8, 26, 0.55)");
-      g.addColorStop(1, "rgba(10, 5, 16, 0.65)");
-      paintCtx.fillStyle = g;
-      paintCtx.fillRect(0, 0, w, h);
-    }
-
-    /* Drei breite Wischbahnen — decken den ganzen Screen ab */
-    function initBrushes() {
-      var passMs = mobile ? 780 : 920;
-      var gapMs = 40;
-      var brushW = Math.max(mobile ? w * 0.58 : w * 0.62, h * 0.46);
-      var yBands = [0.17, 0.5, 0.83];
-      var list = [];
-      var r;
-
-      for (r = 0; r < 3; r++) {
-        var ltr = r % 2 === 0;
-        var y = yBands[r];
-        var wobble = (seededRand(r * 13.7) - 0.5) * 0.012;
-        list.push({
-          x1: ltr ? -0.22 : 1.22,
-          y1: y + wobble,
-          cx: 0.5,
-          cy: y + wobble + (ltr ? -0.02 : 0.02),
-          x2: ltr ? 1.22 : -0.22,
-          y2: y + wobble * 0.5,
-          color: r % PALETTE.length,
-          width: brushW,
-          delay: r * (passMs + gapMs),
-          dur: passMs,
-          pressure: 0.96 - r * 0.03,
-          tilt: (seededRand(r * 5.3) - 0.5) * 0.05,
-          index: r,
-        });
-      }
-
-      brushes = list;
-      paintEndMs = 2 * (passMs + gapMs) + passMs;
-      titleAtMs = paintEndMs + 200;
-    }
-
-    function applyFinalFill() {
-      if (finalFillDone) return;
-      finalFillDone = true;
-      paintCtx.save();
-      paintCtx.globalCompositeOperation = "lighter";
-      var g = paintCtx.createLinearGradient(0, 0, 0, h);
-      g.addColorStop(0, rgba(pickColor(0), 0.14));
-      g.addColorStop(0.45, rgba(pickColor(2), 0.12));
-      g.addColorStop(0.72, rgba(pickColor(4), 0.11));
-      g.addColorStop(1, rgba(pickColor(1), 0.16));
-      paintCtx.fillStyle = g;
-      paintCtx.fillRect(0, 0, w, h);
-      paintCtx.restore();
-    }
-
-    function pathPoint(b, u) {
-      var p = quadPoint(b.x1 * w, b.y1 * h, b.cx * w, b.cy * h, b.x2 * w, b.y2 * h, u);
-      var wob = Math.sin(u * Math.PI * 4.2 + b.index) * h * 0.006;
-      return { x: p.x, y: p.y + wob };
-    }
-
-    function pathAngle(b, u) {
-      var tan = quadTangent(b.x1 * w, b.y1 * h, b.cx * w, b.cy * h, b.x2 * w, b.y2 * h, Math.min(0.998, u));
-      return Math.atan2(tan.y, tan.x) + b.tilt;
-    }
-
-    function drawBrushBand(b, uFrom, uTo, dissolve) {
-      if (uTo <= uFrom + 0.0002) return null;
-
-      var steps = Math.max(2, Math.ceil((uTo - uFrom) * (mobile ? 55 : 75)));
-      var si;
-      var lastPt = null;
-      var color = pickColor(b.color);
-      var baseW = b.width * b.pressure;
-
-      if (!tintCache.hard[b.color]) tintCache.hard[b.color] = tintImage(STROKE_IMG, color);
-      if (!tintCache.soft[b.color]) tintCache.soft[b.color] = tintImage(STROKE_SOFT, pickColor(b.color + 1));
-      var tinted = tintCache.hard[b.color];
-      var tintedSoft = tintCache.soft[b.color];
-
-      var prev = pathPoint(b, uFrom);
-
-      for (si = 1; si <= steps; si++) {
-        var u = uFrom + ((uTo - uFrom) * si) / steps;
-        var pt = pathPoint(b, u);
-        var ang = pathAngle(b, u);
-        var edge = 0.5 + 0.5 * Math.sin(u * Math.PI);
-        var alpha = (0.5 + edge * 0.42) * dissolve * b.pressure;
-        var stampW = baseW * (2.6 + edge * 0.55);
-        var stampH = stampW * 0.24;
-
-        paintCtx.save();
-        paintCtx.globalCompositeOperation = "source-over";
-        paintCtx.globalAlpha = alpha * 0.35;
-        paintCtx.lineCap = "round";
-        paintCtx.lineJoin = "round";
-        paintCtx.strokeStyle = rgba(color, alpha * 0.55);
-        paintCtx.lineWidth = baseW * 1.55;
-        paintCtx.beginPath();
-        paintCtx.moveTo(prev.x, prev.y);
-        paintCtx.lineTo(pt.x, pt.y);
-        paintCtx.stroke();
-        paintCtx.strokeStyle = rgba(color, alpha * 0.75);
-        paintCtx.lineWidth = baseW * 0.78;
-        paintCtx.stroke();
-        paintCtx.strokeStyle = rgba(color, alpha);
-        paintCtx.lineWidth = baseW * 0.42;
-        paintCtx.stroke();
-        paintCtx.restore();
-
-        paintCtx.save();
-        paintCtx.globalCompositeOperation = "lighter";
-        paintCtx.globalAlpha = alpha * 0.5;
-        paintCtx.translate(pt.x, pt.y);
-        paintCtx.rotate(ang);
-        paintCtx.drawImage(tintedSoft, -stampW * 0.5, -stampH * 0.55, stampW, stampH);
-        paintCtx.globalAlpha = alpha * 0.85;
-        paintCtx.drawImage(tinted, -stampW * 0.48, -stampH * 0.5, stampW * 0.96, stampH);
-        paintCtx.restore();
-
-        prev = pt;
-        lastPt = { x: pt.x, y: pt.y, ang: ang, color: b.color, pr: edge * b.pressure };
-      }
-
-      return lastPt;
-    }
-
-    function activeBrushIndex(elapsed) {
-      var i;
-      for (i = brushes.length - 1; i >= 0; i--) {
-        var b = brushes[i];
-        if (elapsed >= b.delay && elapsed <= b.delay + b.dur + 40) return i;
-      }
-      return -1;
-    }
-
-    function advanceBrush(idx, elapsed, dissolve) {
-      var b = brushes[idx];
-      if (elapsed < b.delay) return null;
-
-      var t = Math.min(1, (elapsed - b.delay) / b.dur);
-      var u = t;
-      var lastU = strokeU[idx] || 0;
-
-      if (u <= lastU + 0.0001) {
-        var hold = pathPoint(b, u);
-        return {
-          x: hold.x,
-          y: hold.y,
-          ang: pathAngle(b, u),
-          color: b.color,
-          pr: b.pressure,
-        };
-      }
-
-      var pt = drawBrushBand(b, lastU, u, dissolve);
-      strokeU[idx] = u;
-      return pt;
-    }
-
-    function drawBrushTip(pt) {
-      if (!pt) return;
-      var color = pickColor(pt.color);
-      var sw = (mobile ? w * 0.38 : w * 0.44) * pt.pr;
-      var sh = sw * 0.2;
-
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      if (STROKE_IMG && tintCache.hard[pt.color]) {
-        ctx.globalAlpha = 0.9 * pt.pr;
-        ctx.translate(pt.x, pt.y);
-        ctx.rotate(pt.ang);
-        ctx.drawImage(tintCache.hard[pt.color], -sw * 0.5, -sh * 0.5, sw, sh);
-      }
-      ctx.restore();
-
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      var g = ctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, sh * 0.8);
-      g.addColorStop(0, "rgba(255,255,255," + (0.3 * pt.pr) + ")");
-      g.addColorStop(0.5, rgba(color, 0.2 * pt.pr));
-      g.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, sh * 0.8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    function drawBloom(elapsed, dissolve) {
-      if (elapsed < titleAtMs) return;
-      var p = easeInOutSine(Math.min(1, (elapsed - titleAtMs) / 420));
-      if (p <= 0.01) return;
-
-      var r = Math.min(w, h) * (0.1 + p * 0.38);
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      var grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      grd.addColorStop(0, "rgba(255,255,255," + (0.28 * p * dissolve) + ")");
-      grd.addColorStop(0.22, "rgba(255,196,106," + (0.24 * p * dissolve) + ")");
-      grd.addColorStop(0.48, "rgba(188,77,255," + (0.2 * p * dissolve) + ")");
-      grd.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.fillStyle = grd;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = 0;
+    var h = 0;
+    var mask = null;
+    var maskCtx = null;
+    var procCanvas = null;
+    var procCtx = null;
+    var strokes = [];
+    var rand = mulberry32(124928);
+    var running = true;
+    var startTime = performance.now();
+    var titleRevealed = false;
 
     overlay._wwsTitleReveal = function () {
       if (titleRevealed) return;
@@ -381,51 +159,324 @@
       if (typeof overlay._wwsRevealTitleFn === "function") overlay._wwsRevealTitleFn();
     };
 
-    resize();
+    function pointOnCubic(s, t) {
+      var mt = 1 - t;
+      return {
+        x: mt * mt * mt * s.x0 + 3 * mt * mt * t * s.cx1 + 3 * mt * t * t * s.cx2 + t * t * t * s.x1,
+        y: mt * mt * mt * s.y0 + 3 * mt * mt * t * s.cy1 + 3 * mt * t * t * s.cy2 + t * t * t * s.y1,
+      };
+    }
 
-    function draw(now) {
-      if (!running) return;
-      var elapsed = now - startTime;
-      lastFrame = now;
-      var dissolve = elapsed < revealMs + 340 ? 1 : Math.max(0, 1 - (elapsed - revealMs - 340) / 440);
+    function tangentOnCubic(s, t) {
+      var mt = 1 - t;
+      var x = 3 * mt * mt * (s.cx1 - s.x0) + 6 * mt * t * (s.cx2 - s.cx1) + 3 * t * t * (s.x1 - s.cx2);
+      var y = 3 * mt * mt * (s.cy1 - s.y0) + 6 * mt * t * (s.cy2 - s.cy1) + 3 * t * t * (s.y1 - s.cy2);
+      var len = Math.hypot(x, y) || 1;
+      return { x: x / len, y: y / len };
+    }
 
-      tip = null;
-      var active = activeBrushIndex(elapsed);
+    function buildStrokes() {
+      var base = Math.max(180, Math.min(w, h) * 0.22);
+      var wide = Math.max(230, Math.min(w, h) * 0.34);
+      var mobile = w < 768;
+      var scale = mobile ? 0.82 : 1;
+      var defs = [
+        { delay: 0, dur: 1050, width: wide * 1.05, x0: -w * 0.18, y0: h * 0.31, cx1: w * 0.18, cy1: -h * 0.1, cx2: w * 0.72, cy2: h * 0.18, x1: w * 1.2, y1: h * 0.03 },
+        { delay: 180, dur: 1100, width: wide * 0.88, x0: -w * 0.15, y0: h * 0.61, cx1: w * 0.2, cy1: h * 0.18, cx2: w * 0.68, cy2: h * 0.69, x1: w * 1.14, y1: h * 0.37 },
+        { delay: 360, dur: 1200, width: base * 1.05, x0: w * 0.04, y0: h * 1.1, cx1: w * 0.12, cy1: h * 0.62, cx2: w * 0.52, cy2: h * 0.5, x1: w * 1.08, y1: h * 0.75 },
+        { delay: 540, dur: 1000, width: wide * 0.72, x0: w * 0.34, y0: -h * 0.12, cx1: w * 0.45, cy1: h * 0.2, cx2: w * 0.78, cy2: h * 0.38, x1: w * 1.16, y1: h * 0.28 },
+        { delay: 760, dur: 1050, width: base * 0.86, x0: -w * 0.2, y0: h * 0.86, cx1: w * 0.24, cy1: h * 0.8, cx2: w * 0.38, cy2: h * 0.98, x1: w * 1.22, y1: h * 0.94 },
+        { delay: 930, dur: 880, width: base * 0.72, x0: -w * 0.08, y0: h * 0.12, cx1: w * 0.22, cy1: h * 0.38, cx2: w * 0.34, cy2: h * 0.56, x1: w * 0.78, y1: h * 1.12 },
+        { delay: 1120, dur: 980, width: wide * 0.7, x0: w * 0.88, y0: -h * 0.1, cx1: w * 0.72, cy1: h * 0.22, cx2: w * 0.42, cy2: h * 0.65, x1: -w * 0.2, y1: h * 0.72 },
+        { delay: 1320, dur: 820, width: base * 0.74, x0: w * 0.2, y0: -h * 0.12, cx1: w * 0.12, cy1: h * 0.26, cx2: w * 0.34, cy2: h * 0.46, x1: w * 0.56, y1: h * 1.1 },
+      ];
+
+      strokes = defs.map(function (s, index) {
+        var bristles = [];
+        var bristleCount = Math.round(32 + (s.width * scale) / 7);
+        var i;
+        for (i = 0; i < bristleCount; i++) {
+          bristles.push({
+            offset: (rand() - 0.5) * s.width * scale * 1.06,
+            width: lerp(1.4, 9.5, rand()),
+            alpha: lerp(0.2, 0.82, rand()),
+            start: rand() * 0.09,
+            end: 0.84 + rand() * 0.16,
+            phase: rand() * Math.PI * 2,
+          });
+        }
+
+        var holes = [];
+        for (i = 0; i < 36; i++) {
+          holes.push({
+            t: rand(),
+            offset: (rand() - 0.5) * s.width * scale * 0.86,
+            len: lerp(0.035, 0.12, rand()),
+            width: lerp(3, 18, rand()),
+            alpha: lerp(0.09, 0.28, rand()),
+          });
+        }
+
+        var splats = [];
+        for (i = 0; i < 58; i++) {
+          splats.push({
+            t: rand(),
+            offset: (rand() - 0.5) * s.width * scale * 1.55,
+            drift: (rand() - 0.5) * 80,
+            r: lerp(1.2, 13, Math.pow(rand(), 1.7)),
+            alpha: lerp(0.36, 0.92, rand()),
+          });
+        }
+
+        return {
+          delay: s.delay,
+          dur: s.dur,
+          width: s.width * scale,
+          x0: s.x0,
+          y0: s.y0,
+          cx1: s.cx1,
+          cy1: s.cy1,
+          cx2: s.cx2,
+          cy2: s.cy2,
+          x1: s.x1,
+          y1: s.y1,
+          index: index,
+          bristles: bristles,
+          holes: holes,
+          splats: splats,
+        };
+      });
+    }
+
+    function drawPath(context, s, progress, offset, width, alpha, jitter, steps) {
+      var end = clamp(progress, 0, 1);
+      if (end <= 0) return;
+      offset = offset || 0;
+      width = width == null ? s.width : width;
+      alpha = alpha == null ? 1 : alpha;
+      jitter = jitter || 0;
+      steps = steps || 46;
+
+      context.beginPath();
       var i;
+      for (i = 0; i <= steps; i++) {
+        var t = (i / steps) * end;
+        var p = pointOnCubic(s, t);
+        var tan = tangentOnCubic(s, t);
+        var nx = -tan.y;
+        var ny = tan.x;
+        var wiggle = Math.sin(t * Math.PI * 10 + jitter) * 8 + Math.sin(t * Math.PI * 21 + jitter) * 3;
+        var x = p.x + nx * (offset + wiggle);
+        var y = p.y + ny * (offset + wiggle);
+        if (i === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
+      }
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      context.lineWidth = width;
+      context.globalAlpha = alpha;
+      context.strokeStyle = "#fff";
+      context.stroke();
+      context.globalAlpha = 1;
+    }
 
-      for (i = 0; i < brushes.length; i++) {
-        if (elapsed >= brushes[i].delay) advanceBrush(i, elapsed, dissolve);
+    function drawBrushOnMask(s, local) {
+      var p = easeOutCubic(clamp(local, 0, 1));
+      if (p <= 0) return;
+
+      drawPath(maskCtx, s, p, 0, s.width, 0.92, s.index * 1.7, 68);
+      drawPath(maskCtx, s, p, -s.width * 0.29, s.width * 0.18, 0.55, s.index + 4.2, 58);
+      drawPath(maskCtx, s, p, s.width * 0.31, s.width * 0.14, 0.45, s.index + 7.1, 58);
+
+      var bi;
+      for (bi = 0; bi < s.bristles.length; bi++) {
+        var b = s.bristles[bi];
+        var bristleProgress = clamp((p - b.start) / Math.max(0.04, b.end - b.start), 0, 1);
+        if (bristleProgress <= 0) continue;
+        drawPath(maskCtx, s, bristleProgress, b.offset, b.width, b.alpha, b.phase, 54);
       }
 
-      if (active >= 0) {
-        var b = brushes[active];
-        var u = Math.min(1, (elapsed - b.delay) / b.dur);
-        var p = pathPoint(b, u);
-        tip = {
-          x: p.x,
-          y: p.y,
-          ang: pathAngle(b, u),
-          color: b.color,
-          pr: b.pressure * (0.5 + 0.5 * Math.sin(u * Math.PI)),
-        };
+      maskCtx.save();
+      maskCtx.globalCompositeOperation = "destination-out";
+      var hi;
+      for (hi = 0; hi < s.holes.length; hi++) {
+        var hole = s.holes[hi];
+        if (hole.t > p) continue;
+        var t1 = clamp(hole.t - hole.len * 0.5, 0, 1);
+        var t2 = clamp(hole.t + hole.len * 0.5, 0, p);
+        var steps = 10;
+        maskCtx.beginPath();
+        var si;
+        for (si = 0; si <= steps; si++) {
+          var tt = lerp(t1, t2, si / steps);
+          var pt = pointOnCubic(s, tt);
+          var tan = tangentOnCubic(s, tt);
+          var nx = -tan.y;
+          var ny = tan.x;
+          var hx = pt.x + nx * hole.offset + Math.sin(tt * 38) * 7;
+          var hy = pt.y + ny * hole.offset + Math.cos(tt * 28) * 5;
+          if (si === 0) maskCtx.moveTo(hx, hy);
+          else maskCtx.lineTo(hx, hy);
+        }
+        maskCtx.lineCap = "round";
+        maskCtx.lineJoin = "round";
+        maskCtx.lineWidth = hole.width;
+        maskCtx.globalAlpha = hole.alpha;
+        maskCtx.strokeStyle = "#000";
+        maskCtx.stroke();
+      }
+      maskCtx.restore();
+
+      maskCtx.save();
+      maskCtx.fillStyle = "#fff";
+      var spi;
+      for (spi = 0; spi < s.splats.length; spi++) {
+        var sp = s.splats[spi];
+        if (sp.t > p) continue;
+        var spt = pointOnCubic(s, sp.t);
+        var stan = tangentOnCubic(s, sp.t);
+        var snx = -stan.y;
+        var sny = stan.x;
+        var sx = spt.x + snx * sp.offset + stan.x * sp.drift;
+        var sy = spt.y + sny * sp.offset + stan.y * sp.drift;
+        maskCtx.globalAlpha = sp.alpha;
+        maskCtx.beginPath();
+        maskCtx.arc(sx, sy, sp.r, 0, Math.PI * 2);
+        maskCtx.fill();
+        if (sp.r > 7) {
+          maskCtx.globalAlpha = sp.alpha * 0.35;
+          maskCtx.beginPath();
+          maskCtx.ellipse(sx + sp.r * 0.9, sy - sp.r * 0.35, sp.r * 1.6, sp.r * 0.38, Math.atan2(stan.y, stan.x), 0, Math.PI * 2);
+          maskCtx.fill();
+        }
+      }
+      maskCtx.restore();
+    }
+
+    function addWetHighlights(progress) {
+      ctx.save();
+      ctx.globalCompositeOperation = "source-atop";
+      ctx.globalAlpha = 0.16 * (1 - Math.abs(progress - 0.54));
+      ctx.strokeStyle = "rgba(255,255,255,.7)";
+      ctx.lineCap = "round";
+      var i;
+      for (i = 0; i < strokes.length; i++) {
+        var s = strokes[i];
+        var local = clamp((progress * strokeTotalMs - s.delay) / s.dur, 0, 1);
+        if (local <= 0) continue;
+        var j;
+        for (j = 0; j < 6; j++) {
+          drawPath(ctx, s, local, (j - 3) * s.width * 0.07, 1.1 + j * 0.22, 0.28, j + s.index, 42);
+        }
+      }
+      ctx.restore();
+    }
+
+    function render(progress, dissolve) {
+      maskCtx.clearRect(0, 0, w, h);
+      var si;
+      for (si = 0; si < strokes.length; si++) {
+        var local = (progress * strokeTotalMs - strokes[si].delay) / strokes[si].dur;
+        drawBrushOnMask(strokes[si], local);
       }
 
       ctx.clearRect(0, 0, w, h);
       ctx.save();
       ctx.globalAlpha = dissolve;
-      ctx.globalCompositeOperation = "source-over";
-      ctx.drawImage(paintCanvas, 0, 0);
+      ctx.fillStyle = "rgba(255,247,234,.42)";
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "destination-in";
+      ctx.drawImage(mask, 0, 0, w, h);
       ctx.restore();
 
-      if (tip) drawBrushTip(tip);
-      drawBloom(elapsed, dissolve);
+      ctx.save();
+      ctx.globalAlpha = dissolve;
+      if (REVEAL_IMG_READY && REVEAL_IMG) {
+        var r = coverImageRect(REVEAL_IMG, w, h);
+        ctx.drawImage(REVEAL_IMG, r.x, r.y, r.w, r.h);
+      } else {
+        if (!procCanvas) {
+          procCanvas = document.createElement("canvas");
+          procCtx = procCanvas.getContext("2d");
+        }
+        if (procCanvas.width !== w || procCanvas.height !== h) {
+          procCanvas.width = w;
+          procCanvas.height = h;
+          drawProceduralReveal(procCtx, w, h);
+        }
+        ctx.drawImage(procCanvas, 0, 0);
+      }
+      ctx.globalCompositeOperation = "destination-in";
+      ctx.drawImage(mask, 0, 0, w, h);
+      ctx.restore();
 
-      if (elapsed >= paintEndMs) applyFinalFill();
+      ctx.save();
+      ctx.globalCompositeOperation = "source-atop";
+      ctx.globalAlpha = 0.17 * dissolve;
+      ctx.fillStyle = "#fff7e7";
+      var y;
+      for (y = 0; y < h; y += 6) {
+        ctx.fillRect(0, y + ((y * 17) % 4), w, 0.45);
+      }
+      ctx.globalAlpha = 0.09 * dissolve;
+      ctx.fillStyle = "#061833";
+      var x;
+      for (x = 0; x < w; x += 7) {
+        ctx.fillRect(x + ((x * 13) % 5), 0, 0.42, h);
+      }
+      ctx.restore();
+
+      addWetHighlights(progress);
+    }
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = Math.floor(window.innerWidth);
+      h = Math.floor(window.innerHeight);
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      mask = document.createElement("canvas");
+      mask.width = Math.floor(w * dpr);
+      mask.height = Math.floor(h * dpr);
+      maskCtx = mask.getContext("2d", { alpha: true });
+      maskCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      procCanvas = null;
+      buildStrokes();
+    }
+
+    function quickReveal() {
+      resize();
+      render(1, 1);
+      overlay._wwsTitleReveal();
+    }
+
+    if (reduceMotion) {
+      quickReveal();
+      overlay._wwsStopCanvas = function () {};
+      return;
+    }
+
+    resize();
+
+    function draw(now) {
+      if (!running) return;
+      var elapsed = now - startTime;
+      var raw = clamp(elapsed / totalMs, 0, 1);
+      var p = easeInOut(raw);
+      var dissolve =
+        elapsed < titleAtMs + 340 ? 1 : Math.max(0, 1 - (elapsed - titleAtMs - 340) / 440);
+
+      render(p, dissolve);
 
       if (elapsed >= titleAtMs) overlay._wwsTitleReveal();
 
       if (elapsed > totalMs + 120) {
         running = false;
+        render(1, dissolve);
         overlay._wwsTitleReveal();
       } else {
         overlay._wwsRaf = requestAnimationFrame(draw);

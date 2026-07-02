@@ -199,14 +199,22 @@
   text-shadow: none;
 }
 
+.welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__content {
+  z-index: 6;
+}
+
 .welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__title {
   animation: wwsFreiraumTitleBorn var(--wws-title-fade-in, 560ms) cubic-bezier(0.18, 1, 0.32, 1) both,
     wwsFreiraumTitleShift 2.4s ease-in-out infinite alternate;
   opacity: 1;
-  color: #ffd166;
-  filter: drop-shadow(0 6px 24px rgba(255, 209, 102, 0.45));
+  background: linear-gradient(135deg, #ffe08a 0%, #ffd166 42%, #ff9b37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 6px 24px rgba(255, 209, 102, 0.45)) drop-shadow(0 0 18px rgba(255, 209, 102, 0.42));
   letter-spacing: 0.06em;
-  text-shadow: 0 2px 18px rgba(255, 47, 146, 0.18);
+  text-shadow: none;
 }
 
 .welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__sub {
@@ -851,7 +859,11 @@
 }
 
 .welten-world-switch[data-world="freiraum"] .welten-world-switch__title {
-  color: #ffd166;
+  background: linear-gradient(135deg, #ffe08a 0%, #ffd166 42%, #ff9b37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
   filter: drop-shadow(0 6px 24px rgba(255, 209, 102, 0.45));
 }
 
