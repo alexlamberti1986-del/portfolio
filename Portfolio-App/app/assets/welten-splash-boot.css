@@ -97,6 +97,29 @@ html.mv-splash-done #mvSplashBoot {
   pointer-events: none;
 }
 
+/* Handy/Tablet: kein Parallax — Splash sofort aus, Inhalt direkt sichtbar */
+@media (max-width: 1023px) {
+  html.mv-splash-active,
+  html.mv-splash-active body {
+    overflow: auto !important;
+  }
+
+  html.mv-splash-active .mv4-frame,
+  html.mv-splash-active .mv4-bar,
+  html.mv-splash-active .mv-shell-seo,
+  html.mv-splash-active .welten-skip-link {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  #mvSplashBoot {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
 @keyframes mv-splash-kenburns {
   from {
     transform: scale(1.06);

@@ -1,5 +1,5 @@
 /**
- * Splash-Boot — Startbild + Ladebalken, Parallax sofort wenn Hero bereit
+ * Splash-Boot — Startbild + Ladebalken nur bei Desktop-Parallax (≥1024px)
  */
 (function () {
   "use strict";
@@ -24,8 +24,22 @@
   var released = false;
   var heroReadySignal = false;
 
+  function isParallaxViewport() {
+    try {
+      return window.matchMedia("(min-width: 1024px)").matches;
+    } catch (e) {
+      return window.innerWidth >= 1024;
+    }
+  }
+
   function splashEnabled() {
     return !!(document.body && document.body.getAttribute("data-splash-boot") === "1");
+  }
+
+  function skipSplashImmediate() {
+    document.documentElement.classList.remove("mv-splash-active", "mv-splash-done");
+    var splash = document.getElementById("mvSplashBoot");
+    if (splash) splash.remove();
   }
 
   function preloadImage(url) {
@@ -150,6 +164,11 @@
   async function boot() {
     if (!splashEnabled()) return;
 
+    if (!isParallaxViewport()) {
+      skipSplashImmediate();
+      return;
+    }
+
     window.addEventListener("message", function (e) {
       if (e.data && e.data.type === "mv-hero-ready") heroReadySignal = true;
     });
@@ -221,5 +240,9 @@
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
+  }
+
+  if (splashEnabled() && !isParallaxViewport()) {
+    skipSplashImmediate();
   }
 })();

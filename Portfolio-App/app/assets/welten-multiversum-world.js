@@ -225,6 +225,7 @@
 
   function boot() {
     applyTheme();
+    if (!isDesktopParallaxHero()) buildStaticHero();
     stripDecor();
     var bgRoot = document.querySelector(".bg-root");
     if (bgRoot && isDesktopParallaxHero()) bgRoot.remove();
