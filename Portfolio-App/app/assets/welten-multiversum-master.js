@@ -52,7 +52,7 @@
   var currentLang = "de";
   var PREVIEW_MOBILE_CSS = "assets/welten-multiversum-preview-mobile.css?v=20260623mv2";
   var FONT_SYSTEM_CSS = "assets/welten-font-system.css?v=20260629fonts3";
-  var TITLE_COLORS_CSS = "assets/welten-world-title-colors.css?v=20260705titles";
+  var TITLE_COLORS_CSS = "assets/welten-world-title-colors.css?v=20260705orblabels";
   var isLiveShell = document.body && document.body.getAttribute("data-live-shell") === "1";
   var defaultWorld = 0;
   if (document.body && document.body.getAttribute("data-live-default")) {

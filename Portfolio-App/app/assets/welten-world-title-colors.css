@@ -299,3 +299,35 @@ body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__enter
   text-shadow: none !important;
   filter: drop-shadow(0 0 20px var(--freiraum-title-glow));
 }
+
+/* Kugel-Namen unter den Welten-Orbs */
+#mvParallaxHero .world-zone--multiversum .world-core .mv-orb-bubble__label,
+#mvParallaxHero .world-zone--multiversum .world-core .world-name,
+#mvParallaxHero .mv-scroll-orb--multiversum .world-core .mv-orb-bubble__label {
+  border-color: rgba(155, 107, 255, 0.38) !important;
+  background-color: rgba(6, 8, 20, 0.78) !important;
+  box-shadow: 0 0 20px rgba(155, 107, 255, 0.16) !important;
+  background-image: var(--mv-title-gradient) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.55));
+}
+
+#mvParallaxHero .world-zone--freiraum .world-core .mv-orb-bubble__label,
+#mvParallaxHero .world-zone--freiraum .world-core .world-name,
+#mvParallaxHero .mv-scroll-orb--freiraum .world-core .mv-orb-bubble__label,
+#mvParallaxHero .mv-scroll-orb--freiraum.is-labeled .mv-orb-bubble__label {
+  border-color: rgba(255, 209, 102, 0.48) !important;
+  background-color: rgba(28, 14, 8, 0.78) !important;
+  box-shadow: 0 0 22px var(--freiraum-title-glow) !important;
+  background-image: linear-gradient(135deg, #ffe08a 0%, var(--freiraum-title) 42%, var(--freiraum-title-deep) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 16px var(--freiraum-title-glow)) drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
+}
