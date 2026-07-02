@@ -2,7 +2,7 @@
  * Legacy hooks — Boot-Veil übernimmt Startbild
  */
 :root {
-  --mv-hero-poster: url("galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified");
+  --mv-hero-poster: url("assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live");
 }
 
 html.mv-hero-boot-pending,

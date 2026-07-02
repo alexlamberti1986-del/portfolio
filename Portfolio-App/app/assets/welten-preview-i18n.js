@@ -458,61 +458,6 @@
     setText(cue, uiPack.scrollCue);
   }
 
-  var GALAXY_WORLD_MAP = {
-    multiversum: "multiversum-focus",
-    nexora: "nexora-focus",
-    professional: "professional-focus",
-    freiraum: "freiraum-focus",
-  };
-
-  var GALAXY_SUBPAGE_CHAPTER = {
-    about: 2,
-    leistungen: 1,
-    projects: 0,
-    contact: 3,
-  };
-
-  function applyGalaxy(doc, lang) {
-    if (!doc) return;
-    var slidesPack = PARALLAX_SLIDES[lang] || PARALLAX_SLIDES.de;
-    var uiPack = PARALLAX_UI[lang] || PARALLAX_UI.de;
-    var rootEl = doc.getElementById("galaxyRoot") || doc;
-
-    var intro = slidesPack["intro-all-worlds"];
-    var introBox = rootEl.querySelector(".overview-intro-textbox");
-    if (introBox && intro) {
-      setText(introBox.querySelector('[data-reveal="title"]'), intro.title);
-      setText(introBox.querySelector('[data-reveal="body"]'), intro.body);
-    }
-
-    Object.keys(GALAXY_WORLD_MAP).forEach(function (world) {
-      var t = slidesPack[GALAXY_WORLD_MAP[world]];
-      if (!t) return;
-      var panel = rootEl.querySelector('.world-panel[data-world="' + world + '"]');
-      if (!panel) return;
-      var box = panel.querySelector(".world-explainer-textbox") || panel;
-      setText(box.querySelector('[data-reveal="eyebrow"]'), t.label);
-      setText(box.querySelector('[data-reveal="lead"]'), t.lead);
-      setText(box.querySelector('[data-reveal="what"]'), t.body);
-      setText(box.querySelector('[data-reveal="purpose"]'), t.purpose);
-      setText(box.querySelector('[data-reveal="diff"]'), t.difference);
-      box.querySelectorAll(".world-cta, .world-cta--primary").forEach(function (btn) {
-        setText(btn, uiPack.enterWorld);
-      });
-
-      panel.querySelectorAll(".subpage-card").forEach(function (card) {
-        var ch = card.getAttribute("data-chapter");
-        var idx = GALAXY_SUBPAGE_CHAPTER[ch];
-        if (idx == null || !uiPack.portfolio[idx]) return;
-        var c = uiPack.portfolio[idx];
-        setText(card.querySelector("span"), c.label);
-        setText(card.querySelector("small"), c.sub);
-      });
-    });
-
-    doc.documentElement.lang = lang === "en" ? "en" : lang === "it" ? "it" : "de-CH";
-  }
-
   function apply(doc, lang) {
     if (!doc || !lang) return;
     var world = getWorld(doc);
@@ -540,7 +485,6 @@
   root.WeltenPreviewI18n = {
     apply: apply,
     applyParallax: applyParallax,
-    applyGalaxy: applyGalaxy,
     NAV: NAV,
     SLIDES: SLIDES,
     PARALLAX_SLIDES: PARALLAX_SLIDES,

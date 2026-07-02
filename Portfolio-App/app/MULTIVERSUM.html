@@ -25,16 +25,16 @@
     html,body{background:#02030b!important}
     html.mv-hero-boot-pending #mvBootVeil{
       position:fixed;top:var(--header-h,90px);left:0;right:0;bottom:0;z-index:3;
-      background:#02030b url("galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified") center/cover no-repeat
+      background:#02030b url("assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live") center/cover no-repeat
     }
   </style>
   <script>document.documentElement.classList.add("mv-hero-boot-pending");</script>
-  <link rel="preload" as="image" href="galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified" fetchpriority="high" />
-  <link rel="stylesheet" href="assets/welten-multiversum-hero-instant.css?v=20260704galaxy" />
-  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260704galaxy" />
-  <script src="assets/welten-multiversum-hero-ready.js?v=20260704galaxy"></script>
-  <script src="assets/welten-live-shell-early.js?v=20260704galaxy"></script>
-  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260704galaxy" />
+  <link rel="preload" as="image" href="assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live" fetchpriority="high" />
+  <link rel="stylesheet" href="assets/welten-multiversum-hero-instant.css?v=20260704parallax" />
+  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260704parallax" />
+  <script src="assets/welten-multiversum-hero-ready.js?v=20260704parallax"></script>
+  <script src="assets/welten-live-shell-early.js?v=20260704parallax"></script>
+  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260704parallax" />
   <title>Alex Lamberti Multiversum für digitale Welten</title>
   <meta name="description" content="Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Digital Marketing, Webdesign und Strategie." />
   <!-- Keine Webfonts nötig. Optional in WP: Schrift „Manrope“ oder „Inter“ per Theme/Elementor nachladen. -->
@@ -5174,7 +5174,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   }
   body[data-world="general"] .menu-kicker { color: #ff59b2 !important; }
   body[data-world="general"] .menu-links a:hover { color: #ff59b2 !important; }
-  /* Grosser Desktop (27"+): DNA-Stage ausblenden — Galaxy/Parallax aktiv */
+  /* Grosser Desktop (27"+): DNA-Stage ausblenden — Parallax aktiv */
   @media (min-width: 1920px) {
     body[data-world="general"] #dnaStage,
     body[data-world="general"] .home-hero-experience {
@@ -8648,41 +8648,20 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-multiversum-world.css?v=20260621mv-home" />
 <link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260702unified" />
 <link rel="stylesheet" href="assets/welten-multiversum-parallax-v4.css?v=20260702unified" />
-<link rel="stylesheet" href="assets/galaxy-v10-home.css?v=20260703perf" />
 <link rel="stylesheet" href="assets/welten-preview-portraits.css?v=20260626portrait" />
 <link rel="stylesheet" href="assets/welten-multiversum-theme.css?v=20260701mv-typeuni" />
-<script src="assets/welten-preview-i18n.js?v=20260704fix" defer></script>
-<script src="assets/welten-preview-i18n-bridge.js?v=20260704fix" defer></script>
+<script src="assets/welten-preview-i18n.js?v=20260704parallax" defer></script>
+<script src="assets/welten-preview-i18n-bridge.js?v=20260704parallax" defer></script>
 <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260629mv-cards1" defer></script>
 <script src="assets/welten-multiversum-scene-config.js?v=20260629mv-title1" defer></script>
 <script src="assets/welten-multiversum-scene-config-v4.js?v=20260701mv-flow" defer></script>
-<script>
-if (/\bmv-flight-test=1\b/.test(location.search)) window.__mvFlightTest = true;
-</script>
-<script src="assets/galaxy-v10-home-boot.js?v=20260704galaxy" defer></script>
-<script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260704boot2" defer></script>
-<script src="assets/welten-multiversum-world.js?v=20260704galaxy" defer></script>
-<script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260704boot2" defer></script>
+<script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260704parallax" defer></script>
+<script src="assets/welten-multiversum-world.js?v=20260704parallax" defer></script>
+<script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260704parallax" defer></script>
 <link rel="stylesheet" href="assets/welten-font-system.css?v=20260629fonts3" />
 <link rel="stylesheet" href="assets/welten-world-title-colors.css?v=20260701mv-typeuni2" />
 <link rel="stylesheet" href="assets/welten-desktop-rail-clearance.css?v=20260629rail6" />
 <script src="assets/welten-portraits-apply.js?v=20260629-prof-portrait" defer></script>
-<script>
-(function () {
-  if (!/\bmv-flight-test=1\b/.test(location.search)) return;
-  var v = "?v=20260701mv-flight";
-  var link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = "assets/welten-multiversum-flight-arrival-test.css" + v;
-  document.head.appendChild(link);
-  ["welten-multiversum-galaxy-flight.js", "welten-multiversum-flight-arrival-boot.js"].forEach(function (file) {
-    var s = document.createElement("script");
-    s.src = "assets/" + file + v;
-    s.defer = true;
-    document.body.appendChild(s);
-  });
-})();
-</script>
 <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 </body>
 </html>

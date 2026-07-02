@@ -44,14 +44,6 @@
     return "nexora";
   }
 
-  function forwardGalaxyLang(lang) {
-    var frame = document.querySelector(".galaxy-v10-home-frame");
-    if (!frame || !frame.contentWindow) return;
-    try {
-      frame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: lang }, "*");
-    } catch (e) {}
-  }
-
   function syncLeadForm(lang) {
     var frame = document.getElementById("weltenLeadForm") || document.getElementById("mvLeadForm");
     if (!frame || !frame.contentWindow) return;
@@ -75,7 +67,6 @@
     if (window.MVParallaxHero && typeof window.MVParallaxHero.applyLang === "function") {
       window.MVParallaxHero.applyLang(code);
     }
-    forwardGalaxyLang(code);
     syncLeadForm(code);
     if (window.WeltenContactLeadform && window.WeltenContactLeadform.syncLeadFormFrame) {
       window.WeltenContactLeadform.syncLeadFormFrame();

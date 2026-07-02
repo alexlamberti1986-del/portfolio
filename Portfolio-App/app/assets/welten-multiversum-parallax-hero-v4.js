@@ -2190,14 +2190,10 @@
   }
 
   function buildParallaxHero(goChapter) {
-    if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return null;
     if (window.__mvParallaxBuilding || document.getElementById("mvParallaxHero")) return document.getElementById("mvParallaxHero");
     if (document.body.getAttribute("data-world") !== "general") return null;
     if (!isDesktopParallaxHero()) return null;
     if (!window.MVSceneConfig || !window.MVSceneConfig.keyframes) return null;
-    if (window.MVGalaxyV10Home && typeof window.MVGalaxyV10Home.shouldUse === "function" && window.MVGalaxyV10Home.shouldUse()) {
-      return null;
-    }
 
     window.__mvParallaxBuilding = true;
     try {

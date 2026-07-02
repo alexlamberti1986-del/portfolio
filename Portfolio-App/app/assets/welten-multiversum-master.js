@@ -148,8 +148,6 @@
         var outer = frames[i].contentWindow;
         if (!outer) continue;
         if (outer === win) return true;
-        var galaxyFrame = outer.document.querySelector(".galaxy-v10-home-frame");
-        if (galaxyFrame && galaxyFrame.contentWindow === win) return true;
       } catch (e) {}
     }
     return false;

@@ -12,6 +12,9 @@
     { id: "contact", label: "Kontakt" },
   ];
 
+  var PARALLAX_POSTER =
+    "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live";
+
   function applyTheme() {
     document.body.setAttribute("data-world", "general");
     document.documentElement.classList.add("mv-world-general");
@@ -58,20 +61,12 @@
     if (link) link.click();
   }
 
-  function isGalaxyDesktop() {
+  function isDesktopParallaxHero() {
     try {
       return window.matchMedia("(min-width: 1920px)").matches;
     } catch (e) {
       return window.innerWidth >= 1920;
     }
-  }
-
-  function shouldUseGalaxyHero() {
-    return (
-      window.MVGalaxyV10Home &&
-      typeof window.MVGalaxyV10Home.shouldUse === "function" &&
-      window.MVGalaxyV10Home.shouldUse()
-    );
   }
 
   function buildStaticHero() {
@@ -112,7 +107,11 @@
     }
   }
 
-  var GALAXY_PRELOAD = ["galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified"];
+  var PARALLAX_PRELOAD = [
+    "assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp?v=20260629mv-v4live",
+    PARALLAX_POSTER,
+    "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
+  ];
 
   function preloadUrls(urls, done) {
     var left = urls.length;
@@ -136,7 +135,6 @@
 
   function buildHero() {
     if (window.__mvHeroBootLock) return;
-    if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return;
     if (document.getElementById("mvParallaxHero") || document.getElementById("mvStaticHero")) return;
 
     window.__mvHeroBootLock = true;
@@ -144,8 +142,14 @@
       if (window.MVHeroReady && window.MVHeroReady.setProgress) {
         window.MVHeroReady.setProgress(68);
       }
-      if (shouldUseGalaxyHero()) {
-        if (window.MVGalaxyV10Home.mount && window.MVGalaxyV10Home.mount()) return;
+      if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
+        var built = window.MVParallaxHero.build(goChapter);
+        if (built) {
+          if (window.MVHeroReady && window.MVHeroReady.setProgress) {
+            window.MVHeroReady.setProgress(85);
+          }
+          return;
+        }
       }
       buildStaticHero();
     } finally {
@@ -154,7 +158,6 @@
   }
 
   document.addEventListener("mv-restore-hero", function () {
-    if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return;
     buildHero();
   });
 
@@ -168,7 +171,6 @@
   }
 
   function injectContactForm() {
-    /* Formular wird zentral über welten-contact-final.js eingebunden */
     if (window.WeltenContactLeadform && window.WeltenContactLeadform.syncLeadFormFrame) {
       window.WeltenContactLeadform.syncLeadFormFrame();
     }
@@ -184,12 +186,6 @@
           "*"
         );
       } catch (e) {}
-    }
-    var galaxyFrame = document.querySelector(".galaxy-v10-home-frame");
-    if (galaxyFrame && galaxyFrame.contentWindow && data.lang) {
-      try {
-        galaxyFrame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: data.lang }, "*");
-      } catch (e2) {}
     }
     if (data.lang && window.WeltenPreviewI18nBridge) {
       window.WeltenPreviewI18nBridge.apply(data.lang);
@@ -224,11 +220,11 @@
         window.WeltenPreviewImages.patchChapterBoxes();
       }
     };
-    if (isGalaxyDesktop()) {
+    if (isDesktopParallaxHero()) {
       if (window.MVHeroReady && window.MVHeroReady.setProgress) {
         window.MVHeroReady.setProgress(8);
       }
-      preloadUrls(GALAXY_PRELOAD, finishBoot);
+      preloadUrls(PARALLAX_PRELOAD, finishBoot);
     } else {
       finishBoot();
     }
