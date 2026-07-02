@@ -11,11 +11,21 @@
 }
 
 @media (max-width: 1023px) {
-  body[data-world="general"]:not(:has(#mvStaticHero)) #dnaStage,
-  body[data-world="general"]:not(:has(#mvStaticHero)) .home-hero-experience {
+  body[data-world="general"] #dnaStage,
+  body[data-world="general"] .home-hero-experience,
+  body[data-world="general"] .neuro-core,
+  body[data-world="general"] .dna-unified-scene,
+  body[data-world="general"] .dna-holo-arm,
+  body[data-world="general"] .dna-visual-stack,
+  body[data-world="general"] #dnaPremiumCanvas,
+  body[data-world="general"] #dnaParticlesCanvas {
+    display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
   }
 }
 

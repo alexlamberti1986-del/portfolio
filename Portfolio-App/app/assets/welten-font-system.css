@@ -284,11 +284,6 @@ body[data-world="freiraum"] .menu-kicker {
   body[data-world="nexora"] .section-title {
     letter-spacing: 0.05em !important;
   }
-
-  .mv4-worlds button {
-    font-size: 11px !important;
-    padding: 8px 12px !important;
-  }
 }
 
 @media (max-width: 600px) {

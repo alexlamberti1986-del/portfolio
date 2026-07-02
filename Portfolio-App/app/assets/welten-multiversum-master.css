@@ -474,6 +474,22 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
     font-size: 8px;
     letter-spacing: 0.01em;
     min-height: 28px;
+    line-height: 1.05;
+    overflow: hidden;
+    text-overflow: clip;
+  }
+
+  .mv4-worlds button[data-world-key="general"],
+  .mv4-worlds button[data-world-key="freiraum"] {
+    font-family: var(--font-main) !important;
+    font-size: 6.75px !important;
+    padding: 5px 1px !important;
+    letter-spacing: 0 !important;
+  }
+
+  body[data-master-world="general"] .mv4-worlds button[data-iframe="0"] {
+    letter-spacing: 0.01em !important;
+    font-weight: 700 !important;
   }
 
   .mv4-fx {
@@ -523,6 +539,12 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
     font-size: 7.5px;
     padding: 5px 2px;
     min-height: 26px;
+  }
+
+  .mv4-worlds button[data-world-key="general"],
+  .mv4-worlds button[data-world-key="freiraum"] {
+    font-size: 6.25px !important;
+    padding: 4px 1px !important;
   }
 }
 

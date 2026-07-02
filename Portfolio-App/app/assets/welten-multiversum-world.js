@@ -256,6 +256,14 @@
     boot();
   }
 
+  if (!isDesktopParallaxHero() && document.getElementById("dnaStage")) {
+    try {
+      applyTheme();
+      buildStaticHero();
+      stripDecor();
+    } catch (e) {}
+  }
+
   try {
     new MutationObserver(syncActiveNav).observe(document.body, {
       attributes: true,
