@@ -1,16 +1,15 @@
 /**
- * Splash-Boot — Test: Ladebalken bis Parallax + Assets bereit sind
+ * Splash-Boot — Startbild + Ladebalken, Parallax erst wenn bereit
  */
 (function () {
   "use strict";
 
-  if (document.body.getAttribute("data-splash-boot") !== "1") return;
-
-  var SPLASH = "assets/images/splash/multiversum-boot-splash.png?v=20260704splash";
+  var SPLASH = "assets/images/splash/multiversum-boot-splash.png?v=20260705live";
   var FALLBACK = "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live";
   var V = "20260629mv-v4live";
   var MIN_MS = 1400;
   var MAX_MS = 22000;
+  var FAILSAFE_MS = 26000;
   var POLL_MS = 120;
 
   var PREVIEW = "assets/images/4welten-preview/general/";
@@ -27,6 +26,13 @@
     PREVIEW + "01_MULTIVERSUM_01_UeberMich.webp",
     PREVIEW + "07_MULTIVERSUM_07_Kontakt.webp",
   ];
+
+  var failsafeTimer = 0;
+  var released = false;
+
+  function splashEnabled() {
+    return !!(document.body && document.body.getAttribute("data-splash-boot") === "1");
+  }
 
   function preloadImage(url) {
     return new Promise(function (resolve) {
@@ -61,33 +67,35 @@
         return !!(doc.getElementById("mvStaticHero") || doc.getElementById("mvParallaxHero") || doc.querySelector("#slide-home"));
       }
 
-      if (!win.__mvParallaxHeroReady) return false;
       var hero = doc.getElementById("mvParallaxHero");
-      if (!hero) return false;
-
-      var imgs = hero.querySelectorAll(".world-card__image img, .mv-orb-bubble__standalone");
-      if (!imgs.length) return false;
-
-      for (var i = 0; i < imgs.length; i++) {
-        if (!imgs[i].complete || !imgs[i].naturalWidth) return false;
-      }
-      return true;
+      if (hero && (hero.classList.contains("is-js-ready") || win.__mvParallaxHeroReady)) return true;
+      if (doc.getElementById("mvStaticHero")) return true;
+      return false;
     } catch (e) {
       return false;
     }
   }
 
-  function waitForParallax(frame) {
+  function waitForParallax(frame, bump) {
     return new Promise(function (resolve) {
       var start = Date.now();
-      function tick() {
-        if (frameReady(frame) || Date.now() - start > MAX_MS) {
+      var tick = 72;
+
+      function poll() {
+        if (frameReady(frame)) {
           resolve();
           return;
         }
-        setTimeout(tick, POLL_MS);
+        if (Date.now() - start > MAX_MS) {
+          resolve();
+          return;
+        }
+        tick = Math.min(94, tick + 0.35);
+        if (bump) bump(tick, "Parallax wird initialisiert…");
+        setTimeout(poll, POLL_MS);
       }
-      tick();
+
+      poll();
     });
   }
 
@@ -105,6 +113,10 @@
   }
 
   function release() {
+    if (released) return;
+    released = true;
+    if (failsafeTimer) window.clearTimeout(failsafeTimer);
+
     document.documentElement.classList.add("mv-splash-done");
     window.setTimeout(function () {
       document.documentElement.classList.remove("mv-splash-active", "mv-splash-done");
@@ -114,6 +126,9 @@
   }
 
   async function boot() {
+    if (!splashEnabled()) return;
+
+    failsafeTimer = window.setTimeout(release, FAILSAFE_MS);
     document.documentElement.classList.add("mv-splash-active");
 
     var bar = document.getElementById("mvSplashBar");
@@ -127,40 +142,48 @@
       setProgress(bar, label, pctEl, progress, text);
     }
 
-    bump(4, "Multiversum wird vorbereitet…");
+    try {
+      bump(4, "Multiversum wird vorbereitet…");
 
-    await preloadImage(SPLASH);
-    bump(10, "Startbild geladen");
+      await preloadImage(SPLASH);
+      bump(10, "Startbild geladen");
 
-    var done = 0;
-    await Promise.all(
-      PRELOAD_IMAGES.map(function (url) {
-        return preloadImage(url).then(function () {
-          done += 1;
-          bump(10 + (done / PRELOAD_IMAGES.length) * 42, "Assets werden geladen…");
-        });
-      })
-    );
+      var done = 0;
+      await Promise.all(
+        PRELOAD_IMAGES.map(function (url) {
+          return preloadImage(url).then(function () {
+            done += 1;
+            bump(10 + (done / PRELOAD_IMAGES.length) * 42, "Assets werden geladen…");
+          });
+        })
+      );
 
-    bump(54, "Welt wird aufgebaut…");
+      bump(54, "Welt wird aufgebaut…");
 
-    var frame = document.querySelector(".mv4-frame.is-active");
-    if (!frame) {
-      release();
-      return;
+      var frame = document.querySelector(".mv4-frame.is-active");
+      if (!frame) {
+        bump(100, "Willkommen im Multiversum");
+        await wait(320);
+        release();
+        return;
+      }
+
+      await waitForFrameLoad(frame);
+      bump(72, "Parallax wird initialisiert…");
+
+      await waitForParallax(frame, bump);
+      bump(96, "Fast fertig…");
+
+      var elapsed = Date.now() - started;
+      if (elapsed < MIN_MS) await wait(MIN_MS - elapsed);
+
+      bump(100, "Willkommen im Multiversum");
+      await wait(320);
+    } catch (e) {
+      bump(100, "Willkommen im Multiversum");
+      await wait(320);
     }
 
-    await waitForFrameLoad(frame);
-    bump(72, "Parallax wird initialisiert…");
-
-    await waitForParallax(frame);
-    bump(96, "Fast fertig…");
-
-    var elapsed = Date.now() - started;
-    if (elapsed < MIN_MS) await wait(MIN_MS - elapsed);
-
-    bump(100, "Willkommen im Multiversum");
-    await wait(320);
     release();
   }
 
