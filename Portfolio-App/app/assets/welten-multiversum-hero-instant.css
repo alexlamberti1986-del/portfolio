@@ -1,0 +1,92 @@
+/**
+ * MULTIVERSUM — sofortiger Startbildschirm ab erstem Paint (vor JS)
+ */
+:root {
+  --mv-hero-poster: url("galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified");
+}
+
+html.mv-hero-boot-pending,
+html:not(.mv-hero-ready) body[data-world="general"] #slide-home {
+  background: #02030b;
+}
+
+.mv-hero-instant-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: #02030b var(--mv-hero-poster) center/cover no-repeat;
+}
+
+html.mv-hero-boot-pending body[data-world="general"] #dnaStage,
+html:not(.mv-hero-ready) body[data-world="general"] #dnaStage {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.mv-hero-boot-pending body[data-world="general"] #slide-home .home-main-block,
+html:not(.mv-hero-ready) body[data-world="general"] #slide-home .home-main-block {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.mv-hero-boot-pending body[data-world="general"] #slide-home .slide-inner--home,
+html:not(.mv-hero-ready) body[data-world="general"] #slide-home .slide-inner--home {
+  position: relative;
+  min-height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
+}
+
+.galaxy-v10-home-host.mv-hero-host-pending {
+  position: relative;
+  width: 100%;
+  height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
+  min-height: min(100svh, 920px);
+  z-index: 3;
+  background: #02030b var(--mv-hero-poster) center/cover no-repeat;
+}
+
+.galaxy-v10-home-host.mv-hero-host-pending .galaxy-v10-home-frame {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+body.mv-hero-ready .galaxy-v10-home-host.mv-hero-host-pending .galaxy-v10-home-frame.is-loaded {
+  opacity: 1;
+}
+
+body.mv-hero-ready .mv-hero-instant-poster {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+body.mv-hero-ready #slide-home .home-main-block {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 1919px) {
+  .mv-hero-instant-poster {
+    display: none !important;
+  }
+
+  .galaxy-v10-home-host.mv-hero-host-pending {
+    display: none !important;
+  }
+
+  html.mv-hero-boot-pending body[data-world="general"] #dnaStage,
+  html:not(.mv-hero-ready) body[data-world="general"] #dnaStage {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
+html.mv-hero-boot-pending body[data-world="general"] #particle-canvas,
+html.mv-hero-boot-pending body[data-world="general"] .light-beams,
+html.mv-hero-boot-pending body[data-world="general"] .bg-grid {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}

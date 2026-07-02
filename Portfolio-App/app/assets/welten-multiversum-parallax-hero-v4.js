@@ -2240,6 +2240,11 @@
           window.WeltenPreviewI18n.applyParallax(document, lang);
         } catch (e) {}
       }
+      requestAnimationFrame(function () {
+        if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
+          window.MVHeroReady.mark();
+        }
+      });
       window.__mvParallaxHeroReady = true;
       return heroEl;
     } finally {

@@ -5,9 +5,15 @@
   "use strict";
 
   var GALAXY_MIN_WIDTH = 1920;
-  var CACHE = "20260704boot";
+  var CACHE = "20260704instant";
   var bootedAt = Date.now();
   var resizeTimer = 0;
+
+  function markReady() {
+    if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
+      window.MVHeroReady.mark();
+    }
+  }
 
   function isLargeDesktop() {
     try {
@@ -68,35 +74,11 @@
     document.dispatchEvent(new CustomEvent("mv-restore-hero"));
   }
 
-  function mountGalaxy() {
-    if (!shouldUseGalaxy()) {
-      teardownGalaxy();
-      return false;
-    }
-
-    var existing = document.getElementById("galaxyV10HomeHost");
-    if (existing) {
-      window.__galaxyV10HomeActive = true;
-      return true;
-    }
-
-    removeParallaxHero();
-
-    var stage = document.getElementById("dnaStage") || ensureDnaStage();
-    if (!stage || !stage.parentNode) return false;
-
-    var host = document.createElement("div");
-    host.className = "galaxy-v10-home-host";
-    host.id = "galaxyV10HomeHost";
-
-    var frame = document.createElement("iframe");
-    frame.className = "galaxy-v10-home-frame";
-    frame.title = "Reise durch das Multiversum";
-    frame.src = "galaxy-v10/embed.html?v=" + CACHE;
-    frame.loading = "eager";
+  function wireGalaxyFrame(frame) {
     frame.addEventListener(
       "load",
       function () {
+        frame.classList.add("is-loaded");
         var lang = "de";
         try {
           lang = localStorage.getItem("mv-preview-lang") || "de";
@@ -106,15 +88,48 @@
             frame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: lang }, "*");
           } catch (err) {}
         }
+        markReady();
       },
       { once: true }
     );
+  }
 
+  function mountGalaxy() {
+    if (!shouldUseGalaxy()) {
+      teardownGalaxy();
+      return false;
+    }
+
+    var host = document.getElementById("galaxyV10HomeHost");
+    if (host) {
+      window.__galaxyV10HomeActive = true;
+      return true;
+    }
+
+    removeParallaxHero();
+
+    var stage = document.getElementById("dnaStage") || ensureDnaStage();
+    if (!stage || !stage.parentNode) return false;
+
+    host = document.createElement("div");
+    host.className = "galaxy-v10-home-host mv-hero-host-pending";
+    host.id = "galaxyV10HomeHost";
+
+    var frame = document.createElement("iframe");
+    frame.className = "galaxy-v10-home-frame";
+    frame.title = "Reise durch das Multiversum";
+    frame.loading = "eager";
+    wireGalaxyFrame(frame);
     host.appendChild(frame);
+
     stage.parentNode.insertBefore(host, stage);
     stage.classList.add("mv-dna-hidden");
     stage.setAttribute("hidden", "hidden");
     window.__galaxyV10HomeActive = true;
+
+    requestAnimationFrame(function () {
+      frame.src = "galaxy-v10/embed.html?v=" + CACHE;
+    });
     return true;
   }
 

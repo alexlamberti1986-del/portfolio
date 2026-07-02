@@ -99,6 +99,9 @@
         goChapter(btn.getAttribute("data-go"));
       });
     });
+    if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
+      window.MVHeroReady.mark();
+    }
   }
 
   function buildHero() {

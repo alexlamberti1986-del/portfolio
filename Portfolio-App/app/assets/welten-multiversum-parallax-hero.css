@@ -1,5 +1,4 @@
 /* MULTIVERSUM Scroll Story V6 Refined */
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Orbitron:wght@500;700&family=Sora:wght@400;500;600&display=swap");
 
 /* Multiversum Scroll-Story: rechte Punktnavigation auf Home ausblenden */
 body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail,
