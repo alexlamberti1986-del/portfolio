@@ -111,6 +111,9 @@ body[data-world="freiraum"] .welten-site-footer__inner {
   .site-header .header-meta {
     font-size: 0.72rem;
   }
+  body[data-world="general"] .site-header .header-meta[href^="mailto:"]:not([data-mv-mobile-mail="1"]) {
+    display: none !important;
+  }
   .welten-site-footer__inner {
     font-size: 0.72rem;
     gap: 6px 10px;
@@ -118,7 +121,7 @@ body[data-world="freiraum"] .welten-site-footer__inner {
 }
 
 @media (max-width: 480px) {
-  .site-header .header-meta[href^="mailto"] {
+  .site-header .header-meta[href^="mailto"]:not([data-mv-mobile-mail="1"]) {
     display: none !important;
   }
 }

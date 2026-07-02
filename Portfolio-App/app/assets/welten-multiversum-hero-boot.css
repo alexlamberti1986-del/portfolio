@@ -13,12 +13,20 @@
 @media (max-width: 1023px) {
   body[data-world="general"] #dnaStage,
   body[data-world="general"] .home-hero-experience,
+  body[data-world="general"] .home-hero-experience::before,
+  body[data-world="general"] .home-hero-experience::after,
   body[data-world="general"] .neuro-core,
+  body[data-world="general"] .neuro-core::before,
+  body[data-world="general"] .neuro-core::after,
   body[data-world="general"] .dna-unified-scene,
+  body[data-world="general"] .dna-orbit-group,
+  body[data-world="general"] .dna-ring-scene,
   body[data-world="general"] .dna-holo-arm,
   body[data-world="general"] .dna-visual-stack,
   body[data-world="general"] #dnaPremiumCanvas,
-  body[data-world="general"] #dnaParticlesCanvas {
+  body[data-world="general"] #dnaParticlesCanvas,
+  body[data-world="general"] .dna-particles-canvas,
+  body[data-world="general"] .dna-premium-canvas {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -26,6 +34,22 @@
     height: 0 !important;
     max-height: 0 !important;
     overflow: hidden !important;
+    animation: none !important;
+    background: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
+  body[data-world="general"] #slide-home.slide,
+  body[data-world="general"] #slide-home .slide-inner--home {
+    background: #05070d !important;
+    padding-top: 0 !important;
+  }
+
+  body[data-world="general"] #mvStaticHero {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 }
 

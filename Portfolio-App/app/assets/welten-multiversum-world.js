@@ -88,7 +88,7 @@
     });
   }
 
-  if (document.body && document.body.getAttribute("data-world") === "general") {
+  if (document.body && document.body.getAttribute("data-world") === "general" && isDesktopParallaxHero()) {
     preloadUrls(PARALLAX_PRELOAD);
   }
 
@@ -225,6 +225,7 @@
 
   function boot() {
     applyTheme();
+    patchMobileHeader();
     if (!isDesktopParallaxHero()) buildStaticHero();
     stripDecor();
     var bgRoot = document.querySelector(".bg-root");
@@ -240,6 +241,32 @@
     });
     document.querySelectorAll(".bg-grid, .light-beams").forEach(function (el) {
       el.remove();
+    });
+    if (!isDesktopParallaxHero()) {
+      document
+        .querySelectorAll(
+          "#dnaStage, .home-hero-experience, .neuro-core, .dna-unified-scene, .dna-orbit-group, .dna-ring-scene"
+        )
+        .forEach(function (el) {
+          if (el && el.id !== "mvStaticHero") el.remove();
+        });
+    }
+  }
+
+  function patchMobileHeader() {
+    try {
+      if (!window.matchMedia("(max-width: 640px)").matches) return;
+    } catch (e) {
+      if (window.innerWidth > 640) return;
+    }
+    var brand = document.querySelector(".site-header .brand-mark");
+    if (!brand || brand.getAttribute("data-mv-mobile-mail") === "1") return;
+    brand.setAttribute("data-mv-mobile-mail", "1");
+    brand.href = "mailto:alex.lamberti@hotmail.ch";
+    brand.setAttribute("aria-label", "E-Mail: alex.lamberti@hotmail.ch");
+    brand.textContent = "E-Mail: alex.lamberti@hotmail.ch";
+    document.querySelectorAll('.site-header .header-meta[href^="mailto:"]').forEach(function (link) {
+      if (link !== brand) link.setAttribute("hidden", "");
     });
   }
 
@@ -259,6 +286,7 @@
   if (!isDesktopParallaxHero() && document.getElementById("dnaStage")) {
     try {
       applyTheme();
+      patchMobileHeader();
       buildStaticHero();
       stripDecor();
     } catch (e) {}
