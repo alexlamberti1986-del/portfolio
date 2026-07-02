@@ -2180,9 +2180,9 @@
 
   function isDesktopParallaxHero() {
     try {
-      return window.matchMedia("(min-width: 1920px)").matches;
+      return window.matchMedia("(min-width: 1024px)").matches;
     } catch (e) {
-      return window.innerWidth >= 1920;
+      return window.innerWidth >= 1024;
     }
   }
 

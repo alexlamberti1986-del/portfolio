@@ -62,7 +62,7 @@
       var doc = frame.contentDocument;
       if (!win || !doc || doc.readyState !== "complete") return false;
 
-      var desktop = window.matchMedia("(min-width: 1920px)").matches;
+      var desktop = window.matchMedia("(min-width: 1024px)").matches;
       if (!desktop) {
         return !!(doc.getElementById("mvStaticHero") || doc.getElementById("mvParallaxHero") || doc.querySelector("#slide-home"));
       }

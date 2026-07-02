@@ -8,6 +8,9 @@
   --freiraum-title: #ffd166;
   --freiraum-title-deep: #ff9b37;
   --freiraum-title-glow: rgba(255, 209, 102, 0.42);
+  --mv-title-gradient: linear-gradient(90deg, #5ec4ff 0%, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a 100%);
+  --professional-title: rgba(236, 242, 250, 0.96);
+  --professional-title-glow: rgba(255, 255, 255, 0.28);
 }
 
 /* ── NEXORA: Seiten & Home ── */
@@ -197,4 +200,102 @@ body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__enter
   border-color: rgba(255, 89, 178, 0.55) !important;
   background: linear-gradient(135deg, rgba(94, 196, 255, 0.14), rgba(155, 107, 255, 0.12), rgba(255, 89, 178, 0.14)) !important;
   box-shadow: 0 12px 32px rgba(255, 89, 178, 0.2) !important;
+}
+
+/* ── Parallax Live: Welten-Titel + Karten (Projekte, Leistungen, Über mich, Kontakt) ── */
+#mvParallaxHero .world-zone--multiversum .world-copy h2,
+#mvParallaxHero .mv-scroll-slide--multiversum .world-copy h2,
+#mvParallaxHero .mv-scroll-slide--multiversum h2,
+#mvParallaxHero .mv-scroll-story[data-layout="intro"] .world-copy h2 {
+  background: var(--mv-title-gradient) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+#mvParallaxHero .world-zone--professional .world-copy h2,
+#mvParallaxHero .mv-scroll-slide--professional .world-copy h2,
+#mvParallaxHero .mv-scroll-slide--professional h2 {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--professional-title) !important;
+  -webkit-text-fill-color: var(--professional-title) !important;
+  text-shadow: 0 0 22px var(--professional-title-glow) !important;
+  filter: none !important;
+}
+
+#mvParallaxHero .world-zone--multiversum .world-card__label,
+#mvParallaxHero .world-zone[data-world-zone="multiversum"] .world-card__label {
+  background: var(--mv-title-gradient) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+}
+
+#mvParallaxHero .world-zone--nexora .world-card__label,
+#mvParallaxHero .world-zone[data-world-zone="nexora"] .world-card__label {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--nexora-title) !important;
+  -webkit-text-fill-color: var(--nexora-title) !important;
+  text-shadow: 0 0 16px var(--nexora-title-glow), 0 2px 10px rgba(0, 0, 0, 0.45) !important;
+  filter: none !important;
+}
+
+#mvParallaxHero .world-zone--professional .world-card__label,
+#mvParallaxHero .world-zone[data-world-zone="professional"] .world-card__label {
+  background: none !important;
+  color: var(--professional-title) !important;
+  -webkit-text-fill-color: var(--professional-title) !important;
+  text-shadow: 0 0 14px var(--professional-title-glow), 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+  filter: none !important;
+}
+
+#mvParallaxHero .world-zone--freiraum .world-card__label,
+#mvParallaxHero .world-zone[data-world-zone="freiraum"] .world-card__label {
+  background: linear-gradient(135deg, #ffe08a 0%, var(--freiraum-title) 42%, var(--freiraum-title-deep) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 12px var(--freiraum-title-glow)) drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+}
+
+#mvParallaxHero .mv-scroll-portfolio .mv-scroll-card__label {
+  background: var(--mv-title-gradient) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+#mvParallaxHero .mv-scroll-slide--nexora h2,
+#mvParallaxHero .world-zone--nexora .world-copy h2 {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: var(--nexora-title) !important;
+  -webkit-text-fill-color: var(--nexora-title) !important;
+  text-shadow: 0 0 28px var(--nexora-title-glow), 0 0 56px rgba(0, 168, 255, 0.24) !important;
+  filter: none !important;
+}
+
+#mvParallaxHero .mv-scroll-slide--freiraum h2,
+#mvParallaxHero .world-zone--freiraum .world-copy h2 {
+  background: linear-gradient(120deg, #ffe08a 0%, var(--freiraum-title) 38%, var(--freiraum-title-deep) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  filter: drop-shadow(0 0 20px var(--freiraum-title-glow));
 }
