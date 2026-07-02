@@ -109,6 +109,7 @@
   var portfolioHoldUnlocked = false;
   var PORTFOLIO_HOLD_SCROLLS = 3;
   var onScrollHandler = null;
+  var bootPaintDone = false;
 
   function asset(path) {
     if (!path || typeof path !== "string") return path;
@@ -1654,6 +1655,13 @@
     rafId = 0;
     if (!heroEl || !config) return;
 
+    if (!bootPaintDone && heroEl.classList.contains("is-js-ready")) {
+      bootPaintDone = true;
+      if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
+        window.MVHeroReady.mark();
+      }
+    }
+
     var rawP = getProgress();
     if (reducedMotion || mobileLayout) {
       animProgress = rawP;
@@ -2240,13 +2248,6 @@
           window.WeltenPreviewI18n.applyParallax(document, lang);
         } catch (e) {}
       }
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          if (!window.__galaxyV10HomeActive && window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
-            window.MVHeroReady.mark();
-          }
-        });
-      });
       window.__mvParallaxHeroReady = true;
       return heroEl;
     } finally {

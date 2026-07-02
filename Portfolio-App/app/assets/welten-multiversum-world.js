@@ -104,6 +104,33 @@
     }
   }
 
+  var PARALLAX_PRELOAD = [
+    "assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp?v=20260629mv-v4live",
+    "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live",
+    "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
+    "galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified",
+  ];
+
+  function preloadUrls(urls, done) {
+    var left = urls.length;
+    if (!left) {
+      done();
+      return;
+    }
+    urls.forEach(function (url, i) {
+      var img = new Image();
+      var fin = function () {
+        if (window.MVHeroReady && window.MVHeroReady.setProgress) {
+          window.MVHeroReady.setProgress(12 + ((i + 1) / urls.length) * 48);
+        }
+        if (--left <= 0) done();
+      };
+      img.onload = fin;
+      img.onerror = fin;
+      img.src = url;
+    });
+  }
+
   function buildHero() {
     if (window.__mvHeroBootLock) return;
     if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return;
@@ -111,12 +138,20 @@
 
     window.__mvHeroBootLock = true;
     try {
+      if (window.MVHeroReady && window.MVHeroReady.setProgress) {
+        window.MVHeroReady.setProgress(68);
+      }
       if (window.MVGalaxyV10Home && typeof window.MVGalaxyV10Home.shouldUse === "function" && window.MVGalaxyV10Home.shouldUse()) {
         if (window.MVGalaxyV10Home.mount && window.MVGalaxyV10Home.mount()) return;
       }
       if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
         var built = window.MVParallaxHero.build(goChapter);
-        if (built) return;
+        if (built) {
+          if (window.MVHeroReady && window.MVHeroReady.setProgress) {
+            window.MVHeroReady.setProgress(85);
+          }
+          return;
+        }
       }
       buildStaticHero();
     } finally {
@@ -184,14 +219,24 @@
 
   function boot() {
     applyTheme();
-    buildHero();
-    applyProfiles();
-    injectContactForm();
-    syncActiveNav();
     stripDecor();
-    styleMvButtons();
-    if (window.WeltenPreviewImages) {
-      window.WeltenPreviewImages.patchChapterBoxes();
+    var finishBoot = function () {
+      buildHero();
+      applyProfiles();
+      injectContactForm();
+      syncActiveNav();
+      styleMvButtons();
+      if (window.WeltenPreviewImages) {
+        window.WeltenPreviewImages.patchChapterBoxes();
+      }
+    };
+    if (isDesktopParallaxHero()) {
+      if (window.MVHeroReady && window.MVHeroReady.setProgress) {
+        window.MVHeroReady.setProgress(8);
+      }
+      preloadUrls(PARALLAX_PRELOAD, finishBoot);
+    } else {
+      finishBoot();
     }
   }
 

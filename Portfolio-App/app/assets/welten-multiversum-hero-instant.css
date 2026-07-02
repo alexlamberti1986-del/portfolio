@@ -1,77 +1,17 @@
 /**
- * MULTIVERSUM — sofortiger Startbildschirm ab erstem Paint (vor JS)
+ * Legacy hooks — Boot-Veil übernimmt Startbild
  */
 :root {
   --mv-hero-poster: url("galaxy-v10/assets/galaxy-start-hero.png?v=20260702unified");
 }
 
-html.mv-hero-boot-pending body[data-world="general"] #slide-home,
-html:not(.mv-hero-ready) body[data-world="general"] #slide-home {
-  background: #02030b;
-}
-
-.mv-hero-instant-poster {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  pointer-events: none;
-  background: #02030b var(--mv-hero-poster) center/cover no-repeat;
-}
-
-html.mv-hero-boot-pending body[data-world="general"] #dnaStage,
-html:not(.mv-hero-ready) body[data-world="general"] #dnaStage {
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-html.mv-hero-boot-pending body[data-world="general"] #slide-home .home-main-block,
-html:not(.mv-hero-ready) body[data-world="general"] #slide-home .home-main-block {
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-html.mv-hero-boot-pending body[data-world="general"] #slide-home .slide-inner--home,
-html:not(.mv-hero-ready) body[data-world="general"] #slide-home .slide-inner--home {
-  position: relative;
-  min-height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px)));
-}
-
-.galaxy-v10-home-host {
-  position: relative;
-  z-index: 3;
-}
-
-.galaxy-v10-home-frame {
-  visibility: hidden;
-}
-
-.galaxy-v10-home-frame.is-visible {
-  visibility: visible;
+html.mv-hero-boot-pending,
+html.mv-hero-boot-pending body {
+  background: #02030b !important;
 }
 
 body.mv-hero-ready #slide-home .home-main-block {
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
-}
-
-@media (max-width: 1919px) {
-  .mv-hero-instant-poster {
-    display: none !important;
-  }
-
-  html.mv-hero-boot-pending body[data-world="general"] #dnaStage,
-  html:not(.mv-hero-ready) body[data-world="general"] #dnaStage {
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-}
-
-html.mv-hero-boot-pending body[data-world="general"] #particle-canvas,
-html.mv-hero-boot-pending body[data-world="general"] .light-beams,
-html.mv-hero-boot-pending body[data-world="general"] .bg-grid {
-  opacity: 0 !important;
-  visibility: hidden !important;
 }

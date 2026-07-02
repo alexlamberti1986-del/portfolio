@@ -24,6 +24,7 @@
   }
 
   function shouldUseGalaxy() {
+    if (!/\bgalaxy=1\b/.test(location.search)) return false;
     if (window.__mvFlightTest || /\bmv-flight-test=1\b/.test(location.search)) return false;
     return document.body.getAttribute("data-world") === "general" && isLargeDesktop();
   }
