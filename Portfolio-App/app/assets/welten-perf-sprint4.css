@@ -1,8 +1,7 @@
 /* Sprint 4 — TBT/INP: Canvas aus auf Unterseiten, weniger Paint auf Mobile */
 
-body.is-subpage canvas,
-body.is-subpage #weltenMousePaintCanvas,
-html.welten-subpage-perf canvas {
+body.is-subpage canvas:not(#weltenMousePaintCanvas),
+html.welten-subpage-perf canvas:not(#weltenMousePaintCanvas) {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
