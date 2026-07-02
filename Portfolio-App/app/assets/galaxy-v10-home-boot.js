@@ -5,7 +5,7 @@
   "use strict";
 
   var GALAXY_MIN_WIDTH = 1920;
-  var CACHE = "20260703perf";
+  var CACHE = "20260704i18n";
 
   function isLargeDesktop() {
     try {
@@ -16,6 +16,7 @@
   }
 
   function shouldUseGalaxy() {
+    if (window.__mvFlightTest || /\bmv-flight-test=1\b/.test(location.search)) return false;
     return document.body.getAttribute("data-world") === "general" && isLargeDesktop();
   }
 
@@ -63,6 +64,17 @@
     frame.title = "Reise durch das Multiversum";
     frame.src = "galaxy-v10/embed.html?v=" + CACHE;
     frame.loading = "eager";
+    frame.addEventListener("load", function () {
+      var lang = "de";
+      try {
+        lang = localStorage.getItem("mv-preview-lang") || "de";
+      } catch (e) {}
+      if (frame.contentWindow) {
+        try {
+          frame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: lang }, "*");
+        } catch (err) {}
+      }
+    });
 
     host.appendChild(frame);
     stage.parentNode.insertBefore(host, stage);

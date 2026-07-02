@@ -381,3 +381,47 @@ body[data-world="nexora"] #slide-projects .projects-accordion__panel-content {
     animation: none;
   }
 }
+
+/* Accessibility — Skip-Link & Focus */
+.welten-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 100000;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: #0a1220;
+  color: #e8eef8;
+  font: 600 14px/1.2 system-ui, sans-serif;
+  text-decoration: none;
+  border: 2px solid rgba(142, 197, 255, 0.5);
+}
+
+.welten-skip-link:focus {
+  left: 12px;
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid rgba(142, 197, 255, 0.75);
+  outline-offset: 2px;
+}
+
+html.mv-effects-off #particle-canvas,
+html.mv-effects-off .light-beams,
+html.mv-effects-off .dna-premium-canvas {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+html.welten-tab-hidden #particle-canvas {
+  visibility: hidden;
+}

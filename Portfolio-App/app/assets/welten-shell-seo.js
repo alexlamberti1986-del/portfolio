@@ -1,8 +1,10 @@
 /**
- * Welten SEO · Meta, Open Graph, JSON-LD pro Kapitel
+ * Shell SEO — Meta, Canonical, OG für 3-Welten-Master (Produktion)
  */
 (function () {
   "use strict";
+
+  if (!document.body || document.body.getAttribute("data-live-shell") !== "1") return;
 
   var BASE = "https://www.alexlamberti.ch";
   var OG_IMAGE = BASE + "/assets/og-image.jpg";
@@ -23,7 +25,7 @@
     leistungen: {
       title: "Leistungen | Alex Lamberti · Branding, Webdesign & Marketing",
       description:
-        "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Websites-Optimierung.",
+        "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Website-Optimierung.",
       path: "/leistungen",
     },
     about: {
@@ -38,6 +40,14 @@
         "Kontakt zu Alex Lamberti: Telefon 079 667 82 11, E-Mail alex.lamberti@hotmail.ch, Standort Full-Reuenthal.",
       path: "/kontakt",
     },
+  };
+
+  var ROUTE_CHAPTER = {
+    "/": "home",
+    "/projekte": "projects",
+    "/leistungen": "leistungen",
+    "/ueber-mich": "about",
+    "/kontakt": "contact",
   };
 
   function upsertMeta(attr, key, content) {
@@ -62,7 +72,7 @@
   }
 
   function injectSchema() {
-    if (document.getElementById("welten-schema-jsonld")) return;
+    if (document.getElementById("welten-shell-schema-jsonld")) return;
     var data = {
       "@context": "https://schema.org",
       "@graph": [
@@ -74,66 +84,27 @@
           email: "alex.lamberti@hotmail.ch",
           telephone: "+41796678211",
           url: BASE,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Schulweg 603",
-            addressLocality: "Full-Reuenthal",
-            postalCode: "5324",
-            addressCountry: "CH",
-          },
-        },
-        {
-          "@type": "Organization",
-          "@id": BASE + "/#organization",
-          name: "Alex Lamberti",
-          url: BASE,
-          logo: BASE + "/assets/favicon/android-chrome-512x512.png",
-          image: OG_IMAGE,
-          contactPoint: {
-            "@type": "ContactPoint",
-            telephone: "+41796678211",
-            contactType: "customer service",
-            email: "alex.lamberti@hotmail.ch",
-            areaServed: "CH",
-            availableLanguage: ["de"],
-          },
         },
         {
           "@type": "WebSite",
           "@id": BASE + "/#website",
           url: BASE,
-          name: "Alex Lamberti Portfolio",
-          publisher: { "@id": BASE + "/#organization" },
+          name: "Alex Lamberti Multiversum",
           inLanguage: "de-CH",
-        },
-        {
-          "@type": "LocalBusiness",
-          "@id": BASE + "/#localbusiness",
-          name: "Alex Lamberti",
-          image: OG_IMAGE,
-          url: BASE,
-          telephone: "+41796678211",
-          email: "alex.lamberti@hotmail.ch",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Schulweg 603",
-            addressLocality: "Full-Reuenthal",
-            postalCode: "5324",
-            addressCountry: "CH",
-          },
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: 47.599,
-            longitude: 8.204,
-          },
+          publisher: { "@id": BASE + "/#person" },
         },
       ],
     };
     var script = document.createElement("script");
-    script.id = "welten-schema-jsonld";
+    script.id = "welten-shell-schema-jsonld";
     script.type = "application/ld+json";
     script.textContent = JSON.stringify(data);
     document.head.appendChild(script);
+  }
+
+  function chapterFromPath() {
+    var p = (window.location.pathname || "/").replace(/\/$/, "") || "/";
+    return ROUTE_CHAPTER[p] || "home";
   }
 
   function apply(chapter) {
@@ -149,9 +120,6 @@
     upsertMeta("property", "og:description", page.description);
     upsertMeta("property", "og:url", BASE + page.path);
     upsertMeta("property", "og:image", OG_IMAGE);
-    upsertMeta("property", "og:image:width", "1200");
-    upsertMeta("property", "og:image:height", "630");
-    upsertMeta("property", "og:image:alt", "Alex Lamberti · Branding, Websites und digitale Erlebnisse");
 
     upsertMeta("name", "twitter:card", "summary_large_image");
     upsertMeta("name", "twitter:title", page.title);
@@ -160,18 +128,12 @@
   }
 
   injectSchema();
-  apply("home");
+  apply(chapterFromPath());
 
-  document.addEventListener("welten-chapter-change", function (e) {
-    if (e.detail && e.detail.chapter) {
-      apply(e.detail.chapter);
-      if (window.parent !== window) {
-        try {
-          window.parent.postMessage({ type: "portfolio-chapter", chapter: e.detail.chapter }, "*");
-        } catch (err) {}
-      }
-    }
+  window.addEventListener("message", function (e) {
+    if (!e.data || e.data.type !== "portfolio-chapter") return;
+    if (typeof e.data.chapter === "string") apply(e.data.chapter);
   });
 
-  window.WeltenSEO = { apply: apply, PAGES: PAGES };
+  window.WeltenShellSEO = { apply: apply, PAGES: PAGES };
 })();

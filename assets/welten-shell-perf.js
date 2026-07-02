@@ -1,10 +1,19 @@
 /**
- * Shell Performance — Aggressives Preload + schneller Weltwechsel
+ * Shell Performance — Preload nur wenn sinnvoll
  */
 (function () {
   "use strict";
 
+  function isMobileShell() {
+    try {
+      return window.matchMedia("(max-width: 1024px)").matches;
+    } catch (e) {
+      return window.innerWidth <= 1024;
+    }
+  }
+
   function shouldPrefetch() {
+    if (isMobileShell()) return false;
     var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (!conn) return true;
     if (conn.saveData) return false;
@@ -12,34 +21,42 @@
     return !slow;
   }
 
-  function preloadLazyWorlds(preloadFrame) {
+  function adjacentWorlds(activeIdx) {
+    var idx = typeof activeIdx === "number" ? activeIdx : 0;
+    var list = [idx];
+    if (idx > 0) list.push(idx - 1);
+    if (idx < 3) list.push(idx + 1);
+    return list;
+  }
+
+  function preloadLazyWorlds(preloadFrame, activeIdx) {
     if (!shouldPrefetch() || typeof preloadFrame !== "function") return;
-    [0, 1, 2, 3].forEach(function (i) {
+    adjacentWorlds(activeIdx).forEach(function (i) {
       preloadFrame(i);
     });
   }
 
-  /** Sofort nach kurzer Verzögerung + Idle-Fallback */
-  function scheduleLazyWorldPreload(preloadFrame) {
+  function scheduleLazyWorldPreload(preloadFrame, activeIdx) {
     if (!shouldPrefetch() || typeof preloadFrame !== "function") return;
+    var targets = adjacentWorlds(activeIdx);
     setTimeout(function () {
-      [0, 1, 2, 3].forEach(function (i) {
+      targets.forEach(function (i) {
         preloadFrame(i);
       });
-    }, 350);
+    }, 1200);
     if ("requestIdleCallback" in window) {
       requestIdleCallback(
         function () {
-          preloadLazyWorlds(preloadFrame);
+          preloadLazyWorlds(preloadFrame, activeIdx);
         },
-        { timeout: 900 }
+        { timeout: 2400 }
       );
     }
   }
 
   function injectDocumentPrefetch() {
     if (!shouldPrefetch()) return;
-    ["MULTIVERSUM.html", "NEXORA.html", "FREIRAUM.html"].forEach(function (href) {
+    ["NEXORA.html"].forEach(function (href) {
       if (document.querySelector('link[rel="prefetch"][href="' + href + '"]')) return;
       var link = document.createElement("link");
       link.rel = "prefetch";

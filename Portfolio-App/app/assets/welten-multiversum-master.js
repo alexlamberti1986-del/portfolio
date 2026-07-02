@@ -5,6 +5,7 @@
   "use strict";
 
   var LANG_KEY = "mv-preview-lang";
+  var FX_KEY = "mv-effects-on";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var FRAME_PAGES = ["MULTIVERSUM.html", "NEXORA.html", "PROFESSIONAL.html", "FREIRAUM.html"];
@@ -62,8 +63,8 @@
   var resetAttempts = {};
   loaded[defaultWorld] = true;
   var SHELL_CHROME_CSS =
-    "html.welten-live-shell .mv4-bar,html.welten-live-shell .site-header{display:none!important}" +
-    "html.welten-live-shell .experience-rail{display:none!important}" +
+    "html.welten-live-shell .mv4-bar,html.welten-live-shell .site-header{display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important}" +
+    "html.welten-live-shell .experience-rail{display:none!important;visibility:hidden!important}" +
     "html.welten-live-shell #slide-home{padding-top:0!important}";
 
   function injectPreviewShellCss(f) {
@@ -213,6 +214,9 @@
     if (!isLiveShell) return;
     var ch = chapterFromShellPath();
     sharedChapter = ch;
+    if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
+      window.WeltenShellSEO.apply(ch);
+    }
     var idx = activeIdx();
     if (idx < 0) idx = defaultWorld;
     var f = frames[idx];
@@ -241,11 +245,26 @@
     } catch (e) {}
   }
 
+  function prefersReducedMotion() {
+    try {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function loadPrefs() {
     try {
       currentLang = localStorage.getItem(LANG_KEY) || "de";
     } catch (e) {}
-    effectsOn = true;
+    try {
+      var storedFx = localStorage.getItem(FX_KEY);
+      if (storedFx === "0") effectsOn = false;
+      else if (storedFx === "1") effectsOn = true;
+      else effectsOn = !prefersReducedMotion();
+    } catch (e2) {
+      effectsOn = !prefersReducedMotion();
+    }
   }
 
   function saveLang() {
@@ -254,22 +273,50 @@
     } catch (e) {}
   }
 
+  function saveEffects() {
+    try {
+      localStorage.setItem(FX_KEY, effectsOn ? "1" : "0");
+    } catch (e) {}
+  }
+
+  function applyEffectsState() {
+    var off = !effectsOn;
+    document.documentElement.classList.toggle("mv-effects-off", off);
+    document.body.classList.toggle("mv-effects-off", off);
+    var reduce = off || prefersReducedMotion();
+    document.documentElement.classList.toggle("welten-reduce-effects", reduce);
+    document.body.classList.toggle("welten-reduce-effects", reduce);
+    frames.forEach(function (f) {
+      postFrame(f, { type: "portfolio-effects", on: effectsOn });
+    });
+    document.dispatchEvent(new CustomEvent("mv-effects-change", { detail: { on: effectsOn } }));
+  }
+
   function updateFxBtn() {
     if (!fxBtn) return;
     var labels = {
-      de: ["EFFEKTE ON", "EFFEKTE OFF"],
-      en: ["EFFECTS ON", "EFFECTS OFF"],
-      it: ["EFFETTI ON", "EFFETTI OFF"],
+      de: ["Effekte: Ein", "Effekte: Aus"],
+      en: ["Effects: On", "Effects: Off"],
+      it: ["Effetti: On", "Effetti: Off"],
+    };
+    var ariaLabels = {
+      de: ["Visuelle Effekte deaktivieren", "Visuelle Effekte aktivieren"],
+      en: ["Disable visual effects", "Enable visual effects"],
+      it: ["Disattiva effetti visivi", "Attiva effetti visivi"],
     };
     var pair = labels[currentLang] || labels.de;
+    var ariaPair = ariaLabels[currentLang] || ariaLabels.de;
     fxBtn.textContent = effectsOn ? pair[0] : pair[1];
     fxBtn.classList.toggle("is-on", effectsOn);
     fxBtn.setAttribute("aria-pressed", effectsOn ? "true" : "false");
+    fxBtn.setAttribute("aria-label", effectsOn ? ariaPair[0] : ariaPair[1]);
   }
 
   function updateFlags() {
     document.querySelectorAll(".mv4-flag").forEach(function (btn) {
-      btn.classList.toggle("is-active", btn.dataset.lang === currentLang);
+      var active = btn.dataset.lang === currentLang;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
     });
   }
 
@@ -349,6 +396,7 @@
     bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
       b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
     });
+    updateFlags();
   }
 
   function readChapter(f) {
@@ -503,6 +551,7 @@
 
   loadPrefs();
   updateFxBtn();
+  applyEffectsState();
   updateFlags();
   setBarHeight();
   window.addEventListener("resize", setBarHeight, { passive: true });
@@ -533,7 +582,9 @@
     fxBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       effectsOn = !effectsOn;
+      saveEffects();
       updateFxBtn();
+      applyEffectsState();
       resumeAudio();
     });
   }
@@ -595,7 +646,12 @@
     }
     if (e.data.type === "portfolio-chapter" && typeof e.data.chapter === "string") {
       if (!isOurFrame(e.source)) return;
-      if (CHAPTERS.indexOf(e.data.chapter) >= 0) sharedChapter = e.data.chapter;
+      if (CHAPTERS.indexOf(e.data.chapter) >= 0) {
+        sharedChapter = e.data.chapter;
+        if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
+          window.WeltenShellSEO.apply(e.data.chapter);
+        }
+      }
       return;
     }
     if (e.data.type === "portfolio-open-external") {
@@ -620,6 +676,7 @@
       ensureSingleBar();
       injectProfiles(f, j);
       broadcastLang();
+      postFrame(f, { type: "portfolio-effects", on: effectsOn });
     });
   });
 

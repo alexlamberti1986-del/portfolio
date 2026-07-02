@@ -111,6 +111,11 @@
     buildStaticHero();
   }
 
+  document.addEventListener("mv-restore-hero", function () {
+    if (window.__galaxyV10HomeActive || document.getElementById("galaxyV10HomeHost")) return;
+    buildHero();
+  });
+
   function syncActiveNav() {
     var slide = document.body.getAttribute("data-current-slide") || "home";
     document.querySelectorAll(".mv-static-hero__nav-btn, .experience-step[data-go]").forEach(function (btn) {

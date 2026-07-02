@@ -913,12 +913,17 @@
 
 html.welten-world-switch-lock {
   overflow: hidden;
-  touch-action: none;
 }
 
 html.welten-world-switch-lock body {
   overflow: hidden;
-  touch-action: none;
+}
+
+html.welten-world-switch-lock .mv4-bar,
+html.welten-world-switch-lock .mv4-bar button,
+html.welten-world-switch-lock .mv4-flag {
+  pointer-events: auto !important;
+  touch-action: manipulation;
 }
 
 /* Mobile & Tablet: Safe-Area, kompaktere Typo */

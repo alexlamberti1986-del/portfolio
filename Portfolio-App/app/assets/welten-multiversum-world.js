@@ -143,6 +143,12 @@
         );
       } catch (e) {}
     }
+    var galaxyFrame = document.querySelector(".galaxy-v10-home-frame");
+    if (galaxyFrame && galaxyFrame.contentWindow && data.lang) {
+      try {
+        galaxyFrame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: data.lang }, "*");
+      } catch (e2) {}
+    }
     if (data.lang && window.WeltenPreviewI18nBridge) {
       window.WeltenPreviewI18nBridge.apply(data.lang);
     }

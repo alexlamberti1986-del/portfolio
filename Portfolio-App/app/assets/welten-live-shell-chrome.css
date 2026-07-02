@@ -1,0 +1,16 @@
+/* Live-Shell: innerer Header/Rail ausblenden — nur Shell-.mv4-bar sichtbar */
+html.welten-live-shell .site-header,
+html.welten-live-shell .mv4-bar,
+html.welten-live-shell .experience-rail {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+}
+
+html.welten-live-shell #slide-home {
+  padding-top: 0 !important;
+}

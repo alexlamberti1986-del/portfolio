@@ -141,6 +141,171 @@
     },
   };
 
+  var PARALLAX_UI = {
+    de: {
+      enterWorld: "Welt öffnen",
+      viewAllAreas: "Alle Bereiche ansehen",
+      scrollCue: "Scrollen",
+      portfolio: [
+        { label: "Projekte", sub: "Arbeit aus allen Welten" },
+        { label: "Leistungen", sub: "Was ich anbiete" },
+        { label: "Über mich", sub: "Persönlichkeit & Kompetenz" },
+        { label: "Kontakt", sub: "Nächster Schritt" },
+      ],
+    },
+    en: {
+      enterWorld: "Open world",
+      viewAllAreas: "View all areas",
+      scrollCue: "Scroll",
+      portfolio: [
+        { label: "Projects", sub: "Work from all worlds" },
+        { label: "Services", sub: "What I offer" },
+        { label: "About me", sub: "Personality & skills" },
+        { label: "Contact", sub: "Next step" },
+      ],
+    },
+    it: {
+      enterWorld: "Apri mondo",
+      viewAllAreas: "Vedi tutte le aree",
+      scrollCue: "Scorri",
+      portfolio: [
+        { label: "Progetti", sub: "Lavori da tutti i mondi" },
+        { label: "Servizi", sub: "Cosa offro" },
+        { label: "Chi sono", sub: "Personalità e competenze" },
+        { label: "Contatto", sub: "Prossimo passo" },
+      ],
+    },
+  };
+
+  var PARALLAX_SLIDES = {
+    de: {
+      "intro-all-worlds": {
+        title: "Reise durch das Multiversum",
+        body: "Scrollen startet den Flug durch ein digitales Universum. Unterwegs taucht jede Welt einzeln auf — mit Erklärung, Rolle und Unterschied zu den anderen Welten.",
+      },
+      "multiversum-focus": {
+        label: "MULTIVERSUM",
+        lead: "Was ist MULTIVERSUM?",
+        body: "Die Übersichtswelt und das verbindende Portfolio-Universum. Hier sehen Sie das Gesamtbild, bevor die Reise in die einzelnen Spezialwelten geht.",
+        purpose: "Als Meta-Ebene: Strategie, Persönlichkeit und die passende Wirkung je nach Projekt — analytisch, klar oder emotional.",
+        difference: "Nicht eine Spezialwelt wie NEXORA, PROFESSIONAL oder FREIRAUM, sondern das übergeordnete System, das alle drei vereint.",
+      },
+      "nexora-focus": {
+        label: "NEXORA",
+        lead: "Was ist NEXORA?",
+        body: "Die Technologie-Welt für Systeme, Performance und smarte digitale Lösungen — Web, Automatisierung und technische Klarheit.",
+        purpose: "Wenn Projekte technisch anspruchsvoll sind: skalierbare Strukturen, präzise Umsetzung und messbare digitale Wirkung.",
+        difference: "Im Gegensatz zu PROFESSIONAL (Business-Klarheit) und FREIRAUM (Kreativität) fokussiert NEXORA auf Technologie, Logik und Systemdenken.",
+      },
+      "professional-focus": {
+        label: "PROFESSIONAL",
+        lead: "Was ist PROFESSIONAL?",
+        body: "Die Business-Welt für Auftritt, Vertrauen und professionelle Markenführung — strukturiert, seriös und überzeugend.",
+        purpose: "Für Unternehmen und Persönlichkeiten, die Klarheit, Glaubwürdigkeit und einen hochwertigen professionellen Eindruck brauchen.",
+        difference: "Weniger technisch als NEXORA, weniger expressiv als FREIRAUM — hier steht Präzision, Ordnung und Business-Wirkung im Vordergrund.",
+      },
+      "freiraum-focus": {
+        label: "FREIRAUM",
+        lead: "Was ist FREIRAUM?",
+        body: "Die Kreativ-Welt für Identität, Emotion und visuelle Freiheit — Design, Kampagnen und Inhalte mit Charakter.",
+        purpose: "Wenn Marken und Projekte Persönlichkeit, Tiefe und ein unverwechselbares Gefühl brauchen — mutig, expressiv, menschlich.",
+        difference: "Im Unterschied zu NEXORA (Technik) und PROFESSIONAL (Struktur) lebt FREIRAUM von Kreativität, Farbe und emotionaler Erzählung.",
+      },
+      merge: {
+        title: "Vier Welten. Ein System.",
+        body: "Übersicht, Technologie, Struktur und Kreativität verbinden sich zu einem Portfolio, das zeigt, was möglich ist.",
+      },
+      "portfolio-contact": {
+        title: "Bereit für den nächsten Schritt?",
+        body: "Entdecke Projekte aus allen Welten oder starte direkt mit einer neuen Idee.",
+      },
+    },
+    en: {
+      "intro-all-worlds": {
+        title: "Journey through the multiverse",
+        body: "Scrolling starts a flight through a digital universe. Along the way, each world appears individually — with explanation, role and difference to the other worlds.",
+      },
+      "multiversum-focus": {
+        label: "MULTIVERSE",
+        lead: "What is the MULTIVERSE?",
+        body: "The overview world and connecting portfolio universe. Here you see the big picture before the journey into the individual specialist worlds.",
+        purpose: "As a meta level: strategy, personality and the right impact per project — analytical, clear or emotional.",
+        difference: "Not a specialist world like NEXORA, PROFESSIONAL or FREIRAUM, but the overarching system that unites all three.",
+      },
+      "nexora-focus": {
+        label: "NEXORA",
+        lead: "What is NEXORA?",
+        body: "The technology world for systems, performance and smart digital solutions — web, automation and technical clarity.",
+        purpose: "When projects are technically demanding: scalable structures, precise delivery and measurable digital impact.",
+        difference: "Unlike PROFESSIONAL (business clarity) and FREIRAUM (creativity), NEXORA focuses on technology, logic and systems thinking.",
+      },
+      "professional-focus": {
+        label: "PROFESSIONAL",
+        lead: "What is PROFESSIONAL?",
+        body: "The business world for presence, trust and professional brand leadership — structured, serious and convincing.",
+        purpose: "For companies and individuals who need clarity, credibility and a high-quality professional impression.",
+        difference: "Less technical than NEXORA, less expressive than FREIRAUM — precision, order and business impact come first.",
+      },
+      "freiraum-focus": {
+        label: "FREIRAUM",
+        lead: "What is FREIRAUM?",
+        body: "The creative world for identity, emotion and visual freedom — design, campaigns and content with character.",
+        purpose: "When brands and projects need personality, depth and a distinctive feel — bold, expressive, human.",
+        difference: "Unlike NEXORA (tech) and PROFESSIONAL (structure), FREIRAUM lives on creativity, colour and emotional storytelling.",
+      },
+      merge: {
+        title: "Four worlds. One system.",
+        body: "Overview, technology, structure and creativity combine into a portfolio that shows what is possible.",
+      },
+      "portfolio-contact": {
+        title: "Ready for the next step?",
+        body: "Explore projects from all worlds or start directly with a new idea.",
+      },
+    },
+    it: {
+      "intro-all-worlds": {
+        title: "Viaggio attraverso il multiverso",
+        body: "Lo scroll avvia il volo attraverso un universo digitale. Lungo il percorso, ogni mondo appare singolarmente — con spiegazione, ruolo e differenza rispetto agli altri.",
+      },
+      "multiversum-focus": {
+        label: "MULTIVERSO",
+        lead: "Cos'è il MULTIVERSO?",
+        body: "Il mondo panoramico e portfolio connettente. Qui si vede il quadro generale prima del viaggio nei mondi specializzati.",
+        purpose: "Come meta-livello: strategia, personalità e impatto giusto per progetto — analitico, chiaro o emotivo.",
+        difference: "Non un mondo specializzato come NEXORA, PROFESSIONAL o FREIRAUM, ma il sistema sovraordinato che unisce tutti e tre.",
+      },
+      "nexora-focus": {
+        label: "NEXORA",
+        lead: "Cos'è NEXORA?",
+        body: "Il mondo tecnologico per sistemi, performance e soluzioni digitali intelligenti — web, automazione e chiarezza tecnica.",
+        purpose: "Quando i progetti sono tecnicamente esigenti: strutture scalabili, implementazione precisa e impatto digitale misurabile.",
+        difference: "A differenza di PROFESSIONAL (chiarezza business) e FREIRAUM (creatività), NEXORA si concentra su tecnologia, logica e pensiero sistemico.",
+      },
+      "professional-focus": {
+        label: "PROFESSIONAL",
+        lead: "Cos'è PROFESSIONAL?",
+        body: "Il mondo business per presenza, fiducia e leadership di marca professionale — strutturato, serio e convincente.",
+        purpose: "Per aziende e persone che necessitano chiarezza, credibilità e un'impressione professionale di alto livello.",
+        difference: "Meno tecnico di NEXORA, meno espressivo di FREIRAUM — qui contano precisione, ordine e impatto business.",
+      },
+      "freiraum-focus": {
+        label: "FREIRAUM",
+        lead: "Cos'è FREIRAUM?",
+        body: "Il mondo creativo per identità, emozione e libertà visiva — design, campagne e contenuti con carattere.",
+        purpose: "Quando brand e progetti necessitano personalità, profondità e una sensazione distintiva — audace, espressivo, umano.",
+        difference: "A differenza di NEXORA (tech) e PROFESSIONAL (struttura), FREIRAUM vive di creatività, colore e narrazione emotiva.",
+      },
+      merge: {
+        title: "Quattro mondi. Un sistema.",
+        body: "Panoramica, tecnologia, struttura e creatività si uniscono in un portfolio che mostra cosa è possibile.",
+      },
+      "portfolio-contact": {
+        title: "Pronti per il prossimo passo?",
+        body: "Scopri progetti da tutti i mondi o inizia direttamente con una nuova idea.",
+      },
+    },
+  };
+
   function getWorld(doc) {
     var w = (doc.body && doc.body.getAttribute("data-world")) || "nexora";
     if (w === "professional") w = "vertex";
@@ -210,11 +375,113 @@
     setText(extra.querySelector("h3.section-title"), pack.extraTitle);
   }
 
+  function applyParallax(doc, lang) {
+    var hero = doc.getElementById("mvParallaxHero");
+    if (!hero) return;
+    var slidesPack = PARALLAX_SLIDES[lang] || PARALLAX_SLIDES.de;
+    var uiPack = PARALLAX_UI[lang] || PARALLAX_UI.de;
+    var cfg = window.MVSceneConfig;
+    if (!cfg || !cfg.slides) return;
+
+    cfg.slides.forEach(function (slideCfg, i) {
+      var slideEl = hero.querySelector('.mv-scroll-slide[data-slide="' + i + '"]');
+      var t = slidesPack[slideCfg.id];
+      if (!slideEl || !t) return;
+
+      setText(slideEl.querySelector(".mv-scroll-slide__eyebrow"), t.label);
+      var leadEl = slideEl.querySelector(".mv-scroll-slide__lead");
+      if (leadEl) {
+        var strong = leadEl.querySelector("strong");
+        if (strong) setText(strong, t.lead);
+        else setText(leadEl, t.lead);
+      }
+      setText(slideEl.querySelector(".mv-scroll-slide__what"), t.body);
+      setText(slideEl.querySelector(".mv-scroll-slide__purpose"), t.purpose);
+      setText(slideEl.querySelector(".mv-scroll-slide__diff"), t.difference);
+      setText(slideEl.querySelector("h2"), t.title);
+      setText(slideEl.querySelector(".mv-scroll-slide__body"), t.body);
+    });
+
+    hero.querySelectorAll(".mv-scroll-slide__enter[data-world-enter]").forEach(function (btn) {
+      setText(btn, uiPack.enterWorld);
+    });
+    hero.querySelectorAll("[data-world-more]").forEach(function (btn) {
+      setText(btn, uiPack.viewAllAreas);
+    });
+    if (uiPack.portfolio) {
+      var openSuffix = lang === "en" ? " open" : lang === "it" ? " apri" : " öffnen";
+      hero.querySelectorAll(".mv-scroll-card").forEach(function (card, idx) {
+        var c = uiPack.portfolio[idx];
+        if (!c) return;
+        setText(card.querySelector(".mv-scroll-card__label"), c.label);
+        setText(card.querySelector(".mv-scroll-card__sub"), c.sub);
+        if (c.label) card.setAttribute("aria-label", c.label + openSuffix);
+      });
+    }
+    var cue = hero.querySelector(".mv-scroll-cue span");
+    setText(cue, uiPack.scrollCue);
+  }
+
+  var GALAXY_WORLD_MAP = {
+    multiversum: "multiversum-focus",
+    nexora: "nexora-focus",
+    professional: "professional-focus",
+    freiraum: "freiraum-focus",
+  };
+
+  var GALAXY_SUBPAGE_CHAPTER = {
+    about: 2,
+    leistungen: 1,
+    projects: 0,
+    contact: 3,
+  };
+
+  function applyGalaxy(doc, lang) {
+    if (!doc) return;
+    var slidesPack = PARALLAX_SLIDES[lang] || PARALLAX_SLIDES.de;
+    var uiPack = PARALLAX_UI[lang] || PARALLAX_UI.de;
+    var rootEl = doc.getElementById("galaxyRoot") || doc;
+
+    var intro = slidesPack["intro-all-worlds"];
+    var introBox = rootEl.querySelector(".overview-intro-textbox");
+    if (introBox && intro) {
+      setText(introBox.querySelector('[data-reveal="title"]'), intro.title);
+      setText(introBox.querySelector('[data-reveal="body"]'), intro.body);
+    }
+
+    Object.keys(GALAXY_WORLD_MAP).forEach(function (world) {
+      var t = slidesPack[GALAXY_WORLD_MAP[world]];
+      if (!t) return;
+      var panel = rootEl.querySelector('.world-panel[data-world="' + world + '"]');
+      if (!panel) return;
+      var box = panel.querySelector(".world-explainer-textbox") || panel;
+      setText(box.querySelector('[data-reveal="eyebrow"]'), t.label);
+      setText(box.querySelector('[data-reveal="lead"]'), t.lead);
+      setText(box.querySelector('[data-reveal="what"]'), t.body);
+      setText(box.querySelector('[data-reveal="purpose"]'), t.purpose);
+      setText(box.querySelector('[data-reveal="diff"]'), t.difference);
+      box.querySelectorAll(".world-cta, .world-cta--primary").forEach(function (btn) {
+        setText(btn, uiPack.enterWorld);
+      });
+
+      panel.querySelectorAll(".subpage-card").forEach(function (card) {
+        var ch = card.getAttribute("data-chapter");
+        var idx = GALAXY_SUBPAGE_CHAPTER[ch];
+        if (idx == null || !uiPack.portfolio[idx]) return;
+        var c = uiPack.portfolio[idx];
+        setText(card.querySelector("span"), c.label);
+        setText(card.querySelector("small"), c.sub);
+      });
+    });
+
+    doc.documentElement.lang = lang === "en" ? "en" : lang === "it" ? "it" : "de-CH";
+  }
+
   function apply(doc, lang) {
     if (!doc || !lang) return;
     var world = getWorld(doc);
     var slides = SLIDES[world] && SLIDES[world][lang];
-    doc.documentElement.lang = lang === "en" ? "en" : lang;
+    doc.documentElement.lang = lang === "en" ? "en" : lang === "it" ? "it" : "de-CH";
     applyNav(doc, lang);
     applyHome(doc, world, lang);
     if (slides) {
@@ -224,6 +491,7 @@
       applySlide(doc, "slide-contact", slides.contact);
     }
     applyAboutExtra(doc, world, lang);
+    applyParallax(doc, lang);
     doc.querySelectorAll("[data-i18n]").forEach(function (el) {
       var key = el.getAttribute("data-i18n");
       var parts = key.split(".");
@@ -233,5 +501,14 @@
     });
   }
 
-  root.WeltenPreviewI18n = { apply: apply, NAV: NAV, SLIDES: SLIDES, getWorld: getWorld };
+  root.WeltenPreviewI18n = {
+    apply: apply,
+    applyParallax: applyParallax,
+    applyGalaxy: applyGalaxy,
+    NAV: NAV,
+    SLIDES: SLIDES,
+    PARALLAX_SLIDES: PARALLAX_SLIDES,
+    PARALLAX_UI: PARALLAX_UI,
+    getWorld: getWorld,
+  };
 })(typeof window !== "undefined" ? window : this);

@@ -2227,6 +2227,13 @@
     bindScroll();
     updateFrame();
     heroEl.classList.add("is-js-ready");
+    if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
+      try {
+        var langKey = "mv-preview-lang";
+        var lang = localStorage.getItem(langKey) || sessionStorage.getItem(langKey) || "de";
+        window.WeltenPreviewI18n.applyParallax(document, lang);
+      } catch (e) {}
+    }
     return heroEl;
   }
 
@@ -2244,5 +2251,10 @@
     destroy: destroy,
     switchWorld: switchWorld,
     requestWorldSwitch: requestWorldSwitch,
+    applyLang: function (lang) {
+      if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
+        window.WeltenPreviewI18n.applyParallax(document, lang || "de");
+      }
+    },
   };
 })();

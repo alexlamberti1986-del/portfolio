@@ -7,6 +7,8 @@
   var LANG_KEY = "mv-preview-lang";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
+  var FRAME_PAGES = ["MULTIVERSUM.html", "NEXORA.html", "PROFESSIONAL.html", "FREIRAUM.html"];
+  var SHELL_PAGES = ["3-Welten-Master-iframe.html", "index.html", ""];
   var ROUTE_CHAPTER = {
     "/": "home",
     "/projekte": "projects",
@@ -57,7 +59,12 @@
     if (!isFinite(defaultWorld) || defaultWorld < 0 || defaultWorld > 3) defaultWorld = 0;
   }
   var loaded = {};
+  var resetAttempts = {};
   loaded[defaultWorld] = true;
+  var SHELL_CHROME_CSS =
+    "html.welten-live-shell .mv4-bar,html.welten-live-shell .site-header{display:none!important}" +
+    "html.welten-live-shell .experience-rail{display:none!important}" +
+    "html.welten-live-shell #slide-home{padding-top:0!important}";
 
   function injectPreviewShellCss(f) {
     try {
@@ -85,6 +92,12 @@
         titleLink.rel = "stylesheet";
         titleLink.href = TITLE_COLORS_CSS;
         (d.head || d.documentElement).appendChild(titleLink);
+      }
+      if (isLiveShell && !d.getElementById("mv4-shell-chrome-css")) {
+        var chrome = d.createElement("style");
+        chrome.id = "mv4-shell-chrome-css";
+        chrome.textContent = SHELL_CHROME_CSS;
+        (d.head || d.documentElement).appendChild(chrome);
       }
     } catch (e) {}
   }
@@ -121,13 +134,74 @@
   }
 
   function isOurFrame(win) {
+    return isTrustedMessageSource(win);
+  }
+
+  function isTrustedMessageSource(win) {
     if (!win) return false;
     for (var i = 0; i < frames.length; i++) {
       try {
-        if (frames[i].contentWindow === win) return true;
+        var outer = frames[i].contentWindow;
+        if (!outer) continue;
+        if (outer === win) return true;
+        var galaxyFrame = outer.document.querySelector(".galaxy-v10-home-frame");
+        if (galaxyFrame && galaxyFrame.contentWindow === win) return true;
       } catch (e) {}
     }
     return false;
+  }
+
+  function worldIndexFromKey(worldKey) {
+    var map = {
+      general: 0,
+      multiversum: 0,
+      nexora: 1,
+      professional: 2,
+      vertex: 2,
+      freiraum: 3,
+    };
+    return map[worldKey];
+  }
+
+  function framePageName(path) {
+    var parts = (path || "").split("/");
+    return parts[parts.length - 1] || "";
+  }
+
+  function frameNeedsReset(f, i) {
+    if (!f || i < 0 || i > 3) return false;
+    var expected = FRAME_PAGES[i];
+    try {
+      var file = framePageName(f.contentWindow.location.pathname);
+      if (!file || SHELL_PAGES.indexOf(file) >= 0) return true;
+      if (file !== expected && file.toLowerCase() !== expected.toLowerCase()) return true;
+      return false;
+    } catch (e) {
+      return !frameHasSrc(f) || f.src.indexOf(expected) < 0;
+    }
+  }
+
+  function resetFrame(i) {
+    var f = frames[i];
+    if (!f) return;
+    resetAttempts[i] = (resetAttempts[i] || 0) + 1;
+    if (resetAttempts[i] > 2) return;
+    f.src = FRAME_PAGES[i];
+    loaded[i] = false;
+  }
+
+  function ensureSingleBar() {
+    var bars = document.querySelectorAll(".mv4-bar");
+    for (var i = 1; i < bars.length; i++) {
+      bars[i].remove();
+    }
+  }
+
+  function clearSwitchLock() {
+    document.documentElement.classList.remove("welten-world-switch-lock");
+    if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
+      window.WeltenWorldSwitchPreview.abort();
+    }
   }
 
   function chapterFromShellPath() {
@@ -313,7 +387,7 @@
     });
     setMaster(i);
     broadcastLang();
-    unlockShell();
+    if (!switching) unlockShell();
     setTimeout(function () {
       var f = frames[i];
       if (f) injectProfiles(f, i);
@@ -374,6 +448,11 @@
 
   function switchTo(i) {
     if (i < 0 || i > 3 || switching) return;
+    clearSwitchLock();
+    ensureSingleBar();
+    if (frameNeedsReset(frames[i], i)) {
+      resetFrame(i);
+    }
     var prev = activeIdx();
     if (prev === i) {
       applyChapter(frames[i], sharedChapter);
@@ -388,9 +467,17 @@
     var wKey = worldSwitchKey(i);
 
     if (!effectsOn) {
-      switchToWorldIndex(i);
+      switchToWorldIndex(i).then(function () {
+        unlockShell();
+      });
       return;
     }
+
+    window.__wwsOnTransitionEnd = function () {
+      unlockShell();
+      clearSwitchLock();
+      window.__wwsOnTransitionEnd = null;
+    };
 
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
       window.WeltenWorldSwitchPreview.playSwitch(wKey, i);
@@ -452,7 +539,9 @@
   }
 
   document.querySelectorAll(".mv4-flag").forEach(function (btn) {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       currentLang = btn.dataset.lang || "de";
       saveLang();
       updateFlags();
@@ -491,8 +580,11 @@
   window.addEventListener("message", function (e) {
     if (!e.data) return;
     if (e.data.type === "alex:switch-world") {
-      if (!isOurFrame(e.source)) return;
-      if (clickWorldShellButton(e.data.world)) {
+      if (!isTrustedMessageSource(e.source)) return;
+      var idx = worldIndexFromKey(e.data.world);
+      if (idx !== undefined) {
+        if (frameNeedsReset(frames[idx], idx)) resetFrame(idx);
+        switchTo(idx);
         postScrollToActiveFrame(e.data.targetHash, e.data.go);
         return;
       }
@@ -517,20 +609,30 @@
 
   frames.forEach(function (f, j) {
     f.addEventListener("load", function () {
+      try {
+        var file = framePageName(f.contentWindow.location.pathname);
+        if (SHELL_PAGES.indexOf(file) >= 0) {
+          resetFrame(j);
+          return;
+        }
+        resetAttempts[j] = 0;
+      } catch (e) {}
+      ensureSingleBar();
       injectProfiles(f, j);
       broadcastLang();
     });
   });
 
+  ensureSingleBar();
+  clearSwitchLock();
+
   setMaster(defaultWorld);
   broadcastLang();
   applyShellRoute();
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
-    window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame);
+    window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
   } else {
-    [0, 1, 2, 3].forEach(function (i) {
-      if (i !== defaultWorld) preloadFrame(i);
-    });
+    preloadFrame(1);
   }
   window.mv4SwitchWorld = switchTo;
 })();

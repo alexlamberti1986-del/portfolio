@@ -29,6 +29,7 @@
 
   function storeLang(lang) {
     try {
+      localStorage.setItem(LANG_KEY, lang);
       sessionStorage.setItem(LANG_KEY, lang);
     } catch (e) {}
   }
@@ -41,6 +42,14 @@
     if (w === "vertex") return "professional";
     if (w === "general" || w === "nexora" || w === "freiraum") return w === "general" ? "general" : w;
     return "nexora";
+  }
+
+  function forwardGalaxyLang(lang) {
+    var frame = document.querySelector(".galaxy-v10-home-frame");
+    if (!frame || !frame.contentWindow) return;
+    try {
+      frame.contentWindow.postMessage({ type: "portfolio-preview-lang", lang: lang }, "*");
+    } catch (e) {}
   }
 
   function syncLeadForm(lang) {
@@ -63,6 +72,10 @@
     var code = lang || currentLang();
     storeLang(code);
     window.WeltenPreviewI18n.apply(document, code);
+    if (window.MVParallaxHero && typeof window.MVParallaxHero.applyLang === "function") {
+      window.MVParallaxHero.applyLang(code);
+    }
+    forwardGalaxyLang(code);
     syncLeadForm(code);
     if (window.WeltenContactLeadform && window.WeltenContactLeadform.syncLeadFormFrame) {
       window.WeltenContactLeadform.syncLeadFormFrame();
