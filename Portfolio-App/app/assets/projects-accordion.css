@@ -580,6 +580,109 @@ body[data-world="freiraum"] .project-card--preview .project-card__preview {
     margin-right: 2px;
   }
 
+  /* NEXORA · PROFESSIONAL · FREIRAUM — Pfeil wie Multiversum (nur Tablet/Handy) */
+  body[data-world="nexora"] .projects-accordion__chevron,
+  body[data-world="vertex"] .projects-accordion__chevron,
+  body[data-world="professional"] .projects-accordion__chevron,
+  body[data-world="freiraum"] .projects-accordion__chevron {
+    position: relative;
+    z-index: 3;
+    width: 32px;
+    height: 32px;
+    margin-right: 2px;
+    border-radius: 50%;
+    transform: none;
+    border-right: none;
+    border-bottom: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+
+  body[data-world="nexora"] .projects-accordion__chevron {
+    border: 1px solid rgba(101, 217, 255, 0.48);
+    background: rgba(4, 12, 28, 0.78);
+    box-shadow: 0 0 0 1px rgba(101, 217, 255, 0.14), 0 8px 20px rgba(0, 0, 0, 0.28);
+  }
+
+  body[data-world="nexora"] .projects-accordion__chevron::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 9px;
+    height: 9px;
+    border-right: 2.5px solid #65d9ff;
+    border-bottom: 2.5px solid #65d9ff;
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  body[data-world="vertex"] .projects-accordion__chevron,
+  body[data-world="professional"] .projects-accordion__chevron {
+    border: 1px solid rgba(0, 0, 0, 0.38);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  body[data-world="vertex"] .projects-accordion__chevron::before,
+  body[data-world="professional"] .projects-accordion__chevron::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 9px;
+    height: 9px;
+    border-right: 2.5px solid #111;
+    border-bottom: 2.5px solid #111;
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  body[data-world="freiraum"] .projects-accordion__chevron {
+    border: 1px solid rgba(255, 209, 102, 0.48);
+    background: rgba(22, 10, 32, 0.78);
+    box-shadow: 0 0 0 1px rgba(255, 209, 102, 0.14), 0 8px 20px rgba(0, 0, 0, 0.28);
+  }
+
+  body[data-world="freiraum"] .projects-accordion__chevron::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 9px;
+    height: 9px;
+    border-right: 2.5px solid #ffd166;
+    border-bottom: 2.5px solid #ffd166;
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  body[data-world="nexora"] .projects-accordion__item.is-open .projects-accordion__chevron,
+  body[data-world="vertex"] .projects-accordion__item.is-open .projects-accordion__chevron,
+  body[data-world="professional"] .projects-accordion__item.is-open .projects-accordion__chevron,
+  body[data-world="freiraum"] .projects-accordion__item.is-open .projects-accordion__chevron {
+    margin-top: 0;
+  }
+
+  body[data-world="nexora"] .projects-accordion__item.is-open .projects-accordion__chevron::before,
+  body[data-world="vertex"] .projects-accordion__item.is-open .projects-accordion__chevron::before,
+  body[data-world="professional"] .projects-accordion__item.is-open .projects-accordion__chevron::before,
+  body[data-world="freiraum"] .projects-accordion__item.is-open .projects-accordion__chevron::before {
+    transform: translate(-50%, -58%) rotate(-135deg);
+  }
+
+  body[data-world="nexora"] .projects-accordion__item.is-open .projects-accordion__chevron {
+    background: rgba(0, 194, 255, 0.14);
+  }
+
+  body[data-world="vertex"] .projects-accordion__item.is-open .projects-accordion__chevron,
+  body[data-world="professional"] .projects-accordion__item.is-open .projects-accordion__chevron {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  body[data-world="freiraum"] .projects-accordion__item.is-open .projects-accordion__chevron {
+    background: rgba(255, 209, 102, 0.16);
+  }
+
   body[data-world="nexora"] .projects-accordion__trigger.has-service-bg::after {
     background: linear-gradient(
       90deg,
@@ -633,6 +736,14 @@ body[data-world="freiraum"] .project-card--preview .project-card__preview {
   }
 
   body[data-world="general"] .projects-accordion__chevron {
+    width: 28px;
+    height: 28px;
+  }
+
+  body[data-world="nexora"] .projects-accordion__chevron,
+  body[data-world="vertex"] .projects-accordion__chevron,
+  body[data-world="professional"] .projects-accordion__chevron,
+  body[data-world="freiraum"] .projects-accordion__chevron {
     width: 28px;
     height: 28px;
   }
