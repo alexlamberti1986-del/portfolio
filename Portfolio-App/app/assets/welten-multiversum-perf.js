@@ -8,7 +8,7 @@
   document.documentElement.classList.add("mv-preview-lite", "mv-world-general");
 
   function stripDecor() {
-    ["#particle-canvas", "#dnaPremiumCanvas", "#dnaParticlesCanvas", "#weltenMousePaintCanvas"].forEach(function (sel) {
+    ["#particle-canvas", "#dnaPremiumCanvas", "#dnaParticlesCanvas"].forEach(function (sel) {
       var el = document.querySelector(sel);
       if (el) el.remove();
     });

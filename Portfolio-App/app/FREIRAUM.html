@@ -5903,43 +5903,8 @@ body[data-world="nexora"] .faq-panel-inner {
 
 </style>
 
-<script id="welten-mouse-paint-final-v3">
-(function () {
-  "use strict";
-  if (window.matchMedia) {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (window.matchMedia("(max-width: 1024px)").matches) return;
-    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
-  }
-  var canvas = document.getElementById("weltenMousePaintCanvas");
-  if (!canvas) { canvas = document.createElement("canvas"); canvas.id = "weltenMousePaintCanvas"; canvas.setAttribute("aria-hidden","true"); document.body.insertBefore(canvas, document.body.firstChild); }
-  canvas.style.cssText = "position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9;opacity:0;mix-blend-mode:screen;transition:opacity .25s ease";
-  var ctx = canvas.getContext("2d", { alpha:true }); if (!ctx) return;
-  var w=0,h=0,dpr=1, particles=[], trail=[], lastMove=0;
-  function world(){ return document.body.getAttribute("data-world") || ""; }
-  function resize(){ dpr=Math.min(window.devicePixelRatio||1,1.5); w=canvas.width=Math.floor(innerWidth*dpr); h=canvas.height=Math.floor(innerHeight*dpr); canvas.style.width=innerWidth+"px"; canvas.style.height=innerHeight+"px"; }
-  function clear(){ particles.length=0; trail.length=0; ctx.clearRect(0,0,w,h); }
-  function add(x,y,mode){
-    var free=mode==="freiraum";
-    var colors=free?[[255,209,102],[255,48,126],[0,220,210],[122,92,255],[255,255,255]]:[[101,217,255],[0,185,255],[142,197,255],[215,250,255]];
-    var count=free?3:2;
-    for(var i=0;i<count;i++){ var c=colors[(Math.random()*colors.length)|0]; particles.push({x:x*dpr+(Math.random()-.5)*(free?18:12)*dpr,y:y*dpr+(Math.random()-.5)*(free?18:12)*dpr,vx:(Math.random()-.5)*(free?1.4:.75)*dpr,vy:(Math.random()-.5)*(free?1.4:.75)*dpr,r:(free?(5+Math.random()*12):(3+Math.random()*7))*dpr,a:free?.50:.44,fade:free?.90:.88,c:c}); }
-    if(!free){ trail.push({x:x*dpr,y:y*dpr,a:.38}); if(trail.length>10) trail.splice(0, trail.length-10); }
-    var max=free?64:48; if(particles.length>max) particles.splice(0, particles.length-max);
-  }
-  document.addEventListener("pointermove", function(e){ var m=world(); if(m!=="freiraum"&&m!=="nexora") return; canvas.style.opacity=m==="freiraum"?.62:.48; lastMove=performance.now(); add(e.clientX,e.clientY,m); }, {passive:true});
-  function draw(){
-    var m=world(); ctx.clearRect(0,0,w,h);
-    if(m!=="freiraum"&&m!=="nexora"){ canvas.style.opacity=0; clear(); requestAnimationFrame(draw); return; }
-    ctx.globalCompositeOperation="lighter";
-    if(m==="nexora"&&trail.length>1){ ctx.lineCap="round"; for(var t=1;t<trail.length;t++){ var a=trail[t-1],b=trail[t],al=Math.min(a.a,b.a)*.5; ctx.strokeStyle="rgba(80,210,255,"+al.toFixed(3)+")"; ctx.lineWidth=(1.15*dpr)*al+.3; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); } }
-    for(var i=0;i<particles.length;i++){ var p=particles[i]; p.x+=p.vx; p.y+=p.vy; p.a*=p.fade; p.r*=.982; var g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r); g.addColorStop(0,"rgba("+p.c[0]+","+p.c[1]+","+p.c[2]+","+p.a.toFixed(3)+")"); g.addColorStop(.48,"rgba("+p.c[0]+","+p.c[1]+","+p.c[2]+","+(p.a*.28).toFixed(3)+")"); g.addColorStop(1,"rgba("+p.c[0]+","+p.c[1]+","+p.c[2]+",0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); }
-    particles=particles.filter(function(p){return p.a>.025&&p.r>.7}); for(var j=0;j<trail.length;j++) trail[j].a*=.82; trail=trail.filter(function(p){return p.a>.025});
-    if(performance.now()-lastMove>650&&particles.length<4) clear(); ctx.globalCompositeOperation="source-over"; requestAnimationFrame(draw);
-  }
-  window.addEventListener("resize", resize, {passive:true}); new MutationObserver(clear).observe(document.body,{attributes:true, attributeFilter:["data-world"]}); resize(); requestAnimationFrame(draw);
-})();
-</script>
+<link rel="stylesheet" href="assets/welten-mouse-paint.css?v=20260707mouse" />
+<script src="assets/welten-mouse-paint.js?v=20260707mouse" defer></script>
 
 <link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260612a" id="welten-mobile-hero-stylesheet" />
 <script src="assets/welten-mobile-hero.js?v=20260608d" defer></script>

@@ -23,7 +23,7 @@
     document.querySelectorAll(".bg-root, .bg-grid, .light-beams").forEach(function (el) {
       el.remove();
     });
-    ["#particle-canvas", "#dnaPremiumCanvas", "#dnaParticlesCanvas", "#weltenMousePaintCanvas"].forEach(function (sel) {
+    ["#particle-canvas", "#dnaPremiumCanvas", "#dnaParticlesCanvas"].forEach(function (sel) {
       var el = document.querySelector(sel);
       if (el) el.remove();
     });
@@ -245,7 +245,7 @@
   }
 
   function stripDecor() {
-    ["#particle-canvas", "#dnaPremiumCanvas", "#dnaParticlesCanvas", "#weltenMousePaintCanvas"].forEach(function (sel) {
+    ["#particle-canvas", "#dnaPremiumCanvas", "#dnaParticlesCanvas"].forEach(function (sel) {
       var el = document.querySelector(sel);
       if (el) el.remove();
     });
