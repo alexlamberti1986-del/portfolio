@@ -114,19 +114,36 @@
     });
   }
 
+  function parallaxDepsReady() {
+    return !!(window.MVWorldCollage && window.MVSceneConfig && window.MVParallaxHero);
+  }
+
   function buildHero() {
     if (window.__mvHeroBootLock) return;
     if (document.getElementById("mvParallaxHero") || document.getElementById("mvStaticHero")) return;
+    if (isDesktopParallaxHero() && !parallaxDepsReady()) return;
 
     window.__mvHeroBootLock = true;
     try {
-      if (isDesktopParallaxHero() && window.MVParallaxHero && typeof window.MVParallaxHero.build === "function") {
-        if (window.MVParallaxHero.build(goChapter)) return;
-      }
+      if (isDesktopParallaxHero() && typeof window.MVParallaxHero.build === "function" && window.MVParallaxHero.build(goChapter)) return;
       buildStaticHero();
     } finally {
       window.__mvHeroBootLock = false;
     }
+  }
+
+  function ensureParallaxHero() {
+    buildHero();
+    if (!isDesktopParallaxHero() || document.getElementById("mvParallaxHero")) return;
+    if (!parallaxDepsReady()) return;
+    var hero = document.getElementById("mvParallaxHero");
+    if (!hero) return;
+    var hasCards = hero.querySelector(".world-card__image img[src]");
+    if (hasCards) return;
+    hero.remove();
+    window.__mvParallaxHeroReady = false;
+    window.__mvHeroBootLock = false;
+    buildHero();
   }
 
   document.addEventListener("mv-restore-hero", function () {
@@ -179,13 +196,9 @@
     });
   }
 
-  function boot() {
-    applyTheme();
-    stripDecor();
-    var bgRoot = document.querySelector(".bg-root");
-    if (bgRoot && isDesktopParallaxHero()) bgRoot.remove();
+  function finishBoot() {
     buildHero();
-    if (isDesktopParallaxHero()) preloadUrls(PARALLAX_PRELOAD);
+    ensureParallaxHero();
     applyProfiles();
     injectContactForm();
     syncActiveNav();
@@ -193,6 +206,15 @@
     if (window.WeltenPreviewImages) {
       window.WeltenPreviewImages.patchChapterBoxes();
     }
+  }
+
+  function boot() {
+    applyTheme();
+    stripDecor();
+    var bgRoot = document.querySelector(".bg-root");
+    if (bgRoot && isDesktopParallaxHero()) bgRoot.remove();
+    finishBoot();
+    if (isDesktopParallaxHero()) preloadUrls(PARALLAX_PRELOAD);
   }
 
   function stripDecor() {

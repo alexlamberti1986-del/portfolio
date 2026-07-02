@@ -80,11 +80,42 @@
     });
   }
 
+  function patchCardImages() {
+    if (!window.MVWorldCollage) return;
+    document.querySelectorAll(".world-zone[data-world-zone]").forEach(function (zone) {
+      var world = zone.getAttribute("data-world-zone");
+      var cards = (window.MVWorldCollage.worldCards && window.MVWorldCollage.worldCards[world]) || [];
+      zone.querySelectorAll(".world-card").forEach(function (cardEl, i) {
+        var c = cards[i];
+        if (!c || !c.image) return;
+        var img = cardEl.querySelector(".world-card__image img");
+        if (!img) return;
+        if (!img.getAttribute("src") || img.getAttribute("src") === window.location.href) {
+          img.src = c.image;
+        }
+      });
+    });
+  }
+
+  function ensureParallaxCards() {
+    var hero = document.getElementById("mvParallaxHero");
+    if (!hero || !window.MVWorldCollage) return;
+    var hasImages = hero.querySelector(".world-card__image img[src*='4welten-preview'], .world-card__image img[src*='multiversum-parallax-v4']");
+    if (hasImages) return;
+    if (!hero.querySelector(".world-card")) {
+      document.dispatchEvent(new CustomEvent("mv-restore-hero"));
+      return;
+    }
+    patchCardImages();
+  }
+
   function patchAll() {
     patchOrbImages();
     patchCopy();
     patchProfessionalPortraits();
     patchSideNav();
+    patchCardImages();
+    ensureParallaxCards();
   }
 
   function boot() {
