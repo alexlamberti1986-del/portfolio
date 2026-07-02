@@ -2256,6 +2256,9 @@
       window.__mvParallaxHeroReady = true;
       bootPaintDone = true;
       try {
+        document.body.classList.add("mv-home-ready");
+      } catch (eReadyClass) {}
+      try {
         if (window.parent && window.parent !== window) {
           window.parent.postMessage({ type: "mv-hero-ready" }, "*");
         }

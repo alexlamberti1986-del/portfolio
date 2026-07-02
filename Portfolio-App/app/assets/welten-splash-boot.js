@@ -36,6 +36,15 @@
     return !!(document.body && document.body.getAttribute("data-splash-boot") === "1");
   }
 
+  function releaseShellBootGate() {
+    document.documentElement.classList.remove("mv-shell-booting");
+  }
+
+  function startShellBootGate() {
+    document.documentElement.classList.add("mv-shell-booting");
+    window.setTimeout(releaseShellBootGate, FAILSAFE_MS);
+  }
+
   function skipSplashImmediate() {
     document.documentElement.classList.remove("mv-splash-active", "mv-splash-done");
     var splash = document.getElementById("mvSplashBoot");
@@ -78,7 +87,9 @@
 
       var desktop = window.matchMedia("(min-width: 1024px)").matches;
       if (!desktop) {
-        return !!(doc.getElementById("mvStaticHero") || doc.getElementById("mvParallaxHero") || doc.querySelector("#slide-home"));
+        if (doc.getElementById("mvStaticHero")) return true;
+        var mobileHero = doc.getElementById("mvParallaxHero");
+        return !!(mobileHero && mobileHero.classList.contains("is-boot-painted"));
       }
 
       if (doc.defaultView && doc.defaultView.__mvParallaxHeroReady) return true;
@@ -139,6 +150,7 @@
     if (released) return;
     released = true;
     if (failsafeTimer) window.clearTimeout(failsafeTimer);
+    releaseShellBootGate();
 
     document.documentElement.classList.add("mv-splash-done");
     window.setTimeout(function () {
@@ -164,14 +176,29 @@
   async function boot() {
     if (!splashEnabled()) return;
 
-    if (!isParallaxViewport()) {
-      skipSplashImmediate();
-      return;
-    }
+    startShellBootGate();
 
     window.addEventListener("message", function (e) {
-      if (e.data && e.data.type === "mv-hero-ready") heroReadySignal = true;
+      if (e.data && e.data.type === "mv-hero-ready") {
+        heroReadySignal = true;
+        if (!released && heroReadySignal) {
+          if (!isParallaxViewport()) {
+            release();
+          }
+        }
+      }
     });
+
+    if (!isParallaxViewport()) {
+      skipSplashImmediate();
+      try {
+        var mobileFrame = document.querySelector(".mv4-frame.is-active");
+        await waitForFrameUsable(mobileFrame);
+        await waitForParallax(mobileFrame, null);
+      } catch (e) {}
+      release();
+      return;
+    }
 
     failsafeTimer = window.setTimeout(release, FAILSAFE_MS);
     document.documentElement.classList.add("mv-splash-active");
@@ -240,9 +267,5 @@
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
-  }
-
-  if (splashEnabled() && !isParallaxViewport()) {
-    skipSplashImmediate();
   }
 })();

@@ -97,27 +97,23 @@ html.mv-splash-done #mvSplashBoot {
   pointer-events: none;
 }
 
-/* Handy/Tablet: kein Parallax — Splash sofort aus, Inhalt direkt sichtbar */
-@media (max-width: 1023px) {
-  html.mv-splash-active,
-  html.mv-splash-active body {
-    overflow: auto !important;
-  }
+/* Shell: Inhalt erst zeigen wenn MULTIVERSUM-Hero bereit (alle Viewports) */
+html.mv-shell-booting,
+html.mv-shell-booting body {
+  background: #02030b !important;
+}
 
-  html.mv-splash-active .mv4-frame,
-  html.mv-splash-active .mv4-bar,
-  html.mv-splash-active .mv-shell-seo,
-  html.mv-splash-active .welten-skip-link {
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
+html.mv-shell-booting .mv4-frame.is-active {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 
-  #mvSplashBoot {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
+html.mv-shell-booting.mv-splash-active .mv4-bar,
+html.mv-shell-booting .mv4-bar {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 @keyframes mv-splash-kenburns {

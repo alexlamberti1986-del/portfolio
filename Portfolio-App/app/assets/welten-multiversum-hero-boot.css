@@ -1,6 +1,36 @@
 /**
  * MULTIVERSUM — Parallax-Hero: Dekor ausblenden, kein Startposter (nur Desktop)
  */
+html,
+body {
+  background: #02030b;
+}
+
+body[data-world="general"]:not(.mv-home-ready) {
+  overflow: hidden !important;
+}
+
+body[data-world="general"]:not(.mv-home-ready) .bg-root,
+body[data-world="general"]:not(.mv-home-ready) .bg-grid,
+body[data-world="general"]:not(.mv-home-ready) .light-beams,
+body[data-world="general"]:not(.mv-home-ready) #particle-canvas,
+body[data-world="general"]:not(.mv-home-ready) #slidesRoot,
+body[data-world="general"]:not(.mv-home-ready) .experience-rail {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body[data-world="general"]:not(.mv-home-ready) .site-header {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+body[data-world="general"]:not(.mv-home-ready) .site-header > * {
+  pointer-events: auto !important;
+}
+
 @media (min-width: 1024px) {
   body[data-world="general"] #slide-home .home-hero-experience,
   body[data-world="general"] #dnaStage {
