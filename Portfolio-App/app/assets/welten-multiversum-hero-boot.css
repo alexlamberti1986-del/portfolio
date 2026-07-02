@@ -1,55 +1,18 @@
 /**
- * MULTIVERSUM — Startposter + Crossfade zum Parallax-Hero
+ * MULTIVERSUM — Parallax-Hero: Dekor ausblenden, kein Startposter
  */
-.mv-boot-veil {
-  position: fixed;
-  top: var(--header-h, 90px);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 4;
-  background: #02030b var(--mv-hero-poster) center/cover no-repeat;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: none;
-  touch-action: none;
-  transition: opacity 0.38s ease, visibility 0.38s ease;
-}
-
-.mv-boot-veil.is-releasing {
-  opacity: 0;
-  visibility: hidden;
-}
-
-html.mv-hero-boot-pending body[data-world="general"] #mvParallaxHero {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-html.mv-hero-ready body[data-world="general"] #mvParallaxHero {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transition: opacity 0.38s ease;
-}
-
-html.mv-hero-boot-pending body[data-world="general"] #dnaStage,
-html.mv-hero-boot-pending body[data-world="general"] .bg-root,
-html.mv-hero-boot-pending body[data-world="general"] .bg-grid,
-html.mv-hero-boot-pending body[data-world="general"] .light-beams,
-html.mv-hero-boot-pending body[data-world="general"] #particle-canvas,
 body[data-world="general"]:has(#mvParallaxHero) .bg-root,
 body[data-world="general"]:has(#mvParallaxHero) .bg-grid,
 body[data-world="general"]:has(#mvParallaxHero) .light-beams,
-body[data-world="general"]:has(#mvParallaxHero) #particle-canvas {
+body[data-world="general"]:has(#mvParallaxHero) #particle-canvas,
+body[data-world="general"]:has(#mvParallaxHero) #dnaStage {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-html.mv-hero-boot-pending body[data-world="general"] #slide-home .home-main-block {
+body[data-world="general"]:has(#mvParallaxHero) #slide-home .home-main-block {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;

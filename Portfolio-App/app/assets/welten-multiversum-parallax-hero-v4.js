@@ -1657,9 +1657,6 @@
 
     if (!bootPaintDone && heroEl.classList.contains("is-js-ready")) {
       bootPaintDone = true;
-      if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
-        window.MVHeroReady.mark();
-      }
     }
 
     var rawP = getProgress();
@@ -2246,15 +2243,6 @@
       }
       window.__mvParallaxHeroReady = true;
       bootPaintDone = true;
-      var markReady = function () {
-        if (window.MVHeroReady && typeof window.MVHeroReady.mark === "function") {
-          window.MVHeroReady.mark();
-        }
-      };
-      requestAnimationFrame(function () {
-        updateFrame();
-        requestAnimationFrame(markReady);
-      });
       return heroEl;
     } finally {
       window.__mvParallaxBuilding = false;

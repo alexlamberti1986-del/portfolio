@@ -23,21 +23,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <style id="mv-boot-critical">
     html,body{background:#02030b!important}
-    html.mv-hero-boot-pending #mvBootVeil{
-      position:fixed;top:var(--header-h,90px);left:0;right:0;bottom:0;z-index:3;
-      background:#02030b url("assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live") center/cover no-repeat
-    }
+    body[data-world="general"] .bg-root,
+    body[data-world="general"] .bg-grid,
+    body[data-world="general"] .light-beams,
+    body[data-world="general"] #particle-canvas,
+    body[data-world="general"] #dnaStage{display:none!important}
+    body[data-world="general"] #slide-home .home-main-block{visibility:hidden!important;opacity:0!important;pointer-events:none!important}
   </style>
-  <script>document.documentElement.classList.add("mv-hero-boot-pending");</script>
-  <link rel="preload" as="image" href="assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live" fetchpriority="high" />
   <link rel="preload" href="assets/welten-multiversum-scene-config-v4.js?v=20260701mv-flow" as="script" />
-  <link rel="preload" href="assets/welten-multiversum-parallax-hero-v4.js?v=20260704bootclean" as="script" />
-  <link rel="preload" href="assets/welten-multiversum-world.js?v=20260704bootclean" as="script" />
-  <link rel="stylesheet" href="assets/welten-multiversum-hero-instant.css?v=20260704bootclean" />
-  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260704bootclean" />
-  <script src="assets/welten-multiversum-hero-ready.js?v=20260704bootclean"></script>
-  <script src="assets/welten-live-shell-early.js?v=20260704bootclean"></script>
-  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260704bootclean" />
+  <link rel="preload" href="assets/welten-multiversum-parallax-hero-v4.js?v=20260704direct" as="script" />
+  <link rel="preload" href="assets/welten-multiversum-world.js?v=20260704direct" as="script" />
+  <link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260702unified" />
+  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260704direct" />
+  <script src="assets/welten-multiversum-scene-config.js?v=20260629mv-title1" defer></script>
+  <script src="assets/welten-multiversum-scene-config-v4.js?v=20260701mv-flow" defer></script>
+  <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260704direct" defer></script>
+  <script src="assets/welten-multiversum-world.js?v=20260704direct" defer></script>
+  <script src="assets/welten-live-shell-early.js?v=20260704direct"></script>
+  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260704direct" />
   <title>Alex Lamberti Multiversum für digitale Welten</title>
   <meta name="description" content="Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Digital Marketing, Webdesign und Strategie." />
   <!-- Keine Webfonts nötig. Optional in WP: Schrift „Manrope“ oder „Inter“ per Theme/Elementor nachladen. -->
@@ -5200,7 +5203,6 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <script src="assets/welten-skills-charts.js?v=20260608d" defer></script>
 </head>
 <body data-world="general" class="is-home mv-preview-lite">
-<div id="mvBootVeil" class="mv-boot-veil" aria-hidden="true"></div>
 <a class="welten-skip-link" href="#slide-home">Zum Hauptinhalt springen</a>
 <script src="assets/portfolio-images.js?v=20260629-prof-portrait"></script>
 <script src="assets/welten-preview-images.js?v=20260629-prof-portrait"></script>
@@ -8643,18 +8645,13 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-world-buttons.css?v=20260612b" />
 <script src="assets/welten-chapter-visuals.js?v=20260612" defer></script>
 <link rel="stylesheet" href="assets/welten-multiversum-world.css?v=20260621mv-home" />
-<link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260702unified" />
 <link rel="stylesheet" href="assets/welten-multiversum-parallax-v4.css?v=20260702unified" />
 <link rel="stylesheet" href="assets/welten-preview-portraits.css?v=20260626portrait" />
 <link rel="stylesheet" href="assets/welten-multiversum-theme.css?v=20260701mv-typeuni" />
 <script src="assets/welten-preview-i18n.js?v=20260704parallax" defer></script>
 <script src="assets/welten-preview-i18n-bridge.js?v=20260704parallax" defer></script>
 <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260629mv-cards1" defer></script>
-<script src="assets/welten-multiversum-scene-config.js?v=20260629mv-title1" defer></script>
-<script src="assets/welten-multiversum-scene-config-v4.js?v=20260701mv-flow" defer></script>
-<script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260704bootclean" defer></script>
-<script src="assets/welten-multiversum-world.js?v=20260704bootclean" defer></script>
-<script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260704bootclean" defer></script>
+<script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260704direct" defer></script>
 <link rel="stylesheet" href="assets/welten-font-system.css?v=20260629fonts3" />
 <link rel="stylesheet" href="assets/welten-world-title-colors.css?v=20260701mv-typeuni2" />
 <link rel="stylesheet" href="assets/welten-desktop-rail-clearance.css?v=20260629rail6" />
