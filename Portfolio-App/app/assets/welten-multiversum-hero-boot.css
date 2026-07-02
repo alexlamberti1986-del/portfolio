@@ -1,19 +1,52 @@
 /**
  * MULTIVERSUM — Parallax-Hero: Dekor ausblenden, kein Startposter
  */
-body[data-world="general"]:has(#mvParallaxHero) .bg-root,
-body[data-world="general"]:has(#mvParallaxHero) .bg-grid,
-body[data-world="general"]:has(#mvParallaxHero) .light-beams,
-body[data-world="general"]:has(#mvParallaxHero) #particle-canvas,
-body[data-world="general"]:has(#mvParallaxHero) #dnaStage {
+body[data-world="general"] #slide-home .home-hero-experience,
+body[data-world="general"] #dnaStage {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) .bg-root,
+body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) .bg-grid,
+body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) .light-beams,
+body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #particle-canvas,
+body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #dnaStage {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-body[data-world="general"]:has(#mvParallaxHero) #slide-home .home-main-block {
+body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #slide-home .home-main-block {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+#mvParallaxHero.is-boot-painted {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+#mvParallaxHero:not(.is-boot-painted) .mv-scroll-bg:not([data-bg="multiverse"]),
+#mvParallaxHero:not(.is-boot-painted) .mv-scroll-slide--nexora,
+#mvParallaxHero:not(.is-boot-painted) .mv-scroll-slide--professional,
+#mvParallaxHero:not(.is-boot-painted) .mv-scroll-slide--freiraum,
+#mvParallaxHero:not(.is-boot-painted) .world-zone--nexora,
+#mvParallaxHero:not(.is-boot-painted) .world-zone--professional,
+#mvParallaxHero:not(.is-boot-painted) .world-zone--freiraum,
+#mvParallaxHero:not(.is-boot-painted) [data-deco-theme="nexora"],
+#mvParallaxHero:not(.is-boot-painted) [data-deco-theme="professional"],
+#mvParallaxHero:not(.is-boot-painted) [data-deco-theme="freiraum"],
+#mvParallaxHero:not(.is-boot-painted) [data-particle-field="nexora"],
+#mvParallaxHero:not(.is-boot-painted) [data-particle-field="professional"],
+#mvParallaxHero:not(.is-boot-painted) [data-particle-field="freiraum"] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+

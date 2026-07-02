@@ -2232,7 +2232,11 @@
       bindPortfolioScrollHold();
       onResize();
       bindScroll();
+      scrollRoot.scrollTop = 0;
+      animProgress = 0;
+      updateFrame();
       heroEl.classList.add("is-js-ready");
+      heroEl.classList.add("is-boot-painted");
       updateFrame();
       if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
         try {

@@ -68,7 +68,7 @@
       }
 
       var hero = doc.getElementById("mvParallaxHero");
-      if (hero && (hero.classList.contains("is-js-ready") || win.__mvParallaxHeroReady)) return true;
+      if (hero && hero.classList.contains("is-boot-painted")) return true;
       if (doc.getElementById("mvStaticHero")) return true;
       return false;
     } catch (e) {

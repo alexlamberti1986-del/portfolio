@@ -12,6 +12,7 @@ html.mv-splash-active .mv4-bar,
 html.mv-splash-active .mv-shell-seo,
 html.mv-splash-active .welten-skip-link {
   visibility: hidden !important;
+  opacity: 0 !important;
   pointer-events: none !important;
 }
 
