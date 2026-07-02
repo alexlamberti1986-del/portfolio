@@ -382,17 +382,15 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
   .mv4-worlds {
     order: 2;
     flex: 1 1 100%;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 6px;
-    padding-left: 8px;
+    overflow-x: visible;
+    gap: 5px;
+    padding-left: 0;
+    padding-right: 0;
     padding-bottom: 2px;
-    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 10px), transparent 100%);
-    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 10px), transparent 100%);
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 
   .mv4-worlds::-webkit-scrollbar {
@@ -400,11 +398,13 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
   }
 
   .mv4-worlds button {
-    flex: 0 0 auto;
-    padding: 7px 11px;
-    font-size: 10px;
-    letter-spacing: 0.03em;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 7px 6px;
+    font-size: 9px;
+    letter-spacing: 0.02em;
     white-space: nowrap;
+    text-align: center;
   }
 
   .mv4-actions {
@@ -446,10 +446,60 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
   }
 }
 
+@media (max-width: 640px) {
+  .mv4-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    padding: 6px 8px;
+    padding-top: calc(6px + env(safe-area-inset-top, 0px));
+  }
+
+  .mv4-actions {
+    order: 1;
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+    align-self: center;
+  }
+
+  .mv4-worlds {
+    order: 2;
+    width: 100%;
+    gap: 4px;
+  }
+
+  .mv4-worlds button {
+    padding: 6px 3px;
+    font-size: 8px;
+    letter-spacing: 0.01em;
+    min-height: 28px;
+  }
+
+  .mv4-fx {
+    font-size: 8px;
+    padding: 4px 7px;
+    min-height: 26px;
+  }
+
+  .mv4-flag {
+    width: 36px;
+    height: 26px;
+    min-width: 36px;
+    min-height: 26px;
+    padding: 3px;
+  }
+
+  .mv4-flag img {
+    width: 24px;
+    height: 16px;
+  }
+}
+
 @media (min-width: 769px) and (max-width: 1024px) {
   .mv4-worlds button {
-    padding: 8px 13px;
-    font-size: 11px;
+    padding: 8px 10px;
+    font-size: 10px;
   }
 
   .mv4-fx {
@@ -469,31 +519,10 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
 }
 
 @media (max-width: 480px) {
-  .mv4-bar {
-    padding: 6px 8px;
-    padding-top: calc(6px + env(safe-area-inset-top, 0px));
-  }
-
   .mv4-worlds button {
-    padding: 6px 9px;
-    font-size: 9px;
-    min-height: 28px;
-  }
-
-  .mv4-fx {
-    font-size: 8px;
-    padding: 4px 7px;
+    font-size: 7.5px;
+    padding: 5px 2px;
     min-height: 26px;
-  }
-
-  .mv4-flag {
-    width: 28px;
-    height: 20px;
-  }
-
-  .mv4-flag img {
-    width: 22px;
-    height: 14px;
   }
 }
 

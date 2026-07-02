@@ -24,7 +24,7 @@
           ],
           cta1: "Projekte ansehen",
           cta2: "Über mich",
-          tag: "Drei Welten. Ein Ziel. Deine Vision.",
+          tag: "Vier Welten. Ein Ziel. Deine Vision.",
         },
         about: { label: "Über mich", title: "Ich vereine Strategie, Technologie und Gestaltung in einem klaren digitalen Auftritt.", extraLabel: "MULTIVERSUM", extraTitle: "Alle Welten · ein Ziel" },
         leistungen: { label: "Leistungen", title: "Leistungen & Kompetenzen", intro: "Von Strategie bis Umsetzung · angepasst an Zielgruppe, Marke und Wirkung." },

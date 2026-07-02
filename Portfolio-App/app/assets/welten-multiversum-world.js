@@ -111,7 +111,7 @@
       '<p class="mv-static-hero__eyebrow">Alex Lamberti · Portfolio</p>' +
       '<h1 class="mv-static-hero__title">MULTIVERSUM</h1>' +
       '<p class="mv-static-hero__tag" data-i18n="home.tag">' +
-      '<span class="mv-tag-blue">Drei Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
+      '<span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
       '<nav class="mv-static-hero__nav" aria-label="Kapitel">' +
       navHtml +
       "</nav></div>";
