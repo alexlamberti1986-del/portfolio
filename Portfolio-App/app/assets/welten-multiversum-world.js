@@ -222,9 +222,10 @@
     };
     if (isDesktopParallaxHero()) {
       if (window.MVHeroReady && window.MVHeroReady.setProgress) {
-        window.MVHeroReady.setProgress(8);
+        window.MVHeroReady.setProgress(42);
       }
-      preloadUrls(PARALLAX_PRELOAD, finishBoot);
+      finishBoot();
+      preloadUrls(PARALLAX_PRELOAD, function () {});
     } else {
       finishBoot();
     }

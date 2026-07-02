@@ -52,11 +52,11 @@
   }
 
   function scheduleLoader() {
-    loaderTimer = window.setTimeout(startLoader, 750);
+    loaderTimer = window.setTimeout(startLoader, 2200);
   }
 
   function scheduleFallback() {
-    fallbackTimer = window.setTimeout(release, 12000);
+    fallbackTimer = window.setTimeout(release, 5000);
   }
 
   window.MVHeroReady = {
