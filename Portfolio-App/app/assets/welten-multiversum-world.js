@@ -73,14 +73,23 @@
   ];
 
   function notifyHeroReady() {
-    try {
-      if (document.body) document.body.classList.add("mv-home-ready");
-    } catch (e) {}
-    try {
-      if (window.parent && window.parent !== window) {
-        window.parent.postMessage({ type: "mv-hero-ready" }, "*");
-      }
-    } catch (e) {}
+    function finish() {
+      try {
+        if (document.body) document.body.classList.add("mv-home-ready");
+      } catch (e) {}
+      try {
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: "mv-hero-ready" }, "*");
+        }
+      } catch (e2) {}
+    }
+    if (typeof requestAnimationFrame === "function") {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(finish);
+      });
+      return;
+    }
+    finish();
   }
 
   function preloadUrls(urls) {

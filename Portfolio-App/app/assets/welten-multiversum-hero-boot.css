@@ -15,19 +15,45 @@ body[data-world="general"]:not(.mv-home-ready) .bg-grid,
 body[data-world="general"]:not(.mv-home-ready) .light-beams,
 body[data-world="general"]:not(.mv-home-ready) #particle-canvas,
 body[data-world="general"]:not(.mv-home-ready) #slidesRoot,
-body[data-world="general"]:not(.mv-home-ready) .experience-rail {
+body[data-world="general"]:not(.mv-home-ready) .experience-rail,
+body[data-world="general"]:not(.mv-home-ready) .site-header,
+body[data-world="general"]:not(.mv-home-ready) .menu-overlay,
+body[data-world="general"]:not(.mv-home-ready) .welten-skip-link {
+  display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-body[data-world="general"]:not(.mv-home-ready) .site-header {
+body[data-world="general"].mv-home-ready #mvStaticHero,
+body[data-world="general"].mv-home-ready #mvParallaxHero.is-boot-painted {
+  display: grid !important;
   visibility: visible !important;
   opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+body[data-world="general"].mv-home-ready #mvParallaxHero.is-boot-painted {
+  display: block !important;
+}
+
+body[data-world="general"].mv-home-ready #slidesRoot,
+body[data-world="general"].mv-home-ready .site-header {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body[data-world="general"].mv-home-ready .site-header {
+  display: flex !important;
   pointer-events: none !important;
 }
 
-body[data-world="general"]:not(.mv-home-ready) .site-header > * {
+body[data-world="general"].mv-home-ready .site-header > * {
+  pointer-events: auto !important;
+}
+
+body[data-world="general"].mv-home-ready #slidesRoot {
+  display: block !important;
   pointer-events: auto !important;
 }
 
@@ -75,12 +101,6 @@ body[data-world="general"]:not(.mv-home-ready) .site-header > * {
     background: #05070d !important;
     padding-top: 0 !important;
   }
-
-  body[data-world="general"] #mvStaticHero {
-    display: grid !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
 }
 
 body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) .bg-root,
@@ -98,7 +118,7 @@ body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #dnaStage {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+  transition: none !important;
 }
 
 #mvParallaxHero:not(.is-boot-painted) .mv-scroll-bg:not([data-bg="multiverse"]),

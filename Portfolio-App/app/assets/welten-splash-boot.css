@@ -103,10 +103,29 @@ html.mv-shell-booting body {
   background: #02030b !important;
 }
 
-html.mv-shell-booting .mv4-frame.is-active {
+html.mv-shell-booting .mv4-frame.is-active,
+html.mv-shell-booting .mv4-frame.is-active:not(.is-leaving) {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  transition: none !important;
+}
+
+html.mv-shell-booting::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: var(--bar-h, 72px);
+  z-index: 2147483646;
+  background: #02030b;
+  pointer-events: none;
+}
+
+html.mv-shell-booting.mv-splash-active::after {
+  top: 0;
+  z-index: 2147482999;
 }
 
 html.mv-shell-booting.mv-splash-active .mv4-bar,
@@ -114,6 +133,8 @@ html.mv-shell-booting .mv4-bar {
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
+  position: relative;
+  z-index: 2147483647;
 }
 
 @keyframes mv-splash-kenburns {

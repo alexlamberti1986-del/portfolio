@@ -3,6 +3,11 @@
 <head>
   <script>
     (function () {
+      window.addEventListener("message", function (e) {
+        if (e.data && e.data.type === "mv-hero-ready") {
+          document.documentElement.classList.remove("mv-shell-booting");
+        }
+      });
       try {
         if (!window.matchMedia("(min-width: 1024px)").matches) {
           document.documentElement.classList.remove("mv-splash-active");
@@ -70,7 +75,11 @@
       html.mv-splash-active body { overflow: auto; }
       #mvSplashBoot { display: none !important; }
     }
-    html.mv-shell-booting .mv4-frame.is-active { visibility: hidden !important; opacity: 0 !important; }
+    html.mv-shell-booting .mv4-frame.is-active { visibility: hidden !important; opacity: 0 !important; transition: none !important; }
+    html.mv-shell-booting::after {
+      content: ""; position: fixed; left: 0; right: 0; bottom: 0;
+      top: var(--bar-h, 72px); z-index: 2147483646; background: #02030b; pointer-events: none;
+    }
   </style>
 
   <link rel="preload" as="image" href="assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live" fetchpriority="high" media="(min-width: 1024px)" />
@@ -87,8 +96,8 @@
   <link rel="stylesheet" href="assets/welten-world-switch-preview.css?v=20260702fr-bing-sync" />
   <link rel="stylesheet" href="assets/shell-performance.css?v=20260704opt" />
   <link rel="stylesheet" href="assets/welten-shell-accessibility.css?v=20260704opt" />
-  <link rel="stylesheet" href="assets/welten-splash-boot.css?v=20260706boot-gate" />
-  <script src="assets/welten-splash-boot.js?v=20260706boot-gate" defer></script>
+  <link rel="stylesheet" href="assets/welten-splash-boot.css?v=20260706boot-clean" />
+  <script src="assets/welten-splash-boot.js?v=20260706boot-clean" defer></script>
   <script src="assets/welten-shell-perf.js?v=20260704opt" defer></script>
   <script src="assets/welten-shell-seo.js?v=20260704opt" defer></script>
   <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>

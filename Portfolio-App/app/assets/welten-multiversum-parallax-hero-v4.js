@@ -2255,14 +2255,23 @@
       }
       window.__mvParallaxHeroReady = true;
       bootPaintDone = true;
-      try {
-        document.body.classList.add("mv-home-ready");
-      } catch (eReadyClass) {}
-      try {
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage({ type: "mv-hero-ready" }, "*");
-        }
-      } catch (eReady) {}
+      function signalReady() {
+        try {
+          document.body.classList.add("mv-home-ready");
+        } catch (eReadyClass) {}
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: "mv-hero-ready" }, "*");
+          }
+        } catch (eReady) {}
+      }
+      if (typeof requestAnimationFrame === "function") {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(signalReady);
+        });
+      } else {
+        signalReady();
+      }
       return heroEl;
     } finally {
       window.__mvParallaxBuilding = false;

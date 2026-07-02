@@ -15,12 +15,10 @@
     "assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp?v=" + V,
     "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=" + V,
     "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
-    "assets/multiversum-parallax-v4/orbs/Nexora.png?v=20260629mv-prof-portrait",
-    "assets/multiversum-parallax-v4/orbs/Professional_new_new.png?v=20260629mv-prof-portrait",
-    "assets/multiversum-parallax-v4/orbs/Freiraum.png?v=20260629mv-prof-portrait",
   ];
 
   var failsafeTimer = 0;
+  var shellFailsafeTimer = 0;
   var released = false;
   var heroReadySignal = false;
 
@@ -42,7 +40,13 @@
 
   function startShellBootGate() {
     document.documentElement.classList.add("mv-shell-booting");
-    window.setTimeout(releaseShellBootGate, FAILSAFE_MS);
+    if (shellFailsafeTimer) window.clearTimeout(shellFailsafeTimer);
+    shellFailsafeTimer = window.setTimeout(releaseShellBootGate, FAILSAFE_MS);
+  }
+
+  function onHeroReadyMessage() {
+    heroReadySignal = true;
+    if (!released) release();
   }
 
   function skipSplashImmediate() {
@@ -84,12 +88,11 @@
     try {
       var doc = frame.contentDocument;
       if (!doc || !docUsable(doc)) return false;
+      if (doc.body && doc.body.classList.contains("mv-home-ready")) return true;
 
       var desktop = window.matchMedia("(min-width: 1024px)").matches;
       if (!desktop) {
-        if (doc.getElementById("mvStaticHero")) return true;
-        var mobileHero = doc.getElementById("mvParallaxHero");
-        return !!(mobileHero && mobileHero.classList.contains("is-boot-painted"));
+        return !!(doc.body && doc.body.classList.contains("mv-home-ready"));
       }
 
       if (doc.defaultView && doc.defaultView.__mvParallaxHeroReady) return true;
@@ -150,14 +153,23 @@
     if (released) return;
     released = true;
     if (failsafeTimer) window.clearTimeout(failsafeTimer);
-    releaseShellBootGate();
+    if (shellFailsafeTimer) window.clearTimeout(shellFailsafeTimer);
 
-    document.documentElement.classList.add("mv-splash-done");
-    window.setTimeout(function () {
-      document.documentElement.classList.remove("mv-splash-active", "mv-splash-done");
-      var splash = document.getElementById("mvSplashBoot");
-      if (splash) splash.remove();
-    }, 380);
+    var splash = document.getElementById("mvSplashBoot");
+    var hasSplash = !!(splash && isParallaxViewport());
+
+    if (hasSplash) {
+      document.documentElement.classList.add("mv-splash-done");
+      window.setTimeout(function () {
+        releaseShellBootGate();
+        document.documentElement.classList.remove("mv-splash-active", "mv-splash-done");
+        if (splash) splash.remove();
+      }, 300);
+      return;
+    }
+
+    releaseShellBootGate();
+    skipSplashImmediate();
   }
 
   function idlePreload(urls) {
@@ -176,18 +188,11 @@
   async function boot() {
     if (!splashEnabled()) return;
 
-    startShellBootGate();
-
     window.addEventListener("message", function (e) {
-      if (e.data && e.data.type === "mv-hero-ready") {
-        heroReadySignal = true;
-        if (!released && heroReadySignal) {
-          if (!isParallaxViewport()) {
-            release();
-          }
-        }
-      }
+      if (e.data && e.data.type === "mv-hero-ready") onHeroReadyMessage();
     });
+
+    startShellBootGate();
 
     if (!isParallaxViewport()) {
       skipSplashImmediate();
@@ -219,41 +224,42 @@
 
       var frame = document.querySelector(".mv4-frame.is-active");
 
+      var framePromise = frame ? waitForFrameUsable(frame) : Promise.resolve();
+      var heroPromise = frame ? waitForParallax(frame, bump) : Promise.resolve();
+
       var preloadPromise = Promise.all(
         CRITICAL_PRELOAD.map(function (url, i) {
           return preloadImage(url).then(function () {
-            bump(12 + ((i + 1) / CRITICAL_PRELOAD.length) * 38, "Assets werden geladen…");
+            bump(12 + ((i + 1) / CRITICAL_PRELOAD.length) * 28, "Assets werden geladen…");
           });
         })
       );
 
-      var framePromise = frame ? waitForFrameUsable(frame) : Promise.resolve();
-
-      await Promise.all([preloadPromise, framePromise]);
-      bump(58, "Welt wird aufgebaut…");
-
-      if (!frame) {
-        bump(100, "Willkommen im Multiversum");
-        await wait(60);
-        release();
-        return;
+      await framePromise;
+      bump(52, "Welt wird aufgebaut…");
+      await Promise.race([
+        heroPromise,
+        preloadPromise,
+      ]);
+      if (!heroReadySignal && frame) {
+        await waitForParallax(frame, bump);
       }
-
-      bump(68, "Parallax wird initialisiert…");
-      await waitForParallax(frame, bump);
       bump(96, "Fast fertig…");
 
       var elapsed = Date.now() - started;
       if (elapsed < MIN_MS) await wait(MIN_MS - elapsed);
 
       bump(100, "Willkommen im Multiversum");
-      await wait(60);
+      await wait(40);
     } catch (e) {
       bump(100, "Willkommen im Multiversum");
-      await wait(60);
+      await wait(40);
     }
 
     idlePreload([
+      "assets/multiversum-parallax-v4/orbs/Nexora.png?v=20260629mv-prof-portrait",
+      "assets/multiversum-parallax-v4/orbs/Professional_new_new.png?v=20260629mv-prof-portrait",
+      "assets/multiversum-parallax-v4/orbs/Freiraum.png?v=20260629mv-prof-portrait",
       "assets/images/4welten-preview/general/05_MULTIVERSUM_05_Projekte.webp",
       "assets/images/4welten-preview/general/03_MULTIVERSUM_03_Leistungen.webp",
       "assets/images/4welten-preview/general/01_MULTIVERSUM_01_UeberMich.webp",
