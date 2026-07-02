@@ -2036,6 +2036,14 @@
 
     if (dom.cue) dom.cue.style.opacity = String(p < 0.05 ? 1 : clamp(1 - (p - 0.05) / 0.04, 0, 1));
 
+    var releaseRange = chapterRange("releaseToNormalContent", [0.97, 1]);
+    var heroScrollMax = heroMaxScroll();
+    var contentReleased =
+      phaseP >= releaseRange[0] ||
+      (scrollRoot && heroScrollMax > 0 && scrollRoot.scrollTop >= heroScrollMax - 6);
+    document.body.classList.toggle("is-below-parallax", contentReleased);
+    heroEl.classList.toggle("is-content-released", contentReleased);
+
     heroEl.setAttribute("data-active-world", layoutMode === "split-world" && config.slides[activeSlide] && config.slides[activeSlide].worldType ? config.slides[activeSlide].worldType : state.activeWorld || "multiversum");
     heroEl.setAttribute("data-scene", String(activeSlide + 1));
     heroEl.setAttribute("data-layout", layoutMode);

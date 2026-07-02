@@ -19,12 +19,6 @@ body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #dnaStage {
   pointer-events: none !important;
 }
 
-body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #slide-home .home-main-block {
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
 #mvParallaxHero.is-boot-painted {
   opacity: 1 !important;
   visibility: visible !important;

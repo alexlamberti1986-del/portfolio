@@ -39,6 +39,20 @@ body[data-world="general"]:has(#mvParallaxHero) .home-main-block .home-copy > .l
   display: none;
 }
 
+/* Intro-Block unter Parallax: während Scroll versteckt, ab Release sichtbar */
+body[data-world="general"]:has(#mvParallaxHero.is-boot-painted):not(.is-below-parallax) #slide-home .home-main-block {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body[data-world="general"].is-below-parallax #slide-home .home-main-block,
+body[data-world="general"]:has(#mvParallaxHero.is-content-released) #slide-home .home-main-block {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
 .mv-scroll-story {
   position: relative;
   height: calc(var(--mv-scroll-vh, 1400) * 1vh);
