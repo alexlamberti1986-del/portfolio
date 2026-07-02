@@ -49,8 +49,8 @@
       timing = Object.assign(timing, {
         WORLD_TRANSITION_DURATION: 4200,
         EFFECT_MS: 3400,
-        TITLE_REVEAL_AT: 1700,
-        TITLE_FADE_IN: 560,
+        TITLE_REVEAL_AT: 1280,
+        TITLE_FADE_IN: 320,
         TITLE_HOLD: 1300,
         COVER_MS: 1250,
       });
