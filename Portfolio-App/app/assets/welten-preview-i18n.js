@@ -5,9 +5,9 @@
   "use strict";
 
   var NAV = {
-    de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt", menu: "Menü" },
-    en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact", menu: "Menu" },
-    it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto", menu: "Menu" },
+    de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt", menu: "Menü", menuClose: "Schliessen" },
+    en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact", menu: "Menu", menuClose: "Close" },
+    it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto", menu: "Menu", menuClose: "Chiudi" },
   };
 
   var SLIDES = {
@@ -331,6 +331,10 @@
       var span = menuBtn.querySelector("span");
       if (span) span.textContent = nav.menu;
     }
+    var menuTitle = doc.querySelector(".menu-title");
+    if (menuTitle) setText(menuTitle, nav.menu);
+    var closeBtn = doc.getElementById("closeMenu");
+    if (closeBtn) setText(closeBtn, nav.menuClose);
   }
 
   function applySlide(doc, slideId, data) {
@@ -381,26 +385,26 @@
     var slidesPack = PARALLAX_SLIDES[lang] || PARALLAX_SLIDES.de;
     var uiPack = PARALLAX_UI[lang] || PARALLAX_UI.de;
     var cfg = window.MVSceneConfig;
-    if (!cfg || !cfg.slides) return;
+    if (cfg && cfg.slides) {
+      cfg.slides.forEach(function (slideCfg, i) {
+        var slideEl = hero.querySelector('.mv-scroll-slide[data-slide="' + i + '"]');
+        var t = slidesPack[slideCfg.id];
+        if (!slideEl || !t) return;
 
-    cfg.slides.forEach(function (slideCfg, i) {
-      var slideEl = hero.querySelector('.mv-scroll-slide[data-slide="' + i + '"]');
-      var t = slidesPack[slideCfg.id];
-      if (!slideEl || !t) return;
-
-      setText(slideEl.querySelector(".mv-scroll-slide__eyebrow"), t.label);
-      var leadEl = slideEl.querySelector(".mv-scroll-slide__lead");
-      if (leadEl) {
-        var strong = leadEl.querySelector("strong");
-        if (strong) setText(strong, t.lead);
-        else setText(leadEl, t.lead);
-      }
-      setText(slideEl.querySelector(".mv-scroll-slide__what"), t.body);
-      setText(slideEl.querySelector(".mv-scroll-slide__purpose"), t.purpose);
-      setText(slideEl.querySelector(".mv-scroll-slide__diff"), t.difference);
-      setText(slideEl.querySelector("h2"), t.title);
-      setText(slideEl.querySelector(".mv-scroll-slide__body"), t.body);
-    });
+        setText(slideEl.querySelector(".mv-scroll-slide__eyebrow"), t.label);
+        var leadEl = slideEl.querySelector(".mv-scroll-slide__lead");
+        if (leadEl) {
+          var strong = leadEl.querySelector("strong");
+          if (strong) setText(strong, t.lead);
+          else setText(leadEl, t.lead);
+        }
+        setText(slideEl.querySelector(".mv-scroll-slide__what"), t.body);
+        setText(slideEl.querySelector(".mv-scroll-slide__purpose"), t.purpose);
+        setText(slideEl.querySelector(".mv-scroll-slide__diff"), t.difference);
+        setText(slideEl.querySelector("h2"), t.title);
+        setText(slideEl.querySelector(".mv-scroll-slide__body"), t.body);
+      });
+    }
 
     hero.querySelectorAll(".mv-scroll-slide__enter[data-world-enter]").forEach(function (btn) {
       setText(btn, uiPack.enterWorld);
@@ -410,14 +414,46 @@
     });
     if (uiPack.portfolio) {
       var openSuffix = lang === "en" ? " open" : lang === "it" ? " apri" : " öffnen";
-      hero.querySelectorAll(".mv-scroll-card").forEach(function (card, idx) {
-        var c = uiPack.portfolio[idx];
+      var portfolioByGo = {
+        projects: uiPack.portfolio[0],
+        leistungen: uiPack.portfolio[1],
+        about: uiPack.portfolio[2],
+        contact: uiPack.portfolio[3],
+      };
+      hero.querySelectorAll(".mv-scroll-card[data-go]").forEach(function (card) {
+        var c = portfolioByGo[card.getAttribute("data-go")];
         if (!c) return;
         setText(card.querySelector(".mv-scroll-card__label"), c.label);
         setText(card.querySelector(".mv-scroll-card__sub"), c.sub);
         if (c.label) card.setAttribute("aria-label", c.label + openSuffix);
       });
     }
+
+    var nav = NAV[lang] || NAV.de;
+    var cardOpenSuffix = lang === "en" ? " open" : lang === "it" ? " apri" : " öffnen";
+    var homeOpenSuffix = lang === "en" ? " open home" : lang === "it" ? " apri home" : " Home öffnen";
+    hero.querySelectorAll(".world-card[data-go]").forEach(function (card) {
+      var go = card.getAttribute("data-go");
+      if (!go || !nav[go]) return;
+      var label = nav[go];
+      setText(card.querySelector(".world-card__label"), label);
+      var img = card.querySelector("img");
+      if (img) img.setAttribute("alt", label);
+      var zone = card.closest("[data-world-zone]") || card.closest("[data-world]");
+      var worldKey = zone ? zone.getAttribute("data-world-zone") || zone.getAttribute("data-world") || "" : "";
+      if (worldKey) {
+        card.setAttribute("aria-label", worldKey.toUpperCase() + " " + label + cardOpenSuffix);
+      }
+    });
+    hero.querySelectorAll(".world-core[data-go='home']").forEach(function (core) {
+      var zone = core.closest("[data-world-zone]") || core.closest("[data-world]");
+      var worldKey = zone ? zone.getAttribute("data-world-zone") || zone.getAttribute("data-world") || "" : "";
+      if (worldKey) {
+        core.setAttribute("aria-label", worldKey.toUpperCase() + homeOpenSuffix);
+        core.setAttribute("title", worldKey.toUpperCase() + homeOpenSuffix);
+      }
+    });
+
     var cue = hero.querySelector(".mv-scroll-cue span");
     setText(cue, uiPack.scrollCue);
   }
