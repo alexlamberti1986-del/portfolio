@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de-CH">
+<html lang="de-CH" class="mv-splash-active">
 <head>
   <link rel="icon" href="assets/favicon/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png" />
@@ -39,6 +39,24 @@
   <meta name="twitter:image" content="https://www.alexlamberti.ch/assets/og-image.jpg" />
   <title>Alex Lamberti Multiversum für digitale Welten</title>
 
+  <link rel="preload" as="image" href="assets/images/splash/multiversum-boot-splash.png?v=20260705live" fetchpriority="high" />
+  <style id="mv-splash-critical">
+    html, body { margin: 0; background: #02030b; }
+    html.mv-splash-active body { overflow: hidden; }
+    #mvSplashBoot {
+      position: fixed; inset: 0; z-index: 2147483000;
+      display: grid; place-items: end center; padding: 2rem;
+      background: #02030b center/cover no-repeat url("assets/images/splash/multiversum-boot-splash.png?v=20260705live");
+    }
+    #mvSplashBoot::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(2,3,11,.25), rgba(2,3,11,.9));
+    }
+    #mvSplashBoot .mv-splash-boot__panel { position: relative; z-index: 1; width: min(560px, 92vw); text-align: center; color: #e8ecff; font-family: system-ui, sans-serif; }
+    #mvSplashBar { display: block; height: 100%; width: 8%; background: linear-gradient(90deg, #4da3ff, #ffd27a); }
+    .mv-splash-boot__bar { height: 5px; border-radius: 999px; overflow: hidden; background: rgba(255,255,255,.12); }
+  </style>
+
   <link rel="preload" href="assets/welten-multiversum-world-collage-config-v4.js?v=20260629mv-cards1" as="script" />
   <link rel="preload" href="MULTIVERSUM.html" as="document" fetchpriority="high" />
   <link rel="prefetch" href="NEXORA.html" as="document" />
@@ -51,11 +69,23 @@
   <link rel="stylesheet" href="assets/welten-world-switch-preview.css?v=20260629fr-brush-3x" />
   <link rel="stylesheet" href="assets/shell-performance.css?v=20260704opt" />
   <link rel="stylesheet" href="assets/welten-shell-accessibility.css?v=20260704opt" />
+  <link rel="stylesheet" href="assets/welten-splash-boot.css?v=20260705live" />
+  <script src="assets/welten-splash-boot.js?v=20260705live"></script>
   <script src="assets/welten-shell-perf.js?v=20260704opt" defer></script>
   <script src="assets/welten-shell-seo.js?v=20260704opt" defer></script>
   <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 </head>
-<body data-master-world="general" data-live-shell="1" data-live-default="0">
+<body data-master-world="general" data-live-shell="1" data-live-default="0" data-splash-boot="1">
+  <div id="mvSplashBoot" role="status" aria-live="polite" aria-label="Ladevorgang">
+    <div class="mv-splash-boot__bg" aria-hidden="true"></div>
+    <div class="mv-splash-boot__scrim" aria-hidden="true"></div>
+    <div class="mv-splash-boot__panel">
+      <p class="mv-splash-boot__brand">Alex Lamberti · Multiversum</p>
+      <p class="mv-splash-boot__label" id="mvSplashLabel">Multiversum wird vorbereitet…</p>
+      <div class="mv-splash-boot__bar" aria-hidden="true"><span id="mvSplashBar"></span></div>
+      <p id="mvSplashPct">8%</p>
+    </div>
+  </div>
   <a class="welten-skip-link" href="#mv-shell-main">Zum Hauptinhalt springen</a>
   <main id="mv-shell-main" class="mv-shell-seo" lang="de-CH">
     <h1>Alex Lamberti · Multiversum für digitale Welten</h1>
