@@ -2,3 +2,45 @@ tools/libwebp/
 tools/libwebp.zip
 _visitenkarten_import/
 _hero_ref/
+
+# Lokale Arbeitsordner / Archive
+_archive/
+_archive_old_versions/
+_assets_zip_review/
+_build/
+_temp*/
+_test*/
+_zip*/
+_ref*/
+_formular*/
+_freiraum_brush_package/
+_multiversum_parallax_import/
+_visitenkarten_import/
+
+# Test-HTML (Ausnahme: local-dev-preview.html in Portfolio-App/app/)
+*-test.html
+*_test.html
+*test*.html
+!Portfolio-App/app/local-dev-preview.html
+
+# Zip-Pakete
+*.zip
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Node (Desktop-App)
+Portfolio-App/node_modules/
+Portfolio-App/dist/
+
+# Unbenutzte Asset-Experimente
+Portfolio-App/app/assets/multiversum-v13/
+Portfolio-App/app/assets/multiversum-v14/
+Portfolio-App/app/assets/multiversum-v16/
+Portfolio-App/app/assets/multiversum-v2/
+Portfolio-App/app/assets/multiversum-v3/
+Portfolio-App/app/assets/multiversum/
+Portfolio-App/app/assets/flight-test/
+Portfolio-App/app/assets/world-images/
