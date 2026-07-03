@@ -85,7 +85,7 @@
 
   try {
     new MutationObserver(function () {
-      applyShell();
+      applyShell(lang());
     }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
   } catch (e) {}
 

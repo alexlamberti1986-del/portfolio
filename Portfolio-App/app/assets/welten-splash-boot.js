@@ -78,6 +78,15 @@
     });
   }
 
+  function splashText(key, fallback) {
+    if (window.WeltenTranslations) {
+      var lg = window.WeltenTranslations.getLang();
+      var v = window.WeltenTranslations.t("splash." + key, lg);
+      if (v) return v;
+    }
+    return fallback;
+  }
+
   function docUsable(doc) {
     if (!doc) return false;
     return doc.readyState === "interactive" || doc.readyState === "complete";
@@ -119,8 +128,10 @@
           return;
         }
         if (bump) {
-          var tick = Math.min(94, 72 + (Date.now() - start) / 220);
-          bump(tick, splashText("initParallax", "Parallax wird initialisiert…"));
+          try {
+            var tick = Math.min(94, 72 + (Date.now() - start) / 220);
+            bump(tick, splashText("initParallax", "Parallax wird initialisiert…"));
+          } catch (err) {}
         }
         setTimeout(poll, POLL_MS);
       }
@@ -219,15 +230,6 @@
       setProgress(bar, label, pctEl, progress, text);
     }
 
-    function splashText(key, fallback) {
-      if (window.WeltenTranslations) {
-        var lg = window.WeltenTranslations.getLang();
-        var v = window.WeltenTranslations.t("splash." + key, lg);
-        if (v) return v;
-      }
-      return fallback;
-    }
-
     try {
       bump(8, splashText("preparing", "Multiversum wird vorbereitet…"));
 
@@ -251,7 +253,7 @@
         preloadPromise,
       ]);
       if (!heroReadySignal && frame) {
-        await waitForParallax(frame, bump);
+        await Promise.race([waitForParallax(frame, bump), wait(MAX_MS)]);
       }
       bump(96, splashText("almostDone", "Fast fertig…"));
 
