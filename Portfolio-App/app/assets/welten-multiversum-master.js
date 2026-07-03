@@ -254,9 +254,16 @@
     }
   }
 
+  function normalizeLang(lang) {
+    if (window.WeltenTranslations) return window.WeltenTranslations.normalizeLang(lang);
+    lang = String(lang || "de").toLowerCase();
+    if (lang === "en" || lang === "it" || lang === "fr") return lang;
+    return "de";
+  }
+
   function loadPrefs() {
     try {
-      currentLang = localStorage.getItem(LANG_KEY) || "de";
+      currentLang = normalizeLang(localStorage.getItem(LANG_KEY) || "de");
     } catch (e) {}
     try {
       var storedFx = localStorage.getItem(FX_KEY);
@@ -295,22 +302,37 @@
 
   function updateFxBtn() {
     if (!fxBtn) return;
-    var labels = {
-      de: ["Effekte: Ein", "Effekte: Aus"],
-      en: ["Effects: On", "Effects: Off"],
-      it: ["Effetti: On", "Effetti: Off"],
-    };
-    var ariaLabels = {
-      de: ["Visuelle Effekte deaktivieren", "Visuelle Effekte aktivieren"],
-      en: ["Disable visual effects", "Enable visual effects"],
-      it: ["Disattiva effetti visivi", "Attiva effetti visivi"],
-    };
-    var pair = labels[currentLang] || labels.de;
-    var ariaPair = ariaLabels[currentLang] || ariaLabels.de;
-    fxBtn.textContent = effectsOn ? pair[0] : pair[1];
+    var T = window.WeltenTranslations;
+    var l = currentLang;
+    var fxOn = T ? T.t("shell.fxOn", l) : "Effekte: Ein";
+    var fxOff = T ? T.t("shell.fxOff", l) : "Effekte: Aus";
+    var ariaOn = T ? T.t("shell.fxAriaOn", l) : "Visuelle Effekte deaktivieren";
+    var ariaOff = T ? T.t("shell.fxAriaOff", l) : "Visuelle Effekte aktivieren";
+    var fxTitle = T ? T.t("shell.fxTitle", l) : "Visuelle Effekte und Sound beim Weltenwechsel";
+    fxBtn.textContent = effectsOn ? fxOn : fxOff;
     fxBtn.classList.toggle("is-on", effectsOn);
     fxBtn.setAttribute("aria-pressed", effectsOn ? "true" : "false");
-    fxBtn.setAttribute("aria-label", effectsOn ? ariaPair[0] : ariaPair[1]);
+    fxBtn.setAttribute("aria-label", effectsOn ? ariaOn : ariaOff);
+    fxBtn.setAttribute("title", fxTitle);
+    updateShellChrome();
+  }
+
+  function updateShellChrome() {
+    var T = window.WeltenTranslations;
+    var l = currentLang;
+    var bar = T ? T.t("shell.bar", l) : "Welten & Steuerung";
+    var worlds = T ? T.t("shell.worlds", l) : "Welten wechseln";
+    var language = T ? T.t("shell.language", l) : "Sprache";
+    var barEl = document.querySelector(".mv4-bar");
+    if (barEl) barEl.setAttribute("aria-label", bar);
+    var worldsNav = document.querySelector(".mv4-worlds");
+    if (worldsNav) worldsNav.setAttribute("aria-label", worlds);
+    var flags = document.querySelector(".mv4-flags");
+    if (flags) flags.setAttribute("aria-label", language);
+    if (T) T.applyHtmlLang(document, l);
+    if (window.WeltenShellI18n && typeof window.WeltenShellI18n.apply === "function") {
+      window.WeltenShellI18n.apply(l);
+    }
   }
 
   function updateFlags() {
@@ -325,6 +347,12 @@
     try {
       localStorage.setItem(LANG_KEY, currentLang);
     } catch (e) {}
+    if (window.WeltenTranslations) {
+      window.WeltenTranslations.applyHtmlLang(document, currentLang);
+    }
+    if (window.WeltenShellI18n && typeof window.WeltenShellI18n.apply === "function") {
+      window.WeltenShellI18n.apply(currentLang);
+    }
     frames.forEach(function (f) {
       postFrame(f, { type: "portfolio-preview-lang", lang: currentLang });
       postFrame(f, { type: "alx-preview-sync", lang: currentLang, world: mapWorldForForm(activeIdx()) });
@@ -599,7 +627,7 @@
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      currentLang = btn.dataset.lang || "de";
+      currentLang = normalizeLang(btn.dataset.lang || "de");
       saveLang();
       updateFlags();
       updateFxBtn();

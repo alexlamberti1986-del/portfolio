@@ -80,6 +80,35 @@
         desc: "Pitch decks, company presentations and sales materials for clients, investors and partners.",
       },
     },
+    fr: {
+      sectionTitle: "Autres services",
+      sectionIntro:
+        "Ces domaines complètent les exemples de projets ci-dessus · avec images et courtes descriptions adaptées à chaque monde.",
+      logo: {
+        title: "Logo design",
+        desc: "Création de nouveaux logos, présences de marque et identités visuelles pour entreprises et projets.",
+      },
+      qr: {
+        title: "QR code",
+        desc: "QR codes personnalisés pour produits print, sites web, campagnes et applications digitales.",
+      },
+      seo: {
+        title: "SEO & SEA",
+        desc: "Optimisation de la visibilité via référencement naturel (SEO) et publicité sur les moteurs de recherche (SEA).",
+      },
+      print: {
+        title: "Médias print",
+        desc: "Flyers, cartes de visite, affiches, brochures ou roll-ups · conçus et prêts à imprimer.",
+      },
+      layout3d: {
+        title: "Layouts 3D",
+        desc: "Visualisation d'espaces, concepts, intérieurs et idées de projet en 3D.",
+      },
+      present: {
+        title: "Présentations",
+        desc: "Pitch decks, présentations d'entreprise et supports commerciaux pour clients, investisseurs et partenaires.",
+      },
+    },
     it: {
       sectionTitle: "Altri servizi",
       sectionIntro:
@@ -126,8 +155,14 @@
 
   function t(key) {
     var lang = currentLang();
-    var pack = COPY[lang] || COPY.de;
-    return pack[key] != null ? pack[key] : COPY.de[key];
+    if (window.WeltenTranslations) lang = window.WeltenTranslations.normalizeLang(lang);
+    var pack =
+      (window.WeltenTranslations && window.WeltenTranslations.langPack(COPY, lang)) ||
+      COPY[lang] ||
+      COPY.en ||
+      COPY.de;
+    if (pack[key] != null) return pack[key];
+    return (COPY.en && COPY.en[key]) || COPY.de[key];
   }
 
   function worldKey() {
@@ -308,6 +343,10 @@
     if (e && e.detail && e.detail.chapter === "projects") onProjectsChapter();
   });
   document.addEventListener("welten-init-projects-accordion", onProjectsChapter);
+
+  document.addEventListener("welten-lang-change", function () {
+    render();
+  });
 
   window.addEventListener("message", function (e) {
     if (!e.data) return;

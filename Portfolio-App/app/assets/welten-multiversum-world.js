@@ -104,6 +104,40 @@
     preloadUrls(PARALLAX_PRELOAD);
   }
 
+  function navLabels(lang) {
+    lang = lang || "de";
+    if (window.WeltenPreviewI18n && window.WeltenPreviewI18n.NAV) {
+      var pack =
+        (window.WeltenTranslations && window.WeltenTranslations.langPack(window.WeltenPreviewI18n.NAV, lang)) ||
+        window.WeltenPreviewI18n.NAV[lang] ||
+        window.WeltenPreviewI18n.NAV.de;
+      return NAV.map(function (item) {
+        return { id: item.id, label: pack[item.id] || item.label };
+      });
+    }
+    return NAV;
+  }
+
+  function applyStaticHeroLang(lang) {
+    var hero = document.getElementById("mvStaticHero");
+    if (!hero) return;
+    navLabels(lang).forEach(function (item) {
+      var btn = hero.querySelector('[data-go="' + item.id + '"]');
+      if (btn) btn.textContent = item.label;
+    });
+    var tag = hero.querySelector(".mv-static-hero__tag");
+    if (tag && window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyHome === "function") {
+      window.WeltenPreviewI18n.applyHome(document, "general", lang);
+    }
+    if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyAria === "function") {
+      var a =
+        (window.WeltenTranslations && window.WeltenTranslations.langPack(window.WeltenPreviewI18n.ARIA, lang)) ||
+        (window.WeltenPreviewI18n.ARIA[lang] || window.WeltenPreviewI18n.ARIA.de);
+      var navEl = hero.querySelector(".mv-static-hero__nav");
+      if (navEl && a.mainNav) navEl.setAttribute("aria-label", a.mainNav);
+    }
+  }
+
   function buildStaticHero() {
     if (document.getElementById("mvStaticHero")) return;
     var stage = document.getElementById("dnaStage");
@@ -114,7 +148,7 @@
     hero.className = "mv-static-hero";
     hero.setAttribute("aria-label", "MULTIVERSUM");
 
-    var navHtml = NAV.map(function (item) {
+    var navHtml = navLabels().map(function (item) {
       return '<button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="' + item.id + '">' + item.label + "</button>";
     }).join("");
 
@@ -285,6 +319,20 @@
     syncActiveNav();
     styleMvButtons();
     if (window.WeltenPreviewImages) window.WeltenPreviewImages.patchChapterBoxes();
+  });
+
+  document.addEventListener("welten-lang-change", function (e) {
+    var lang = (e && e.detail && e.detail.lang) || "de";
+    applyStaticHeroLang(lang);
+    syncActiveNav();
+  });
+
+  window.addEventListener("message", function (e) {
+    if (!e.data) return;
+    if (e.data.type === "portfolio-preview-lang" && e.data.lang) {
+      applyStaticHeroLang(e.data.lang);
+      syncActiveNav();
+    }
   });
 
   if (document.readyState === "loading") {

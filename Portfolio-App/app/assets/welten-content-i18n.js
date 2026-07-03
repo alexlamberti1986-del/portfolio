@@ -1,12 +1,20 @@
 /**
- * Erweiterte Inhalts-Übersetzungen DE / EN / IT — Persona, About, Projekte, Kontakt, Leistungen
+ * Erweiterte Inhalts-Übersetzungen DE / EN / FR / IT — Persona, About, Projekte, Kontakt, Leistungen
  */
 (function () {
   "use strict";
 
+  function lp(map, lang) {
+    if (window.WeltenTranslations) {
+      return window.WeltenTranslations.langPack(map, lang) || map.de;
+    }
+    return map[lang] || map.en || map.de;
+  }
+
   var CTA = {
     de: { cta1: "Projekte ansehen", cta2: "Über mich" },
     en: { cta1: "View projects", cta2: "About me" },
+    fr: { cta1: "Voir les projets", cta2: "À propos" },
     it: { cta1: "Vedi progetti", cta2: "Chi sono" },
   };
 
@@ -20,6 +28,11 @@
       websites: { label: "Websites", meta: "Live presences & web concepts" },
       leadformulare: { label: "Lead forms", meta: "Guided enquiries & conversion" },
       visitenkarten: { label: "Business cards", meta: "Digital mini presences" },
+    },
+    fr: {
+      websites: { label: "Websites", meta: "Présences en ligne et concepts web" },
+      leadformulare: { label: "Formulaires lead", meta: "Demandes guidées et conversion" },
+      visitenkarten: { label: "Cartes de visite", meta: "Mini-présences digitales" },
     },
     it: {
       websites: { label: "Siti web", meta: "Presenze live e concept web" },
@@ -45,6 +58,14 @@
       { title: "Content", desc: "SEO-oriented content that is found and understood." },
       { title: "Optimisation", desc: "Continuously improving performance, SEO and conversion." },
     ],
+    fr: [
+      { title: "Branding", desc: "Présences de marque avec positionnement clair et reconnaissance." },
+      { title: "Web design", desc: "Sites web avec guidage utilisateur, structure et focus conversion." },
+      { title: "Marketing", desc: "Campagnes digitales, contenu et visibilité." },
+      { title: "Stratégie", desc: "De l'objectif à la mise en œuvre · réfléchi et mesurable." },
+      { title: "Content", desc: "Contenus orientés SEO, trouvés et compris." },
+      { title: "Optimisation", desc: "Amélioration continue des performances, SEO et conversion." },
+    ],
     it: [
       { title: "Branding", desc: "Presenze di marca con posizionamento chiaro e riconoscibilità." },
       { title: "Web design", desc: "Siti web con guida utente, struttura e focus sulla conversione." },
@@ -63,6 +84,10 @@
     en: {
       col1: { title: "Focus", items: ["Maker mindset & goal clarity", "Digital systems thinking", "Conversion orientation"] },
       col2: { title: "Expression", items: ["Content & language", "Creativity with brand in mind", "Team communication"] },
+    },
+    fr: {
+      col1: { title: "Focus", items: ["Mentalité d'action et clarté des objectifs", "Pensée systémique digitale", "Orientation conversion"] },
+      col2: { title: "Expression", items: ["Contenu et langage", "Créativité au service de la marque", "Communication d'équipe"] },
     },
     it: {
       col1: { title: "Focus", items: ["Mentalità operativa e chiarezza degli obiettivi", "Pensiero sistemico digitale", "Orientamento alla conversione"] },
@@ -207,6 +232,7 @@
       email: "E-Mail",
       phone: "Telefon",
       address: "Adresse",
+      formTitle: "Leadformular",
     },
     en: {
       prose1: "I welcome opportunities where I can apply my experience in brand staging, client communication and digital marketing.",
@@ -215,6 +241,16 @@
       email: "Email",
       phone: "Phone",
       address: "Address",
+      formTitle: "Lead form",
+    },
+    fr: {
+      prose1: "J'accueille les opportunités où je peux mettre à profit mon expérience en mise en scène de marque, communication client et marketing digital.",
+      prose2: "Prenons contact.",
+      prose3: "Site web, présence de marque, visibilité digitale ou projet client concret : j'apprécie l'échange et je réponds rapidement, de manière fiable et simple.",
+      email: "E-mail",
+      phone: "Téléphone",
+      address: "Adresse",
+      formTitle: "Formulaire lead",
     },
     it: {
       prose1: "Accolgo opportunità in cui posso applicare la mia esperienza in brand staging, comunicazione con i clienti e marketing digitale.",
@@ -223,6 +259,7 @@
       email: "E-mail",
       phone: "Telefono",
       address: "Indirizzo",
+      formTitle: "Modulo lead",
     },
   };
 
@@ -261,7 +298,7 @@
   }
 
   function applyHomeCtas(doc, lang) {
-    var pack = CTA[lang] || CTA.de;
+    var pack = lp(CTA, lang);
     doc.querySelectorAll("#slide-home .cta-row .btn").forEach(function (btn, i) {
       if (i === 0 && pack.cta1) btn.textContent = pack.cta1;
       if (i === 1 && pack.cta2) btn.textContent = pack.cta2;
@@ -269,7 +306,7 @@
   }
 
   function applyProjectsAccordion(doc, lang) {
-    var pack = ACCORDION[lang] || ACCORDION.de;
+    var pack = lp(ACCORDION, lang);
     Object.keys(pack).forEach(function (cat) {
       var item = doc.querySelector('.projects-accordion__item[data-category="' + cat + '"]');
       if (!item) return;
@@ -280,7 +317,7 @@
   }
 
   function applyServicesGrid(doc, lang) {
-    var items = SERVICES_GRID[lang] || SERVICES_GRID.de;
+    var items = lp(SERVICES_GRID, lang);
     doc.querySelectorAll(".welten-leistungen-grid .welten-leistung-card").forEach(function (card, i) {
       if (!items[i]) return;
       setText(card.querySelector("h3"), items[i].title);
@@ -289,7 +326,7 @@
   }
 
   function applyLeistungenLanes(doc, lang) {
-    var pack = LEISTUNGEN_LANES[lang] || LEISTUNGEN_LANES.de;
+    var pack = lp(LEISTUNGEN_LANES, lang);
     var cols = doc.querySelectorAll("#slide-leistungen .welten-strengths-lanes .sl-col");
     if (cols[0]) {
       setText(cols[0].querySelector("h3"), pack.col1.title);
@@ -306,7 +343,7 @@
   }
 
   function applyAboutMain(doc, lang) {
-    var paras = ABOUT_MAIN[lang] || ABOUT_MAIN.de;
+    var paras = lp(ABOUT_MAIN, lang);
     var aboutInner = doc.querySelector("#slide-about .slide-inner > div");
     if (!aboutInner) return;
     aboutInner.querySelectorAll(":scope > p.prose").forEach(function (p, i) {
@@ -316,7 +353,7 @@
 
   function applyAboutExtra(doc, lang) {
     var key = worldExtraKey(doc);
-    var pack = (ABOUT_EXTRA[key] && ABOUT_EXTRA[key][lang]) || (ABOUT_EXTRA[key] && ABOUT_EXTRA[key].de);
+    var pack = ABOUT_EXTRA[key] ? lp(ABOUT_EXTRA[key], lang) : null;
     if (!pack) return;
     var extra = doc.querySelector("[data-welten-about-extra]");
     if (!extra) return;
@@ -339,7 +376,7 @@
   }
 
   function applyPersona(doc, lang) {
-    var pack = PERSONA[lang] || PERSONA.de;
+    var pack = lp(PERSONA, lang);
     doc.querySelectorAll(".persona-tabs button[data-persona]").forEach(function (btn) {
       var k = btn.getAttribute("data-persona");
       if (pack.tabs[k]) btn.textContent = pack.tabs[k];
@@ -383,8 +420,14 @@
   function applyContactCopy(doc, lang) {
     var slides = window.WeltenPreviewI18n && window.WeltenPreviewI18n.SLIDES;
     var world = window.WeltenPreviewI18n ? window.WeltenPreviewI18n.getWorld(doc) : "nexora";
-    var slidePack = slides && slides[world] && slides[world][lang] && slides[world][lang].contact;
-    var ui = CONTACT_UI[lang] || CONTACT_UI.de;
+    var worldSlides = slides && slides[world];
+    var worldPack = worldSlides
+      ? window.WeltenTranslations
+        ? window.WeltenTranslations.langPack(worldSlides, lang)
+        : worldSlides[lang] || worldSlides.en || worldSlides.de
+      : null;
+    var slidePack = worldPack && worldPack.contact;
+    var ui = lp(CONTACT_UI, lang);
     var copy = doc.querySelector("#slide-contact .contact-copy");
     if (!copy) return;
     if (slidePack) {
@@ -400,11 +443,241 @@
       if (!span) return;
       var t = span.textContent || "";
       if (t.indexOf("@") >= 0) span.textContent = ui.email + ": alex.lamberti@hotmail.ch";
-      else if (t.indexOf("079") >= 0 || t.toLowerCase().indexOf("telefon") >= 0 || t.toLowerCase().indexOf("phone") >= 0)
+      else if (
+        t.indexOf("079") >= 0 ||
+        t.toLowerCase().indexOf("telefon") >= 0 ||
+        t.toLowerCase().indexOf("phone") >= 0 ||
+        t.toLowerCase().indexOf("téléphone") >= 0 ||
+        t.toLowerCase().indexOf("telefono") >= 0
+      )
         span.textContent = ui.phone + ": 079 667 82 11";
-      else if (t.indexOf("Schulweg") >= 0 || t.toLowerCase().indexOf("address") >= 0 || t.toLowerCase().indexOf("indirizzo") >= 0)
+      else if (
+        t.indexOf("Schulweg") >= 0 ||
+        t.toLowerCase().indexOf("address") >= 0 ||
+        t.toLowerCase().indexOf("indirizzo") >= 0 ||
+        t.toLowerCase().indexOf("adresse") >= 0
+      )
         span.textContent = ui.address + ": Schulweg 603, 5324 Full-Reuenthal, Schweiz";
     });
+    var form = doc.getElementById("weltenLeadForm");
+    if (form && ui.formTitle) form.setAttribute("title", ui.formTitle);
+  }
+
+  var ABOUT_SOURCES = {
+    de: {
+      experience: {
+        label: "Erfahrung",
+        title: "Vom Markenraum zur digitalen Strategie.",
+        intro: "Ein Werdegang aus Handel, Inszenierung und digitaler Umsetzung – geprägt von fundierter Ausbildung, praktischer Erfahrung und gezielter Weiterentwicklung.",
+        workTitle: "Berufserfahrung",
+        eduTitle: "Bildungsweg",
+        schoolTitle: "Schulbildung",
+        focus: "Schwerpunkte:",
+        jobs: [
+          { role: "Key-Account- und Marketing-Spezialist.", focus: "Kundenprojekte, Websites, Suchmaschinenoptimierung,\nMarkenarbeit, Inhalte, Kommunikation,\nBeratung und Projektsteuerung." },
+          { role: "Polydesigner 3D / Koordination Warenpräsentation." },
+          { role: "Koordination Warenpräsentation im Einzelhandel." },
+          { role: "Polydesigner 3D / Koordination Warenpräsentation." },
+          { role: "Mitarbeiter Detailhandel." },
+        ],
+        edu: [
+          { role: "MBSZ Zürich." },
+          { role: "HSO Zürich." },
+          { role: "EBZ." },
+          { role: "Interne Ausbildung H&M, Luzern." },
+          { role: "Kaufmännisches Bildungszentrum Zug." },
+        ],
+        school: [{ role: "Oberstufenzeit in Oberarth." }, { role: "Primarschule in Goldau." }],
+      },
+      workstyle: {
+        label: "Arbeitsweise",
+        title: "So arbeite ich",
+        intro: "Ich arbeite gerne strukturiert, aber nicht starr. Für mich beginnt jedes gute Projekt mit Verständnis: Was ist das Ziel? Wer soll erreicht werden? Welche Botschaft soll ankommen? Erst wenn diese Grundlage klar ist, entstehen Ideen, die wirklich passen.",
+        steps: [
+          { t: "Verstehen", p: "Ziele, Zielgruppe, Marke und Ausgangslage sauber erfassen." },
+          { t: "Strukturieren", p: "Informationen ordnen, damit Inhalte überzeugend wirken." },
+          { t: "Gestalten", p: "Design, Tonality und UX zur Marke passend verbinden." },
+          { t: "Optimieren", p: "Feedback und Messung in Verbesserungen übersetzen." },
+        ],
+      },
+      values: {
+        label: "Werte",
+        title: "Persönliche Werte",
+        intro: "Meine Werte prägen, wie ich arbeite, kommuniziere und Verantwortung übernehme. Sie sind für mich nicht nur schöne Begriffe, sondern konkrete Orientierung im Alltag. Besonders im Digital Marketing ist es wichtig, klar, glaubwürdig und bewusst zu handeln.",
+        rows: [
+          { t: "Verlässlichkeit", p: "Zusagen einhalten, Verantwortung übernehmen, Aufgaben zu Ende bringen." },
+          { t: "Qualitätsanspruch", p: "Durchdachte, saubere und langfristig tragfähige Ergebnisse." },
+          { t: "Eigeninitiative", p: "Aktiv mitdenken, Lösungen einbringen, Verantwortung packen." },
+          { t: "Lernbereitschaft", p: "Offen für neue Tools, Methoden und Technologien." },
+          { t: "Teamgeist", p: "Vertrauen, Offenheit und gegenseitige Unterstützung." },
+          { t: "Wirkung", p: "Marketing soll Orientierung geben und zum Handeln führen." },
+        ],
+      },
+    },
+    en: {
+      experience: {
+        label: "Experience",
+        title: "From brand space to digital strategy.",
+        intro: "A career path spanning retail, staging and digital delivery – shaped by solid training, hands-on experience and focused development.",
+        workTitle: "Work experience",
+        eduTitle: "Education",
+        schoolTitle: "School",
+        focus: "Focus areas:",
+        jobs: [
+          { role: "Key account and marketing specialist.", focus: "Client projects, websites, SEO,\nbrand work, content, communication,\nconsulting and project management." },
+          { role: "3D polydesigner / visual merchandising coordination." },
+          { role: "Visual merchandising coordination in retail." },
+          { role: "3D polydesigner / visual merchandising coordination." },
+          { role: "Retail employee." },
+        ],
+        edu: [
+          { role: "MBSZ Zurich." },
+          { role: "HSO Zurich." },
+          { role: "EBZ." },
+          { role: "In-house training H&M, Lucerne." },
+          { role: "Commercial training centre Zug." },
+        ],
+        school: [{ role: "Upper school years in Oberarth." }, { role: "Primary school in Goldau." }],
+      },
+      workstyle: {
+        label: "Approach",
+        title: "How I work",
+        intro: "I like to work in a structured but flexible way. Every good project starts with understanding: What is the goal? Who should we reach? What message should land? Only then do ideas emerge that truly fit.",
+        steps: [
+          { t: "Understand", p: "Capture goals, audience, brand and starting point clearly." },
+          { t: "Structure", p: "Organise information so content works convincingly." },
+          { t: "Design", p: "Connect design, tone and UX to match the brand." },
+          { t: "Optimise", p: "Turn feedback and measurement into improvements." },
+        ],
+      },
+      values: {
+        label: "Values",
+        title: "Personal values",
+        intro: "My values shape how I work, communicate and take responsibility. They are practical guidance in everyday work – especially in digital marketing, where clarity, credibility and conscious action matter.",
+        rows: [
+          { t: "Reliability", p: "Keep commitments, take responsibility, finish tasks." },
+          { t: "Quality standards", p: "Thoughtful, clean and sustainable results." },
+          { t: "Initiative", p: "Think ahead, contribute solutions, take ownership." },
+          { t: "Willingness to learn", p: "Open to new tools, methods and technologies." },
+          { t: "Team spirit", p: "Trust, openness and mutual support." },
+          { t: "Impact", p: "Marketing should guide and lead to action." },
+        ],
+      },
+    },
+    it: {
+      experience: {
+        label: "Esperienza",
+        title: "Dallo spazio brand alla strategia digitale.",
+        intro: "Un percorso tra commercio, allestimento e implementazione digitale – formato da solida formazione, esperienza pratica e sviluppo mirato.",
+        workTitle: "Esperienza professionale",
+        eduTitle: "Formazione",
+        schoolTitle: "Scuola",
+        focus: "Aree di focus:",
+        jobs: [
+          { role: "Specialista key account e marketing.", focus: "Progetti clienti, siti web, SEO,\nlavoro sul brand, contenuti, comunicazione,\nconsulenza e gestione progetti." },
+          { role: "Polydesigner 3D / coordinamento visual merchandising." },
+          { role: "Coordinamento visual merchandising nel retail." },
+          { role: "Polydesigner 3D / coordinamento visual merchandising." },
+          { role: "Dipendente commercio al dettaglio." },
+        ],
+        edu: [
+          { role: "MBSZ Zurigo." },
+          { role: "HSO Zurigo." },
+          { role: "EBZ." },
+          { role: "Formazione interna H&M, Lucerna." },
+          { role: "Centro formazione commerciale Zugo." },
+        ],
+        school: [{ role: "Scuola superiore a Oberarth." }, { role: "Scuola primaria a Goldau." }],
+      },
+      workstyle: {
+        label: "Metodo",
+        title: "Come lavoro",
+        intro: "Lavoro in modo strutturato ma non rigido. Ogni buon progetto inizia con la comprensione: qual è l'obiettivo? Chi dobbiamo raggiungere? Quale messaggio deve arrivare? Solo allora nascono idee che funzionano davvero.",
+        steps: [
+          { t: "Comprendere", p: "Catturare obiettivi, pubblico, brand e punto di partenza." },
+          { t: "Strutturare", p: "Organizzare le informazioni per contenuti convincenti." },
+          { t: "Progettare", p: "Collegare design, tono e UX al brand." },
+          { t: "Ottimizzare", p: "Trasformare feedback e misurazioni in miglioramenti." },
+        ],
+      },
+      values: {
+        label: "Valori",
+        title: "Valori personali",
+        intro: "I miei valori guidano come lavoro, comunico e mi assumo responsabilità. Sono orientamento concreto – soprattutto nel marketing digitale, dove contano chiarezza, credibilità e azione consapevole.",
+        rows: [
+          { t: "Affidabilità", p: "Mantenere le promesse, assumersi responsabilità, portare a termine." },
+          { t: "Qualità", p: "Risultati ponderati, puliti e sostenibili." },
+          { t: "Iniziativa", p: "Pensare in anticipo, proporre soluzioni, prendersi carico." },
+          { t: "Apprendimento", p: "Aperti a nuovi strumenti, metodi e tecnologie." },
+          { t: "Spirito di squadra", p: "Fiducia, apertura e supporto reciproco." },
+          { t: "Impatto", p: "Il marketing deve orientare e portare all'azione." },
+        ],
+      },
+    },
+  };
+
+  function applyTimelineRoles(timeline, items, focusLabel) {
+    if (!timeline) return;
+    timeline.querySelectorAll(".tl-item").forEach(function (item, i) {
+      var data = items[i];
+      if (!data) return;
+      var paras = item.querySelectorAll("p");
+      if (paras[0] && data.role) paras[0].textContent = data.role;
+      if (data.focus && paras[1]) {
+        var strong = paras[1].querySelector("strong");
+        if (strong) strong.textContent = focusLabel;
+        if (paras[2]) paras[2].innerHTML = data.focus.replace(/\n/g, "<br />");
+      }
+    });
+  }
+
+  function applyMergedAboutSources(doc, lang) {
+    var pack = lp(ABOUT_SOURCES, lang);
+    var exp = doc.querySelector("#slide-experience .slide-inner");
+    if (exp && pack.experience) {
+      var e = pack.experience;
+      setText(exp.querySelector(".chapter-label"), e.label);
+      setText(exp.querySelector(".section-title"), e.title);
+      var intro = exp.querySelector(".prose");
+      if (intro) intro.textContent = e.intro;
+      var titles = exp.querySelectorAll(".exp-block-title");
+      if (titles[0]) titles[0].textContent = e.workTitle;
+      if (titles[1]) titles[1].textContent = e.eduTitle;
+      if (titles[2]) titles[2].textContent = e.schoolTitle;
+      var timelines = exp.querySelectorAll(".timeline");
+      applyTimelineRoles(timelines[0], e.jobs, e.focus);
+      applyTimelineRoles(timelines[1], e.edu, e.focus);
+      applyTimelineRoles(timelines[2], e.school, e.focus);
+      exp.setAttribute("aria-label", e.label);
+    }
+    var ws = doc.querySelector("#slide-workstyle .slide-inner");
+    if (ws && pack.workstyle) {
+      var w = pack.workstyle;
+      setText(ws.querySelector(".chapter-label"), w.label);
+      setText(ws.querySelector(".section-title"), w.title);
+      var wIntro = ws.querySelector(".prose");
+      if (wIntro) wIntro.textContent = w.intro;
+      ws.querySelectorAll(".wp-step").forEach(function (step, i) {
+        if (!w.steps[i]) return;
+        setText(step.querySelector("h3"), w.steps[i].t);
+        setText(step.querySelector("p"), w.steps[i].p);
+      });
+      ws.closest("section").setAttribute("aria-label", w.label);
+    }
+    var val = doc.querySelector("#slide-values .slide-inner");
+    if (val && pack.values) {
+      var v = pack.values;
+      setText(val.querySelector(".chapter-label"), v.label);
+      setText(val.querySelector(".section-title"), v.title);
+      var vIntro = val.querySelector(".prose");
+      if (vIntro) vIntro.textContent = v.intro;
+      val.querySelectorAll(".vz-row").forEach(function (row, i) {
+        if (!v.rows[i]) return;
+        setText(row.querySelector("h3"), v.rows[i].t);
+        setText(row.querySelector("p"), v.rows[i].p);
+      });
+      val.closest("section").setAttribute("aria-label", v.label);
+    }
   }
 
   function refreshMergedAbout(doc) {
@@ -414,6 +687,10 @@
 
   function applyContent(doc, lang) {
     if (!doc || !lang) return;
+    if (window.WeltenPreviewI18n) {
+      var world = window.WeltenPreviewI18n.getWorld(doc);
+      window.WeltenPreviewI18n.applyHome(doc, world, lang);
+    }
     applyHomeCtas(doc, lang);
     applyProjectsAccordion(doc, lang);
     applyLeistungenLanes(doc, lang);
@@ -422,7 +699,17 @@
     applyAboutMain(doc, lang);
     applyPersona(doc, lang);
     applyContactCopy(doc, lang);
+    applyMergedAboutSources(doc, lang);
     refreshMergedAbout(doc);
+    if (window.WeltenProjectsI18n && typeof window.WeltenProjectsI18n.apply === "function") {
+      window.WeltenProjectsI18n.apply(doc, lang);
+    }
+    if (window.WeltenCleanup && typeof window.WeltenCleanup.injectLeistungenRich === "function") {
+      window.WeltenCleanup.injectLeistungenRich(lang);
+    }
+    if (window.WeltenSkillsCharts && typeof window.WeltenSkillsCharts.init === "function") {
+      window.WeltenSkillsCharts.init(lang);
+    }
     if (window.WeltenProjectsServices && typeof window.WeltenProjectsServices.render === "function") {
       window.WeltenProjectsServices.render();
     }

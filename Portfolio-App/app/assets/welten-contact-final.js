@@ -199,6 +199,9 @@
     slide.className = "slide-inner contact-layout contact-layout--form";
     slide.dataset.weltenContactFinal = VERSION;
     slide.innerHTML = contactMarkup();
+    if (window.WeltenContentI18n && typeof window.WeltenContentI18n.applyContactCopy === "function") {
+      window.WeltenContentI18n.applyContactCopy(document, currentLang());
+    }
     applyContactPortrait();
     syncLeadFormFrame();
   }
@@ -212,6 +215,14 @@
   } else {
     apply();
   }
+
+  document.addEventListener("welten-lang-change", function (e) {
+    var lang = (e && e.detail && e.detail.lang) || currentLang();
+    if (window.WeltenContentI18n && typeof window.WeltenContentI18n.applyContactCopy === "function") {
+      window.WeltenContentI18n.applyContactCopy(document, lang);
+    }
+    syncLeadFormFrame();
+  });
 
   document.addEventListener("welten-chapter-change", function (e) {
     if (e && e.detail && e.detail.chapter === "contact") applyContactFinal();

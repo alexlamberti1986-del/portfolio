@@ -100,6 +100,7 @@
           panel.removeAttribute("hidden");
           loadPanelPreviews(panel);
           revealProjectCards(panel);
+          document.dispatchEvent(new CustomEvent("welten-projects-panel-open", { detail: { panel: panel } }));
         }
       });
     });

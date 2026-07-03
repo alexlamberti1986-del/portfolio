@@ -7,38 +7,40 @@
   var BASE = "https://www.alexlamberti.ch";
   var OG_IMAGE = BASE + "/assets/og-image.jpg";
 
-  var PAGES = {
-    home: {
+  var PATHS = {
+    home: "/",
+    projects: "/projekte",
+    leistungen: "/leistungen",
+    about: "/ueber-mich",
+    contact: "/kontakt",
+  };
+
+  function getLang() {
+    try {
+      return localStorage.getItem("mv-preview-lang") || sessionStorage.getItem("mv-preview-lang") || "de";
+    } catch (e) {
+      return "de";
+    }
+  }
+
+  function pageMeta(chapter, lang) {
+    if (window.WeltenTranslations) {
+      var seo = window.WeltenTranslations.pack("seo." + chapter, lang);
+      if (seo && seo.title) {
+        return {
+          title: seo.title,
+          description: seo.description,
+          path: PATHS[chapter] || PATHS.home,
+        };
+      }
+    }
+    return {
       title: "Alex Lamberti Multiversum für digitale Welten",
       description:
         "Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Drei digitale Welten für Ideen, Projekte, Webdesign und Digital Marketing.",
-      path: "/",
-    },
-    projects: {
-      title: "Projekte | Alex Lamberti · Websites, Leadformulare & Visitenkarten",
-      description:
-        "Ausgewählte Projekte von Alex Lamberti: Websites, Leadformulare und digitale Visitenkarten mit klarer Handschrift.",
-      path: "/projekte",
-    },
-    leistungen: {
-      title: "Leistungen | Alex Lamberti · Branding, Webdesign & Marketing",
-      description:
-        "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Websites-Optimierung.",
-      path: "/leistungen",
-    },
-    about: {
-      title: "Über mich | Alex Lamberti · Digital Marketing Spezialist",
-      description:
-        "Wer ist Alex Lamberti? Werdegang, Arbeitsweise, Werte und Kompetenzen im Digital Marketing.",
-      path: "/ueber-mich",
-    },
-    contact: {
-      title: "Kontakt | Alex Lamberti · Telefon, E-Mail & Standort",
-      description:
-        "Kontakt zu Alex Lamberti: Telefon 079 667 82 11, E-Mail alex.lamberti@hotmail.ch, Standort Full-Reuenthal.",
-      path: "/kontakt",
-    },
-  };
+      path: PATHS[chapter] || PATHS.home,
+    };
+  }
 
   function upsertMeta(attr, key, content) {
     var sel = "meta[" + attr + '="' + key + '"]';
@@ -87,16 +89,8 @@
           "@id": BASE + "/#organization",
           name: "Alex Lamberti",
           url: BASE,
-          logo: BASE + "/assets/favicon/android-chrome-512x512.png",
-          image: OG_IMAGE,
-          contactPoint: {
-            "@type": "ContactPoint",
-            telephone: "+41796678211",
-            contactType: "customer service",
-            email: "alex.lamberti@hotmail.ch",
-            areaServed: "CH",
-            availableLanguage: ["de"],
-          },
+          logo: OG_IMAGE,
+          sameAs: [],
         },
         {
           "@type": "WebSite",
@@ -136,14 +130,18 @@
     document.head.appendChild(script);
   }
 
-  function apply(chapter) {
-    var page = PAGES[chapter] || PAGES.home;
+  function apply(chapter, lang) {
+    chapter = chapter || "home";
+    lang = window.WeltenTranslations ? window.WeltenTranslations.normalizeLang(lang || getLang()) : getLang();
+    var page = pageMeta(chapter, lang);
     document.title = page.title;
     upsertMeta("name", "description", page.description);
     upsertLink("canonical", BASE + page.path);
 
+    var ogLocale = window.WeltenTranslations ? window.WeltenTranslations.OG_LOCALE[lang] || "de_CH" : "de_CH";
+
     upsertMeta("property", "og:type", "website");
-    upsertMeta("property", "og:locale", "de_CH");
+    upsertMeta("property", "og:locale", ogLocale);
     upsertMeta("property", "og:site_name", "Alex Lamberti");
     upsertMeta("property", "og:title", page.title);
     upsertMeta("property", "og:description", page.description);
@@ -173,5 +171,15 @@
     }
   });
 
-  window.WeltenSEO = { apply: apply, PAGES: PAGES };
+  document.addEventListener("welten-lang-change", function (e) {
+    if (e.detail && e.detail.lang) {
+      var ch = "home";
+      try {
+        if (window.WeltenChapter && window.WeltenChapter.current) ch = window.WeltenChapter.current();
+      } catch (err) {}
+      apply(ch, e.detail.lang);
+    }
+  });
+
+  window.WeltenSEO = { apply: apply };
 })();

@@ -1,9 +1,40 @@
 (function () {
   "use strict";
 
-  var SKILLS_VERSION = "17";
+  var SKILLS_VERSION = "18";
 
-  var CHARTS = [
+  function getLang() {
+    try {
+      return localStorage.getItem("mv-preview-lang") || sessionStorage.getItem("mv-preview-lang") || "de";
+    } catch (e) {
+      return "de";
+    }
+  }
+
+  var OVERVIEW_UI = {
+    de: {
+      aria: "Kompetenzen und Expertise",
+      title: "Kompetenzen & Expertise",
+      subtitle: "Ein visueller Überblick über meine wichtigsten Fähigkeiten, digitalen Kompetenzen und strategischen Schwerpunkte.",
+    },
+    en: {
+      aria: "Skills and expertise",
+      title: "Skills & expertise",
+      subtitle: "A visual overview of my key skills, digital competencies and strategic focus areas.",
+    },
+    fr: {
+      aria: "Compétences et expertise",
+      title: "Compétences et expertise",
+      subtitle: "Un aperçu visuel de mes principales compétences, expertises digitales et domaines stratégiques.",
+    },
+    it: {
+      aria: "Competenze ed expertise",
+      title: "Competenze ed expertise",
+      subtitle: "Una panoramica visiva delle mie competenze chiave, digitali e degli ambiti strategici.",
+    },
+  };
+
+  var CHARTS_DE = [
     {
       id: "marketing",
       title: "Digital Marketing & Strategie",
@@ -73,12 +104,242 @@
     },
   ];
 
-  var OVERVIEW_HTML =
-    '<div class="welten-skills-overview" data-welten-skills-overview aria-label="Kompetenzen und Expertise">' +
-    '<h3 class="welten-skills-overview__title">Kompetenzen &amp; Expertise</h3>' +
-    '<p class="welten-skills-overview__subtitle">Ein visueller Überblick über meine wichtigsten Fähigkeiten, digitalen Kompetenzen und strategischen Schwerpunkte.</p>' +
-    '<div class="welten-skills-charts-grid" role="list"></div>' +
-    "</div>";
+  var CHARTS_EN = [
+    {
+      id: "marketing",
+      title: "Digital marketing & strategy",
+      type: "hbar",
+      items: [
+        { label: "Digital marketing", value: 95 },
+        { label: "Corporate identity", value: 92 },
+        { label: "Branding", value: 88 },
+        { label: "SEO", value: 86 },
+        { label: "Web content management", value: 90 },
+      ],
+    },
+    {
+      id: "creative",
+      title: "Creative tools",
+      type: "donut",
+      items: [
+        { label: "Creative Cloud", value: 35, color: "var(--sk-accent)" },
+        { label: "Canva", value: 20, color: "var(--sk-accent-2)" },
+        { label: "Video", value: 20, color: "var(--sk-accent-3)" },
+        { label: "Imaging", value: 25, color: "var(--sk-accent-4)" },
+      ],
+    },
+    {
+      id: "strategy",
+      title: "Strategic skills",
+      type: "radar",
+      items: [
+        { label: "Project coordination", lines: ["Project", "coordination"], value: 92 },
+        { label: "IT strategy", value: 88 },
+        { label: "Software solutions", lines: ["Software", "solutions"], value: 85 },
+        { label: "Key accounts", value: 94 },
+        { label: "Enterprise clients", value: 90 },
+        { label: "Customer retention", lines: ["Customer", "retention"], value: 91 },
+      ],
+    },
+    {
+      id: "web",
+      title: "Web & digital",
+      type: "vbar",
+      items: [
+        { label: "CMS", value: 95 },
+        { label: "Web design", value: 90 },
+        { label: "Images", value: 92 },
+        { label: "SEO", value: 86 },
+        { label: "AI tools", value: 94 },
+      ],
+    },
+    {
+      id: "business",
+      title: "Business & communication",
+      type: "rings",
+      items: [
+        { label: "Communication", value: 96 },
+        { label: "Consulting", value: 93 },
+        { label: "Presentation", value: 91 },
+        { label: "Negotiation", value: 94 },
+      ],
+    },
+    {
+      id: "matrix",
+      title: "Skills matrix",
+      type: "heatmap",
+      levels: ["Strong", "Very strong", "Expert"],
+      categories: ["Marketing", "Design", "Strategy", "Web", "AI", "Communication"],
+      matrix: [3, 2, 3, 3, 2, 3],
+    },
+  ];
+
+  var CHARTS_FR = [
+    {
+      id: "marketing",
+      title: "Marketing digital et stratégie",
+      type: "hbar",
+      items: [
+        { label: "Marketing digital", value: 95 },
+        { label: "Corporate identity", value: 92 },
+        { label: "Branding", value: 88 },
+        { label: "SEO", value: 86 },
+        { label: "Gestion de contenu web", value: 90 },
+      ],
+    },
+    {
+      id: "creative",
+      title: "Outils créatifs",
+      type: "donut",
+      items: [
+        { label: "Creative Cloud", value: 35, color: "var(--sk-accent)" },
+        { label: "Canva", value: 20, color: "var(--sk-accent-2)" },
+        { label: "Vidéo", value: 20, color: "var(--sk-accent-3)" },
+        { label: "Imaging", value: 25, color: "var(--sk-accent-4)" },
+      ],
+    },
+    {
+      id: "strategy",
+      title: "Compétences stratégiques",
+      type: "radar",
+      items: [
+        { label: "Coordination de projets", lines: ["Coordination", "de projets"], value: 92 },
+        { label: "Stratégie IT", value: 88 },
+        { label: "Solutions logicielles", lines: ["Solutions", "logicielles"], value: 85 },
+        { label: "Grands comptes", value: 94 },
+        { label: "Clients entreprise", value: 90 },
+        { label: "Fidélisation client", lines: ["Fidélisation", "client"], value: 91 },
+      ],
+    },
+    {
+      id: "web",
+      title: "Web et digital",
+      type: "vbar",
+      items: [
+        { label: "CMS", value: 95 },
+        { label: "Web design", value: 90 },
+        { label: "Images", value: 92 },
+        { label: "SEO", value: 86 },
+        { label: "Outils IA", value: 94 },
+      ],
+    },
+    {
+      id: "business",
+      title: "Business et communication",
+      type: "rings",
+      items: [
+        { label: "Communication", value: 96 },
+        { label: "Conseil", value: 93 },
+        { label: "Présentation", value: 91 },
+        { label: "Négociation", value: 94 },
+      ],
+    },
+    {
+      id: "matrix",
+      title: "Matrice de compétences",
+      type: "heatmap",
+      levels: ["Fort", "Très fort", "Expert"],
+      categories: ["Marketing", "Design", "Stratégie", "Web", "IA", "Communication"],
+      matrix: [3, 2, 3, 3, 2, 3],
+    },
+  ];
+
+  var CHARTS_IT = [
+    {
+      id: "marketing",
+      title: "Digital marketing e strategia",
+      type: "hbar",
+      items: [
+        { label: "Marketing digitale", value: 95 },
+        { label: "Corporate identity", value: 92 },
+        { label: "Branding", value: 88 },
+        { label: "SEO", value: 86 },
+        { label: "Web content management", value: 90 },
+      ],
+    },
+    {
+      id: "creative",
+      title: "Strumenti creativi",
+      type: "donut",
+      items: [
+        { label: "Creative Cloud", value: 35, color: "var(--sk-accent)" },
+        { label: "Canva", value: 20, color: "var(--sk-accent-2)" },
+        { label: "Video", value: 20, color: "var(--sk-accent-3)" },
+        { label: "Imaging", value: 25, color: "var(--sk-accent-4)" },
+      ],
+    },
+    {
+      id: "strategy",
+      title: "Competenze strategiche",
+      type: "radar",
+      items: [
+        { label: "Coordinamento progetti", lines: ["Coordinamento", "progetti"], value: 92 },
+        { label: "Strategia IT", value: 88 },
+        { label: "Soluzioni software", lines: ["Soluzioni", "software"], value: 85 },
+        { label: "Key account", value: 94 },
+        { label: "Grandi clienti", value: 90 },
+        { label: "Fidelizzazione", lines: ["Fidelizza-", "zione"], value: 91 },
+      ],
+    },
+    {
+      id: "web",
+      title: "Web e digitale",
+      type: "vbar",
+      items: [
+        { label: "CMS", value: 95 },
+        { label: "Web design", value: 90 },
+        { label: "Immagini", value: 92 },
+        { label: "SEO", value: 86 },
+        { label: "Strumenti IA", value: 94 },
+      ],
+    },
+    {
+      id: "business",
+      title: "Business e comunicazione",
+      type: "rings",
+      items: [
+        { label: "Comunicazione", value: 96 },
+        { label: "Consulenza", value: 93 },
+        { label: "Presentazione", value: 91 },
+        { label: "Negoziazione", value: 94 },
+      ],
+    },
+    {
+      id: "matrix",
+      title: "Matrice competenze",
+      type: "heatmap",
+      levels: ["Forte", "Molto forte", "Esperto"],
+      categories: ["Marketing", "Design", "Strategia", "Web", "IA", "Comunicazione"],
+      matrix: [3, 2, 3, 3, 2, 3],
+    },
+  ];
+
+  function chartsForLang(lang) {
+    if (lang === "en") return CHARTS_EN;
+    if (lang === "fr") return CHARTS_FR;
+    if (lang === "it") return CHARTS_IT;
+    return CHARTS_DE;
+  }
+
+  function overviewHtml(lang) {
+    var ui =
+      (window.WeltenTranslations && window.WeltenTranslations.langPack(OVERVIEW_UI, lang)) ||
+      OVERVIEW_UI[lang] ||
+      OVERVIEW_UI.de;
+    return (
+      '<div class="welten-skills-overview" data-welten-skills-overview aria-label="' +
+      ui.aria +
+      '">' +
+      '<h3 class="welten-skills-overview__title">' +
+      ui.title +
+      "</h3>" +
+      '<p class="welten-skills-overview__subtitle">' +
+      ui.subtitle +
+      "</p>" +
+      '<div class="welten-skills-charts-grid" role="list"></div>' +
+      "</div>"
+    );
+  }
 
   function el(tag, cls, html) {
     var node = document.createElement(tag);
@@ -371,20 +632,22 @@
     });
   }
 
-  function buildOverview(container) {
+  function buildOverview(container, lang) {
+    lang = lang || getLang();
     var existing = container.querySelector("[data-welten-skills-overview]");
     if (existing) {
-      if (existing.getAttribute("data-skills-version") === SKILLS_VERSION) return;
+      if (existing.getAttribute("data-skills-version") === SKILLS_VERSION && existing.getAttribute("data-skills-lang") === lang) return;
       existing.remove();
     }
 
-    container.insertAdjacentHTML("beforeend", OVERVIEW_HTML);
+    container.insertAdjacentHTML("beforeend", overviewHtml(lang));
 
     var overview = container.querySelector("[data-welten-skills-overview]");
     overview.setAttribute("data-skills-version", SKILLS_VERSION);
+    overview.setAttribute("data-skills-lang", lang);
     var grid = overview.querySelector(".welten-skills-charts-grid");
 
-    CHARTS.forEach(function (chart) {
+    chartsForLang(lang).forEach(function (chart) {
       var card = el("article", "welten-skills-chart-card glass-card");
       card.setAttribute("role", "listitem");
       card.setAttribute("data-skills-chart", chart.id);
@@ -422,8 +685,10 @@
     obs.observe(overview);
   }
 
-  function init() {
-    document.querySelectorAll("[data-welten-leistungen-v1] .slide-inner, [data-welten-strengths-v1] .slide-inner").forEach(buildOverview);
+  function init(lang) {
+    document.querySelectorAll("[data-welten-leistungen-v1] .slide-inner, [data-welten-strengths-v1] .slide-inner").forEach(function (c) {
+      buildOverview(c, lang);
+    });
   }
 
   function boot() {
@@ -431,10 +696,16 @@
       document.body.getAttribute("data-current-slide") === "leistungen" ||
       !!document.querySelector("#slide-leistungen.active");
     if (onLeistungen) {
-      init();
+      init(getLang());
       return;
     }
-    document.addEventListener("welten-init-skills-charts", init, { once: true });
+    document.addEventListener(
+      "welten-init-skills-charts",
+      function () {
+        init(getLang());
+      },
+      { once: true }
+    );
   }
 
   if (document.readyState === "loading") {
@@ -442,4 +713,11 @@
   } else {
     boot();
   }
+
+  document.addEventListener("welten-lang-change", function (e) {
+    var lang = (e && e.detail && e.detail.lang) || getLang();
+    init(lang);
+  });
+
+  window.WeltenSkillsCharts = { init: init, getLang: getLang };
 })();

@@ -120,7 +120,7 @@
         }
         if (bump) {
           var tick = Math.min(94, 72 + (Date.now() - start) / 220);
-          bump(tick, "Parallax wird initialisiert…");
+          bump(tick, splashText("initParallax", "Parallax wird initialisiert…"));
         }
         setTimeout(poll, POLL_MS);
       }
@@ -219,8 +219,17 @@
       setProgress(bar, label, pctEl, progress, text);
     }
 
+    function splashText(key, fallback) {
+      if (window.WeltenTranslations) {
+        var lg = window.WeltenTranslations.getLang();
+        var v = window.WeltenTranslations.t("splash." + key, lg);
+        if (v) return v;
+      }
+      return fallback;
+    }
+
     try {
-      bump(8, "Multiversum wird vorbereitet…");
+      bump(8, splashText("preparing", "Multiversum wird vorbereitet…"));
 
       var frame = document.querySelector(".mv4-frame.is-active");
 
@@ -230,13 +239,13 @@
       var preloadPromise = Promise.all(
         CRITICAL_PRELOAD.map(function (url, i) {
           return preloadImage(url).then(function () {
-            bump(12 + ((i + 1) / CRITICAL_PRELOAD.length) * 28, "Assets werden geladen…");
+            bump(12 + ((i + 1) / CRITICAL_PRELOAD.length) * 28, splashText("loadingAssets", "Assets werden geladen…"));
           });
         })
       );
 
       await framePromise;
-      bump(52, "Welt wird aufgebaut…");
+      bump(52, splashText("buildingWorld", "Welt wird aufgebaut…"));
       await Promise.race([
         heroPromise,
         preloadPromise,
@@ -244,15 +253,15 @@
       if (!heroReadySignal && frame) {
         await waitForParallax(frame, bump);
       }
-      bump(96, "Fast fertig…");
+      bump(96, splashText("almostDone", "Fast fertig…"));
 
       var elapsed = Date.now() - started;
       if (elapsed < MIN_MS) await wait(MIN_MS - elapsed);
 
-      bump(100, "Willkommen im Multiversum");
+      bump(100, splashText("welcome", "Willkommen im Multiversum"));
       await wait(40);
     } catch (e) {
-      bump(100, "Willkommen im Multiversum");
+      bump(100, splashText("welcome", "Willkommen im Multiversum"));
       await wait(40);
     }
 

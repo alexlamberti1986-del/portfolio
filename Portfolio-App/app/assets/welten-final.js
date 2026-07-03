@@ -48,6 +48,11 @@
   }
 
   function fixHomeButtons() {
+    var lang = "de";
+    try {
+      lang = localStorage.getItem("mv-preview-lang") || sessionStorage.getItem("mv-preview-lang") || "de";
+    } catch (e) {}
+    if (lang !== "de") return;
     document.querySelectorAll('#slide-home .cta-row button[data-go="about"]').forEach(function (btn) {
       if (btn.textContent.indexOf("Mehr") >= 0) btn.textContent = "Über mich";
     });

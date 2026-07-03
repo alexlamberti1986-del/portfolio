@@ -9,37 +9,12 @@
   var BASE = "https://www.alexlamberti.ch";
   var OG_IMAGE = BASE + "/assets/og-image.jpg";
 
-  var PAGES = {
-    home: {
-      title: "Alex Lamberti Multiversum für digitale Welten",
-      description:
-        "Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Drei digitale Welten für Ideen, Projekte, Webdesign und Digital Marketing.",
-      path: "/",
-    },
-    projects: {
-      title: "Projekte | Alex Lamberti · Websites, Leadformulare & Visitenkarten",
-      description:
-        "Ausgewählte Projekte von Alex Lamberti: Websites, Leadformulare und digitale Visitenkarten mit klarer Handschrift.",
-      path: "/projekte",
-    },
-    leistungen: {
-      title: "Leistungen | Alex Lamberti · Branding, Webdesign & Marketing",
-      description:
-        "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Website-Optimierung.",
-      path: "/leistungen",
-    },
-    about: {
-      title: "Über mich | Alex Lamberti · Digital Marketing Spezialist",
-      description:
-        "Wer ist Alex Lamberti? Werdegang, Arbeitsweise, Werte und Kompetenzen im Digital Marketing.",
-      path: "/ueber-mich",
-    },
-    contact: {
-      title: "Kontakt | Alex Lamberti · Telefon, E-Mail & Standort",
-      description:
-        "Kontakt zu Alex Lamberti: Telefon 079 667 82 11, E-Mail alex.lamberti@hotmail.ch, Standort Full-Reuenthal.",
-      path: "/kontakt",
-    },
+  var PATHS = {
+    home: "/",
+    projects: "/projekte",
+    leistungen: "/leistungen",
+    about: "/ueber-mich",
+    contact: "/kontakt",
   };
 
   var ROUTE_CHAPTER = {
@@ -49,6 +24,29 @@
     "/ueber-mich": "about",
     "/kontakt": "contact",
   };
+
+  function getLang() {
+    return window.WeltenTranslations ? window.WeltenTranslations.getLang() : "de";
+  }
+
+  function pageMeta(chapter, lang) {
+    if (window.WeltenTranslations) {
+      var seo = window.WeltenTranslations.pack("seo." + chapter, lang);
+      if (seo && seo.title) {
+        return {
+          title: seo.title,
+          description: seo.description,
+          path: PATHS[chapter] || PATHS.home,
+        };
+      }
+    }
+    return {
+      title: "Alex Lamberti Multiversum für digitale Welten",
+      description:
+        "Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Drei digitale Welten für Ideen, Projekte, Webdesign und Digital Marketing.",
+      path: PATHS[chapter] || PATHS.home,
+    };
+  }
 
   function upsertMeta(attr, key, content) {
     var sel = "meta[" + attr + '="' + key + '"]';
@@ -107,14 +105,18 @@
     return ROUTE_CHAPTER[p] || "home";
   }
 
-  function apply(chapter) {
-    var page = PAGES[chapter] || PAGES.home;
+  function apply(chapter, lang) {
+    chapter = chapter || chapterFromPath();
+    lang = window.WeltenTranslations ? window.WeltenTranslations.normalizeLang(lang || getLang()) : "de";
+    var page = pageMeta(chapter, lang);
     document.title = page.title;
     upsertMeta("name", "description", page.description);
     upsertLink("canonical", BASE + page.path);
 
+    var ogLocale = window.WeltenTranslations ? window.WeltenTranslations.OG_LOCALE[lang] || "de_CH" : "de_CH";
+
     upsertMeta("property", "og:type", "website");
-    upsertMeta("property", "og:locale", "de_CH");
+    upsertMeta("property", "og:locale", ogLocale);
     upsertMeta("property", "og:site_name", "Alex Lamberti");
     upsertMeta("property", "og:title", page.title);
     upsertMeta("property", "og:description", page.description);
@@ -135,5 +137,10 @@
     if (typeof e.data.chapter === "string") apply(e.data.chapter);
   });
 
-  window.WeltenShellSEO = { apply: apply, PAGES: PAGES };
+  window.addEventListener("message", function (e) {
+    if (!e.data || e.data.type !== "portfolio-preview-lang") return;
+    if (e.data.lang) apply(chapterFromPath(), e.data.lang);
+  });
+
+  window.WeltenShellSEO = { apply: apply, chapterFromPath: chapterFromPath };
 })();
