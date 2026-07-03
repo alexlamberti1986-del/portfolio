@@ -730,10 +730,6 @@
 
   function boot() {
     extendI18n();
-    document.addEventListener("welten-lang-change", function (e) {
-      var lang = (e && e.detail && e.detail.lang) || "de";
-      applyContent(document, lang);
-    });
   }
 
   if (window.WeltenPreviewI18n) {

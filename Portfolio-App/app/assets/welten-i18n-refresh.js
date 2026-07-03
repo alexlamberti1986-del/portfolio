@@ -5,6 +5,8 @@
   "use strict";
 
   var busy = false;
+  var refreshTimer = 0;
+  var lastLang = "";
 
   function currentLang() {
     try {
@@ -15,9 +17,10 @@
   }
 
   function refresh(lang) {
-    if (busy) return;
-    busy = true;
     var code = lang || currentLang();
+    if (busy || code === lastLang) return;
+    busy = true;
+    lastLang = code;
     try {
       if (window.WeltenPreviewI18n) {
         window.WeltenPreviewI18n.apply(document, code);
@@ -46,49 +49,25 @@
     busy = false;
   }
 
-  function scheduleRefresh(lang) {
-    var code = lang || currentLang();
-    refresh(code);
-    requestAnimationFrame(function () {
-      refresh(code);
-    });
-    setTimeout(function () {
-      refresh(code);
+  function scheduleRefresh(lang, force) {
+    if (force) lastLang = "";
+    if (refreshTimer) window.clearTimeout(refreshTimer);
+    refreshTimer = window.setTimeout(function () {
+      refreshTimer = 0;
+      refresh(lang);
     }, 120);
   }
-
-  window.addEventListener("load", function () {
-    scheduleRefresh();
-  });
 
   document.addEventListener("welten-chapter-change", function (e) {
     var ch = e && e.detail && e.detail.chapter;
     if (ch === "home" || ch === "projects" || ch === "leistungen" || ch === "about") {
-      scheduleRefresh();
+      scheduleRefresh(null, true);
     }
   });
 
   document.addEventListener("welten-projects-panel-open", function () {
-    scheduleRefresh();
+    scheduleRefresh(null, true);
   });
-
-  window.addEventListener("message", function (e) {
-    if (!e.data) return;
-    if (e.data.type === "portfolio-preview-lang" && e.data.lang) {
-      scheduleRefresh(e.data.lang);
-    }
-  });
-
-  try {
-    new MutationObserver(function (mutations) {
-      for (var i = 0; i < mutations.length; i++) {
-        if (mutations[i].attributeName === "data-world") {
-          scheduleRefresh();
-          break;
-        }
-      }
-    }).observe(document.body, { attributes: true, attributeFilter: ["data-world"] });
-  } catch (e) {}
 
   window.WeltenI18nRefresh = { refresh: refresh, scheduleRefresh: scheduleRefresh };
 })();

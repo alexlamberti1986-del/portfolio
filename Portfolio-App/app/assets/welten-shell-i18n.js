@@ -83,11 +83,5 @@
     }
   });
 
-  try {
-    new MutationObserver(function () {
-      applyShell(lang());
-    }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
-  } catch (e) {}
-
   window.WeltenShellI18n = { apply: applyShell };
 })();

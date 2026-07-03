@@ -343,7 +343,9 @@
     });
   }
 
-  function broadcastLang() {
+  var broadcastTimer = 0;
+
+  function broadcastLangNow() {
     try {
       localStorage.setItem(LANG_KEY, currentLang);
     } catch (e) {}
@@ -354,9 +356,18 @@
       window.WeltenShellI18n.apply(currentLang);
     }
     frames.forEach(function (f) {
+      if (!frameHasSrc(f)) return;
       postFrame(f, { type: "portfolio-preview-lang", lang: currentLang });
       postFrame(f, { type: "alx-preview-sync", lang: currentLang, world: mapWorldForForm(activeIdx()) });
     });
+  }
+
+  function broadcastLang() {
+    if (broadcastTimer) window.clearTimeout(broadcastTimer);
+    broadcastTimer = window.setTimeout(function () {
+      broadcastTimer = 0;
+      broadcastLangNow();
+    }, 32);
   }
 
   function mapWorldForForm(i) {

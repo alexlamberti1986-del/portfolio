@@ -237,9 +237,6 @@
         );
       } catch (e) {}
     }
-    if (data.lang && window.WeltenPreviewI18nBridge) {
-      window.WeltenPreviewI18nBridge.apply(data.lang);
-    }
   }
 
   window.addEventListener("message", function (e) {

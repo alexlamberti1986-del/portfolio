@@ -6,6 +6,8 @@
 
   var LANG_KEY = "mv-preview-lang";
   var active = false;
+  var lastAppliedLang = "";
+  var applyTimer = 0;
 
   function isPreviewContext() {
     if (window.parent === window) return false;
@@ -59,9 +61,11 @@
     } catch (e) {}
   }
 
-  function apply(lang) {
+  function applyNow(lang) {
     if (!window.WeltenPreviewI18n) return;
     var code = lang || currentLang();
+    if (code === lastAppliedLang) return;
+    lastAppliedLang = code;
     storeLang(code);
     window.WeltenPreviewI18n.apply(document, code);
     if (window.MVParallaxHero && typeof window.MVParallaxHero.applyLang === "function") {
@@ -72,6 +76,15 @@
       window.WeltenContactLeadform.syncLeadFormFrame();
     }
     document.dispatchEvent(new CustomEvent("welten-lang-change", { detail: { lang: code } }));
+  }
+
+  function apply(lang) {
+    var code = lang || currentLang();
+    if (applyTimer) window.clearTimeout(applyTimer);
+    applyTimer = window.setTimeout(function () {
+      applyTimer = 0;
+      applyNow(code);
+    }, 48);
   }
 
   function boot() {
@@ -99,17 +112,26 @@
 
     if (!isPreviewContext() && !inShell) return;
     active = true;
-    requestAnimationFrame(function () {
-      apply(currentLang());
-    });
+    var bootLang = currentLang();
+    var runBoot = function () {
+      applyNow(bootLang);
+    };
+    if (typeof requestIdleCallback === "function") {
+      requestIdleCallback(runBoot, { timeout: 1200 });
+    } else {
+      setTimeout(runBoot, 0);
+    }
 
     window.addEventListener("message", function (e) {
       if (!e.data) return;
       if (e.data.type === "portfolio-preview-lang" && e.data.lang) {
         apply(e.data.lang);
       }
-      if (e.data.type === "alx-preview-sync" && e.data.lang) {
-        apply(e.data.lang);
+      if (e.data.type === "alx-preview-sync") {
+        if (e.data.lang) syncLeadForm(e.data.lang);
+        if (window.WeltenContactLeadform && window.WeltenContactLeadform.syncLeadFormFrame) {
+          window.WeltenContactLeadform.syncLeadFormFrame();
+        }
       }
     });
   }
