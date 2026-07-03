@@ -224,6 +224,17 @@
     }
     if (e.data.type === "portfolio-preview-lang" || e.data.type === "alx-preview-sync") {
       syncLeadFormFrame();
+      if (window.WeltenContentI18n && typeof window.WeltenContentI18n.applyContactCopy === "function") {
+        try {
+          var lg =
+            (e.data.lang ||
+              localStorage.getItem("mv-preview-lang") ||
+              sessionStorage.getItem("mv-preview-lang") ||
+              "de");
+          window.WeltenContentI18n.applyContactCopy(document, lg);
+        } catch (eLang) {}
+      }
+      return;
     }
   });
 

@@ -71,6 +71,7 @@
     if (window.WeltenContactLeadform && window.WeltenContactLeadform.syncLeadFormFrame) {
       window.WeltenContactLeadform.syncLeadFormFrame();
     }
+    document.dispatchEvent(new CustomEvent("welten-lang-change", { detail: { lang: code } }));
   }
 
   function boot() {

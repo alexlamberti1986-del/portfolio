@@ -159,6 +159,12 @@
     about.appendChild(wrap);
   }
 
+  function refreshMergedAbout() {
+    var merged = document.querySelector(".welten-about-merged");
+    if (merged) merged.remove();
+    mergeAboutContent();
+  }
+
   function enhanceContact() {
     /* Kontakt aus FINAL HTML · kein Map-Embed */
   }
@@ -282,6 +288,7 @@
     navigateToChapter: navigateToChapter,
     scrollToSection: scrollToSection,
     syncUrl: syncUrl,
+    refreshMergedAbout: refreshMergedAbout,
     ROUTES: ROUTES,
   };
 })();

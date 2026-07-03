@@ -459,6 +459,10 @@
       }
       function finish() {
         loaded[i] = true;
+        try {
+          postFrame(f, { type: "portfolio-preview-lang", lang: currentLang });
+          postFrame(f, { type: "alx-preview-sync", lang: currentLang, world: mapWorldForForm(i) });
+        } catch (eLoad) {}
         resolve();
       }
       f.addEventListener("load", finish, { once: true });
