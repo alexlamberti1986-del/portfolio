@@ -110,6 +110,30 @@
   <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 </head>
 <body data-master-world="general" data-live-shell="1" data-live-default="0" data-splash-boot="0" data-world-audio-test="1">
+  <script>
+    (function () {
+      if (document.body.getAttribute("data-world-audio-test") !== "1") return;
+      var src = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio3";
+      var a = new Audio(src);
+      a.loop = true;
+      a.preload = "auto";
+      a.volume = 0;
+      window.__mvWorldAudioEarly = a;
+      function kick() {
+        var fx = document.getElementById("mv4-fx");
+        if (fx && fx.getAttribute("aria-pressed") === "false") return;
+        var p = a.play();
+        if (p && p.then) {
+          p.then(function () {
+            a.volume = 0.4;
+          }).catch(function () {});
+        }
+      }
+      a.addEventListener("canplay", kick, { once: true });
+      a.addEventListener("loadeddata", kick, { once: true });
+      kick();
+    })();
+  </script>
   <div id="mvSplashBoot" hidden aria-hidden="true">
     <div class="mv-splash-boot__bg" aria-hidden="true"></div>
     <div class="mv-splash-boot__scrim" aria-hidden="true"></div>
@@ -209,6 +233,6 @@
   <script src="assets/welten-multiversum-master.js?v=20260706perf-fix" defer></script>
   <script src="assets/welten-world-switch-freiraum-brush-v3.js?v=20260703wws-smooth" defer></script>
   <script src="assets/welten-world-switch-preview.js?v=20260703wws-smooth" defer></script>
-  <script src="assets/welten-world-audio-test.js?v=20260706audio2" defer></script>
+  <script src="assets/welten-world-audio-test.js?v=20260706audio3" defer></script>
 </body>
 </html>
