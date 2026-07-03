@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de-CH" class="mv-splash-active">
+<html lang="de-CH">
 <head>
   <script>
     (function () {
@@ -15,18 +15,9 @@
         }
       });
 
-      try {
-        if (!window.matchMedia("(min-width: 1024px)").matches) {
-          document.documentElement.classList.remove("mv-splash-active", "mv-shell-booting");
-        }
-      } catch (e) {
-        if (window.innerWidth < 1024) {
-          document.documentElement.classList.remove("mv-splash-active", "mv-shell-booting");
-        }
-      }
-
-      /* Hard failsafe: niemals Splash/Boot-Gate blockieren */
-      setTimeout(releaseShell, 9000);
+      releaseShell();
+      document.addEventListener("DOMContentLoaded", releaseShell);
+      setTimeout(releaseShell, 1200);
     })();
   </script>
   <link rel="icon" href="assets/favicon/favicon.ico" />
@@ -70,6 +61,7 @@
   <link rel="preload" as="image" href="assets/images/splash/multiversum-boot-splash.png?v=20260705live" fetchpriority="high" media="(min-width: 1024px)" />
   <style id="mv-splash-critical">
     html, body { margin: 0; background: #02030b; }
+    #mvSplashBoot { display: none !important; visibility: hidden !important; }
     html.mv-splash-active body { overflow: hidden; }
     #mvSplashBoot {
       position: fixed; inset: 0; z-index: 2147483000;
@@ -116,8 +108,8 @@
   <script src="assets/welten-shell-seo.js?v=20260706boot-rescue" defer></script>
   <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 </head>
-<body data-master-world="general" data-live-shell="1" data-live-default="0" data-splash-boot="1">
-  <div id="mvSplashBoot" role="status" aria-live="polite" aria-label="Ladevorgang">
+<body data-master-world="general" data-live-shell="1" data-live-default="0" data-splash-boot="0">
+  <div id="mvSplashBoot" hidden aria-hidden="true">
     <div class="mv-splash-boot__bg" aria-hidden="true"></div>
     <div class="mv-splash-boot__scrim" aria-hidden="true"></div>
     <div class="mv-splash-boot__panel">
