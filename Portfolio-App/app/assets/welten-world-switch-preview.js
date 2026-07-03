@@ -49,7 +49,7 @@
       timing = Object.assign(timing, {
         WORLD_TRANSITION_DURATION: 4200,
         EFFECT_MS: 3400,
-        TITLE_REVEAL_AT: 1280,
+        TITLE_REVEAL_AT: 760,
         TITLE_FADE_IN: 320,
         TITLE_HOLD: 1300,
         COVER_MS: 1250,
@@ -106,7 +106,9 @@
   function applyTimingCssVars(worldKey) {
     var timing = getTimingForWorld(worldKey || "");
     var r = document.documentElement;
+    var enterMs = Math.min(520, Math.max(360, Math.round(timing.COVER_MS * 0.42)));
     r.style.setProperty("--wws-transition-duration", timing.WORLD_TRANSITION_DURATION + "ms");
+    r.style.setProperty("--wws-enter-duration", enterMs + "ms");
     r.style.setProperty("--wws-title-fade-in", timing.TITLE_FADE_IN + "ms");
     r.style.setProperty("--wws-title-hold", timing.TITLE_HOLD + "ms");
     r.style.setProperty("--wws-title-fade-out", timing.TITLE_FADE_OUT + "ms");
@@ -287,6 +289,9 @@
     if (!overlay || overlay._wwsTitleShown) return;
     overlay._wwsTitleShown = true;
     overlay._wwsTitleShownAt = Date.now();
+    if (typeof overlay._wwsOnTitleRevealed === "function") {
+      overlay._wwsOnTitleRevealed();
+    }
   }
 
   function revealStagedTitle(overlay) {
@@ -1604,6 +1609,11 @@
     document.body.appendChild(overlay);
     document.documentElement.classList.add("welten-world-switch-lock");
 
+    var frameReady =
+      typeof window.preloadWorldIndex === "function"
+        ? window.preloadWorldIndex(targetIdx)
+        : Promise.resolve();
+
     var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var coverMs = reduced ? 80 : timing.COVER_MS;
     var minShowMs = reduced
@@ -1614,33 +1624,48 @@
     var start = Date.now();
 
     activeRaf = requestAnimationFrame(function () {
-      overlay.classList.add("is-entering");
-      startCanvas(overlay, worldKey);
-      if (reduced) {
-        wwsLater(function () {
-          revealStagedTitle(overlay);
-        }, 200);
-      } else if (!isCanvasDrivenWorld(worldKey)) {
-        wwsLater(function () {
-          revealStagedTitle(overlay);
-        }, timing.TITLE_REVEAL_AT);
-      } else if (worldKey === "nexora" || worldKey === "general" || worldKey === "freiraum") {
-        /* Canvas-gesteuerte Titel-Enthüllung (NEXORA / MULTIVERSUM / FREIRAUM) */
-      } else {
-        wwsLater(function () {
-          revealStagedTitle(overlay);
-        }, timing.TITLE_REVEAL_AT + 180);
-      }
-      if (worldKey === "vertex" && !reduced) {
-        wwsLater(function () {
-          overlay.classList.add("wws--pro-white-bg");
-        }, Math.round(timing.EFFECT_MS * 0.37));
-        wwsLater(function () {
-          overlay.classList.remove("wws--pro-white-bg");
-          overlay.classList.add("wws--pro-black-bg", "wws--dark-text");
-        }, Math.round(timing.EFFECT_MS * 0.76));
-      }
+      requestAnimationFrame(function () {
+        overlay.classList.add("is-entering");
+        startCanvas(overlay, worldKey);
+        if (reduced) {
+          wwsLater(function () {
+            revealStagedTitle(overlay);
+          }, 200);
+        } else if (!isCanvasDrivenWorld(worldKey)) {
+          wwsLater(function () {
+            revealStagedTitle(overlay);
+          }, timing.TITLE_REVEAL_AT);
+        } else if (worldKey === "nexora" || worldKey === "general" || worldKey === "freiraum") {
+          /* Canvas-gesteuerte Titel-Enthüllung (NEXORA / MULTIVERSUM / FREIRAUM) */
+        } else {
+          wwsLater(function () {
+            revealStagedTitle(overlay);
+          }, timing.TITLE_REVEAL_AT + 180);
+        }
+        if (worldKey === "vertex" && !reduced) {
+          wwsLater(function () {
+            overlay.classList.add("wws--pro-white-bg");
+          }, Math.round(timing.EFFECT_MS * 0.37));
+          wwsLater(function () {
+            overlay.classList.remove("wws--pro-white-bg");
+            overlay.classList.add("wws--pro-black-bg", "wws--dark-text");
+          }, Math.round(timing.EFFECT_MS * 0.76));
+        }
+      });
     });
+
+    function scheduleExitAfterTitle() {
+      if (!overlay || overlay._wwsExitScheduled) return;
+      overlay._wwsExitScheduled = true;
+      var wait = Math.max(0, minShowMs - (Date.now() - start));
+      var sinceTitle = overlay._wwsTitleShownAt ? Date.now() - overlay._wwsTitleShownAt : 0;
+      var extra = Math.max(0, postTitleHoldMs - sinceTitle);
+      wwsLater(finishExit, Math.max(wait, extra));
+    }
+
+    overlay._wwsOnTitleRevealed = function () {
+      if (overlay._wwsSwitchDone) scheduleExitAfterTitle();
+    };
 
     function finishExit() {
       if (!activeOverlay || activeOverlay._wwsFinishing) return;
@@ -1667,37 +1692,30 @@
 
     wwsLater(function () {
       var switchFn = window.switchToWorldIndex;
-      var p =
-        typeof switchFn === "function"
-          ? Promise.resolve(switchFn(targetIdx))
-          : Promise.resolve();
-
-      p.then(function () {
-        var wait = Math.max(0, minShowMs - (Date.now() - start));
-        if (postTitleHoldMs > 0) {
-          function scheduleExit() {
-            var elapsed = Date.now() - start;
-            var maxHold = getTransitionFailsafeMs(timing);
-            if (!overlay._wwsTitleShownAt) {
-              if (elapsed < maxHold) {
-                wwsLater(scheduleExit, 32);
-                return;
-              }
-              revealStagedTitle(overlay);
-            }
-            var sinceTitle = overlay._wwsTitleShownAt
-              ? Date.now() - overlay._wwsTitleShownAt
-              : 0;
-            var extra = Math.max(0, postTitleHoldMs - sinceTitle);
-            wwsLater(finishExit, Math.max(wait, extra));
+      frameReady
+        .then(function () {
+          return typeof switchFn === "function" ? Promise.resolve(switchFn(targetIdx)) : Promise.resolve();
+        })
+        .then(function () {
+          overlay._wwsSwitchDone = true;
+          if (overlay._wwsTitleShownAt) {
+            scheduleExitAfterTitle();
+            return;
           }
-          scheduleExit();
-        } else {
-          wwsLater(finishExit, wait);
-        }
-      }).catch(function () {
-        finishExit();
-      });
+          if (postTitleHoldMs > 0) {
+            var maxHold = getTransitionFailsafeMs(timing);
+            var remain = Math.max(0, maxHold - (Date.now() - start));
+            wwsLater(function () {
+              if (!overlay._wwsTitleShownAt) revealStagedTitle(overlay);
+              scheduleExitAfterTitle();
+            }, remain);
+            return;
+          }
+          wwsLater(finishExit, Math.max(0, minShowMs - (Date.now() - start)));
+        })
+        .catch(function () {
+          finishExit();
+        });
     }, coverMs);
 
     wwsLater(function () {
@@ -1709,6 +1727,27 @@
     var bar = document.querySelector(".world-bar");
     if (!bar || bar.dataset.wwsPreviewHooked === "1") return;
     bar.dataset.wwsPreviewHooked = "1";
+
+    function preloadFromBtn(btn) {
+      if (!btn || typeof window.preloadWorldIndex !== "function") return;
+      var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+      if (isFinite(idx)) window.preloadWorldIndex(idx);
+    }
+
+    bar.addEventListener(
+      "pointerenter",
+      function (e) {
+        preloadFromBtn(e.target.closest("button[data-iframe]"));
+      },
+      true
+    );
+    bar.addEventListener(
+      "focusin",
+      function (e) {
+        preloadFromBtn(e.target.closest("button[data-iframe]"));
+      },
+      true
+    );
 
     bar.addEventListener(
       "click",

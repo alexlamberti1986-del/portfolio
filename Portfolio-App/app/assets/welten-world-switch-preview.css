@@ -13,7 +13,11 @@
   pointer-events: all;
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--wws-title-fade-in, 300ms) ease, visibility var(--wws-title-fade-in, 300ms) ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition:
+    opacity var(--wws-enter-duration, 420ms) cubic-bezier(0.22, 1, 0.36, 1),
+    visibility var(--wws-enter-duration, 420ms) cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity;
 }
 
@@ -25,7 +29,8 @@
 
 .welten-world-switch.is-exiting {
   opacity: 0;
-  transition-duration: var(--wws-exit-duration, 300ms);
+  transition-duration: var(--wws-exit-duration, 400ms);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .welten-world-switch__bg,
@@ -94,6 +99,7 @@
 
 .welten-world-switch[data-world="vertex"].wws-staged .welten-world-switch__bg {
   background: #0a0a0a !important;
+  transition: background-color 320ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .welten-world-switch[data-world="vertex"].wws-staged.wws--pro-white-bg .welten-world-switch__bg {
@@ -213,7 +219,7 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
   filter: drop-shadow(0 6px 24px rgba(255, 209, 102, 0.45)) drop-shadow(0 0 18px rgba(255, 209, 102, 0.42));
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-shadow: none;
 }
 
@@ -270,13 +276,13 @@
   }
   28% {
     opacity: 1;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     filter: blur(0) drop-shadow(0 6px 24px rgba(255, 209, 102, 0.5));
     transform: scale(1.04);
   }
   100% {
     opacity: 1;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     filter: blur(0) drop-shadow(0 6px 24px rgba(255, 209, 102, 0.45));
     transform: scale(1);
   }
@@ -865,6 +871,8 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
   filter: drop-shadow(0 6px 24px rgba(255, 209, 102, 0.45));
+  letter-spacing: 0.08em;
+  font-weight: 800;
 }
 
 .welten-world-switch[data-world="freiraum"] .welten-world-switch__sub {

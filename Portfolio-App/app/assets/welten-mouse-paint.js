@@ -89,6 +89,7 @@
   }
 
   function canPaint() {
+    if (window.__worldTransitionRunning) return false;
     var wld = world();
     return effectsAllowed() && !!ACTIVE_WORLDS[wld] && !!paintMode();
   }

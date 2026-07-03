@@ -493,6 +493,7 @@
   }
 
   window.switchToWorldIndex = switchToWorldIndex;
+  window.preloadWorldIndex = loadFrame;
   window.mv4ActiveFrameIndex = activeIdx;
 
   function switchTo(i) {

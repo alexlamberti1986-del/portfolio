@@ -133,7 +133,7 @@
     var FT =
       window.WeltenWorldSwitchPreview && window.WeltenWorldSwitchPreview.getTimingForWorld
         ? window.WeltenWorldSwitchPreview.getTimingForWorld("freiraum")
-        : { EFFECT_MS: 3400, TITLE_REVEAL_AT: 1280 };
+        : { EFFECT_MS: 3400, TITLE_REVEAL_AT: 760 };
 
     var totalMs = FT.EFFECT_MS || 3400;
     var titleAtMs = FT.TITLE_REVEAL_AT || Math.round(totalMs * 0.5);
@@ -469,7 +469,9 @@
       var raw = clamp(elapsed / totalMs, 0, 1);
       var p = easeInOut(raw);
       var dissolve =
-        elapsed < dissolveStartMs ? 1 : Math.max(0, 1 - (elapsed - dissolveStartMs) / 440);
+        elapsed < dissolveStartMs
+          ? 1
+          : Math.max(0, 1 - easeOutCubic(clamp((elapsed - dissolveStartMs) / 440, 0, 1)));
 
       render(p, dissolve);
 
