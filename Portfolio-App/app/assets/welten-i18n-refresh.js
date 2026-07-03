@@ -22,21 +22,28 @@
       if (window.WeltenPreviewI18n) {
         window.WeltenPreviewI18n.apply(document, code);
       }
+    } catch (e1) {}
+    try {
       if (window.WeltenContentI18n && typeof window.WeltenContentI18n.apply === "function") {
         window.WeltenContentI18n.apply(document, code);
       }
+    } catch (e2) {}
+    try {
       if (window.WeltenProjectsI18n && typeof window.WeltenProjectsI18n.apply === "function") {
         window.WeltenProjectsI18n.apply(document, code);
       }
+    } catch (e3) {}
+    try {
       if (window.WeltenCleanup && typeof window.WeltenCleanup.injectLeistungenRich === "function") {
         window.WeltenCleanup.injectLeistungenRich(code);
       }
+    } catch (e4) {}
+    try {
       if (window.WeltenSkillsCharts && typeof window.WeltenSkillsCharts.init === "function") {
         window.WeltenSkillsCharts.init(code);
       }
-    } finally {
-      busy = false;
-    }
+    } catch (e5) {}
+    busy = false;
   }
 
   function scheduleRefresh(lang) {
