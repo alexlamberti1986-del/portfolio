@@ -32,11 +32,36 @@ body[data-world="general"]:not(.mv-home-ready) .welten-skip-link {
 }
 
 body[data-world="general"].mv-home-ready #mvStaticHero,
+body[data-world="general"][data-boot-failsafe="1"] #mvStaticHero,
 body[data-world="general"].mv-home-ready #mvParallaxHero.is-boot-painted {
   display: grid !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
+}
+
+@media (max-width: 1023px) {
+  body[data-world="general"] #mvStaticHero {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    min-height: min(72vh, 640px);
+  }
+
+  body[data-world="general"].mv-home-ready #slidesRoot,
+  body[data-world="general"][data-boot-failsafe="1"] #slidesRoot,
+  body[data-world="general"].mv-home-ready .site-header,
+  body[data-world="general"][data-boot-failsafe="1"] .site-header {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  body[data-world="general"].mv-home-ready .site-header,
+  body[data-world="general"][data-boot-failsafe="1"] .site-header {
+    display: flex !important;
+  }
 }
 
 body[data-world="general"].mv-home-ready #mvParallaxHero.is-boot-painted {

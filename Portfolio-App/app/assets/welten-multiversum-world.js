@@ -140,8 +140,15 @@
 
   function buildStaticHero() {
     if (document.getElementById("mvStaticHero")) return;
+
     var stage = document.getElementById("dnaStage");
-    if (!stage) return;
+    var mount =
+      stage ||
+      document.querySelector("#slide-home .slide-inner--home") ||
+      document.getElementById("slide-home") ||
+      document.getElementById("slidesRoot") ||
+      document.body;
+    if (!mount) return;
 
     var hero = document.createElement("div");
     hero.id = "mvStaticHero";
@@ -162,9 +169,15 @@
       navHtml +
       "</nav></div>";
 
-    stage.parentNode.insertBefore(hero, stage);
-    stage.classList.add("mv-dna-hidden");
-    stage.remove();
+    if (stage && stage.parentNode) {
+      stage.parentNode.insertBefore(hero, stage);
+      stage.classList.add("mv-dna-hidden");
+      stage.remove();
+    } else if (mount.firstChild) {
+      mount.insertBefore(hero, mount.firstChild);
+    } else {
+      mount.appendChild(hero);
+    }
 
     hero.querySelectorAll("[data-go]").forEach(function (btn) {
       btn.addEventListener("click", function () {
@@ -280,12 +293,14 @@
   function boot() {
     applyTheme();
     patchMobileHeader();
-    stripDecor();
     if (!isDesktopParallaxHero()) {
+      /* Hero zuerst bauen — stripDecor entfernt sonst #dnaStage */
       buildStaticHero();
+      stripDecor();
       finishBoot();
       return;
     }
+    stripDecor();
     waitForParallaxDeps(function () {
       finishBoot();
       preloadUrls(PARALLAX_PRELOAD);
@@ -352,20 +367,36 @@
     }
   });
 
-  /* Sofort booten sobald dieses Script läuft (Head-Defer, vor schweren Body-Scripts) */
-  if (document.body) {
-    boot();
-  } else {
-    document.addEventListener("DOMContentLoaded", boot);
+  function startBoot() {
+    try {
+      boot();
+    } catch (e) {}
+    /* Mobile/Tablet: falls Hero noch fehlt, erneut versuchen */
+    if (!isDesktopParallaxHero() && !document.getElementById("mvStaticHero")) {
+      setTimeout(function () {
+        try {
+          buildStaticHero();
+          stripDecor();
+          notifyHeroReady();
+        } catch (err) {}
+      }, 0);
+      setTimeout(function () {
+        if (!document.getElementById("mvStaticHero")) {
+          try {
+            buildStaticHero();
+            notifyHeroReady();
+          } catch (err2) {}
+        }
+      }, 200);
+    }
   }
 
-  if (!isDesktopParallaxHero() && document.getElementById("dnaStage")) {
-    try {
-      applyTheme();
-      patchMobileHeader();
-      buildStaticHero();
-      stripDecor();
-    } catch (e) {}
+  if (document.body && (document.getElementById("dnaStage") || document.getElementById("slide-home"))) {
+    startBoot();
+  } else if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", startBoot);
+  } else {
+    startBoot();
   }
 
   try {
