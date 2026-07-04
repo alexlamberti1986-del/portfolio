@@ -488,8 +488,8 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
   .mv4-worlds button[data-world-key="general"],
   .mv4-worlds button[data-world-key="freiraum"] {
     font-family: var(--font-main) !important;
-    font-size: 6.75px !important;
-    padding: 5px 1px !important;
+    font-size: 8px !important;
+    padding: 6px 2px !important;
     letter-spacing: 0 !important;
   }
 
@@ -549,8 +549,8 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
 
   .mv4-worlds button[data-world-key="general"],
   .mv4-worlds button[data-world-key="freiraum"] {
-    font-size: 6.25px !important;
-    padding: 4px 1px !important;
+    font-size: 7.5px !important;
+    padding: 5px 2px !important;
   }
 }
 
