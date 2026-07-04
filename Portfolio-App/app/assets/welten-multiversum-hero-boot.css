@@ -10,10 +10,29 @@ body[data-world="general"]:not(.mv-home-ready) {
   overflow: hidden !important;
 }
 
-/* Nach kurzem Boot-Fenster Inhalt nie dauerhaft verstecken */
+/* Nach Boot: wie andere Welten kein Body-Scroll (Scroll nur in .slide / #slide-home) */
 body[data-world="general"].mv-home-ready,
 body[data-world="general"][data-boot-failsafe="1"] {
-  overflow: auto;
+  overflow: hidden !important;
+}
+
+html:has(body[data-world="general"].mv-home-ready),
+html:has(body[data-world="general"][data-boot-failsafe="1"]) {
+  overflow: hidden !important;
+}
+
+/* Scrollbar in Folien unsichtbar — kein grauer Balken am Rand */
+body[data-world="general"] .slide,
+body[data-world="general"] #slide-home.slide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body[data-world="general"] .slide::-webkit-scrollbar,
+body[data-world="general"] #slide-home.slide::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 body[data-world="general"]:not(.mv-home-ready) .bg-root,
@@ -72,6 +91,31 @@ body[data-world="general"].mv-home-ready #slidesRoot,
 body[data-world="general"].mv-home-ready .site-header {
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+/* Desktop: kein kurzes Aufblitzen der Legacy-Home vor dem Parallax-Hero */
+@media (min-width: 1024px) {
+  body[data-world="general"].mv-home-ready:not(:has(#mvParallaxHero.is-boot-painted)):not(:has(#mvStaticHero)) #slidesRoot {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #slidesRoot,
+  body[data-world="general"]:has(#mvStaticHero) #slidesRoot {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) .site-header,
+  body[data-world="general"]:has(#mvStaticHero) .site-header {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 }
 
 body[data-world="general"] .bg-root,

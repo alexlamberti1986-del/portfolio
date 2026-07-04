@@ -305,9 +305,6 @@
       finishBoot();
       preloadUrls(PARALLAX_PRELOAD);
     });
-    setTimeout(function () {
-      if (!document.body.classList.contains("mv-home-ready")) notifyHeroReady();
-    }, 1800);
   }
 
   function stripDecor() {

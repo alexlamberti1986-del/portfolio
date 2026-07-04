@@ -382,6 +382,7 @@ body[data-world="general"] .experience-step {
 
 body[data-world="general"] .experience-step.is-active {
   transform: scale(1.28) !important;
+  transform-origin: center center !important;
   border-color: transparent !important;
   background: var(--mv-gradient-fill) !important;
   box-shadow: 0 0 24px rgba(255, 89, 178, 0.32) !important;

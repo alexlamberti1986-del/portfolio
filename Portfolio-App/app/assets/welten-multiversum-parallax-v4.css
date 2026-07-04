@@ -4,11 +4,11 @@
 body[data-mv-v4-test="1"] {
   --mv-v4-orb-size: clamp(168px, 14.5vw, 248px);
   --mv-v4-focus-stage: min(580px, 52vw, 74vh);
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 html:has(body[data-mv-v4-test="1"]) {
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* Vollflächig bis zum Bildschirmrand */

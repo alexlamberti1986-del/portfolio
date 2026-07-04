@@ -46,4 +46,30 @@
     box-sizing: border-box;
   }
 }
+
+/* Desktop: einheitlicher Abstand der Punktnavigation zum rechten Bildschirmrand */
+@media (min-width: 1920px) {
+  body[data-world="general"] .experience-rail,
+  body[data-world="nexora"] .experience-rail,
+  body[data-world="vertex"] .experience-rail,
+  body[data-world="freiraum"] .experience-rail,
+  .experience-rail {
+    position: fixed !important;
+    right: max(22px, env(safe-area-inset-right)) !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    inset-inline-end: max(22px, env(safe-area-inset-right)) !important;
+    inset-inline-start: auto !important;
+  }
+
+  body[data-world="general"] .experience-step.is-active {
+    transform: scale(1.28) !important;
+    transform-origin: center center !important;
+  }
+}
 
