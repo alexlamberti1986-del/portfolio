@@ -83,7 +83,54 @@
   <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 </head>
 <body data-master-world="general" data-live-shell="1" data-live-default="0" data-splash-boot="0" data-world-audio-test="1">
-  <audio id="mvWorldBgm" loop playsinline preload="none" style="display:none" aria-hidden="true"></audio>
+  <audio
+    id="mvWorldBgm"
+    loop
+    playsinline
+    autoplay
+    preload="auto"
+    src="assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-live"
+    style="display:none"
+    aria-hidden="true"
+  ></audio>
+  <script>
+    (function () {
+      if (document.body.getAttribute("data-world-audio-test") !== "1") return;
+      var a = document.getElementById("mvWorldBgm");
+      if (!a) return;
+      var VOL = 0.4;
+      function fxOn() {
+        if (document.documentElement.classList.contains("mv-effects-off")) return false;
+        var fx = document.getElementById("mv4-fx");
+        if (fx && fx.getAttribute("aria-pressed") === "false") return false;
+        return true;
+      }
+      function kick() {
+        if (!fxOn()) return;
+        a.muted = false;
+        a.volume = VOL;
+        var p = a.play();
+        if (p && p.catch) {
+          p.catch(function () {
+            a.muted = true;
+            a.play()
+              .then(function () {
+                a.muted = false;
+                a.volume = VOL;
+              })
+              .catch(function () {});
+          });
+        }
+      }
+      a.addEventListener("canplay", kick, { once: true });
+      a.addEventListener("loadeddata", kick, { once: true });
+      kick();
+      window.addEventListener("load", kick);
+      ["pointerdown", "touchstart", "keydown"].forEach(function (ev) {
+        document.addEventListener(ev, kick, { once: true, capture: true });
+      });
+    })();
+  </script>
   <a class="welten-skip-link" href="#mv-shell-main">Zum Hauptinhalt springen</a>
   <main id="mv-shell-main" class="mv-shell-seo" lang="de-CH">
     <h1>Alex Lamberti · Multiversum für digitale Welten</h1>
@@ -173,6 +220,6 @@
   <script src="assets/welten-multiversum-master.js?v=20260706start" defer></script>
   <script src="assets/welten-world-switch-freiraum-brush-v3.js?v=20260703wws-smooth" defer></script>
   <script src="assets/welten-world-switch-preview.js?v=20260703wws-smooth" defer></script>
-  <script src="assets/welten-world-audio-test.js?v=20260706start" defer></script>
+  <script src="assets/welten-world-audio-test.js?v=20260706audio-live" defer></script>
 </body>
 </html>
