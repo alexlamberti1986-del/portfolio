@@ -133,14 +133,14 @@
     var FT =
       window.WeltenWorldSwitchPreview && window.WeltenWorldSwitchPreview.getTimingForWorld
         ? window.WeltenWorldSwitchPreview.getTimingForWorld("freiraum")
-        : { EFFECT_MS: 3400, TITLE_REVEAL_AT: 760 };
+        : { EFFECT_MS: 1600, TITLE_REVEAL_AT: 1280 };
 
-    var totalMs = FT.EFFECT_MS || 3400;
-    var titleAtMs = FT.TITLE_REVEAL_AT || Math.round(totalMs * 0.5);
-    var dissolveStartMs = Math.round(totalMs * 0.85);
-    var strokeTotalMs = totalMs * (2500 / 2950);
+    var totalMs = FT.EFFECT_MS || 1600;
+    var dissolveStartMs = Math.round(totalMs * 0.82);
+    var strokeTotalMs = totalMs * 0.92;
+    var timeScale = totalMs / 2950;
 
-    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     var w = 0;
     var h = 0;
     var mask = null;
@@ -151,14 +151,8 @@
     var rand = mulberry32(124928);
     var running = true;
     var startTime = performance.now();
-    var titleRevealed = false;
-
-    overlay._wwsTitleReveal = function () {
-      if (titleRevealed) return;
-      titleRevealed = true;
-      overlay.classList.add("wws--title-reveal");
-      if (typeof overlay._wwsRevealTitleFn === "function") overlay._wwsRevealTitleFn();
-    };
+    /* Titel wird im Preview-Timer gesteuert (einfach wie PROFESSIONAL) */
+    overlay._wwsTitleReveal = function () {};
 
     function pointOnCubic(s, t) {
       var mt = 1 - t;
@@ -194,7 +188,7 @@
 
       strokes = defs.map(function (s, index) {
         var bristles = [];
-        var bristleCount = Math.round(32 + (s.width * scale) / 7);
+        var bristleCount = Math.round(10 + (s.width * scale) / 14);
         var i;
         for (i = 0; i < bristleCount; i++) {
           bristles.push({
@@ -208,7 +202,7 @@
         }
 
         var holes = [];
-        for (i = 0; i < 36; i++) {
+        for (i = 0; i < 10; i++) {
           holes.push({
             t: rand(),
             offset: (rand() - 0.5) * s.width * scale * 0.86,
@@ -219,7 +213,7 @@
         }
 
         var splats = [];
-        for (i = 0; i < 58; i++) {
+        for (i = 0; i < 14; i++) {
           splats.push({
             t: rand(),
             offset: (rand() - 0.5) * s.width * scale * 1.55,
@@ -230,8 +224,8 @@
         }
 
         return {
-          delay: s.delay,
-          dur: s.dur,
+          delay: s.delay * timeScale,
+          dur: Math.max(220, s.dur * timeScale),
           width: s.width * scale,
           x0: s.x0,
           y0: s.y0,
@@ -285,16 +279,16 @@
       var p = easeOutCubic(clamp(local, 0, 1));
       if (p <= 0) return;
 
-      drawPath(maskCtx, s, p, 0, s.width, 0.92, s.index * 1.7, 68);
-      drawPath(maskCtx, s, p, -s.width * 0.29, s.width * 0.18, 0.55, s.index + 4.2, 58);
-      drawPath(maskCtx, s, p, s.width * 0.31, s.width * 0.14, 0.45, s.index + 7.1, 58);
+      drawPath(maskCtx, s, p, 0, s.width, 0.92, s.index * 1.7, 28);
+      drawPath(maskCtx, s, p, -s.width * 0.29, s.width * 0.18, 0.55, s.index + 4.2, 24);
+      drawPath(maskCtx, s, p, s.width * 0.31, s.width * 0.14, 0.45, s.index + 7.1, 24);
 
       var bi;
       for (bi = 0; bi < s.bristles.length; bi++) {
         var b = s.bristles[bi];
         var bristleProgress = clamp((p - b.start) / Math.max(0.04, b.end - b.start), 0, 1);
         if (bristleProgress <= 0) continue;
-        drawPath(maskCtx, s, bristleProgress, b.offset, b.width, b.alpha, b.phase, 54);
+        drawPath(maskCtx, s, bristleProgress, b.offset, b.width, b.alpha, b.phase, 22);
       }
 
       maskCtx.save();
@@ -366,8 +360,8 @@
         var local = clamp((progress * strokeTotalMs - s.delay) / s.dur, 0, 1);
         if (local <= 0) continue;
         var j;
-        for (j = 0; j < 6; j++) {
-          drawPath(ctx, s, local, (j - 3) * s.width * 0.07, 1.1 + j * 0.22, 0.28, j + s.index, 42);
+        for (j = 0; j < 3; j++) {
+          drawPath(ctx, s, local, (j - 1) * s.width * 0.08, 1.1 + j * 0.22, 0.28, j + s.index, 20);
         }
       }
       ctx.restore();
@@ -452,7 +446,6 @@
     function quickReveal() {
       resize();
       render(1, 1);
-      overlay._wwsTitleReveal();
     }
 
     if (reduceMotion) {
@@ -471,16 +464,13 @@
       var dissolve =
         elapsed < dissolveStartMs
           ? 1
-          : Math.max(0, 1 - easeOutCubic(clamp((elapsed - dissolveStartMs) / 440, 0, 1)));
+          : Math.max(0, 1 - easeOutCubic(clamp((elapsed - dissolveStartMs) / 280, 0, 1)));
 
       render(p, dissolve);
 
-      if (elapsed >= titleAtMs) overlay._wwsTitleReveal();
-
-      if (elapsed > totalMs + 120) {
+      if (elapsed > totalMs + 40) {
         running = false;
         render(1, dissolve);
-        overlay._wwsTitleReveal();
       } else {
         overlay._wwsRaf = requestAnimationFrame(draw);
       }

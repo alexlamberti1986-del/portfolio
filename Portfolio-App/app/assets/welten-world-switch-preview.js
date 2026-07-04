@@ -47,12 +47,13 @@
       });
     } else if (worldKey === "freiraum") {
       timing = Object.assign(timing, {
-        WORLD_TRANSITION_DURATION: 4200,
-        EFFECT_MS: 3400,
-        TITLE_REVEAL_AT: 760,
-        TITLE_FADE_IN: 320,
-        TITLE_HOLD: 1300,
-        COVER_MS: 1250,
+        WORLD_TRANSITION_DURATION: 2400,
+        EFFECT_MS: 1600,
+        TITLE_REVEAL_AT: 1280,
+        TITLE_FADE_IN: 120,
+        TITLE_HOLD: 520,
+        TITLE_FADE_OUT: 220,
+        COVER_MS: 700,
       });
     } else if (worldKey === "vertex") {
       timing = Object.assign(timing, {
@@ -94,7 +95,8 @@
   }
 
   function isCanvasDrivenWorld(worldKey) {
-    return worldKey === "nexora" || worldKey === "general" || worldKey === "freiraum";
+    /* FREIRAUM: Pinsel-Canvas ja, Titel aber timer-gesteuert wie PROFESSIONAL */
+    return worldKey === "nexora" || worldKey === "general";
   }
 
   var WWS_SEQUENCE_MS = WWS_TIMING.WORLD_TRANSITION_DURATION;
@@ -1548,9 +1550,8 @@
       window.__wwsFreiraumSprayPngStart(overlay);
       return;
     }
-    overlay._wwsRevealTitleFn = function () {
-      revealStagedTitle(overlay);
-    };
+    /* Titel kommt per Timer (wie PROFESSIONAL), nicht aus dem Pinsel-Canvas */
+    overlay._wwsRevealTitleFn = null;
     if (typeof window.__wwsFreiraumBrushV3 === "function") {
       window.__wwsFreiraumBrushV3(overlay);
       return;
@@ -1635,8 +1636,13 @@
           wwsLater(function () {
             revealStagedTitle(overlay);
           }, timing.TITLE_REVEAL_AT);
-        } else if (worldKey === "nexora" || worldKey === "general" || worldKey === "freiraum") {
-          /* Canvas-gesteuerte Titel-Enthüllung (NEXORA / MULTIVERSUM / FREIRAUM) */
+        } else if (worldKey === "nexora" || worldKey === "general") {
+          /* Canvas-gesteuerte Titel-Enthüllung (NEXORA / MULTIVERSUM) */
+        } else if (worldKey === "freiraum") {
+          /* FREIRAUM: Titel einfach einblenden wie PROFESSIONAL */
+          wwsLater(function () {
+            revealStagedTitle(overlay);
+          }, timing.TITLE_REVEAL_AT);
         } else {
           wwsLater(function () {
             revealStagedTitle(overlay);

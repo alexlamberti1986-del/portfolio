@@ -207,20 +207,29 @@
 
 .welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__content {
   z-index: 6;
+  transition: opacity var(--wws-title-fade-in, 120ms) ease, transform var(--wws-title-fade-in, 120ms) ease;
+  transform: none;
 }
 
+/* FREIRAUM-Titel: einfach erscheinen wie PROFESSIONAL, ohne Extra-Animation */
 .welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__title {
-  animation: wwsFreiraumTitleBorn var(--wws-title-fade-in, 320ms) cubic-bezier(0.16, 1, 0.28, 1) both,
-    wwsFreiraumTitleShift 2.4s ease-in-out infinite alternate;
+  animation: none !important;
   opacity: 1;
+  transform: none;
   background: linear-gradient(135deg, #ffe08a 0%, #ffd166 42%, #ff9b37 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  filter: drop-shadow(0 6px 24px rgba(255, 209, 102, 0.45)) drop-shadow(0 0 18px rgba(255, 209, 102, 0.42));
-  letter-spacing: 0.08em;
+  filter: drop-shadow(0 4px 16px rgba(255, 209, 102, 0.35));
+  letter-spacing: 0.1em;
   text-shadow: none;
+}
+
+.welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__kicker,
+.welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__sub,
+.welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__bar {
+  animation: none !important;
 }
 
 .welten-world-switch[data-world="freiraum"].wws--title-reveal .welten-world-switch__sub {
