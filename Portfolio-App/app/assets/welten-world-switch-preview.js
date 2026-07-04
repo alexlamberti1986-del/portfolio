@@ -47,11 +47,11 @@
       });
     } else if (worldKey === "freiraum") {
       timing = Object.assign(timing, {
-        WORLD_TRANSITION_DURATION: 2400,
+        WORLD_TRANSITION_DURATION: 2900,
         EFFECT_MS: 1600,
         TITLE_REVEAL_AT: 1280,
         TITLE_FADE_IN: 120,
-        TITLE_HOLD: 520,
+        TITLE_HOLD: 1100,
         TITLE_FADE_OUT: 220,
         COVER_MS: 700,
       });
