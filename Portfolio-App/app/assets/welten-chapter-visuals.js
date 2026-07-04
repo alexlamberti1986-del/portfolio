@@ -98,7 +98,8 @@
     root.insertBefore(box, label);
     box.appendChild(label);
     box.appendChild(title);
-    if (intro && intro.parentNode === root) {
+    /* Über mich: Fliesstext bleibt unter der Hero-Box, nicht doppelt im Titelblock */
+    if (intro && intro.parentNode === root && heroKey !== "about") {
       box.appendChild(intro);
     }
 
@@ -108,6 +109,18 @@
 
   function applyAbout() {
     wrapHeroBox("slide-about", "about", "about");
+
+    /* Falls Fliesstext früher fälschlich in die Hero-Box gerutscht ist: wieder darunter */
+    var aboutHero = document.querySelector('#slide-about [data-chapter-hero="about"]');
+    if (aboutHero && aboutHero.parentNode) {
+      var aboutRoot = aboutHero.parentNode;
+      var anchor = aboutRoot.querySelector("[data-welten-about-extra]") || aboutHero;
+      aboutHero.querySelectorAll(":scope > p.prose").forEach(function (p) {
+        if (anchor.nextSibling) aboutRoot.insertBefore(p, anchor.nextSibling);
+        else aboutRoot.appendChild(p);
+        anchor = p;
+      });
+    }
 
     var merged = document.querySelector("#slide-about .welten-about-merged");
     if (!merged) return;

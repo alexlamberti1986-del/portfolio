@@ -389,9 +389,26 @@
 
   function applyAboutMain(doc, lang) {
     var paras = lp(ABOUT_MAIN, lang);
-    var aboutInner = doc.querySelector("#slide-about .slide-inner > div");
+    if (!paras) return;
+    var aboutInner =
+      doc.querySelector("#slide-about .about-grid > div") ||
+      doc.querySelector("#slide-about .slide-inner > div") ||
+      doc.querySelector("#slide-about .slide-inner");
     if (!aboutInner) return;
-    aboutInner.querySelectorAll(":scope > p.prose").forEach(function (p, i) {
+    /* Nur Fliesstext unter der Hero-Box / Extra-Karte — nicht im Titelblock */
+    var nodes = aboutInner.querySelectorAll(":scope > p.prose");
+    if (!nodes.length) {
+      nodes = aboutInner.querySelectorAll("p.prose:not([data-welten-about-extra] p.prose)");
+    }
+    var list = [];
+    nodes.forEach(function (p) {
+      if (p.closest("[data-welten-about-extra]")) return;
+      if (p.closest("[data-chapter-hero]")) return;
+      if (p.closest(".welten-about-merged")) return;
+      if (p.closest(".persona-panel")) return;
+      list.push(p);
+    });
+    list.forEach(function (p, i) {
       if (paras[i]) p.textContent = paras[i];
     });
   }
@@ -478,6 +495,11 @@
     if (slidePack) {
       setText(copy.querySelector(".chapter-label"), slidePack.label);
       setText(copy.querySelector(".section-title"), slidePack.title);
+      var stripText = copy.querySelector(".welten-chapter-box__strip-text");
+      if (stripText && slidePack.title) {
+        var cta = String(slidePack.title).replace(/\s*\.\s*$/, "").trim();
+        stripText.textContent = cta + "?";
+      }
     }
     var prose = copy.querySelectorAll("p.prose");
     if (prose[0]) prose[0].textContent = ui.prose1;
