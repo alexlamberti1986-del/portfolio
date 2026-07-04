@@ -135,6 +135,12 @@ html, body {
   border-radius: 4px;
   display: block;
   pointer-events: none;
+  background: #012169;
+  flex-shrink: 0;
+}
+
+.mv4-flag[data-lang="en"] img {
+  background: #012169;
 }
 
 .mv4-frame {

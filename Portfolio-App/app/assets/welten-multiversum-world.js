@@ -121,12 +121,12 @@
   function applyStaticHeroLang(lang) {
     var hero = document.getElementById("mvStaticHero");
     if (!hero) return;
+    lang = lang || "de";
     navLabels(lang).forEach(function (item) {
       var btn = hero.querySelector('[data-go="' + item.id + '"]');
       if (btn) btn.textContent = item.label;
     });
-    var tag = hero.querySelector(".mv-static-hero__tag");
-    if (tag && window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyHome === "function") {
+    if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyHome === "function") {
       window.WeltenPreviewI18n.applyHome(document, "general", lang);
     }
     if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyAria === "function") {

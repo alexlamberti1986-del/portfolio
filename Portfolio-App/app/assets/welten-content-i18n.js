@@ -106,6 +106,11 @@
       "My background in visual merchandising has strongly shaped my sense of staging, visual clarity, spatial impact and user guidance. Today I combine that experience with digital marketing, website conception, SEO, content structure and consultative project leadership.",
       "What sets me apart is the combination of positive energy, reliability and structure. I make complex topics understandable, bring people on board, translate ideas into clear next steps and deliver results teams and clients can depend on.",
     ],
+    fr: [
+      "Depuis 2024, je travaille comme spécialiste key account et marketing et j'accompagne les projets clients de bout en bout – de la première analyse à l'orientation stratégique jusqu'à la mise en œuvre opérationnelle. Je pense les projets en termes de marque, de public cible et d'impact mesurable.",
+      "Mon parcours en visual merchandising a fortement façonné mon sens de la mise en scène, de la clarté visuelle, de l'impact spatial et du parcours utilisateur. Aujourd'hui, je relie cette expérience au marketing digital, à la conception de sites, au SEO, à la structure de contenu et à la conduite de projet conseil.",
+      "Ce qui me distingue, c'est la combinaison d'énergie positive, de fiabilité et de structure. Je rends les sujets complexes compréhensibles, j'embarque les personnes, je traduis les idées en prochaines étapes claires et je livre des résultats sur lesquels équipes et clients peuvent compter.",
+    ],
     it: [
       "Dal 2024 lavoro come specialista key account e marketing e accompagno progetti in modo olistico – dall'analisi iniziale alla direzione strategica fino all'implementazione operativa. Penso ai progetti in termini di marca, pubblico e impatto misurabile.",
       "Il mio background nel visual merchandising ha formato il mio senso di allestimento, chiarezza visiva, impatto spaziale e guida utente. Oggi unisco questa esperienza a marketing digitale, concezione siti web, SEO, struttura dei contenuti e gestione consulenziale dei progetti.",
@@ -183,6 +188,42 @@
             "<li>Key account perspective: nurture relationships, understand requirements, secure results.</li>" +
             "<li>Structured way of working with clear processes and strong delivery discipline.</li>" +
             "<li>Quick comprehension and the drive to finish ideas professionally.</li></ul>",
+        },
+      },
+    },
+    fr: {
+      tabs: { p: "Personnalité", w: "Valeurs", k: "Compétences et méthode" },
+      blocks: {
+        p: {
+          title: "Personnalité",
+          html:
+            "<ul><li>Style positif, ouvert et motivant avec un vrai intérêt pour les personnes derrière chaque projet.</li>" +
+            "<li>Forte compétence sociale : j'écoute, je relie les perspectives et je crée la confiance.</li>" +
+            "<li>Présence naturelle alliée à l'accessibilité, à l'humour et à la clarté professionnelle.</li>" +
+            "<li>J'apporte de l'énergie aux équipes sans perdre le focus – constructif et orienté solutions.</li>" +
+            "<li>Je saisis rapidement les situations complexes et les traduis en prochaines étapes claires.</li>" +
+            "<li>Ma force est de motiver les personnes et de créer ensemble du momentum.</li></ul>",
+        },
+        w: {
+          title: "Valeurs",
+          html:
+            "<ul><li>Fiabilité : ce que je promets, je le prends au sérieux – communication, timing et qualité.</li>" +
+            "<li>Loyauté : je m'identifie aux objectifs communs et représente les marques avec conviction.</li>" +
+            "<li>Exigence de qualité : ce qui compte n'est pas seulement d'être terminé, mais d'être professionnel.</li>" +
+            "<li>Respect et clarté : une bonne collaboration demande une communication honnête et de la confiance.</li>" +
+            "<li>Développement : je cherche les défis, j'apprends vite et j'utilise le feedback.</li>" +
+            "<li>Engagement : je veux un travail visible, sensé et convaincant.</li></ul>",
+        },
+        k: {
+          title: "Compétences et méthode",
+          html:
+            "<ul><li>Conduite de projet globale de l'analyse à la stratégie jusqu'à la mise en œuvre.</li>" +
+            "<li>Conception de sites centrée sur le parcours utilisateur, la logique de contenu et la conversion.</li>" +
+            "<li>SEO et visibilité digitale avec regard sur structure, contenus et pertinence audience.</li>" +
+            "<li>Compréhension marque et design issus de plus de 15 ans d'expérience en mise en scène visuelle.</li>" +
+            "<li>Perspective key account : relations, besoins clients et résultats sécurisés.</li>" +
+            "<li>Méthode structurée avec processus clairs et forte discipline d'exécution.</li>" +
+            "<li>Compréhension rapide et volonté de mener les idées à un résultat professionnel.</li></ul>",
         },
       },
     },
@@ -267,21 +308,25 @@
     nexora: {
       de: { label: "NEXORA", title: "Digitales Denken als Stärke", prose: ["Für mich ist eine Website mehr als eine digitale Visitenkarte. Sie ist ein System aus Inhalt, Struktur, Gestaltung, Technik und Nutzererlebnis.", "Ich interessiere mich besonders dafür, wie digitale Touchpoints aufgebaut sein müssen, damit sie verständlich, überzeugend und wirkungsvoll sind."], cards: [{ t: "Strategie & Struktur", p: "Ich denke digitale Projekte vom Ziel her." }, { t: "Technologie & Tools", p: "Ich bin offen für moderne Tools, KI und Automatisierung." }, { t: "Sichtbarkeit & Wirkung", p: "Gutes Digital Marketing soll gefunden werden und Vertrauen aufbauen." }] },
       en: { label: "NEXORA", title: "Digital thinking as a strength", prose: ["For me a website is more than a digital business card. It is a system of content, structure, design, technology and user experience.", "I am especially interested in how digital touchpoints must be built to be clear, convincing and effective."], cards: [{ t: "Strategy & structure", p: "I think digital projects from the goal outward." }, { t: "Technology & tools", p: "I am open to modern tools, AI and automation." }, { t: "Visibility & impact", p: "Good digital marketing should be found and build trust." }] },
+      fr: { label: "NEXORA", title: "La pensée digitale comme force", prose: ["Pour moi, un site web est plus qu'une carte de visite digitale. C'est un système de contenu, structure, design, technique et expérience utilisateur.", "Je m'intéresse particulièrement à la façon dont les touchpoints digitaux doivent être construits pour être clairs, convaincants et efficaces."], cards: [{ t: "Stratégie et structure", p: "Je pense les projets digitaux à partir de l'objectif." }, { t: "Technologie et outils", p: "Je suis ouvert aux outils modernes, à l'IA et à l'automatisation." }, { t: "Visibilité et impact", p: "Un bon marketing digital doit être trouvé et créer la confiance." }] },
       it: { label: "NEXORA", title: "Il pensiero digitale come forza", prose: ["Per me un sito web è più di un biglietto da visita digitale. È un sistema di contenuti, struttura, design, tecnologia ed esperienza utente.", "Mi interessa soprattutto come devono essere costruiti i touchpoint digitali per essere chiari, convincenti ed efficaci."], cards: [{ t: "Strategia e struttura", p: "Penso ai progetti digitali partendo dall'obiettivo." }, { t: "Tecnologia e strumenti", p: "Sono aperto a strumenti moderni, IA e automazione." }, { t: "Visibilità e impatto", p: "Il buon marketing digitale deve farsi trovare e creare fiducia." }] },
     },
     professional: {
       de: { label: "PROFESSIONAL", title: "Professionelles Arbeiten mit klarem Anspruch", prose: ["Professionelles Arbeiten bedeutet für mich, Verantwortung zu übernehmen, sauber zu kommunizieren und Aufgaben mit hohem Qualitätsanspruch umzusetzen.", "Besonders wichtig ist mir, dass Projekte strukturiert geführt werden – mit Prioritäten, Timing und klarem Ziel."], cards: [{ t: "Verantwortung", p: "Ich stehe hinter meinen Aufgaben und übernehme Verantwortung für Qualität und Ergebnis." }, { t: "Kommunikation", p: "Offene und klare Kommunikation schafft Vertrauen und effiziente Zusammenarbeit." }, { t: "Qualität", p: "Qualität bedeutet, dass ein Ergebnis nicht nur fertig ist, sondern überzeugt." }] },
       en: { label: "PROFESSIONAL", title: "Professional work with clear standards", prose: ["Professional work means taking responsibility, communicating clearly and delivering with high quality standards.", "It matters to me that projects are led in a structured way – with priorities, timing and a clear goal."], cards: [{ t: "Responsibility", p: "I stand behind my tasks and take responsibility for quality and outcomes." }, { t: "Communication", p: "Open, clear communication builds trust and efficient collaboration." }, { t: "Quality", p: "Quality means a result is not only finished but truly convincing." }] },
+      fr: { label: "PROFESSIONAL", title: "Un travail professionnel avec des exigences claires", prose: ["Travailler de façon professionnelle signifie pour moi assumer la responsabilité, communiquer clairement et livrer avec un haut niveau de qualité.", "Il est important pour moi que les projets soient menés de façon structurée – avec priorités, timing et objectif clair."], cards: [{ t: "Responsabilité", p: "Je assume la responsabilité de la qualité et des résultats." }, { t: "Communication", p: "Une communication ouverte et claire crée confiance et efficacité." }, { t: "Qualité", p: "La qualité signifie un résultat non seulement terminé, mais convaincant." }] },
       it: { label: "PROFESSIONAL", title: "Lavoro professionale con standard chiari", prose: ["Lavorare in modo professionale significa assumersi responsabilità, comunicare chiaramente e consegnare con alto standard qualitativo.", "Per me è importante che i progetti siano guidati in modo strutturato – con priorità, tempi e obiettivo chiaro."], cards: [{ t: "Responsabilità", p: "Mi assumo la responsabilità di qualità e risultati." }, { t: "Comunicazione", p: "Comunicazione aperta e chiara crea fiducia ed efficienza." }, { t: "Qualità", p: "Qualità significa un risultato non solo finito ma convincente." }] },
     },
     freiraum: {
       de: { label: "FREIRAUM", title: "Kreativität mit Richtung", prose: ["Kreativität bedeutet für mich, eine Idee so zu formen, dass sie verstanden wird, berührt und zur Marke passt.", "Marken wirken stark, wenn sie authentisch sind – wenn Sprache, Design und Erlebnis zusammenpassen."], cards: [{ t: "Ideen & Perspektiven", p: "Ich denke neu und suche Lösungen mit mehr Ausdruck und Eigenständigkeit." }, { t: "Storytelling", p: "Gute Inhalte erzählen eine Geschichte und schaffen Nähe zur Marke." }, { t: "Gestaltung & Atmosphäre", p: "Starkes Gespür dafür, wie Gestaltung wirkt und Identität sichtbar macht." }] },
       en: { label: "FREIRAUM", title: "Creativity with direction", prose: ["Creativity means shaping an idea so it is understood, felt and fits the brand.", "Brands are strong when they are authentic – when language, design and experience align."], cards: [{ t: "Ideas & perspectives", p: "I think anew and seek solutions with more expression and individuality." }, { t: "Storytelling", p: "Good content tells a story and creates closeness to the brand." }, { t: "Design & atmosphere", p: "A strong sense of how design works and makes identity visible." }] },
+      fr: { label: "FREIRAUM", title: "Créativité avec direction", prose: ["La créativité signifie pour moi façonner une idée pour qu'elle soit comprise, ressentie et cohérente avec la marque.", "Les marques sont fortes lorsqu'elles sont authentiques – quand langage, design et expérience s'alignent."], cards: [{ t: "Idées et perspectives", p: "Je pense autrement et cherche des solutions avec plus d'expression." }, { t: "Storytelling", p: "Les bons contenus racontent une histoire et rapprochent de la marque." }, { t: "Design et atmosphère", p: "Un fort sens de la façon dont le design agit et rend l'identité visible." }] },
       it: { label: "FREIRAUM", title: "Creatività con direzione", prose: ["Creatività significa modellare un'idea affinché sia compresa, sentita e coerente con il brand.", "I brand sono forti quando sono autentici – quando linguaggio, design ed esperienza coincidono."], cards: [{ t: "Idee e prospettive", p: "Penso in modo nuovo e cerco soluzioni con più espressione." }, { t: "Storytelling", p: "I buoni contenuti raccontano una storia e avvicinano al brand." }, { t: "Design e atmosfera", p: "Fort senso di come il design funziona e rende visibile l'identità." }] },
     },
     general: {
       de: { label: "MULTIVERSUM", title: "Alle Welten · ein Ziel", prose: ["MULTIVERSUM vereint die Stärken aller Welten: NEXORA, PROFESSIONAL und FREIRAUM – abgestimmt auf Ihr Projekt.", "So entsteht ein Auftritt, der strategisch fundiert, menschlich verständlich und mit echter Umsetzungskraft überzeugt."], cards: [{ t: "Strategie & Struktur", p: "Digitale Projekte vom Ziel her denken." }, { t: "Technologie & Tools", p: "Offen für moderne Tools, KI und Automatisierung." }, { t: "Sichtbarkeit & Wirkung", p: "SEO, Content und Conversion immer mitdenken." }] },
       en: { label: "MULTIVERSE", title: "All worlds · one goal", prose: ["The MULTIVERSE unites the strengths of all worlds: NEXORA, PROFESSIONAL and FREIRAUM – tailored to your project.", "The result is a presence that is strategically sound, humanly clear and backed by real delivery strength."], cards: [{ t: "Strategy & structure", p: "Thinking digital projects from the goal outward." }, { t: "Technology & tools", p: "Open to modern tools, AI and automation." }, { t: "Visibility & impact", p: "Always considering SEO, content and conversion." }] },
+      fr: { label: "MULTIVERSUM", title: "Tous les mondes · un objectif", prose: ["MULTIVERSUM réunit les forces de tous les mondes : NEXORA, PROFESSIONAL et FREIRAUM – adaptés à votre projet.", "Il en résulte une présence stratégiquement solide, humainement claire et portée par une vraie capacité d'exécution."], cards: [{ t: "Stratégie et structure", p: "Penser les projets digitaux à partir de l'objectif." }, { t: "Technologie et outils", p: "Ouvert aux outils modernes, à l'IA et à l'automatisation." }, { t: "Visibilité et impact", p: "SEO, contenu et conversion toujours pris en compte." }] },
       it: { label: "MULTIVERSO", title: "Tutti i mondi · un obiettivo", prose: ["Il MULTIVERSO unisce i punti di forza di tutti i mondi: NEXORA, PROFESSIONAL e FREIRAUM – su misura per il progetto.", "Nasce una presenza strategicamente solida, umana e con vera capacità di implementazione."], cards: [{ t: "Strategia e struttura", p: "Progetti digitali partendo dall'obiettivo." }, { t: "Tecnologia e strumenti", p: "Aperti a strumenti moderni, IA e automazione." }, { t: "Visibilità e impatto", p: "SEO, contenuti e conversione sempre considerati." }] },
     },
   };
@@ -561,6 +606,56 @@
           { t: "Willingness to learn", p: "Open to new tools, methods and technologies." },
           { t: "Team spirit", p: "Trust, openness and mutual support." },
           { t: "Impact", p: "Marketing should guide and lead to action." },
+        ],
+      },
+    },
+    fr: {
+      experience: {
+        label: "Expérience",
+        title: "De l'espace de marque à la stratégie digitale.",
+        intro: "Un parcours entre commerce, mise en scène et mise en œuvre digitale – façonné par une formation solide, une expérience pratique et un développement ciblé.",
+        workTitle: "Expérience professionnelle",
+        eduTitle: "Formation",
+        schoolTitle: "Scolarité",
+        focus: "Axes prioritaires :",
+        jobs: [
+          { role: "Spécialiste key account et marketing.", focus: "Projets clients, sites web, SEO,\ntravail de marque, contenus, communication,\nconseil et pilotage de projet." },
+          { role: "Polydesigner 3D / coordination visual merchandising." },
+          { role: "Coordination visual merchandising en retail." },
+          { role: "Polydesigner 3D / coordination visual merchandising." },
+          { role: "Collaborateur commerce de détail." },
+        ],
+        edu: [
+          { role: "MBSZ Zurich." },
+          { role: "HSO Zurich." },
+          { role: "EBZ." },
+          { role: "Formation interne H&M, Lucerne." },
+          { role: "Centre de formation commerciale Zoug." },
+        ],
+        school: [{ role: "Cycle secondaire à Oberarth." }, { role: "École primaire à Goldau." }],
+      },
+      workstyle: {
+        label: "Méthode",
+        title: "Comment je travaille",
+        intro: "J'aime travailler de façon structurée, mais pas rigide. Chaque bon projet commence par la compréhension : quel est l'objectif ? Qui faut-il atteindre ? Quel message doit passer ? Ce n'est qu'ensuite que naissent des idées vraiment adaptées.",
+        steps: [
+          { t: "Comprendre", p: "Saisir clairement objectifs, public, marque et point de départ." },
+          { t: "Structurer", p: "Organiser l'information pour des contenus convaincants." },
+          { t: "Concevoir", p: "Relier design, ton et UX à la marque." },
+          { t: "Optimiser", p: "Transformer feedback et mesure en améliorations." },
+        ],
+      },
+      values: {
+        label: "Valeurs",
+        title: "Valeurs personnelles",
+        intro: "Mes valeurs façonnent ma façon de travailler, de communiquer et d'assumer la responsabilité. Elles sont un guide concret au quotidien – surtout en marketing digital, où clarté, crédibilité et action consciente comptent.",
+        rows: [
+          { t: "Fiabilité", p: "Tenir ses engagements, assumer, aller au bout." },
+          { t: "Exigence de qualité", p: "Des résultats réfléchis, propres et durables." },
+          { t: "Initiative", p: "Anticiper, proposer des solutions, prendre en charge." },
+          { t: "Envie d'apprendre", p: "Ouvert aux nouveaux outils, méthodes et technologies." },
+          { t: "Esprit d'équipe", p: "Confiance, ouverture et soutien mutuel." },
+          { t: "Impact", p: "Le marketing doit orienter et mener à l'action." },
         ],
       },
     },

@@ -183,6 +183,55 @@
     },
   };
 
+  var FR_PROJECTS = {
+    "genialbau.ch": {
+      desc: "Présence web haut de gamme axée sur la confiance, une forte imagerie et vidéo, et une présentation claire des services.",
+      highlight: "Communication professionnelle, visuels forts et parcours utilisateur clair.",
+      skill: "Impact de marque, structure de contenu, conception web.",
+    },
+    "gallace-all-in-maler.ch": {
+      desc: "Présence clairement structurée pour une PME locale, centrée sur les services, la confiance et un contact simple.",
+      highlight: "Chemin direct de l'intérêt à la demande.",
+      skill: "Web design PME, structure d'offre, parcours de demande.",
+    },
+    "360clean.ch / Offertenformular": {
+      desc: "Formulaire de devis multi-étapes avec processus guidé et parcours utilisateur clair.",
+      highlight: "Expérience pas à pas, meilleure orientation et barrière d'entrée plus basse.",
+      skill: "Processus de demande, guidance utilisateur, optimisation du taux de demande.",
+    },
+    "awarillo.ch": {
+      desc: "Présence de marque digitale avec une ligne visuelle réduite et une reconnaissance claire.",
+      highlight: "Look cohérent, présentation moderne et positionnement clair.",
+      skill: "Pilotage de marque, communication digitale, design unifié.",
+    },
+    "chesa-cherma.ch": {
+      desc: "Présence atmosphérique avec une imagerie forte et une histoire claire autour de l'expérience et du séjour.",
+      highlight: "Atmosphère et impression premium en image et récit, avec réservation directe.",
+      skill: "Experience design, guidance visuelle, perception premium et logique de réservation.",
+    },
+    "lbmm.ch": {
+      desc: "Ce site convainc par une structure claire, un design moderne et une impression globale de qualité.",
+      highlight: "Présentation claire des services et une mise en page calme et professionnelle.",
+      skill: "Présentation d'offre structurée, web design moderne, flux d'information clair.",
+    },
+    Sanitrend: { desc: "Formulaire lead multi-étapes pour sanitaire, rénovation de salle de bain et assainissement · guidé et orienté conversion." },
+    "Dein Umzug Deal": { desc: "Formulaire de déménagement guidé avec étapes claires, éléments de confiance et demande de devis structurée." },
+    "ART Reinigungen & Hauswartungen": { desc: "Formulaire de demande pour nettoyage et entretien immobilier · professionnel, clair et fiable." },
+    "iDEAL Umzüge": { desc: "Formulaire lead déménagement avec UI moderne, guidance claire et demande de devis ciblée." },
+    "DT-Cleaning": { desc: "Formulaire lead pour entretien auto et nettoyage véhicules · structuré, mobile et orienté conversion." },
+    "Spitex Xundheit Plus": { desc: "Formulaire de demande soins et Spitex avec guidance empathique, structure claire et construction de confiance." },
+    "ad-res": { desc: "Carte de visite digitale avec présence de marque claire et accès contact rapide." },
+    "bodenbelaege-hajdari": { desc: "Présence compacte pour revêtements de sol avec focus services et joignabilité directe." },
+    "burgunder-handwerk": { desc: "Carte digitale artisanale avec confiance et logique de contact claire." },
+    "chesa-cherma": { desc: "Carte de visite atmosphérique au caractère premium avec lien de réservation." },
+    "haller-design": { desc: "Carte digitale orientée design avec une ligne visuelle claire." },
+    "kita-wundersterne": { desc: "Carte de visite chaleureuse et fiable pour une crèche avec infos claires pour les parents." },
+  };
+
+  Object.keys(PROJECTS).forEach(function (key) {
+    if (FR_PROJECTS[key]) PROJECTS[key].fr = FR_PROJECTS[key];
+  });
+
   function cardKey(card) {
     var h3 = card.querySelector("h3");
     return h3 ? h3.textContent.trim() : "";

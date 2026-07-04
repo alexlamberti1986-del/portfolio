@@ -142,7 +142,7 @@
           ],
           cta1: "View projects",
           cta2: "About me",
-          tag: "Three worlds. One goal. Your vision.",
+          tag: "Four worlds. One goal. Your vision.",
           bullets: [
             "Digital brand presences with clear positioning",
             "Websites focused on user guidance, structure and conversion",
@@ -170,7 +170,7 @@
           ],
           cta1: "Vedi progetti",
           cta2: "Chi sono",
-          tag: "Tre mondi. Un obiettivo. La tua visione.",
+          tag: "Quattro mondi. Un obiettivo. La tua visione.",
           bullets: [
             "Presenze di marca digitali con posizionamento chiaro",
             "Siti web con focus su guida utente, struttura e conversione",
@@ -710,6 +710,33 @@
     if (cta[1] && h.cta2) cta[1].textContent = h.cta2;
     var tag = doc.querySelector(".mv-world-hero__tag");
     if (tag && h.tag) tag.textContent = h.tag;
+    var staticTag = doc.querySelector(".mv-static-hero__tag");
+    if (staticTag && h.tag) {
+      var spans = staticTag.querySelectorAll("span");
+      var parts = String(h.tag)
+        .split(/\.\s*/)
+        .map(function (p) {
+          return p.trim();
+        })
+        .filter(Boolean);
+      if (spans.length >= 3 && parts.length >= 3) {
+        spans[0].textContent = parts[0] + ".";
+        spans[1].textContent = parts[1] + ".";
+        spans[2].textContent = parts[2] + (/\.$/.test(h.tag) || parts[2].indexOf("!") < 0 ? "." : "");
+      } else {
+        staticTag.textContent = h.tag;
+      }
+    }
+    var eyebrow = doc.querySelector(".mv-static-hero__eyebrow");
+    if (eyebrow) {
+      var eyebrowPack = {
+        de: "Alex Lamberti · Portfolio",
+        en: "Alex Lamberti · Portfolio",
+        fr: "Alex Lamberti · Portfolio",
+        it: "Alex Lamberti · Portfolio",
+      };
+      eyebrow.textContent = eyebrowPack[lang] || eyebrowPack.de;
+    }
   }
 
   function applyAboutExtra(doc, world, lang) {
