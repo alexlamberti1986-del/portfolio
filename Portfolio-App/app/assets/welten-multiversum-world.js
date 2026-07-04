@@ -304,7 +304,26 @@
     waitForParallaxDeps(function () {
       finishBoot();
       preloadUrls(PARALLAX_PRELOAD);
+      if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
+        buildStaticHero();
+      }
     });
+    setTimeout(function () {
+      if (!isDesktopParallaxHero()) return;
+      if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
+        try {
+          buildStaticHero();
+        } catch (err) {}
+      }
+      var parallax = document.getElementById("mvParallaxHero");
+      if (parallax && !parallax.classList.contains("is-boot-painted")) {
+        parallax.classList.add("is-boot-painted");
+      }
+      document.body.setAttribute("data-boot-failsafe", "1");
+      if (!document.body.classList.contains("mv-home-ready")) {
+        notifyHeroReady();
+      }
+    }, 2800);
   }
 
   function stripDecor() {

@@ -93,29 +93,30 @@ body[data-world="general"].mv-home-ready .site-header {
   opacity: 1 !important;
 }
 
-/* Desktop: kein kurzes Aufblitzen der Legacy-Home vor dem Parallax-Hero */
+/* Desktop: Folien erst nach Boot-Signal — nicht erst nach Parallax-Paint */
 @media (min-width: 1024px) {
-  body[data-world="general"].mv-home-ready:not(:has(#mvParallaxHero.is-boot-painted)):not(:has(#mvStaticHero)) #slidesRoot {
+  body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) #slidesRoot,
+  body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) .site-header {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
   }
+}
 
-  body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #slidesRoot,
-  body[data-world="general"]:has(#mvStaticHero) #slidesRoot {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
+/* Failsafe: Hero/Inhalt sichtbar auch wenn Paint hängen bleibt */
+body[data-world="general"][data-boot-failsafe="1"] #mvParallaxHero,
+body[data-world="general"][data-boot-failsafe="1"] #mvStaticHero {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
 
-  body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) .site-header,
-  body[data-world="general"]:has(#mvStaticHero) .site-header {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
+body[data-world="general"][data-boot-failsafe="1"] #slide-home .home-main-block {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
 body[data-world="general"] .bg-root,
