@@ -733,8 +733,6 @@
   applyShellRoute();
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
     window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
-  } else if (!window.matchMedia || !window.matchMedia("(max-width: 1024px)").matches) {
-    preloadFrame(1);
   }
   window.mv4SwitchWorld = switchTo;
 })();

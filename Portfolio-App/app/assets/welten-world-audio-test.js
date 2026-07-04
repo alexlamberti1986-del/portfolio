@@ -1,13 +1,13 @@
 /**
  * Hintergrundmusik pro Welt (Loop), gekoppelt an Effekte Ein/Aus.
- * Aktiv nur mit data-world-audio-test="1" auf der Shell-Seite.
+ * Aktiv nur mit data-world-audio-test="1". Startet erst nach Hero/Idle, blockiert nicht den Seitenstart.
  */
 (function () {
   "use strict";
 
   if (!document.body || document.body.getAttribute("data-world-audio-test") !== "1") return;
 
-  var VERSION = "20260706audio4";
+  var VERSION = "20260706start";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 350;
   var TRACKS = {
@@ -23,6 +23,7 @@
   var playToken = 0;
   var bootTimer = 0;
   var preloaded = {};
+  var audioAllowed = false;
 
   function effectsEnabled() {
     if (document.documentElement.classList.contains("mv-effects-off")) return false;
@@ -41,9 +42,10 @@
       if (!audio) {
         audio = new Audio();
         audio.loop = true;
-        audio.preload = "metadata";
+        audio.preload = "none";
       }
       audio.loop = true;
+      audio.preload = "none";
     }
     return audio;
   }
@@ -101,30 +103,23 @@
     document.head.appendChild(link);
   }
 
-  function playElement(el, token, after) {
-    if (token !== playToken || !effectsEnabled()) return;
+  function playElement(el, token) {
+    if (token !== playToken || !effectsEnabled() || !audioAllowed) return;
     el.muted = false;
     var promise = el.play();
     if (promise && typeof promise.then === "function") {
       promise
         .then(function () {
           if (token !== playToken) return;
-          fadeVolume(TARGET_VOLUME, after);
+          fadeVolume(TARGET_VOLUME);
         })
-        .catch(function () {
-          if (token !== playToken) return;
-          el.muted = true;
-          var mutedTry = el.play();
-          if (mutedTry && mutedTry.catch) mutedTry.catch(function () {});
-        });
-    } else if (after) {
-      after();
+        .catch(function () {});
     }
   }
 
   function startPlayback(world, token) {
     var src = TRACKS[world];
-    if (!src || token !== playToken || !effectsEnabled()) return;
+    if (!src || token !== playToken || !effectsEnabled() || !audioAllowed) return;
 
     var el = ensureAudio();
     if (currentSrc === src && currentWorld === world && !el.paused) {
@@ -139,9 +134,13 @@
       el.volume = 0;
       el.src = src;
       el.load();
-      el.addEventListener("canplay", function () {
-        playElement(el, token);
-      }, { once: true });
+      el.addEventListener(
+        "canplay",
+        function () {
+          playElement(el, token);
+        },
+        { once: true }
+      );
       bootTimer = window.setTimeout(function () {
         if (token === playToken && el.paused) playElement(el, token);
       }, 500);
@@ -170,7 +169,6 @@
 
   function playAfterSwitch(world) {
     if (!world || !TRACKS[world] || !effectsEnabled()) return;
-    preloadTrack(world);
     cancelPending();
     var token = playToken;
     waitForSwitchDone(function () {
@@ -181,29 +179,15 @@
 
   function bootMultiversum() {
     if (activeWorld() !== "general" || !effectsEnabled()) return;
-
-    var el = ensureAudio();
-    currentWorld = "general";
-    currentSrc = TRACKS.general;
-
-    if (!el.paused && el.src && el.src.indexOf("MULTIVERSUM") >= 0) {
-      el.muted = false;
-      fadeVolume(TARGET_VOLUME);
-      return;
-    }
-
-    if (window.__mvWorldBgmBoot) {
-      window.__mvWorldBgmBoot();
-      return;
-    }
-
+    audioAllowed = true;
     cancelPending();
-    var token = playToken;
-    if (!el.src || el.src.indexOf("MULTIVERSUM") < 0) {
-      el.src = TRACKS.general;
-      el.load();
-    }
-    playElement(el, token);
+    startPlayback("general", playToken);
+  }
+
+  function allowAudioAndBoot() {
+    audioAllowed = true;
+    if (activeWorld() === "general") bootMultiversum();
+    else playAfterSwitch(activeWorld());
   }
 
   function hookWorldButtons() {
@@ -222,21 +206,10 @@
       },
       true
     );
-    nav.querySelectorAll("button[data-iframe]").forEach(function (btn) {
-      var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-      var keys = ["general", "nexora", "vertex", "freiraum"];
-      var world = keys[idx];
-      if (!world || world === "general") return;
-      btn.addEventListener("mouseenter", function () {
-        preloadTrack(world);
-      }, { passive: true });
-      btn.addEventListener("focus", function () {
-        preloadTrack(world);
-      });
-    });
   }
 
   function onWorldAttributeChange() {
+    if (!audioAllowed) return;
     playAfterSwitch(activeWorld());
   }
 
@@ -246,9 +219,10 @@
       stopAll();
       return;
     }
+    if (!audioAllowed) return;
     if (document.documentElement.classList.contains("welten-world-switch-lock")) return;
-    bootMultiversum();
-    if (activeWorld() !== "general") playAfterSwitch(activeWorld());
+    if (activeWorld() === "general") bootMultiversum();
+    else playAfterSwitch(activeWorld());
   });
 
   try {
@@ -275,7 +249,6 @@
   function init() {
     ensureAudio();
     hookWorldButtons();
-    bootMultiversum();
   }
 
   if (document.readyState === "loading") {
@@ -284,8 +257,28 @@
     init();
   }
 
-  window.addEventListener("load", bootMultiversum);
-  window.addEventListener("pageshow", bootMultiversum);
+  window.addEventListener("message", function (e) {
+    if (e.data && e.data.type === "mv-hero-ready") {
+      setTimeout(allowAudioAndBoot, 120);
+    }
+  });
+
+  ["pointerdown", "touchstart", "keydown", "click"].forEach(function (ev) {
+    document.addEventListener(ev, allowAudioAndBoot, { once: true, capture: true });
+  });
+
+  function scheduleIdleBoot() {
+    var run = function () {
+      allowAudioAndBoot();
+    };
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(run, { timeout: 2800 });
+    } else {
+      setTimeout(run, 1800);
+    }
+  }
+
+  window.addEventListener("load", scheduleIdleBoot);
 
   window.WeltenWorldAudioTest = {
     play: playAfterSwitch,

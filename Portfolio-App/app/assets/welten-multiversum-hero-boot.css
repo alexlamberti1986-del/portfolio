@@ -10,6 +10,12 @@ body[data-world="general"]:not(.mv-home-ready) {
   overflow: hidden !important;
 }
 
+/* Nach kurzem Boot-Fenster Inhalt nie dauerhaft verstecken */
+body[data-world="general"].mv-home-ready,
+body[data-world="general"][data-boot-failsafe="1"] {
+  overflow: auto;
+}
+
 body[data-world="general"]:not(.mv-home-ready) .bg-root,
 body[data-world="general"]:not(.mv-home-ready) .bg-grid,
 body[data-world="general"]:not(.mv-home-ready) .light-beams,

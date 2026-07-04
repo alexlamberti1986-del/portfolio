@@ -266,13 +266,33 @@
     }
   }
 
+  function waitForParallaxDeps(done, tries) {
+    tries = tries || 0;
+    if (!isDesktopParallaxHero() || parallaxDepsReady() || tries > 40) {
+      done();
+      return;
+    }
+    setTimeout(function () {
+      waitForParallaxDeps(done, tries + 1);
+    }, 50);
+  }
+
   function boot() {
     applyTheme();
     patchMobileHeader();
-    if (!isDesktopParallaxHero()) buildStaticHero();
     stripDecor();
-    finishBoot();
-    if (isDesktopParallaxHero()) preloadUrls(PARALLAX_PRELOAD);
+    if (!isDesktopParallaxHero()) {
+      buildStaticHero();
+      finishBoot();
+      return;
+    }
+    waitForParallaxDeps(function () {
+      finishBoot();
+      preloadUrls(PARALLAX_PRELOAD);
+    });
+    setTimeout(function () {
+      if (!document.body.classList.contains("mv-home-ready")) notifyHeroReady();
+    }, 1800);
   }
 
   function stripDecor() {
@@ -332,10 +352,11 @@
     }
   });
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
-  } else {
+  /* Sofort booten sobald dieses Script läuft (Head-Defer, vor schweren Body-Scripts) */
+  if (document.body) {
     boot();
+  } else {
+    document.addEventListener("DOMContentLoaded", boot);
   }
 
   if (!isDesktopParallaxHero() && document.getElementById("dnaStage")) {
