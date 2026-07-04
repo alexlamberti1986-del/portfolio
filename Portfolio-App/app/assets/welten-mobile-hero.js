@@ -4,9 +4,13 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260608c";
+  var HERO_VER = "20260706chapter-hero";
 
   var WORLDS = {
+    general: {
+      title: "MULTIVERSUM",
+      keywords: "VIER WELTEN · EIN ZIEL · DEINE VISION",
+    },
     nexora: {
       title: "NEXORA",
       keywords: "STRATEGIE · TECHNOLOGIE · ZUKUNFT",
@@ -21,8 +25,9 @@
     },
   };
 
-  /** Mobile/Tablet: Home oben, dann 2×2 (Projekte|Leistungen, Über mich|Kontakt) */
-  var HERO_GRID_ORDER = ["home", "projects", "leistungen", "about", "contact"];
+  /** Mobile/Tablet: aktives Kapitel oben (groß), danach 2×2 */
+  var HERO_CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
+  var HERO_GRID_ORDER = HERO_CHAPTERS.slice();
 
   var nexoraHeroRetryTimer = null;
   var mqHero = window.matchMedia("(max-width: 1024px)");
@@ -48,12 +53,70 @@
       });
   }
 
-  function isHomeChapter() {
+  function currentChapter() {
     var slide =
       document.body.getAttribute("data-current-slide") ||
       (document.querySelector(".slide.active[data-slide]") &&
         document.querySelector(".slide.active[data-slide]").getAttribute("data-slide"));
-    return !slide || slide === "home";
+    if (HERO_CHAPTERS.indexOf(slide) >= 0) return slide;
+    return "home";
+  }
+
+  function isHomeChapter() {
+    return currentChapter() === "home";
+  }
+
+  function gridOrder(active) {
+    active = active || currentChapter();
+    if (HERO_CHAPTERS.indexOf(active) < 0) active = "home";
+    var rest = HERO_CHAPTERS.filter(function (id) {
+      return id !== active;
+    });
+    return [active].concat(rest);
+  }
+
+  function chapterLabels() {
+    var lang = "de";
+    try {
+      lang =
+        localStorage.getItem("mv-preview-lang") ||
+        sessionStorage.getItem("mv-preview-lang") ||
+        "de";
+    } catch (e) {}
+    var fallback = {
+      de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt" },
+      en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact" },
+      fr: { home: "Accueil", projects: "Projets", leistungen: "Services", about: "À propos", contact: "Contact" },
+      it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto" },
+    };
+    if (window.WeltenPreviewI18n && window.WeltenPreviewI18n.NAV) {
+      var pack =
+        (window.WeltenTranslations &&
+          window.WeltenTranslations.langPack(window.WeltenPreviewI18n.NAV, lang)) ||
+        window.WeltenPreviewI18n.NAV[lang] ||
+        window.WeltenPreviewI18n.NAV.de;
+      return pack;
+    }
+    return fallback[lang] || fallback.de;
+  }
+
+  function worldConfig() {
+    var w = document.body.getAttribute("data-world") || "general";
+    return WORLDS[w] || WORLDS.general;
+  }
+
+  function goChapter(id) {
+    if (window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
+      window.WeltenSiteIA.navigateToChapter(id);
+      return;
+    }
+    var step = document.querySelector('.experience-step[data-go="' + id + '"]');
+    if (step) {
+      step.click();
+      return;
+    }
+    var link = document.querySelector('.menu-links a[data-go="' + id + '"]');
+    if (link) link.click();
   }
 
   function releaseHeroPointerCapture() {
@@ -158,30 +221,30 @@
     return row;
   }
 
-  function restructureHeroButtons() {
-    if (!isHeroMobile()) return;
+  function markPrimaryButtons(root, active) {
+    if (!root) return;
+    root.querySelectorAll("[data-go]").forEach(function (btn) {
+      var go = btn.getAttribute("data-go");
+      var on = go === active;
+      btn.classList.toggle("is-active", on);
+      btn.classList.toggle("is-hero-primary", on);
+      btn.setAttribute("aria-current", on ? "page" : "false");
+    });
+  }
 
-    var ctx = getHeroButtonContext();
-    if (!ctx.shell || !ctx.ring) return;
-
-    var contactRow = ctx.shell.querySelector(":scope > .hero-contact-button-row");
-    if (contactRow) {
-      var rowContact = contactRow.querySelector("[data-go='contact']");
-      if (rowContact) ctx.ring.appendChild(rowContact);
-      contactRow.remove();
+  function orderButtonsInRing(ring, selector, active) {
+    if (!ring) return;
+    var buttons = Array.from(ring.querySelectorAll(selector));
+    if (!buttons.length) {
+      buttons = Array.from(document.querySelectorAll(selector));
     }
-
-    ctx.shell.classList.add("hero-buttons-shell");
-    ctx.ring.classList.add("hero-buttons-grid", "welten-mobile-hero-grid");
-
-    var buttons = Array.from(document.querySelectorAll(ctx.selector));
     if (!buttons.length) return;
 
     var byGo = {};
     buttons.forEach(function (btn) {
       var go = btn.getAttribute("data-go");
       if (!go || byGo[go]) {
-        btn.remove();
+        if (byGo[go] && btn !== byGo[go]) btn.remove();
         return;
       }
       byGo[go] = btn;
@@ -195,13 +258,99 @@
       btn.style.setProperty("bottom", "auto", "important");
     });
 
-    HERO_GRID_ORDER.forEach(function (go) {
+    gridOrder(active).forEach(function (go) {
       var btn = byGo[go];
-      if (btn) ctx.ring.appendChild(btn);
+      if (btn) ring.appendChild(btn);
     });
 
-    ctx.ring.style.setProperty("display", "grid", "important");
-    ctx.ring.style.setProperty("transform", "none", "important");
+    markPrimaryButtons(ring, active);
+    ring.classList.add("hero-buttons-grid", "welten-mobile-hero-grid");
+    ring.style.setProperty("display", "grid", "important");
+    ring.style.setProperty("transform", "none", "important");
+  }
+
+  function restructureHeroButtons() {
+    if (!isHeroMobile()) return;
+
+    var active = currentChapter();
+    var ctx = getHeroButtonContext();
+    if (ctx.shell && ctx.ring) {
+      var contactRow = ctx.shell.querySelector(":scope > .hero-contact-button-row");
+      if (contactRow) {
+        var rowContact = contactRow.querySelector("[data-go='contact']");
+        if (rowContact) ctx.ring.appendChild(rowContact);
+        contactRow.remove();
+      }
+      ctx.shell.classList.add("hero-buttons-shell");
+      orderButtonsInRing(ctx.ring, ctx.selector, active);
+    }
+
+    /* MULTIVERSUM Static Hero */
+    var staticNav = document.querySelector("#mvStaticHero .mv-static-hero__nav");
+    if (staticNav) {
+      staticNav.classList.add("hero-buttons-grid", "welten-mobile-hero-grid");
+      orderButtonsInRing(staticNav, ".mv-static-hero__nav-btn", active);
+    }
+
+    /* Portable Heroes auf Unterseiten */
+    document.querySelectorAll("[data-mobile-chapter-hero] .welten-mobile-hero-grid").forEach(function (grid) {
+      orderButtonsInRing(grid, ".hero-button", active);
+    });
+  }
+
+  function ensureChapterHeroes() {
+    if (!isHeroMobile()) {
+      document.querySelectorAll("[data-mobile-chapter-hero]").forEach(function (el) {
+        el.remove();
+      });
+      return;
+    }
+
+    var cfg = worldConfig();
+    var labels = chapterLabels();
+    var active = currentChapter();
+
+    HERO_CHAPTERS.forEach(function (chapter) {
+      if (chapter === "home") return;
+      var slide = document.getElementById("slide-" + chapter);
+      if (!slide) return;
+      var inner = slide.querySelector(".slide-inner") || slide;
+      var hero = inner.querySelector(":scope > [data-mobile-chapter-hero]");
+      if (!hero) {
+        hero = document.createElement("div");
+        hero.className = "welten-mobile-chapter-hero";
+        hero.setAttribute("data-mobile-chapter-hero", "1");
+        hero.innerHTML =
+          '<div class="welten-mobile-hero-title"></div>' +
+          '<div class="welten-mobile-hero-meta">' +
+          metaHtml(cfg.keywords) +
+          "</div>" +
+          '<div class="welten-mobile-hero-grid hero-buttons-grid" role="navigation" aria-label="Kapitel"></div>';
+        inner.insertBefore(hero, inner.firstChild);
+        var grid = hero.querySelector(".welten-mobile-hero-grid");
+        HERO_CHAPTERS.forEach(function (id) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "hero-button welten-mobile-chapter-hero__btn";
+          btn.setAttribute("data-go", id);
+          btn.textContent = labels[id] || id;
+          btn.addEventListener("click", function () {
+            goChapter(id);
+          });
+          grid.appendChild(btn);
+        });
+      }
+      var titleEl = hero.querySelector(".welten-mobile-hero-title");
+      if (titleEl) titleEl.textContent = cfg.title;
+      var kw = hero.querySelector(".welten-mobile-hero-keywords");
+      if (kw) kw.textContent = cfg.keywords;
+      hero.querySelectorAll("[data-go]").forEach(function (btn) {
+        var id = btn.getAttribute("data-go");
+        if (labels[id]) btn.textContent = labels[id];
+      });
+      orderButtonsInRing(hero.querySelector(".welten-mobile-hero-grid"), ".hero-button", active);
+      hero.hidden = chapter !== active;
+    });
   }
 
   function resetHeroButtonDom() {
@@ -292,7 +441,6 @@
 
   function buildNexoraHero() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
-    if (!isHomeChapter()) return;
     var stage = document.getElementById("dnaStage");
     if (!stage) return;
     var cfg = WORLDS.nexora;
@@ -311,8 +459,10 @@
     clearTimeout(nexoraHeroRetryTimer);
     nexoraHeroRetryTimer = setTimeout(function () {
       if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
-      if (!isHomeChapter()) return;
-      if (document.querySelector("#slide-home .nexora-orbit-button")) return;
+      if (document.querySelector("#slide-home .nexora-orbit-button")) {
+        restructureHeroButtons();
+        return;
+      }
       buildNexoraHero();
     }, 200);
   }
@@ -398,6 +548,9 @@
       document.documentElement.classList.remove("welten-mobile-hero");
       removeHeroTitleDom();
       resetHeroButtonDom();
+      document.querySelectorAll("[data-mobile-chapter-hero]").forEach(function (el) {
+        el.remove();
+      });
       return;
     }
     if (!isHeroTitleVisible()) {
@@ -414,6 +567,10 @@
     }
     if (world === "freiraum") buildFreiraumHero();
     if (world === "vertex") buildProfessionalHero();
+    if (world === "general") restructureHeroButtons();
+
+    ensureChapterHeroes();
+    restructureHeroButtons();
   }
 
   function boot() {
@@ -426,9 +583,7 @@
     if (window.WeltenMobilePerf && typeof window.WeltenMobilePerf.cleanup === "function") {
       window.WeltenMobilePerf.cleanup();
     }
-    if (isHomeChapter()) {
-      setTimeout(boot, 40);
-    }
+    setTimeout(boot, 40);
   }
 
   document.addEventListener(
@@ -477,6 +632,21 @@
   window.addEventListener("orientationchange", function () {
     setTimeout(boot, 120);
   });
+
+  document.addEventListener("welten-chapter-change", function () {
+    setTimeout(boot, 30);
+  });
+
+  document.addEventListener("welten-lang-change", function () {
+    setTimeout(boot, 30);
+  });
+
+  try {
+    new MutationObserver(function () {
+      if (!isHeroMobile()) return;
+      setTimeout(boot, 30);
+    }).observe(document.body, { attributes: true, attributeFilter: ["data-current-slide", "data-world"] });
+  } catch (e) {}
 
   window.WeltenMobileHero = { refresh: boot, version: HERO_VER };
 })();

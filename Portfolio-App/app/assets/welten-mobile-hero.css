@@ -256,9 +256,11 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     flex-wrap: unset !important;
   }
 
-  body[data-world] #slide-home .hero-button[data-go="home"],
-  body[data-world] #slide-home .nexora-orbit-button[data-go="home"],
-  body[data-world] #slide-home .dna-slide[data-go="home"] {
+  body[data-world] #slide-home .hero-button.is-hero-primary,
+  body[data-world] #slide-home .nexora-orbit-button.is-hero-primary,
+  body[data-world] #slide-home .dna-slide.is-hero-primary,
+  body[data-world] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
+  body[data-world] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary {
     grid-column: 1 / -1 !important;
     justify-self: stretch !important;
     width: 100% !important;
@@ -1015,9 +1017,11 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
   }
 
   /* Home-Button: volle Breite über beide Spalten, gleich hoch wie die anderen */
-  body[data-world] #slide-home .hero-button[data-go="home"],
-  body[data-world] #slide-home .nexora-orbit-button[data-go="home"],
-  body[data-world] #slide-home .dna-slide[data-go="home"] {
+  body[data-world] #slide-home .hero-button.is-hero-primary,
+  body[data-world] #slide-home .nexora-orbit-button.is-hero-primary,
+  body[data-world] #slide-home .dna-slide.is-hero-primary,
+  body[data-world] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
+  body[data-world] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary {
     grid-column: 1 / -1 !important;
     justify-self: stretch !important;
     width: 100% !important;
@@ -1072,6 +1076,175 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     min-height: 56px !important;
     font-size: clamp(13px, 1.6vw, 16px) !important;
     padding: 0 12px !important;
+  }
+}
+
+/* ── Kapitel-Hero auf Unterseiten (nur Handy/Tablet) ── */
+@media (min-width: 1025px) {
+  [data-mobile-chapter-hero] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .welten-mobile-chapter-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(12px, 2.4vw, 18px);
+    width: 100%;
+    margin: 0 0 clamp(18px, 4vw, 28px);
+    padding: clamp(20px, 4vw, 36px) clamp(12px, 3vw, 20px) clamp(16px, 3vw, 24px);
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .welten-mobile-chapter-hero[hidden] {
+    display: none !important;
+  }
+
+  .welten-mobile-chapter-hero .welten-mobile-hero-title {
+    margin: 0;
+    font-size: clamp(2.2rem, 11vw, 4.2rem);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  .welten-mobile-chapter-hero .welten-mobile-hero-grid {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: min(390px, 92vw) !important;
+    margin: 0 auto !important;
+  }
+
+  .welten-mobile-chapter-hero .hero-button {
+    min-height: 52px !important;
+    font: inherit;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    border-radius: 14px !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  body[data-world="general"] .welten-mobile-chapter-hero,
+  body[data-world="general"] #mvStaticHero {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 38%, rgba(255, 89, 178, 0.1), transparent 62%),
+      linear-gradient(180deg, rgba(5, 7, 13, 0.98), rgba(11, 17, 27, 0.94));
+  }
+
+  body[data-world="general"] .welten-mobile-chapter-hero .welten-mobile-hero-title,
+  body[data-world="general"] #mvStaticHero .mv-static-hero__title {
+    background: linear-gradient(90deg, #5ec4ff, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  body[data-world="general"] .welten-mobile-chapter-hero .hero-button,
+  body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn {
+    border: 1px solid rgba(255, 89, 178, 0.28);
+    background: rgba(255, 255, 255, 0.05);
+    color: #eef3ff;
+  }
+
+  body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
+  body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary {
+    background: linear-gradient(135deg, #5ec4ff, #9b6bff, #ff59b2, #ff9b37, #ffd86a);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 16px 38px rgba(255, 89, 178, 0.22);
+  }
+
+  body[data-world="nexora"] .welten-mobile-chapter-hero {
+    background: radial-gradient(ellipse 80% 55% at 50% 30%, rgba(0, 194, 255, 0.12), transparent 60%), #050810;
+  }
+
+  body[data-world="nexora"] .welten-mobile-chapter-hero .welten-mobile-hero-title {
+    color: #65d9ff;
+    text-shadow: 0 0 24px rgba(101, 217, 255, 0.45);
+  }
+
+  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button {
+    border: 1px solid rgba(101, 217, 255, 0.35);
+    background: rgba(8, 18, 32, 0.85);
+    color: #e8f7ff;
+    border-radius: 12px !important;
+  }
+
+  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-hero-primary {
+    box-shadow: 0 0 0 1px rgba(101, 217, 255, 0.5), 0 0 22px rgba(0, 194, 255, 0.35);
+  }
+
+  body[data-world="vertex"] .welten-mobile-chapter-hero {
+    background: #f4f2ee;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  body[data-world="vertex"] .welten-mobile-chapter-hero .welten-mobile-hero-title,
+  body[data-world="vertex"] .welten-mobile-chapter-hero .welten-mobile-hero-keywords {
+    color: #111;
+  }
+
+  body[data-world="vertex"] .welten-mobile-chapter-hero .welten-mobile-hero-line span {
+    background: #111;
+  }
+
+  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button {
+    border: 1px solid #111;
+    background: #111;
+    color: #fff;
+    border-radius: 2px !important;
+  }
+
+  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-hero-primary {
+    box-shadow: 0 0 0 2px #111, 0 0 0 4px #fff;
+  }
+
+  body[data-world="freiraum"] .welten-mobile-chapter-hero {
+    background:
+      radial-gradient(ellipse 85% 65% at 18% 22%, rgba(255, 139, 189, 0.18), transparent 52%),
+      linear-gradient(168deg, #2a1420 0%, #1a1028 42%, #120a1a 100%);
+  }
+
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .welten-mobile-hero-title,
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .welten-mobile-hero-keywords {
+    color: #ffd166;
+  }
+
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button {
+    border: 1px solid rgba(255, 209, 102, 0.4);
+    background: rgba(55, 24, 62, 0.55);
+    color: #fff8ef;
+    border-radius: 999px 20px 999px 20px !important;
+  }
+
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-hero-primary {
+    box-shadow: 0 0 0 1px rgba(255, 209, 102, 0.45), 0 0 20px rgba(255, 209, 102, 0.28);
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__nav {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: min(390px, 92vw) !important;
+    margin: 8px auto 0 !important;
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary,
+  body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-active {
+    grid-column: 1 / -1 !important;
   }
 }
 
