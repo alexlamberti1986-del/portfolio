@@ -204,6 +204,16 @@
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
       window.WeltenWorldSwitchPreview.abort();
     }
+    unlockShell();
+  }
+
+  function recoverStuckSwitch() {
+    if (
+      switching &&
+      !document.documentElement.classList.contains("welten-world-switch-lock")
+    ) {
+      unlockShell();
+    }
   }
 
   function chapterFromShellPath() {
@@ -540,7 +550,9 @@
   window.mv4ActiveFrameIndex = activeIdx;
 
   function switchTo(i) {
-    if (i < 0 || i > 3 || switching) return;
+    if (i < 0 || i > 3) return;
+    recoverStuckSwitch();
+    if (switching) return;
     clearSwitchLock();
     ensureSingleBar();
     if (frameNeedsReset(frames[i], i)) {
@@ -727,6 +739,10 @@
 
   ensureSingleBar();
   clearSwitchLock();
+  recoverStuckSwitch();
+
+  window.addEventListener("pageshow", recoverStuckSwitch);
+  window.addEventListener("focus", recoverStuckSwitch);
 
   setMaster(defaultWorld);
   broadcastLang();

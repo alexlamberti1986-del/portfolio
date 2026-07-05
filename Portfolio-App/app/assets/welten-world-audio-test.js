@@ -330,15 +330,12 @@
   } catch (e) {}
 
   try {
-    new MutationObserver(function (mutations) {
-      for (var i = 0; i < mutations.length; i++) {
-        if (
-          mutations[i].attributeName === "class" &&
-          document.documentElement.classList.contains("welten-world-switch-lock")
-        ) {
-          stopForSwitch();
-          break;
-        }
+    new MutationObserver(function () {
+      var locked = document.documentElement.classList.contains("welten-world-switch-lock");
+      if (locked) {
+        stopForSwitch();
+      } else if (switching) {
+        switching = false;
       }
     }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   } catch (e2) {}

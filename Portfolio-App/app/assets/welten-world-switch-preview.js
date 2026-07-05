@@ -1592,7 +1592,21 @@
 
     if (!wwsEffectsEnabled()) {
       var instant = window.switchToWorldIndex;
-      if (typeof instant === "function") Promise.resolve(instant(targetIdx));
+      if (typeof instant === "function") {
+        Promise.resolve(instant(targetIdx)).finally(function () {
+          if (typeof window.__wwsOnTransitionEnd === "function") {
+            try {
+              window.__wwsOnTransitionEnd();
+            } catch (eEnd) {}
+            window.__wwsOnTransitionEnd = null;
+          }
+        });
+      } else if (typeof window.__wwsOnTransitionEnd === "function") {
+        try {
+          window.__wwsOnTransitionEnd();
+        } catch (eEnd2) {}
+        window.__wwsOnTransitionEnd = null;
+      }
       return;
     }
 
