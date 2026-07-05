@@ -7946,14 +7946,11 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   .slide#slide-faq .card-grid { margin-top: 0.75rem; }
 </style>
 <style id="welten-ui-v10">
-#slide-home .neuro-core {
-  top: clamp(300px, 48vh, 500px) !important;
-}
-@media (max-width: 1100px) {
-  #slide-home .neuro-core { top: clamp(275px, 45vh, 450px) !important; }
-}
-@media (max-width: 720px) {
-  #slide-home .neuro-core { top: clamp(248px, 42vh, 400px) !important; }
+/* Gehirn tiefer nur auf grossen Desktops — Laptop nutzt 34vh (siehe welten-nexora-laptop-hero.css) */
+@media (min-width: 1440px) {
+  #slide-home .neuro-core {
+    top: clamp(300px, 48vh, 500px) !important;
+  }
 }
 @media (min-width: 1025px) and (hover: hover) {
 #slide-home .nexora-orbit-buttons {
@@ -8502,6 +8499,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260705mobile-hero-stack" id="welten-mobile-hero-stylesheet" />
 <link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260606f" />
 <script src="assets/welten-mobile-hero.js?v=20260705mobile-hero-stack" defer></script>
+<link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260705laptop-hero" />
 <script src="assets/welten-desktop-chapter-hero.js?v=20260705hero-v7" defer></script>
 <script src="assets/welten-mobile-nexora-nav.js?v=20260606f" defer></script>
 <script src="assets/welten-nexora-mobile-fix.js?v=20260622a" defer></script>

@@ -8,7 +8,7 @@
 
   if (!document.body || document.body.getAttribute("data-world-audio-test") !== "1") return;
 
-  var VERSION = "20260706audio-now";
+  var VERSION = "20260705audio-autoplay";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 280;
   var TRACKS = {
@@ -343,10 +343,39 @@
     }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   } catch (e2) {}
 
+  function attachEarlyAudio() {
+    var el = window.__mvWorldAudioEarly || document.getElementById("mvWorldBgm");
+    if (!el || !document.body) return null;
+    el.id = "mvWorldBgm";
+    el.loop = true;
+    el.playsInline = true;
+    el.setAttribute("playsinline", "");
+    el.preload = "auto";
+    el.style.display = "none";
+    if (!el.parentNode) {
+      document.body.insertBefore(el, document.body.firstChild);
+    }
+    audio = el;
+    return el;
+  }
+
+  function tryImmediateBoot() {
+    if (!effectsEnabled() || switching) return;
+    attachEarlyAudio();
+    if (typeof window.__mvWorldAudioBoot === "function") {
+      window.__mvWorldAudioBoot().catch(function () {
+        bootMultiversum();
+      });
+      return;
+    }
+    bootMultiversum();
+  }
+
   function init() {
+    attachEarlyAudio();
     ensureAudio();
     hookWorldButtons();
-    bootMultiversum();
+    tryImmediateBoot();
   }
 
   if (document.readyState === "loading") {
@@ -355,10 +384,10 @@
     init();
   }
 
-  bootMultiversum();
-  window.addEventListener("load", bootMultiversum);
-  window.addEventListener("pageshow", bootMultiversum);
-  window.addEventListener("focus", bootMultiversum);
+  tryImmediateBoot();
+  window.addEventListener("load", tryImmediateBoot);
+  window.addEventListener("pageshow", tryImmediateBoot);
+  window.addEventListener("focus", tryImmediateBoot);
 
   window.addEventListener("message", function (e) {
     if (e.data && e.data.type === "mv-hero-ready") {

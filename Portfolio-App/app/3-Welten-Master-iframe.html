@@ -4,7 +4,7 @@
   <script>
     /* MULTIVERSUM-Musik so früh wie möglich starten (Effekte Ein) */
     (function () {
-      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-now";
+      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260705audio-autoplay";
       var VOL = 0.4;
       function effectsWanted() {
         try {
@@ -21,7 +21,7 @@
       var a = new Audio();
       a.id = "mvWorldBgm";
       a.loop = true;
-      a.preload = "metadata";
+      a.preload = "auto";
       a.playsInline = true;
       a.setAttribute("playsinline", "");
       a.setAttribute("autoplay", "");
@@ -32,6 +32,10 @@
       window.__mvWorldAudioBoot = function () {
         if (!effectsWanted()) return Promise.resolve();
         if (document.documentElement.classList.contains("mv-effects-off")) return Promise.resolve();
+        if (document.body && !a.parentNode) {
+          a.style.display = "none";
+          document.body.insertBefore(a, document.body.firstChild);
+        }
         a.muted = false;
         a.volume = VOL;
         return a.play().then(function () {
@@ -46,19 +50,27 @@
           if (tries < 40) setTimeout(kick, 120);
         });
       }
-      a.addEventListener("canplay", kick);
-      a.addEventListener("loadeddata", kick);
-      kick();
+      function attachAndKick() {
+        if (document.body && !a.parentNode) {
+          a.style.display = "none";
+          document.body.insertBefore(a, document.body.firstChild);
+        }
+        kick();
+      }
+      a.addEventListener("canplay", attachAndKick);
+      a.addEventListener("loadeddata", attachAndKick);
+      if (document.body) attachAndKick();
+      else document.addEventListener("DOMContentLoaded", attachAndKick);
       var n = 0;
       var iv = setInterval(function () {
         n += 1;
-        if ((window.__mvWorldAudioPlaying && !a.paused) || n > 30) {
+        if ((window.__mvWorldAudioPlaying && !a.paused) || n > 40) {
           clearInterval(iv);
           return;
         }
         if (!effectsWanted()) return;
-        kick();
-      }, 250);
+        attachAndKick();
+      }, 200);
     })();
   </script>
   <script>
@@ -137,7 +149,7 @@
     playsinline
     autoplay
     preload="metadata"
-    src="assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-now"
+    src="assets/audio/worlds/MULTIVERSUM.mp3?v=20260705audio-autoplay"
     style="display:none"
     aria-hidden="true"
   ></audio>
@@ -267,6 +279,6 @@
   <script src="assets/welten-multiversum-master.js?v=20260706start" defer></script>
   <script src="assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="assets/welten-world-switch-preview.js?v=20260706fr-hold" defer></script>
-  <script src="assets/welten-world-audio-test.js?v=20260706audio-now" defer></script>
+  <script src="assets/welten-world-audio-test.js?v=20260705audio-autoplay" defer></script>
 </body>
 </html>

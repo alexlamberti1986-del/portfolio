@@ -280,15 +280,33 @@ body[data-world="general"] .welten-chapter-box__scrim {
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
+  body[data-world="general"] .mv-static-hero,
+  body[data-world="general"] .welten-desktop-subpage-mv-hero.mv-static-hero {
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: clamp(20px, 3.5vw, 32px) !important;
+    padding-bottom: clamp(14px, 2.5vw, 22px) !important;
+  }
+
+  body[data-world="general"] .mv-static-hero__inner {
+    gap: clamp(8px, 1.6vw, 14px) !important;
+  }
+
   body[data-world="general"] .mv-static-hero__nav {
     max-width: 720px !important;
     gap: 18px !important;
+    margin-top: 0 !important;
   }
 
   body[data-world="general"] .mv-static-hero__nav-btn {
     min-height: 56px !important;
     font-size: clamp(13px, 1.6vw, 16px) !important;
     padding: 0 12px !important;
+  }
+
+  body[data-world="general"] .welten-mobile-chapter-hero {
+    padding-bottom: clamp(10px, 2vw, 16px) !important;
+    margin-bottom: clamp(10px, 2.5vw, 16px) !important;
   }
 }
 

@@ -1,0 +1,24 @@
+/**
+ * NEXORA — Laptop only (1025–1439px): Orbit-Buttons mittig zum Gehirn wie Desktop.
+ * Desktop ≥1440px und Tablet/Mobile unverändert.
+ */
+@media (min-width: 1025px) and (max-width: 1439px) and (hover: hover) {
+  body[data-world="nexora"] #slide-home .neuro-core,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core {
+    top: clamp(245px, 34vh, 350px) !important;
+    width: min(900px, 78vw) !important;
+    height: min(400px, 34vw) !important;
+  }
+
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons {
+    top: clamp(112px, 13vh, 172px) !important;
+    bottom: clamp(88px, 12vh, 148px) !important;
+    perspective-origin: 50% 52% !important;
+  }
+
+  body[data-world="nexora"] #slide-home .nexora-orbit-buttons::before,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons::before {
+    top: 52% !important;
+  }
+}
