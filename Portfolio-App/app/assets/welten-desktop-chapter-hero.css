@@ -511,3 +511,22 @@
     pointer-events: none;
   }
 }
+
+/* MULTIVERSUM: grosser Desktop — weniger Leerraum unter dem Hero (Laptop/Tablet/Handy unverändert) */
+@media (min-width: 1440px) {
+  body[data-world="general"] #mvStaticHero.mv-static-hero,
+  body[data-world="general"] .mv-static-hero.welten-desktop-relocated-hero,
+  body[data-world="general"] .welten-desktop-subpage-mv-hero.mv-static-hero {
+    min-height: clamp(380px, 52vh, 560px) !important;
+    height: auto !important;
+    max-height: none !important;
+    padding-top: clamp(20px, 3vh, 36px) !important;
+    padding-bottom: clamp(14px, 1.8vh, 24px) !important;
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__inner,
+  body[data-world="general"] .welten-desktop-subpage-mv-hero .mv-static-hero__inner,
+  body[data-world="general"] .mv-static-hero.welten-desktop-relocated-hero .mv-static-hero__inner {
+    gap: clamp(10px, 1.5vh, 16px);
+  }
+}
