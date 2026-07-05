@@ -2229,32 +2229,14 @@
       stage.remove();
 
       cacheDom();
-      Object.keys(dom.particleFields || {}).forEach(function (theme) {
-        var src = ASSETS.deco[theme] && ASSETS.deco[theme].particles;
-        if (src && dom.particleFields[theme]) {
-          dom.particleFields[theme].style.backgroundImage = "url(" + asset(src) + ")";
-        }
-      });
       bindGoButtons(heroEl, goChapter);
-      bindCollageInteractions();
-      bindPortfolioScrollHold();
       onResize();
       bindScroll();
       scrollRoot.scrollTop = 0;
       animProgress = 0;
       updateFrame();
-      heroEl.classList.add("is-js-ready");
-      heroEl.classList.add("is-boot-painted");
-      updateFrame();
-      if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
-        try {
-          var langKey = "mv-preview-lang";
-          var lang = localStorage.getItem(langKey) || sessionStorage.getItem(langKey) || "de";
-          window.WeltenPreviewI18n.applyParallax(document, lang);
-        } catch (e) {}
-      }
-      window.__mvParallaxHeroReady = true;
-      bootPaintDone = true;
+      heroEl.classList.add("is-js-ready", "is-boot-painted");
+
       function signalReady() {
         try {
           document.body.classList.add("mv-home-ready");
@@ -2266,11 +2248,35 @@
         } catch (eReady) {}
       }
       if (typeof requestAnimationFrame === "function") {
-        requestAnimationFrame(function () {
-          requestAnimationFrame(signalReady);
-        });
+        requestAnimationFrame(signalReady);
       } else {
         signalReady();
+      }
+
+      function finishHeavyBoot() {
+        Object.keys(dom.particleFields || {}).forEach(function (theme) {
+          var src = ASSETS.deco[theme] && ASSETS.deco[theme].particles;
+          if (src && dom.particleFields[theme]) {
+            dom.particleFields[theme].style.backgroundImage = "url(" + asset(src) + ")";
+          }
+        });
+        bindCollageInteractions();
+        bindPortfolioScrollHold();
+        updateFrame();
+        if (window.WeltenPreviewI18n && typeof window.WeltenPreviewI18n.applyParallax === "function") {
+          try {
+            var langKey = "mv-preview-lang";
+            var lang = localStorage.getItem(langKey) || sessionStorage.getItem(langKey) || "de";
+            window.WeltenPreviewI18n.applyParallax(document, lang);
+          } catch (e) {}
+        }
+        window.__mvParallaxHeroReady = true;
+        bootPaintDone = true;
+      }
+      if (typeof requestIdleCallback === "function") {
+        requestIdleCallback(finishHeavyBoot, { timeout: 1200 });
+      } else {
+        setTimeout(finishHeavyBoot, 40);
       }
       return heroEl;
     } finally {

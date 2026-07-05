@@ -21,7 +21,7 @@
       var a = new Audio();
       a.id = "mvWorldBgm";
       a.loop = true;
-      a.preload = "auto";
+      a.preload = "metadata";
       a.playsInline = true;
       a.setAttribute("playsinline", "");
       a.setAttribute("autoplay", "");
@@ -69,11 +69,19 @@
         if (splash) splash.remove();
       }
       window.addEventListener("message", function (e) {
-        if (e.data && e.data.type === "mv-hero-ready") releaseShell();
+        if (!e.data || e.data.type !== "mv-hero-ready") return;
+        var a = window.__mvWorldAudioEarly;
+        if (a && a.preload !== "auto") {
+          a.preload = "auto";
+          try {
+            a.load();
+          } catch (err) {}
+        }
+        releaseShell();
       });
       releaseShell();
       document.addEventListener("DOMContentLoaded", releaseShell);
-      setTimeout(releaseShell, 400);
+      setTimeout(releaseShell, 250);
     })();
   </script>
   <meta charset="UTF-8" />
@@ -108,26 +116,6 @@
     html, body { margin: 0; background: #02030b; }
   </style>
 
-  <link
-    rel="preload"
-    as="image"
-    href="assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live"
-    fetchpriority="high"
-    media="(min-width: 1024px)"
-  />
-  <link
-    rel="preload"
-    as="image"
-    href="assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait"
-    fetchpriority="high"
-    media="(min-width: 1024px)"
-  />
-  <link
-    rel="preload"
-    href="assets/welten-multiversum-parallax-hero-v4.js?v=20260706start"
-    as="script"
-    media="(min-width: 1024px)"
-  />
   <link rel="preload" href="MULTIVERSUM.html" as="document" fetchpriority="high" />
 
   <link rel="stylesheet" href="assets/welten-font-system.css?v=20260706mob-bar" />
@@ -148,7 +136,7 @@
     loop
     playsinline
     autoplay
-    preload="auto"
+    preload="metadata"
     src="assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-now"
     style="display:none"
     aria-hidden="true"

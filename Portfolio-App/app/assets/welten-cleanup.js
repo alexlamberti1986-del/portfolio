@@ -487,9 +487,17 @@
     injectFaqSchema(lang);
   }
 
+  function getNexoraHeroEl() {
+    return (
+      document.getElementById("dnaStage") ||
+      document.querySelector(".home-hero-experience.welten-desktop-relocated-hero") ||
+      document.querySelector("#slide-home .home-hero-experience")
+    );
+  }
+
   function fixNexoraOrbit(lang) {
     if (document.body.getAttribute("data-world") !== "nexora") return;
-    var hero = document.querySelector("#slide-home .home-hero-experience");
+    var hero = getNexoraHeroEl();
     if (!hero) return;
 
     var nav =

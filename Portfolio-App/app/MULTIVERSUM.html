@@ -27,13 +27,12 @@
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260702home-content" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-v4.css?v=20260706no-scroll" />
   <link rel="preload" as="image" href="assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live" fetchpriority="high" media="(min-width: 1024px)" />
-  <link rel="preload" as="image" href="assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait" fetchpriority="high" media="(min-width: 1024px)" />
   <script src="assets/welten-live-shell-early.js?v=20260704restore"></script>
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260704restore" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
-  <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260706start" defer></script>
-  <script src="assets/welten-multiversum-world.js?v=20260706boot-fix" defer></script>
+  <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260706perf-start" defer></script>
+  <script src="assets/welten-multiversum-world.js?v=20260706perf-start" defer></script>
   <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260706start" defer></script>
   <script>
     (function () {
@@ -59,8 +58,8 @@
           } catch (e3) {}
         } catch (e2) {}
       }
-      setTimeout(mobileFailsafe, 1400);
-      setTimeout(desktopFailsafe, 3200);
+      setTimeout(mobileFailsafe, 700);
+      setTimeout(desktopFailsafe, 1500);
     })();
   </script>
   <title>Alex Lamberti Multiversum für digitale Welten</title>
@@ -5237,8 +5236,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 })();
 </script>
 <a class="welten-skip-link" href="#slide-home">Zum Hauptinhalt springen</a>
-<script src="assets/portfolio-images.js?v=20260629-prof-portrait"></script>
-<script src="assets/welten-preview-images.js?v=20260629-prof-portrait"></script>
+<script src="assets/portfolio-images.js?v=20260629-prof-portrait" defer></script>
+<script src="assets/welten-preview-images.js?v=20260629-prof-portrait" defer></script>
 
 <!-- WP: Hintergrund-Ebenen optional weglassen oder als Section-Hintergrund + HTML für Canvas -->
   <div class="bg-root" aria-hidden="true"></div>
@@ -8611,6 +8610,7 @@ body[data-world="nexora"] .faq-panel-inner {
 
 <link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706btn-active" id="welten-mobile-hero-stylesheet" />
 <script src="assets/welten-mobile-hero.js?v=20260706btn-active" defer></script>
+<script src="assets/welten-desktop-chapter-hero.js?v=20260705hero-v7" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260606f" />
 <link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260606f" />
@@ -8628,7 +8628,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-final.css?v=20260614mv10" />
 <script src="assets/welten-final.js?v=20260706perf-fix" defer></script>
 <link rel="stylesheet" href="assets/welten-cleanup.css?v=20260704opt" />
-<script src="assets/welten-cleanup.js?v=20260706i18n-lang" defer></script>
+<script src="assets/welten-cleanup.js?v=20260706nexora-nav-lang" defer></script>
 <link rel="stylesheet" href="assets/welten-premium-review.css?v=20260608d" />
 <script src="assets/welten-premium-review.js?v=20260531c" defer></script>
 <link rel="stylesheet" href="assets/welten-final-restore.css?v=20260706perf-fix" />
@@ -8643,10 +8643,10 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-preview-portraits.css?v=20260626portrait" />
 <link rel="stylesheet" href="assets/welten-multiversum-theme.css?v=20260701mv-typeuni" />
 <script src="assets/welten-translations.js?v=20260706perf-fix" defer></script>
-<script src="assets/welten-preview-i18n.js?v=20260706i18n-lang" defer></script>
+<script src="assets/welten-preview-i18n.js?v=20260706nexora-nav-lang" defer></script>
 <script src="assets/welten-slides-fr.js?v=20260706perf-fix" defer></script>
 <script src="assets/welten-content-i18n.js?v=20260706about-contact" defer></script>
-<script src="assets/welten-projects-i18n.js?v=20260706i18n-lang" defer></script>
+<script src="assets/welten-projects-i18n.js?v=20260706nexora-nav-lang" defer></script>
 <script src="assets/welten-preview-i18n-bridge.js?v=20260706perf-fix" defer></script>
 <script src="assets/welten-i18n-refresh.js?v=20260706perf-fix" defer></script>
 <link rel="stylesheet" href="assets/welten-font-system.css?v=20260629fonts3" />

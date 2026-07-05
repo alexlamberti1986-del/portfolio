@@ -72,6 +72,19 @@
     "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
   ];
 
+  function parallaxDepsReady() {
+    return !!(window.MVSceneConfig && window.MVParallaxHero);
+  }
+
+  function deferIdle(fn, timeout) {
+    timeout = timeout || 1800;
+    if (typeof requestIdleCallback === "function") {
+      requestIdleCallback(fn, { timeout: timeout });
+    } else {
+      setTimeout(fn, 120);
+    }
+  }
+
   function notifyHeroReady() {
     function finish() {
       try {
@@ -84,9 +97,7 @@
       } catch (e2) {}
     }
     if (typeof requestAnimationFrame === "function") {
-      requestAnimationFrame(function () {
-        requestAnimationFrame(finish);
-      });
+      requestAnimationFrame(finish);
       return;
     }
     finish();
@@ -101,7 +112,9 @@
   }
 
   if (document.body && document.body.getAttribute("data-world") === "general" && isDesktopParallaxHero()) {
-    preloadUrls(PARALLAX_PRELOAD);
+    deferIdle(function () {
+      preloadUrls(PARALLAX_PRELOAD);
+    }, 2400);
   }
 
   function navLabels(lang) {
@@ -188,10 +201,6 @@
     notifyHeroReady();
   }
 
-  function parallaxDepsReady() {
-    return !!(window.MVWorldCollage && window.MVSceneConfig && window.MVParallaxHero);
-  }
-
   function buildHero() {
     if (window.__mvHeroBootLock) return;
     if (document.getElementById("mvParallaxHero") || document.getElementById("mvStaticHero")) return;
@@ -231,6 +240,9 @@
       if (!go) return;
       btn.classList.toggle("is-active", go === slide);
     });
+    if (window.WeltenDesktopChapterHero && typeof window.WeltenDesktopChapterHero.refresh === "function") {
+      window.WeltenDesktopChapterHero.refresh();
+    }
   }
 
   function injectContactForm() {
@@ -279,17 +291,6 @@
     }
   }
 
-  function waitForParallaxDeps(done, tries) {
-    tries = tries || 0;
-    if (!isDesktopParallaxHero() || parallaxDepsReady() || tries > 40) {
-      done();
-      return;
-    }
-    setTimeout(function () {
-      waitForParallaxDeps(done, tries + 1);
-    }, 50);
-  }
-
   function boot() {
     applyTheme();
     patchMobileHeader();
@@ -301,13 +302,10 @@
       return;
     }
     stripDecor();
-    waitForParallaxDeps(function () {
-      finishBoot();
-      preloadUrls(PARALLAX_PRELOAD);
-      if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
-        buildStaticHero();
-      }
-    });
+    finishBoot();
+    if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
+      buildStaticHero();
+    }
     setTimeout(function () {
       if (!isDesktopParallaxHero()) return;
       if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
@@ -323,7 +321,7 @@
       if (!document.body.classList.contains("mv-home-ready")) {
         notifyHeroReady();
       }
-    }, 2800);
+    }, 1200);
   }
 
   function stripDecor() {

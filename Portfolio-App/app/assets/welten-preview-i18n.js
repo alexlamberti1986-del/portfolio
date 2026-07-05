@@ -624,7 +624,9 @@
 
   function applyNav(doc, lang) {
     var nav = pick(NAV, lang) || NAV.de;
-    doc.querySelectorAll(".experience-step[data-go], .dna-slide[data-go], .menu-links a[data-go]").forEach(function (el) {
+    doc.querySelectorAll(
+      ".experience-step[data-go], .dna-slide[data-go], .nexora-orbit-button[data-go], .mv-static-hero__nav-btn[data-go], .menu-links a[data-go]"
+    ).forEach(function (el) {
       var key = el.getAttribute("data-go");
       if (nav[key]) el.textContent = nav[key];
     });
