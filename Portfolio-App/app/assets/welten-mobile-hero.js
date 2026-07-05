@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706chapter-hero";
+  var HERO_VER = "20260705mobile-hero-stack";
 
   var WORLDS = {
     general: {
@@ -177,19 +177,87 @@
       meta = document.createElement("div");
       meta.className = "welten-mobile-hero-meta";
       meta.innerHTML = metaHtml(keywords);
-      var buttons =
-        container.querySelector(".nexora-orbit-buttons") ||
-        container.querySelector(".dna-orbit-group");
-      if (buttons) {
-        container.insertBefore(meta, buttons);
+      var title = container.querySelector(":scope > .welten-mobile-hero-title");
+      if (title && title.nextSibling) {
+        container.insertBefore(meta, title.nextSibling);
       } else {
-        container.appendChild(meta);
+        var buttons =
+          container.querySelector(":scope > .nexora-orbit-buttons") ||
+          container.querySelector(":scope > .dna-orbit-group");
+        if (buttons) {
+          container.insertBefore(meta, buttons);
+        } else {
+          container.appendChild(meta);
+        }
       }
     } else {
       var kw = meta.querySelector(".welten-mobile-hero-keywords");
       if (kw) kw.textContent = keywords;
     }
     return meta;
+  }
+
+  /** Titel → Meta → Buttons — DOM-Reihenfolge erzwingen */
+  function pinOrderedChildren(parent, selectors) {
+    if (!parent) return;
+    var nodes = selectors
+      .map(function (sel) {
+        return parent.querySelector(sel);
+      })
+      .filter(Boolean);
+    if (!nodes.length) return;
+    var insertAt = parent.firstChild;
+    nodes.forEach(function (el) {
+      parent.insertBefore(el, insertAt);
+      insertAt = el.nextSibling;
+    });
+  }
+
+  function pinHomeHeroStack(container) {
+    if (!container) return;
+    pinOrderedChildren(container, [
+      ":scope > .welten-mobile-hero-title",
+      ":scope > .welten-mobile-hero-meta",
+      ":scope > .nexora-orbit-buttons",
+      ":scope > .dna-orbit-group",
+    ]);
+  }
+
+  function pinChapterHeroStack(hero) {
+    if (!hero) return;
+    pinOrderedChildren(hero, [
+      ".welten-mobile-hero-title",
+      ".welten-mobile-hero-meta",
+      ".welten-mobile-hero-grid",
+    ]);
+  }
+
+  function pinGeneralHeroStack(inner) {
+    if (!inner) return;
+    pinOrderedChildren(inner, [
+      ".mv-static-hero__title",
+      ".mv-static-hero__tag",
+      ".mv-static-hero__nav",
+    ]);
+    var eyebrow = inner.querySelector(".mv-static-hero__eyebrow");
+    if (eyebrow) eyebrow.setAttribute("hidden", "");
+  }
+
+  function suppressSubpageHeaderClutter(inner) {
+    if (!inner || !isHeroMobile()) return;
+    var pageHero = inner.querySelector(":scope > .welten-page-hero");
+    if (pageHero) pageHero.hidden = true;
+  }
+
+  function mountChapterHeroFirst(inner, hero) {
+    if (!inner || !hero) return;
+    var host = inner.querySelector(":scope > .welten-desktop-hero-host");
+    if (host && isHeroMobile()) {
+      inner.appendChild(host);
+    }
+    inner.insertBefore(hero, inner.firstChild);
+    suppressSubpageHeaderClutter(inner);
+    pinChapterHeroStack(hero);
   }
 
   function getHeroButtonContext() {
@@ -267,6 +335,17 @@
     ring.classList.add("hero-buttons-grid", "welten-mobile-hero-grid");
     ring.style.setProperty("display", "grid", "important");
     ring.style.setProperty("transform", "none", "important");
+
+    var heroRoot =
+      ring.closest("[data-mobile-chapter-hero]") ||
+      ring.closest("#dnaStage") ||
+      ring.closest(".dna-unified-scene") ||
+      ring.closest(".mv-static-hero__inner");
+    if (heroRoot && heroRoot.hasAttribute("data-mobile-chapter-hero")) {
+      pinChapterHeroStack(heroRoot);
+    } else if (heroRoot) {
+      pinHomeHeroStack(heroRoot);
+    }
   }
 
   function restructureHeroButtons() {
@@ -326,7 +405,7 @@
           metaHtml(cfg.keywords) +
           "</div>" +
           '<div class="welten-mobile-hero-grid hero-buttons-grid" role="navigation" aria-label="Kapitel"></div>';
-        inner.insertBefore(hero, inner.firstChild);
+        mountChapterHeroFirst(inner, hero);
         var grid = hero.querySelector(".welten-mobile-hero-grid");
         HERO_CHAPTERS.forEach(function (id) {
           var btn = document.createElement("button");
@@ -349,8 +428,22 @@
         if (labels[id]) btn.textContent = labels[id];
       });
       orderButtonsInRing(hero.querySelector(".welten-mobile-hero-grid"), ".hero-button", active);
+      mountChapterHeroFirst(inner, hero);
       hero.hidden = chapter !== active;
     });
+  }
+
+  function buildGeneralHero() {
+    if (!isHeroMobile() || document.body.getAttribute("data-world") !== "general") return;
+    var staticHero = document.getElementById("mvStaticHero");
+    if (!staticHero) return;
+    var inner = staticHero.querySelector(".mv-static-hero__inner");
+    if (!inner) return;
+    var titleEl = inner.querySelector(".mv-static-hero__title");
+    if (titleEl && isHeroTitleVisible()) {
+      titleEl.classList.add("welten-mobile-hero-title");
+    }
+    pinGeneralHeroStack(inner);
   }
 
   function resetHeroButtonDom() {
@@ -452,6 +545,7 @@
     }
     flattenNexoraButtons();
     restructureHeroButtons();
+    pinHomeHeroStack(stage);
     disableNexoraOrbitOnMobile();
   }
 
@@ -479,6 +573,7 @@
     }
     flattenFreiraumButtons();
     restructureHeroButtons();
+    pinHomeHeroStack(scene);
   }
 
   function buildProfessionalHero() {
@@ -493,6 +588,7 @@
     }
     flattenProButtons();
     restructureHeroButtons();
+    pinHomeHeroStack(scene);
   }
 
   function markHeroGrid(ring) {
@@ -567,10 +663,15 @@
     }
     if (world === "freiraum") buildFreiraumHero();
     if (world === "vertex") buildProfessionalHero();
-    if (world === "general") restructureHeroButtons();
+    if (world === "general") buildGeneralHero();
 
     ensureChapterHeroes();
     restructureHeroButtons();
+
+    document.querySelectorAll("[data-mobile-chapter-hero]:not([hidden])").forEach(function (hero) {
+      var inner = hero.parentElement;
+      if (inner) mountChapterHeroFirst(inner, hero);
+    });
   }
 
   function boot() {
@@ -639,6 +740,10 @@
 
   document.addEventListener("welten-lang-change", function () {
     setTimeout(boot, 30);
+  });
+
+  document.addEventListener("mv-restore-hero", function () {
+    setTimeout(boot, 60);
   });
 
   try {

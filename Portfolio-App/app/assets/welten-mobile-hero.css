@@ -1279,6 +1279,62 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     box-shadow: 0 0 0 1px rgba(255, 209, 102, 0.65), 0 0 26px rgba(255, 209, 102, 0.42), 8px 10px 0 rgba(255, 48, 126, 0.22) !important;
     text-shadow: none !important;
   }
+
+  /* ── Einheitliche Hero-Reihenfolge: Titel → Meta → Buttons ── */
+  .welten-mobile-chapter-hero .welten-mobile-hero-title {
+    order: 1 !important;
+  }
+
+  .welten-mobile-chapter-hero .welten-mobile-hero-meta {
+    order: 2 !important;
+  }
+
+  .welten-mobile-chapter-hero .welten-mobile-hero-grid {
+    order: 3 !important;
+  }
+
+  .slide:not(#slide-home) > .slide-inner > .welten-page-hero {
+    display: none !important;
+  }
+
+  .slide-inner.contact-layout > .welten-mobile-chapter-hero {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience > *:not(.welten-mobile-hero-title):not(.welten-mobile-hero-meta):not(.nexora-orbit-buttons) {
+    order: 99 !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-unified-scene > *:not(.welten-mobile-hero-title):not(.welten-mobile-hero-meta):not(.dna-orbit-group),
+  body[data-world="vertex"] #slide-home .dna-unified-scene > *:not(.welten-mobile-hero-title):not(.welten-mobile-hero-meta):not(.dna-orbit-group) {
+    order: 99 !important;
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__title {
+    order: 1 !important;
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__tag {
+    order: 2 !important;
+    margin-bottom: clamp(18px, 4vw, 28px) !important;
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__nav {
+    order: 3 !important;
+  }
+
+  body[data-world="general"] #mvStaticHero .mv-static-hero__eyebrow[hidden] {
+    display: none !important;
+  }
 }
 
 /* Siehe welten-hero-hide-desktop-titles.css (wird als letztes Stylesheet geladen) */

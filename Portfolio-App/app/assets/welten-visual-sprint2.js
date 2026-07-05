@@ -80,6 +80,7 @@
   }
 
   function injectPageHero(slideId, key) {
+    if (window.matchMedia("(max-width: 1024px)").matches) return;
     var slide = document.getElementById(slideId);
     if (!slide) return;
     var inner = slide.querySelector(".slide-inner");
