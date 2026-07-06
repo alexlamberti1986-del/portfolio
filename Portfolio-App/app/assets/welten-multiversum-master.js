@@ -691,7 +691,7 @@
       requestAnimationFrame(setBarHeight);
     }
 
-    if (!effectsOn || isCoarseMobileShell()) {
+    if (!effectsOn) {
       purgeSwitchOverlays();
       if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
         window.WeltenWorldSwitchPreview.abort(true);
