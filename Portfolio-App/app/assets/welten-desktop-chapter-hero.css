@@ -8,6 +8,10 @@
 }
 
 @media (min-width: 1025px) {
+  body.welten-desktop-subpage-hero--on .slide.active:not(#slide-home) [data-chapter-hero] {
+    display: none !important;
+  }
+
   body.welten-desktop-subpage-hero--on .slide.active:not(#slide-home) {
     overflow-y: auto;
     overflow-x: hidden;
@@ -520,6 +524,27 @@
 
 /* MULTIVERSUM: grosser Desktop — weniger Leerraum unter dem Hero (Laptop/Tablet/Handy unverändert) */
 @media (min-width: 1440px) {
+  body[data-world="general"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="general"] .welten-desktop-relocated-hero#dnaStage {
+    display: block !important;
+    visibility: visible !important;
+    min-height: clamp(420px, 42vw, 560px) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-world="general"] .welten-desktop-relocated-hero .dna-slide.is-active,
+  body[data-world="general"] .welten-desktop-relocated-hero .dna-slide.is-hero-primary,
+  body[data-world="general"] #slide-home .dna-slide.is-active,
+  body[data-world="general"] #slide-home .dna-slide.is-hero-primary {
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(142, 197, 255, 0.55) !important;
+    color: #eaf4ff !important;
+    box-shadow: 0 0 24px rgba(76, 183, 255, 0.28) !important;
+  }
+
   body[data-world="general"] #mvStaticHero.mv-static-hero,
   body[data-world="general"] .mv-static-hero.welten-desktop-relocated-hero,
   body[data-world="general"] .welten-desktop-subpage-mv-hero.mv-static-hero {

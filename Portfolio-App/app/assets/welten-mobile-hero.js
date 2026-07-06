@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706mobile-pass3";
+  var HERO_VER = "20260706hero-all";
 
   function heroRoot() {
     return (
@@ -25,14 +25,20 @@
   }
 
   function getMobileHomeHero() {
+    var relocated = document.querySelector(".welten-mobile-relocated-hero");
+    if (relocated) return relocated;
+
+    var dna =
+      document.getElementById("dnaStage") ||
+      document.querySelector("#slide-home .home-hero-experience");
+    if (dna) return dna;
+
     var world = document.body.getAttribute("data-world") || "general";
     if (world === "general") {
       return document.getElementById("mvStaticHero") || document.getElementById("mvParallaxHero");
     }
-    return (
-      document.getElementById("dnaStage") ||
-      document.querySelector("#slide-home .home-hero-experience")
-    );
+
+    return dna;
   }
 
   function getSlideMount(chapter) {
@@ -362,7 +368,9 @@
 
   function suppressSubpageHeaderClutter(inner) {
     if (!inner || !isHeroMobile()) return;
-    inner.querySelectorAll(":scope > .welten-page-hero, :scope > .chapter-label, :scope > .section-title").forEach(function (el) {
+    inner.querySelectorAll(
+      "[data-chapter-hero], :scope > .welten-page-hero, :scope > .chapter-label, :scope > .section-title"
+    ).forEach(function (el) {
       el.hidden = true;
       el.style.display = "none";
     });
@@ -383,6 +391,14 @@
     var world = document.body.getAttribute("data-world");
     var scope = heroRoot() || document.querySelector("#slide-home");
     if (world === "general") {
+      if (scope.querySelector(".dna-ring, .dna-slide")) {
+        var dnaGroup = scope.querySelector(".dna-orbit-group");
+        return {
+          shell: dnaGroup || scope,
+          ring: scope.querySelector(".dna-ring"),
+          selector: ".dna-slide",
+        };
+      }
       var inner = scope.querySelector(".mv-static-hero__inner") || scope;
       var nav = inner.querySelector(".mv-static-hero__nav");
       return {
@@ -512,6 +528,10 @@
 
   function buildGeneralHero() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "general") return;
+    if (document.getElementById("dnaStage") || document.querySelector("#slide-home .home-hero-experience")) {
+      buildGeneralDnaHero();
+      return;
+    }
     var staticHero = document.getElementById("mvStaticHero");
     if (!staticHero) return;
     var inner = staticHero.querySelector(".mv-static-hero__inner");
@@ -521,6 +541,25 @@
       titleEl.classList.add("welten-mobile-hero-title");
     }
     pinGeneralHeroStack(inner);
+  }
+
+  function buildGeneralDnaHero() {
+    var stage =
+      document.getElementById("dnaStage") ||
+      document.querySelector("#slide-home .home-hero-experience");
+    if (!stage) return;
+    var scene = stage.querySelector(".dna-unified-scene");
+    if (!scene) return;
+    var cfg = WORLDS.general;
+    if (isHeroTitleVisible()) {
+      ensureTitle(scene, cfg.title);
+      ensureMeta(scene, cfg.keywords);
+    } else {
+      removeHeroTitleDom();
+    }
+    flattenProButtons();
+    restructureHeroButtons();
+    pinHomeHeroStack(scene);
   }
 
   function resetHeroButtonDom() {

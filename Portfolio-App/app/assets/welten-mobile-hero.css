@@ -1393,6 +1393,48 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     padding-right: clamp(12px, 4vw, 18px) !important;
     box-sizing: border-box !important;
   }
+
+  body.welten-mobile-subpage-hero--on .slide.active:not(#slide-home) [data-chapter-hero] {
+    display: none !important;
+  }
+
+  body[data-world="general"] #slide-home .home-hero-experience,
+  body[data-world="general"] #slide-home #dnaStage,
+  #dnaStage.welten-mobile-relocated-hero.home-hero-experience,
+  body[data-world="general"] .welten-mobile-relocated-hero.home-hero-experience {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 48px !important;
+    padding-bottom: 40px !important;
+    box-sizing: border-box !important;
+  }
+
+  body[data-world="general"] #slide-home .dna-unified-scene,
+  body[data-world="general"] .welten-mobile-relocated-hero .dna-unified-scene {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto !important;
+    padding-left: clamp(12px, 4vw, 18px) !important;
+    padding-right: clamp(12px, 4vw, 18px) !important;
+    box-sizing: border-box !important;
+  }
+
+  body[data-world="general"] #slide-home .dna-slide,
+  body[data-world="general"] .welten-mobile-relocated-hero .dna-slide {
+    border-radius: 14px !important;
+  }
+
+  body[data-world="general"] .welten-mobile-relocated-hero .dna-slide.is-active,
+  body[data-world="general"] .welten-mobile-relocated-hero .dna-slide.is-hero-primary,
+  body[data-world="general"] #slide-home .dna-slide.is-active,
+  body[data-world="general"] #slide-home .dna-slide.is-hero-primary {
+    background: linear-gradient(135deg, #5ec4ff, #9b6bff 28%, #ff59b2 52%, #ff9b37 78%, #ffd86a) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    box-shadow: 0 14px 34px rgba(255, 89, 178, 0.34), 0 0 0 1px rgba(255, 255, 255, 0.12) inset !important;
+  }
 }
 
 /* Siehe welten-hero-hide-desktop-titles.css (wird als letztes Stylesheet geladen) */
