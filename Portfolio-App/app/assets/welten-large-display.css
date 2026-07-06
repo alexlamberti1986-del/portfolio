@@ -1,0 +1,384 @@
+/**
+ * Large displays (65″ / 98″) — proportional to 27″ desktop baseline.
+ * Applies only above 2560px CSS width; laptop (≤1024) and 27″ desktop (1025–2560) unchanged.
+ */
+
+/* ── 65″ tier: 4K @ ~150 % scaling, ultrawide ── */
+@media (min-width: 2561px) {
+  :root {
+    --welten-xl-content: min(1575px, 61.5vw);
+    --welten-xl-orbit: min(600px, 23.4vw);
+    --welten-xl-orbit-max: 1480px;
+    --welten-xl-type: 1.14;
+    --welten-xl-ui: 1.12;
+    --welten-xl-space: 1.1;
+    --dna-orbit-radius: min(600px, 23.4vw);
+    --dna-img-max-width: min(1480px, 58vw);
+    --header-inner-row: 58px;
+    --header-air-top: 24px;
+    --header-air-bottom: 18px;
+    --radius-lg: 32px;
+    --radius-md: 20px;
+  }
+
+  .slide-inner,
+  #slide-projects .slide-inner,
+  #slide-leistungen .slide-inner,
+  #slide-about .slide-inner,
+  #slide-contact .slide-inner,
+  .home-main-block {
+    max-width: var(--welten-xl-content) !important;
+  }
+
+  .slide {
+    padding: clamp(24px, 3.2vw, 64px) clamp(28px, 3.6vw, 80px) 28px !important;
+  }
+
+  @media (min-width: 1920px) {
+    .slide {
+      padding-right: clamp(88px, 5.2vw, 148px) !important;
+    }
+  }
+
+  .brand-mark,
+  .header-meta {
+    font-size: clamp(0.94rem, 1.1vw, 1.06rem) !important;
+  }
+
+  .btn-menu {
+    padding: 10px 18px !important;
+    font-size: clamp(0.94rem, 1.05vw, 1.02rem) !important;
+  }
+
+  .world-switch {
+    padding: 6px !important;
+    gap: 8px !important;
+  }
+
+  .world-btn {
+    min-width: 104px !important;
+    padding: 10px 14px !important;
+  }
+
+  .world-btn span {
+    font-size: 0.74rem !important;
+  }
+
+  .world-btn small {
+    font-size: 0.62rem !important;
+  }
+
+  .menu-panel {
+    width: min(580px, 42vw) !important;
+    padding: clamp(32px, 3.5vw, 48px) !important;
+  }
+
+  .menu-title {
+    font-size: 1.5rem !important;
+  }
+
+  .menu-links a {
+    padding: 18px 6px !important;
+    font-size: 1.14rem !important;
+  }
+
+  .experience-rail {
+    right: max(28px, env(safe-area-inset-right)) !important;
+    gap: 14px !important;
+  }
+
+  .experience-step {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .experience-step::after {
+    right: 38px !important;
+    font-size: 0.92rem !important;
+  }
+
+  body[data-world="general"] .experience-step.is-active {
+    transform: scale(1.32) !important;
+  }
+
+  .section-title,
+  .chapter-label {
+    font-size: clamp(2rem, 2.8vw, 2.85rem) !important;
+  }
+
+  .welten-home-intro {
+    max-width: 72ch !important;
+    font-size: calc(1rem * var(--welten-xl-type)) !important;
+  }
+
+  #slide-home .cta-row .btn {
+    min-height: 54px !important;
+    padding: 14px 26px !important;
+    font-size: clamp(0.98rem, 0.95vw, 1.08rem) !important;
+  }
+
+  /* NEXORA orbit — cap vw growth, scale like 27″ */
+  @media (min-width: 1025px) and (hover: hover) {
+    #slide-home .nexora-orbit-button,
+    #slide-home .nexora-orbit-button[data-go="contact"],
+    #slide-home .nexora-orbit-button[data-go="about"],
+    #slide-home .nexora-orbit-button.is-front,
+    .welten-desktop-relocated-hero .nexora-orbit-button {
+      width: clamp(240px, 10.5vw, 310px) !important;
+      min-width: clamp(240px, 10.5vw, 310px) !important;
+      max-width: clamp(240px, 10.5vw, 310px) !important;
+      height: clamp(72px, 4.8vw, 96px) !important;
+      min-height: clamp(72px, 4.8vw, 96px) !important;
+      max-height: clamp(72px, 4.8vw, 96px) !important;
+      font-size: clamp(0.92rem, 0.82vw, 1.08rem) !important;
+      padding: 0 20px !important;
+    }
+
+    #slide-home .nexora-orbit-button.is-front {
+      --orbit-radius: min(760px, 29.6vw) !important;
+    }
+  }
+
+  #slide-home .nexora-orbit-buttons,
+  .welten-desktop-relocated-hero .nexora-orbit-buttons {
+    width: min(var(--welten-xl-orbit-max), 58vw) !important;
+  }
+
+  /* FREIRAUM / PROFESSIONAL DNA buttons */
+  @media (min-width: 1025px) {
+    body[data-world="freiraum"] #slide-home .dna-slide,
+    body[data-world="vertex"] #slide-home .dna-slide,
+    .welten-desktop-relocated-hero .dna-slide {
+      min-width: clamp(108px, 6.8vw, 168px) !important;
+      max-width: clamp(138px, 8.8vw, 208px) !important;
+      padding: clamp(11px, 0.85vw, 16px) clamp(15px, 1.1vw, 24px) !important;
+      font-size: clamp(0.78rem, 0.72vw, 1rem) !important;
+    }
+
+    body[data-world="freiraum"] .dna-unified-scene::after {
+      font-size: clamp(2.6rem, 3.8vw, 6.2rem) !important;
+      max-width: min(48vw, 920px) !important;
+    }
+
+    body[data-world="vertex"] .dna-unified-scene::before {
+      font-size: clamp(3.8rem, 8.5vw, 10.5rem) !important;
+    }
+  }
+
+  /* MULTIVERSUM static hero */
+  #mvStaticHero .mv-static-hero__title {
+    font-size: clamp(3.2rem, 4.8vw, 5.4rem) !important;
+  }
+
+  #mvStaticHero .mv-static-hero__nav-btn {
+    min-height: 54px !important;
+    font-size: clamp(0.92rem, 0.82vw, 1.05rem) !important;
+  }
+
+  /* MULTIVERSUM parallax v4 */
+  body[data-mv-v4-test="1"] {
+    --mv-v4-orb-size: clamp(200px, 11vw, 280px);
+    --mv-v4-focus-stage: min(920px, 48vw, 72vh);
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage {
+    width: min(92vw, 1480px) !important;
+    height: min(48vh, 580px) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
+    width: min(48vw, 1080px) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(580px, 22.6vw) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="intro"] .mv-scroll-slide[data-slide="0"] .world-copy h2 {
+    font-size: clamp(1.85rem, 2.4vw, 3rem) !important;
+  }
+
+  .projects-accordion__trigger,
+  .projects-accordion__label {
+    font-size: calc(1rem * var(--welten-xl-type)) !important;
+  }
+
+  #slide-home .home-layout {
+    gap: clamp(32px, 4vw, 72px) !important;
+    grid-template-columns: 1fr minmax(300px, 460px) !important;
+  }
+}
+
+/* ── 98″ tier: native 4K fullscreen ── */
+@media (min-width: 3840px) {
+  :root {
+    --welten-xl-content: min(2360px, 61.5vw);
+    --welten-xl-orbit: min(780px, 20.3vw);
+    --welten-xl-orbit-max: 1880px;
+    --welten-xl-type: 1.28;
+    --welten-xl-ui: 1.24;
+    --welten-xl-space: 1.2;
+    --dna-orbit-radius: min(780px, 20.3vw);
+    --dna-img-max-width: min(1880px, 49vw);
+    --header-inner-row: 64px;
+    --header-air-top: 28px;
+    --header-air-bottom: 20px;
+    --radius-lg: 36px;
+    --radius-md: 22px;
+  }
+
+  .slide-inner,
+  #slide-projects .slide-inner,
+  #slide-leistungen .slide-inner,
+  #slide-about .slide-inner,
+  #slide-contact .slide-inner,
+  .home-main-block {
+    max-width: var(--welten-xl-content) !important;
+  }
+
+  .slide {
+    padding: clamp(28px, 2.8vw, 80px) clamp(36px, 3.2vw, 112px) 32px !important;
+  }
+
+  @media (min-width: 1920px) {
+    .slide {
+      padding-right: clamp(112px, 4.8vw, 200px) !important;
+    }
+  }
+
+  .brand-mark,
+  .header-meta {
+    font-size: clamp(1.02rem, 0.92vw, 1.18rem) !important;
+  }
+
+  .btn-menu {
+    padding: 12px 22px !important;
+    font-size: clamp(1rem, 0.88vw, 1.12rem) !important;
+  }
+
+  .world-btn {
+    min-width: 118px !important;
+    padding: 12px 16px !important;
+  }
+
+  .world-btn span {
+    font-size: 0.8rem !important;
+  }
+
+  .menu-panel {
+    width: min(680px, 36vw) !important;
+    padding: clamp(40px, 3vw, 56px) !important;
+  }
+
+  .menu-title {
+    font-size: 1.72rem !important;
+  }
+
+  .menu-links a {
+    padding: 20px 8px !important;
+    font-size: 1.28rem !important;
+  }
+
+  .experience-step {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .experience-step::after {
+    right: 42px !important;
+    font-size: 1rem !important;
+  }
+
+  .section-title,
+  .chapter-label {
+    font-size: clamp(2.2rem, 2.2vw, 3.2rem) !important;
+  }
+
+  #slide-home .cta-row .btn {
+    min-height: 58px !important;
+    padding: 16px 30px !important;
+    font-size: clamp(1.04rem, 0.78vw, 1.16rem) !important;
+  }
+
+  @media (min-width: 1025px) and (hover: hover) {
+    #slide-home .nexora-orbit-button,
+    #slide-home .nexora-orbit-button[data-go="contact"],
+    #slide-home .nexora-orbit-button[data-go="about"],
+    #slide-home .nexora-orbit-button.is-front,
+    .welten-desktop-relocated-hero .nexora-orbit-button {
+      width: clamp(272px, 7.1vw, 380px) !important;
+      min-width: clamp(272px, 7.1vw, 380px) !important;
+      max-width: clamp(272px, 7.1vw, 380px) !important;
+      height: clamp(84px, 3.2vw, 112px) !important;
+      min-height: clamp(84px, 3.2vw, 112px) !important;
+      max-height: clamp(84px, 3.2vw, 112px) !important;
+      font-size: clamp(1rem, 0.62vw, 1.18rem) !important;
+      padding: 0 24px !important;
+    }
+
+    #slide-home .nexora-orbit-button.is-front {
+      --orbit-radius: min(920px, 24vw) !important;
+    }
+  }
+
+  #slide-home .nexora-orbit-buttons,
+  .welten-desktop-relocated-hero .nexora-orbit-buttons {
+    width: min(var(--welten-xl-orbit-max), 49vw) !important;
+  }
+
+  @media (min-width: 1025px) {
+    body[data-world="freiraum"] #slide-home .dna-slide,
+    body[data-world="vertex"] #slide-home .dna-slide,
+    .welten-desktop-relocated-hero .dna-slide {
+      min-width: clamp(124px, 4.8vw, 196px) !important;
+      max-width: clamp(158px, 6.2vw, 248px) !important;
+      padding: clamp(13px, 0.65vw, 18px) clamp(18px, 0.9vw, 28px) !important;
+      font-size: clamp(0.86rem, 0.58vw, 1.12rem) !important;
+    }
+
+    body[data-world="freiraum"] .dna-unified-scene::after {
+      font-size: clamp(3.2rem, 2.8vw, 7.4rem) !important;
+      max-width: min(42vw, 1120px) !important;
+    }
+
+    body[data-world="vertex"] .dna-unified-scene::before {
+      font-size: clamp(4.6rem, 6.2vw, 12rem) !important;
+    }
+  }
+
+  #mvStaticHero .mv-static-hero__title {
+    font-size: clamp(3.8rem, 3.4vw, 6.2rem) !important;
+  }
+
+  #mvStaticHero .mv-static-hero__nav-btn {
+    min-height: 58px !important;
+    font-size: clamp(1rem, 0.62vw, 1.14rem) !important;
+  }
+
+  body[data-mv-v4-test="1"] {
+    --mv-v4-orb-size: clamp(240px, 8vw, 340px);
+    --mv-v4-focus-stage: min(1120px, 38vw, 76vh);
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="intro"] .mv-world-stage {
+    width: min(88vw, 1880px) !important;
+    height: min(50vh, 680px) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story.is-js-ready[data-layout="split-world"] .mv-world-stage {
+    width: min(42vw, 1280px) !important;
+  }
+
+  body[data-world="general"] .mv-scroll-slide--world .world-copy {
+    max-width: min(680px, 17.7vw) !important;
+  }
+
+  body[data-mv-v4-test="1"] .mv-scroll-story[data-layout="intro"] .mv-scroll-slide[data-slide="0"] .world-copy h2 {
+    font-size: clamp(2.2rem, 1.8vw, 3.6rem) !important;
+  }
+
+  #slide-home .home-layout {
+    gap: clamp(40px, 3.5vw, 96px) !important;
+    grid-template-columns: 1fr minmax(340px, 520px) !important;
+  }
+}
