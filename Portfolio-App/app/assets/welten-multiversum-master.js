@@ -229,13 +229,9 @@
       return;
     }
     if (shellBar) {
-      shellBar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
-        if (btn.disabled && !switching && !locked) {
-          btn.disabled = false;
-        }
-      });
+      forceEnableWorldButtons();
       if (!switching && !locked) {
-        shellBar.style.pointerEvents = "auto";
+        shellBar.style.pointerEvents = "";
       }
     }
   }
@@ -448,10 +444,8 @@
     switchLockSince = Date.now();
     var shellBar = getBar();
     if (shellBar) {
-      shellBar.style.pointerEvents = "none";
-      shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-        b.disabled = true;
-      });
+      shellBar.setAttribute("aria-busy", "true");
+      shellBar.style.pointerEvents = "";
     }
   }
 
@@ -461,12 +455,25 @@
     switchLockSince = 0;
     var shellBar = getBar();
     if (shellBar) {
-      shellBar.style.pointerEvents = "auto";
+      shellBar.removeAttribute("aria-busy");
+      shellBar.style.pointerEvents = "";
       shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
         b.disabled = false;
+        b.removeAttribute("aria-disabled");
       });
     }
     setBarHeight();
+  }
+
+  function forceEnableWorldButtons() {
+    var shellBar = getBar();
+    if (!shellBar) return;
+    shellBar.style.pointerEvents = "";
+    shellBar.removeAttribute("aria-busy");
+    shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+      b.disabled = false;
+      b.removeAttribute("aria-disabled");
+    });
   }
 
   function setMaster(i) {
@@ -629,11 +636,14 @@
         window.WeltenWorldSwitchPreview.timing ||
         { WORLD_TRANSITION_DURATION: 3000, COVER_MS: 1200, TITLE_HOLD: 1200, EXIT_MS: 400 };
       var safetyMs =
+        (window.WeltenWorldSwitchPreview.getTransitionFailsafeMs &&
+          window.WeltenWorldSwitchPreview.getTransitionFailsafeMs(timing)) ||
         timing.COVER_MS +
-        timing.WORLD_TRANSITION_DURATION +
-        timing.TITLE_HOLD +
-        timing.EXIT_MS +
-        800;
+          timing.EFFECT_MS +
+          timing.TITLE_FADE_IN +
+          timing.TITLE_HOLD +
+          timing.EXIT_MS +
+          900;
       setTimeout(function () {
         if (switching) {
           unlockShell();
@@ -664,29 +674,41 @@
   function bindWorldButtons() {
     var shellBar = getBar();
     if (!shellBar || shellBar.dataset.mv4WorldBtnsBound === "1") return;
+    var worlds = shellBar.querySelector(".mv4-worlds");
+    if (!worlds) return;
     shellBar.dataset.mv4WorldBtnsBound = "1";
-    shellBar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
-    var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-    btn.addEventListener("click", function (e) {
+    worlds.addEventListener("click", function (e) {
+      var btn = e.target.closest("button[data-iframe]");
+      if (!btn || !worlds.contains(btn)) return;
       e.preventDefault();
+      recoverStuckSwitch();
+      forceEnableWorldButtons();
+      var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+      if (!isFinite(idx)) return;
       switchTo(idx);
     });
-    btn.addEventListener("pointerdown", function () {
-      preloadFrame(idx);
-    }, { passive: true });
-    btn.addEventListener("mouseenter", function () {
-      preloadFrame(idx);
+    worlds.querySelectorAll("button[data-iframe]").forEach(function (btn) {
+      var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+      btn.addEventListener("pointerdown", function () {
+        preloadFrame(idx);
+      }, { passive: true });
+      btn.addEventListener("mouseenter", function () {
+        preloadFrame(idx);
+      });
+      btn.addEventListener("touchstart", function () {
+        preloadFrame(idx);
+      }, { passive: true });
+      btn.addEventListener("focus", function () {
+        preloadFrame(idx);
+      });
     });
-    btn.addEventListener("touchstart", function () {
-      preloadFrame(idx);
-    }, { passive: true });
-    btn.addEventListener("focus", function () {
-      preloadFrame(idx);
-    });
-  });
   }
 
   bindWorldButtons();
+  document.addEventListener("DOMContentLoaded", function () {
+    bindWorldButtons();
+    forceEnableWorldButtons();
+  });
 
   if (fxBtn) {
     fxBtn.addEventListener("click", function (e) {
@@ -793,6 +815,7 @@
   ensureSingleBar();
   clearSwitchLock();
   recoverStuckSwitch();
+  forceEnableWorldButtons();
 
   window.addEventListener("pageshow", recoverStuckSwitch);
   window.addEventListener("focus", recoverStuckSwitch);

@@ -1836,6 +1836,7 @@
     isEffectsEnabled: wwsEffectsEnabled,
     timing: WWS_TIMING,
     getTimingForWorld: getTimingForWorld,
+    getTransitionFailsafeMs: getTransitionFailsafeMs,
     abort: wwsAbortTransition,
   };
 })();

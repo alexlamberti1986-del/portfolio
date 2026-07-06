@@ -64,6 +64,8 @@ html, body {
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.04em;
+  pointer-events: auto !important;
+  touch-action: manipulation;
 }
 
 .mv4-actions {

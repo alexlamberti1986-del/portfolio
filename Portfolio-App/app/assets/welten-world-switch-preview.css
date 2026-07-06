@@ -10,7 +10,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  pointer-events: all;
+  pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transform: translateZ(0);
@@ -25,6 +25,7 @@
 .welten-world-switch.is-exiting {
   opacity: 1;
   visibility: visible;
+  pointer-events: all;
 }
 
 .welten-world-switch.is-exiting {
