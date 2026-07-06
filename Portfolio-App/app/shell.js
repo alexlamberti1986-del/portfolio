@@ -18,6 +18,7 @@
   var switching = false;
 
   var SOUND_FILES = {
+    multiversum: "assets/audio/Multiversum sound.mp3",
     nexora: "assets/audio/Nexora sound.mp3",
     professional: "assets/audio/Professional sound.mp3",
     freiraum: "assets/audio/Freiraum sound.mp3",
@@ -162,7 +163,9 @@
   }
 
   function soundKeyFromWorld(world) {
-    return world === "professional" ? "professional" : world;
+    if (world === "professional") return "professional";
+    if (world === "general" || world === "multiversum") return "multiversum";
+    return world;
   }
 
   function playWorldSwitchSound(world) {

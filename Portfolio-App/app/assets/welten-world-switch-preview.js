@@ -353,6 +353,42 @@
     return wwsEffectsEnabled();
   }
 
+  var WWS_SWITCH_MP3 = {
+    general: "assets/audio/Multiversum sound.mp3?v=20260706mv-switch-sound",
+  };
+
+  var wwsSwitchMp3Cache = {};
+
+  function wwsEncodeAudioSrc(src) {
+    try {
+      return encodeURI(src).replace(/#/g, "%23");
+    } catch (e) {
+      return src;
+    }
+  }
+
+  function wwsPlaySwitchMp3(worldKey) {
+    var src = WWS_SWITCH_MP3[worldKey];
+    if (!src || !wwsSoundEnabled()) return false;
+    try {
+      if (!wwsSwitchMp3Cache[worldKey]) {
+        var clip = new Audio(wwsEncodeAudioSrc(src));
+        clip.preload = "auto";
+        clip.volume = 0.58;
+        wwsSwitchMp3Cache[worldKey] = clip;
+      }
+      var audio = wwsSwitchMp3Cache[worldKey];
+      audio.currentTime = 0;
+      var playPromise = audio.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(function () {});
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function wwsSoundAlive(gen) {
     return gen === wwsSoundGen && wwsSoundEnabled();
   }
@@ -766,6 +802,7 @@
     var gen = wwsSoundGen;
     wwsResumeAudio();
     if (worldKey === "general") {
+      if (wwsPlaySwitchMp3("general")) return;
       wwsActiveWorldGain = 3.8;
       playMultiversumSwitchSound(gen);
     } else if (worldKey === "nexora") {
