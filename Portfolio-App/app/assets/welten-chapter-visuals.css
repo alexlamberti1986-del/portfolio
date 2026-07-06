@@ -348,14 +348,14 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
   }
 }
 
-/* ── PROFESSIONAL Desktop/Laptop: Leistungen & FAQ lesbar (schwarze Karten) ── */
+/* ── PROFESSIONAL Desktop/Laptop: Leistungen — weicheres Grau/Schwarz, gut lesbar ── */
 @media (min-width: 1025px) {
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich.glass-card,
   body[data-world="vertex"] #slide-leistungen .welten-leistung-rich.glass-card {
-    background: #0a0a0a !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
-    color: #f2f2f2 !important;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22) !important;
+    background: #2a2a2a !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #f5f5f5 !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14) !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich h3,
@@ -377,9 +377,10 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-chart-card.glass-card,
   body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card.glass-card {
-    background: #0a0a0a !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    color: #f2f2f2 !important;
+    background: #2a2a2a !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    color: #f5f5f5 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview__title,
@@ -443,9 +444,9 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq.welten-chapter-box .welten-chapter-box__scrim {
     background: linear-gradient(
       155deg,
-      rgba(0, 0, 0, 0.9) 0%,
-      rgba(0, 0, 0, 0.78) 48%,
-      rgba(0, 0, 0, 0.92) 100%
+      rgba(20, 20, 20, 0.82) 0%,
+      rgba(30, 30, 30, 0.68) 48%,
+      rgba(18, 18, 18, 0.86) 100%
     ) !important;
   }
 
@@ -505,30 +506,30 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
   /* FAQ-Box: Bild + dunkler Scrim, lesbar auf Desktop */
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq.welten-chapter-box,
   body[data-world="vertex"] #slide-leistungen .welten-faq.welten-chapter-box {
-    background: #0a0a0a !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2) !important;
+    background: #2a2a2a !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14) !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__bg,
   body[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__bg {
-    opacity: 0.55 !important;
+    opacity: 0.48 !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__scrim,
   body[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__scrim {
     background: linear-gradient(
       155deg,
-      rgba(0, 0, 0, 0.94) 0%,
-      rgba(0, 0, 0, 0.88) 50%,
-      rgba(0, 0, 0, 0.96) 100%
+      rgba(22, 22, 22, 0.86) 0%,
+      rgba(36, 36, 36, 0.7) 50%,
+      rgba(20, 20, 20, 0.88) 100%
     ) !important;
   }
 
   /* Skills-Übersicht: eigene dunkle Box falls ausserhalb der Rich-Box */
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box,
   body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box {
-    background: #0a0a0a !important;
+    background: #2a2a2a !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
     padding: clamp(1.5rem, 3vw, 2.25rem) !important;

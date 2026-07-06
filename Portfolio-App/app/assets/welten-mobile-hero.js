@@ -4,7 +4,126 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706mobile-pass2";
+  var HERO_VER = "20260706mobile-pass3";
+
+  function heroRoot() {
+    return (
+      document.querySelector(".welten-mobile-relocated-hero") ||
+      document.getElementById("dnaStage") ||
+      document.getElementById("mvStaticHero") ||
+      document.querySelector("#slide-home .home-hero-experience")
+    );
+  }
+
+  function queryInHero(selector) {
+    var root = heroRoot();
+    if (root) {
+      var scoped = root.querySelectorAll(selector);
+      if (scoped.length) return scoped;
+    }
+    return document.querySelectorAll("#slide-home " + selector);
+  }
+
+  function getMobileHomeHero() {
+    var world = document.body.getAttribute("data-world") || "general";
+    if (world === "general") {
+      return document.getElementById("mvStaticHero") || document.getElementById("mvParallaxHero");
+    }
+    return (
+      document.getElementById("dnaStage") ||
+      document.querySelector("#slide-home .home-hero-experience")
+    );
+  }
+
+  function getSlideMount(chapter) {
+    if (chapter === "home") {
+      return document.querySelector("#slide-home .slide-inner");
+    }
+    var slide = document.getElementById("slide-" + chapter);
+    return slide ? slide.querySelector(".slide-inner") || slide : null;
+  }
+
+  function ensureMobileHeroHost(mount) {
+    if (!mount) return null;
+    var host = mount.querySelector(":scope > .welten-mobile-hero-host");
+    if (!host) {
+      host = document.createElement("div");
+      host.className = "welten-mobile-hero-host";
+      mount.insertBefore(host, mount.firstChild);
+    } else if (mount.firstElementChild !== host) {
+      mount.insertBefore(host, mount.firstChild);
+    }
+    return host;
+  }
+
+  function ensureMobileHomePlaceholder(homeInner, hero) {
+    if (!homeInner || !hero) return null;
+    var ph = document.getElementById("welten-mobile-hero-home-slot");
+    if (!ph) {
+      ph = document.createElement("div");
+      ph.id = "welten-mobile-hero-home-slot";
+      ph.hidden = true;
+      ph.setAttribute("aria-hidden", "true");
+      homeInner.insertBefore(ph, hero);
+    }
+    return ph;
+  }
+
+  function restoreMobileHeroToHome() {
+    var hero = document.querySelector(".welten-mobile-relocated-hero") || getMobileHomeHero();
+    var homeInner = document.querySelector("#slide-home .slide-inner");
+    if (!hero || !homeInner) return;
+    hero.classList.remove("welten-mobile-relocated-hero");
+    ["display", "visibility", "pointer-events", "height", "overflow", "width", "max-width"].forEach(function (prop) {
+      hero.style.removeProperty(prop);
+    });
+    var ph = document.getElementById("welten-mobile-hero-home-slot");
+    if (ph && ph.parentNode) {
+      ph.parentNode.insertBefore(hero, ph);
+      ph.remove();
+    } else if (hero.parentNode !== homeInner) {
+      homeInner.insertBefore(hero, homeInner.firstChild);
+    }
+    document.querySelectorAll(".welten-mobile-hero-host").forEach(function (host) {
+      if (!host.children.length) host.remove();
+    });
+  }
+
+  function relocateMobileHero() {
+    document.querySelectorAll("[data-mobile-chapter-hero]").forEach(function (el) {
+      el.remove();
+    });
+
+    if (!isHeroMobile()) {
+      restoreMobileHeroToHome();
+      document.body.classList.remove("welten-mobile-subpage-hero--on");
+      return;
+    }
+
+    var active = currentChapter();
+    var hero = getMobileHomeHero();
+    var homeInner = document.querySelector("#slide-home .slide-inner");
+
+    if (!hero || !homeInner) return;
+
+    if (active === "home") {
+      restoreMobileHeroToHome();
+      document.body.classList.remove("welten-mobile-subpage-hero--on");
+      markPrimaryButtons(hero, active);
+      return;
+    }
+
+    var mount = getSlideMount(active);
+    if (!mount) return;
+
+    var host = ensureMobileHeroHost(mount);
+    ensureMobileHomePlaceholder(homeInner, hero);
+    hero.classList.add("welten-mobile-relocated-hero");
+    host.appendChild(hero);
+    suppressSubpageHeaderClutter(mount);
+    document.body.classList.add("welten-mobile-subpage-hero--on");
+    markPrimaryButtons(hero, active);
+  }
 
   var WORLDS = {
     general: {
@@ -262,19 +381,29 @@
 
   function getHeroButtonContext() {
     var world = document.body.getAttribute("data-world");
+    var scope = heroRoot() || document.querySelector("#slide-home");
+    if (world === "general") {
+      var inner = scope.querySelector(".mv-static-hero__inner") || scope;
+      var nav = inner.querySelector(".mv-static-hero__nav");
+      return {
+        shell: inner,
+        ring: nav,
+        selector: ".mv-static-hero__nav-btn",
+      };
+    }
     if (world === "nexora") {
-      var shell = document.querySelector("#slide-home .nexora-orbit-buttons");
+      var shell = scope.querySelector(".nexora-orbit-buttons") || scope;
       return {
         shell: shell,
         ring: shell ? shell.querySelector(".nexora-orbit-ring") : null,
-        selector: "#slide-home .nexora-orbit-button",
+        selector: ".nexora-orbit-button",
       };
     }
-    var group = document.querySelector("#slide-home .dna-orbit-group");
+    var group = scope.querySelector(".dna-orbit-group");
     return {
-      shell: group,
-      ring: document.querySelector("#slide-home .dna-ring"),
-      selector: "#slide-home .dna-slide",
+      shell: group || scope,
+      ring: scope.querySelector(".dna-ring"),
+      selector: ".dna-slide",
     };
   }
 
@@ -365,20 +494,12 @@
     }
 
     /* MULTIVERSUM Static Hero */
-    var staticNav = document.querySelector("#mvStaticHero .mv-static-hero__nav");
+    var mvHero = heroRoot();
+    var staticNav = mvHero && mvHero.querySelector(".mv-static-hero__nav");
     if (staticNav) {
       staticNav.classList.add("hero-buttons-grid", "welten-mobile-hero-grid");
       orderButtonsInRing(staticNav, ".mv-static-hero__nav-btn", active);
     }
-
-    /* Portable Heroes auf Unterseiten */
-    document.querySelectorAll("[data-mobile-chapter-hero] .welten-mobile-hero-grid").forEach(function (grid) {
-      var sel =
-        document.body.getAttribute("data-world") === "general"
-          ? ".mv-static-hero__nav-btn"
-          : ".hero-button";
-      orderButtonsInRing(grid, sel, active);
-    });
   }
 
   function ensureChapterHeroes() {
@@ -386,55 +507,7 @@
       document.querySelectorAll("[data-mobile-chapter-hero]").forEach(function (el) {
         el.remove();
       });
-      return;
     }
-
-    var cfg = worldConfig();
-    var labels = chapterLabels();
-    var active = currentChapter();
-
-    HERO_CHAPTERS.forEach(function (chapter) {
-      if (chapter === "home") return;
-      var slide = document.getElementById("slide-" + chapter);
-      if (!slide) return;
-      var inner = slide.querySelector(".slide-inner") || slide;
-      var hero = inner.querySelector(":scope > [data-mobile-chapter-hero]");
-      if (!hero) {
-        hero = document.createElement("div");
-        hero.className = "welten-mobile-chapter-hero";
-        hero.setAttribute("data-mobile-chapter-hero", "1");
-        hero.innerHTML =
-          '<div class="welten-mobile-hero-title"></div>' +
-          '<div class="welten-mobile-hero-meta">' +
-          metaHtml(cfg.keywords) +
-          "</div>" +
-          '<div class="welten-mobile-hero-grid hero-buttons-grid" role="navigation" aria-label="Kapitel"></div>';
-        mountChapterHeroFirst(inner, hero);
-        var grid = hero.querySelector(".welten-mobile-hero-grid");
-        HERO_CHAPTERS.forEach(function (id) {
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "hero-button welten-mobile-chapter-hero__btn mv-static-hero__nav-btn";
-          btn.setAttribute("data-go", id);
-          btn.textContent = labels[id] || id;
-          btn.addEventListener("click", function () {
-            goChapter(id);
-          });
-          grid.appendChild(btn);
-        });
-      }
-      var titleEl = hero.querySelector(".welten-mobile-hero-title");
-      if (titleEl) titleEl.textContent = cfg.title;
-      var kw = hero.querySelector(".welten-mobile-hero-keywords");
-      if (kw) kw.textContent = cfg.keywords;
-      hero.querySelectorAll("[data-go]").forEach(function (btn) {
-        var id = btn.getAttribute("data-go");
-        if (labels[id]) btn.textContent = labels[id];
-      });
-      orderButtonsInRing(hero.querySelector(".welten-mobile-hero-grid"), ".hero-button", active);
-      mountChapterHeroFirst(inner, hero);
-      hero.hidden = chapter !== active;
-    });
   }
 
   function buildGeneralHero() {
@@ -500,8 +573,7 @@
     if (!row) return;
     var contact = row.querySelector("[data-go='contact']");
     var ring =
-      document.querySelector("#slide-home .nexora-orbit-ring") ||
-      document.querySelector("#slide-home .dna-ring");
+      heroRoot() && heroRoot().querySelector(".nexora-orbit-ring, .dna-ring");
     if (contact && ring) ring.appendChild(contact);
     row.remove();
   }
@@ -522,36 +594,20 @@
   }
 
   function hideSubpageHomeHeroLeak() {
-    if (!isHeroMobile() || isHomeChapter()) return;
-    document
-      .querySelectorAll(
-        "#slide-home .home-hero-experience, #slide-home #dnaStage, #slide-home .dna-unified-scene, #slide-home #mvStaticHero, #slide-home #mvParallaxHero"
-      )
-      .forEach(function (el) {
-        el.style.setProperty("display", "none", "important");
-        el.style.setProperty("visibility", "hidden", "important");
-        el.style.setProperty("pointer-events", "none", "important");
-      });
+    /* replaced by relocateMobileHero */
   }
 
   function restoreHomeHeroOnMobile() {
-    if (!isHeroMobile() || !isHomeChapter()) return;
-    document
-      .querySelectorAll("#slide-home .home-hero-experience, #slide-home #dnaStage, #slide-home .dna-unified-scene, #slide-home #mvStaticHero")
-      .forEach(function (el) {
-        ["display", "visibility", "pointer-events", "height", "overflow"].forEach(function (prop) {
-          el.style.removeProperty(prop);
-        });
-      });
+    /* replaced by restoreMobileHeroToHome */
   }
 
   function disableNexoraOrbitOnMobile() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
-    document.querySelectorAll("#slide-home .nexora-orbit-nav").forEach(function (nav) {
+    document.querySelectorAll(".welten-mobile-relocated-hero .nexora-orbit-nav, #slide-home .nexora-orbit-nav").forEach(function (nav) {
       nav.style.setProperty("display", "none", "important");
       nav.style.setProperty("pointer-events", "none", "important");
     });
-    var hero = document.querySelector("#slide-home .home-hero-experience");
+    var hero = heroRoot();
     if (hero) {
       hero.classList.remove("is-dragging");
       hero.style.touchAction = "pan-y";
@@ -560,11 +616,11 @@
       hero.style.height = "auto";
       hero.style.minHeight = "auto";
     }
-    document.querySelectorAll("#slide-home .neuro-core, #slide-home .nexora-orbit-nav").forEach(function (el) {
+    document.querySelectorAll(".welten-mobile-relocated-hero .neuro-core, .welten-mobile-relocated-hero .nexora-orbit-nav, #slide-home .neuro-core, #slide-home .nexora-orbit-nav").forEach(function (el) {
       el.style.setProperty("display", "none", "important");
       el.style.setProperty("pointer-events", "none", "important");
     });
-    document.querySelectorAll("#slide-home .nexora-orbit-button").forEach(function (btn) {
+    queryInHero(".nexora-orbit-button").forEach(function (btn) {
       btn.style.setProperty("touch-action", "pan-y", "important");
       btn.style.setProperty("position", "relative", "important");
       btn.style.setProperty("transform", "none", "important");
@@ -596,7 +652,7 @@
     clearTimeout(nexoraHeroRetryTimer);
     nexoraHeroRetryTimer = setTimeout(function () {
       if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
-      if (document.querySelector("#slide-home .nexora-orbit-button")) {
+      if (queryInHero(".nexora-orbit-button").length) {
         restructureHeroButtons();
         return;
       }
@@ -605,7 +661,7 @@
   }
 
   function buildFreiraumHero() {
-    var scene = document.querySelector("#slide-home .dna-unified-scene");
+    var scene = heroRoot() && heroRoot().querySelector(".dna-unified-scene");
     if (!scene) return;
     var cfg = WORLDS.freiraum;
     if (isHeroTitleVisible()) {
@@ -620,7 +676,7 @@
   }
 
   function buildProfessionalHero() {
-    var scene = document.querySelector("#slide-home .dna-unified-scene");
+    var scene = heroRoot() && heroRoot().querySelector(".dna-unified-scene");
     if (!scene) return;
     var cfg = WORLDS.vertex;
     if (isHeroTitleVisible()) {
@@ -639,13 +695,13 @@
   }
 
   function flattenNexoraButtons() {
-    var ring = document.querySelector("#slide-home .nexora-orbit-ring");
+    var ring = heroRoot() && heroRoot().querySelector(".nexora-orbit-ring");
     markHeroGrid(ring);
     if (ring) {
       ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
     }
-    document.querySelectorAll("#slide-home .nexora-orbit-button").forEach(function (btn) {
+    queryInHero(".nexora-orbit-button").forEach(function (btn) {
       btn.style.setProperty("position", "relative", "important");
       btn.style.setProperty("transform", "none", "important");
       btn.style.setProperty("opacity", "1", "important");
@@ -653,13 +709,13 @@
   }
 
   function flattenFreiraumButtons() {
-    var ring = document.querySelector("#slide-home .dna-ring");
+    var ring = heroRoot() && heroRoot().querySelector(".dna-ring");
     markHeroGrid(ring);
     if (ring) {
       ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
     }
-    document.querySelectorAll("#slide-home .dna-slide").forEach(function (btn) {
+    queryInHero(".dna-slide").forEach(function (btn) {
       btn.style.setProperty("position", "relative", "important");
       btn.style.setProperty("left", "auto", "important");
       btn.style.setProperty("top", "auto", "important");
@@ -669,13 +725,13 @@
   }
 
   function flattenProButtons() {
-    var ring = document.querySelector("#slide-home .dna-ring");
+    var ring = heroRoot() && heroRoot().querySelector(".dna-ring");
     markHeroGrid(ring);
     if (ring) {
       ring.style.setProperty("display", "grid", "important");
       ring.style.setProperty("transform", "none", "important");
     }
-    document.querySelectorAll("#slide-home .dna-slide").forEach(function (btn) {
+    queryInHero(".dna-slide").forEach(function (btn) {
       btn.style.setProperty("position", "relative", "important");
       btn.style.setProperty("transform", "none", "important");
     });
@@ -685,6 +741,8 @@
     if (!isHeroMobile()) {
       document.body.classList.remove("welten-mobile-hero-active");
       document.documentElement.classList.remove("welten-mobile-hero");
+      restoreMobileHeroToHome();
+      document.body.classList.remove("welten-mobile-subpage-hero--on");
       removeHeroTitleDom();
       resetHeroButtonDom();
       document.querySelectorAll("[data-mobile-chapter-hero]").forEach(function (el) {
@@ -709,13 +767,9 @@
     if (world === "general") buildGeneralHero();
 
     ensureChapterHeroes();
+    relocateMobileHero();
     restructureHeroButtons();
     hideMobileSideNav();
-    if (isHomeChapter()) {
-      restoreHomeHeroOnMobile();
-    } else {
-      hideSubpageHomeHeroLeak();
-    }
 
     document.querySelectorAll("[data-mobile-chapter-hero]:not([hidden])").forEach(function (hero) {
       var inner = hero.parentElement;
@@ -788,7 +842,7 @@
     "click",
     function (e) {
       if (!isHeroMobile()) return;
-      var btn = e.target.closest("[data-mobile-chapter-hero] [data-go], #mvStaticHero [data-go], #slide-home .hero-button[data-go], #slide-home .nexora-orbit-button[data-go], #slide-home .dna-slide[data-go]");
+      var btn = e.target.closest("[data-go], #mvStaticHero [data-go], .welten-mobile-relocated-hero [data-go], #slide-home .hero-button[data-go], #slide-home .nexora-orbit-button[data-go], #slide-home .dna-slide[data-go]");
       if (!btn) return;
       if (btn.closest("[data-mobile-chapter-hero]")) return;
       var id = btn.getAttribute("data-go");
