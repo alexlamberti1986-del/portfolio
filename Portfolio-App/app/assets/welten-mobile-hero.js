@@ -4,7 +4,8 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706nexora-hero";
+  var HERO_VER = "20260706mobile-hero";
+  var bootTimer = null;
 
   function heroRoot() {
     return (
@@ -165,6 +166,12 @@
     if (!mount) return;
 
     var host = ensureMobileHeroHost(mount);
+    if (hero.parentElement === host && hero.classList.contains("welten-mobile-relocated-hero")) {
+      markPrimaryButtons(hero, active);
+      restructureHeroButtons();
+      return;
+    }
+
     ensureMobileHomePlaceholder(homeInner, hero);
     hero.classList.add("welten-mobile-relocated-hero");
     stripRelocatedHeroInlineStyles(hero);
@@ -233,13 +240,8 @@
     return currentChapter() === "home";
   }
 
-  function gridOrder(active) {
-    active = active || currentChapter();
-    if (HERO_CHAPTERS.indexOf(active) < 0) active = "home";
-    var rest = HERO_CHAPTERS.filter(function (id) {
-      return id !== active;
-    });
-    return [active].concat(rest);
+  function gridOrder() {
+    return HERO_GRID_ORDER.slice();
   }
 
   function chapterLabels() {
@@ -493,10 +495,11 @@
     if (!root) return;
     root.querySelectorAll("[data-go]").forEach(function (btn) {
       var go = btn.getAttribute("data-go");
-      var on = go === active;
-      btn.classList.toggle("is-active", on);
-      btn.classList.toggle("is-hero-primary", on);
-      btn.setAttribute("aria-current", on ? "page" : "false");
+      var isHome = go === "home";
+      var isActive = go === active;
+      btn.classList.toggle("is-active", isActive);
+      btn.classList.toggle("is-hero-primary", isHome);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
     });
   }
 
@@ -526,7 +529,7 @@
       btn.style.setProperty("bottom", "auto", "important");
     });
 
-    gridOrder(active).forEach(function (go) {
+    gridOrder().forEach(function (go) {
       var btn = byGo[go];
       if (btn) ring.appendChild(btn);
     });
@@ -583,14 +586,17 @@
 
   function buildGeneralHero() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "general") return;
-    var dna =
-      document.getElementById("dnaStage") ||
-      document.querySelector("#slide-home .home-hero-experience");
-    if (dna && isHeroElementVisible(dna)) {
+    var hero = heroRoot();
+    if (
+      hero &&
+      (hero.id === "dnaStage" || hero.classList.contains("home-hero-experience")) &&
+      isHeroElementVisible(hero)
+    ) {
       buildGeneralDnaHero();
       return;
     }
-    var staticHero = document.getElementById("mvStaticHero");
+    var staticHero =
+      hero && hero.id === "mvStaticHero" ? hero : document.getElementById("mvStaticHero");
     if (!staticHero) return;
     var inner = staticHero.querySelector(".mv-static-hero__inner");
     if (!inner) return;
@@ -602,9 +608,7 @@
   }
 
   function buildGeneralDnaHero() {
-    var stage =
-      document.getElementById("dnaStage") ||
-      document.querySelector("#slide-home .home-hero-experience");
+    var stage = heroRoot();
     if (!stage) return;
     var scene = stage.querySelector(".dna-unified-scene");
     if (!scene) return;
@@ -730,7 +734,7 @@
 
   function buildNexoraHero() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
-    var stage = document.getElementById("dnaStage");
+    var stage = heroRoot();
     if (!stage) return;
     var cfg = WORLDS.nexora;
     if (isHeroTitleVisible()) {
@@ -834,6 +838,17 @@
     });
   }
 
+  function applyWorldHero() {
+    var world = document.body.getAttribute("data-world");
+    if (world === "nexora") {
+      buildNexoraHero();
+      scheduleNexoraHeroRetry();
+    }
+    if (world === "freiraum") buildFreiraumHero();
+    if (world === "vertex") buildProfessionalHero();
+    if (world === "general") buildGeneralHero();
+  }
+
   function buildMobileHeroDom() {
     if (!isHeroMobile()) {
       document.body.classList.remove("welten-mobile-hero-active");
@@ -854,18 +869,12 @@
     document.documentElement.classList.add("welten-mobile-hero");
     ensureStylesheetLock();
 
-    var world = document.body.getAttribute("data-world");
-    if (world === "nexora") {
-      buildNexoraHero();
-      scheduleNexoraHeroRetry();
-    }
-    if (world === "freiraum") buildFreiraumHero();
-    if (world === "vertex") buildProfessionalHero();
-    if (world === "general") buildGeneralHero();
-
     ensureChapterHeroes();
+    applyWorldHero();
     relocateMobileHero();
+    applyWorldHero();
     restructureHeroButtons();
+    markPrimaryButtons(heroRoot(), currentChapter());
     hideMobileSideNav();
 
     document.querySelectorAll("[data-mobile-chapter-hero]:not([hidden])").forEach(function (hero) {
@@ -875,7 +884,10 @@
   }
 
   function boot() {
-    buildMobileHeroDom();
+    clearTimeout(bootTimer);
+    bootTimer = setTimeout(function () {
+      buildMobileHeroDom();
+    }, 48);
   }
 
   function afterNavigation() {

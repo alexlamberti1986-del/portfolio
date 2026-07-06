@@ -1081,8 +1081,10 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
   }
 
   body[data-world="nexora"] #slide-home .home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience,
+  body[data-world="nexora"] #slide-home #dnaStage, #dnaStage.welten-mobile-relocated-hero.home-hero-experience,
   body[data-world="freiraum"] #slide-home .home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience,
-  body[data-world="vertex"] #slide-home .home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience {
+  body[data-world="vertex"] #slide-home .home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience,
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero {
     padding-top: 48px !important;
     padding-bottom: 40px !important;
   }
@@ -1209,23 +1211,18 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
   }
 
   body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-active,
   body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-active,
-  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-active {
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-hero-primary {
     grid-column: 1 / -1 !important;
   }
 
   body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-active,
-  body[data-world="general"] .welten-mobile-chapter-hero .mv-static-hero__nav-btn.is-hero-primary,
-  body[data-world="general"] .welten-mobile-chapter-hero .mv-static-hero__nav-btn.is-active {
+  body[data-world="general"] .welten-mobile-chapter-hero .mv-static-hero__nav-btn.is-hero-primary {
     grid-column: 1 / -1 !important;
   }
 
   body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary,
-  body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-active {
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__nav-btn.is-hero-primary {
     grid-column: 1 / -1 !important;
   }
 
@@ -1234,11 +1231,24 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
    * MULTIVERSUM = Verlauf, NEXORA = Blau, PROFESSIONAL = Weiss/Schwarz, FREIRAUM = Gelb
    */
   body[data-world="general"] #slide-home .hero-button.is-hero-primary,
-  body[data-world="general"] #slide-home .hero-button.is-active,
   body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-active,
   body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary,
-  body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-active {
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__nav-btn.is-hero-primary,
+  body[data-world="general"] .welten-mobile-relocated-hero .dna-slide.is-hero-primary,
+  body[data-world="general"] #slide-home .dna-slide.is-hero-primary {
+    background: linear-gradient(135deg, #5ec4ff, #9b6bff 28%, #ff59b2 52%, #ff9b37 78%, #ffd86a) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+    box-shadow: 0 14px 34px rgba(255, 89, 178, 0.34), 0 0 0 1px rgba(255, 255, 255, 0.12) inset !important;
+    text-shadow: none !important;
+  }
+
+  body[data-world="general"] #slide-home .hero-button.is-active,
+  body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-active,
+  body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-active,
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__nav-btn.is-active,
+  body[data-world="general"] .welten-mobile-relocated-hero .dna-slide.is-active,
+  body[data-world="general"] #slide-home .dna-slide.is-active {
     background: linear-gradient(135deg, #5ec4ff, #9b6bff 28%, #ff59b2 52%, #ff9b37 78%, #ffd86a) !important;
     border-color: transparent !important;
     color: #fff !important;
@@ -1248,9 +1258,7 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
 
   body[data-world="nexora"] #slide-home .hero-button.is-hero-primary,
   body[data-world="nexora"] #slide-home .nexora-orbit-button, .welten-mobile-relocated-hero .nexora-orbit-button.is-hero-primary,
-  body[data-world="nexora"] #slide-home .nexora-orbit-button, .welten-mobile-relocated-hero .nexora-orbit-button.is-active,
-  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-active {
+  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-hero-primary {
     background: linear-gradient(135deg, #0a8cff, #3dd8ff 55%, #65d9ff) !important;
     border-color: rgba(157, 236, 255, 0.85) !important;
     color: #041018 !important;
@@ -1258,11 +1266,15 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
     text-shadow: none !important;
   }
 
+  body[data-world="nexora"] #slide-home .nexora-orbit-button, .welten-mobile-relocated-hero .nexora-orbit-button.is-active:not(.is-hero-primary),
+  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-active:not(.is-hero-primary) {
+    border-color: rgba(157, 236, 255, 0.95) !important;
+    box-shadow: 0 0 0 1px rgba(101, 217, 255, 0.55), 0 0 20px rgba(0, 194, 255, 0.42) !important;
+  }
+
   body[data-world="vertex"] #slide-home .hero-button.is-hero-primary,
   body[data-world="vertex"] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.is-hero-primary,
-  body[data-world="vertex"] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.is-active,
-  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-active {
+  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-hero-primary {
     background: #fff !important;
     border-color: #111 !important;
     color: #111 !important;
@@ -1270,16 +1282,28 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
     text-shadow: none !important;
   }
 
+  body[data-world="vertex"] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.is-active:not(.is-hero-primary),
+  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-active:not(.is-hero-primary) {
+    background: #fff !important;
+    border-color: #111 !important;
+    color: #111 !important;
+    box-shadow: 0 0 0 2px #111, 0 8px 18px rgba(0, 0, 0, 0.12) !important;
+  }
+
   body[data-world="freiraum"] #slide-home .hero-button.is-hero-primary,
   body[data-world="freiraum"] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.is-hero-primary,
-  body[data-world="freiraum"] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.is-active,
-  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-active {
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-hero-primary {
     background: linear-gradient(135deg, #ffe08a, #ffd166 40%, #ffc44d) !important;
     border-color: rgba(255, 255, 255, 0.45) !important;
     color: #24142f !important;
     box-shadow: 0 0 0 1px rgba(255, 209, 102, 0.65), 0 0 26px rgba(255, 209, 102, 0.42), 8px 10px 0 rgba(255, 48, 126, 0.22) !important;
     text-shadow: none !important;
+  }
+
+  body[data-world="freiraum"] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.is-active:not(.is-hero-primary),
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-active:not(.is-hero-primary) {
+    border-color: rgba(255, 209, 102, 0.85) !important;
+    box-shadow: 0 0 0 1px rgba(255, 209, 102, 0.55), 0 0 18px rgba(255, 139, 189, 0.28) !important;
   }
 
   /* ── Einheitliche Hero-Reihenfolge: Titel → Meta → Buttons ── */
@@ -1451,13 +1475,58 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
   }
 
   body[data-world="general"] .welten-mobile-relocated-hero .dna-slide.is-active,
-  body[data-world="general"] .welten-mobile-relocated-hero .dna-slide.is-hero-primary,
-  body[data-world="general"] #slide-home .dna-slide.is-active,
-  body[data-world="general"] #slide-home .dna-slide.is-hero-primary {
+  body[data-world="general"] #slide-home .dna-slide.is-active {
     background: linear-gradient(135deg, #5ec4ff, #9b6bff 28%, #ff59b2 52%, #ff9b37 78%, #ffd86a) !important;
     border-color: transparent !important;
     color: #fff !important;
     box-shadow: 0 14px 34px rgba(255, 89, 178, 0.34), 0 0 0 1px rgba(255, 255, 255, 0.12) inset !important;
+  }
+}
+
+/* ── Unterseiten (Handy): Relocated Hero = identisch wie Home ── */
+@media (max-width: 1024px) {
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 38%, rgba(255, 89, 178, 0.1), transparent 62%),
+      linear-gradient(180deg, rgba(5, 7, 13, 0.98), rgba(11, 17, 27, 0.94)) !important;
+    padding-top: 48px !important;
+    padding-bottom: 40px !important;
+  }
+
+  body[data-world="vertex"] .welten-mobile-relocated-hero.home-hero-experience {
+    background: #f4f2ee !important;
+  }
+
+  body[data-world="freiraum"] .welten-mobile-relocated-hero.home-hero-experience {
+    background-image: none !important;
+    background:
+      radial-gradient(ellipse 85% 65% at 18% 22%, rgba(255, 139, 189, 0.22), transparent 52%),
+      radial-gradient(ellipse 75% 55% at 82% 68%, rgba(255, 209, 102, 0.16), transparent 50%),
+      linear-gradient(168deg, #2a1420 0%, #1a1028 42%, #120a1a 100%) !important;
+  }
+
+  body[data-world="nexora"] .welten-mobile-relocated-hero.home-hero-experience,
+  body[data-world="nexora"] #dnaStage.welten-mobile-relocated-hero {
+    background: #0a0e14 !important;
+  }
+
+  body.welten-mobile-subpage-hero--on .slide.active:not(#slide-home) .welten-mobile-hero-host {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.welten-mobile-subpage-hero--on .slide.active:not(#slide-home) .welten-mobile-relocated-hero {
+    margin-bottom: 0 !important;
+  }
+
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__title,
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__tag,
+  body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__nav {
+    width: 100% !important;
+    max-width: min(390px, 92vw) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 }
 
