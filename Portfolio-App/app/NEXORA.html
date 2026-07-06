@@ -7424,67 +7424,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 
   function initMobileOrbitShell() {
     if (!isTouchUI()) return;
-    var hero = getNexoraHeroEl();
-    if (!hero) return;
-    document.documentElement.classList.add("welten-nexora-list");
-    var shell = hero.querySelector(".nexora-orbit-buttons");
-    if (!shell) {
-      shell = document.createElement("div");
-      shell.className = "nexora-orbit-buttons welten-nexora-list-mode";
-      shell.setAttribute("aria-label", "NEXORA Navigation");
-      shell.innerHTML = '<div class="nexora-orbit-ring"></div>';
-      hero.appendChild(shell);
-    }
-    shell.classList.add("welten-nexora-list-mode");
-    var ring = shell.querySelector(".nexora-orbit-ring");
-    if (!ring) return;
-    if (!ring.querySelector(".nexora-orbit-button")) {
-      items.forEach(function (item) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "nexora-orbit-button";
-        btn.setAttribute("data-go", item[0]);
-        btn.textContent = item[1];
-        ring.appendChild(btn);
-      });
-    }
-    ring.querySelectorAll(".nexora-orbit-button").forEach(function (b) {
-      b.style.setProperty("transform", "none", "important");
-      b.style.setProperty("opacity", "1", "important");
-      b.style.setProperty("filter", "none", "important");
-    });
-    hero.querySelectorAll(".nexora-orbit-nav").forEach(function (n) {
-      n.style.setProperty("display", "none", "important");
-      n.style.setProperty("pointer-events", "none", "important");
-    });
-    hero.style.setProperty("height", "auto", "important");
-    hero.style.setProperty("min-height", "0", "important");
-    hero.style.setProperty("max-height", "none", "important");
-    hero.style.setProperty("overflow", "visible", "important");
-    hero.style.setProperty("touch-action", "pan-y", "important");
-    shell.style.setProperty("position", "relative", "important");
-    shell.style.setProperty("top", "auto", "important");
-    shell.style.setProperty("bottom", "auto", "important");
-    shell.style.setProperty("transform", "none", "important");
-    shell.style.setProperty("touch-action", "pan-y", "important");
-    ring.style.setProperty("position", "relative", "important");
-    ring.style.setProperty("transform", "none", "important");
-    ring.style.setProperty("touch-action", "pan-y", "important");
-    ring.querySelectorAll(".nexora-orbit-button").forEach(function (b) {
-      b.style.setProperty("position", "relative", "important");
-      b.style.setProperty("touch-action", "pan-y", "important");
-    });
-    if (window.WeltenNexoraMobileFix && typeof window.WeltenNexoraMobileFix.unlockHeroScroll === "function") {
-      window.WeltenNexoraMobileFix.unlockHeroScroll();
-    }
-    if (window.WeltenCompactHero && typeof window.WeltenCompactHero.rebuild === "function") {
-      window.WeltenCompactHero.rebuild();
-      setTimeout(function () {
-        if (window.WeltenCompactHero && typeof window.WeltenCompactHero.rebuild === "function") {
-          window.WeltenCompactHero.rebuild();
-        }
-      }, 120);
-    }
+    return;
   }
 
   function navigateTo(id) {
@@ -8501,9 +8441,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-mouse-paint.css?v=20260703wws-smooth" />
 <script src="assets/welten-mouse-paint.js?v=20260703wws-smooth" defer></script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706compact-nav-v2" id="welten-mobile-hero-stylesheet" />
-<link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260606f" />
-<script src="assets/welten-mobile-hero.js?v=20260706compact-nav-v2" defer></script>
+<script src="assets/welten-mobile-hero.js?v=20260706hero-off" defer></script>
 <link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260705laptop-hero" />
 <script src="assets/welten-desktop-chapter-hero.js?v=20260706nexora-hero" defer></script>
 <script src="assets/welten-mobile-nexora-nav.js?v=20260606f" defer></script>
@@ -8552,6 +8490,6 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-large-display.css?v=20260706xl-display" />
 <script src="assets/welten-portraits-apply.js?v=20260626-prof-neu" defer></script>
 <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
-<link rel="stylesheet" href="assets/welten-compact-hero-nav.css?v=20260706compact-nav-v2" id="welten-compact-hero-nav-stylesheet" />
+<link rel="stylesheet" href="assets/welten-mobile-hero-off.css?v=20260706hero-off" id="welten-mobile-hero-off-stylesheet" />
 </body>
 </html>

@@ -1,6 +1,6 @@
 /**
  * Desktop/Laptop — voller Home-Hero oben auf jeder Unterseite (≥1025px).
- * Handy/Tablet: unverändert (welten-mobile-hero.js).
+ * Handy/Tablet: Hero deaktiviert (welten-mobile-hero-off).
  */
 (function () {
   "use strict";
