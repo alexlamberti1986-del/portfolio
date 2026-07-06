@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706hero-sync";
+  var HERO_VER = "20260706hero-parity";
 
   function heroRoot() {
     return (
@@ -105,6 +105,38 @@
     });
   }
 
+  function stripRelocatedHeroInlineStyles(hero) {
+    if (!hero) return;
+    hero.querySelectorAll(
+      ".dna-slide, .nexora-orbit-button, .dna-ring, .nexora-orbit-ring, .dna-orbit-group, .nexora-orbit-buttons"
+    ).forEach(function (el) {
+      [
+        "display",
+        "visibility",
+        "position",
+        "transform",
+        "opacity",
+        "left",
+        "top",
+        "right",
+        "bottom",
+        "height",
+        "min-height",
+        "max-height",
+        "width",
+        "max-width",
+        "overflow",
+        "touch-action",
+        "pointer-events",
+        "grid-template-columns",
+        "gap",
+      ].forEach(function (prop) {
+        el.style.removeProperty(prop);
+      });
+      el.classList.remove("hero-button", "hero-buttons-grid", "welten-mobile-hero-grid");
+    });
+  }
+
   function relocateMobileHero() {
     document.querySelectorAll("[data-mobile-chapter-hero]").forEach(function (el) {
       el.remove();
@@ -135,6 +167,7 @@
     var host = ensureMobileHeroHost(mount);
     ensureMobileHomePlaceholder(homeInner, hero);
     hero.classList.add("welten-mobile-relocated-hero");
+    stripRelocatedHeroInlineStyles(hero);
     host.appendChild(hero);
     suppressSubpageHeaderClutter(mount);
     scheduleSubpageCleanup(mount);

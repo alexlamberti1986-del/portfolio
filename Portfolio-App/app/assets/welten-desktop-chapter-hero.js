@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260706hero-sync";
+  var VER = "20260706hero-parity";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
 
@@ -297,6 +297,43 @@
     }
   }
 
+  function stripRelocatedHeroInlineStyles(hero) {
+    if (!hero) return;
+    hero.querySelectorAll(
+      ".dna-slide, .nexora-orbit-button, .dna-ring, .nexora-orbit-ring, .dna-orbit-group, .nexora-orbit-buttons, .dna-unified-scene"
+    ).forEach(function (el) {
+      [
+        "display",
+        "visibility",
+        "position",
+        "transform",
+        "opacity",
+        "left",
+        "top",
+        "right",
+        "bottom",
+        "height",
+        "min-height",
+        "max-height",
+        "width",
+        "max-width",
+        "overflow",
+        "touch-action",
+        "pointer-events",
+        "grid-template-columns",
+        "gap",
+        "flex-wrap",
+        "justify-content",
+      ].forEach(function (prop) {
+        el.style.removeProperty(prop);
+      });
+      el.classList.remove("hero-button", "hero-buttons-grid", "welten-mobile-hero-grid");
+    });
+    ["height", "min-height", "max-height", "overflow", "touch-action"].forEach(function (prop) {
+      hero.style.removeProperty(prop);
+    });
+  }
+
   function suppressSubpageHeaderClutter(mount) {
     if (!mount || !isDesktop()) return;
     mount.querySelectorAll(
@@ -372,9 +409,20 @@
     if (!host) return null;
 
     ensureHomePlaceholder(homeInner, hero);
+    stripRelocatedHeroInlineStyles(hero);
     hero.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
     host.appendChild(hero);
     bindHeroNavClicks(hero);
+    if (document.body.getAttribute("data-world") === "nexora") {
+      setTimeout(function () {
+        if (window.NexoraOrbitUI && typeof window.NexoraOrbitUI.snapToChapter === "function") {
+          window.NexoraOrbitUI.snapToChapter(active);
+        }
+        try {
+          document.dispatchEvent(new CustomEvent("mv-restore-hero"));
+        } catch (e) {}
+      }, 60);
+    }
     return hero;
   }
 

@@ -59,7 +59,7 @@
     margin-bottom: clamp(16px, 2.5vw, 28px);
     flex-shrink: 0;
     position: relative;
-    z-index: 4;
+    z-index: 24;
   }
 
   .welten-desktop-relocated-hero.home-hero-experience,
@@ -408,150 +408,28 @@
     color: #f4f9ff !important;
   }
 
-  /* ── FREIRAUM: Desktop wie Home — kein Portrait-Hintergrund auf Unterseiten ── */
-  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience {
-    background-image: none !important;
-    background:
-      radial-gradient(circle at 16% 22%, rgba(255, 208, 48, 0.25), transparent 28%),
-      radial-gradient(circle at 74% 18%, rgba(255, 48, 126, 0.24), transparent 30%),
-      radial-gradient(circle at 82% 76%, rgba(0, 220, 210, 0.22), transparent 28%),
-      linear-gradient(135deg, #170d1f 0%, #25102e 42%, #111827 100%) !important;
-    background-size: auto !important;
-    background-position: center center !important;
+  /* ── FREIRAUM / PROFESSIONAL: Home-Styles aus HTML (.home-hero-experience) gelten 1:1 ── */
+
+  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="vertex"] .welten-desktop-relocated-hero.home-hero-experience {
+    overflow: hidden !important;
   }
 
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .home-portrait-card,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .portrait-photo,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-premium-canvas,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-particles-canvas,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-holo-arm,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-visual-stack,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero #dnaVisualStack,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-layer,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-asset {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-
-  /* ── FREIRAUM: Button-Layout wie Home ── */
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-orbit-group,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-ring-scene,
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-ring {
-    position: absolute !important;
-    inset: 0 !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important;
+  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-unified-scene,
+  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-unified-scene {
+    position: relative !important;
+    z-index: 2 !important;
     height: 100% !important;
-    transform: none !important;
-    pointer-events: none !important;
-  }
-
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide {
-    position: absolute !important;
-    width: auto !important;
-    min-width: clamp(96px, 8.5vw, 148px) !important;
-    max-width: clamp(124px, 12vw, 182px) !important;
-    padding: clamp(9px, 1vw, 14px) clamp(13px, 1.35vw, 20px) !important;
-    font-size: clamp(0.7rem, 1vw, 0.92rem) !important;
-    line-height: 1.15 !important;
-    transform: translate(-50%, -50%) rotate(var(--free-r, 0deg)) !important;
-    pointer-events: auto !important;
-    z-index: 12 !important;
-  }
-
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(1) { left: 22% !important; top: 36% !important; --free-r: -8deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(2) { left: 38% !important; top: 39% !important; --free-r: 5deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(3) { left: 25% !important; top: 50% !important; --free-r: 8deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(4) { left: 43% !important; top: 53% !important; --free-r: -6deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(5) { left: 30% !important; top: 64% !important; --free-r: 4deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(6) { left: 50% !important; top: 66% !important; --free-r: -4deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(7) { left: 20% !important; top: 77% !important; --free-r: 6deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(8) { left: 40% !important; top: 78% !important; --free-r: -6deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(9) { left: 56% !important; top: 48% !important; --free-r: 3deg; }
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide:nth-child(10) { left: 60% !important; top: 61% !important; --free-r: -5deg; }
-
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-unified-scene::after {
-    right: 5vw !important;
-    top: 15% !important;
-    max-width: 48vw !important;
-    font-size: clamp(2.2rem, 5.2vw, 5.2rem) !important;
-    line-height: 0.92 !important;
-  }
-
-  /* ── PROFESSIONAL: Buttons unten zentriert wie Home ── */
-  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-orbit-group {
-    position: absolute !important;
-    left: 50% !important;
-    right: auto !important;
-    bottom: clamp(34px, 8vh, 92px) !important;
-    top: auto !important;
-    width: min(760px, calc(100vw - 220px)) !important;
-    height: auto !important;
-    min-height: 0 !important;
-    transform: translateX(-50%) !important;
-    text-align: center !important;
-    display: block !important;
-    z-index: 8 !important;
-    pointer-events: auto;
-  }
-
-  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-ring-scene,
-  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-ring {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    transform: none !important;
-    display: flex !important;
-    flex-wrap: wrap;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 12px !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-slide {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    width: auto !important;
-    min-height: auto !important;
-    padding: 11px 17px !important;
-    border-radius: 0 !important;
-    border: 1px solid #111 !important;
-    background: #111 !important;
-    color: #fff !important;
-    font: 800 0.76rem ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
-    transform: none !important;
-    pointer-events: auto !important;
-    box-shadow: none !important;
-    opacity: 1 !important;
-    filter: none !important;
-    transition: background 0.22s ease, color 0.22s ease, transform 0.22s ease !important;
-  }
-
-  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-slide:hover {
-    background: transparent !important;
-    color: #111 !important;
-    transform: translateY(-2px) !important;
+    min-height: inherit !important;
   }
 
   body[data-world="vertex"] .welten-desktop-relocated-hero .dna-unified-scene::before {
-    content: "PROFESSIONAL";
-    position: absolute;
-    inset: auto 0 12%;
-    text-align: center;
-    font-size: clamp(4rem, 15vw, 13rem);
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.04);
-    pointer-events: none;
+    content: "PROFESSIONAL" !important;
+  }
+
+  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-unified-scene::after {
+    content: "STRATEGIE · STRUKTUR · WIRKUNG" !important;
+    display: block !important;
   }
 }
 

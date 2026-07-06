@@ -3696,13 +3696,13 @@ body[data-world="vertex"] .home-portrait-card,
 
   @media (min-width: 1025px) {
   /* FREIRAUM: Buttons sauber im ovalen Bereich (nur Desktop) */
-  body[data-world="freiraum"] #slide-home .dna-orbit-group,
-  body[data-world="freiraum"] #slide-home .dna-ring-scene,
-  body[data-world="freiraum"] #slide-home .dna-ring {
+  body[data-world="freiraum"] .home-hero-experience .dna-orbit-group,
+  body[data-world="freiraum"] .home-hero-experience .dna-ring-scene,
+  body[data-world="freiraum"] .home-hero-experience .dna-ring {
     position:absolute !important; inset:0 !important; left:0 !important; top:0 !important;
     width:100% !important; height:100% !important; transform:none !important; pointer-events:none !important;
   }
-  body[data-world="freiraum"] #slide-home .dna-slide {
+  body[data-world="freiraum"] .home-hero-experience .dna-slide {
     position:absolute !important; width:auto !important;
     min-width:clamp(96px,8.5vw,148px) !important; max-width:clamp(124px,12vw,182px) !important;
     padding:clamp(9px,1vw,14px) clamp(13px,1.35vw,20px) !important;
@@ -3710,33 +3710,33 @@ body[data-world="vertex"] .home-portrait-card,
     transform:translate(-50%,-50%) rotate(var(--free-r,0deg)) !important;
     pointer-events:auto !important; z-index:12 !important;
   }
-  body[data-world="freiraum"] #slide-home .dna-slide:hover { transform:translate(-50%,calc(-50% - 5px)) scale(1.04) rotate(var(--free-r,0deg)) !important; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(1) { left:22% !important; top:36% !important; --free-r:-8deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(2) { left:38% !important; top:39% !important; --free-r:5deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(3) { left:25% !important; top:50% !important; --free-r:8deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(4) { left:43% !important; top:53% !important; --free-r:-6deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(5) { left:30% !important; top:64% !important; --free-r:4deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(6) { left:50% !important; top:66% !important; --free-r:-4deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(7) { left:20% !important; top:77% !important; --free-r:6deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(8) { left:40% !important; top:78% !important; --free-r:-6deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(9) { left:56% !important; top:48% !important; --free-r:3deg; }
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(10) { left:60% !important; top:61% !important; --free-r:-5deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:hover { transform:translate(-50%,calc(-50% - 5px)) scale(1.04) rotate(var(--free-r,0deg)) !important; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(1) { left:22% !important; top:36% !important; --free-r:-8deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(2) { left:38% !important; top:39% !important; --free-r:5deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(3) { left:25% !important; top:50% !important; --free-r:8deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(4) { left:43% !important; top:53% !important; --free-r:-6deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(5) { left:30% !important; top:64% !important; --free-r:4deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(6) { left:50% !important; top:66% !important; --free-r:-4deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(7) { left:20% !important; top:77% !important; --free-r:6deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(8) { left:40% !important; top:78% !important; --free-r:-6deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(9) { left:56% !important; top:48% !important; --free-r:3deg; }
+  body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(10) { left:60% !important; top:61% !important; --free-r:-5deg; }
   body[data-world="freiraum"] .dna-unified-scene::after {
     right:5vw !important; top:15% !important; max-width:48vw !important;
     font-size:clamp(2.2rem,5.2vw,5.2rem) !important; line-height:.92 !important;
   }
   }
   @media (max-width:1200px) {
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(1) { left:20% !important; top:39% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(2) { left:42% !important; top:40% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(3) { left:24% !important; top:52% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(4) { left:47% !important; top:54% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(5) { left:30% !important; top:66% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(6) { left:54% !important; top:67% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(7) { left:18% !important; top:79% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(8) { left:42% !important; top:80% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(9) { left:62% !important; top:48% !important; }
-    body[data-world="freiraum"] #slide-home .dna-slide:nth-child(10) { left:68% !important; top:62% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(1) { left:20% !important; top:39% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(2) { left:42% !important; top:40% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(3) { left:24% !important; top:52% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(4) { left:47% !important; top:54% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(5) { left:30% !important; top:66% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(6) { left:54% !important; top:67% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(7) { left:18% !important; top:79% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(8) { left:42% !important; top:80% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(9) { left:62% !important; top:48% !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide:nth-child(10) { left:68% !important; top:62% !important; }
     body[data-world="freiraum"] .dna-unified-scene::after { right:5vw !important; top:12% !important; max-width:54vw !important; }
   }
   @media (max-width:760px) {
@@ -3744,7 +3744,7 @@ body[data-world="vertex"] .home-portrait-card,
     body[data-world="freiraum"] .dna-unified-scene::after {
       font-size:clamp(1.7rem,10vw,3.8rem) !important; right:7vw !important; top:10% !important; max-width:84vw !important;
     }
-    body[data-world="freiraum"] #slide-home .dna-slide { min-width:92px !important; max-width:132px !important; padding:8px 11px !important; font-size:.70rem !important; }
+    body[data-world="freiraum"] .home-hero-experience .dna-slide { min-width:92px !important; max-width:132px !important; padding:8px 11px !important; font-size:.70rem !important; }
     /* freiraum mobile: grid in welten-mobile-performance.css */
     /* freiraum: alle Punkte auf Mobile sichtbar (siehe welten-mobile-performance.css) */
     .menu-panel { max-height:calc(100dvh - 92px) !important; }
@@ -6015,9 +6015,9 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-mouse-paint.css?v=20260703wws-smooth" />
 <script src="assets/welten-mouse-paint.js?v=20260703wws-smooth" defer></script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706hero-sync" id="welten-mobile-hero-stylesheet" />
-<script src="assets/welten-mobile-hero.js?v=20260706hero-sync" defer></script>
-<script src="assets/welten-desktop-chapter-hero.js?v=20260706hero-sync" defer></script>
+<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706hero-parity" id="welten-mobile-hero-stylesheet" />
+<script src="assets/welten-mobile-hero.js?v=20260706hero-parity" defer></script>
+<script src="assets/welten-desktop-chapter-hero.js?v=20260706hero-parity" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260706mobile-pass3" />
 </body>
