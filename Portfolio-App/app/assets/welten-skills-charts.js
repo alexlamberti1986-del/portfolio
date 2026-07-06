@@ -685,10 +685,21 @@
     obs.observe(overview);
   }
 
+  function deferLeistungenSectionOrder(slideInner) {
+    function run() {
+      if (window.WeltenCleanup && typeof window.WeltenCleanup.ensureLeistungenSectionOrder === "function") {
+        window.WeltenCleanup.ensureLeistungenSectionOrder(slideInner);
+      }
+    }
+    run();
+    setTimeout(run, 0);
+    setTimeout(run, 150);
+  }
+
   function init(lang) {
     document.querySelectorAll("[data-welten-leistungen-v1] .slide-inner, [data-welten-strengths-v1] .slide-inner").forEach(function (slideInner) {
-      var target = slideInner.querySelector(".welten-leistungen-rich") || slideInner;
-      buildOverview(target, lang);
+      buildOverview(slideInner, lang);
+      deferLeistungenSectionOrder(slideInner);
     });
   }
 

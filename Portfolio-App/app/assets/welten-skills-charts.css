@@ -15,6 +15,7 @@
   font-size: clamp(1.35rem, 2.4vw, 1.75rem);
   letter-spacing: -0.02em;
   line-height: 1.2;
+  color: var(--text, inherit);
 }
 
 .welten-skills-overview__subtitle {
@@ -23,6 +24,14 @@
   font-size: clamp(0.92rem, 1.6vw, 1.02rem);
   line-height: 1.55;
   color: var(--text-muted);
+}
+
+body[data-world="vertex"] #slide-leistungen .welten-skills-overview:not(.welten-chapter-box) .welten-skills-overview__title {
+  color: #101010;
+}
+
+body[data-world="vertex"] #slide-leistungen .welten-skills-overview:not(.welten-chapter-box) .welten-skills-overview__subtitle {
+  color: rgba(20, 20, 20, 0.72);
 }
 
 .welten-skills-charts-grid {
@@ -755,6 +764,10 @@ body[data-world="nexora"] .welten-skills-heatmap-cell.is-l3 {
 
 body[data-world="vertex"] .welten-skills-heatmap-cell.is-l3 {
   outline: 1px solid rgba(0, 0, 0, 0.22);
+}
+
+body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* Responsive tuning */

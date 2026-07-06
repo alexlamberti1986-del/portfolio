@@ -456,6 +456,30 @@
     document.head.appendChild(script);
   }
 
+  function ensureLeistungenSectionOrder(slide) {
+    if (!slide) return;
+    var rich = slide.querySelector(".welten-leistungen-rich");
+    if (!rich) return;
+    var faq = slide.querySelector(".welten-faq");
+    var overview = slide.querySelector("[data-welten-skills-overview]");
+
+    if (overview && overview.parentNode !== slide) {
+      overview.parentNode.removeChild(overview);
+      slide.appendChild(overview);
+    }
+
+    var insertAfter = rich;
+    if (faq) {
+      if (faq.parentNode) faq.parentNode.removeChild(faq);
+      insertAfter.insertAdjacentElement("afterend", faq);
+      insertAfter = faq;
+    }
+    if (overview) {
+      if (overview.parentNode) overview.parentNode.removeChild(overview);
+      insertAfter.insertAdjacentElement("afterend", overview);
+    }
+  }
+
   function injectLeistungenRich(lang) {
     lang = lang || getLang();
     var slide = document.querySelector("#slide-leistungen .slide-inner");
@@ -485,6 +509,7 @@
     }
     renderFaqSection(faq, lang);
     injectFaqSchema(lang);
+    ensureLeistungenSectionOrder(slide);
   }
 
   function getNexoraHeroEl() {
@@ -611,5 +636,10 @@
     }, 120);
   });
 
-  window.WeltenCleanup = { apply: apply, injectLeistungenRich: injectLeistungenRich, getLang: getLang };
+  window.WeltenCleanup = {
+    apply: apply,
+    injectLeistungenRich: injectLeistungenRich,
+    ensureLeistungenSectionOrder: ensureLeistungenSectionOrder,
+    getLang: getLang,
+  };
 })();

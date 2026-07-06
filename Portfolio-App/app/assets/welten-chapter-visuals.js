@@ -67,8 +67,21 @@
   }
 
   function applyChapterBox(el, imageKey) {
-    if (!el || el.dataset.chapterVisualApplied === imageKey) return;
-    if (!el.classList.contains("glass-card") && el.classList.contains("welten-faq")) {
+    if (!el) return;
+    if (el.dataset.chapterVisualApplied === imageKey) return;
+    if (
+      el.dataset.chapterVisualApplied &&
+      el.dataset.chapterVisualApplied !== imageKey
+    ) {
+      delete el.dataset.chapterVisualApplied;
+      el.querySelectorAll(".welten-chapter-box__bg, .welten-chapter-box__scrim").forEach(function (layer) {
+        layer.remove();
+      });
+    }
+    if (
+      !el.classList.contains("glass-card") &&
+      (el.classList.contains("welten-faq") || el.classList.contains("welten-skills-overview"))
+    ) {
       el.classList.add("glass-card");
     }
     ensureBoxLayers(el, imageKey);
@@ -134,16 +147,14 @@
   function applyLeistungen() {
     wrapHeroBox("slide-leistungen", "leistungen", "leistungen");
 
-    var skills = document.querySelector("#slide-leistungen .welten-leistungen-rich");
-    if (skills) applyChapterBox(skills, "skills");
-
-    var overview = document.querySelector("#slide-leistungen .welten-skills-overview");
-    if (overview && !overview.closest(".welten-leistungen-rich")) {
-      applyChapterBox(overview, "skills");
-    }
+    var rich = document.querySelector("#slide-leistungen .welten-leistungen-rich");
+    if (rich) applyChapterBox(rich, "leistungen");
 
     var faq = document.querySelector("#slide-leistungen .welten-faq");
     if (faq) applyChapterBox(faq, "faq");
+
+    var overview = document.querySelector("#slide-leistungen .welten-skills-overview");
+    if (overview) applyChapterBox(overview, "skills");
   }
 
   function applyProjects() {
