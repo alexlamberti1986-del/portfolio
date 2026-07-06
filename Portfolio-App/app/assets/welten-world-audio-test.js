@@ -7,7 +7,7 @@
 
   if (!document.body || document.body.getAttribute("data-world-audio-test") !== "1") return;
 
-  var VERSION = "20260706audio-live2";
+  var VERSION = "20260706audio-live3";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 280;
   var TRACKS = {
@@ -138,7 +138,13 @@
     var el = ensureAudio();
     var src = TRACKS[world];
     if (!src || !el || el.paused) return false;
-    return el.src.indexOf(src.split("?")[0]) >= 0 && !el.muted && el.volume > 0.05;
+    return el.src.indexOf(src.split("?")[0]) >= 0;
+  }
+
+  function isAudibleWorld(world) {
+    var el = ensureAudio();
+    if (!isPlayingWorld(world)) return false;
+    return !el.muted && el.volume > 0.05;
   }
 
   function playElement(el, token) {
@@ -269,7 +275,18 @@
     if (activeWorld() !== "general" || !effectsEnabled()) return;
     if (!force && switching) return;
     switching = false;
-    if (isPlayingWorld("general")) {
+    var el = ensureAudio();
+    var pathOnly = TRACKS.general.split("?")[0];
+    if (el && !el.paused && el.src && el.src.indexOf(pathOnly) >= 0) {
+      currentWorld = "general";
+      currentSrc = TRACKS.general;
+      window.__mvWorldAudioPlaying = true;
+      switching = false;
+      el.muted = false;
+      fadeVolume(TARGET_VOLUME);
+      return;
+    }
+    if (isAudibleWorld("general")) {
       currentWorld = "general";
       currentSrc = TRACKS.general;
       window.__mvWorldAudioPlaying = true;
@@ -284,8 +301,8 @@
           currentSrc = TRACKS.general;
           switching = false;
           window.__mvWorldAudioPlaying = true;
-          var el = ensureAudio();
-          el.muted = false;
+          var bootEl = ensureAudio();
+          bootEl.muted = false;
           fadeVolume(TARGET_VOLUME);
         })
         .catch(function () {
@@ -309,7 +326,7 @@
     if (!worldObserverReady) return;
     var world = activeWorld();
     if (!world || !TRACKS[world] || !effectsEnabled()) return;
-    if (world === lastObservedWorld && isPlayingWorld(world)) return;
+    if (world === lastObservedWorld && isAudibleWorld(world)) return;
     if (world === lastObservedWorld) return;
 
     var prev = lastObservedWorld;
@@ -474,7 +491,7 @@
       return;
     }
     if (!effectsEnabled()) return;
-    if (activeWorld() === "general" && !isPlayingWorld("general")) bootMultiversum(true);
+    if (activeWorld() === "general" && !isAudibleWorld("general")) bootMultiversum(true);
   }, 350);
 
   window.WeltenWorldAudioTest = {

@@ -347,3 +347,105 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
     transform: scale(1.02);
   }
 }
+
+/* ── PROFESSIONAL Desktop/Laptop: Leistungen & FAQ lesbar (schwarze Karten) ── */
+@media (min-width: 1025px) {
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich.glass-card,
+  body[data-world="vertex"] #slide-leistungen .welten-leistung-rich.glass-card {
+    background: #0a0a0a !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #f2f2f2 !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich h3,
+  body[data-world="vertex"] #slide-leistungen .welten-leistung-rich h3 {
+    color: #ffffff !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich__desc,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich__benefit,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich li,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich__result,
+  body[data-world="vertex"] #slide-leistungen .welten-leistung-rich__desc,
+  body[data-world="vertex"] #slide-leistungen .welten-leistung-rich__benefit,
+  body[data-world="vertex"] #slide-leistungen .welten-leistung-rich li,
+  body[data-world="vertex"] #slide-leistungen .welten-leistung-rich__result {
+    color: rgba(255, 255, 255, 0.92) !important;
+    opacity: 1 !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-chart-card.glass-card,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card.glass-card {
+    background: #0a0a0a !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #f2f2f2 !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview__title,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-chart-title,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__title,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-title {
+    color: #ffffff !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-hbar-label,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-donut-legend li,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-vbar-label,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-ring-label,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-cat,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-head span,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-hbar-val,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-vbar-pct,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-donut-legend li,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-ring-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-cat,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-head span,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-val,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-pct {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq > h3,
+  body[data-world="vertex"] #slide-leistungen .welten-faq > h3 {
+    color: #ffffff !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq__trigger,
+  body[data-world="vertex"] #slide-leistungen .welten-faq__trigger {
+    color: #ffffff !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq__trigger::after,
+  body[data-world="vertex"] #slide-leistungen .welten-faq__trigger::after {
+    color: rgba(255, 255, 255, 0.8) !important;
+    opacity: 1 !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq__panel,
+  body[data-world="vertex"] #slide-leistungen .welten-faq__panel {
+    color: rgba(255, 255, 255, 0.92) !important;
+    background: rgba(0, 0, 0, 0.42) !important;
+    border-radius: 10px;
+    opacity: 1 !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq__item,
+  body[data-world="vertex"] #slide-leistungen .welten-faq__item {
+    border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistungen-rich.welten-chapter-box .welten-chapter-box__scrim,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq.welten-chapter-box .welten-chapter-box__scrim {
+    background: linear-gradient(
+      155deg,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.78) 48%,
+      rgba(0, 0, 0, 0.92) 100%
+    ) !important;
+  }
+}
