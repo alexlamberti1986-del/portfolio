@@ -370,7 +370,7 @@ html.welten-world-paused .light-beams {
     display: none !important;
   }
 
-  body[data-world="nexora"] #slide-home .nexora-orbit-ring {
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring:not(.welten-phone-nav-source) {
     position: relative !important;
     left: auto !important;
     top: auto !important;
@@ -385,7 +385,8 @@ html.welten-world-paused .light-beams {
     pointer-events: auto !important;
   }
 
-  body[data-world="nexora"] #slide-home .nexora-orbit-button {
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring > .nexora-orbit-button,
+  body[data-world="nexora"] .welten-mobile-relocated-hero .nexora-orbit-ring > .nexora-orbit-button {
     position: relative !important;
     left: auto !important;
     top: auto !important;
@@ -488,7 +489,7 @@ html.welten-world-paused .light-beams {
     margin: 0 !important;
   }
 
-  body[data-world="vertex"] .dna-ring {
+  body[data-world="vertex"] .dna-ring:not(.welten-phone-nav-source) {
     display: flex !important;
     flex-wrap: wrap !important;
     justify-content: center !important;
@@ -498,7 +499,7 @@ html.welten-world-paused .light-beams {
     padding: 0 8px 4px !important;
   }
 
-  body[data-world="vertex"] .dna-slide {
+  body[data-world="vertex"] .dna-ring > .dna-slide {
     padding: clamp(9px, 2.2vw, 12px) clamp(10px, 2.8vw, 14px) !important;
     font-size: clamp(0.64rem, 2.5vw, 0.76rem) !important;
     flex: 0 1 auto !important;
@@ -541,7 +542,7 @@ html.welten-world-paused .light-beams {
     flex: 1 1 auto !important;
   }
 
-  body[data-world="freiraum"] #slide-home .dna-ring {
+  body[data-world="freiraum"] #slide-home .dna-ring:not(.welten-phone-nav-source) {
     position: relative !important;
     display: flex !important;
     flex-wrap: wrap !important;
@@ -556,8 +557,8 @@ html.welten-world-paused .light-beams {
     isolation: isolate !important;
   }
 
-  body[data-world="freiraum"] #slide-home .dna-slide,
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(n) {
+  body[data-world="freiraum"] #slide-home .dna-ring > .dna-slide,
+  body[data-world="freiraum"] .welten-mobile-relocated-hero .dna-ring > .dna-slide {
     position: relative !important;
     left: auto !important;
     top: auto !important;
@@ -599,8 +600,8 @@ html.welten-world-paused .light-beams {
     font-size: clamp(1.75rem, 10vw, 2.6rem) !important;
   }
 
-  body[data-world="freiraum"] #slide-home .dna-slide,
-  body[data-world="nexora"] #slide-home .nexora-orbit-button {
+  body[data-world="freiraum"] #slide-home .dna-ring > .dna-slide,
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring > .nexora-orbit-button {
     font-size: 0.68rem !important;
     padding: 8px 10px !important;
   }
@@ -614,9 +615,7 @@ html.welten-world-paused .light-beams {
 
   body[data-world="freiraum"] #slide-home .dna-orbit-group,
   body[data-world="freiraum"] #slide-home .dna-ring-scene,
-  body[data-world="freiraum"] #slide-home .dna-ring,
-  body[data-world="freiraum"] #slide-home .dna-slide,
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(n) {
+  body[data-world="freiraum"] #slide-home .dna-ring:not(.welten-phone-nav-source) {
     position: relative !important;
     left: auto !important;
     top: auto !important;
@@ -631,7 +630,7 @@ html.welten-world-paused .light-beams {
     width: 100% !important;
   }
 
-  body[data-world="freiraum"] #slide-home .dna-ring {
+  body[data-world="freiraum"] #slide-home .dna-ring:not(.welten-phone-nav-source) {
     display: flex !important;
     flex-wrap: wrap !important;
     justify-content: center !important;
@@ -640,24 +639,24 @@ html.welten-world-paused .light-beams {
     margin: 0 auto !important;
   }
 
-  body[data-world="freiraum"] #slide-home .dna-slide,
-  body[data-world="freiraum"] #slide-home .dna-slide:nth-child(n) {
+  body[data-world="freiraum"] #slide-home .dna-ring:not(.welten-phone-nav-source) > .dna-slide,
+  body[data-world="freiraum"] #slide-home .dna-ring:not(.welten-phone-nav-source) > .dna-slide:nth-child(n) {
     width: auto !important;
     flex: 0 1 auto !important;
   }
 }
 
 @media (max-width: 1024px) {
-  body[data-world="nexora"] #slide-home .nexora-orbit-ring,
-  body[data-world="nexora"] #slide-home .nexora-orbit-ring.hero-buttons-grid {
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring:not(.welten-phone-nav-source),
+  body[data-world="nexora"] #slide-home .nexora-orbit-ring.hero-buttons-grid:not(.welten-phone-nav-source) {
     display: grid !important;
     flex-wrap: unset !important;
     justify-content: stretch !important;
     align-items: stretch !important;
   }
 
-  body[data-world="vertex"] #slide-home .dna-ring,
-  body[data-world="freiraum"] #slide-home .dna-ring {
+  body[data-world="vertex"] #slide-home .dna-ring:not(.welten-phone-nav-source),
+  body[data-world="freiraum"] #slide-home .dna-ring:not(.welten-phone-nav-source) {
     display: grid !important;
     flex-wrap: unset !important;
   }

@@ -4,8 +4,9 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706compact-nav";
+  var HERO_VER = "20260706compact-nav-v2";
   var bootTimer = null;
+  var compactHeroRetryTimer = null;
 
   function heroRoot() {
     return (
@@ -363,6 +364,17 @@
     document.body.appendChild(link);
   }
 
+  function ensureCompactStylesheet() {
+    if (!isHeroMobile()) return;
+    var id = "welten-compact-hero-nav-stylesheet";
+    if (document.getElementById(id)) return;
+    var link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = "assets/welten-compact-hero-nav.css?v=" + HERO_VER;
+    document.body.appendChild(link);
+  }
+
   function metaHtml(keywords) {
     return (
       '<div class="welten-mobile-hero-line" aria-hidden="true">' +
@@ -623,8 +635,8 @@
   }
 
   function buildPhoneHeroNav(shell, ring, selector, active, byGo) {
-    if (!shell || !ring) return null;
-    byGo = byGo || collectHeroButtons(ring, selector);
+    if (!shell) return null;
+    byGo = byGo || collectHeroButtons(ring || shell, selector);
     active = active || currentChapter();
     if (HERO_CHAPTERS.indexOf(active) < 0) active = "home";
 
@@ -673,10 +685,12 @@
       }
     });
 
-    ring.classList.add("welten-phone-nav-source");
-    ring.classList.remove("hero-buttons-grid", "welten-mobile-hero-grid");
-    ring.style.setProperty("display", "none", "important");
-    ring.setAttribute("aria-hidden", "true");
+    if (ring) {
+      ring.classList.add("welten-phone-nav-source");
+      ring.classList.remove("hero-buttons-grid", "welten-mobile-hero-grid");
+      ring.style.setProperty("display", "none", "important");
+      ring.setAttribute("aria-hidden", "true");
+    }
 
     markPrimaryButtons(shell, active);
     return navWrap;
@@ -991,6 +1005,7 @@
   }
 
   function flattenNexoraButtons() {
+    if (isCompactHeroNav()) return;
     var ring = heroRoot() && heroRoot().querySelector(".nexora-orbit-ring");
     markHeroGrid(ring);
     if (ring) {
@@ -1005,6 +1020,7 @@
   }
 
   function flattenFreiraumButtons() {
+    if (isCompactHeroNav()) return;
     var ring = heroRoot() && heroRoot().querySelector(".dna-ring");
     markHeroGrid(ring);
     if (ring) {
@@ -1021,6 +1037,7 @@
   }
 
   function flattenProButtons() {
+    if (isCompactHeroNav()) return;
     var ring = heroRoot() && heroRoot().querySelector(".dna-ring");
     markHeroGrid(ring);
     if (ring) {
@@ -1044,6 +1061,22 @@
     if (world === "general") buildGeneralHero();
   }
 
+  function compactHeroRebuild() {
+    if (!isHeroMobile()) return;
+    finalizePhoneHero(currentChapter());
+  }
+
+  function scheduleCompactHeroRetries() {
+    if (!isCompactHeroNav()) return;
+    clearTimeout(compactHeroRetryTimer);
+    [80, 250, 600, 1200, 2400].forEach(function (ms) {
+      setTimeout(function () {
+        if (!isCompactHeroNav()) return;
+        compactHeroRebuild();
+      }, ms);
+    });
+  }
+
   function buildMobileHeroDom() {
     if (!isHeroMobile()) {
       document.body.classList.remove("welten-mobile-hero-active");
@@ -1063,6 +1096,7 @@
     document.body.classList.add("welten-mobile-hero-active");
     document.documentElement.classList.add("welten-mobile-hero");
     ensureStylesheetLock();
+    ensureCompactStylesheet();
 
     ensureChapterHeroes();
     relocateMobileHero();
@@ -1072,6 +1106,7 @@
       var inner = hero.parentElement;
       if (inner) mountChapterHeroFirst(inner, hero);
     });
+    scheduleCompactHeroRetries();
   }
 
   function boot() {
@@ -1179,4 +1214,5 @@
   } catch (e) {}
 
   window.WeltenMobileHero = { refresh: boot, version: HERO_VER };
+  window.WeltenCompactHero = { rebuild: compactHeroRebuild, version: HERO_VER };
 })();

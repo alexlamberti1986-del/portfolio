@@ -5215,7 +5215,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <script src="assets/welten-touch-env.js" defer></script>
 <script src="assets/welten-runtime-perf.js?v=20260608d" defer></script>
 <link rel="stylesheet" href="assets/welten-skills-charts.css?v=20260621sk1" />
-<link rel="stylesheet" href="assets/welten-mobile-performance.css?v=20260706mobile-pass3" />
+<link rel="stylesheet" href="assets/welten-mobile-performance.css?v=20260706compact-nav-v2" />
 <link rel="stylesheet" href="assets/projects-accordion.css?v=20260706proj-chevron" />
 <script src="assets/projects-accordion.js?v=20260613a" defer></script>
 <script src="assets/welten-form-service-images.js?v=20260629vk2" defer></script>
@@ -7633,6 +7633,14 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     if (window.WeltenNexoraMobileFix && typeof window.WeltenNexoraMobileFix.unlockHeroScroll === "function") {
       window.WeltenNexoraMobileFix.unlockHeroScroll();
     }
+    if (window.WeltenCompactHero && typeof window.WeltenCompactHero.rebuild === "function") {
+      window.WeltenCompactHero.rebuild();
+      setTimeout(function () {
+        if (window.WeltenCompactHero && typeof window.WeltenCompactHero.rebuild === "function") {
+          window.WeltenCompactHero.rebuild();
+        }
+      }, 120);
+    }
   }
 
   function navigateTo(id) {
@@ -8608,8 +8616,8 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-mouse-paint.css?v=20260703wws-smooth" />
 <script src="assets/welten-mouse-paint.js?v=20260703wws-smooth" defer></script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706compact-nav" id="welten-mobile-hero-stylesheet" />
-<script src="assets/welten-mobile-hero.js?v=20260706compact-nav" defer></script>
+<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706compact-nav-v2" id="welten-mobile-hero-stylesheet" />
+<script src="assets/welten-mobile-hero.js?v=20260706compact-nav-v2" defer></script>
 <script src="assets/welten-desktop-chapter-hero.js?v=20260706nexora-hero" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260706mobile-pass3" />
@@ -8656,5 +8664,6 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 <link rel="stylesheet" href="assets/welten-multiversum-legacy-kill.css?v=20260706boot-clean2" />
 <link rel="stylesheet" href="assets/welten-large-display.css?v=20260706xl-display" />
+<link rel="stylesheet" href="assets/welten-compact-hero-nav.css?v=20260706compact-nav-v2" id="welten-compact-hero-nav-stylesheet" />
 </body>
 </html>
