@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706hero-all";
+  var HERO_VER = "20260706hero-sync";
 
   function heroRoot() {
     return (
@@ -24,16 +24,26 @@
     return document.querySelectorAll("#slide-home " + selector);
   }
 
+  function isHeroElementVisible(el) {
+    if (!el) return false;
+    try {
+      var cs = window.getComputedStyle(el);
+      if (cs.display === "none" || cs.visibility === "hidden") return false;
+      if (parseFloat(cs.opacity) < 0.05) return false;
+    } catch (e) {}
+    return true;
+  }
+
   function getMobileHomeHero() {
     var relocated = document.querySelector(".welten-mobile-relocated-hero");
     if (relocated) return relocated;
 
+    var world = document.body.getAttribute("data-world") || "general";
     var dna =
       document.getElementById("dnaStage") ||
       document.querySelector("#slide-home .home-hero-experience");
-    if (dna) return dna;
+    if (dna && (world !== "general" || isHeroElementVisible(dna))) return dna;
 
-    var world = document.body.getAttribute("data-world") || "general";
     if (world === "general") {
       return document.getElementById("mvStaticHero") || document.getElementById("mvParallaxHero");
     }
@@ -127,6 +137,7 @@
     hero.classList.add("welten-mobile-relocated-hero");
     host.appendChild(hero);
     suppressSubpageHeaderClutter(mount);
+    scheduleSubpageCleanup(mount);
     document.body.classList.add("welten-mobile-subpage-hero--on");
     markPrimaryButtons(hero, active);
   }
@@ -376,6 +387,17 @@
     });
   }
 
+  function scheduleSubpageCleanup(inner) {
+    if (!inner) return;
+    [120, 400, 900, 1600].forEach(function (ms) {
+      setTimeout(function () {
+        if (!isHeroMobile() || currentChapter() === "home") return;
+        var mount = getSlideMount(currentChapter());
+        suppressSubpageHeaderClutter(mount || inner);
+      }, ms);
+    });
+  }
+
   function mountChapterHeroFirst(inner, hero) {
     if (!inner || !hero) return;
     var host = inner.querySelector(":scope > .welten-desktop-hero-host");
@@ -528,7 +550,10 @@
 
   function buildGeneralHero() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "general") return;
-    if (document.getElementById("dnaStage") || document.querySelector("#slide-home .home-hero-experience")) {
+    var dna =
+      document.getElementById("dnaStage") ||
+      document.querySelector("#slide-home .home-hero-experience");
+    if (dna && isHeroElementVisible(dna)) {
       buildGeneralDnaHero();
       return;
     }
@@ -908,7 +933,7 @@
     new MutationObserver(function () {
       if (!isHeroMobile()) return;
       setTimeout(boot, 30);
-    }).observe(document.body, { attributes: true, attributeFilter: ["data-current-slide", "data-world"] });
+    }).observe(document.body, { attributes: true, attributeFilter: ["data-current-slide", "data-world", "class"] });
   } catch (e) {}
 
   window.WeltenMobileHero = { refresh: boot, version: HERO_VER };

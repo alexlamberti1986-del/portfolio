@@ -12,6 +12,39 @@
     display: none !important;
   }
 
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero.home-hero-experience,
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero#dnaStage,
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero#mvStaticHero,
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero#mvParallaxHero,
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero.mv-static-hero {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-world="general"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="general"] .welten-desktop-relocated-hero#dnaStage {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: var(--hero-dna-h, calc(100svh - var(--header-h, 72px) - var(--dock-h, 0px)));
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  body[data-world="general"] .welten-desktop-relocated-hero .dna-slide.is-active,
+  body[data-world="general"] .welten-desktop-relocated-hero .dna-slide.is-hero-primary,
+  body[data-world="general"] #slide-home .dna-slide.is-active,
+  body[data-world="general"] #slide-home .dna-slide.is-hero-primary {
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(142, 197, 255, 0.55) !important;
+    color: #eaf4ff !important;
+    box-shadow: 0 0 24px rgba(76, 183, 255, 0.28) !important;
+  }
+
   body.welten-desktop-subpage-hero--on .slide.active:not(#slide-home) {
     overflow-y: auto;
     overflow-x: hidden;

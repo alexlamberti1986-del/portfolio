@@ -1398,6 +1398,14 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     display: none !important;
   }
 
+  body[data-world="general"] .welten-mobile-relocated-hero#dnaStage,
+  body[data-world="general"] .welten-mobile-relocated-hero.home-hero-experience {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
   body[data-world="general"] #slide-home .home-hero-experience,
   body[data-world="general"] #slide-home #dnaStage,
   #dnaStage.welten-mobile-relocated-hero.home-hero-experience,

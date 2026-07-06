@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260706hero-all";
+  var VER = "20260706hero-sync";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
 
@@ -61,11 +61,24 @@
     if (link) link.click();
   }
 
+  function isHeroElementVisible(el) {
+    if (!el) return false;
+    try {
+      var cs = window.getComputedStyle(el);
+      if (cs.display === "none" || cs.visibility === "hidden") return false;
+      if (parseFloat(cs.opacity) < 0.05) return false;
+    } catch (e) {}
+    return true;
+  }
+
   function hasDnaHomeHero() {
-    return !!(
+    var dna =
       document.getElementById("dnaStage") ||
-      document.querySelector("#slide-home .home-hero-experience")
-    );
+      document.querySelector("#slide-home .home-hero-experience");
+    if (!dna) return false;
+    var world = document.body.getAttribute("data-world") || "general";
+    if (world === "general") return isHeroElementVisible(dna);
+    return true;
   }
 
   function getDnaHeroEl() {
@@ -294,6 +307,17 @@
     });
   }
 
+  function scheduleSubpageCleanup(mount) {
+    if (!mount) return;
+    [120, 400, 900, 1600].forEach(function (ms) {
+      setTimeout(function () {
+        if (currentChapter() === "home" || !isDesktop()) return;
+        var activeMount = getSlideMount(currentChapter());
+        suppressSubpageHeaderClutter(activeMount || mount);
+      }, ms);
+    });
+  }
+
   function relocateGeneralHero(active, mount) {
     var host = ensureHeroHost(mount);
     if (!host) return null;
@@ -393,6 +417,7 @@
 
     if (active !== "home") {
       suppressSubpageHeaderClutter(mount);
+      scheduleSubpageCleanup(mount);
       var slideEl = document.getElementById("slide-" + active);
       if (slideEl) slideEl.scrollTop = 0;
     }
@@ -439,6 +464,16 @@
   document.addEventListener("mv-restore-hero", function () {
     setTimeout(boot, 80);
   });
+
+  try {
+    new MutationObserver(function () {
+      if (!isDesktop()) return;
+      setTimeout(boot, 20);
+    }).observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-current-slide", "data-world", "class"],
+    });
+  } catch (e) {}
 
   window.addEventListener("message", function (e) {
     if (e.data && e.data.type === "portfolio-preview-lang") {
