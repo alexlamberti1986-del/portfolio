@@ -523,6 +523,14 @@
     setMaster(i);
     broadcastLang();
     if (!switching) unlockShell();
+    if (window.WeltenWorldAudioTest && typeof window.WeltenWorldAudioTest.bootMultiversum === "function") {
+      setTimeout(function () {
+        if (soundKey(i) === "general") window.WeltenWorldAudioTest.bootMultiversum(true);
+        else if (typeof window.WeltenWorldAudioTest.play === "function") {
+          window.WeltenWorldAudioTest.play(masterKey(i));
+        }
+      }, 120);
+    }
     setTimeout(function () {
       var f = frames[i];
       if (f) injectProfiles(f, i);
@@ -827,5 +835,11 @@
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
     window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
   }
+  setTimeout(function () {
+    forceEnableWorldButtons();
+    if (window.WeltenWorldAudioTest && typeof window.WeltenWorldAudioTest.bootMultiversum === "function") {
+      window.WeltenWorldAudioTest.bootMultiversum(true);
+    }
+  }, 600);
   window.mv4SwitchWorld = switchTo;
 })();

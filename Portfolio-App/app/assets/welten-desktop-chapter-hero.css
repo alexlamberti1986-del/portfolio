@@ -38,6 +38,12 @@
     overflow: hidden;
   }
 
+  .welten-desktop-relocated-hero#mvStaticHero,
+  .welten-desktop-relocated-hero.mv-static-hero.is-subpage-hero {
+    min-height: var(--hero-dna-h, calc(100svh - var(--header-h, 72px) - var(--dock-h, 0px)));
+    max-height: none;
+  }
+
   .welten-desktop-subpage-mv-hero.mv-static-hero {
     min-height: var(--hero-dna-h, calc(100svh - var(--header-h, 72px) - var(--dock-h, 0px)));
   }

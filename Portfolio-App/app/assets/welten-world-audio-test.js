@@ -8,7 +8,7 @@
 
   if (!document.body || document.body.getAttribute("data-world-audio-test") !== "1") return;
 
-  var VERSION = "20260705audio-autoplay";
+  var VERSION = "20260706audio-live";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 280;
   var TRACKS = {
@@ -140,24 +140,42 @@
   }
 
   function playElement(el, token) {
-    if (token !== playToken || !effectsEnabled() || switching) return;
+    if (token !== playToken || !effectsEnabled()) return;
+    if (switching && activeWorld() === "general" && currentWorld !== "general") return;
+    if (switching && currentWorld && currentWorld !== activeWorld()) return;
+
+    function afterPlay() {
+      if (token !== playToken) return;
+      switching = false;
+      window.__mvWorldAudioPlaying = true;
+      el.muted = false;
+      fadeVolume(TARGET_VOLUME);
+    }
+
     el.muted = false;
     if (el.volume < 0.05) el.volume = TARGET_VOLUME;
     var promise = el.play();
     if (promise && typeof promise.then === "function") {
       promise
-        .then(function () {
-          if (token !== playToken || switching) return;
-          window.__mvWorldAudioPlaying = true;
-          fadeVolume(TARGET_VOLUME);
-        })
+        .then(afterPlay)
         .catch(function () {
-          if (token !== playToken || switching) return;
+          if (token !== playToken) return;
+          el.muted = true;
+          el.volume = TARGET_VOLUME;
+          var mutedTry = el.play();
+          if (mutedTry && typeof mutedTry.then === "function") {
+            mutedTry
+              .then(afterPlay)
+              .catch(function () {
+                if (token !== playToken) return;
+                scheduleRetry(token);
+              });
+            return;
+          }
           scheduleRetry(token);
         });
     } else {
-      window.__mvWorldAudioPlaying = true;
-      fadeVolume(TARGET_VOLUME);
+      afterPlay();
     }
   }
 
@@ -177,7 +195,7 @@
 
   function startPlayback(world, token) {
     var src = TRACKS[world];
-    if (!src || token !== playToken || !effectsEnabled() || switching) return;
+    if (!src || token !== playToken || !effectsEnabled()) return;
 
     var el = ensureAudio();
     if (isPlayingWorld(world)) {
@@ -244,8 +262,9 @@
     });
   }
 
-  function bootMultiversum() {
+  function bootMultiversum(force) {
     if (activeWorld() !== "general" || !effectsEnabled()) return;
+    if (!force && switching) return;
     switching = false;
     if (isPlayingWorld("general")) {
       currentWorld = "general";
@@ -282,21 +301,16 @@
     var nav = document.querySelector(".mv4-worlds");
     if (!nav || nav.dataset.worldAudioHooked === "1") return;
     nav.dataset.worldAudioHooked = "1";
-    nav.addEventListener(
-      "click",
-      function (e) {
-        var btn = e.target.closest("button[data-iframe]");
-        if (!btn || btn.classList.contains("is-active")) return;
-        var keys = ["general", "nexora", "vertex", "freiraum"];
-        var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-        if (keys[idx]) preloadTrack(keys[idx]);
-        stopForSwitch();
-      },
-      true
-    );
     nav.querySelectorAll("button[data-iframe]").forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
       var keys = ["general", "nexora", "vertex", "freiraum"];
+      btn.addEventListener(
+        "click",
+        function () {
+          if (keys[idx]) preloadTrack(keys[idx]);
+        },
+        { passive: true }
+      );
       if (keys[idx] && keys[idx] !== "general") {
         btn.addEventListener(
           "pointerenter",
@@ -336,6 +350,11 @@
         stopForSwitch();
       } else if (switching) {
         switching = false;
+        if (effectsEnabled()) {
+          var world = activeWorld();
+          if (world === "general") bootMultiversum(true);
+          else playAfterSwitch(world);
+        }
       }
     }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
   } catch (e2) {}
@@ -357,15 +376,22 @@
   }
 
   function tryImmediateBoot() {
-    if (!effectsEnabled() || switching) return;
+    if (!effectsEnabled()) return;
+    switching = false;
     attachEarlyAudio();
     if (typeof window.__mvWorldAudioBoot === "function") {
-      window.__mvWorldAudioBoot().catch(function () {
-        bootMultiversum();
-      });
+      window.__mvWorldAudioBoot()
+        .then(function () {
+          currentWorld = "general";
+          currentSrc = TRACKS.general;
+          window.__mvWorldAudioPlaying = true;
+        })
+        .catch(function () {
+          bootMultiversum(true);
+        });
       return;
     }
-    bootMultiversum();
+    bootMultiversum(true);
   }
 
   function init() {
@@ -388,7 +414,10 @@
 
   window.addEventListener("message", function (e) {
     if (e.data && e.data.type === "mv-hero-ready") {
-      setTimeout(bootMultiversum, 40);
+      switching = false;
+      setTimeout(function () {
+        bootMultiversum(true);
+      }, 40);
     }
   });
 
@@ -420,8 +449,13 @@
       return;
     }
     if (!effectsEnabled() || switching) return;
-    if (activeWorld() === "general") bootMultiversum();
+    if (activeWorld() === "general") bootMultiversum(true);
   }, 300);
+
+  window.addEventListener("pageshow", function () {
+    switching = false;
+    tryImmediateBoot();
+  });
 
   window.WeltenWorldAudioTest = {
     play: playAfterSwitch,

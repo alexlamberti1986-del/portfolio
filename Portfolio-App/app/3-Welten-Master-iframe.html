@@ -4,7 +4,7 @@
   <script>
     /* MULTIVERSUM-Musik so früh wie möglich starten (Effekte Ein) */
     (function () {
-      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260705audio-autoplay";
+      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-live";
       var VOL = 0.4;
       function effectsWanted() {
         try {
@@ -40,6 +40,13 @@
         a.volume = VOL;
         return a.play().then(function () {
           window.__mvWorldAudioPlaying = true;
+        }).catch(function () {
+          a.muted = true;
+          return a.play().then(function () {
+            a.muted = false;
+            a.volume = VOL;
+            window.__mvWorldAudioPlaying = true;
+          });
         });
       };
       var tries = 0;
@@ -132,8 +139,8 @@
 
   <link rel="stylesheet" href="assets/welten-font-system.css?v=20260706mob-bar" />
   <link rel="stylesheet" href="assets/welten-world-title-colors.css?v=20260705bootfix" />
-  <link rel="stylesheet" href="assets/welten-multiversum-master.css?v=20260706world-switch-fix4" />
-  <link rel="stylesheet" href="assets/welten-world-switch-preview.css?v=20260706world-switch-fix4" />
+  <link rel="stylesheet" href="assets/welten-multiversum-master.css?v=20260706live-fix" />
+  <link rel="stylesheet" href="assets/welten-world-switch-preview.css?v=20260706live-fix" />
   <link rel="stylesheet" href="assets/shell-performance.css?v=20260704opt" />
   <link rel="stylesheet" href="assets/welten-shell-accessibility.css?v=20260704opt" />
   <script src="assets/welten-translations.js?v=20260706perf-fix" defer></script>
@@ -148,8 +155,8 @@
     loop
     playsinline
     autoplay
-    preload="metadata"
-    src="assets/audio/worlds/MULTIVERSUM.mp3?v=20260705audio-autoplay"
+    preload="auto"
+    src="assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-live"
     style="display:none"
     aria-hidden="true"
   ></audio>
@@ -276,9 +283,9 @@
   <iframe class="mv4-frame" title="PROFESSIONAL" data-lazy-src="PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
 
-  <script src="assets/welten-multiversum-master.js?v=20260706world-switch-fix4" defer></script>
+  <script src="assets/welten-multiversum-master.js?v=20260706live-fix" defer></script>
   <script src="assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
-  <script src="assets/welten-world-switch-preview.js?v=20260706world-switch-fix4" defer></script>
-  <script src="assets/welten-world-audio-test.js?v=20260706world-switch-fix4" defer></script>
+  <script src="assets/welten-world-switch-preview.js?v=20260706live-fix" defer></script>
+  <script src="assets/welten-world-audio-test.js?v=20260706live-fix" defer></script>
 </body>
 </html>

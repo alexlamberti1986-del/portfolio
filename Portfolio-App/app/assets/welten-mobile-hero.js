@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706hero-home-match";
+  var HERO_VER = "20260706hero-live";
 
   var WORLDS = {
     general: {
@@ -40,9 +40,7 @@
   }
 
   function isHeroTitleVisible() {
-    if (!isHeroMobile()) return false;
-    if (mqTabletLandscape.matches) return false;
-    return true;
+    return isHeroMobile();
   }
 
   function removeHeroTitleDom() {

@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260705hero-v10";
+  var VER = "20260706hero-live";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
 
@@ -283,11 +283,15 @@
     var parallax = document.getElementById("mvParallaxHero");
     var staticHome = document.getElementById("mvStaticHero");
 
-    if (staticHome && !parallax) {
+    if (staticHome) {
       ensureHomePlaceholder(document.querySelector("#slide-home .slide-inner"), staticHome);
-      staticHome.classList.add("welten-desktop-relocated-hero");
+      staticHome.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
       host.appendChild(staticHome);
       bindHeroNavClicks(staticHome);
+      if (parallax) {
+        parallax.classList.remove("welten-desktop-relocated-hero", "is-subpage-hero");
+      }
+      removeMvSubpageHeroes();
       return staticHome;
     }
 
