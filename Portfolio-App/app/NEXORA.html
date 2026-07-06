@@ -2576,7 +2576,6 @@
        BUSINESS: Apple-like reveal motion
        ========================================================== */
 body[data-world="nexora"] .dna-premium-canvas { opacity: .62 !important; }
-    body[data-world="nexora"] .dna-holo-arm { opacity: .42; filter: blur(.4px) saturate(1.2); }
     body[data-world="nexora"] .home-hero-experience {
       background:
         radial-gradient(900px 540px at 72% 36%, rgba(0, 224, 255, .28), transparent 60%),
@@ -4421,10 +4420,10 @@ body.is-home .bg-root::after {
    NEXORA FINAL OVERRIDE - sofort echtes Brain-Hero, kein altes DNA-Bild zuerst
    ============================================================================= */
 #slide-home .dna-premium-canvas, .welten-desktop-relocated-hero .dna-premium-canvas, .welten-mobile-relocated-hero .dna-premium-canvas,
-#slide-home .dna-holo-arm,
-#slide-home .dna-visual-stack,
-#slide-home .dna-layer,
-#slide-home .dna-layer--fallback-svg {
+body[data-world="nexora"] .dna-holo-arm,
+body[data-world="nexora"] .dna-visual-stack,
+body[data-world="nexora"] .dna-layer,
+body[data-world="nexora"] .dna-layer--fallback-svg {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
@@ -5004,7 +5003,6 @@ body.is-home .bg-root::after {
     :root { --dna-orbit-radius:min(38vw,360px); --dna-img-max-width:min(940px,88vw); }
     .dna-orbit-group { height:min(100%, min(48vh, 440px)) !important; }
     body[data-world="nexora"] .dna-slide { width:min(154px, 25vw) !important; min-height:45px !important; padding:14px 15px !important; font-size:clamp(.72rem,1.1vw,.86rem) !important; }
-    body[data-world="nexora"] .dna-holo-arm { transform:translate(-50%,-50%) rotateZ(-11deg) scale(.70) !important; }
     body[data-world="vertex"] .dna-unified-scene::before { font-size:clamp(3.2rem, 12vw, 9rem) !important; line-height:.9 !important; }
   }
 
@@ -5184,75 +5182,6 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
             </span>
           </div>
           <div class="dna-unified-scene">
-            <!-- DNA: optional «dna-strand-freisteller.webp» nur Strang (Alpha); sonst Referenz-WebP. Bei PNG/WebP mit Alpha: am Stack class «dna-stack--alpha» setzen. -->
-            <div class="dna-holo-arm" aria-hidden="true">
-              <div class="dna-visual-stack" id="dnaVisualStack">
-                <div class="dna-layer dna-layer--raster dna-layer--soft">
-                  <picture>
-                    <source srcset="assets/dna-strand-freisteller.webp" type="image/webp" />
-                    <img
-                      src="assets/glowing-3d-dna-double-helix-600nw-2654806055.webp"
-                      alt=""
-                      width="600"
-                      height="265"
-                      decoding="async"
-                      class="dna-asset dna-asset--soft"
-                      onerror="document.getElementById('dnaVisualStack').classList.add('dna-use-fallback');"
-                    />
-                  </picture>
-                </div>
-                <div class="dna-layer dna-layer--raster dna-layer--main">
-                  <picture>
-                    <source srcset="assets/dna-strand-freisteller.webp" type="image/webp" />
-                    <img
-                      src="assets/glowing-3d-dna-double-helix-600nw-2654806055.webp"
-                      alt=""
-                      width="600"
-                      height="265"
-                      decoding="async"
-                      class="dna-asset dna-asset--main"
-                      onerror="document.getElementById('dnaVisualStack').classList.add('dna-use-fallback');"
-                    />
-                  </picture>
-                </div>
-                <div class="dna-layer dna-layer--fallback-svg dna-holo-svg-wrap" aria-hidden="true">
-                      <svg class="dna-holo-svg" viewBox="0 0 120 280" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <linearGradient id="dnaStrandFb" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#1e5cb8" stop-opacity="0.35"/>
-                            <stop offset="35%" stop-color="#9fd4ff" stop-opacity="1"/>
-                            <stop offset="65%" stop-color="#6eb8ff" stop-opacity="1"/>
-                            <stop offset="100%" stop-color="#1e5cb8" stop-opacity="0.35"/>
-                          </linearGradient>
-                          <filter id="dnaBlurFb" x="-20%" y="-20%" width="140%" height="140%">
-                            <feGaussianBlur stdDeviation="1.2" result="b"/>
-                            <feMerge>
-                              <feMergeNode in="b"/>
-                              <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                          </filter>
-                        </defs>
-                        <g filter="url(#dnaBlurFb)" opacity="0.94">
-                          <path fill="none" stroke="url(#dnaStrandFb)" stroke-width="2.4" stroke-linecap="round"
-                            d="M60 8 C88 28 32 48 60 68 C88 88 32 108 60 128 C88 148 32 168 60 188 C88 208 32 228 60 248 C78 262 52 272 60 276"/>
-                          <path fill="none" stroke="url(#dnaStrandFb)" stroke-width="2.4" stroke-linecap="round"
-                            d="M60 8 C32 28 88 48 60 68 C32 88 88 108 60 128 C32 148 88 168 60 188 C32 208 88 228 60 248 C42 262 68 272 60 276"/>
-                        </g>
-                        <g opacity="0.55">
-                          <line x1="78" y1="42" x2="42" y2="42" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="42" y1="58" x2="78" y2="58" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="78" y1="88" x2="42" y2="88" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="42" y1="104" x2="78" y2="104" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="78" y1="134" x2="42" y2="134" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="42" y1="150" x2="78" y2="150" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="78" y1="180" x2="42" y2="180" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="42" y1="196" x2="78" y2="196" stroke="#8ec5ff" stroke-width="1.2"/>
-                          <line x1="78" y1="226" x2="42" y2="226" stroke="#8ec5ff" stroke-width="1.2"/>
-                        </g>
-                      </svg>
-                </div>
-              </div>
-            </div>
             <div class="dna-orbit-group" id="dnaOrbitGroup" style="--dna-rot: 0deg;">
               <div class="dna-ring-scene">
                 <div class="dna-ring" id="dnaRing">                  <button type="button" class="dna-slide" data-go="projects" style="--i: 0; --lift: -40px; --z-depth: -52px;">Projekte</button>
@@ -7048,10 +6977,10 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 
 /* Alte DNA-/Helix-Darstellung im Home-Hero entfernen */
 #slide-home .dna-premium-canvas, .welten-desktop-relocated-hero .dna-premium-canvas, .welten-mobile-relocated-hero .dna-premium-canvas,
-#slide-home .dna-holo-arm,
-#slide-home .dna-visual-stack,
-#slide-home .dna-layer,
-#slide-home .dna-asset {
+body[data-world="nexora"] .dna-holo-arm,
+body[data-world="nexora"] .dna-visual-stack,
+body[data-world="nexora"] .dna-layer,
+body[data-world="nexora"] .dna-asset {
   display: none !important;
   opacity: 0 !important;
   visibility: hidden !important;
@@ -8443,7 +8372,7 @@ body[data-world="nexora"] .faq-panel-inner {
 
 <script src="assets/welten-mobile-hero.js?v=20260706hero-off" defer></script>
 <link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260705laptop-hero" />
-<script src="assets/welten-desktop-chapter-hero.js?v=20260706nexora-hero" defer></script>
+<script src="assets/welten-desktop-chapter-hero.js?v=20260706nexora-dna-off" defer></script>
 <script src="assets/welten-mobile-nexora-nav.js?v=20260606f" defer></script>
 <script src="assets/welten-nexora-mobile-fix.js?v=20260622a" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />

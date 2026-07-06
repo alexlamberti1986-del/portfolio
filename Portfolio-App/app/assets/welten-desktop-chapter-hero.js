@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260706nexora-hero";
+  var VER = "20260706nexora-dna-off";
   var bootTimer = null;
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
@@ -298,6 +298,13 @@
     }
   }
 
+  function stripNexoraDnaStrand(hero) {
+    if (!hero || document.body.getAttribute("data-world") !== "nexora") return;
+    hero.querySelectorAll(".dna-holo-arm, .dna-visual-stack, #dnaVisualStack").forEach(function (el) {
+      el.remove();
+    });
+  }
+
   function stripRelocatedHeroInlineStyles(hero) {
     if (!hero) return;
     hero.querySelectorAll(
@@ -423,6 +430,7 @@
 
     ensureHomePlaceholder(homeInner, hero);
     stripRelocatedHeroInlineStyles(hero);
+    stripNexoraDnaStrand(hero);
     hero.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
     host.appendChild(hero);
     bindHeroNavClicks(hero);
@@ -469,6 +477,10 @@
     if (!hero && active !== "home") {
       setTimeout(boot, 320);
       return;
+    }
+
+    if (world === "nexora") {
+      stripNexoraDnaStrand(getDnaHeroEl());
     }
 
     syncHeroNav(active);

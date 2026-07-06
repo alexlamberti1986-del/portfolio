@@ -202,6 +202,17 @@
     overflow: hidden !important;
   }
 
+  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-holo-arm,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-visual-stack,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-layer,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-layer--fallback-svg,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-asset {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons,
   body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-ring {
     pointer-events: none !important;
