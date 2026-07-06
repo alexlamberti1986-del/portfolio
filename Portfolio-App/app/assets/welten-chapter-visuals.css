@@ -377,33 +377,31 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-chart-card.glass-card,
   body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card.glass-card {
-    background: #404040 !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
-    color: #f2f2f2 !important;
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1) !important;
+    background: #484848 !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12) !important;
   }
 
-  /* Titel/Subtitel: dunkel auf hellem Grund, weiss in Skills-Box */
+  /* Skills-Bereich: alle Schriften weiss */
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview {
+    color: #ffffff !important;
+    border-top-color: rgba(255, 255, 255, 0.24) !important;
+  }
+
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview__title,
-  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__title {
-    color: #101010 !important;
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__title,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-chart-title,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-title {
+    color: #ffffff !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle,
   body[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle {
-    color: rgba(20, 20, 20, 0.72) !important;
-  }
-
-  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-skills-overview__title,
-  body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-skills-overview__title,
-  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-skills-chart-title,
-  body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-skills-chart-title {
-    color: #ffffff !important;
-  }
-
-  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-skills-overview__subtitle,
-  body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-skills-overview__subtitle {
-    color: rgba(255, 255, 255, 0.84) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-hbar-label,
@@ -412,17 +410,22 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-ring-label,
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-cat,
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-head span,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-level,
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-hbar-val,
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-vbar-pct,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-ring-pct,
   body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-label,
   body[data-world="vertex"] #slide-leistungen .welten-skills-donut-legend li,
   body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-label,
   body[data-world="vertex"] #slide-leistungen .welten-skills-ring-label,
   body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-cat,
   body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-head span,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-level,
   body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-val,
   body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-pct {
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    opacity: 1 !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq > h3,
@@ -482,7 +485,7 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview,
   body[data-world="vertex"] #slide-leistungen .welten-skills-overview {
-    border-top-color: rgba(255, 255, 255, 0.22) !important;
+    border-top-color: rgba(255, 255, 255, 0.24) !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich__benefit,
@@ -540,25 +543,34 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
     ) !important;
   }
 
-  /* Skills-Übersicht: eigene Box mit weichem Grau */
+  /* Skills-Übersicht: eigene Box, etwas heller für bessere Lesbarkeit */
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box,
   body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box {
-    background: #3a3a3a !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: #444444 !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.16) !important;
     padding: clamp(1.5rem, 3vw, 2.25rem) !important;
     border-radius: clamp(16px, 2.2vw, 24px) !important;
     margin-top: clamp(1.5rem, 3vw, 2.25rem) !important;
+    color: #ffffff !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-chapter-box__scrim,
   body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box .welten-chapter-box__scrim {
     background: linear-gradient(
       155deg,
-      rgba(28, 28, 28, 0.78) 0%,
-      rgba(48, 48, 48, 0.58) 48%,
-      rgba(26, 26, 26, 0.8) 100%
+      rgba(36, 36, 36, 0.82) 0%,
+      rgba(56, 56, 56, 0.62) 48%,
+      rgba(34, 34, 34, 0.84) 100%
     ) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-radar-label,
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-radar-value,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-radar-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-radar-value {
+    fill: #ffffff !important;
+    fill-opacity: 0.92 !important;
   }
 
   body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistungen-rich.welten-chapter-box .welten-skills-overview,

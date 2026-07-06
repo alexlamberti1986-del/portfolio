@@ -34,6 +34,82 @@ body[data-world="vertex"] #slide-leistungen .welten-skills-overview:not(.welten-
   color: rgba(20, 20, 20, 0.72);
 }
 
+/* PROFESSIONAL Desktop/Laptop: Skills-Bereich — alles weiss, hoher Kontrast */
+@media (min-width: 1024px) {
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview {
+    --sk-label: #ffffff;
+    --sk-value: #ffffff;
+    --sk-track: rgba(255, 255, 255, 0.2);
+    --sk-radar-grid: rgba(255, 255, 255, 0.28);
+    --sk-radar-axis: rgba(255, 255, 255, 0.42);
+    --sk-radar-fill: rgba(255, 255, 255, 0.12);
+    --sk-radar-stroke: rgba(255, 255, 255, 0.72);
+    --sk-radar-point-fill: #ffffff;
+    --sk-radar-point-stroke: rgba(255, 255, 255, 0.85);
+    --sk-heat-1: rgba(255, 255, 255, 0.22);
+    --sk-heat-2: rgba(255, 255, 255, 0.42);
+    --sk-heat-3: rgba(255, 255, 255, 0.68);
+    --sk-ring-gradient: #ffffff;
+    color: #ffffff;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__title,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-title,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-val,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-donut-legend li,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-pct,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-ring-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-ring-pct,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-cat,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-head span,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-level {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview__subtitle {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-radar-label,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-radar-value {
+    fill: #ffffff !important;
+    fill-opacity: 0.92 !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card.glass-card {
+    background: #484848 !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    color: #ffffff !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-fill {
+    background: linear-gradient(90deg, #ffffff, #c8c8c8) !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-fill {
+    background: linear-gradient(180deg, #ffffff, #b8b8b8) !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-donut {
+    background: conic-gradient(
+      #ffffff 0 calc(var(--sk-s0, 0) * 1%),
+      #d0d0d0 0 calc((var(--sk-s0, 0) + var(--sk-s1, 0)) * 1%),
+      #a8a8a8 0 calc((var(--sk-s0, 0) + var(--sk-s1, 0) + var(--sk-s2, 0)) * 1%),
+      #787878 0 100%
+    ) !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-heatmap-cell.is-l3 {
+    outline: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+  }
+}
+
 .welten-skills-charts-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -168,6 +244,11 @@ body[data-world="vertex"] #slide-leistungen .welten-skills-overview:not(.welten-
   font-family: inherit;
 }
 
+body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label,
+body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label tspan {
+  fill: #ffffff;
+}
+
 .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label tspan {
   font-size: inherit;
   font-weight: inherit;
@@ -179,6 +260,11 @@ body[data-world="vertex"] #slide-leistungen .welten-skills-overview:not(.welten-
   fill: var(--sk-label, var(--text-muted));
   fill-opacity: 0.75;
   font-family: inherit;
+}
+
+body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-value {
+  fill: #ffffff;
+  fill-opacity: 1;
 }
 
 .welten-skills-overview.is-inview .welten-skills-chart-card {
@@ -652,6 +738,10 @@ body[data-world="nexora"] .welten-skills-chart-card:hover {
   font-variant-numeric: tabular-nums;
 }
 
+body[data-world="vertex"] #slide-leistungen .welten-skills-ring-pct {
+  fill: #ffffff;
+}
+
 .welten-skills-ring-label {
   font-size: var(--sk-chart-term-size);
   font-family: inherit;
@@ -916,4 +1006,28 @@ body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapt
   .welten-skills-hbar-fill { width: var(--sk-pct, 0%) !important; }
   .welten-skills-vbar-fill { height: var(--sk-vh, 0%) !important; }
   .welten-skills-ring-fg { stroke-dasharray: var(--sk-ring-dash, 0 999) !important; }
+}
+
+/* PROFESSIONAL Leistungen: Ring- & Radar-Werte immer weiss (SVG fill) */
+body[data-world="vertex"] #slide-leistungen .welten-skills-ring-pct,
+body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="business"] .welten-skills-ring-pct {
+  fill: #ffffff !important;
+}
+
+body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label,
+body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-label tspan,
+body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-value {
+  fill: #ffffff !important;
+  fill-opacity: 1 !important;
+}
+
+@media (min-width: 1024px) {
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-grid,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-axis {
+    stroke: rgba(255, 255, 255, 0.35) !important;
+  }
+
+  body[data-world="vertex"] #slide-leistungen .welten-skills-chart-card[data-skills-chart="strategy"] .welten-skills-radar-edge {
+    stroke: rgba(255, 255, 255, 0.7) !important;
+  }
 }
