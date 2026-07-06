@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706phone-nav";
+  var HERO_VER = "20260706phone-hero-parity";
   var bootTimer = null;
 
   function heroRoot() {
@@ -158,7 +158,7 @@
     if (active === "home") {
       restoreMobileHeroToHome();
       document.body.classList.remove("welten-mobile-subpage-hero--on");
-      markPrimaryButtons(hero, active);
+      finalizePhoneHero(active);
       return;
     }
 
@@ -167,8 +167,7 @@
 
     var host = ensureMobileHeroHost(mount);
     if (hero.parentElement === host && hero.classList.contains("welten-mobile-relocated-hero")) {
-      markPrimaryButtons(hero, active);
-      restructureHeroButtons();
+      finalizePhoneHero(active);
       return;
     }
 
@@ -179,7 +178,33 @@
     suppressSubpageHeaderClutter(mount);
     scheduleSubpageCleanup(mount);
     document.body.classList.add("welten-mobile-subpage-hero--on");
-    markPrimaryButtons(hero, active);
+    finalizePhoneHero(active);
+  }
+
+  function finalizePhoneHero(active) {
+    active = active || currentChapter();
+    if (!isHeroMobile()) return;
+    applyWorldHero();
+    restructureHeroButtons();
+    markPrimaryButtons(heroRoot(), active);
+    var hero = heroRoot();
+    if (!hero) return;
+    hero.querySelectorAll(
+      ".welten-mobile-hero-title, .welten-mobile-hero-meta, .mobile-hero-nav, .mv-static-hero__title, .mv-static-hero__tag"
+    ).forEach(function (el) {
+      el.style.removeProperty("display");
+      el.style.removeProperty("visibility");
+      el.style.removeProperty("height");
+      el.style.removeProperty("overflow");
+    });
+    if (isPhoneHero()) {
+      hero.querySelectorAll(
+        ".neuro-core, .dna-premium-canvas, .dna-particles-canvas, .home-main-block, .home-portrait-card, .nexora-orbit-nav"
+      ).forEach(function (el) {
+        el.style.setProperty("display", "none", "important");
+        el.style.setProperty("pointer-events", "none", "important");
+      });
+    }
   }
 
   var WORLDS = {
@@ -406,6 +431,7 @@
     pinOrderedChildren(container, [
       ":scope > .welten-mobile-hero-title",
       ":scope > .welten-mobile-hero-meta",
+      ":scope > .mobile-hero-nav",
       ":scope > .nexora-orbit-buttons",
       ":scope > .dna-orbit-group",
     ]);
@@ -416,6 +442,7 @@
     pinOrderedChildren(hero, [
       ".welten-mobile-hero-title",
       ".welten-mobile-hero-meta",
+      ".mobile-hero-nav",
       ".welten-mobile-hero-grid",
     ]);
   }
@@ -425,6 +452,7 @@
     pinOrderedChildren(inner, [
       ".mv-static-hero__title",
       ".mv-static-hero__tag",
+      ".mobile-hero-nav",
       ".mv-static-hero__nav",
     ]);
     var eyebrow = inner.querySelector(".mv-static-hero__eyebrow");
@@ -1033,11 +1061,7 @@
     ensureStylesheetLock();
 
     ensureChapterHeroes();
-    applyWorldHero();
     relocateMobileHero();
-    applyWorldHero();
-    restructureHeroButtons();
-    markPrimaryButtons(heroRoot(), currentChapter());
     hideMobileSideNav();
 
     document.querySelectorAll("[data-mobile-chapter-hero]:not([hidden])").forEach(function (hero) {
