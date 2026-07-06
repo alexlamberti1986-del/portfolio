@@ -241,6 +241,18 @@
     padding-bottom: 0;
     margin-bottom: 0;
   }
+
+  .slide:not(#slide-home) > .slide-inner {
+    padding-left: clamp(16px, 4vw, 20px);
+    padding-right: clamp(16px, 4vw, 20px);
+    box-sizing: border-box;
+  }
+
+  #slide-home .slide-inner--home {
+    padding-left: clamp(12px, 3.5vw, 18px);
+    padding-right: clamp(12px, 3.5vw, 18px);
+    box-sizing: border-box;
+  }
 }
 
 /* NEXORA Mobile Scroll — nur ≤1024px (Desktop-Hero unberührt) */

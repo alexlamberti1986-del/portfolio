@@ -410,7 +410,8 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
   .mv4-worlds button {
     flex: 1 1 0;
     min-width: 0;
-    padding: 7px 6px;
+    min-height: 44px;
+    padding: 10px 6px;
     font-size: 9px;
     letter-spacing: 0.02em;
     white-space: nowrap;
@@ -426,10 +427,10 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
 
   .mv4-fx {
     font-size: 9px;
-    padding: 5px 8px;
+    padding: 8px 10px;
     font-weight: 700;
     letter-spacing: 0.02em;
-    min-height: 28px;
+    min-height: 44px;
   }
 
   .mv4-flags {
@@ -438,9 +439,9 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
 
   .mv4-flag {
     width: 44px;
-    height: 32px;
+    height: 44px;
     min-width: 44px;
-    min-height: 32px;
+    min-height: 44px;
     padding: 4px;
   }
 
@@ -480,11 +481,11 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
   }
 
   .mv4-worlds button {
-    padding: 6px 3px;
+    padding: 10px 4px;
     font-size: 8px;
     letter-spacing: 0.01em;
-    min-height: 28px;
-    line-height: 1.05;
+    min-height: 44px;
+    line-height: 1.15;
     overflow: hidden;
     text-overflow: clip;
   }
@@ -504,16 +505,16 @@ body[data-master-world="freiraum"] .mv4-flags .mv4-flag:not(.is-active):not([ari
 
   .mv4-fx {
     font-size: 8px;
-    padding: 4px 7px;
-    min-height: 26px;
+    padding: 8px 9px;
+    min-height: 44px;
   }
 
   .mv4-flag {
-    width: 36px;
-    height: 26px;
-    min-width: 36px;
-    min-height: 26px;
-    padding: 3px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 4px;
   }
 
   .mv4-flag img {

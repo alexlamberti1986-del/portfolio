@@ -1602,8 +1602,41 @@
     );
   }
 
+  function isCoarseMobileShell() {
+    try {
+      return window.matchMedia("(max-width: 1024px)").matches;
+    } catch (e) {
+      return window.innerWidth <= 1024;
+    }
+  }
+
   function playSwitch(worldKey, targetIdx) {
     if (running) wwsAbortTransition(true);
+
+    if (isCoarseMobileShell()) {
+      var mobileInstant = window.switchToWorldIndex;
+      if (activeOverlay) {
+        stopCanvas(activeOverlay);
+        activeOverlay.remove();
+        activeOverlay = null;
+      }
+      document.querySelectorAll(".welten-world-switch").forEach(function (el) {
+        try {
+          el.remove();
+        } catch (eRm) {}
+      });
+      document.documentElement.classList.remove("welten-world-switch-lock");
+      running = false;
+      window.__wwsPreviewOwnsSound = false;
+      if (typeof mobileInstant === "function") {
+        Promise.resolve(mobileInstant(targetIdx)).finally(function () {
+          wwsCallTransitionEnd();
+        });
+      } else {
+        wwsCallTransitionEnd();
+      }
+      return;
+    }
 
     if (!wwsEffectsEnabled()) {
       var instant = window.switchToWorldIndex;

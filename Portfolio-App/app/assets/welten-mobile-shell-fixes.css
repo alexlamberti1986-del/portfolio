@@ -1,0 +1,82 @@
+/**
+ * Mobile/Tablet Shell — Welten-Bar, Touch, Abstände (≤1024px)
+ * Desktop ≥1025px: keine Regeln
+ */
+
+@media (max-width: 1024px) {
+  .mv4-bar {
+    z-index: 2147483647 !important;
+    pointer-events: auto !important;
+    isolation: isolate;
+  }
+
+  .mv4-bar .mv4-worlds {
+    position: relative;
+    z-index: 3;
+    pointer-events: auto !important;
+  }
+
+  .mv4-bar .mv4-worlds button[data-iframe] {
+    min-height: 44px !important;
+    min-width: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    pointer-events: auto !important;
+  }
+
+  .mv4-bar .mv4-fx,
+  .mv4-bar .mv4-flag {
+    min-height: 44px !important;
+    touch-action: manipulation;
+    pointer-events: auto !important;
+  }
+
+  .mv4-frame {
+    z-index: 1 !important;
+  }
+
+  .welten-world-switch {
+    pointer-events: none !important;
+  }
+
+  .welten-world-switch.is-entering,
+  .welten-world-switch.is-exiting {
+    pointer-events: none !important;
+  }
+
+  html.welten-world-switch-lock .mv4-bar,
+  html.welten-world-switch-lock .mv4-bar button,
+  html.welten-world-switch-lock .mv4-flag {
+    pointer-events: auto !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .mv4-bar {
+    padding-left: clamp(12px, 3.5vw, 16px) !important;
+    padding-right: clamp(12px, 3.5vw, 16px) !important;
+  }
+
+  .mv4-worlds {
+    gap: 6px !important;
+  }
+
+  .mv4-worlds button[data-iframe] {
+    padding: 10px 5px !important;
+    font-size: clamp(7.5px, 2.35vw, 9px) !important;
+    line-height: 1.15 !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .mv4-worlds button[data-iframe] {
+    padding: 10px 8px !important;
+    font-size: clamp(9px, 1.2vw, 11px) !important;
+  }
+
+  .mv4-fx {
+    font-size: 11px !important;
+    padding: 8px 12px !important;
+  }
+}

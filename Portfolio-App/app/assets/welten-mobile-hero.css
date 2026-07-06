@@ -1167,6 +1167,22 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     margin: 8px auto 0 !important;
   }
 
+  body[data-world="general"] .welten-mobile-chapter-hero .welten-mobile-hero-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: min(390px, 92vw) !important;
+    margin: 8px auto 0 !important;
+  }
+
+  body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
+  body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-active,
+  body[data-world="general"] .welten-mobile-chapter-hero .mv-static-hero__nav-btn.is-hero-primary,
+  body[data-world="general"] .welten-mobile-chapter-hero .mv-static-hero__nav-btn.is-active {
+    grid-column: 1 / -1 !important;
+  }
+
   body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary,
   body[data-world="general"] #mvStaticHero .mv-static-hero__nav-btn.is-active {
     grid-column: 1 / -1 !important;
@@ -1279,6 +1295,18 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
 
   body[data-world="general"] #mvStaticHero .mv-static-hero__eyebrow[hidden] {
     display: none !important;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .welten-mobile-chapter-hero {
+      padding-left: clamp(16px, 3vw, 24px) !important;
+      padding-right: clamp(16px, 3vw, 24px) !important;
+    }
+
+    body[data-world="general"] .welten-mobile-chapter-hero .welten-mobile-hero-grid,
+    body[data-world="general"] #mvStaticHero .mv-static-hero__nav {
+      max-width: min(520px, 88vw) !important;
+    }
   }
 }
 

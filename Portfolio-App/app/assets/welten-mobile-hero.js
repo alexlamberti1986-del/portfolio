@@ -373,7 +373,11 @@
 
     /* Portable Heroes auf Unterseiten */
     document.querySelectorAll("[data-mobile-chapter-hero] .welten-mobile-hero-grid").forEach(function (grid) {
-      orderButtonsInRing(grid, ".hero-button", active);
+      var sel =
+        document.body.getAttribute("data-world") === "general"
+          ? ".mv-static-hero__nav-btn"
+          : ".hero-button";
+      orderButtonsInRing(grid, sel, active);
     });
   }
 
@@ -410,7 +414,7 @@
         HERO_CHAPTERS.forEach(function (id) {
           var btn = document.createElement("button");
           btn.type = "button";
-          btn.className = "hero-button welten-mobile-chapter-hero__btn";
+          btn.className = "hero-button welten-mobile-chapter-hero__btn mv-static-hero__nav-btn";
           btn.setAttribute("data-go", id);
           btn.textContent = labels[id] || id;
           btn.addEventListener("click", function () {

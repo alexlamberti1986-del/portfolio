@@ -500,6 +500,14 @@
     });
   }
 
+  function isCoarseMobileShell() {
+    try {
+      return window.matchMedia("(max-width: 1024px)").matches;
+    } catch (e) {
+      return window.innerWidth <= 1024;
+    }
+  }
+
   function activateWorldButton(btn, e) {
     if (!btn) return;
     if (e) {
@@ -507,7 +515,7 @@
       e.stopPropagation();
     }
     var now = Date.now();
-    if (now - lastWorldBtnAt < 120) return;
+    if (now - lastWorldBtnAt < 80) return;
     lastWorldBtnAt = now;
     recoverStuckSwitch();
     purgeSwitchOverlays();
@@ -675,7 +683,11 @@
       requestAnimationFrame(setBarHeight);
     }
 
-    if (!effectsOn) {
+    if (!effectsOn || isCoarseMobileShell()) {
+      purgeSwitchOverlays();
+      if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
+        window.WeltenWorldSwitchPreview.abort(true);
+      }
       switchToWorldIndex(i).then(finishTransition);
       return;
     }
@@ -722,29 +734,36 @@
     new ResizeObserver(setBarHeight).observe(getBar());
   }
 
+  var suppressWorldClickUntil = 0;
+
   function bindWorldButtons() {
     var shellBar = getBar();
     if (!shellBar || shellBar.dataset.mv4WorldBtnsBound === "1") return;
     var worlds = shellBar.querySelector(".mv4-worlds");
     if (!worlds) return;
     shellBar.dataset.mv4WorldBtnsBound = "1";
+    worlds.addEventListener(
+      "touchend",
+      function (e) {
+        if (e.target.closest("#mv4-fx") || e.target.closest(".mv4-flag")) return;
+        var btn = e.target.closest("button[data-iframe]");
+        if (!btn || !worlds.contains(btn)) return;
+        e.preventDefault();
+        activateWorldButton(btn, e);
+        suppressWorldClickUntil = Date.now() + 500;
+      },
+      { passive: false }
+    );
     worlds.addEventListener("click", function (e) {
+      if (Date.now() < suppressWorldClickUntil) {
+        e.preventDefault();
+        return;
+      }
       if (e.target.closest("#mv4-fx") || e.target.closest(".mv4-flag")) return;
       var btn = e.target.closest("button[data-iframe]");
       if (!btn || !worlds.contains(btn)) return;
       activateWorldButton(btn, e);
     });
-    worlds.addEventListener(
-      "pointerup",
-      function (e) {
-        if (e.pointerType === "mouse" && e.button !== 0) return;
-        if (e.target.closest("#mv4-fx") || e.target.closest(".mv4-flag")) return;
-        var btn = e.target.closest("button[data-iframe]");
-        if (!btn || !worlds.contains(btn)) return;
-        activateWorldButton(btn, e);
-      },
-      { passive: false }
-    );
     worlds.querySelectorAll("button[data-iframe]").forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
       btn.addEventListener("pointerdown", function () {
@@ -891,5 +910,16 @@
       window.WeltenWorldAudioTest.bootMultiversum(true);
     }
   }, 600);
+  if (isCoarseMobileShell()) {
+    setTimeout(function () {
+      preloadFrame(1);
+    }, 900);
+    setTimeout(function () {
+      preloadFrame(2);
+    }, 1800);
+    setTimeout(function () {
+      preloadFrame(3);
+    }, 2600);
+  }
   window.mv4SwitchWorld = switchTo;
 })();

@@ -448,4 +448,57 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
       rgba(0, 0, 0, 0.92) 100%
     ) !important;
   }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen [data-chapter-hero="leistungen"] .chapter-label,
+  body[data-world="vertex"] #slide-leistungen [data-chapter-hero="leistungen"] .chapter-label {
+    color: rgba(255, 255, 255, 0.72) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen [data-chapter-hero="leistungen"] .section-title,
+  body[data-world="vertex"] #slide-leistungen [data-chapter-hero="leistungen"] .section-title {
+    color: #ffffff !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen [data-chapter-hero="leistungen"] .prose,
+  body[data-world="vertex"] #slide-leistungen [data-chapter-hero="leistungen"] .prose {
+    color: rgba(255, 255, 255, 0.9) !important;
+    opacity: 1 !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview {
+    border-top-color: rgba(255, 255, 255, 0.22) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistung-rich__benefit,
+  body[data-world="vertex"] #slide-leistungen .welten-leistung-rich__benefit {
+    color: rgba(255, 255, 255, 0.84) !important;
+    font-weight: 600;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-hbar-fill,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-hbar-fill {
+    background: linear-gradient(90deg, #f2f2f2, #8a8a8a) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-vbar-fill,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-vbar-fill {
+    background: linear-gradient(180deg, #ffffff, #9a9a9a) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-ring-fg,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-ring-fg {
+    stroke: #f0f0f0 !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-radar-area,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-radar-area {
+    fill: rgba(255, 255, 255, 0.14) !important;
+    stroke: rgba(255, 255, 255, 0.55) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-radar-point,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-radar-point {
+    fill: #ffffff !important;
+  }
 }
