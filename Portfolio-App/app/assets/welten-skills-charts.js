@@ -686,8 +686,9 @@
   }
 
   function init(lang) {
-    document.querySelectorAll("[data-welten-leistungen-v1] .slide-inner, [data-welten-strengths-v1] .slide-inner").forEach(function (c) {
-      buildOverview(c, lang);
+    document.querySelectorAll("[data-welten-leistungen-v1] .slide-inner, [data-welten-strengths-v1] .slide-inner").forEach(function (slideInner) {
+      var target = slideInner.querySelector(".welten-leistungen-rich") || slideInner;
+      buildOverview(target, lang);
     });
   }
 

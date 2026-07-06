@@ -501,4 +501,44 @@ body.welten-chapter-visuals--on .welten-chapter-box.welten-reveal.is-visible {
   body[data-world="vertex"] #slide-leistungen .welten-skills-radar-point {
     fill: #ffffff !important;
   }
+
+  /* FAQ-Box: Bild + dunkler Scrim, lesbar auf Desktop */
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq.welten-chapter-box,
+  body[data-world="vertex"] #slide-leistungen .welten-faq.welten-chapter-box {
+    background: #0a0a0a !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__bg,
+  body[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__bg {
+    opacity: 0.55 !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__scrim,
+  body[data-world="vertex"] #slide-leistungen .welten-faq .welten-chapter-box__scrim {
+    background: linear-gradient(
+      155deg,
+      rgba(0, 0, 0, 0.94) 0%,
+      rgba(0, 0, 0, 0.88) 50%,
+      rgba(0, 0, 0, 0.96) 100%
+    ) !important;
+  }
+
+  /* Skills-Übersicht: eigene dunkle Box falls ausserhalb der Rich-Box */
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box,
+  body[data-world="vertex"] #slide-leistungen .welten-skills-overview.welten-chapter-box {
+    background: #0a0a0a !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    padding: clamp(1.5rem, 3vw, 2.25rem) !important;
+    border-radius: clamp(16px, 2.2vw, 24px) !important;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem) !important;
+  }
+
+  body.welten-chapter-visuals--on[data-world="vertex"] #slide-leistungen .welten-leistungen-rich.welten-chapter-box .welten-skills-overview,
+  body[data-world="vertex"] #slide-leistungen .welten-leistungen-rich.welten-chapter-box .welten-skills-overview {
+    border-top-color: rgba(255, 255, 255, 0.22) !important;
+    padding-top: clamp(1.5rem, 3vw, 2.25rem) !important;
+  }
 }

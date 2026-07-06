@@ -235,7 +235,7 @@
   }
 }
 
-@media (min-width: 901px) and (max-width: 1400px) {
+@media (min-width: 1025px) and (max-width: 1400px) {
   body[data-world="nexora"] .experience-rail,
   body[data-world="vertex"] .experience-rail,
   body[data-world="freiraum"] .experience-rail {

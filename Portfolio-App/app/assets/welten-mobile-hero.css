@@ -765,7 +765,10 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
   body[data-world="freiraum"] #slide-home #particle-canvas,
   body[data-world="freiraum"] #slide-home .light-beams,
   body[data-world="freiraum"] #slide-home .experience-rail,
-  body[data-world="freiraum"] #slide-home .dna-ring-scene::before {
+  body[data-world="freiraum"] #slide-home .dna-ring-scene::before,
+  body[data-world="vertex"] #slide-home .experience-rail,
+  body[data-world="nexora"] #slide-home .experience-rail,
+  body[data-world="general"] #slide-home .experience-rail {
     display: none !important;
     visibility: hidden !important;
     pointer-events: none !important;
@@ -1176,6 +1179,28 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
     margin: 8px auto 0 !important;
   }
 
+  body[data-world="nexora"] .welten-mobile-chapter-hero .welten-mobile-hero-grid,
+  body[data-world="vertex"] .welten-mobile-chapter-hero .welten-mobile-hero-grid,
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .welten-mobile-hero-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: min(390px, 92vw) !important;
+    margin: 8px auto 0 !important;
+    position: relative !important;
+    transform: none !important;
+  }
+
+  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
+  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button.is-active,
+  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
+  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button.is-active,
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button.is-active {
+    grid-column: 1 / -1 !important;
+  }
+
   body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
   body[data-world="general"] .welten-mobile-chapter-hero .hero-button.is-active,
   body[data-world="general"] .welten-mobile-chapter-hero .mv-static-hero__nav-btn.is-hero-primary,
@@ -1252,6 +1277,29 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
 
   .welten-mobile-chapter-hero .welten-mobile-hero-grid {
     order: 3 !important;
+    width: 100% !important;
+    padding: 0 clamp(12px, 4vw, 18px) 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .welten-mobile-chapter-hero .welten-mobile-hero-title {
+    order: 1 !important;
+    width: 100% !important;
+    padding: 16px clamp(12px, 4vw, 18px) 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .welten-mobile-chapter-hero .welten-mobile-hero-meta {
+    order: 2 !important;
+    width: 100% !important;
+    padding: 0 clamp(12px, 4vw, 18px) !important;
+    box-sizing: border-box !important;
+  }
+
+  body[data-world="vertex"] .welten-mobile-chapter-hero .hero-button,
+  body[data-world="freiraum"] .welten-mobile-chapter-hero .hero-button,
+  body[data-world="nexora"] .welten-mobile-chapter-hero .hero-button {
+    min-height: 58px !important;
   }
 
   .slide:not(#slide-home) > .slide-inner > .welten-page-hero {

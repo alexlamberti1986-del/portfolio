@@ -137,6 +137,11 @@
     var skills = document.querySelector("#slide-leistungen .welten-leistungen-rich");
     if (skills) applyChapterBox(skills, "skills");
 
+    var overview = document.querySelector("#slide-leistungen .welten-skills-overview");
+    if (overview && !overview.closest(".welten-leistungen-rich")) {
+      applyChapterBox(overview, "skills");
+    }
+
     var faq = document.querySelector("#slide-leistungen .welten-faq");
     if (faq) applyChapterBox(faq, "faq");
   }

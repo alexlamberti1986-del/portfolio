@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706hero-live2";
+  var HERO_VER = "20260706mobile-pass2";
 
   var WORLDS = {
     general: {
@@ -506,6 +506,45 @@
     row.remove();
   }
 
+  function hideMobileSideNav() {
+    if (!isHeroMobile()) return;
+    document
+      .querySelectorAll(
+        ".experience-rail, .experience-step, .side-nav, .chapter-nav, .dot-nav, .vertical-nav, .right-nav, .chapter-dots, .welten-desktop-hero-host, .welten-desktop-subpage-mv-hero"
+      )
+      .forEach(function (el) {
+        el.style.setProperty("display", "none", "important");
+        el.style.setProperty("visibility", "hidden", "important");
+        el.style.setProperty("pointer-events", "none", "important");
+        el.style.setProperty("height", "0", "important");
+        el.style.setProperty("overflow", "hidden", "important");
+      });
+  }
+
+  function hideSubpageHomeHeroLeak() {
+    if (!isHeroMobile() || isHomeChapter()) return;
+    document
+      .querySelectorAll(
+        "#slide-home .home-hero-experience, #slide-home #dnaStage, #slide-home .dna-unified-scene, #slide-home #mvStaticHero, #slide-home #mvParallaxHero"
+      )
+      .forEach(function (el) {
+        el.style.setProperty("display", "none", "important");
+        el.style.setProperty("visibility", "hidden", "important");
+        el.style.setProperty("pointer-events", "none", "important");
+      });
+  }
+
+  function restoreHomeHeroOnMobile() {
+    if (!isHeroMobile() || !isHomeChapter()) return;
+    document
+      .querySelectorAll("#slide-home .home-hero-experience, #slide-home #dnaStage, #slide-home .dna-unified-scene, #slide-home #mvStaticHero")
+      .forEach(function (el) {
+        ["display", "visibility", "pointer-events", "height", "overflow"].forEach(function (prop) {
+          el.style.removeProperty(prop);
+        });
+      });
+  }
+
   function disableNexoraOrbitOnMobile() {
     if (!isHeroMobile() || document.body.getAttribute("data-world") !== "nexora") return;
     document.querySelectorAll("#slide-home .nexora-orbit-nav").forEach(function (nav) {
@@ -671,6 +710,12 @@
 
     ensureChapterHeroes();
     restructureHeroButtons();
+    hideMobileSideNav();
+    if (isHomeChapter()) {
+      restoreHomeHeroOnMobile();
+    } else {
+      hideSubpageHomeHeroLeak();
+    }
 
     document.querySelectorAll("[data-mobile-chapter-hero]:not([hidden])").forEach(function (hero) {
       var inner = hero.parentElement;
@@ -685,6 +730,7 @@
   function afterNavigation() {
     releaseHeroPointerCapture();
     disableNexoraOrbitOnMobile();
+    hideMobileSideNav();
     if (window.WeltenMobilePerf && typeof window.WeltenMobilePerf.cleanup === "function") {
       window.WeltenMobilePerf.cleanup();
     }

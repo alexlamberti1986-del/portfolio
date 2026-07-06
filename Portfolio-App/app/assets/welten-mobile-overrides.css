@@ -160,6 +160,50 @@
     overflow: hidden !important;
   }
 
+  /* Seitliche Navigation nur Desktop — auf Handy/Tablet aus */
+  .experience-rail,
+  .experience-step,
+  .side-nav,
+  .chapter-nav,
+  .dot-nav,
+  .vertical-nav,
+  .right-nav,
+  .chapter-dots {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+  }
+
+  .welten-desktop-hero-host,
+  .welten-desktop-subpage-mv-hero,
+  .welten-desktop-relocated-hero.is-subpage-hero {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+  }
+
+  body[data-world="nexora"] .slide:not(#slide-home),
+  body[data-world="vertex"] .slide:not(#slide-home),
+  body[data-world="freiraum"] .slide:not(#slide-home),
+  body[data-world="general"] .slide:not(#slide-home) {
+    padding-right: clamp(16px, 4vw, 20px) !important;
+  }
+
+  #slide-home .slide-inner > .welten-desktop-hero-host {
+    display: none !important;
+  }
+
   html.welten-mobile main.slides-root,
   html.welten-mobile #slidesRoot {
     padding-bottom: 0 !important;
