@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706hero-parity";
+  var HERO_VER = "20260706freiraum-hero";
 
   function heroRoot() {
     return (

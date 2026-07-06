@@ -408,6 +408,26 @@
     color: #f4f9ff !important;
   }
 
+  /* ── FREIRAUM: Unterseiten = gleicher Hero-Hintergrund wie Home (ohne Profilbild) ── */
+  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience {
+    background-image: none !important;
+    background:
+      radial-gradient(circle at 16% 22%, rgba(255, 208, 48, 0.25), transparent 28%),
+      radial-gradient(circle at 74% 18%, rgba(255, 48, 126, 0.24), transparent 30%),
+      radial-gradient(circle at 82% 76%, rgba(0, 220, 210, 0.22), transparent 28%),
+      linear-gradient(135deg, #170d1f 0%, #25102e 42%, #111827 100%) !important;
+    background-size: auto !important;
+    background-position: center center !important;
+  }
+
+  body[data-world="freiraum"] .welten-desktop-relocated-hero .portrait-photo,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero .home-portrait-card {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   /* ── FREIRAUM / PROFESSIONAL: Home-Styles aus HTML (.home-hero-experience) gelten 1:1 ── */
 
   body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,

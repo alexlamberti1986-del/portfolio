@@ -58,9 +58,11 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
 
 } /* end FREIRAUM mobile-only block */
 
-/* FREIRAUM Desktop/Laptop: kein Profilbild als Hero-Hintergrund */
+/* FREIRAUM Desktop/Laptop: kein Profilbild als Hero-Hintergrund (Home + Unterseiten) */
 @media (min-width: 1025px) {
-  body[data-world="freiraum"] #slide-home .home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience {
+  body[data-world="freiraum"] #slide-home .home-hero-experience,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="freiraum"] .welten-mobile-relocated-hero.home-hero-experience {
     background-image: none !important;
     background:
       radial-gradient(circle at 16% 22%, rgba(255, 208, 48, 0.25), transparent 28%),
