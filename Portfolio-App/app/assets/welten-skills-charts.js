@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  var SKILLS_VERSION = "18";
+  var SKILLS_VERSION = "19";
 
   function getLang() {
     try {
@@ -99,8 +99,8 @@
       title: "Kompetenz-Matrix",
       type: "heatmap",
       levels: ["Stark", "Sehr stark", "Experte"],
-      categories: ["Marketing", "Design", "Strategie", "Web", "KI", "Kommunikation"],
-      matrix: [3, 2, 3, 3, 2, 3],
+      categories: ["Marketing", "Design", "Strategie", "Web", "KI"],
+      matrix: [3, 2, 3, 3, 2],
     },
   ];
 
@@ -169,8 +169,8 @@
       title: "Skills matrix",
       type: "heatmap",
       levels: ["Strong", "Very strong", "Expert"],
-      categories: ["Marketing", "Design", "Strategy", "Web", "AI", "Communication"],
-      matrix: [3, 2, 3, 3, 2, 3],
+      categories: ["Marketing", "Design", "Strategy", "Web", "AI"],
+      matrix: [3, 2, 3, 3, 2],
     },
   ];
 
@@ -239,8 +239,8 @@
       title: "Matrice de compétences",
       type: "heatmap",
       levels: ["Fort", "Très fort", "Expert"],
-      categories: ["Marketing", "Design", "Stratégie", "Web", "IA", "Communication"],
-      matrix: [3, 2, 3, 3, 2, 3],
+      categories: ["Marketing", "Design", "Stratégie", "Web", "IA"],
+      matrix: [3, 2, 3, 3, 2],
     },
   ];
 
@@ -309,8 +309,8 @@
       title: "Matrice competenze",
       type: "heatmap",
       levels: ["Forte", "Molto forte", "Esperto"],
-      categories: ["Marketing", "Design", "Strategia", "Web", "IA", "Comunicazione"],
-      matrix: [3, 2, 3, 3, 2, 3],
+      categories: ["Marketing", "Design", "Strategia", "Web", "IA"],
+      matrix: [3, 2, 3, 3, 2],
     },
   ];
 
