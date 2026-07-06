@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260705mobile-hero-stack";
+  var HERO_VER = "20260706hero-home-match";
 
   var WORLDS = {
     general: {

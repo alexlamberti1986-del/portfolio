@@ -154,7 +154,7 @@
     return { w: w, h: h };
   }
 
-  function wwsAbortTransition() {
+  function wwsAbortTransition(skipEnd) {
     wwsSoundGen += 1;
     wwsClearTimers();
     if (activeOverlay) {
@@ -165,6 +165,16 @@
     document.documentElement.classList.remove("welten-world-switch-lock");
     running = false;
     window.__wwsPreviewOwnsSound = false;
+    if (!skipEnd) wwsCallTransitionEnd();
+  }
+
+  function wwsCallTransitionEnd() {
+    if (typeof window.__wwsOnTransitionEnd === "function") {
+      try {
+        window.__wwsOnTransitionEnd();
+      } catch (eEnd) {}
+      window.__wwsOnTransitionEnd = null;
+    }
   }
 
   var WORLD_ORB_THEMES = {
@@ -1588,7 +1598,7 @@
   }
 
   function playSwitch(worldKey, targetIdx) {
-    if (running) wwsAbortTransition();
+    if (running) wwsAbortTransition(true);
 
     if (!wwsEffectsEnabled()) {
       var instant = window.switchToWorldIndex;
@@ -1688,7 +1698,15 @@
     };
 
     function finishExit() {
-      if (!activeOverlay || activeOverlay._wwsFinishing) return;
+      if (!activeOverlay) {
+        document.documentElement.classList.remove("welten-world-switch-lock");
+        running = false;
+        window.__wwsPreviewOwnsSound = false;
+        wwsClearTimers();
+        wwsCallTransitionEnd();
+        return;
+      }
+      if (activeOverlay._wwsFinishing) return;
       activeOverlay._wwsFinishing = true;
       stopCanvas(activeOverlay);
       activeOverlay.classList.remove("is-entering");
@@ -1702,11 +1720,7 @@
         running = false;
         window.__wwsPreviewOwnsSound = false;
         wwsClearTimers();
-        if (typeof window.__wwsOnTransitionEnd === "function") {
-          try {
-            window.__wwsOnTransitionEnd();
-          } catch (eEnd) {}
-        }
+        wwsCallTransitionEnd();
       }, exitMs);
     }
 
@@ -1739,7 +1753,17 @@
     }, coverMs);
 
     wwsLater(function () {
-      if (running && activeOverlay) finishExit();
+      if (!running) return;
+      wwsClearTimers();
+      if (activeOverlay) {
+        stopCanvas(activeOverlay);
+        activeOverlay.remove();
+        activeOverlay = null;
+      }
+      document.documentElement.classList.remove("welten-world-switch-lock");
+      running = false;
+      window.__wwsPreviewOwnsSound = false;
+      wwsCallTransitionEnd();
     }, getTransitionFailsafeMs(timing));
   }
 

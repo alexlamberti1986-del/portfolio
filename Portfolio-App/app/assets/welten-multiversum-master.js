@@ -44,6 +44,7 @@
   };
 
   var bar = document.querySelector(".mv4-bar");
+  var switchLockSince = 0;
   var frames = document.querySelectorAll(".mv4-frame");
   var fxBtn = document.getElementById("mv4-fx");
   var sharedChapter = "home";
@@ -107,8 +108,9 @@
   }
 
   function setBarHeight() {
-    if (!bar) return;
-    var h = Math.ceil(bar.getBoundingClientRect().height);
+    var shellBar = getBar();
+    if (!shellBar) return;
+    var h = Math.ceil(shellBar.getBoundingClientRect().height);
     if (h < 48) h = 56;
     document.documentElement.style.setProperty("--bar-h", h + "px");
   }
@@ -199,20 +201,42 @@
     }
   }
 
+  function getBar() {
+    if (!bar || !document.body.contains(bar)) {
+      bar = document.querySelector(".mv4-bar");
+    }
+    return bar;
+  }
+
   function clearSwitchLock() {
     document.documentElement.classList.remove("welten-world-switch-lock");
+    switchLockSince = 0;
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
-      window.WeltenWorldSwitchPreview.abort();
+      window.WeltenWorldSwitchPreview.abort(true);
     }
     unlockShell();
   }
 
   function recoverStuckSwitch() {
-    if (
-      switching &&
-      !document.documentElement.classList.contains("welten-world-switch-lock")
-    ) {
+    var shellBar = getBar();
+    var locked = document.documentElement.classList.contains("welten-world-switch-lock");
+    if (switching && !locked) {
       unlockShell();
+      return;
+    }
+    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 12000) {
+      clearSwitchLock();
+      return;
+    }
+    if (shellBar) {
+      shellBar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
+        if (btn.disabled && !switching && !locked) {
+          btn.disabled = false;
+        }
+      });
+      if (!switching && !locked) {
+        shellBar.style.pointerEvents = "auto";
+      }
     }
   }
 
@@ -421,9 +445,11 @@
   function lockShell() {
     switching = true;
     window.__worldTransitionRunning = true;
-    if (bar) {
-      bar.style.pointerEvents = "none";
-      bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+    switchLockSince = Date.now();
+    var shellBar = getBar();
+    if (shellBar) {
+      shellBar.style.pointerEvents = "none";
+      shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
         b.disabled = true;
       });
     }
@@ -432,9 +458,11 @@
   function unlockShell() {
     switching = false;
     window.__worldTransitionRunning = false;
-    if (bar) {
-      bar.style.pointerEvents = "auto";
-      bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+    switchLockSince = 0;
+    var shellBar = getBar();
+    if (shellBar) {
+      shellBar.style.pointerEvents = "auto";
+      shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
         b.disabled = false;
       });
     }
@@ -443,7 +471,9 @@
 
   function setMaster(i) {
     document.body.setAttribute("data-master-world", masterKey(i));
-    bar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+    var shellBar = getBar();
+    if (!shellBar) return;
+    shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
       b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
     });
     updateFlags();
@@ -552,14 +582,20 @@
   function switchTo(i) {
     if (i < 0 || i > 3) return;
     recoverStuckSwitch();
-    if (switching) return;
-    clearSwitchLock();
+    if (switching) {
+      if (document.documentElement.classList.contains("welten-world-switch-lock")) {
+        clearSwitchLock();
+      } else {
+        unlockShell();
+      }
+    }
     ensureSingleBar();
     if (frameNeedsReset(frames[i], i)) {
       resetFrame(i);
     }
     var prev = activeIdx();
     if (prev === i) {
+      unlockShell();
       applyChapter(frames[i], sharedChapter);
       return;
     }
@@ -579,9 +615,10 @@
     }
 
     window.__wwsOnTransitionEnd = function () {
-      unlockShell();
-      clearSwitchLock();
       window.__wwsOnTransitionEnd = null;
+      unlockShell();
+      document.documentElement.classList.remove("welten-world-switch-lock");
+      switchLockSince = 0;
     };
 
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
@@ -598,12 +635,20 @@
         timing.EXIT_MS +
         800;
       setTimeout(function () {
-        if (switching) unlockShell();
+        if (switching) {
+          unlockShell();
+          document.documentElement.classList.remove("welten-world-switch-lock");
+          switchLockSince = 0;
+        }
       }, safetyMs);
       return;
     }
 
-    switchToWorldIndex(i);
+    switchToWorldIndex(i).then(function () {
+      unlockShell();
+      clearSwitchLock();
+    });
+    return;
   }
 
   loadPrefs();
@@ -612,13 +657,18 @@
   updateFlags();
   setBarHeight();
   window.addEventListener("resize", setBarHeight, { passive: true });
-  if (bar && typeof ResizeObserver !== "undefined") {
-    new ResizeObserver(setBarHeight).observe(bar);
+  if (getBar() && typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(setBarHeight).observe(getBar());
   }
 
-  bar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
+  function bindWorldButtons() {
+    var shellBar = getBar();
+    if (!shellBar || shellBar.dataset.mv4WorldBtnsBound === "1") return;
+    shellBar.dataset.mv4WorldBtnsBound = "1";
+    shellBar.querySelectorAll("button[data-iframe]").forEach(function (btn) {
     var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
       switchTo(idx);
     });
     btn.addEventListener("pointerdown", function () {
@@ -634,6 +684,9 @@
       preloadFrame(idx);
     });
   });
+  }
+
+  bindWorldButtons();
 
   if (fxBtn) {
     fxBtn.addEventListener("click", function (e) {
@@ -743,6 +796,7 @@
 
   window.addEventListener("pageshow", recoverStuckSwitch);
   window.addEventListener("focus", recoverStuckSwitch);
+  setInterval(recoverStuckSwitch, 2000);
 
   setMaster(defaultWorld);
   broadcastLang();
