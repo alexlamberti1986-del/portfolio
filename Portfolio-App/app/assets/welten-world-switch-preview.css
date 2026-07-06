@@ -954,6 +954,8 @@ html.welten-world-switch-lock .mv4-bar button,
 html.welten-world-switch-lock .mv4-flag {
   pointer-events: auto !important;
   touch-action: manipulation;
+  position: relative;
+  z-index: 2147483647 !important;
 }
 
 /* Mobile & Tablet: Safe-Area, kompaktere Typo */

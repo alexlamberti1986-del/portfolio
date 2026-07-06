@@ -162,6 +162,11 @@
       activeOverlay.remove();
       activeOverlay = null;
     }
+    document.querySelectorAll(".welten-world-switch").forEach(function (el) {
+      try {
+        el.remove();
+      } catch (eRm) {}
+    });
     document.documentElement.classList.remove("welten-world-switch-lock");
     running = false;
     window.__wwsPreviewOwnsSound = false;
@@ -1755,11 +1760,13 @@
     wwsLater(function () {
       if (!running) return;
       wwsClearTimers();
-      if (activeOverlay) {
-        stopCanvas(activeOverlay);
-        activeOverlay.remove();
-        activeOverlay = null;
-      }
+      document.querySelectorAll(".welten-world-switch").forEach(function (el) {
+        try {
+          stopCanvas(el);
+          el.remove();
+        } catch (eRm) {}
+      });
+      activeOverlay = null;
       document.documentElement.classList.remove("welten-world-switch-lock");
       running = false;
       window.__wwsPreviewOwnsSound = false;
@@ -1817,10 +1824,18 @@
     );
   }
 
+  function hookMv4WorldBar() {
+    var bar = document.querySelector(".mv4-bar .mv4-worlds");
+    if (!bar || bar.dataset.wwsMv4Hooked === "1") return;
+    if (typeof window.mv4SwitchWorld !== "function") return;
+    bar.dataset.wwsMv4Hooked = "1";
+  }
+
   function init() {
     applyTimingCssVars();
     hookSoundToggle();
     hookWorldBar();
+    hookMv4WorldBar();
   }
 
   if (document.readyState === "loading") {

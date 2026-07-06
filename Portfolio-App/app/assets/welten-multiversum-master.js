@@ -45,6 +45,7 @@
 
   var bar = document.querySelector(".mv4-bar");
   var switchLockSince = 0;
+  var lastWorldBtnAt = 0;
   var frames = document.querySelectorAll(".mv4-frame");
   var fxBtn = document.getElementById("mv4-fx");
   var sharedChapter = "home";
@@ -112,6 +113,9 @@
     if (!shellBar) return;
     var h = Math.ceil(shellBar.getBoundingClientRect().height);
     if (h < 48) h = 56;
+    try {
+      if (window.matchMedia("(max-width: 1024px)").matches && h < 72) h = 72;
+    } catch (e) {}
     document.documentElement.style.setProperty("--bar-h", h + "px");
   }
 
@@ -208,8 +212,17 @@
     return bar;
   }
 
-  function clearSwitchLock() {
+  function purgeSwitchOverlays() {
+    document.querySelectorAll(".welten-world-switch").forEach(function (el) {
+      try {
+        el.remove();
+      } catch (e) {}
+    });
     document.documentElement.classList.remove("welten-world-switch-lock");
+  }
+
+  function clearSwitchLock() {
+    purgeSwitchOverlays();
     switchLockSince = 0;
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
       window.WeltenWorldSwitchPreview.abort(true);
@@ -220,19 +233,29 @@
   function recoverStuckSwitch() {
     var shellBar = getBar();
     var locked = document.documentElement.classList.contains("welten-world-switch-lock");
+    var staleOverlay = document.querySelector(".welten-world-switch.is-entering, .welten-world-switch.is-exiting");
+    if (staleOverlay && !locked && !switching) {
+      purgeSwitchOverlays();
+    }
     if (switching && !locked) {
       unlockShell();
       return;
     }
-    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 12000) {
+    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 9000) {
+      clearSwitchLock();
+      return;
+    }
+    if (locked && !switching && switchLockSince && Date.now() - switchLockSince > 9000) {
       clearSwitchLock();
       return;
     }
     if (shellBar) {
       forceEnableWorldButtons();
+      shellBar.style.pointerEvents = "auto";
       if (!switching && !locked) {
         shellBar.style.pointerEvents = "";
       }
+      requestAnimationFrame(setBarHeight);
     }
   }
 
@@ -468,12 +491,30 @@
   function forceEnableWorldButtons() {
     var shellBar = getBar();
     if (!shellBar) return;
-    shellBar.style.pointerEvents = "";
+    shellBar.style.pointerEvents = "auto";
     shellBar.removeAttribute("aria-busy");
     shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
       b.disabled = false;
       b.removeAttribute("aria-disabled");
+      b.style.pointerEvents = "auto";
     });
+  }
+
+  function activateWorldButton(btn, e) {
+    if (!btn) return;
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    var now = Date.now();
+    if (now - lastWorldBtnAt < 120) return;
+    lastWorldBtnAt = now;
+    recoverStuckSwitch();
+    purgeSwitchOverlays();
+    forceEnableWorldButtons();
+    var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+    if (!isFinite(idx)) return;
+    switchTo(idx);
   }
 
   function setMaster(i) {
@@ -595,7 +636,10 @@
     recoverStuckSwitch();
     if (switching) {
       if (document.documentElement.classList.contains("welten-world-switch-lock")) {
-        clearSwitchLock();
+        if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
+          window.WeltenWorldSwitchPreview.abort(true);
+        }
+        purgeSwitchOverlays();
       } else {
         unlockShell();
       }
@@ -617,52 +661,54 @@
     if (c) sharedChapter = c;
 
     var wKey = worldSwitchKey(i);
+    var transitionDone = false;
 
-    if (!effectsOn) {
-      switchToWorldIndex(i).then(function () {
-        unlockShell();
-      });
-      return;
-    }
-
-    window.__wwsOnTransitionEnd = function () {
+    function finishTransition() {
+      if (transitionDone) return;
+      transitionDone = true;
       window.__wwsOnTransitionEnd = null;
       unlockShell();
       forceEnableWorldButtons();
+      purgeSwitchOverlays();
       document.documentElement.classList.remove("welten-world-switch-lock");
       switchLockSince = 0;
-    };
+      requestAnimationFrame(setBarHeight);
+    }
 
-    if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
-      window.WeltenWorldSwitchPreview.playSwitch(wKey, i);
-      var timing =
-        (window.WeltenWorldSwitchPreview.getTimingForWorld &&
-          window.WeltenWorldSwitchPreview.getTimingForWorld(wKey)) ||
-        window.WeltenWorldSwitchPreview.timing ||
-        { WORLD_TRANSITION_DURATION: 3000, COVER_MS: 1200, TITLE_HOLD: 1200, EXIT_MS: 400 };
-      var safetyMs =
-        (window.WeltenWorldSwitchPreview.getTransitionFailsafeMs &&
-          window.WeltenWorldSwitchPreview.getTransitionFailsafeMs(timing)) ||
-        timing.COVER_MS +
-          timing.EFFECT_MS +
-          timing.TITLE_FADE_IN +
-          timing.TITLE_HOLD +
-          timing.EXIT_MS +
-          900;
-      setTimeout(function () {
-        if (switching) {
-          unlockShell();
-          document.documentElement.classList.remove("welten-world-switch-lock");
-          switchLockSince = 0;
-        }
-      }, safetyMs);
+    if (!effectsOn) {
+      switchToWorldIndex(i).then(finishTransition);
       return;
     }
 
-    switchToWorldIndex(i).then(function () {
-      unlockShell();
-      clearSwitchLock();
-    });
+    window.__wwsOnTransitionEnd = finishTransition;
+
+    try {
+      if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.playSwitch === "function") {
+        window.WeltenWorldSwitchPreview.playSwitch(wKey, i);
+        var timing =
+          (window.WeltenWorldSwitchPreview.getTimingForWorld &&
+            window.WeltenWorldSwitchPreview.getTimingForWorld(wKey)) ||
+          window.WeltenWorldSwitchPreview.timing ||
+          { WORLD_TRANSITION_DURATION: 3000, COVER_MS: 1200, TITLE_HOLD: 1200, EXIT_MS: 400 };
+        var safetyMs =
+          (window.WeltenWorldSwitchPreview.getTransitionFailsafeMs &&
+            window.WeltenWorldSwitchPreview.getTransitionFailsafeMs(timing)) ||
+          timing.COVER_MS +
+            timing.EFFECT_MS +
+            timing.TITLE_FADE_IN +
+            timing.TITLE_HOLD +
+            timing.EXIT_MS +
+            900;
+        setTimeout(function () {
+          if (switching) finishTransition();
+        }, safetyMs);
+        return;
+      }
+    } catch (errPlay) {
+      finishTransition();
+    }
+
+    switchToWorldIndex(i).then(finishTransition);
     return;
   }
 
@@ -682,6 +728,23 @@
     var worlds = shellBar.querySelector(".mv4-worlds");
     if (!worlds) return;
     shellBar.dataset.mv4WorldBtnsBound = "1";
+    worlds.addEventListener("click", function (e) {
+      if (e.target.closest("#mv4-fx") || e.target.closest(".mv4-flag")) return;
+      var btn = e.target.closest("button[data-iframe]");
+      if (!btn || !worlds.contains(btn)) return;
+      activateWorldButton(btn, e);
+    });
+    worlds.addEventListener(
+      "pointerup",
+      function (e) {
+        if (e.pointerType === "mouse" && e.button !== 0) return;
+        if (e.target.closest("#mv4-fx") || e.target.closest(".mv4-flag")) return;
+        var btn = e.target.closest("button[data-iframe]");
+        if (!btn || !worlds.contains(btn)) return;
+        activateWorldButton(btn, e);
+      },
+      { passive: false }
+    );
     worlds.querySelectorAll("button[data-iframe]").forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
       btn.addEventListener("pointerdown", function () {
@@ -704,24 +767,6 @@
     bindWorldButtons();
     forceEnableWorldButtons();
   });
-
-  document.addEventListener(
-    "click",
-    function (e) {
-      var worlds = document.querySelector(".mv4-worlds");
-      if (!worlds) return;
-      var btn = e.target.closest("button[data-iframe]");
-      if (!btn || !worlds.contains(btn)) return;
-      if (e.defaultPrevented) return;
-      e.preventDefault();
-      recoverStuckSwitch();
-      forceEnableWorldButtons();
-      var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-      if (!isFinite(idx)) return;
-      switchTo(idx);
-    },
-    true
-  );
 
   if (fxBtn) {
     fxBtn.addEventListener("click", function (e) {
