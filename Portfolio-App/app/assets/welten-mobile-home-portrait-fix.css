@@ -1,9 +1,9 @@
 /**
- * Home-Profilbild Handy = exakt wie Kontaktseite
- * Nur #slide-home · ≤768px · Desktop/Tablet unverändert
+ * Home-Profilbild Handy + Tablet = exakt wie Kontaktseite
+ * Nur #slide-home · ≤1024px · Laptop/Desktop ≥1025px unverändert
  */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Container: identisch zu #slide-contact .contact-visual */
   html.welten-mobile body[data-world] #slide-home .home-main-block .home-portrait-card,
   html.welten-mobile body[data-world] #slide-home figure.home-portrait-card {

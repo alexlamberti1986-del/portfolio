@@ -58,3 +58,44 @@ body[data-world="vertex"] #slide-contact .contact-visual {
   border-radius: 0 !important;
   transform: none !important;
 }
+
+@media (max-width: 1024px) {
+  body[data-world="vertex"] #slide-home .home-portrait-card,
+  body[data-world="vertex"] #slide-contact .contact-visual {
+    position: relative !important;
+    width: min(88vw, 420px) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    aspect-ratio: 4 / 5 !important;
+    min-height: 240px !important;
+    max-height: min(72vh, 520px) !important;
+    background: #fff !important;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.14) !important;
+  }
+
+  body[data-world="vertex"] #slide-home #heroPhoto,
+  body[data-world="vertex"] #slide-home .home-portrait-card img.portrait-photo,
+  body[data-world="vertex"] #slide-contact #contactPhoto,
+  body[data-world="vertex"] #slide-contact .contact-visual img.contact-photo {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    content: normal !important;
+  }
+
+  body[data-world="vertex"] #slide-home .home-portrait-card::before,
+  body[data-world="vertex"] #slide-home .home-portrait-card::after,
+  body[data-world="vertex"] #slide-contact .contact-visual::before,
+  body[data-world="vertex"] #slide-contact .contact-visual::after {
+    display: none !important;
+    content: none !important;
+  }
+}

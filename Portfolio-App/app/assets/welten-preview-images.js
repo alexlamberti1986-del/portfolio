@@ -59,7 +59,7 @@
     },
   };
 
-  var PORTRAIT_V = "20260626-prof-neu";
+  var PORTRAIT_V = "20260706prof-portrait-tablet";
 
   var PORTRAIT_FILES = {
     general: "MULTIVERSUM PROFILBILD für HOME und Kontakt.png",

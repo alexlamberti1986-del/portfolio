@@ -17,7 +17,7 @@
     "/ueber-mich": "about",
     "/kontakt": "contact",
   };
-  var PROFILE_V = "20260626-prof-neu";
+  var PROFILE_V = "20260706prof-portrait-tablet";
   var PROFILE_BASE = "assets/images/4welten-preview/";
   var PROFILE_FILES = {
     general: "MULTIVERSUM PROFILBILD für HOME und Kontakt.png",

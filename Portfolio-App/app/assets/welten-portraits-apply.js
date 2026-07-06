@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var V = "20260629-prof-portrait";
+  var V = "20260706prof-portrait-tablet";
 
   function worldKey() {
     return document.body.getAttribute("data-world") || "nexora";

@@ -55,6 +55,62 @@
     object-position: center 22% !important;
   }
 
+  html.welten-mobile body[data-world="vertex"] #slide-contact .contact-visual,
+  html.welten-mobile body[data-world="vertex"] #slide-home .home-portrait-card {
+    position: relative !important;
+    overflow: hidden !important;
+    width: min(88vw, 420px) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    aspect-ratio: 4 / 5 !important;
+    min-height: 240px !important;
+    max-height: min(72vh, 520px) !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+    isolation: isolate !important;
+    background: #fff !important;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.14) !important;
+  }
+
+  html.welten-mobile body[data-world="vertex"] #slide-contact .contact-visual img,
+  html.welten-mobile body[data-world="vertex"] #slide-contact .contact-visual img.contact-photo,
+  html.welten-mobile body[data-world="vertex"] #slide-contact img#contactPhoto,
+  html.welten-mobile body[data-world="vertex"] #slide-home .home-portrait-card img,
+  html.welten-mobile body[data-world="vertex"] #slide-home .home-portrait-card img.portrait-photo,
+  html.welten-mobile body[data-world="vertex"] #slide-home img#heroPhoto {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    object-fit: cover !important;
+    object-position: center top !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    z-index: 0 !important;
+  }
+
+  html.welten-mobile body[data-world="vertex"] .home-portrait-card::before,
+  html.welten-mobile body[data-world="vertex"] .home-portrait-card::after,
+  html.welten-mobile body[data-world="vertex"] .contact-visual::before,
+  html.welten-mobile body[data-world="vertex"] .contact-visual::after {
+    display: none !important;
+    content: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    animation: none !important;
+  }
+
   html.welten-mobile body[data-world="nexora"] .home-portrait-card::before,
   html.welten-mobile body[data-world="nexora"] .home-portrait-card::after,
   html.welten-mobile body[data-world="nexora"] .contact-visual::before,
