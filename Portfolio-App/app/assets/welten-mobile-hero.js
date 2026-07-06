@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706mobile-hero";
+  var HERO_VER = "20260706phone-nav";
   var bootTimer = null;
 
   function heroRoot() {
@@ -207,12 +207,17 @@
 
   var nexoraHeroRetryTimer = null;
   var mqHero = window.matchMedia("(max-width: 1024px)");
+  var mqPhone = window.matchMedia("(max-width: 767px)");
   var mqTabletLandscape = window.matchMedia(
     "(min-width: 769px) and (max-width: 1024px) and (orientation: landscape)"
   );
 
   function isHeroMobile() {
     return mqHero.matches;
+  }
+
+  function isPhoneHero() {
+    return mqPhone.matches;
   }
 
   function isHeroTitleVisible() {
@@ -240,8 +245,22 @@
     return currentChapter() === "home";
   }
 
-  function gridOrder() {
-    return HERO_GRID_ORDER.slice();
+  function gridOrderWithout(active) {
+    active = active || currentChapter();
+    if (HERO_CHAPTERS.indexOf(active) < 0) active = "home";
+    return HERO_CHAPTERS.filter(function (id) {
+      return id !== active;
+    });
+  }
+
+  function gridOrderTablet(active) {
+    active = active || currentChapter();
+    if (HERO_CHAPTERS.indexOf(active) < 0) active = "home";
+    return [active].concat(
+      HERO_CHAPTERS.filter(function (id) {
+        return id !== active;
+      })
+    );
   }
 
   function chapterLabels() {
@@ -493,24 +512,41 @@
 
   function markPrimaryButtons(root, active) {
     if (!root) return;
-    root.querySelectorAll("[data-go]").forEach(function (btn) {
+    var scope = isPhoneHero() ? root.querySelector(".mobile-hero-nav") || root : root;
+    scope.querySelectorAll("[data-go]").forEach(function (btn) {
       var go = btn.getAttribute("data-go");
-      var isHome = go === "home";
       var isActive = go === active;
       btn.classList.toggle("is-active", isActive);
-      btn.classList.toggle("is-hero-primary", isHome);
+      if (isPhoneHero()) {
+        btn.classList.toggle("is-hero-primary", btn.classList.contains("hero-nav-button-main"));
+      } else {
+        btn.classList.toggle("is-hero-primary", isActive);
+      }
       btn.setAttribute("aria-current", isActive ? "page" : "false");
     });
   }
 
-  function orderButtonsInRing(ring, selector, active) {
-    if (!ring) return;
-    var buttons = Array.from(ring.querySelectorAll(selector));
+  function collectHeroButtons(ring, selector) {
+    var shell =
+      ring &&
+      (ring.closest(".hero-buttons-shell") ||
+        ring.closest(".nexora-orbit-buttons") ||
+        ring.closest(".dna-orbit-group") ||
+        ring.closest(".mv-static-hero__inner") ||
+        ring.parentElement);
+    var scope = shell || ring;
+    var buttons = scope ? Array.from(scope.querySelectorAll(selector)) : [];
+    if (!buttons.length && ring) {
+      buttons = Array.from(ring.querySelectorAll(selector));
+    }
     if (!buttons.length) {
       buttons = Array.from(document.querySelectorAll(selector));
     }
-    if (!buttons.length) return;
-
+    var hero = heroRoot();
+    if (hero && buttons.length > 5) {
+      var scoped = Array.from(hero.querySelectorAll(selector));
+      if (scoped.length) buttons = scoped;
+    }
     var byGo = {};
     buttons.forEach(function (btn) {
       var go = btn.getAttribute("data-go");
@@ -519,17 +555,144 @@
         return;
       }
       byGo[go] = btn;
-      btn.classList.add("hero-button");
-      btn.style.setProperty("position", "relative", "important");
-      btn.style.setProperty("transform", "none", "important");
-      btn.style.setProperty("opacity", "1", "important");
-      btn.style.setProperty("left", "auto", "important");
-      btn.style.setProperty("top", "auto", "important");
-      btn.style.setProperty("right", "auto", "important");
-      btn.style.setProperty("bottom", "auto", "important");
+    });
+    return byGo;
+  }
+
+  function prepareFlatHeroButton(btn) {
+    btn.classList.add("hero-button");
+    btn.style.setProperty("position", "relative", "important");
+    btn.style.setProperty("transform", "none", "important");
+    btn.style.setProperty("opacity", "1", "important");
+    btn.style.setProperty("left", "auto", "important");
+    btn.style.setProperty("top", "auto", "important");
+    btn.style.setProperty("right", "auto", "important");
+    btn.style.setProperty("bottom", "auto", "important");
+  }
+
+  function unwrapPhoneHeroNav(shell, ring) {
+    if (!shell) return;
+    var navWrap = shell.querySelector(":scope > .mobile-hero-nav");
+    if (!navWrap) return;
+    var main = navWrap.querySelector(".hero-nav-button-main");
+    var grid = navWrap.querySelector(".hero-nav-grid");
+    if (ring) {
+      if (main) ring.appendChild(main);
+      if (grid) {
+        while (grid.firstChild) {
+          ring.appendChild(grid.firstChild);
+        }
+      }
+      ring.style.removeProperty("display");
+      ring.removeAttribute("aria-hidden");
+      ring.classList.remove("welten-phone-nav-source");
+    }
+    navWrap.remove();
+  }
+
+  function buildPhoneHeroNav(shell, ring, selector, active, byGo) {
+    if (!shell || !ring) return null;
+    byGo = byGo || collectHeroButtons(ring, selector);
+    active = active || currentChapter();
+    if (HERO_CHAPTERS.indexOf(active) < 0) active = "home";
+
+    var activeBtn = byGo[active];
+    if (!activeBtn) return null;
+
+    shell.classList.add("hero-buttons-shell");
+
+    var navWrap = shell.querySelector(":scope > .mobile-hero-nav");
+    if (!navWrap) {
+      navWrap = document.createElement("div");
+      navWrap.className = "mobile-hero-nav welten-mobile-hero-nav";
+      shell.appendChild(navWrap);
+    }
+
+    var grid = navWrap.querySelector(":scope > .hero-nav-grid");
+    if (!grid) {
+      grid = document.createElement("div");
+      grid.className = "hero-nav-grid welten-mobile-hero-grid";
+      navWrap.appendChild(grid);
+    }
+
+    Object.keys(byGo).forEach(function (go) {
+      var btn = byGo[go];
+      prepareFlatHeroButton(btn);
+      btn.classList.remove(
+        "hero-nav-button-main",
+        "hero-nav-button-active",
+        "hero-nav-button",
+        "is-hero-primary",
+        "is-active"
+      );
     });
 
-    gridOrder().forEach(function (go) {
+    activeBtn.classList.add("hero-nav-button", "hero-nav-button-main", "hero-nav-button-active");
+    if (activeBtn.parentNode !== navWrap) {
+      navWrap.insertBefore(activeBtn, grid);
+    }
+
+    gridOrderWithout(active).forEach(function (go) {
+      var btn = byGo[go];
+      if (!btn) return;
+      btn.classList.add("hero-nav-button");
+      if (btn.parentNode !== grid) {
+        grid.appendChild(btn);
+      }
+    });
+
+    ring.classList.add("welten-phone-nav-source");
+    ring.classList.remove("hero-buttons-grid", "welten-mobile-hero-grid");
+    ring.style.setProperty("display", "none", "important");
+    ring.setAttribute("aria-hidden", "true");
+
+    markPrimaryButtons(shell, active);
+    return navWrap;
+  }
+
+  function orderButtonsInRing(ring, selector, active) {
+    if (!ring) return;
+    active = active || currentChapter();
+
+    var shell =
+      ring.closest(".hero-buttons-shell") ||
+      ring.closest(".nexora-orbit-buttons") ||
+      ring.closest(".dna-orbit-group") ||
+      ring.closest(".mv-static-hero__inner") ||
+      ring.parentElement;
+    if (!shell) shell = ring.parentElement;
+    if (shell && shell !== ring) shell.classList.add("hero-buttons-shell");
+
+    var byGo = collectHeroButtons(ring, selector);
+    if (!Object.keys(byGo).length) return;
+
+    if (isPhoneHero()) {
+      buildPhoneHeroNav(shell, ring, selector, active, byGo);
+      var heroRootEl =
+        ring.closest("[data-mobile-chapter-hero]") ||
+        ring.closest("#dnaStage") ||
+        ring.closest(".dna-unified-scene") ||
+        ring.closest(".mv-static-hero__inner");
+      if (heroRootEl && heroRootEl.hasAttribute("data-mobile-chapter-hero")) {
+        pinChapterHeroStack(heroRootEl);
+      } else if (heroRootEl) {
+        pinHomeHeroStack(heroRootEl);
+      }
+      return;
+    }
+
+    unwrapPhoneHeroNav(shell, ring);
+
+    Object.keys(byGo).forEach(function (go) {
+      prepareFlatHeroButton(byGo[go]);
+      byGo[go].classList.remove(
+        "hero-nav-button-main",
+        "hero-nav-button-active",
+        "hero-nav-button"
+      );
+    });
+
+    gridOrderTablet(active).forEach(function (go) {
       var btn = byGo[go];
       if (btn) ring.appendChild(btn);
     });
@@ -929,6 +1092,12 @@
 
   function onViewportChange() {
     boot();
+  }
+
+  if (mqPhone.addEventListener) {
+    mqPhone.addEventListener("change", onViewportChange);
+  } else if (mqPhone.addListener) {
+    mqPhone.addListener(onViewportChange);
   }
 
   if (mqHero.addEventListener) {
