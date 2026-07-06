@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706hero-live";
+  var HERO_VER = "20260706hero-live2";
 
   var WORLDS = {
     general: {
@@ -243,8 +243,10 @@
 
   function suppressSubpageHeaderClutter(inner) {
     if (!inner || !isHeroMobile()) return;
-    var pageHero = inner.querySelector(":scope > .welten-page-hero");
-    if (pageHero) pageHero.hidden = true;
+    inner.querySelectorAll(":scope > .welten-page-hero, :scope > .chapter-label, :scope > .section-title").forEach(function (el) {
+      el.hidden = true;
+      el.style.display = "none";
+    });
   }
 
   function mountChapterHeroFirst(inner, hero) {
@@ -731,6 +733,21 @@
   window.addEventListener("orientationchange", function () {
     setTimeout(boot, 120);
   });
+
+  document.addEventListener(
+    "click",
+    function (e) {
+      if (!isHeroMobile()) return;
+      var btn = e.target.closest("[data-mobile-chapter-hero] [data-go], #mvStaticHero [data-go], #slide-home .hero-button[data-go], #slide-home .nexora-orbit-button[data-go], #slide-home .dna-slide[data-go]");
+      if (!btn) return;
+      if (btn.closest("[data-mobile-chapter-hero]")) return;
+      var id = btn.getAttribute("data-go");
+      if (!id || id === currentChapter()) return;
+      e.preventDefault();
+      goChapter(id);
+    },
+    true
+  );
 
   document.addEventListener("welten-chapter-change", function () {
     setTimeout(boot, 30);

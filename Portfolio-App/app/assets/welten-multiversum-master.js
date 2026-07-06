@@ -522,14 +522,9 @@
     });
     setMaster(i);
     broadcastLang();
-    if (!switching) unlockShell();
-    if (window.WeltenWorldAudioTest && typeof window.WeltenWorldAudioTest.bootMultiversum === "function") {
-      setTimeout(function () {
-        if (soundKey(i) === "general") window.WeltenWorldAudioTest.bootMultiversum(true);
-        else if (typeof window.WeltenWorldAudioTest.play === "function") {
-          window.WeltenWorldAudioTest.play(masterKey(i));
-        }
-      }, 120);
+    if (!switching) {
+      unlockShell();
+      forceEnableWorldButtons();
     }
     setTimeout(function () {
       var f = frames[i];
@@ -596,6 +591,7 @@
 
   function switchTo(i) {
     if (i < 0 || i > 3) return;
+    forceEnableWorldButtons();
     recoverStuckSwitch();
     if (switching) {
       if (document.documentElement.classList.contains("welten-world-switch-lock")) {
@@ -632,6 +628,7 @@
     window.__wwsOnTransitionEnd = function () {
       window.__wwsOnTransitionEnd = null;
       unlockShell();
+      forceEnableWorldButtons();
       document.documentElement.classList.remove("welten-world-switch-lock");
       switchLockSince = 0;
     };
@@ -685,16 +682,6 @@
     var worlds = shellBar.querySelector(".mv4-worlds");
     if (!worlds) return;
     shellBar.dataset.mv4WorldBtnsBound = "1";
-    worlds.addEventListener("click", function (e) {
-      var btn = e.target.closest("button[data-iframe]");
-      if (!btn || !worlds.contains(btn)) return;
-      e.preventDefault();
-      recoverStuckSwitch();
-      forceEnableWorldButtons();
-      var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-      if (!isFinite(idx)) return;
-      switchTo(idx);
-    });
     worlds.querySelectorAll("button[data-iframe]").forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
       btn.addEventListener("pointerdown", function () {
@@ -717,6 +704,24 @@
     bindWorldButtons();
     forceEnableWorldButtons();
   });
+
+  document.addEventListener(
+    "click",
+    function (e) {
+      var worlds = document.querySelector(".mv4-worlds");
+      if (!worlds) return;
+      var btn = e.target.closest("button[data-iframe]");
+      if (!btn || !worlds.contains(btn)) return;
+      if (e.defaultPrevented) return;
+      e.preventDefault();
+      recoverStuckSwitch();
+      forceEnableWorldButtons();
+      var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+      if (!isFinite(idx)) return;
+      switchTo(idx);
+    },
+    true
+  );
 
   if (fxBtn) {
     fxBtn.addEventListener("click", function (e) {

@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260706hero-live";
+  var VER = "20260706hero-live2";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
 
