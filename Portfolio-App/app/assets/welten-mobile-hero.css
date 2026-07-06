@@ -280,11 +280,11 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
     flex-wrap: unset !important;
   }
 
-  body[data-world] #slide-home .hero-button.is-hero-primary,
-  body[data-world] #slide-home .nexora-orbit-button, .welten-mobile-relocated-hero .nexora-orbit-button.is-hero-primary,
-  body[data-world] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.is-hero-primary,
+  body[data-world] #slide-home .hero-buttons-grid > .hero-button.is-hero-primary:not(.hero-nav-button),
+  body[data-world] #slide-home .hero-buttons-grid > .nexora-orbit-button.is-hero-primary:not(.hero-nav-button),
+  body[data-world] #slide-home .hero-buttons-grid > .dna-slide.is-hero-primary:not(.hero-nav-button),
   body[data-world] .welten-mobile-chapter-hero .hero-button.is-hero-primary,
-  body[data-world] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary {
+  body[data-world] #mvStaticHero .mv-static-hero__nav-btn.is-hero-primary:not(.hero-nav-button-main) {
     grid-column: 1 / -1 !important;
     justify-self: stretch !important;
     width: 100% !important;
@@ -1102,17 +1102,21 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  body[data-world] #slide-home .hero-buttons-grid,
-  body[data-world] #slide-home .nexora-orbit-ring, .welten-mobile-relocated-hero .nexora-orbit-ring.hero-buttons-grid,
-  body[data-world] #slide-home .dna-ring, .welten-mobile-relocated-hero .dna-ring.hero-buttons-grid {
+  body[data-world] #slide-home .hero-buttons-grid:not(.welten-phone-nav-source),
+  body[data-world] #slide-home .nexora-orbit-ring:not(.welten-phone-nav-source),
+  .welten-mobile-relocated-hero .nexora-orbit-ring.hero-buttons-grid:not(.welten-phone-nav-source),
+  body[data-world] #slide-home .dna-ring:not(.welten-phone-nav-source),
+  .welten-mobile-relocated-hero .dna-ring.hero-buttons-grid:not(.welten-phone-nav-source) {
     gap: 18px !important;
     max-width: 720px !important;
     padding: 0 20px !important;
   }
 
-  body[data-world] #slide-home .hero-button,
-  body[data-world] #slide-home .nexora-orbit-button, .welten-mobile-relocated-hero .nexora-orbit-button.hero-button,
-  body[data-world] #slide-home .dna-slide, .welten-mobile-relocated-hero .dna-slide.hero-button {
+  body[data-world] #slide-home .hero-button:not(.hero-nav-button),
+  body[data-world] #slide-home .nexora-orbit-button:not(.hero-nav-button),
+  .welten-mobile-relocated-hero .nexora-orbit-button.hero-button:not(.hero-nav-button),
+  body[data-world] #slide-home .dna-slide:not(.hero-nav-button),
+  .welten-mobile-relocated-hero .dna-slide.hero-button:not(.hero-nav-button) {
     min-height: 56px !important;
     font-size: clamp(13px, 1.6vw, 16px) !important;
     padding: 0 12px !important;
@@ -1537,8 +1541,8 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
   }
 }
 
-/* ── Handy ≤767px: Aktive Seite oben, 4 Buttons im 2×2 Grid ── */
-@media (max-width: 767px) {
+/* ── Handy & Tablet ≤1024px: Aktive Seite oben, 4 Buttons im 2×2 Grid ── */
+@media (max-width: 1024px) {
   .welten-phone-nav-source {
     display: none !important;
     visibility: hidden !important;
@@ -1805,6 +1809,57 @@ body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::be
     padding-top: 56px !important;
     padding-bottom: 56px !important;
     box-sizing: border-box !important;
+  }
+
+  /* Tablet: etwas grössere Proportionen */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .mobile-hero-nav,
+    .welten-mobile-hero-nav {
+      max-width: min(540px, 72vw) !important;
+      margin-top: 28px !important;
+      gap: 16px !important;
+      padding: 0 20px !important;
+    }
+
+    .hero-nav-button-main,
+    .mobile-hero-nav .hero-nav-button-main,
+    .welten-mobile-hero-nav .nexora-orbit-button.hero-nav-button-main,
+    .welten-mobile-hero-nav .dna-slide.hero-nav-button-main,
+    .welten-mobile-hero-nav .mv-static-hero__nav-btn.hero-nav-button-main {
+      min-height: 84px !important;
+      font-size: clamp(20px, 3.2vw, 28px) !important;
+      padding: 0 16px !important;
+    }
+
+    .hero-nav-grid,
+    .mobile-hero-nav .hero-nav-grid {
+      gap: 16px !important;
+    }
+
+    .hero-nav-grid .hero-nav-button,
+    .hero-nav-grid .nexora-orbit-button,
+    .hero-nav-grid .dna-slide,
+    .hero-nav-grid .mv-static-hero__nav-btn {
+      min-height: 72px !important;
+      font-size: clamp(16px, 2.2vw, 20px) !important;
+      padding: 0 12px !important;
+    }
+
+    body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__title,
+    body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__tag,
+    body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mv-static-hero__nav,
+    body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero .mobile-hero-nav {
+      max-width: min(540px, 72vw) !important;
+    }
+
+    body[data-world="nexora"] .welten-mobile-relocated-hero.home-hero-experience,
+    body[data-world="nexora"] #dnaStage.welten-mobile-relocated-hero,
+    body[data-world="freiraum"] .welten-mobile-relocated-hero.home-hero-experience,
+    body[data-world="vertex"] .welten-mobile-relocated-hero.home-hero-experience,
+    body[data-world="general"] #mvStaticHero.welten-mobile-relocated-hero {
+      padding-top: 72px !important;
+      padding-bottom: 72px !important;
+    }
   }
 }
 

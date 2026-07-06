@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706phone-hero-parity";
+  var HERO_VER = "20260706compact-nav";
   var bootTimer = null;
 
   function heroRoot() {
@@ -197,7 +197,7 @@
       el.style.removeProperty("height");
       el.style.removeProperty("overflow");
     });
-    if (isPhoneHero()) {
+    if (isHeroMobile()) {
       hero.querySelectorAll(
         ".neuro-core, .dna-premium-canvas, .dna-particles-canvas, .home-main-block, .home-portrait-card, .nexora-orbit-nav"
       ).forEach(function (el) {
@@ -243,6 +243,10 @@
 
   function isPhoneHero() {
     return mqPhone.matches;
+  }
+
+  function isCompactHeroNav() {
+    return isHeroMobile();
   }
 
   function isHeroTitleVisible() {
@@ -540,12 +544,12 @@
 
   function markPrimaryButtons(root, active) {
     if (!root) return;
-    var scope = isPhoneHero() ? root.querySelector(".mobile-hero-nav") || root : root;
+    var scope = isCompactHeroNav() ? root.querySelector(".mobile-hero-nav") || root : root;
     scope.querySelectorAll("[data-go]").forEach(function (btn) {
       var go = btn.getAttribute("data-go");
       var isActive = go === active;
       btn.classList.toggle("is-active", isActive);
-      if (isPhoneHero()) {
+      if (isCompactHeroNav()) {
         btn.classList.toggle("is-hero-primary", btn.classList.contains("hero-nav-button-main"));
       } else {
         btn.classList.toggle("is-hero-primary", isActive);
@@ -694,7 +698,7 @@
     var byGo = collectHeroButtons(ring, selector);
     if (!Object.keys(byGo).length) return;
 
-    if (isPhoneHero()) {
+    if (isCompactHeroNav()) {
       buildPhoneHeroNav(shell, ring, selector, active, byGo);
       var heroRootEl =
         ring.closest("[data-mobile-chapter-hero]") ||
