@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var HERO_VER = "20260706freiraum-hero";
+  var HERO_VER = "20260706nexora-hero";
 
   function heroRoot() {
     return (

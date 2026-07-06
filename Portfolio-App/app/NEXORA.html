@@ -3303,14 +3303,14 @@ body[data-world="vertex"] .home-portrait-card,
       visibility: visible !important;
     }
 
-    #slide-home .home-hero-experience {
+    #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience {
       background:
         radial-gradient(ellipse 62% 46% at 50% 40%, rgba(24, 142, 255, 0.24), transparent 68%),
         radial-gradient(ellipse 120% 70% at 50% 62%, rgba(2, 48, 100, 0.34), transparent 70%),
         linear-gradient(180deg, rgba(0, 3, 10, 0.12), rgba(1, 9, 22, 0.62)) !important;
       border-bottom-color: rgba(139, 214, 255, 0.18) !important;
     }
-    #slide-home .home-hero-experience::before {
+    #slide-home .home-hero-experience::before, .welten-desktop-relocated-hero.home-hero-experience::before, .welten-mobile-relocated-hero.home-hero-experience::before {
       background:
         linear-gradient(90deg, transparent, rgba(85, 190, 255, 0.10), transparent),
         repeating-linear-gradient(90deg, transparent 0 78px, rgba(90, 190, 255, 0.035) 79px 80px),
@@ -3319,7 +3319,7 @@ body[data-world="vertex"] .home-portrait-card,
       mask-image: radial-gradient(ellipse 86% 62% at 50% 42%, black 22%, transparent 78%) !important;
       animation: homeCircuitDrift 34s ease-in-out infinite alternate;
     }
-    #slide-home .home-hero-experience::after {
+    #slide-home .home-hero-experience::after, .welten-desktop-relocated-hero.home-hero-experience::after, .welten-mobile-relocated-hero.home-hero-experience::after {
       background:
         radial-gradient(ellipse 68% 42% at 50% 52%, rgba(76, 178, 255, 0.10), transparent 64%),
         linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.34) 100%) !important;
@@ -3481,7 +3481,7 @@ body[data-world="vertex"] .home-portrait-card,
       animation: virtualDataFloat 46s ease-in-out infinite alternate !important;
     }
 
-    #slide-home .home-hero-experience {
+    #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience {
       background:
         radial-gradient(ellipse 58% 40% at 50% 34%, rgba(35, 165, 255, 0.25), transparent 68%),
         radial-gradient(ellipse 100% 68% at 50% 58%, rgba(0, 60, 130, 0.25), transparent 72%),
@@ -3489,7 +3489,7 @@ body[data-world="vertex"] .home-portrait-card,
       border-bottom: 1px solid rgba(120, 210, 255, 0.18) !important;
       box-shadow: inset 0 -42px 90px rgba(0,0,0,0.46) !important;
     }
-    #slide-home .home-hero-experience::before {
+    #slide-home .home-hero-experience::before, .welten-desktop-relocated-hero.home-hero-experience::before, .welten-mobile-relocated-hero.home-hero-experience::before {
       background:
         radial-gradient(ellipse 38% 30% at 50% 38%, rgba(140, 225, 255, 0.16), transparent 62%),
         repeating-linear-gradient(90deg, transparent 0 72px, rgba(80,190,255,0.030) 73px 74px),
@@ -3499,7 +3499,7 @@ body[data-world="vertex"] .home-portrait-card,
       mask-image: radial-gradient(ellipse 88% 64% at 50% 42%, black 18%, transparent 80%) !important;
       animation: homeCircuitDrift 38s ease-in-out infinite alternate !important;
     }
-    #slide-home .home-hero-experience::after {
+    #slide-home .home-hero-experience::after, .welten-desktop-relocated-hero.home-hero-experience::after, .welten-mobile-relocated-hero.home-hero-experience::after {
       background:
         radial-gradient(ellipse 62% 46% at 50% 53%, rgba(65, 180, 255, 0.11), transparent 66%),
         linear-gradient(90deg, rgba(0,0,0,0.62), transparent 24%, transparent 76%, rgba(0,0,0,0.62)),
@@ -3508,8 +3508,8 @@ body[data-world="vertex"] .home-portrait-card,
       mask-image: none !important;
     }
 
-    #slide-home .dna-premium-canvas { opacity: 0.42 !important; mix-blend-mode: screen !important; }
-    #slide-home .dna-particles-canvas { opacity: 0.48 !important; }
+    #slide-home .dna-premium-canvas, .welten-desktop-relocated-hero .dna-premium-canvas, .welten-mobile-relocated-hero .dna-premium-canvas { opacity: 0.42 !important; mix-blend-mode: screen !important; }
+    #slide-home .dna-particles-canvas, .welten-desktop-relocated-hero .dna-particles-canvas, .welten-mobile-relocated-hero .dna-particles-canvas { opacity: 0.48 !important; }
 
     .home-hero-experience .neuro-core {
       width: clamp(620px, 66vw, 1080px) !important;
@@ -3709,7 +3709,7 @@ body[data-world="vertex"] .home-portrait-card,
     /* =============================================================================
        11. Final clean orbit: nur Seitentitel, mittig um das Gehirn, keine Icons/Untertitel
        ============================================================================= */
-    #slide-home .home-hero-experience {
+    #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience {
       min-height: 760px !important;
     }
 
@@ -3808,7 +3808,7 @@ body[data-world="vertex"] .home-portrait-card,
     }
 
     @media (max-width: 1100px) {
-      #slide-home .home-hero-experience { min-height: 700px !important; }
+      #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience { min-height: 700px !important; }
       .home-hero-experience .neuro-core { top: 245px !important; width: min(860px, 94vw) !important; height: min(360px, 42vw) !important; }
       #slide-home .dna-ring-scene { top: 430px !important; }
       #slide-home .dna-ring::before { width: min(950px, 92vw) !important; height: min(360px, 40vw) !important; }
@@ -3816,7 +3816,7 @@ body[data-world="vertex"] .home-portrait-card,
     }
 
     @media (max-width: 680px) {
-      #slide-home .home-hero-experience { min-height: 640px !important; }
+      #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience { min-height: 640px !important; }
       .home-hero-experience .neuro-core { top: 215px !important; width: 720px !important; max-width: 120vw !important; height: 310px !important; }
       #slide-home .dna-ring-scene { top: 380px !important; }
       #slide-home .dna-ring::before { width: 720px !important; max-width: 118vw !important; height: 300px !important; }
@@ -4002,7 +4002,7 @@ body.is-home .bg-root::after {
   background: #020712 !important;
 }
 
-#slide-home .home-hero-experience {
+#slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience {
   height: calc(100dvh - var(--header-h)) !important;
   min-height: 760px !important;
   max-height: none !important;
@@ -4017,7 +4017,7 @@ body.is-home .bg-root::after {
 }
 
 /* Home: no matrix; instead a calm virtual command-center tunnel */
-#slide-home .home-hero-experience::before {
+#slide-home .home-hero-experience::before, .welten-desktop-relocated-hero.home-hero-experience::before, .welten-mobile-relocated-hero.home-hero-experience::before {
   content: "" !important;
   position: absolute !important;
   inset: -8% -6% !important;
@@ -4034,7 +4034,7 @@ body.is-home .bg-root::after {
   transform: perspective(900px) rotateX(0deg) scale(1.06) !important;
   animation: homeTunnelDrift 32s ease-in-out infinite alternate !important;
 }
-#slide-home .home-hero-experience::after {
+#slide-home .home-hero-experience::after, .welten-desktop-relocated-hero.home-hero-experience::after, .welten-mobile-relocated-hero.home-hero-experience::after {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
@@ -4052,8 +4052,8 @@ body.is-home .bg-root::after {
   100% { transform: scale(1.09) translate3d(1.3%, .6%, 0); opacity: .96; }
 }
 
-#slide-home .dna-premium-canvas,
-#slide-home .dna-particles-canvas {
+#slide-home .dna-premium-canvas, .welten-desktop-relocated-hero .dna-premium-canvas, .welten-mobile-relocated-hero .dna-premium-canvas,
+#slide-home .dna-particles-canvas, .welten-desktop-relocated-hero .dna-particles-canvas, .welten-mobile-relocated-hero .dna-particles-canvas {
   opacity: .32 !important;
   z-index: 5 !important;
   mix-blend-mode: screen !important;
@@ -4277,7 +4277,7 @@ body.is-home .bg-root::after {
 
 @media (min-width: 1025px) and (hover: hover) {
   @media (max-width: 1100px) {
-    #slide-home .home-hero-experience { min-height: 720px !important; }
+    #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience { min-height: 720px !important; }
     .home-hero-experience .neuro-core { width: min(840px, 94vw) !important; height: min(360px, 43vw) !important; top: 260px !important; }
     #slide-home .dna-ring-scene { top: 560px !important; }
     #slide-home .dna-slide { width: min(300px, 54vw) !important; min-height: 108px !important; padding: 18px 18px 18px 84px !important; }
@@ -4285,7 +4285,7 @@ body.is-home .bg-root::after {
     #slide-home .dna-slide .orb-icon { width: 52px !important; height: 52px !important; }
   }
   @media (max-width: 680px) {
-    #slide-home .home-hero-experience { min-height: 660px !important; }
+    #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience { min-height: 660px !important; }
     .home-hero-experience .neuro-core { width: 720px !important; max-width: 118vw !important; height: 310px !important; top: 230px !important; }
     #slide-home .dna-ring-scene { top: 500px !important; }
     #slide-home .dna-slide { width: min(285px, 74vw) !important; min-height: 96px !important; padding: 16px 16px 16px 76px !important; }
@@ -4420,7 +4420,7 @@ body.is-home .bg-root::after {
 /* =============================================================================
    NEXORA FINAL OVERRIDE - sofort echtes Brain-Hero, kein altes DNA-Bild zuerst
    ============================================================================= */
-#slide-home .dna-premium-canvas,
+#slide-home .dna-premium-canvas, .welten-desktop-relocated-hero .dna-premium-canvas, .welten-mobile-relocated-hero .dna-premium-canvas,
 #slide-home .dna-holo-arm,
 #slide-home .dna-visual-stack,
 #slide-home .dna-layer,
@@ -4429,7 +4429,7 @@ body.is-home .bg-root::after {
   opacity: 0 !important;
   visibility: hidden !important;
 }
-#slide-home .dna-particles-canvas {
+#slide-home .dna-particles-canvas, .welten-desktop-relocated-hero .dna-particles-canvas, .welten-mobile-relocated-hero .dna-particles-canvas {
   display: block !important;
   opacity: .22 !important;
   z-index: 5 !important;
@@ -4459,7 +4459,7 @@ body.is-home .bg-root::after {
    - Drag auf dem freien Hero-Bereich neben den Buttons
    ============================================================================= */
 @media (min-width: 1025px) and (hover: hover) {
-  #slide-home .home-hero-experience,
+  #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience,
   #slide-home .dna-unified-scene {
     pointer-events: auto !important;
     touch-action: none !important;
@@ -7000,7 +7000,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 <style id="force-nexora-final-brain-hero">
 /* Final override: Home-Hero exakt mit holografischem Gehirn + Orbit-Buttons (nur Desktop) */
 @media (min-width: 1025px) and (hover: hover) {
-#slide-home .home-hero-experience {
+#slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience {
   position: relative !important;
   min-height: 100vh !important;
   height: 100vh !important;
@@ -7012,7 +7012,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     linear-gradient(180deg, #020611, #061526 50%, #020611 100%) !important;
   box-shadow: inset 0 -130px 160px rgba(0,0,0,.72) !important;
 }
-#slide-home .home-hero-experience::before {
+#slide-home .home-hero-experience::before, .welten-desktop-relocated-hero.home-hero-experience::before, .welten-mobile-relocated-hero.home-hero-experience::before {
   content: "" !important;
   position: absolute !important;
   inset: -7% -5% !important;
@@ -7027,7 +7027,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   mix-blend-mode: screen !important;
   animation: nexoraBrainTunnelDrift 34s ease-in-out infinite alternate !important;
 }
-#slide-home .home-hero-experience::after {
+#slide-home .home-hero-experience::after, .welten-desktop-relocated-hero.home-hero-experience::after, .welten-mobile-relocated-hero.home-hero-experience::after {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
@@ -7047,7 +7047,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 }
 
 /* Alte DNA-/Helix-Darstellung im Home-Hero entfernen */
-#slide-home .dna-premium-canvas,
+#slide-home .dna-premium-canvas, .welten-desktop-relocated-hero .dna-premium-canvas, .welten-mobile-relocated-hero .dna-premium-canvas,
 #slide-home .dna-holo-arm,
 #slide-home .dna-visual-stack,
 #slide-home .dna-layer,
@@ -7056,7 +7056,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   opacity: 0 !important;
   visibility: hidden !important;
 }
-#slide-home .dna-particles-canvas {
+#slide-home .dna-particles-canvas, .welten-desktop-relocated-hero .dna-particles-canvas, .welten-mobile-relocated-hero .dna-particles-canvas {
   opacity: .28 !important;
   z-index: 5 !important;
   mix-blend-mode: screen !important;
@@ -7231,12 +7231,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 }
 @media (min-width: 1025px) and (hover: hover) {
   @media (max-width: 1100px) {
-    #slide-home .home-hero-experience { min-height: 720px !important; }
+    #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience { min-height: 720px !important; }
     .home-hero-experience .neuro-core { width: min(840px, 94vw) !important; height: min(360px, 43vw) !important; top: 260px !important; }
     #slide-home .dna-ring-scene { top: 540px !important; }
   }
   @media (max-width: 720px) {
-    #slide-home .home-hero-experience { min-height: 650px !important; }
+    #slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience { min-height: 650px !important; }
     .home-hero-experience .neuro-core { width: 102vw !important; height: 270px !important; top: 235px !important; }
     #slide-home .dna-ring-scene { top: 480px !important; }
     #slide-home .dna-slide { width: min(230px, 66vw) !important; min-height: 78px !important; font-size: .95rem !important; }
@@ -7514,7 +7514,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     return (
       document.getElementById('dnaStage') ||
       document.querySelector('.home-hero-experience.welten-desktop-relocated-hero') ||
-      document.querySelector('#slide-home .home-hero-experience')
+      document.querySelector('#slide-home .home-hero-experience, .welten-desktop-relocated-hero.home-hero-experience, .welten-mobile-relocated-hero.home-hero-experience')
     );
   }
 
@@ -7847,12 +7847,6 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initOrbit);
   else initOrbit();
   window.addEventListener('load', initOrbit);
-  document.addEventListener('welten-chapter-change', function () {
-    setTimeout(initOrbit, 40);
-  });
-  document.addEventListener('mv-restore-hero', function () {
-    setTimeout(initOrbit, 80);
-  });
 })();
 </script>
 
@@ -7907,6 +7901,9 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   function go(id) {
     if (!isValid(id)) return false;
     setActiveState(id);
+    if (window.NexoraOrbitUI && typeof window.NexoraOrbitUI.snapToChapter === "function") {
+      window.NexoraOrbitUI.snapToChapter(id);
+    }
     return true;
   }
 
@@ -8496,11 +8493,11 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-mouse-paint.css?v=20260703wws-smooth" />
 <script src="assets/welten-mouse-paint.js?v=20260703wws-smooth" defer></script>
 
-<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706freiraum-hero" id="welten-mobile-hero-stylesheet" />
+<link rel="stylesheet" href="assets/welten-mobile-hero.css?v=20260706nexora-hero" id="welten-mobile-hero-stylesheet" />
 <link rel="stylesheet" href="assets/welten-nexora-touch.css?v=20260606f" />
-<script src="assets/welten-mobile-hero.js?v=20260706freiraum-hero" defer></script>
+<script src="assets/welten-mobile-hero.js?v=20260706nexora-hero" defer></script>
 <link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260705laptop-hero" />
-<script src="assets/welten-desktop-chapter-hero.js?v=20260706freiraum-hero" defer></script>
+<script src="assets/welten-desktop-chapter-hero.js?v=20260706nexora-hero" defer></script>
 <script src="assets/welten-mobile-nexora-nav.js?v=20260606f" defer></script>
 <script src="assets/welten-nexora-mobile-fix.js?v=20260622a" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />

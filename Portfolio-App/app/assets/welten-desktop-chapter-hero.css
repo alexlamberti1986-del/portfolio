@@ -196,216 +196,26 @@
     grid-row: 3 !important;
   }
 
-  /* ── NEXORA: Unterseiten = gleicher Hero wie Home ── */
+  /* ── NEXORA: Unterseiten = gleicher Hero wie Home (Styles aus NEXORA.html) ── */
   body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience {
-    position: relative !important;
-    min-height: var(--hero-dna-h, 100vh) !important;
-    height: var(--hero-dna-h, 100vh) !important;
+    background-image: none !important;
     overflow: hidden !important;
-    background:
-      radial-gradient(ellipse 64% 58% at 50% 35%, rgba(42, 158, 255, 0.28), transparent 62%),
-      radial-gradient(ellipse 74% 48% at 50% 56%, rgba(0, 125, 255, 0.15), transparent 70%),
-      linear-gradient(90deg, rgba(0, 3, 9, 0.98), rgba(4, 18, 34, 0.8) 25%, rgba(4, 18, 34, 0.8) 75%, rgba(0, 3, 9, 0.98)),
-      linear-gradient(180deg, #020611, #061526 50%, #020611 100%) !important;
-    box-shadow: inset 0 -130px 160px rgba(0, 0, 0, 0.72) !important;
-    border-bottom: 1px solid rgba(139, 214, 255, 0.18) !important;
   }
 
-  body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience::before {
-    content: "" !important;
-    position: absolute !important;
-    inset: -7% -5% !important;
-    z-index: 1 !important;
-    pointer-events: none !important;
-    background:
-      linear-gradient(90deg, rgba(1, 5, 13, 0.95), transparent 18%, transparent 82%, rgba(1, 5, 13, 0.95)),
-      repeating-linear-gradient(0deg, transparent 0 34px, rgba(82, 184, 255, 0.045) 35px, transparent 36px),
-      repeating-linear-gradient(90deg, transparent 0 54px, rgba(82, 184, 255, 0.04) 55px, transparent 56px),
-      radial-gradient(ellipse 88% 42% at 50% 50%, transparent 46%, rgba(0, 177, 255, 0.18) 48%, transparent 51%);
-    opacity: 0.86 !important;
-    mix-blend-mode: screen !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience::after {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: 2 !important;
-    pointer-events: none !important;
-    background:
-      radial-gradient(ellipse 44% 18% at 50% 64%, rgba(0, 180, 255, 0.2), transparent 72%),
-      radial-gradient(ellipse 80% 42% at 50% 36%, transparent 42%, rgba(0, 0, 0, 0.62) 100%),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 38%, rgba(0, 0, 0, 0.54));
-    opacity: 1 !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-premium-canvas,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-holo-arm,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-visual-stack,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-layer,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-asset,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-unified-scene .dna-slide,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-ring-scene {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-particles-canvas {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 0.28 !important;
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: 5 !important;
-    pointer-events: none !important;
-    mix-blend-mode: screen !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-unified-scene {
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: 8 !important;
-    height: 100% !important;
-    display: block !important;
-    perspective: 2100px !important;
-    perspective-origin: 50% 50% !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core {
-    position: absolute !important;
-    left: 50% !important;
-    top: clamp(245px, 34vh, 350px) !important;
-    width: min(950px, 72vw) !important;
-    height: min(420px, 33vw) !important;
-    aspect-ratio: auto !important;
-    transform: translate(-50%, -50%) !important;
-    z-index: 7 !important;
-    opacity: 1 !important;
-    pointer-events: none !important;
-    filter:
-      drop-shadow(0 0 28px rgba(92, 215, 255, 0.86))
-      drop-shadow(0 0 96px rgba(0, 118, 255, 0.56)) !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core::before {
-    content: "" !important;
-    position: absolute !important;
-    inset: -3% -5% !important;
-    border-radius: 0 !important;
-    background: url("images/nexora-brain-bg.webp") center / contain no-repeat !important;
-    opacity: 0.99 !important;
-    filter: brightness(1.11) contrast(1.05) saturate(1.16) !important;
-    mix-blend-mode: screen !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core::after {
-    content: "" !important;
-    position: absolute !important;
-    left: 50% !important;
-    bottom: -12% !important;
-    width: 54% !important;
-    height: 18% !important;
-    transform: translateX(-50%) rotateX(68deg) !important;
-    border-radius: 50% !important;
-    border: 1px solid rgba(112, 225, 255, 0.68) !important;
-    background: radial-gradient(ellipse at center, rgba(0, 180, 255, 0.24), transparent 66%) !important;
-    box-shadow: 0 0 36px rgba(70, 205, 255, 0.38), inset 0 0 24px rgba(120, 232, 255, 0.2) !important;
-    opacity: 0.9 !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core__brain,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core__halo,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core__quantum,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core__circuit,
-  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core__nodes {
-    display: none !important;
-  }
-
-  /* ── NEXORA: Hero + Orbit auf Unterseiten (wie Home) ── */
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons {
-    position: absolute !important;
-    left: 50% !important;
-    top: clamp(96px, 11vh, 160px) !important;
-    bottom: clamp(120px, 17vh, 200px) !important;
-    width: min(1220px, 90vw) !important;
-    height: auto !important;
-    z-index: 24 !important;
-    perspective: 3000px !important;
-    perspective-origin: 50% 46% !important;
-    transform: translateX(-50%) !important;
-    transform-style: preserve-3d !important;
-    pointer-events: none !important;
-  }
-
-  body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 100%;
-    height: 58%;
-    transform: translate(-50%, -50%) rotateX(72deg);
-    border-radius: 50%;
-    border: 1px solid rgba(145, 228, 255, 0.68);
-    background: radial-gradient(ellipse at center, rgba(0, 160, 255, 0.16), transparent 68%);
-    opacity: 0.92;
-    pointer-events: none;
-  }
-
+  body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons,
   body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-ring {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    width: 0 !important;
-    height: 0 !important;
-    transform-style: preserve-3d !important;
-    transform: rotateX(10deg) rotateY(var(--nexora-orbit-rot, 0deg)) !important;
     pointer-events: none !important;
   }
 
   body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-button {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    width: clamp(200px, 15.5vw, 272px) !important;
-    min-width: clamp(200px, 15.5vw, 272px) !important;
-    max-width: clamp(200px, 15.5vw, 272px) !important;
-    height: clamp(64px, 5.8vw, 84px) !important;
-    min-height: clamp(64px, 5.8vw, 84px) !important;
-    max-height: clamp(64px, 5.8vw, 84px) !important;
-    padding: 0 24px !important;
-    border-radius: 24px !important;
-    border: 1px solid rgba(142, 220, 255, 0.55) !important;
-    background: linear-gradient(180deg, rgba(12, 35, 70, 0.78), rgba(2, 10, 24, 0.9)) !important;
-    color: #f4f9ff !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.055em !important;
-    text-transform: uppercase !important;
-    cursor: pointer !important;
     pointer-events: auto !important;
-    transform-style: preserve-3d !important;
-    opacity: var(--card-opacity, 0.72) !important;
-    filter: brightness(0.9) blur(var(--card-blur, 0.15px));
-    z-index: var(--card-z, 100) !important;
-    transform:
-      translate(calc(-50% + var(--helix-x, 0px)), calc(-50% + var(--helix-y, 0px)))
-      rotateY(calc(var(--i, 0) * var(--nexora-orbit-step, 72deg)))
-      translateZ(var(--orbit-radius, min(720px, 48vw)))
-      scale(var(--card-scale, 0.9)) !important;
+    cursor: pointer !important;
   }
 
-  body[data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-button.is-front {
-    opacity: 1 !important;
-    filter: none !important;
-    border-color: rgba(160, 235, 255, 0.96) !important;
-    background: linear-gradient(180deg, rgba(20, 74, 138, 0.86), rgba(3, 17, 38, 0.96)) !important;
-    color: #f4f9ff !important;
+  body.welten-desktop-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::before {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    animation: none !important;
   }
 
   /* ── FREIRAUM: Unterseiten = gleicher Hero-Hintergrund wie Home (ohne Profilbild) ── */

@@ -58,6 +58,20 @@ body[data-world="freiraum"] #slide-contact img#contactPhoto {
 
 } /* end FREIRAUM mobile-only block */
 
+/* NEXORA Desktop/Laptop: kein Portfolio-Bild als Hero-Hintergrund auf Unterseiten */
+@media (min-width: 1025px) {
+  body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="nexora"] .welten-mobile-relocated-hero.home-hero-experience {
+    background-image: none !important;
+  }
+}
+
+body.welten-mobile-subpage-hero--on[data-world="nexora"].is-subpage .bg-root::before {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  animation: none !important;
+}
+
 /* FREIRAUM Desktop/Laptop: kein Profilbild als Hero-Hintergrund (Home + Unterseiten) */
 @media (min-width: 1025px) {
   body[data-world="freiraum"] #slide-home .home-hero-experience,

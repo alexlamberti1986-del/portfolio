@@ -5,7 +5,8 @@
 (function () {
   "use strict";
 
-  var VER = "20260706freiraum-hero";
+  var VER = "20260706nexora-hero";
+  var bootTimer = null;
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
 
@@ -408,6 +409,18 @@
     var host = ensureHeroHost(mount);
     if (!host) return null;
 
+    if (hero.parentElement === host && hero.classList.contains("welten-desktop-relocated-hero")) {
+      bindHeroNavClicks(hero);
+      if (document.body.getAttribute("data-world") === "nexora") {
+        setTimeout(function () {
+          if (window.NexoraOrbitUI && typeof window.NexoraOrbitUI.snapToChapter === "function") {
+            window.NexoraOrbitUI.snapToChapter(active);
+          }
+        }, 0);
+      }
+      return hero;
+    }
+
     ensureHomePlaceholder(homeInner, hero);
     stripRelocatedHeroInlineStyles(hero);
     hero.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
@@ -418,9 +431,6 @@
         if (window.NexoraOrbitUI && typeof window.NexoraOrbitUI.snapToChapter === "function") {
           window.NexoraOrbitUI.snapToChapter(active);
         }
-        try {
-          document.dispatchEvent(new CustomEvent("mv-restore-hero"));
-        } catch (e) {}
       }, 60);
     }
     return hero;
@@ -490,8 +500,11 @@
   }
 
   function boot() {
-    ensureStylesheet();
-    relocateHero();
+    clearTimeout(bootTimer);
+    bootTimer = setTimeout(function () {
+      ensureStylesheet();
+      relocateHero();
+    }, 48);
   }
 
   if (mqDesktop.addEventListener) {
