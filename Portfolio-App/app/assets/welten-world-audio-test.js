@@ -1,15 +1,17 @@
 /**
  * Hintergrundmusik pro Welt (Loop), gekoppelt an Effekte Ein/Aus.
- * MULTIVERSUM startet beim Seitenaufruf ohne Klick (soweit der Browser es erlaubt).
+ * Start: MULTIVERSUM beim Seitenaufruf. Weltenwechsel: Stopp sofort, neuer Track nach Animation.
  */
 (function () {
   "use strict";
 
   if (!document.body || document.body.getAttribute("data-world-audio-test") !== "1") return;
 
-  var VERSION = "20260706audio-live3";
+  var VERSION = "20260706audio-live4";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 280;
+  var FADE_OUT_MS = 180;
+  var POST_ANIMATION_MS = 100;
   var TRACKS = {
     general: "assets/audio/worlds/MULTIVERSUM.mp3?v=" + VERSION,
     nexora: "assets/audio/worlds/NEXORA.mp3?v=" + VERSION,
@@ -23,10 +25,10 @@
   var playToken = 0;
   var bootTimer = 0;
   var retryTimer = 0;
+  var postAnimTimer = 0;
   var preloaded = {};
   var switching = false;
   var lastObservedWorld = "";
-  var lockWasOn = false;
   var worldObserverReady = false;
 
   function effectsEnabled() {
@@ -72,10 +74,11 @@
     return audio;
   }
 
-  function fadeVolume(target, done) {
+  function fadeVolume(target, done, duration) {
     var el = ensureAudio();
     var start = el.volume;
     var delta = target - start;
+    var ms = duration || FADE_MS;
     if (Math.abs(delta) < 0.01) {
       el.volume = target;
       if (done) done();
@@ -83,7 +86,7 @@
     }
     var t0 = performance.now();
     function step(now) {
-      var p = Math.min(1, (now - t0) / FADE_MS);
+      var p = Math.min(1, (now - t0) / ms);
       el.volume = Math.max(0, Math.min(1, start + delta * p));
       if (p < 1) requestAnimationFrame(step);
       else {
@@ -104,19 +107,32 @@
       window.clearTimeout(retryTimer);
       retryTimer = 0;
     }
+    if (postAnimTimer) {
+      window.clearTimeout(postAnimTimer);
+      postAnimTimer = 0;
+    }
   }
 
   function stopForSwitch() {
     cancelPending();
     switching = true;
     window.__mvWorldAudioPlaying = false;
-    if (!audio) return;
-    try {
-      audio.pause();
-    } catch (e) {}
-    audio.volume = 0;
-    currentWorld = "";
-    currentSrc = "";
+    var el = audio || document.getElementById("mvWorldBgm");
+    if (!el) return;
+    var token = playToken;
+    fadeVolume(
+      0,
+      function () {
+        if (token !== playToken) return;
+        try {
+          el.pause();
+        } catch (e) {}
+        el.volume = 0;
+        currentWorld = "";
+        currentSrc = "";
+      },
+      FADE_OUT_MS
+    );
   }
 
   function stopAll() {
@@ -159,7 +175,7 @@
     }
 
     el.muted = false;
-    if (el.volume < 0.05) el.volume = TARGET_VOLUME;
+    if (el.volume < 0.05) el.volume = 0;
     var promise = el.play();
     if (promise && typeof promise.then === "function") {
       promise
@@ -220,7 +236,7 @@
     var pathOnly = src.split("?")[0];
     if (!el.src || el.src.indexOf(pathOnly) < 0) {
       el.pause();
-      el.volume = TARGET_VOLUME;
+      el.volume = 0;
       el.src = src;
       el.load();
       el.addEventListener(
@@ -239,59 +255,58 @@
     playElement(el, token);
   }
 
+  function schedulePlayAfterAnimation(world) {
+    if (!world || !TRACKS[world] || !effectsEnabled()) return;
+    if (world === currentWorld && isAudibleWorld(world)) {
+      switching = false;
+      return;
+    }
+    cancelPending();
+    var token = playToken;
+    postAnimTimer = window.setTimeout(function () {
+      if (token !== playToken || !effectsEnabled()) return;
+      if (document.documentElement.classList.contains("welten-world-switch-lock")) {
+        waitForSwitchDone(function () {
+          if (token !== playToken || !effectsEnabled()) return;
+          switching = false;
+          startPlayback(world, token);
+        });
+        return;
+      }
+      switching = false;
+      startPlayback(world, token);
+    }, POST_ANIMATION_MS);
+  }
+
   function waitForSwitchDone(cb) {
     var tries = 0;
     function tick() {
       tries += 1;
       var locked = document.documentElement.classList.contains("welten-world-switch-lock");
-      if (!locked) {
-        switching = false;
+      if (!locked || window.__worldTransitionRunning !== true) {
         cb();
         return;
       }
-      if (tries > 160) {
-        switching = false;
+      if (tries > 200) {
         cb();
         return;
       }
-      setTimeout(tick, 80);
+      setTimeout(tick, 50);
     }
     tick();
-  }
-
-  function playAfterSwitch(world) {
-    if (!world || !TRACKS[world] || !effectsEnabled()) return;
-    if (world === currentWorld && isPlayingWorld(world)) return;
-    cancelPending();
-    var token = playToken;
-    waitForSwitchDone(function () {
-      if (token !== playToken || !effectsEnabled()) return;
-      switching = false;
-      startPlayback(world, token);
-    });
   }
 
   function bootMultiversum(force) {
     if (activeWorld() !== "general" || !effectsEnabled()) return;
     if (!force && switching) return;
-    switching = false;
-    var el = ensureAudio();
-    var pathOnly = TRACKS.general.split("?")[0];
-    if (el && !el.paused && el.src && el.src.indexOf(pathOnly) >= 0) {
-      currentWorld = "general";
-      currentSrc = TRACKS.general;
-      window.__mvWorldAudioPlaying = true;
-      switching = false;
-      el.muted = false;
-      fadeVolume(TARGET_VOLUME);
-      return;
-    }
     if (isAudibleWorld("general")) {
       currentWorld = "general";
       currentSrc = TRACKS.general;
       window.__mvWorldAudioPlaying = true;
+      switching = false;
       return;
     }
+    switching = false;
     var token = playToken;
     if (typeof window.__mvWorldAudioBoot === "function") {
       window.__mvWorldAudioBoot()
@@ -315,39 +330,44 @@
 
   function resumeCurrent() {
     if (!effectsEnabled()) return;
-    if (document.documentElement.classList.contains("welten-world-switch-lock")) return;
+    if (
+      switching ||
+      document.documentElement.classList.contains("welten-world-switch-lock") ||
+      window.__worldTransitionRunning
+    ) {
+      return;
+    }
     switching = false;
     var world = activeWorld();
     if (world === "general") bootMultiversum(true);
-    else playAfterSwitch(world);
+    else schedulePlayAfterAnimation(world);
   }
 
   function onWorldAttributeChange() {
     if (!worldObserverReady) return;
+    if (
+      switching ||
+      document.documentElement.classList.contains("welten-world-switch-lock") ||
+      window.__worldTransitionRunning
+    ) {
+      return;
+    }
     var world = activeWorld();
     if (!world || !TRACKS[world] || !effectsEnabled()) return;
     if (world === lastObservedWorld && isAudibleWorld(world)) return;
     if (world === lastObservedWorld) return;
-
-    var prev = lastObservedWorld;
     lastObservedWorld = world;
-
-    if (!prev) {
-      if (world === "general") bootMultiversum(true);
-      else playAfterSwitch(world);
-      return;
-    }
-
-    playAfterSwitch(world);
+    if (world === "general") bootMultiversum(true);
+    else schedulePlayAfterAnimation(world);
   }
 
   function hookWorldButtons() {
     var nav = document.querySelector(".mv4-worlds");
     if (!nav || nav.dataset.worldAudioHooked === "1") return;
     nav.dataset.worldAudioHooked = "1";
+    var keys = ["general", "nexora", "vertex", "freiraum"];
     nav.querySelectorAll("button[data-iframe]").forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-      var keys = ["general", "nexora", "vertex", "freiraum"];
       btn.addEventListener(
         "click",
         function () {
@@ -365,40 +385,6 @@
         );
       }
     });
-  }
-
-  function watchSwitchLock() {
-    try {
-      new MutationObserver(function () {
-        var locked = document.documentElement.classList.contains("welten-world-switch-lock");
-        if (locked && !lockWasOn) {
-          lockWasOn = true;
-          if (window.__worldTransitionRunning) stopForSwitch();
-          return;
-        }
-        if (!locked && lockWasOn) {
-          lockWasOn = false;
-          switching = false;
-          if (!effectsEnabled()) return;
-          var world = activeWorld();
-          if (world === "general") bootMultiversum(true);
-          else playAfterSwitch(world);
-          return;
-        }
-        if (!locked) lockWasOn = false;
-      }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    } catch (e2) {}
-  }
-
-  function watchWorldAttribute() {
-    try {
-      new MutationObserver(onWorldAttributeChange).observe(document.body, {
-        attributes: true,
-        attributeFilter: ["data-master-world"],
-      });
-    } catch (e) {}
-    worldObserverReady = true;
-    lastObservedWorld = activeWorld();
   }
 
   function attachEarlyAudio() {
@@ -421,17 +407,41 @@
     if (!effectsEnabled()) return;
     switching = false;
     attachEarlyAudio();
-    bootMultiversum(true);
+    if (activeWorld() === "general") bootMultiversum(true);
   }
 
   function init() {
     attachEarlyAudio();
     ensureAudio();
     hookWorldButtons();
-    watchSwitchLock();
     tryImmediateBoot();
-    setTimeout(watchWorldAttribute, 800);
+    watchWorldAttribute();
+    preloadTrack("nexora");
+    preloadTrack("vertex");
+    preloadTrack("freiraum");
   }
+
+  function watchWorldAttribute() {
+    try {
+      new MutationObserver(onWorldAttributeChange).observe(document.body, {
+        attributes: true,
+        attributeFilter: ["data-master-world"],
+      });
+    } catch (e) {}
+    worldObserverReady = true;
+    lastObservedWorld = activeWorld();
+  }
+
+  document.addEventListener("welten-audio-switch-start", function () {
+    stopForSwitch();
+  });
+
+  document.addEventListener("welten-audio-switch-end", function (e) {
+    if (!effectsEnabled()) return;
+    var world = (e.detail && e.detail.world) || activeWorld();
+    lastObservedWorld = world;
+    schedulePlayAfterAnimation(world);
+  });
 
   document.addEventListener("mv-effects-change", function (e) {
     var on = !!(e.detail && e.detail.on);
@@ -451,7 +461,6 @@
   window.addEventListener("load", tryImmediateBoot);
   window.addEventListener("pageshow", function () {
     switching = false;
-    lockWasOn = false;
     tryImmediateBoot();
   });
   window.addEventListener("focus", tryImmediateBoot);
@@ -461,7 +470,7 @@
       switching = false;
       setTimeout(function () {
         bootMultiversum(true);
-      }, 40);
+      }, 20);
     }
   });
 
@@ -483,21 +492,11 @@
     );
   });
 
-  var autoTries = 0;
-  var autoTimer = setInterval(function () {
-    autoTries += 1;
-    if (autoTries > 30) {
-      clearInterval(autoTimer);
-      return;
-    }
-    if (!effectsEnabled()) return;
-    if (activeWorld() === "general" && !isAudibleWorld("general")) bootMultiversum(true);
-  }, 350);
-
   window.WeltenWorldAudioTest = {
-    play: playAfterSwitch,
+    play: schedulePlayAfterAnimation,
     stop: stopAll,
     bootMultiversum: bootMultiversum,
     activeWorld: activeWorld,
+    version: VERSION,
   };
 })();

@@ -465,6 +465,9 @@
     switching = true;
     window.__worldTransitionRunning = true;
     switchLockSince = Date.now();
+    try {
+      document.dispatchEvent(new CustomEvent("welten-audio-switch-start"));
+    } catch (eAudioStart) {}
     var shellBar = getBar();
     if (shellBar) {
       shellBar.setAttribute("aria-busy", "true");
@@ -680,6 +683,11 @@
       purgeSwitchOverlays();
       document.documentElement.classList.remove("welten-world-switch-lock");
       switchLockSince = 0;
+      try {
+        document.dispatchEvent(
+          new CustomEvent("welten-audio-switch-end", { detail: { world: masterKey(i) } })
+        );
+      } catch (eAudioEnd) {}
       requestAnimationFrame(setBarHeight);
     }
 
@@ -904,12 +912,12 @@
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
     window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
   }
-  setTimeout(function () {
+  requestAnimationFrame(function () {
     forceEnableWorldButtons();
     if (window.WeltenWorldAudioTest && typeof window.WeltenWorldAudioTest.bootMultiversum === "function") {
       window.WeltenWorldAudioTest.bootMultiversum(true);
     }
-  }, 600);
+  });
   if (isCoarseMobileShell()) {
     setTimeout(function () {
       preloadFrame(1);
