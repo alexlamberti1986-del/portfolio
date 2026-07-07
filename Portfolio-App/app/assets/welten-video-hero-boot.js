@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v14";
+  var VER = "20260707video-hero-v15";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -27,17 +27,17 @@
     nexora: {
       label: "Nexora",
       poster: "assets/videos/nexora-poster.jpg",
-      src: "assets/videos/nexora-hero-720.mp4",
+      src: "assets/videos/nexora-hero.mp4",
     },
     professional: {
       label: "Professional",
       poster: "assets/videos/professional-poster.jpg",
-      src: "assets/videos/professional-hero-720.mp4",
+      src: "assets/videos/professional-hero.mp4",
     },
     freiraum: {
       label: "Freiraum",
       poster: "assets/videos/freiraum-poster.jpg",
-      src: "assets/videos/freiraum-hero-720.mp4",
+      src: "assets/videos/freiraum-hero.mp4",
     },
   };
 
