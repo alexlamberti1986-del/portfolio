@@ -563,6 +563,12 @@
     } catch (e1) {}
   }
 
+  function revealActiveFrame(i) {
+    var f = frames[i];
+    if (!f) return;
+    postFrame(f, { type: "portfolio-world-reveal", world: soundKey(i) });
+  }
+
   function applyActive(i) {
     frames.forEach(function (f, j) {
       var on = j === i;
@@ -573,6 +579,9 @@
         applyChapter(f, sharedChapter);
         if (frameIsReady(f)) injectProfiles(f, j);
         else f.addEventListener("load", function () { injectProfiles(f, j); }, { once: true });
+      } else {
+        postFrame(f, { type: "portfolio-world-pause", paused: true });
+        postFrame(f, { type: "portfolio-cleanup-transition" });
       }
     });
     setMaster(i);
@@ -691,6 +700,7 @@
           new CustomEvent("welten-audio-switch-end", { detail: { world: masterKey(i) } })
         );
       } catch (eAudioEnd) {}
+      revealActiveFrame(i);
       requestAnimationFrame(setBarHeight);
     }
 
@@ -897,6 +907,10 @@
       injectProfiles(f, j);
       broadcastLang();
       postFrame(f, { type: "portfolio-effects", on: effectsOn });
+      if (j === activeIdx()) {
+        postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
+        postFrame(f, { type: "portfolio-world-reveal", world: soundKey(j) });
+      }
     });
   });
 

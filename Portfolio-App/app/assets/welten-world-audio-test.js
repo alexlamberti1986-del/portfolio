@@ -5,11 +5,11 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260707audio-live5";
+  var VERSION = "20260707audio-live6";
   var TARGET_VOLUME = 0.4;
-  var FADE_MS = 280;
-  var FADE_OUT_MS = 180;
-  var POST_ANIMATION_MS = 120;
+  var FADE_MS = 220;
+  var FADE_OUT_MS = 0;
+  var POST_ANIMATION_MS = 0;
   var TRACKS = {
     general: "assets/audio/worlds/MULTIVERSUM.mp3?v=" + VERSION,
     nexora: "assets/audio/worlds/NEXORA.mp3?v=" + VERSION,
@@ -128,20 +128,13 @@
     window.__mvWorldAudioPlaying = false;
     var el = audio || document.getElementById("mvWorldBgm");
     if (!el) return;
-    var token = playToken;
-    fadeVolume(
-      0,
-      function () {
-        if (token !== playToken) return;
-        try {
-          el.pause();
-        } catch (e) {}
-        el.volume = 0;
-        currentWorld = "";
-        currentSrc = "";
-      },
-      FADE_OUT_MS
-    );
+    try {
+      el.pause();
+      el.currentTime = 0;
+    } catch (e) {}
+    el.volume = 0;
+    currentWorld = "";
+    currentSrc = "";
   }
 
   function stopAll() {
@@ -233,70 +226,61 @@
     if (!src || token !== playToken || !effectsEnabled() || isSwitchLocked()) return;
 
     var el = ensureAudio();
-    if (isPlayingWorld(world)) {
-      currentSrc = src;
-      currentWorld = world;
-      switching = false;
-      pendingWorld = "";
-      window.__mvWorldAudioPlaying = true;
-      el.muted = false;
-      fadeVolume(TARGET_VOLUME);
-      return;
-    }
-
     currentSrc = src;
     currentWorld = world;
     var pathOnly = src.split("?")[0];
-    if (!el.src || el.src.indexOf(pathOnly) < 0) {
-      el.pause();
-      el.volume = 0;
+    var needsNewSrc = !el.src || el.src.indexOf(pathOnly) < 0;
+
+    el.pause();
+    el.volume = 0;
+    try {
+      el.currentTime = 0;
+    } catch (eReset) {}
+
+    if (needsNewSrc) {
       el.src = src;
       el.load();
-      el.addEventListener(
-        "canplay",
-        function () {
-          playElement(el, token);
-        },
-        { once: true }
-      );
-      bootTimer = window.setTimeout(function () {
-        if (token === playToken && el.paused) playElement(el, token);
-      }, 200);
-      return;
     }
 
-    playElement(el, token);
+    function beginFromStart() {
+      if (token !== playToken || !effectsEnabled() || isSwitchLocked()) return;
+      try {
+        el.currentTime = 0;
+      } catch (eStart) {}
+      playElement(el, token);
+    }
+
+    el.addEventListener("canplay", beginFromStart, { once: true });
+    bootTimer = window.setTimeout(function () {
+      if (token === playToken && el.paused) beginFromStart();
+    }, 60);
   }
 
   function schedulePlayAfterAnimation(world) {
     if (!world || !TRACKS[world] || !effectsEnabled()) return;
     pendingWorld = world;
-    if (world === currentWorld && isAudibleWorld(world)) {
-      switching = false;
-      pendingWorld = "";
-      return;
-    }
     cancelPending();
     var token = playToken;
-    postAnimTimer = window.setTimeout(function () {
+
+    function playNow() {
       if (token !== playToken || !effectsEnabled()) return;
-      if (isSwitchLocked()) {
-        waitForSwitchDone(function () {
-          if (token !== playToken || !effectsEnabled()) return;
-          if (activeWorld() !== world) return;
-          switching = false;
-          pendingWorld = "";
-          lastObservedWorld = world;
-          startPlayback(world, token);
-        });
-        return;
-      }
       if (activeWorld() !== world) return;
       switching = false;
       pendingWorld = "";
       lastObservedWorld = world;
       startPlayback(world, token);
-    }, POST_ANIMATION_MS);
+    }
+
+    if (isSwitchLocked()) {
+      waitForSwitchDone(playNow);
+      return;
+    }
+
+    if (POST_ANIMATION_MS > 0) {
+      postAnimTimer = window.setTimeout(playNow, POST_ANIMATION_MS);
+      return;
+    }
+    playNow();
   }
 
   function waitForSwitchDone(cb) {
