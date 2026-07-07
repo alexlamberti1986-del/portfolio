@@ -39,8 +39,8 @@ body[data-welten-video-hero="1"]:not([data-current-slide="home"]) #alWorldVideoH
   pointer-events: none !important;
 }
 
-/* Handy: Video komplett aus */
-@media (max-width: 767px) {
+/* Handy + Tablet: Video komplett aus */
+@media (max-width: 1024px) {
   #alWorldVideoHero,
   body[data-welten-video-hero="1"] #alWorldVideoHero {
     display: none !important;

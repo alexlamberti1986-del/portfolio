@@ -1,13 +1,13 @@
 /**
  * Video-Hero Trial — nur auf Home: Header → Video → Hero → Inhalt.
- * Handy: kein Video. Unterseiten: kein Video.
+ * Handy + Tablet: kein Video. Nur Desktop/Laptop. Unterseiten: kein Video.
  */
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v6";
+  var VER = "20260707video-hero-v7";
   var ENABLED = true;
-  var mqPhone = window.matchMedia("(max-width: 767px)");
+  var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var mqTabletLaptop = window.matchMedia("(max-width: 1440px)");
   var prefetched = {};
 
@@ -45,8 +45,8 @@
     },
   };
 
-  function isPhone() {
-    return mqPhone.matches;
+  function isVideoHidden() {
+    return mqNoVideo.matches;
   }
 
   function pickVideoSrc(worldKey) {
@@ -200,7 +200,7 @@
   function mountVideoHero() {
     if (!ENABLED) return;
 
-    if (isPhone()) {
+    if (isVideoHidden()) {
       pauseVideoHero();
       removeVideoHero();
       return;
@@ -235,7 +235,7 @@
   }
 
   function onViewportChange() {
-    if (isPhone()) {
+    if (isVideoHidden()) {
       pauseVideoHero();
       removeVideoHero();
       return;
@@ -245,7 +245,7 @@
 
   function onSlideChange() {
     if (!document.getElementById("alWorldVideoHero")) return;
-    if (isHomeActive() && !isPhone()) {
+    if (isHomeActive() && !isVideoHidden()) {
       playVideoHero();
     } else {
       pauseVideoHero();
@@ -270,10 +270,10 @@
 
   window.addEventListener("load", boot);
 
-  if (mqPhone.addEventListener) {
-    mqPhone.addEventListener("change", onViewportChange);
-  } else if (mqPhone.addListener) {
-    mqPhone.addListener(onViewportChange);
+  if (mqNoVideo.addEventListener) {
+    mqNoVideo.addEventListener("change", onViewportChange);
+  } else if (mqNoVideo.addListener) {
+    mqNoVideo.addListener(onViewportChange);
   }
 
   if (mqTabletLaptop.addEventListener) {
@@ -310,7 +310,7 @@
     prefetch: prefetchVideo,
     getOffset: function () {
       var video = document.getElementById("alWorldVideoHero");
-      if (!video || !isHomeActive() || isPhone()) return 0;
+      if (!video || !isHomeActive() || isVideoHidden()) return 0;
       return video.offsetHeight || 0;
     },
   };
