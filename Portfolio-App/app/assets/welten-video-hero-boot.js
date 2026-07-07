@@ -5,11 +5,12 @@
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v7";
+  var VER = "20260707video-hero-v8";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
-  var mqTabletLaptop = window.matchMedia("(max-width: 1440px)");
+  var mqLargeDesktop = window.matchMedia("(min-width: 1601px)");
   var prefetched = {};
+  var homeObserver = null;
 
   var WORLD_MAP = {
     general: "multiversum",
@@ -52,7 +53,8 @@
   function pickVideoSrc(worldKey) {
     var w = WORLDS[worldKey];
     if (!w) return "";
-    return mqTabletLaptop.matches ? w.mobile : w.desktop;
+    if (worldKey === "multiversum") return w.mobile;
+    return mqLargeDesktop.matches ? w.desktop : w.mobile;
   }
 
   function isHomeActive() {
@@ -100,21 +102,26 @@
 
   function playWhenReady(section, video) {
     if (!video) return;
+    var started = false;
 
     function tryPlay() {
+      if (started) return;
+      started = true;
       var promise = video.play();
       if (promise && typeof promise.then === "function") {
         promise
           .then(function () {
             markVideoReady(section, video);
           })
-          .catch(function () {});
+          .catch(function () {
+            started = false;
+          });
       } else {
         markVideoReady(section, video);
       }
     }
 
-    if (video.readyState >= 3) {
+    if (video.readyState >= 4) {
       tryPlay();
       return;
     }
@@ -130,10 +137,16 @@
     video.addEventListener(
       "loadeddata",
       function () {
-        if (video.readyState >= 2) tryPlay();
+        if (video.readyState >= 3) {
+          window.setTimeout(tryPlay, 120);
+        }
       },
       { once: true }
     );
+
+    window.setTimeout(function () {
+      if (!started && video.readyState >= 2) tryPlay();
+    }, 1800);
   }
 
   function playVideoHero() {
@@ -145,6 +158,7 @@
 
   function buildHero(worldKey) {
     var w = WORLDS[worldKey];
+    var src = pickVideoSrc(worldKey);
     var section = document.createElement("section");
     section.id = "alWorldVideoHero";
     section.className =
@@ -154,18 +168,15 @@
       '<div class="al-world-video-hero__media">' +
       '<video class="al-world-video-hero__video" autoplay muted loop playsinline preload="auto" poster="' +
       w.poster +
-      '">' +
-      '<source src="' +
-      w.mobile +
-      '" media="(max-width: 1440px)" type="video/mp4">' +
-      '<source src="' +
-      w.desktop +
-      '" type="video/mp4">' +
-      "</video></div>";
+      '" src="' +
+      src +
+      '"></video></div>';
 
     var video = section.querySelector("video");
     if (video) {
       video.style.opacity = "0";
+      video.setAttribute("webkit-playsinline", "");
+      video.playsInline = true;
       video.addEventListener(
         "waiting",
         function () {
@@ -180,21 +191,43 @@
         },
         false
       );
+      try {
+        video.load();
+      } catch (e) {}
       playWhenReady(section, video);
     }
 
     return section;
   }
 
-  function placeVideoBeforeHero(videoHero, homeInner) {
-    var legacyHero = homeInner.querySelector(
-      ".home-hero-experience, #dnaStage, #mvParallaxHero, #mvStaticHero"
-    );
-    if (legacyHero) {
-      homeInner.insertBefore(videoHero, legacyHero);
-      return;
+  function ensureVideoOnTop() {
+    var videoHero = document.getElementById("alWorldVideoHero");
+    var homeInner = getHomeInner();
+    if (!videoHero || !homeInner) return;
+    if (homeInner.firstElementChild !== videoHero) {
+      homeInner.insertBefore(videoHero, homeInner.firstElementChild);
     }
-    homeInner.insertBefore(videoHero, homeInner.firstChild);
+  }
+
+  function resetHomeScroll() {
+    var slideHome = document.getElementById("slide-home");
+    if (!slideHome || !isHomeActive()) return;
+    if (slideHome.scrollTop > 4) slideHome.scrollTop = 0;
+  }
+
+  function watchHomeInner() {
+    var homeInner = getHomeInner();
+    if (!homeInner || homeObserver) return;
+    try {
+      homeObserver = new MutationObserver(function () {
+        if (!document.getElementById("alWorldVideoHero")) {
+          mountVideoHero();
+          return;
+        }
+        ensureVideoOnTop();
+      });
+      homeObserver.observe(homeInner, { childList: true });
+    } catch (e) {}
   }
 
   function mountVideoHero() {
@@ -223,9 +256,21 @@
 
     if (!videoHero) {
       videoHero = buildHero(worldKey);
+      homeInner.insertBefore(videoHero, homeInner.firstChild);
+    } else {
+      ensureVideoOnTop();
+      var video = videoHero.querySelector("video");
+      var nextSrc = pickVideoSrc(worldKey);
+      if (video && nextSrc && video.getAttribute("src") !== nextSrc) {
+        video.setAttribute("src", nextSrc);
+        try {
+          video.load();
+        } catch (eLoad) {}
+      }
     }
 
-    placeVideoBeforeHero(videoHero, homeInner);
+    watchHomeInner();
+    resetHomeScroll();
 
     if (isHomeActive()) {
       playVideoHero();
@@ -245,7 +290,9 @@
 
   function onSlideChange() {
     if (!document.getElementById("alWorldVideoHero")) return;
+    ensureVideoOnTop();
     if (isHomeActive() && !isVideoHidden()) {
+      resetHomeScroll();
       playVideoHero();
     } else {
       pauseVideoHero();
@@ -258,8 +305,10 @@
     onViewportChange();
     onSlideChange();
     setTimeout(onViewportChange, 120);
-    setTimeout(onViewportChange, 700);
-    setTimeout(onSlideChange, 700);
+    setTimeout(ensureVideoOnTop, 400);
+    setTimeout(onViewportChange, 900);
+    setTimeout(ensureVideoOnTop, 1400);
+    setTimeout(onSlideChange, 900);
   }
 
   if (document.readyState === "loading") {
@@ -276,10 +325,10 @@
     mqNoVideo.addListener(onViewportChange);
   }
 
-  if (mqTabletLaptop.addEventListener) {
-    mqTabletLaptop.addEventListener("change", onViewportChange);
-  } else if (mqTabletLaptop.addListener) {
-    mqTabletLaptop.addListener(onViewportChange);
+  if (mqLargeDesktop.addEventListener) {
+    mqLargeDesktop.addEventListener("change", onViewportChange);
+  } else if (mqLargeDesktop.addListener) {
+    mqLargeDesktop.addListener(onViewportChange);
   }
 
   window.addEventListener("orientationchange", function () {
@@ -308,6 +357,7 @@
     version: VER,
     remount: boot,
     prefetch: prefetchVideo,
+    ensureOnTop: ensureVideoOnTop,
     getOffset: function () {
       var video = document.getElementById("alWorldVideoHero");
       if (!video || !isHomeActive() || isVideoHidden()) return 0;
