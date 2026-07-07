@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v10";
+  var VER = "20260707video-hero-v11";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -140,6 +140,8 @@
       if (started || !canPlayVideo()) return;
       started = true;
       resetVideoEl(video);
+      video.muted = true;
+      video.volume = 0;
       var promise = video.play();
       if (promise && typeof promise.then === "function") {
         promise
@@ -189,6 +191,10 @@
     var video = section.querySelector("video");
     if (video) {
       video.style.opacity = "0";
+      video.muted = true;
+      video.defaultMuted = true;
+      video.volume = 0;
+      video.setAttribute("muted", "");
       video.setAttribute("webkit-playsinline", "");
       video.playsInline = true;
       video.addEventListener(

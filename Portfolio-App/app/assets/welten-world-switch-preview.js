@@ -315,12 +315,6 @@
     if (!overlay || overlay._wwsTitleShown) return;
     markCanvasSequenceDone(overlay);
     overlay.classList.add("wws--title-reveal");
-    if (overlay.getAttribute("data-world") === "vertex" && wwsSoundEnabled()) {
-      wwsResumeAudio();
-      try {
-        wwsProTitleBing(wwsEnsureAudio(), wwsEnsureAudio().currentTime);
-      } catch (e) {}
-    }
   }
 
   var wwsAudioCtx = null;
@@ -357,7 +351,7 @@
     general: "assets/audio/Multiversum sound.mp3?v=20260706mv-switch-sound",
   };
 
-  var wwsSwitchMp3Cache = {};
+  window.wwsSwitchMp3Cache = wwsSwitchMp3Cache;
 
   function wwsEncodeAudioSrc(src) {
     try {
@@ -368,25 +362,7 @@
   }
 
   function wwsPlaySwitchMp3(worldKey) {
-    var src = WWS_SWITCH_MP3[worldKey];
-    if (!src || !wwsSoundEnabled()) return false;
-    try {
-      if (!wwsSwitchMp3Cache[worldKey]) {
-        var clip = new Audio(wwsEncodeAudioSrc(src));
-        clip.preload = "auto";
-        clip.volume = 0.58;
-        wwsSwitchMp3Cache[worldKey] = clip;
-      }
-      var audio = wwsSwitchMp3Cache[worldKey];
-      audio.currentTime = 0;
-      var playPromise = audio.play();
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(function () {});
-      }
-      return true;
-    } catch (e) {
-      return false;
-    }
+    return false;
   }
 
   function wwsSoundAlive(gen) {
@@ -797,25 +773,7 @@
   }
 
   function playTransitionSound(worldKey) {
-    if (!wwsEffectsEnabled()) return;
-    wwsSoundGen += 1;
-    var gen = wwsSoundGen;
-    wwsResumeAudio();
-    if (worldKey === "general") {
-      if (wwsPlaySwitchMp3("general")) return;
-      wwsActiveWorldGain = 3.8;
-      playMultiversumSwitchSound(gen);
-    } else if (worldKey === "nexora") {
-      wwsActiveWorldGain = 8;
-      playNexoraSwitchSound(gen);
-    } else if (worldKey === "vertex") {
-      wwsActiveWorldGain = 1;
-      playProfessionalSwitchSound(gen);
-    } else {
-      wwsActiveWorldGain = 4.2;
-      playFreiraumSwitchSound(gen);
-    }
-    wwsActiveWorldGain = 1;
+    return;
   }
 
   function hookSoundToggle() {

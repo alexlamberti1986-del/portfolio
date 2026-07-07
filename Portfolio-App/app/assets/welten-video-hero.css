@@ -6,9 +6,9 @@
   margin: 0;
   padding: 0;
   flex-shrink: 0;
-  height: calc(56svh - var(--header-h, 90px) * 0.35);
-  min-height: 320px;
-  max-height: calc(56svh - var(--header-h, 90px) * 0.35);
+  height: calc(84svh - var(--header-h, 90px) * 0.35);
+  min-height: 480px;
+  max-height: calc(84svh - var(--header-h, 90px) * 0.35);
   background: #05050a;
   overflow: hidden;
   z-index: 1;
@@ -46,8 +46,8 @@
 }
 
 .al-world-video-hero--multiversum.al-world-video-hero--video-only {
-  height: calc(60svh - var(--header-h, 90px) * 0.35);
-  max-height: calc(60svh - var(--header-h, 90px) * 0.35);
+  height: calc(90svh - var(--header-h, 90px) * 0.35);
+  max-height: calc(90svh - var(--header-h, 90px) * 0.35);
 }
 
 .al-world-video-hero--multiversum .al-world-video-hero__video {
@@ -69,13 +69,13 @@
 
 @supports not (height: 100svh) {
   .al-world-video-hero--video-only {
-    height: calc(56vh - var(--header-h, 90px) * 0.35);
-    max-height: calc(56vh - var(--header-h, 90px) * 0.35);
+    height: calc(84vh - var(--header-h, 90px) * 0.35);
+    max-height: calc(84vh - var(--header-h, 90px) * 0.35);
   }
 
   .al-world-video-hero--multiversum.al-world-video-hero--video-only {
-    height: calc(60vh - var(--header-h, 90px) * 0.35);
-    max-height: calc(60vh - var(--header-h, 90px) * 0.35);
+    height: calc(90vh - var(--header-h, 90px) * 0.35);
+    max-height: calc(90vh - var(--header-h, 90px) * 0.35);
   }
 }
 
