@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260707audio-live6";
+  var VERSION = "20260707audio-live7";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var FADE_OUT_MS = 0;

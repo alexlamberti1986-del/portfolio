@@ -955,6 +955,9 @@
   }
   requestAnimationFrame(function () {
     forceEnableWorldButtons();
+    if (window.WeltenWorldAudioTest && typeof window.WeltenWorldAudioTest.bootMultiversum === "function") {
+      window.WeltenWorldAudioTest.bootMultiversum(true);
+    }
   });
   if (isCoarseMobileShell()) {
     setTimeout(function () {
