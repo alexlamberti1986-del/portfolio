@@ -30,6 +30,12 @@
   display: block;
   object-fit: cover;
   object-position: center center;
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+
+.al-world-video-hero--video-only.is-video-ready .al-world-video-hero__video {
+  opacity: 1;
 }
 
 .al-world-video-hero--multiversum {

@@ -5,9 +5,11 @@
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v5";
+  var VER = "20260707video-hero-v6";
   var ENABLED = true;
   var mqPhone = window.matchMedia("(max-width: 767px)");
+  var mqTabletLaptop = window.matchMedia("(max-width: 1440px)");
+  var prefetched = {};
 
   var WORLD_MAP = {
     general: "multiversum",
@@ -21,26 +23,36 @@
       label: "Multiversum",
       poster: "assets/videos/multiversum-poster.jpg",
       desktop: "assets/videos/multiversum-hero-1080.mp4",
+      mobile: "assets/videos/multiversum-hero-720.mp4",
     },
     nexora: {
       label: "Nexora",
       poster: "assets/videos/nexora-poster.jpg",
       desktop: "assets/videos/nexora-hero-1080.mp4",
+      mobile: "assets/videos/nexora-hero-720.mp4",
     },
     professional: {
       label: "Professional",
       poster: "assets/videos/professional-poster.jpg",
       desktop: "assets/videos/professional-hero-1080.mp4",
+      mobile: "assets/videos/professional-hero-720.mp4",
     },
     freiraum: {
       label: "Freiraum",
       poster: "assets/videos/freiraum-poster.jpg",
       desktop: "assets/videos/freiraum-hero-1080.mp4",
+      mobile: "assets/videos/freiraum-hero-720.mp4",
     },
   };
 
   function isPhone() {
     return mqPhone.matches;
+  }
+
+  function pickVideoSrc(worldKey) {
+    var w = WORLDS[worldKey];
+    if (!w) return "";
+    return mqTabletLaptop.matches ? w.mobile : w.desktop;
   }
 
   function isHomeActive() {
@@ -56,6 +68,18 @@
     return slideHome && slideHome.querySelector(".slide-inner");
   }
 
+  function prefetchVideo(worldKey) {
+    var src = pickVideoSrc(worldKey);
+    if (!src || prefetched[src]) return;
+    prefetched[src] = true;
+    var link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "video";
+    link.href = src;
+    link.type = "video/mp4";
+    document.head.appendChild(link);
+  }
+
   function removeVideoHero() {
     var hero = document.getElementById("alWorldVideoHero");
     if (hero) hero.remove();
@@ -68,10 +92,55 @@
     video.pause();
   }
 
-  function playVideoHero() {
-    var video = document.querySelector("#alWorldVideoHero video");
+  function markVideoReady(section, video) {
+    if (!section || !video) return;
+    section.classList.add("is-video-ready");
+    video.style.opacity = "1";
+  }
+
+  function playWhenReady(section, video) {
     if (!video) return;
-    video.play().catch(function () {});
+
+    function tryPlay() {
+      var promise = video.play();
+      if (promise && typeof promise.then === "function") {
+        promise
+          .then(function () {
+            markVideoReady(section, video);
+          })
+          .catch(function () {});
+      } else {
+        markVideoReady(section, video);
+      }
+    }
+
+    if (video.readyState >= 3) {
+      tryPlay();
+      return;
+    }
+
+    video.addEventListener(
+      "canplaythrough",
+      function () {
+        tryPlay();
+      },
+      { once: true }
+    );
+
+    video.addEventListener(
+      "loadeddata",
+      function () {
+        if (video.readyState >= 2) tryPlay();
+      },
+      { once: true }
+    );
+  }
+
+  function playVideoHero() {
+    var section = document.getElementById("alWorldVideoHero");
+    var video = section && section.querySelector("video");
+    if (!video) return;
+    playWhenReady(section, video);
   }
 
   function buildHero(worldKey) {
@@ -83,15 +152,37 @@
     section.setAttribute("aria-label", w.label + " Video");
     section.innerHTML =
       '<div class="al-world-video-hero__media">' +
-      '<video class="al-world-video-hero__video" autoplay muted loop playsinline preload="metadata" poster="' +
+      '<video class="al-world-video-hero__video" autoplay muted loop playsinline preload="auto" poster="' +
       w.poster +
       '">' +
+      '<source src="' +
+      w.mobile +
+      '" media="(max-width: 1440px)" type="video/mp4">' +
       '<source src="' +
       w.desktop +
       '" type="video/mp4">' +
       "</video></div>";
 
-    playVideoHero();
+    var video = section.querySelector("video");
+    if (video) {
+      video.style.opacity = "0";
+      video.addEventListener(
+        "waiting",
+        function () {
+          section.classList.remove("is-video-ready");
+        },
+        false
+      );
+      video.addEventListener(
+        "playing",
+        function () {
+          markVideoReady(section, video);
+        },
+        false
+      );
+      playWhenReady(section, video);
+    }
+
     return section;
   }
 
@@ -117,6 +208,8 @@
 
     var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
     if (!worldKey) return;
+
+    prefetchVideo(worldKey);
 
     var homeInner = getHomeInner();
     if (!homeInner) return;
@@ -160,6 +253,8 @@
   }
 
   function boot() {
+    var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
+    if (worldKey) prefetchVideo(worldKey);
     onViewportChange();
     onSlideChange();
     setTimeout(onViewportChange, 120);
@@ -181,12 +276,23 @@
     mqPhone.addListener(onViewportChange);
   }
 
+  if (mqTabletLaptop.addEventListener) {
+    mqTabletLaptop.addEventListener("change", onViewportChange);
+  } else if (mqTabletLaptop.addListener) {
+    mqTabletLaptop.addListener(onViewportChange);
+  }
+
   window.addEventListener("orientationchange", function () {
     setTimeout(onViewportChange, 120);
   });
 
   document.addEventListener("welten-chapter-change", function () {
     setTimeout(onSlideChange, 30);
+  });
+
+  window.addEventListener("message", function (e) {
+    if (!e.data || e.data.type !== "portfolio-world-enter") return;
+    setTimeout(boot, 40);
   });
 
   try {
@@ -201,6 +307,7 @@
   window.WeltenVideoHero = {
     version: VER,
     remount: boot,
+    prefetch: prefetchVideo,
     getOffset: function () {
       var video = document.getElementById("alWorldVideoHero");
       if (!video || !isHomeActive() || isPhone()) return 0;
