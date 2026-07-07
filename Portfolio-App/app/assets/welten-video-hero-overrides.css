@@ -1,29 +1,4 @@
-/* Video-Hero Trial: alten Home-Hero ausblenden, Seite sichtbar halten */
-body[data-welten-video-hero="1"] #slide-home .home-hero-experience,
-body[data-welten-video-hero="1"] #slide-home #dnaStage,
-body[data-welten-video-hero="1"] #slide-home #mvParallaxHero,
-body[data-welten-video-hero="1"] #slide-home #mvStaticHero,
-body[data-welten-video-hero="1"] #slide-home .mv-parallax-hero,
-body[data-welten-video-hero="1"] #slide-home .mv-static-hero {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  min-height: 0 !important;
-  max-height: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-  opacity: 0 !important;
-}
-
-body[data-welten-video-hero="1"] #slide-home .slide-inner--home {
-  display: block;
-}
-
-body[data-welten-video-hero="1"] #alWorldVideoHero {
-  display: flex !important;
-  visibility: visible !important;
-}
-
+/* Video-Hero Trial: nur Video-Streifen, darunter bleibt der bestehende Hero sichtbar */
 body[data-welten-video-hero="1"].mv-preview-lite #slidesRoot,
 body[data-welten-video-hero="1"].mv-preview-lite .site-header,
 body[data-welten-video-hero="1"].mv-preview-lite .experience-rail {
@@ -32,6 +7,23 @@ body[data-welten-video-hero="1"].mv-preview-lite .experience-rail {
   opacity: 1 !important;
 }
 
+body[data-welten-video-hero="1"] #slide-home .slide-inner--home {
+  display: block;
+}
+
 body[data-welten-video-hero="1"] #slide-home.slide {
   min-height: auto;
+}
+
+/* Handy: Video komplett aus */
+@media (max-width: 767px) {
+  #alWorldVideoHero,
+  body[data-welten-video-hero="1"] #alWorldVideoHero {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
 }

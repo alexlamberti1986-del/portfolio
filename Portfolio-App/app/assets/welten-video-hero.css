@@ -1,22 +1,37 @@
 :root {
-  --al-hero-header-offset: 0px;
-  --al-hero-max-content: 1180px;
-  --al-hero-side-padding: clamp(20px, 5vw, 72px);
-  --al-hero-text-width: 760px;
-  --al-hero-radius: 999px;
+  --al-video-hero-height: clamp(200px, 34vh, 400px);
 }
 
-.al-world-video-hero {
+.al-world-video-hero--video-only {
   position: relative;
-  isolation: isolate;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  height: var(--al-video-hero-height);
+  max-height: var(--al-video-hero-height);
+  background: #05050a;
+  overflow: hidden;
+}
+
+.al-world-video-hero--video-only .al-world-video-hero__media {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  min-height: calc(100svh - var(--al-hero-header-offset));
-  overflow: hidden;
-  color: #fff;
+  justify-content: center;
   background: #05050a;
-  margin: 0;
-  padding: clamp(92px, 12vh, 148px) var(--al-hero-side-padding) clamp(72px, 10vh, 120px);
+}
+
+.al-world-video-hero--video-only .al-world-video-hero__video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .al-world-video-hero--multiversum {
@@ -35,259 +50,43 @@
   --al-hero-poster: url("assets/videos/freiraum-poster.jpg");
 }
 
-.al-world-video-hero__media,
-.al-world-video-hero__shade,
-.al-world-video-hero__glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.al-world-video-hero__media {
-  z-index: -4;
-  background: #05050a;
-}
-
-.al-world-video-hero__video {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center center;
-  transform: scale(1.01);
-}
-
-.al-world-video-hero__shade {
-  z-index: -3;
-  background:
-    radial-gradient(circle at 75% 45%, rgba(255, 255, 255, 0.08), transparent 28%),
-    linear-gradient(90deg, rgba(2, 3, 10, 0.88) 0%, rgba(2, 3, 10, 0.58) 38%, rgba(2, 3, 10, 0.2) 72%, rgba(2, 3, 10, 0.64) 100%),
-    linear-gradient(180deg, rgba(2, 3, 10, 0.52) 0%, rgba(2, 3, 10, 0.12) 42%, rgba(2, 3, 10, 0.78) 100%);
-}
-
-.al-world-video-hero__glow {
-  z-index: -2;
-  opacity: 0.7;
-  mix-blend-mode: screen;
-}
-
-.al-world-video-hero--multiversum .al-world-video-hero__glow {
-  background: radial-gradient(circle at 22% 50%, rgba(123, 82, 255, 0.25), transparent 34%);
-}
-
-.al-world-video-hero--nexora .al-world-video-hero__glow {
-  background: radial-gradient(circle at 25% 52%, rgba(67, 180, 255, 0.25), transparent 34%);
-}
-
-.al-world-video-hero--professional .al-world-video-hero__glow {
-  background: radial-gradient(circle at 22% 48%, rgba(255, 255, 255, 0.18), transparent 34%);
-}
-
-.al-world-video-hero--freiraum .al-world-video-hero__glow {
-  background: radial-gradient(circle at 25% 54%, rgba(255, 146, 91, 0.22), transparent 34%);
-}
-
-.al-world-video-hero__content {
-  position: relative;
-  z-index: 2;
-  width: min(100%, var(--al-hero-max-content));
-  margin: 0 auto;
-}
-
-.al-world-video-hero__eyebrow {
-  max-width: var(--al-hero-text-width);
-  margin: 0 0 clamp(12px, 2vw, 18px);
-  font-size: clamp(0.78rem, 1.15vw, 0.95rem);
-  line-height: 1.2;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.76);
-}
-
-.al-world-video-hero__title {
-  max-width: var(--al-hero-text-width);
-  margin: 0;
-  font-size: clamp(3rem, 7.2vw, 7.6rem);
-  line-height: 0.92;
-  letter-spacing: -0.07em;
-  text-wrap: balance;
-}
-
-.al-world-video-hero__text {
-  max-width: min(620px, 100%);
-  margin: clamp(20px, 3vw, 32px) 0 0;
-  font-size: clamp(1.02rem, 1.35vw, 1.28rem);
-  line-height: 1.62;
-  color: rgba(255, 255, 255, 0.78);
-  text-wrap: pretty;
-}
-
-.al-world-video-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: clamp(28px, 4vw, 44px);
-}
-
-.al-world-video-hero__button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 15px 24px;
-  border-radius: var(--al-hero-radius);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 700;
-  line-height: 1;
-  backdrop-filter: blur(18px);
-  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
-  cursor: pointer;
-}
-
-.al-world-video-hero__button:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.48);
-}
-
-.al-world-video-hero__button--primary {
-  background: rgba(255, 255, 255, 0.92);
-  color: #05050a;
-}
-
-.al-world-video-hero__button--ghost {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.al-world-video-hero__scroll {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(20px, 4vh, 38px);
-  z-index: 3;
-  width: 28px;
-  height: 46px;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 999px;
-  transform: translateX(-50%);
-  opacity: 0.74;
-}
-
-.al-world-video-hero__scroll span {
-  position: absolute;
-  left: 50%;
-  top: 9px;
-  width: 4px;
-  height: 4px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.8);
-  transform: translateX(-50%);
-  animation: alHeroScroll 1.7s ease-in-out infinite;
-}
-
-@keyframes alHeroScroll {
-  0% { transform: translate(-50%, 0); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translate(-50%, 17px); opacity: 0; }
-}
-
-@media (min-width: 1800px) {
-  .al-world-video-hero {
-    min-height: min(100svh, 1120px);
-  }
-
-  .al-world-video-hero__title {
-    font-size: clamp(6rem, 6.2vw, 8.6rem);
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+  :root {
+    --al-video-hero-height: clamp(180px, 28vh, 320px);
   }
 }
 
-@media (max-width: 1180px) {
-  .al-world-video-hero {
-    min-height: calc(92svh - var(--al-hero-header-offset));
-  }
-
-  .al-world-video-hero__shade {
-    background:
-      linear-gradient(90deg, rgba(2, 3, 10, 0.9) 0%, rgba(2, 3, 10, 0.56) 54%, rgba(2, 3, 10, 0.32) 100%),
-      linear-gradient(180deg, rgba(2, 3, 10, 0.52) 0%, rgba(2, 3, 10, 0.12) 42%, rgba(2, 3, 10, 0.82) 100%);
+/* Laptop */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  :root {
+    --al-video-hero-height: clamp(210px, 32vh, 380px);
   }
 }
 
-@media (max-width: 900px) {
-  .al-world-video-hero {
-    align-items: flex-end;
-    min-height: calc(86svh - var(--al-hero-header-offset));
-    padding-top: 96px;
-    padding-bottom: 92px;
-  }
-
-  .al-world-video-hero__video {
-    object-position: center center;
-  }
-
-  .al-world-video-hero__shade {
-    background:
-      linear-gradient(180deg, rgba(2, 3, 10, 0.16) 0%, rgba(2, 3, 10, 0.46) 42%, rgba(2, 3, 10, 0.92) 100%),
-      linear-gradient(90deg, rgba(2, 3, 10, 0.62) 0%, rgba(2, 3, 10, 0.24) 100%);
-  }
-
-  .al-world-video-hero__title {
-    max-width: 720px;
-    font-size: clamp(2.65rem, 11vw, 5.4rem);
-  }
-
-  .al-world-video-hero__text {
-    max-width: 640px;
+/* Grosser Desktop */
+@media (min-width: 1441px) {
+  :root {
+    --al-video-hero-height: clamp(240px, 36vh, 440px);
   }
 }
 
-@media (max-width: 600px) {
-  .al-world-video-hero {
-    min-height: calc(78svh - var(--al-hero-header-offset));
-    padding: 86px 18px 82px;
-  }
-
-  .al-world-video-hero__eyebrow {
-    letter-spacing: 0.14em;
-  }
-
-  .al-world-video-hero__title {
-    font-size: clamp(2.32rem, 14vw, 4.2rem);
-    letter-spacing: -0.055em;
-  }
-
-  .al-world-video-hero__text {
-    font-size: 1rem;
-    line-height: 1.56;
-  }
-
-  .al-world-video-hero__actions {
-    gap: 10px;
-  }
-
-  .al-world-video-hero__button {
-    width: 100%;
-    min-height: 50px;
-  }
-
-  .al-world-video-hero__scroll {
-    display: none;
+@media (max-width: 767px) {
+  .al-world-video-hero,
+  #alWorldVideoHero {
+    display: none !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .al-world-video-hero__video {
+  .al-world-video-hero--video-only .al-world-video-hero__video {
     display: none;
   }
 
-  .al-world-video-hero__media {
+  .al-world-video-hero--video-only .al-world-video-hero__media {
     background-image: var(--al-hero-poster, none);
-    background-size: cover;
+    background-size: contain;
     background-position: center;
-  }
-
-  .al-world-video-hero__scroll span {
-    animation: none;
+    background-repeat: no-repeat;
   }
 }
