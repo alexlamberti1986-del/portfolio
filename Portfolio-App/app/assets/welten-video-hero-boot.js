@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v13";
+  var VER = "20260707video-hero-v14";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -22,7 +22,7 @@
     multiversum: {
       label: "Multiversum",
       poster: "assets/videos/multiversum-poster.jpg",
-      src: "assets/videos/multiversum-hero-720.mp4",
+      src: "assets/videos/multiversum-hero.mp4",
     },
     nexora: {
       label: "Nexora",
