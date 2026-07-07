@@ -93,14 +93,10 @@
     var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
     if (!worldKey) return;
 
-    var slideHome = document.getElementById("slide-home");
-    var homeInner = slideHome && slideHome.querySelector(".slide-inner");
-    if (!homeInner) return;
+    var slidesRoot = document.getElementById("slidesRoot");
+    if (!slidesRoot || !slidesRoot.parentNode) return;
 
     var videoHero = document.getElementById("alWorldVideoHero");
-    var legacyHero = homeInner.querySelector(
-      ".home-hero-experience, #dnaStage, #mvParallaxHero, #mvStaticHero"
-    );
 
     document.body.setAttribute("data-welten-video-hero", "1");
     if (document.body.getAttribute("data-world") === "general") {
@@ -111,11 +107,7 @@
       videoHero = buildHero(worldKey);
     }
 
-    if (legacyHero) {
-      homeInner.insertBefore(videoHero, legacyHero);
-    } else {
-      homeInner.insertBefore(videoHero, homeInner.firstChild);
-    }
+    slidesRoot.parentNode.insertBefore(videoHero, slidesRoot);
   }
 
   function onViewportChange() {

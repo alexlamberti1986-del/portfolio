@@ -1,22 +1,13 @@
 /* Video-Hero Trial: nur Video-Streifen, darunter bleibt der bestehende Hero sichtbar */
 body[data-welten-video-hero="1"].mv-preview-lite #slidesRoot,
-body[data-welten-video-hero="1"].mv-preview-lite .site-header,
-body[data-welten-video-hero="1"].mv-preview-lite .experience-rail {
+body[data-welten-video-hero="1"].mv-preview-lite .site-header {
   display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
 }
 
-body[data-welten-video-hero="1"] #slide-home .slide-inner--home {
-  display: block;
-}
-
-body[data-welten-video-hero="1"] #slide-home.slide {
-  min-height: auto;
-}
-
 body[data-welten-video-hero="1"] #alWorldVideoHero {
-  margin-bottom: 10px;
+  margin: 0;
 }
 
 body[data-welten-video-hero="1"] #slide-home .home-hero-experience,
