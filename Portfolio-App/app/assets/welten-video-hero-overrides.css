@@ -1,9 +1,19 @@
-/* Video-Hero Trial: nur Video-Streifen, darunter bleibt der bestehende Hero sichtbar */
+/* Video nur auf Home-Slide, unter Header, danach Hero + Inhalt scrollen */
 body[data-welten-video-hero="1"].mv-preview-lite #slidesRoot,
 body[data-welten-video-hero="1"].mv-preview-lite .site-header {
   display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+body[data-welten-video-hero="1"] #slide-home.slide {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body[data-welten-video-hero="1"] #slide-home .slide-inner--home {
+  display: block;
+  min-height: min-content;
 }
 
 body[data-welten-video-hero="1"] #alWorldVideoHero {
@@ -16,6 +26,17 @@ body[data-welten-video-hero="1"] #slide-home #mvParallaxHero,
 body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
   position: relative;
   z-index: 1;
+}
+
+/* Unterseiten: kein Video */
+body[data-welten-video-hero="1"]:not([data-current-slide="home"]) #alWorldVideoHero,
+#slide-home:not(.active) #alWorldVideoHero {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
 }
 
 /* Handy: Video komplett aus */

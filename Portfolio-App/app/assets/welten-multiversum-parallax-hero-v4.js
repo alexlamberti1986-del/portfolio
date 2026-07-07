@@ -1161,11 +1161,24 @@
     });
   }
 
+  function getVideoHeroOffset() {
+    if (window.WeltenVideoHero && typeof window.WeltenVideoHero.getOffset === "function") {
+      return window.WeltenVideoHero.getOffset() || 0;
+    }
+    var video = document.getElementById("alWorldVideoHero");
+    if (!video) return 0;
+    var slideHome = document.getElementById("slide-home");
+    if (!slideHome || !slideHome.classList.contains("active")) return 0;
+    return video.offsetHeight || 0;
+  }
+
   function getProgress() {
     if (!scrollRoot || !heroEl) return 0;
     var max = heroEl.offsetHeight - scrollRoot.clientHeight;
     if (max <= 0) return 0;
-    return clamp(scrollRoot.scrollTop / max, 0, 1);
+    var offset = getVideoHeroOffset();
+    var adjusted = Math.max(0, scrollRoot.scrollTop - offset);
+    return clamp(adjusted / max, 0, 1);
   }
 
   function dominantOrbKey(state) {
@@ -2038,9 +2051,10 @@
 
     var releaseRange = chapterRange("releaseToNormalContent", [0.97, 1]);
     var heroScrollMax = heroMaxScroll();
+    var videoOffset = getVideoHeroOffset();
     var contentReleased =
       phaseP >= releaseRange[0] ||
-      (scrollRoot && heroScrollMax > 0 && scrollRoot.scrollTop >= heroScrollMax - 6);
+      (scrollRoot && heroScrollMax > 0 && scrollRoot.scrollTop >= videoOffset + heroScrollMax - 6);
     document.body.classList.toggle("is-below-parallax", contentReleased);
     heroEl.classList.toggle("is-content-released", contentReleased);
 
@@ -2079,7 +2093,8 @@
       if (!isPortfolioHoldActive() || portfolioHoldUnlocked) return;
       var max = heroMaxScroll();
       if (max <= 0) return;
-      var atHeroEnd = scrollRoot.scrollTop >= max - 8;
+      var videoOffset = getVideoHeroOffset();
+      var atHeroEnd = scrollRoot.scrollTop >= videoOffset + max - 8;
       if (!atHeroEnd) return;
 
       if (e.deltaY > 0) {
@@ -2118,7 +2133,8 @@
       function (e) {
         if (!isPortfolioHoldActive() || portfolioHoldUnlocked) return;
         var max = heroMaxScroll();
-        if (max <= 0 || scrollRoot.scrollTop < max - 8) return;
+        var videoOffset = getVideoHeroOffset();
+        if (max <= 0 || scrollRoot.scrollTop < videoOffset + max - 8) return;
         var y = e.touches && e.touches[0] ? e.touches[0].clientY : touchStartY;
         var delta = touchStartY - y;
         if (delta > 12) {
@@ -2148,7 +2164,8 @@
         return;
       }
       var max = heroMaxScroll();
-      if (scrollRoot.scrollTop < max - 48) {
+      var videoOffset = getVideoHeroOffset();
+      if (scrollRoot.scrollTop < videoOffset + max - 48) {
         portfolioHoldScrolls = 0;
         portfolioHoldUnlocked = false;
         heroEl.classList.remove("is-portfolio-unlocked");

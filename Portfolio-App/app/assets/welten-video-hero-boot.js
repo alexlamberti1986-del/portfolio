@@ -1,11 +1,11 @@
 /**
- * Video-Hero Trial — Video vor dem Home-Hero, Hero direkt darunter.
- * Handy: kein Video. Tablet/Desktop/Laptop: adaptives Video.
+ * Video-Hero Trial — nur auf Home: Header → Video → Hero → Inhalt.
+ * Handy: kein Video. Unterseiten: kein Video.
  */
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v2";
+  var VER = "20260707video-hero-v5";
   var ENABLED = true;
   var mqPhone = window.matchMedia("(max-width: 767px)");
 
@@ -43,6 +43,19 @@
     return mqPhone.matches;
   }
 
+  function isHomeActive() {
+    var slideHome = document.getElementById("slide-home");
+    if (!slideHome) return false;
+    if (slideHome.classList.contains("active")) return true;
+    var current = document.body.getAttribute("data-current-slide");
+    return !current || current === "home";
+  }
+
+  function getHomeInner() {
+    var slideHome = document.getElementById("slide-home");
+    return slideHome && slideHome.querySelector(".slide-inner");
+  }
+
   function removeVideoHero() {
     var hero = document.getElementById("alWorldVideoHero");
     if (hero) hero.remove();
@@ -51,11 +64,14 @@
 
   function pauseVideoHero() {
     var video = document.querySelector("#alWorldVideoHero video");
-    if (video) {
-      video.pause();
-      video.removeAttribute("src");
-      while (video.firstChild) video.removeChild(video.firstChild);
-    }
+    if (!video) return;
+    video.pause();
+  }
+
+  function playVideoHero() {
+    var video = document.querySelector("#alWorldVideoHero video");
+    if (!video) return;
+    video.play().catch(function () {});
   }
 
   function buildHero(worldKey) {
@@ -75,10 +91,19 @@
       '" type="video/mp4">' +
       "</video></div>";
 
-    var video = section.querySelector("video");
-    if (video) video.play().catch(function () {});
-
+    playVideoHero();
     return section;
+  }
+
+  function placeVideoBeforeHero(videoHero, homeInner) {
+    var legacyHero = homeInner.querySelector(
+      ".home-hero-experience, #dnaStage, #mvParallaxHero, #mvStaticHero"
+    );
+    if (legacyHero) {
+      homeInner.insertBefore(videoHero, legacyHero);
+      return;
+    }
+    homeInner.insertBefore(videoHero, homeInner.firstChild);
   }
 
   function mountVideoHero() {
@@ -93,8 +118,8 @@
     var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
     if (!worldKey) return;
 
-    var slidesRoot = document.getElementById("slidesRoot");
-    if (!slidesRoot || !slidesRoot.parentNode) return;
+    var homeInner = getHomeInner();
+    if (!homeInner) return;
 
     var videoHero = document.getElementById("alWorldVideoHero");
 
@@ -107,7 +132,13 @@
       videoHero = buildHero(worldKey);
     }
 
-    slidesRoot.parentNode.insertBefore(videoHero, slidesRoot);
+    placeVideoBeforeHero(videoHero, homeInner);
+
+    if (isHomeActive()) {
+      playVideoHero();
+    } else {
+      pauseVideoHero();
+    }
   }
 
   function onViewportChange() {
@@ -119,10 +150,21 @@
     mountVideoHero();
   }
 
+  function onSlideChange() {
+    if (!document.getElementById("alWorldVideoHero")) return;
+    if (isHomeActive() && !isPhone()) {
+      playVideoHero();
+    } else {
+      pauseVideoHero();
+    }
+  }
+
   function boot() {
     onViewportChange();
+    onSlideChange();
     setTimeout(onViewportChange, 120);
-    setTimeout(onViewportChange, 600);
+    setTimeout(onViewportChange, 700);
+    setTimeout(onSlideChange, 700);
   }
 
   if (document.readyState === "loading") {
@@ -143,5 +185,26 @@
     setTimeout(onViewportChange, 120);
   });
 
-  window.WeltenVideoHero = { version: VER, remount: boot };
+  document.addEventListener("welten-chapter-change", function () {
+    setTimeout(onSlideChange, 30);
+  });
+
+  try {
+    new MutationObserver(function () {
+      onSlideChange();
+    }).observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-current-slide", "class"],
+    });
+  } catch (e) {}
+
+  window.WeltenVideoHero = {
+    version: VER,
+    remount: boot,
+    getOffset: function () {
+      var video = document.getElementById("alWorldVideoHero");
+      if (!video || !isHomeActive() || isPhone()) return 0;
+      return video.offsetHeight || 0;
+    },
+  };
 })();
