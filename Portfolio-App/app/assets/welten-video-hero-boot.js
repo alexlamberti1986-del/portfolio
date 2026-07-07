@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v12";
+  var VER = "20260707video-hero-v13";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -51,6 +51,28 @@
 
   var frameLive = !isEmbedded();
   var frameVisible = !isEmbedded();
+  var gotWorldSignal = false;
+
+  function isParentActiveFrame() {
+    if (!isEmbedded()) return true;
+    try {
+      var parentFrames = window.parent.document.querySelectorAll(".mv4-frame");
+      for (var i = 0; i < parentFrames.length; i++) {
+        if (parentFrames[i].contentWindow === window && parentFrames[i].classList.contains("is-active")) {
+          return true;
+        }
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function tryEmbeddedInitialReveal() {
+    if (!isEmbedded() || gotWorldSignal || isVideoHidden()) return;
+    if (!isParentActiveFrame()) return;
+    frameLive = true;
+    frameVisible = true;
+    mountVideoHero();
+  }
 
   function isVideoHidden() {
     return mqNoVideo.matches;
@@ -351,6 +373,7 @@
   }
 
   function onWorldEnter() {
+    gotWorldSignal = true;
     frameLive = true;
     frameVisible = false;
     pauseVideoHero();
@@ -358,6 +381,7 @@
   }
 
   function onWorldReveal() {
+    gotWorldSignal = true;
     frameLive = true;
     frameVisible = true;
     mountVideoHero();
@@ -365,6 +389,7 @@
   }
 
   function onWorldPause() {
+    gotWorldSignal = true;
     frameLive = false;
     frameVisible = false;
     pauseVideoHero();
@@ -385,7 +410,12 @@
     boot();
   }
 
-  window.addEventListener("load", boot);
+  window.addEventListener("load", function () {
+    boot();
+    setTimeout(tryEmbeddedInitialReveal, 80);
+    setTimeout(tryEmbeddedInitialReveal, 500);
+    setTimeout(tryEmbeddedInitialReveal, 1400);
+  });
 
   if (mqNoVideo.addEventListener) {
     mqNoVideo.addEventListener("change", onViewportChange);
@@ -409,6 +439,10 @@
     }
     if (e.data.type === "portfolio-world-reveal") {
       onWorldReveal();
+      return;
+    }
+    if (e.data.type === "portfolio-effects") {
+      setTimeout(tryEmbeddedInitialReveal, 40);
       return;
     }
     if (e.data.type === "portfolio-world-pause" || e.data.type === "portfolio-cleanup-transition") {

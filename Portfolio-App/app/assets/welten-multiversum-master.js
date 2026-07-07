@@ -569,6 +569,38 @@
     postFrame(f, { type: "portfolio-world-reveal", world: soundKey(i) });
   }
 
+  function signalFrameReady(f, j) {
+    if (!f) return;
+    try {
+      var file = framePageName(f.contentWindow.location.pathname);
+      if (SHELL_PAGES.indexOf(file) >= 0) {
+        resetFrame(j);
+        return;
+      }
+      resetAttempts[j] = 0;
+    } catch (e) {}
+    ensureSingleBar();
+    injectProfiles(f, j);
+    broadcastLang();
+    postFrame(f, { type: "portfolio-effects", on: effectsOn });
+    if (j === activeIdx()) {
+      postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
+      postFrame(f, { type: "portfolio-world-reveal", world: soundKey(j) });
+    } else {
+      postFrame(f, { type: "portfolio-world-pause", paused: true });
+      postFrame(f, { type: "portfolio-cleanup-transition" });
+    }
+  }
+
+  function primeActiveFrame() {
+    var i = activeIdx();
+    if (i < 0) i = defaultWorld;
+    var f = frames[i];
+    if (!f || !frameHasSrc(f) || !frameIsReady(f)) return;
+    postFrame(f, { type: "portfolio-world-enter", world: soundKey(i) });
+    postFrame(f, { type: "portfolio-world-reveal", world: soundKey(i) });
+  }
+
   function applyActive(i) {
     frames.forEach(function (f, j) {
       var on = j === i;
@@ -895,23 +927,11 @@
 
   frames.forEach(function (f, j) {
     f.addEventListener("load", function () {
-      try {
-        var file = framePageName(f.contentWindow.location.pathname);
-        if (SHELL_PAGES.indexOf(file) >= 0) {
-          resetFrame(j);
-          return;
-        }
-        resetAttempts[j] = 0;
-      } catch (e) {}
-      ensureSingleBar();
-      injectProfiles(f, j);
-      broadcastLang();
-      postFrame(f, { type: "portfolio-effects", on: effectsOn });
-      if (j === activeIdx()) {
-        postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
-        postFrame(f, { type: "portfolio-world-reveal", world: soundKey(j) });
-      }
+      signalFrameReady(f, j);
     });
+    if (frameHasSrc(f) && frameIsReady(f)) {
+      signalFrameReady(f, j);
+    }
   });
 
   ensureSingleBar();
@@ -926,6 +946,10 @@
   setMaster(defaultWorld);
   broadcastLang();
   applyShellRoute();
+  primeActiveFrame();
+  setTimeout(primeActiveFrame, 120);
+  setTimeout(primeActiveFrame, 700);
+  setTimeout(primeActiveFrame, 1800);
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
     window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
   }
