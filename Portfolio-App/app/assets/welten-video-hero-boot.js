@@ -1,6 +1,6 @@
 /**
- * Video-Hero Trial — nur Video oben auf der Home, darunter der bestehende Hero.
- * Handy: kein Video. Tablet/Desktop/Laptop: kompaktes Video mit vollem Bild.
+ * Video-Hero Trial — Video vor dem Home-Hero, Hero direkt darunter.
+ * Handy: kein Video. Tablet/Desktop/Laptop: adaptives Video.
  */
 (function () {
   "use strict";
@@ -97,14 +97,25 @@
     var homeInner = slideHome && slideHome.querySelector(".slide-inner");
     if (!homeInner) return;
 
-    if (document.getElementById("alWorldVideoHero")) return;
+    var videoHero = document.getElementById("alWorldVideoHero");
+    var legacyHero = homeInner.querySelector(
+      ".home-hero-experience, #dnaStage, #mvParallaxHero, #mvStaticHero"
+    );
 
     document.body.setAttribute("data-welten-video-hero", "1");
     if (document.body.getAttribute("data-world") === "general") {
       document.body.classList.add("mv-home-ready");
     }
 
-    homeInner.insertBefore(buildHero(worldKey), homeInner.firstChild);
+    if (!videoHero) {
+      videoHero = buildHero(worldKey);
+    }
+
+    if (legacyHero) {
+      homeInner.insertBefore(videoHero, legacyHero);
+    } else {
+      homeInner.insertBefore(videoHero, homeInner.firstChild);
+    }
   }
 
   function onViewportChange() {

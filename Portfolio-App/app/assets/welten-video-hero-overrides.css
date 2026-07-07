@@ -15,6 +15,18 @@ body[data-welten-video-hero="1"] #slide-home.slide {
   min-height: auto;
 }
 
+body[data-welten-video-hero="1"] #alWorldVideoHero {
+  margin-bottom: 10px;
+}
+
+body[data-welten-video-hero="1"] #slide-home .home-hero-experience,
+body[data-welten-video-hero="1"] #slide-home #dnaStage,
+body[data-welten-video-hero="1"] #slide-home #mvParallaxHero,
+body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
+  position: relative;
+  z-index: 1;
+}
+
 /* Handy: Video komplett aus */
 @media (max-width: 767px) {
   #alWorldVideoHero,
