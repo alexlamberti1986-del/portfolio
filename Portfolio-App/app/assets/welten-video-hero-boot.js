@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260707video-hero-v11";
+  var VER = "20260707video-hero-v12";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};

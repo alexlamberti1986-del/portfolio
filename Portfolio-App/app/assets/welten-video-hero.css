@@ -6,10 +6,10 @@
   margin: 0;
   padding: 0;
   flex-shrink: 0;
-  height: calc(84svh - var(--header-h, 90px) * 0.35);
-  min-height: 480px;
-  max-height: calc(84svh - var(--header-h, 90px) * 0.35);
-  background: #05050a;
+  height: calc(109svh - var(--header-h, 90px) * 0.35);
+  min-height: 624px;
+  max-height: calc(109svh - var(--header-h, 90px) * 0.35);
+  background: var(--navy-0, #050810);
   overflow: hidden;
   z-index: 1;
 }
@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #05050a;
+  background: var(--navy-0, #050810);
 }
 
 .al-world-video-hero--video-only .al-world-video-hero__video {
@@ -45,9 +45,14 @@
   --al-hero-poster: url("assets/videos/multiversum-poster.jpg");
 }
 
+.al-world-video-hero--multiversum.al-world-video-hero--video-only,
+.al-world-video-hero--multiversum.al-world-video-hero--video-only .al-world-video-hero__media {
+  background: var(--navy-0, #02030b);
+}
+
 .al-world-video-hero--multiversum.al-world-video-hero--video-only {
-  height: calc(90svh - var(--header-h, 90px) * 0.35);
-  max-height: calc(90svh - var(--header-h, 90px) * 0.35);
+  height: calc(117svh - var(--header-h, 90px) * 0.35);
+  max-height: calc(117svh - var(--header-h, 90px) * 0.35);
 }
 
 .al-world-video-hero--multiversum .al-world-video-hero__video {
@@ -59,23 +64,38 @@
   --al-hero-poster: url("assets/videos/nexora-poster.jpg");
 }
 
+.al-world-video-hero--nexora.al-world-video-hero--video-only,
+.al-world-video-hero--nexora.al-world-video-hero--video-only .al-world-video-hero__media {
+  background: var(--navy-0, #020712);
+}
+
 .al-world-video-hero--professional {
   --al-hero-poster: url("assets/videos/professional-poster.jpg");
+}
+
+.al-world-video-hero--professional.al-world-video-hero--video-only,
+.al-world-video-hero--professional.al-world-video-hero--video-only .al-world-video-hero__media {
+  background: var(--navy-0, #f4f2ee);
 }
 
 .al-world-video-hero--freiraum {
   --al-hero-poster: url("assets/videos/freiraum-poster.jpg");
 }
 
+.al-world-video-hero--freiraum.al-world-video-hero--video-only,
+.al-world-video-hero--freiraum.al-world-video-hero--video-only .al-world-video-hero__media {
+  background: var(--navy-0, #1c1026);
+}
+
 @supports not (height: 100svh) {
   .al-world-video-hero--video-only {
-    height: calc(84vh - var(--header-h, 90px) * 0.35);
-    max-height: calc(84vh - var(--header-h, 90px) * 0.35);
+    height: calc(109vh - var(--header-h, 90px) * 0.35);
+    max-height: calc(109vh - var(--header-h, 90px) * 0.35);
   }
 
   .al-world-video-hero--multiversum.al-world-video-hero--video-only {
-    height: calc(90vh - var(--header-h, 90px) * 0.35);
-    max-height: calc(90vh - var(--header-h, 90px) * 0.35);
+    height: calc(117vh - var(--header-h, 90px) * 0.35);
+    max-height: calc(117vh - var(--header-h, 90px) * 0.35);
   }
 }
 
@@ -92,6 +112,7 @@
   }
 
   .al-world-video-hero--video-only .al-world-video-hero__media {
+    background-color: var(--navy-0, #050810);
     background-image: var(--al-hero-poster, none);
     background-size: contain;
     background-position: center;
