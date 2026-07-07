@@ -520,6 +520,9 @@
     var now = Date.now();
     if (now - lastWorldBtnAt < 80) return;
     lastWorldBtnAt = now;
+    try {
+      document.dispatchEvent(new CustomEvent("welten-audio-switch-start"));
+    } catch (eAudio) {}
     recoverStuckSwitch();
     purgeSwitchOverlays();
     forceEnableWorldButtons();

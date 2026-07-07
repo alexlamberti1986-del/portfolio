@@ -5,13 +5,11 @@
 (function () {
   "use strict";
 
-  if (!document.body || document.body.getAttribute("data-world-audio-test") !== "1") return;
-
-  var VERSION = "20260706audio-live4";
+  var VERSION = "20260707audio-live5";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 280;
   var FADE_OUT_MS = 180;
-  var POST_ANIMATION_MS = 100;
+  var POST_ANIMATION_MS = 120;
   var TRACKS = {
     general: "assets/audio/worlds/MULTIVERSUM.mp3?v=" + VERSION,
     nexora: "assets/audio/worlds/NEXORA.mp3?v=" + VERSION,
@@ -28,22 +26,33 @@
   var postAnimTimer = 0;
   var preloaded = {};
   var switching = false;
+  var pendingWorld = "";
   var lastObservedWorld = "";
   var worldObserverReady = false;
 
   function effectsEnabled() {
+    if (window.__mvEffectsOn === false) return false;
     try {
       var stored = localStorage.getItem("mv-effects-on");
       if (stored === "0") return false;
       if (stored === "1") return true;
     } catch (e) {}
     if (document.documentElement.classList.contains("mv-effects-off")) return false;
+    if (document.body && document.body.classList.contains("mv-effects-off")) return false;
     var fx = document.getElementById("mv4-fx");
     if (fx) return fx.getAttribute("aria-pressed") === "true";
     try {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
     } catch (e2) {}
     return true;
+  }
+
+  function isSwitchLocked() {
+    return (
+      switching ||
+      !!window.__worldTransitionRunning ||
+      document.documentElement.classList.contains("welten-world-switch-lock")
+    );
   }
 
   function activeWorld() {
@@ -138,6 +147,7 @@
   function stopAll() {
     stopForSwitch();
     switching = false;
+    pendingWorld = "";
   }
 
   function preloadTrack(world) {
@@ -164,11 +174,12 @@
   }
 
   function playElement(el, token) {
-    if (token !== playToken || !effectsEnabled()) return;
+    if (token !== playToken || !effectsEnabled() || isSwitchLocked()) return;
 
     function afterPlay() {
-      if (token !== playToken) return;
+      if (token !== playToken || isSwitchLocked()) return;
       switching = false;
+      pendingWorld = "";
       window.__mvWorldAudioPlaying = true;
       el.muted = false;
       fadeVolume(TARGET_VOLUME);
@@ -204,10 +215,11 @@
   function scheduleRetry(token) {
     if (retryTimer) window.clearTimeout(retryTimer);
     retryTimer = window.setTimeout(function () {
-      if (token !== playToken || !effectsEnabled()) return;
+      if (token !== playToken || !effectsEnabled() || isSwitchLocked()) return;
       var el = ensureAudio();
       if (!el.paused && currentWorld && !el.muted) {
         switching = false;
+        pendingWorld = "";
         window.__mvWorldAudioPlaying = true;
         fadeVolume(TARGET_VOLUME);
         return;
@@ -218,13 +230,14 @@
 
   function startPlayback(world, token) {
     var src = TRACKS[world];
-    if (!src || token !== playToken || !effectsEnabled()) return;
+    if (!src || token !== playToken || !effectsEnabled() || isSwitchLocked()) return;
 
     var el = ensureAudio();
     if (isPlayingWorld(world)) {
       currentSrc = src;
       currentWorld = world;
       switching = false;
+      pendingWorld = "";
       window.__mvWorldAudioPlaying = true;
       el.muted = false;
       fadeVolume(TARGET_VOLUME);
@@ -257,23 +270,31 @@
 
   function schedulePlayAfterAnimation(world) {
     if (!world || !TRACKS[world] || !effectsEnabled()) return;
+    pendingWorld = world;
     if (world === currentWorld && isAudibleWorld(world)) {
       switching = false;
+      pendingWorld = "";
       return;
     }
     cancelPending();
     var token = playToken;
     postAnimTimer = window.setTimeout(function () {
       if (token !== playToken || !effectsEnabled()) return;
-      if (document.documentElement.classList.contains("welten-world-switch-lock")) {
+      if (isSwitchLocked()) {
         waitForSwitchDone(function () {
           if (token !== playToken || !effectsEnabled()) return;
+          if (activeWorld() !== world) return;
           switching = false;
+          pendingWorld = "";
+          lastObservedWorld = world;
           startPlayback(world, token);
         });
         return;
       }
+      if (activeWorld() !== world) return;
       switching = false;
+      pendingWorld = "";
+      lastObservedWorld = world;
       startPlayback(world, token);
     }, POST_ANIMATION_MS);
   }
@@ -282,12 +303,11 @@
     var tries = 0;
     function tick() {
       tries += 1;
-      var locked = document.documentElement.classList.contains("welten-world-switch-lock");
-      if (!locked || window.__worldTransitionRunning !== true) {
+      if (!isSwitchLocked()) {
         cb();
         return;
       }
-      if (tries > 200) {
+      if (tries > 240) {
         cb();
         return;
       }
@@ -297,24 +317,28 @@
   }
 
   function bootMultiversum(force) {
-    if (activeWorld() !== "general" || !effectsEnabled()) return;
+    if (!effectsEnabled() || isSwitchLocked()) return;
+    if (activeWorld() !== "general") return;
     if (!force && switching) return;
     if (isAudibleWorld("general")) {
       currentWorld = "general";
       currentSrc = TRACKS.general;
       window.__mvWorldAudioPlaying = true;
       switching = false;
+      pendingWorld = "";
       return;
     }
     switching = false;
+    pendingWorld = "";
     var token = playToken;
     if (typeof window.__mvWorldAudioBoot === "function") {
       window.__mvWorldAudioBoot()
         .then(function () {
-          if (token !== playToken) return;
+          if (token !== playToken || !effectsEnabled() || activeWorld() !== "general" || isSwitchLocked()) return;
           currentWorld = "general";
           currentSrc = TRACKS.general;
           switching = false;
+          pendingWorld = "";
           window.__mvWorldAudioPlaying = true;
           var bootEl = ensureAudio();
           bootEl.muted = false;
@@ -329,36 +353,18 @@
   }
 
   function resumeCurrent() {
-    if (!effectsEnabled()) return;
-    if (
-      switching ||
-      document.documentElement.classList.contains("welten-world-switch-lock") ||
-      window.__worldTransitionRunning
-    ) {
-      return;
-    }
+    if (!effectsEnabled() || isSwitchLocked()) return;
     switching = false;
     var world = activeWorld();
+    if (!world || !TRACKS[world]) return;
     if (world === "general") bootMultiversum(true);
     else schedulePlayAfterAnimation(world);
   }
 
   function onWorldAttributeChange() {
     if (!worldObserverReady) return;
-    if (
-      switching ||
-      document.documentElement.classList.contains("welten-world-switch-lock") ||
-      window.__worldTransitionRunning
-    ) {
-      return;
-    }
     var world = activeWorld();
-    if (!world || !TRACKS[world] || !effectsEnabled()) return;
-    if (world === lastObservedWorld && isAudibleWorld(world)) return;
-    if (world === lastObservedWorld) return;
     lastObservedWorld = world;
-    if (world === "general") bootMultiversum(true);
-    else schedulePlayAfterAnimation(world);
   }
 
   function hookWorldButtons() {
@@ -368,6 +374,12 @@
     var keys = ["general", "nexora", "vertex", "freiraum"];
     nav.querySelectorAll("button[data-iframe]").forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+      function onWorldButtonIntent() {
+        stopForSwitch();
+        if (keys[idx]) pendingWorld = keys[idx];
+      }
+      btn.addEventListener("pointerdown", onWorldButtonIntent, { capture: true });
+      btn.addEventListener("click", onWorldButtonIntent, { capture: true });
       btn.addEventListener(
         "click",
         function () {
@@ -404,8 +416,7 @@
   }
 
   function tryImmediateBoot() {
-    if (!effectsEnabled()) return;
-    switching = false;
+    if (!effectsEnabled() || isSwitchLocked()) return;
     attachEarlyAudio();
     if (activeWorld() === "general") bootMultiversum(true);
   }
@@ -414,6 +425,10 @@
     attachEarlyAudio();
     ensureAudio();
     hookWorldButtons();
+    if (!effectsEnabled()) {
+      stopAll();
+      return;
+    }
     tryImmediateBoot();
     watchWorldAttribute();
     preloadTrack("nexora");
@@ -438,7 +453,7 @@
 
   document.addEventListener("welten-audio-switch-end", function (e) {
     if (!effectsEnabled()) return;
-    var world = (e.detail && e.detail.world) || activeWorld();
+    var world = (e.detail && e.detail.world) || pendingWorld || activeWorld();
     lastObservedWorld = world;
     schedulePlayAfterAnimation(world);
   });
@@ -460,25 +475,26 @@
 
   window.addEventListener("load", tryImmediateBoot);
   window.addEventListener("pageshow", function () {
+    if (!effectsEnabled() || isSwitchLocked()) return;
     switching = false;
     tryImmediateBoot();
   });
-  window.addEventListener("focus", tryImmediateBoot);
 
   window.addEventListener("message", function (e) {
-    if (e.data && e.data.type === "mv-hero-ready") {
-      switching = false;
-      setTimeout(function () {
-        bootMultiversum(true);
-      }, 20);
-    }
+    if (!e.data || e.data.type !== "mv-hero-ready") return;
+    if (!effectsEnabled() || isSwitchLocked() || activeWorld() !== "general") return;
+    switching = false;
+    setTimeout(function () {
+      bootMultiversum(true);
+    }, 20);
   });
 
   ["pointerdown", "touchstart", "keydown"].forEach(function (ev) {
     document.addEventListener(
       ev,
-      function () {
-        if (!effectsEnabled()) return;
+      function (e) {
+        if (!effectsEnabled() || isSwitchLocked()) return;
+        if (e.target && e.target.closest && e.target.closest(".mv4-worlds button[data-iframe]")) return;
         var el = ensureAudio();
         if (el && !el.paused && activeWorld() === currentWorld) {
           el.muted = false;

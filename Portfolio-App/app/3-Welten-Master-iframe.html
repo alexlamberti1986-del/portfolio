@@ -2,9 +2,9 @@
 <html lang="de-CH">
 <head>
   <script>
-    /* MULTIVERSUM-Musik so früh wie möglich starten (Effekte Ein) */
+    /* Audio-Element früh vorbereiten — Wiedergabe nur über welten-world-audio-test.js */
     (function () {
-      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-live4";
+      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260707audio-live5";
       var VOL = 0.4;
       function effectsWanted() {
         try {
@@ -24,67 +24,36 @@
       a.preload = "auto";
       a.playsInline = true;
       a.setAttribute("playsinline", "");
-      a.setAttribute("autoplay", "");
       a.src = SRC;
-      a.volume = VOL;
+      a.volume = 0;
       a.muted = true;
       window.__mvWorldAudioEarly = a;
-      function markPlaying() {
-        window.__mvWorldAudioPlaying = true;
-      }
-      function unmuteAfterPlay() {
-        a.muted = false;
-        a.volume = VOL;
-        markPlaying();
-      }
       window.__mvWorldAudioBoot = function () {
         if (!effectsWanted()) return Promise.resolve();
         if (document.documentElement.classList.contains("mv-effects-off")) return Promise.resolve();
+        if (document.body && document.body.classList.contains("mv-effects-off")) return Promise.resolve();
+        if (document.body && document.body.getAttribute("data-master-world") && document.body.getAttribute("data-master-world") !== "general") {
+          return Promise.resolve();
+        }
         if (document.body && !a.parentNode) {
           a.style.display = "none";
           document.body.insertBefore(a, document.body.firstChild);
         }
-        if (!a.paused && a.src) {
-          unmuteAfterPlay();
+        if (!a.paused && a.src && window.__mvWorldAudioPlaying) {
+          a.muted = false;
+          a.volume = VOL;
           return Promise.resolve();
         }
         a.muted = true;
-        a.volume = VOL;
-        return a.play().then(unmuteAfterPlay).catch(function () {
-          return a.play().then(function () {
-            unmuteAfterPlay();
-          });
+        a.volume = 0;
+        return a.play().then(function () {
+          a.muted = false;
+          a.volume = VOL;
+          window.__mvWorldAudioPlaying = true;
+        }).catch(function () {
+          return Promise.resolve();
         });
       };
-      var tries = 0;
-      function kick() {
-        if (window.__mvWorldAudioPlaying && !a.paused) return;
-        window.__mvWorldAudioBoot().catch(function () {
-          tries += 1;
-          if (tries < 40) setTimeout(kick, 120);
-        });
-      }
-      function attachAndKick() {
-        if (document.body && !a.parentNode) {
-          a.style.display = "none";
-          document.body.insertBefore(a, document.body.firstChild);
-        }
-        kick();
-      }
-      a.addEventListener("canplay", attachAndKick);
-      a.addEventListener("loadeddata", attachAndKick);
-      if (document.body) attachAndKick();
-      else document.addEventListener("DOMContentLoaded", attachAndKick);
-      var n = 0;
-      var iv = setInterval(function () {
-        n += 1;
-        if ((window.__mvWorldAudioPlaying && !a.paused) || n > 40) {
-          clearInterval(iv);
-          return;
-        }
-        if (!effectsWanted()) return;
-        attachAndKick();
-      }, 200);
     })();
   </script>
   <script>
@@ -142,7 +111,7 @@
     html, body { margin: 0; background: #02030b; }
   </style>
 
-  <link rel="preload" href="assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-live4" as="fetch" type="audio/mpeg" crossorigin />
+  <link rel="preload" href="assets/audio/worlds/MULTIVERSUM.mp3?v=20260707audio-live5" as="fetch" type="audio/mpeg" crossorigin />
   <link rel="preload" href="MULTIVERSUM.html" as="document" fetchpriority="high" />
 
   <link rel="stylesheet" href="assets/welten-font-system.css?v=20260706mob-bar" />
@@ -163,9 +132,7 @@
     id="mvWorldBgm"
     loop
     playsinline
-    autoplay
     preload="auto"
-    src="assets/audio/worlds/MULTIVERSUM.mp3?v=20260706audio-live4"
     style="display:none"
     aria-hidden="true"
   ></audio>
@@ -192,18 +159,6 @@
       }
       if (!a) return;
       a.setAttribute("aria-hidden", "true");
-      if (typeof window.__mvWorldAudioBoot === "function") {
-        window.__mvWorldAudioBoot();
-        var n = 0;
-        var t = setInterval(function () {
-          n += 1;
-          if ((window.__mvWorldAudioPlaying && !a.paused) || n > 30) {
-            clearInterval(t);
-            return;
-          }
-          window.__mvWorldAudioBoot();
-        }, 200);
-      }
     })();
   </script>
   <a class="welten-skip-link" href="#mv-shell-main">Zum Hauptinhalt springen</a>
@@ -292,9 +247,9 @@
   <iframe class="mv4-frame" title="PROFESSIONAL" data-lazy-src="PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
 
-  <script src="assets/welten-multiversum-master.js?v=20260706mobile-switch-anim" defer></script>
+  <script src="assets/welten-multiversum-master.js?v=20260707audio-live5" defer></script>
   <script src="assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="assets/welten-world-switch-preview.js?v=20260706mobile-switch-anim" defer></script>
-  <script src="assets/welten-world-audio-test.js?v=20260706audio-live4" defer></script>
+  <script src="assets/welten-world-audio-test.js?v=20260707audio-live5" defer></script>
 </body>
 </html>

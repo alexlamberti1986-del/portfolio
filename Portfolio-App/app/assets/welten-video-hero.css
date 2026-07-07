@@ -36,6 +36,24 @@
   --al-hero-poster: url("assets/videos/multiversum-poster.jpg");
 }
 
+.al-world-video-hero--multiversum.al-world-video-hero--video-only {
+  height: calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px));
+  min-height: calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px));
+  max-height: none;
+}
+
+.al-world-video-hero--multiversum .al-world-video-hero__video {
+  object-fit: contain;
+  object-position: center center;
+}
+
+@supports not (height: 100svh) {
+  .al-world-video-hero--multiversum.al-world-video-hero--video-only {
+    height: calc(100vh - var(--header-h, 90px) - var(--dock-h, 0px));
+    min-height: calc(100vh - var(--header-h, 90px) - var(--dock-h, 0px));
+  }
+}
+
 .al-world-video-hero--nexora {
   --al-hero-poster: url("assets/videos/nexora-poster.jpg");
 }
