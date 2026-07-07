@@ -2,61 +2,6 @@
 <html lang="de-CH">
 <head>
   <script>
-    /* Audio-Element früh vorbereiten — Wiedergabe nur über welten-world-audio-test.js */
-    (function () {
-      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260707audio-live6";
-      var VOL = 0.4;
-      function effectsWanted() {
-        try {
-          var stored = localStorage.getItem("mv-effects-on");
-          if (stored === "0") return false;
-          if (stored === "1") return true;
-        } catch (e) {}
-        try {
-          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-        } catch (e2) {}
-        return true;
-      }
-      if (!effectsWanted()) return;
-      var a = new Audio();
-      a.id = "mvWorldBgm";
-      a.loop = true;
-      a.preload = "auto";
-      a.playsInline = true;
-      a.setAttribute("playsinline", "");
-      a.src = SRC;
-      a.volume = 0;
-      a.muted = true;
-      window.__mvWorldAudioEarly = a;
-      window.__mvWorldAudioBoot = function () {
-        if (!effectsWanted()) return Promise.resolve();
-        if (document.documentElement.classList.contains("mv-effects-off")) return Promise.resolve();
-        if (document.body && document.body.classList.contains("mv-effects-off")) return Promise.resolve();
-        if (document.body && document.body.getAttribute("data-master-world") && document.body.getAttribute("data-master-world") !== "general") {
-          return Promise.resolve();
-        }
-        if (document.body && !a.parentNode) {
-          a.style.display = "none";
-          document.body.insertBefore(a, document.body.firstChild);
-        }
-        if (!a.paused && a.src && window.__mvWorldAudioPlaying) {
-          a.muted = false;
-          a.volume = VOL;
-          return Promise.resolve();
-        }
-        a.muted = true;
-        a.volume = 0;
-        return a.play().then(function () {
-          a.muted = false;
-          a.volume = VOL;
-          window.__mvWorldAudioPlaying = true;
-        }).catch(function () {
-          return Promise.resolve();
-        });
-      };
-    })();
-  </script>
-  <script>
     (function () {
       function releaseShell() {
         document.documentElement.classList.remove("mv-shell-booting", "mv-splash-active", "mv-splash-done");
@@ -65,13 +10,6 @@
       }
       window.addEventListener("message", function (e) {
         if (!e.data || e.data.type !== "mv-hero-ready") return;
-        var a = window.__mvWorldAudioEarly;
-        if (a && a.preload !== "auto") {
-          a.preload = "auto";
-          try {
-            a.load();
-          } catch (err) {}
-        }
         releaseShell();
       });
       releaseShell();
@@ -111,7 +49,6 @@
     html, body { margin: 0; background: #02030b; }
   </style>
 
-  <link rel="preload" href="assets/audio/worlds/MULTIVERSUM.mp3?v=20260707audio-live6" as="fetch" type="audio/mpeg" crossorigin />
   <link rel="preload" href="MULTIVERSUM.html" as="document" fetchpriority="high" />
 
   <link rel="stylesheet" href="assets/welten-font-system.css?v=20260706mob-bar" />
@@ -127,40 +64,7 @@
   <script src="assets/welten-shell-seo.js?v=20260706perf-fix" defer></script>
   <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 </head>
-<body data-master-world="general" data-live-shell="1" data-live-default="0" data-splash-boot="0" data-world-audio-test="1">
-  <audio
-    id="mvWorldBgm"
-    loop
-    playsinline
-    preload="auto"
-    style="display:none"
-    aria-hidden="true"
-  ></audio>
-  <script>
-    (function () {
-      if (document.body.getAttribute("data-world-audio-test") !== "1") return;
-      var early = window.__mvWorldAudioEarly;
-      var a = document.getElementById("mvWorldBgm");
-      if (early && a && early !== a) {
-        try {
-          a.parentNode && a.parentNode.replaceChild(early, a);
-        } catch (e) {
-          if (a.parentNode) a.remove();
-          early.id = "mvWorldBgm";
-          early.style.display = "none";
-          document.body.insertBefore(early, document.body.firstChild);
-        }
-        a = early;
-      } else if (early && !a) {
-        early.id = "mvWorldBgm";
-        early.style.display = "none";
-        document.body.insertBefore(early, document.body.firstChild);
-        a = early;
-      }
-      if (!a) return;
-      a.setAttribute("aria-hidden", "true");
-    })();
-  </script>
+<body data-master-world="general" data-live-shell="1" data-live-default="0" data-splash-boot="0">
   <a class="welten-skip-link" href="#mv-shell-main">Zum Hauptinhalt springen</a>
   <main id="mv-shell-main" class="mv-shell-seo" lang="de-CH">
     <h1>Alex Lamberti · Multiversum für digitale Welten</h1>
@@ -247,9 +151,8 @@
   <iframe class="mv4-frame" title="PROFESSIONAL" data-lazy-src="PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" title="FREIRAUM" data-lazy-src="FREIRAUM.html" src="about:blank"></iframe>
 
-  <script src="assets/welten-multiversum-master.js?v=20260707audio-live6" defer></script>
+  <script src="assets/welten-multiversum-master.js?v=20260707no-audio" defer></script>
   <script src="assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="assets/welten-world-switch-preview.js?v=20260706mobile-switch-anim" defer></script>
-  <script src="assets/welten-world-audio-test.js?v=20260707audio-live6" defer></script>
 </body>
 </html>

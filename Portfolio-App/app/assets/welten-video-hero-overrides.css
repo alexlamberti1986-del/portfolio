@@ -1,4 +1,4 @@
-/* Video nur auf Home-Slide, unter Header, danach Hero + Inhalt scrollen */
+/* Video nur auf Home-Slide: Header → Hero → Video → Inhalt scrollen */
 body[data-welten-video-hero="1"].mv-preview-lite #slidesRoot,
 body[data-welten-video-hero="1"].mv-preview-lite .site-header {
   display: flex !important;
@@ -19,11 +19,7 @@ body[data-welten-video-hero="1"] #slide-home .slide-inner--home {
 body[data-welten-video-hero="1"] #alWorldVideoHero {
   margin: 0;
   position: relative;
-  z-index: 3;
-}
-
-body[data-welten-video-hero="1"] #slide-home .slide-inner--home > #alWorldVideoHero {
-  order: -1;
+  z-index: 1;
 }
 
 body[data-welten-video-hero="1"] #slide-home #mvParallaxHero,
@@ -31,24 +27,12 @@ body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
   margin-top: 0;
 }
 
-body[data-welten-video-hero="1"] #mvParallaxHero .mv-scroll-slide__body,
-body[data-welten-video-hero="1"] #mvParallaxHero .mv-scroll-slide__lead,
-body[data-welten-video-hero="1"] #mvParallaxHero .mv-scroll-slide__eyebrow {
-  font-size: clamp(1rem, 1.12vw, 1.22rem) !important;
-  line-height: 1.62 !important;
-}
-
-body[data-welten-video-hero="1"] #mvParallaxHero .mv-scroll-slide__title {
-  font-size: clamp(1.8rem, 3vw, 2.8rem) !important;
-  line-height: 1.08 !important;
-}
-
 body[data-welten-video-hero="1"] #slide-home .home-hero-experience,
 body[data-welten-video-hero="1"] #slide-home #dnaStage,
 body[data-welten-video-hero="1"] #slide-home #mvParallaxHero,
 body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* Unterseiten: kein Video */

@@ -6,12 +6,12 @@
   margin: 0;
   padding: 0;
   flex-shrink: 0;
-  height: calc(92svh - var(--header-h, 90px) - var(--dock-h, 0px));
-  min-height: calc(92svh - var(--header-h, 90px) - var(--dock-h, 0px));
-  max-height: calc(92svh - var(--header-h, 90px) - var(--dock-h, 0px));
+  height: calc(56svh - var(--header-h, 90px) * 0.35);
+  min-height: 320px;
+  max-height: calc(56svh - var(--header-h, 90px) * 0.35);
   background: #05050a;
   overflow: hidden;
-  z-index: 2;
+  z-index: 1;
 }
 
 .al-world-video-hero--video-only .al-world-video-hero__media {
@@ -29,7 +29,7 @@
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
   opacity: 0;
   transition: opacity 280ms ease;
@@ -46,13 +46,12 @@
 }
 
 .al-world-video-hero--multiversum.al-world-video-hero--video-only {
-  height: calc(96svh - var(--header-h, 90px) - var(--dock-h, 0px));
-  min-height: calc(96svh - var(--header-h, 90px) - var(--dock-h, 0px));
-  max-height: calc(96svh - var(--header-h, 90px) - var(--dock-h, 0px));
+  height: calc(60svh - var(--header-h, 90px) * 0.35);
+  max-height: calc(60svh - var(--header-h, 90px) * 0.35);
 }
 
 .al-world-video-hero--multiversum .al-world-video-hero__video {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
 }
 
@@ -70,15 +69,13 @@
 
 @supports not (height: 100svh) {
   .al-world-video-hero--video-only {
-    height: calc(92vh - var(--header-h, 90px) - var(--dock-h, 0px));
-    min-height: calc(92vh - var(--header-h, 90px) - var(--dock-h, 0px));
-    max-height: calc(92vh - var(--header-h, 90px) - var(--dock-h, 0px));
+    height: calc(56vh - var(--header-h, 90px) * 0.35);
+    max-height: calc(56vh - var(--header-h, 90px) * 0.35);
   }
 
   .al-world-video-hero--multiversum.al-world-video-hero--video-only {
-    height: calc(96vh - var(--header-h, 90px) - var(--dock-h, 0px));
-    min-height: calc(96vh - var(--header-h, 90px) - var(--dock-h, 0px));
-    max-height: calc(96vh - var(--header-h, 90px) - var(--dock-h, 0px));
+    height: calc(60vh - var(--header-h, 90px) * 0.35);
+    max-height: calc(60vh - var(--header-h, 90px) * 0.35);
   }
 }
 
@@ -96,7 +93,7 @@
 
   .al-world-video-hero--video-only .al-world-video-hero__media {
     background-image: var(--al-hero-poster, none);
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
   }
