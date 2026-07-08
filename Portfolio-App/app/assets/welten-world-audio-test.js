@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260708audio-fix11";
+  var VERSION = "20260708audio-fix12";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
@@ -347,7 +347,10 @@
     switchGeneration += 1;
     setSwitchFlag(true);
     hardStopBgm();
-    initialBootDone = false;
+    /* Nur Gesture-Boot für echten Erstbesuch erlauben — nach Wechsel starten wir über switch-end. */
+    initialBootDone = true;
+    bootGesturePending = false;
+    unhookBootGesture();
     if (pendingWorld) preloadTrack(pendingWorld);
   }
 
@@ -371,6 +374,8 @@
         waitForAnimationEnd(start);
         return;
       }
+      /* Iframe-BGM hart stoppen, damit nach Animation nur der Shell-Player läuft */
+      stopIframeWorldBgm();
       playBgm(world, token, SWITCH_END_FADE_MS, expectedSwitch);
     }
 
@@ -391,7 +396,8 @@
       effectsEnabled() &&
       activeWorld() === "general" &&
       !initialBootDone &&
-      !window.__mvWorldAudioPlaying
+      !window.__mvWorldAudioPlaying &&
+      !isEarlyBootBlocked()
     );
   }
 
@@ -509,6 +515,7 @@
   }
 
   function bootFromUserGesture(e) {
+    if (isEarlyBootBlocked()) return;
     if (initialBootDone || window.__mvWorldAudioPlaying) {
       unhookBootGesture();
       return;
@@ -749,7 +756,15 @@
       return;
     }
     if (e.data.type === "mv-iframe-bgm-playing") {
-      if (activeWorld() !== "general") return;
+      /* Während Weltenwechsel: Iframe-BGM sofort stoppen (nur Shell nach Animation) */
+      if (isEarlyBootBlocked()) {
+        stopIframeWorldBgm();
+        return;
+      }
+      if (activeWorld() !== "general") {
+        stopIframeWorldBgm();
+        return;
+      }
       window.__mvWorldAudioPlaying = true;
       initialBootDone = true;
       bootGesturePending = false;

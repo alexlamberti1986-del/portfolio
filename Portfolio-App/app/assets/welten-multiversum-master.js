@@ -443,6 +443,8 @@
       function relay(ev) {
         if (ev && isExcluded(ev.target)) return;
         try {
+          if (window.__mvInWorldSwitch || window.__worldTransitionRunning) return;
+          if (document.documentElement.classList.contains("welten-world-switch-lock")) return;
           if (
             win.parent &&
             win.parent.WeltenWorldAudioTest &&

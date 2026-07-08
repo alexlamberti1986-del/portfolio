@@ -25,7 +25,7 @@
     /* Multiversum-Startmusik: im Iframe selbst starten (funktioniert auch bei file://) */
     (function () {
       if (window.parent === window) return;
-      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260708audio-fix11";
+      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260708audio-fix12";
       var VOL = 0.4;
       var started = false;
       var pending = false;
@@ -67,6 +67,18 @@
         return !!target.closest('a[href^="tel:"], a[href^="mailto:"], a[href^="sms:"]');
       }
 
+      function parentSwitchBlocked() {
+        try {
+          var p = window.parent;
+          if (p.__mvInWorldSwitch) return true;
+          if (p.__worldTransitionRunning) return true;
+          if (p.document && p.document.documentElement.classList.contains("welten-world-switch-lock")) {
+            return true;
+          }
+        } catch (e) {}
+        return false;
+      }
+
       function parentAlreadyPlaying() {
         try {
           if (window.parent.__mvWorldAudioPlaying) return true;
@@ -76,6 +88,7 @@
 
       function tryBootFromParentApi() {
         try {
+          if (parentSwitchBlocked()) return false;
           var api = window.parent.WeltenWorldAudioTest;
           if (api && typeof api.bootFromUserGesture === "function") {
             api.bootFromUserGesture(null);
@@ -86,7 +99,7 @@
       }
 
       function playLocalBgm() {
-        if (started || pending || parentAlreadyPlaying()) return;
+        if (started || pending || parentAlreadyPlaying() || parentSwitchBlocked()) return;
         pending = true;
         var el = ensureLocalBgm();
         el.muted = false;
@@ -102,6 +115,10 @@
           return;
         }
         function onOk() {
+          if (parentSwitchBlocked() || parentAlreadyPlaying()) {
+            stopLocalBgm();
+            return;
+          }
           started = true;
           pending = false;
           el.muted = false;
@@ -129,7 +146,7 @@
       }
 
       function relay(e) {
-        if (started || parentAlreadyPlaying()) return;
+        if (started || parentAlreadyPlaying() || parentSwitchBlocked()) return;
         if (e && isExcluded(e.target)) return;
         tryBootFromParentApi();
         playLocalBgm();
