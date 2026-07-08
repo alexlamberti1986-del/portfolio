@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260708audio-fix12";
+  var VERSION = "20260708audio-fix13";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
@@ -724,10 +724,12 @@
 
   document.addEventListener("mv-effects-change", function (e) {
     var on = !!(e.detail && e.detail.on);
+    window.__mvEffectsOn = on;
     if (!on) {
       hardStopBgm();
       setSwitchFlag(false);
       initialBootDone = false;
+      bootGesturePending = false;
       unhookBootGesture();
       return;
     }
@@ -756,8 +758,8 @@
       return;
     }
     if (e.data.type === "mv-iframe-bgm-playing") {
-      /* Während Weltenwechsel: Iframe-BGM sofort stoppen (nur Shell nach Animation) */
-      if (isEarlyBootBlocked()) {
+      /* Effekte aus / Weltenwechsel: Iframe-BGM sofort stoppen */
+      if (!effectsEnabled() || isEarlyBootBlocked()) {
         stopIframeWorldBgm();
         return;
       }

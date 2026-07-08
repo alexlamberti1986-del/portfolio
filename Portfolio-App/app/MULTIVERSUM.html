@@ -25,11 +25,12 @@
     /* Multiversum-Startmusik: im Iframe selbst starten (funktioniert auch bei file://) */
     (function () {
       if (window.parent === window) return;
-      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260708audio-fix12";
+      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260708audio-fix13";
       var VOL = 0.4;
       var started = false;
       var pending = false;
       var bgm = null;
+      var effectsAllowed = true;
 
       function notifyParent(type) {
         try {
@@ -67,6 +68,39 @@
         return !!target.closest('a[href^="tel:"], a[href^="mailto:"], a[href^="sms:"]');
       }
 
+      function syncEffectsFromParent() {
+        try {
+          var p = window.parent;
+          if (p.__mvEffectsOn === false) {
+            effectsAllowed = false;
+            return effectsAllowed;
+          }
+          if (p.document) {
+            if (p.document.documentElement.classList.contains("mv-effects-off")) {
+              effectsAllowed = false;
+              return effectsAllowed;
+            }
+            if (p.document.body && p.document.body.classList.contains("mv-effects-off")) {
+              effectsAllowed = false;
+              return effectsAllowed;
+            }
+            var fx = p.document.getElementById("mv4-fx");
+            if (fx) {
+              effectsAllowed = fx.getAttribute("aria-pressed") === "true";
+              return effectsAllowed;
+            }
+          }
+          var stored = p.localStorage && p.localStorage.getItem("mv-effects-on");
+          if (stored === "0") effectsAllowed = false;
+          else if (stored === "1") effectsAllowed = true;
+        } catch (e) {}
+        return effectsAllowed;
+      }
+
+      function parentEffectsOff() {
+        return !syncEffectsFromParent();
+      }
+
       function parentSwitchBlocked() {
         try {
           var p = window.parent;
@@ -88,7 +122,7 @@
 
       function tryBootFromParentApi() {
         try {
-          if (parentSwitchBlocked()) return false;
+          if (parentEffectsOff() || parentSwitchBlocked()) return false;
           var api = window.parent.WeltenWorldAudioTest;
           if (api && typeof api.bootFromUserGesture === "function") {
             api.bootFromUserGesture(null);
@@ -99,7 +133,9 @@
       }
 
       function playLocalBgm() {
-        if (started || pending || parentAlreadyPlaying() || parentSwitchBlocked()) return;
+        if (started || pending || parentAlreadyPlaying() || parentSwitchBlocked() || parentEffectsOff()) {
+          return;
+        }
         pending = true;
         var el = ensureLocalBgm();
         el.muted = false;
@@ -115,7 +151,7 @@
           return;
         }
         function onOk() {
-          if (parentSwitchBlocked() || parentAlreadyPlaying()) {
+          if (parentSwitchBlocked() || parentAlreadyPlaying() || parentEffectsOff()) {
             stopLocalBgm();
             return;
           }
@@ -146,7 +182,7 @@
       }
 
       function relay(e) {
-        if (started || parentAlreadyPlaying() || parentSwitchBlocked()) return;
+        if (started || parentAlreadyPlaying() || parentSwitchBlocked() || parentEffectsOff()) return;
         if (e && isExcluded(e.target)) return;
         tryBootFromParentApi();
         playLocalBgm();
@@ -167,13 +203,23 @@
 
       window.addEventListener("message", function (e) {
         if (!e.data) return;
-        if (e.data.type === "portfolio-world-pause" || e.data.type === "mv-stop-iframe-bgm") {
+        if (e.data.type === "portfolio-effects") {
+          effectsAllowed = e.data.on !== false;
+          if (!effectsAllowed) stopLocalBgm();
+          return;
+        }
+        if (
+          e.data.type === "portfolio-world-pause" ||
+          e.data.type === "mv-stop-iframe-bgm"
+        ) {
           stopLocalBgm();
         }
       });
 
       window.__mvStopIframeWorldBgm = stopLocalBgm;
-      ensureLocalBgm();
+      syncEffectsFromParent();
+      if (!effectsAllowed) stopLocalBgm();
+      else ensureLocalBgm();
     })();
   </script>
   <style id="mv-boot-critical">html,body{background:#02030b!important}@media (max-width:640px){body[data-world="general"] .site-header .brand-mark{font-size:0!important;line-height:1.2!important}body[data-world="general"] .site-header .brand-mark span{display:none!important}body[data-world="general"] .site-header .brand-mark::after{content:"E-Mail: alex.lamberti@hotmail.ch";font-size:.7rem;font-weight:500;color:rgba(232,238,248,.9);white-space:normal;word-break:break-word}body[data-world="general"] .site-header .header-meta[href^="mailto:"]{display:none!important}}@media (max-width:1023px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience,body[data-world="general"] .home-hero-experience::before,body[data-world="general"] .home-hero-experience::after,body[data-world="general"] .neuro-core,body[data-world="general"] .neuro-core::before,body[data-world="general"] .neuro-core::after,body[data-world="general"] .dna-unified-scene,body[data-world="general"] .dna-holo-arm,body[data-world="general"] .dna-visual-stack,body[data-world="general"] #dnaPremiumCanvas,body[data-world="general"] #dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;max-height:0!important;overflow:hidden!important;background:none!important}body[data-world="general"] #slide-home.slide,body[data-world="general"] #slide-home .slide-inner--home{background:#05070d!important}}@media (min-width:1024px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{visibility:hidden!important;opacity:0!important;pointer-events:none!important}#mvParallaxHero:not(.is-boot-painted){opacity:0!important;visibility:hidden!important;pointer-events:none!important}body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) #slidesRoot,body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) .site-header{display:none!important;visibility:hidden!important;opacity:0!important}}</style>

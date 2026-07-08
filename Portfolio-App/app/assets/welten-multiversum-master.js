@@ -342,6 +342,7 @@
 
   function applyEffectsState() {
     var off = !effectsOn;
+    window.__mvEffectsOn = effectsOn;
     document.documentElement.classList.toggle("mv-effects-off", off);
     document.body.classList.toggle("mv-effects-off", off);
     var reduce = off || prefersReducedMotion();
@@ -349,6 +350,15 @@
     document.body.classList.toggle("welten-reduce-effects", reduce);
     frames.forEach(function (f) {
       postFrame(f, { type: "portfolio-effects", on: effectsOn });
+      if (off) {
+        try {
+          var win = f.contentWindow;
+          if (win && typeof win.__mvStopIframeWorldBgm === "function") {
+            win.__mvStopIframeWorldBgm();
+          }
+          postFrame(f, { type: "mv-stop-iframe-bgm" });
+        } catch (eStopFx) {}
+      }
     });
     document.dispatchEvent(new CustomEvent("mv-effects-change", { detail: { on: effectsOn } }));
   }
