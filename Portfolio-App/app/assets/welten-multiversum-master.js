@@ -428,7 +428,52 @@
     return k === "professional" ? "professional" : k;
   }
 
+  function injectAudioGestureBridge(f, i) {
+    if (i !== 0) return;
+    try {
+      var win = f.contentWindow;
+      var doc = f.contentDocument;
+      if (!win) return;
+      if (win.__mvMasterAudioRelayBound) return;
+      win.__mvMasterAudioRelayBound = true;
+      function isExcluded(target) {
+        if (!target || !target.closest) return false;
+        return !!target.closest('a[href^="tel:"], a[href^="mailto:"], a[href^="sms:"]');
+      }
+      function relay(ev) {
+        if (ev && isExcluded(ev.target)) return;
+        try {
+          if (
+            win.parent &&
+            win.parent.WeltenWorldAudioTest &&
+            typeof win.parent.WeltenWorldAudioTest.bootFromUserGesture === "function"
+          ) {
+            win.parent.WeltenWorldAudioTest.bootFromUserGesture(null);
+          }
+        } catch (eRelay) {}
+      }
+      win.addEventListener("pointerdown", relay, true);
+      win.addEventListener("click", relay, true);
+      win.addEventListener("touchstart", relay, true);
+      win.addEventListener("wheel", relay, true);
+      win.addEventListener(
+        "scroll",
+        function () {
+          relay(null);
+        },
+        true
+      );
+      if (doc) {
+        doc.addEventListener("pointerdown", relay, true);
+        doc.addEventListener("click", relay, true);
+        doc.addEventListener("touchstart", relay, true);
+        doc.addEventListener("wheel", relay, true);
+      }
+    } catch (eBridge) {}
+  }
+
   function injectProfiles(f, i) {
+    injectAudioGestureBridge(f, i);
     injectPreviewShellCss(f);
     try {
       var d = f.contentDocument;
@@ -461,12 +506,14 @@
     return !!(f && f.src && f.src.indexOf("about:blank") === -1);
   }
 
-  function lockShell() {
+  function lockShell(targetWorld) {
     switching = true;
     window.__worldTransitionRunning = true;
     switchLockSince = Date.now();
     try {
-      document.dispatchEvent(new CustomEvent("welten-audio-switch-start"));
+      document.dispatchEvent(
+        new CustomEvent("welten-audio-switch-start", { detail: { world: targetWorld || "" } })
+      );
     } catch (eAudioStart) {}
     var shellBar = getBar();
     if (shellBar) {
@@ -520,9 +567,6 @@
     var now = Date.now();
     if (now - lastWorldBtnAt < 80) return;
     lastWorldBtnAt = now;
-    try {
-      document.dispatchEvent(new CustomEvent("welten-audio-switch-start"));
-    } catch (eAudio) {}
     recoverStuckSwitch();
     purgeSwitchOverlays();
     forceEnableWorldButtons();
@@ -597,6 +641,8 @@
     if (i < 0) i = defaultWorld;
     var f = frames[i];
     if (!f || !frameHasSrc(f) || !frameIsReady(f)) return;
+    injectAudioGestureBridge(f, i);
+    injectProfiles(f, i);
     postFrame(f, { type: "portfolio-world-enter", world: soundKey(i) });
     postFrame(f, { type: "portfolio-world-reveal", world: soundKey(i) });
   }
@@ -711,7 +757,7 @@
     }
 
     resumeAudio();
-    lockShell();
+    lockShell(masterKey(i));
     var c = readChapter(frames[prev]);
     if (c) sharedChapter = c;
 
@@ -927,9 +973,11 @@
 
   frames.forEach(function (f, j) {
     f.addEventListener("load", function () {
+      injectAudioGestureBridge(f, j);
       signalFrameReady(f, j);
     });
     if (frameHasSrc(f) && frameIsReady(f)) {
+      injectAudioGestureBridge(f, j);
       signalFrameReady(f, j);
     }
   });
@@ -955,9 +1003,6 @@
   }
   requestAnimationFrame(function () {
     forceEnableWorldButtons();
-    if (window.WeltenWorldAudioTest && typeof window.WeltenWorldAudioTest.bootMultiversum === "function") {
-      window.WeltenWorldAudioTest.bootMultiversum(true);
-    }
   });
   if (isCoarseMobileShell()) {
     setTimeout(function () {

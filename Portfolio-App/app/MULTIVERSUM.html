@@ -21,6 +21,144 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script>
+    /* Multiversum-Startmusik: im Iframe selbst starten (funktioniert auch bei file://) */
+    (function () {
+      if (window.parent === window) return;
+      var SRC = "assets/audio/worlds/MULTIVERSUM.mp3?v=20260708audio-fix11";
+      var VOL = 0.4;
+      var started = false;
+      var pending = false;
+      var bgm = null;
+
+      function notifyParent(type) {
+        try {
+          window.parent.postMessage({ type: type, world: "general" }, "*");
+        } catch (e) {}
+      }
+
+      function stopLocalBgm() {
+        started = false;
+        pending = false;
+        if (!bgm) return;
+        try {
+          bgm.pause();
+          bgm.currentTime = 0;
+        } catch (e) {}
+        bgm.volume = 0;
+        bgm.muted = true;
+      }
+
+      function ensureLocalBgm() {
+        if (bgm) return bgm;
+        bgm = new Audio(SRC);
+        bgm.loop = true;
+        bgm.preload = "auto";
+        bgm.playsInline = true;
+        bgm.setAttribute("playsinline", "");
+        bgm.volume = 0;
+        bgm.muted = true;
+        window.__mvIframeWorldBgm = bgm;
+        return bgm;
+      }
+
+      function isExcluded(target) {
+        if (!target || !target.closest) return false;
+        return !!target.closest('a[href^="tel:"], a[href^="mailto:"], a[href^="sms:"]');
+      }
+
+      function parentAlreadyPlaying() {
+        try {
+          if (window.parent.__mvWorldAudioPlaying) return true;
+        } catch (e) {}
+        return false;
+      }
+
+      function tryBootFromParentApi() {
+        try {
+          var api = window.parent.WeltenWorldAudioTest;
+          if (api && typeof api.bootFromUserGesture === "function") {
+            api.bootFromUserGesture(null);
+            return true;
+          }
+        } catch (e) {}
+        return false;
+      }
+
+      function playLocalBgm() {
+        if (started || pending || parentAlreadyPlaying()) return;
+        pending = true;
+        var el = ensureLocalBgm();
+        el.muted = false;
+        el.volume = 0;
+        try {
+          el.currentTime = 0;
+        } catch (e0) {}
+        var p;
+        try {
+          p = el.play();
+        } catch (ePlay) {
+          pending = false;
+          return;
+        }
+        function onOk() {
+          started = true;
+          pending = false;
+          el.muted = false;
+          el.volume = VOL;
+          notifyParent("mv-iframe-bgm-playing");
+        }
+        function onFail() {
+          pending = false;
+        }
+        if (p && typeof p.then === "function") {
+          p.then(onOk).catch(function () {
+            el.muted = true;
+            el.volume = VOL;
+            var p2 = el.play();
+            if (p2 && typeof p2.then === "function") {
+              p2.then(function () {
+                el.muted = false;
+                onOk();
+              }).catch(onFail);
+            } else onFail();
+          });
+        } else {
+          onOk();
+        }
+      }
+
+      function relay(e) {
+        if (started || parentAlreadyPlaying()) return;
+        if (e && isExcluded(e.target)) return;
+        tryBootFromParentApi();
+        playLocalBgm();
+      }
+
+      var opts = { capture: true, passive: true };
+      window.addEventListener("pointerdown", relay, opts);
+      window.addEventListener("click", relay, opts);
+      window.addEventListener("touchstart", relay, opts);
+      window.addEventListener("wheel", relay, opts);
+      window.addEventListener(
+        "scroll",
+        function () {
+          relay(null);
+        },
+        { capture: true, passive: true }
+      );
+
+      window.addEventListener("message", function (e) {
+        if (!e.data) return;
+        if (e.data.type === "portfolio-world-pause" || e.data.type === "mv-stop-iframe-bgm") {
+          stopLocalBgm();
+        }
+      });
+
+      window.__mvStopIframeWorldBgm = stopLocalBgm;
+      ensureLocalBgm();
+    })();
+  </script>
   <style id="mv-boot-critical">html,body{background:#02030b!important}@media (max-width:640px){body[data-world="general"] .site-header .brand-mark{font-size:0!important;line-height:1.2!important}body[data-world="general"] .site-header .brand-mark span{display:none!important}body[data-world="general"] .site-header .brand-mark::after{content:"E-Mail: alex.lamberti@hotmail.ch";font-size:.7rem;font-weight:500;color:rgba(232,238,248,.9);white-space:normal;word-break:break-word}body[data-world="general"] .site-header .header-meta[href^="mailto:"]{display:none!important}}@media (max-width:1023px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience,body[data-world="general"] .home-hero-experience::before,body[data-world="general"] .home-hero-experience::after,body[data-world="general"] .neuro-core,body[data-world="general"] .neuro-core::before,body[data-world="general"] .neuro-core::after,body[data-world="general"] .dna-unified-scene,body[data-world="general"] .dna-holo-arm,body[data-world="general"] .dna-visual-stack,body[data-world="general"] #dnaPremiumCanvas,body[data-world="general"] #dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;max-height:0!important;overflow:hidden!important;background:none!important}body[data-world="general"] #slide-home.slide,body[data-world="general"] #slide-home .slide-inner--home{background:#05070d!important}}@media (min-width:1024px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{visibility:hidden!important;opacity:0!important;pointer-events:none!important}#mvParallaxHero:not(.is-boot-painted){opacity:0!important;visibility:hidden!important;pointer-events:none!important}body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) #slidesRoot,body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) .site-header{display:none!important;visibility:hidden!important;opacity:0!important}}</style>
   <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260706boot-fix" />
   <link rel="stylesheet" href="assets/welten-multiversum-world.css?v=20260705tablet-hero" />
