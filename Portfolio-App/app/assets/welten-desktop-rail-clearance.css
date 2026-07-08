@@ -1,7 +1,8 @@
 /**
  * Laptop/Tablet/Handy (≤1919px): Seitliche Navigation aus.
- * Desktop (≥1920px): Rail sichtbar.
+ * Desktop / TV / XL (≥1920px): Rail sichtbar (inkl. Multiversum-Home).
  * Parallax-Layout: welten-multiversum-parallax-v4.css
+ * XL-Freiraum: welten-large-display.css (ab 2560px CSS-Breite = typ. 65″ @ 150%).
  */
 @media (max-width: 1919px) {
   .experience-rail,
@@ -47,13 +48,34 @@
   }
 }
 
-/* Desktop: einheitlicher Abstand der Punktnavigation zum rechten Bildschirmrand */
+/* Desktop+: Rail immer sichtbar — überschreibt Multiversum-Home-Ausblendungen */
 @media (min-width: 1920px) {
+  .experience-rail,
+  .side-nav,
+  .dot-nav,
+  .chapter-nav,
+  .vertical-nav,
+  .right-nav,
+  .chapter-dots,
+  .chapter-dock,
+  html.welten-live-shell .experience-rail,
   body[data-world="general"] .experience-rail,
   body[data-world="nexora"] .experience-rail,
   body[data-world="vertex"] .experience-rail,
   body[data-world="freiraum"] .experience-rail,
-  .experience-rail {
+  body[data-mv-v4-test="1"] .experience-rail,
+  body[data-mv-v4-test="1"][data-world="general"] .experience-rail,
+  body[data-mv-v4-test="1"][data-world="general"]:has(#mvParallaxHero) .experience-rail,
+  body[data-world="general"]:has(#mvParallaxHero) .experience-rail,
+  body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail,
+  body[data-world="general"]:has(#mvParallaxHero):not([data-current-slide]) .experience-rail,
+  html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero) .experience-rail,
+  html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail {
+    display: grid !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 800 !important;
     position: fixed !important;
     right: max(22px, env(safe-area-inset-right)) !important;
     left: auto !important;
@@ -71,5 +93,12 @@
     transform: scale(1.28) !important;
     transform-origin: center center !important;
   }
+
+  .slide {
+    padding-right: clamp(76px, 7vw, 128px) !important;
+  }
+
+  #slide-home.slide {
+    padding-right: 0 !important;
+  }
 }
-

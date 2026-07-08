@@ -37,12 +37,15 @@ html.welten-live-shell .btn-menu {
   pointer-events: auto !important;
 }
 
+/* Multiversum-Home-Ausblendung nur unter Desktop; ab 1920px Rail erzwingen */
 @media (min-width: 1920px) {
   html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero) .experience-rail,
-  html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail {
+  html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail,
+  html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero):not([data-current-slide]) .experience-rail {
     display: grid !important;
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    z-index: 800 !important;
   }
 }

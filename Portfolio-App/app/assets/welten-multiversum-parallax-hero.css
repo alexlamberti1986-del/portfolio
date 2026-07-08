@@ -1,12 +1,14 @@
 /* MULTIVERSUM Scroll Story V6 Refined */
 
-/* Multiversum Scroll-Story: rechte Punktnavigation auf Home ausblenden */
-body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail,
-body[data-world="general"]:has(#mvParallaxHero):not([data-current-slide]) .experience-rail {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+/* Multiversum Scroll-Story: Punktnavigation auf Home nur unter Desktop ausblenden */
+@media (max-width: 1919px) {
+  body[data-world="general"]:has(#mvParallaxHero)[data-current-slide="home"] .experience-rail,
+  body[data-world="general"]:has(#mvParallaxHero):not([data-current-slide]) .experience-rail {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
 }
 
 body[data-world="general"]:has(#mvParallaxHero) .home-hero-experience {

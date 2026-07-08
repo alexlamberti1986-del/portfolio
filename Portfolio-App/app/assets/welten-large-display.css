@@ -1,10 +1,11 @@
 /**
  * Large displays (65″ / 98″) — proportional to 27″ desktop baseline.
- * Applies only above 2560px CSS width; laptop (≤1024) and 27″ desktop (1025–2560) unchanged.
+ * 65″ @ 150% Windows-Skalierung liefert oft genau 2560px CSS-Breite → ab 2560px.
+ * Laptop/Tablet/Handy (≤1919) und klassischer Desktop (1920–2559) unverändert.
  */
 
-/* ── 65″ tier: 4K @ ~150 % scaling, ultrawide ── */
-@media (min-width: 2561px) {
+/* ── 65″ tier: 4K @ ~150 % scaling / ultrawide (inkl. genau 2560px) ── */
+@media (min-width: 2560px) {
   :root {
     --welten-xl-content: min(1575px, 61.5vw);
     --welten-xl-orbit: min(600px, 23.4vw);
