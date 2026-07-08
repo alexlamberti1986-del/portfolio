@@ -58,3 +58,38 @@ body[data-welten-video-hero="1"]:not([data-current-slide="home"]) #alWorldVideoH
     pointer-events: none !important;
   }
 }
+
+/*
+ * Screens OHNE seitliche Navigationspunkte (≤1919px, Laptop/kleine Desktops):
+ * Video beidseitig bis zum Screen-Rand.
+ * Desktop mit Rail (≥1920px): Video-Breite unverändert lassen.
+ */
+@media (min-width: 1025px) and (max-width: 1919px) {
+  body[data-welten-video-hero="1"] #slide-home.slide,
+  body[data-welten-video-hero="1"] #slide-home .slide-inner--home {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow-x: clip;
+  }
+
+  body[data-welten-video-hero="1"] #alWorldVideoHero,
+  body[data-welten-video-hero="1"] .al-world-video-hero--video-only {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+  }
+
+  body[data-welten-video-hero="1"] .al-world-video-hero--video-only .al-world-video-hero__media,
+  body[data-welten-video-hero="1"] .al-world-video-hero--video-only .al-world-video-hero__video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  body[data-welten-video-hero="1"] .al-world-video-hero--video-only .al-world-video-hero__media {
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
