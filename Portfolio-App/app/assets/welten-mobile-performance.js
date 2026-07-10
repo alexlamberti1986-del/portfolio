@@ -230,6 +230,16 @@
     document.documentElement.classList.remove("welten-world-paused");
   }
 
+  function removeMobileBottomChrome() {
+    if (!isMobileContext()) return;
+    document.documentElement.style.setProperty("--dock-h", "0px");
+    document.querySelectorAll(
+      ".chapter-dock, #dockScene, #progressRail, .progress-rail, .welten-site-footer"
+    ).forEach(function (el) {
+      el.remove();
+    });
+  }
+
   function fixSlidesLayout() {
     if (!isMobileContext()) {
       document.documentElement.style.removeProperty("--header-h");
@@ -354,6 +364,7 @@
     allowHeroPanY();
     patchDnaDragOffOnTouch();
     flattenNexoraOrbitOnMobile();
+    removeMobileBottomChrome();
     fixSlidesLayout();
     wireMobileHeroNav();
     ensureWorldUnpaused();

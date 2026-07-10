@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260708audio-fix13";
+  var VERSION = "20260710mobile-audio1";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
@@ -27,6 +27,15 @@
   var bootGestureHooked = false;
   var bootGesturePending = false;
   var bootGestureListeners = [];
+  var mobilePlayRetryHooked = false;
+
+  function isTouchMobile() {
+    try {
+      if (window.matchMedia("(max-width: 1024px)").matches) return true;
+      if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return true;
+    } catch (e) {}
+    return false;
+  }
 
   function setSwitchFlag(on) {
     window.__mvInWorldSwitch = !!on;
@@ -322,7 +331,7 @@
     el.addEventListener("canplay", begin, { once: true });
     bootTimer = setTimeout(function () {
       if (canPlayNow(token, world, switchGen) && el.paused) begin();
-    }, 40);
+    }, isTouchMobile() ? 120 : 40);
   }
 
   function waitForAnimationEnd(cb) {
@@ -376,7 +385,8 @@
       }
       /* Iframe-BGM hart stoppen, damit nach Animation nur der Shell-Player läuft */
       stopIframeWorldBgm();
-      playBgm(world, token, SWITCH_END_FADE_MS, expectedSwitch);
+      if (isTouchMobile()) resumeAudioCtx();
+      playBgm(world, token, isTouchMobile() ? 160 : SWITCH_END_FADE_MS, expectedSwitch);
     }
 
     waitForAnimationEnd(start);
@@ -389,6 +399,49 @@
       if (!window.__mv4AudioCtx) window.__mv4AudioCtx = new Ctx();
       if (window.__mv4AudioCtx.state === "suspended") window.__mv4AudioCtx.resume();
     } catch (e) {}
+  }
+
+  function primeShellAudioGesture() {
+    if (!effectsEnabled()) return;
+    resumeAudioCtx();
+    var el = ensureBgm();
+    el.loop = true;
+    el.playsInline = true;
+    el.setAttribute("playsinline", "");
+    el.muted = true;
+    el.volume = 0;
+    try {
+      var p = el.play();
+      if (p && typeof p.then === "function") p.catch(function () {});
+    } catch (ePlay) {}
+    window.__mvMobileAudioPrimedAt = Date.now();
+  }
+
+  function hookMobilePlayRetry() {
+    if (!isTouchMobile() || mobilePlayRetryHooked) return;
+    mobilePlayRetryHooked = true;
+    function retryFromGesture() {
+      if (!effectsEnabled() || isEarlyBootBlocked()) return;
+      var world = activeWorld();
+      if (!TRACKS[world]) return;
+      var el = ensureBgm();
+      if (!el.paused && !el.muted && el.volume > 0.08) return;
+      resumeAudioCtx();
+      if (window.__mvWorldAudioPlaying || initialBootDone) {
+        playBgm(world, playToken, isTouchMobile() ? 160 : SWITCH_END_FADE_MS, switchGeneration);
+      } else if (world === "general") {
+        bootGesturePending = false;
+        playGeneralBgmNow();
+      }
+    }
+    ["pointerdown", "touchstart"].forEach(function (type) {
+      document.addEventListener(type, retryFromGesture, { capture: true, passive: true });
+    });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden || !effectsEnabled()) return;
+      if (!window.__mvWorldAudioPlaying) return;
+      retryFromGesture();
+    });
   }
 
   function needsStartGesture() {
@@ -534,6 +587,15 @@
     bootFromUserGesture(e);
   }
 
+  function getActiveFrame() {
+    var frames = document.querySelectorAll(".mv4-frame");
+    var i;
+    for (i = 0; i < frames.length; i++) {
+      if (frames[i].classList.contains("is-active")) return frames[i];
+    }
+    return frames[0] || null;
+  }
+
   function getMultiversumFrame() {
     var frames = document.querySelectorAll(".mv4-frame");
     var i;
@@ -577,7 +639,7 @@
   }
 
   function hookIframeGestures() {
-    var frame = getMultiversumFrame();
+    var frame = isTouchMobile() ? getActiveFrame() : getMultiversumFrame();
     if (!frame) return;
     function tryAttach() {
       if (initialBootDone || window.__mvWorldAudioPlaying) return;
@@ -664,6 +726,7 @@
         if (!world) return;
         pendingWorld = world;
         preloadTrack(world);
+        if (isTouchMobile()) primeShellAudioGesture();
       }
       btn.addEventListener("pointerdown", onIntent, { capture: true });
       btn.addEventListener("click", onIntent, { capture: true });
@@ -690,6 +753,7 @@
     ensureBgm();
     hookWorldButtons();
     hookFxButtonForAudio();
+    hookMobilePlayRetry();
     if (typeof window.__mvWorldAudioBoot === "function") {
       window.__mvWorldAudioBoot = function () {
         return Promise.resolve();
