@@ -41,11 +41,23 @@
     var run = function () {
       preloadLazyWorlds(preloadFrame, activeIdx);
     };
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(run, { timeout: 5000 });
-    } else {
-      setTimeout(run, 3500);
-    }
+    var delay = function () {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(run, { timeout: 7000 });
+      } else {
+        setTimeout(run, 5000);
+      }
+    };
+    window.addEventListener(
+      "message",
+      function onHeroReady(e) {
+        if (!e.data || e.data.type !== "mv-hero-ready") return;
+        window.removeEventListener("message", onHeroReady);
+        delay();
+      },
+      false
+    );
+    setTimeout(delay, 10000);
   }
 
   function injectDocumentPrefetch() {
@@ -58,11 +70,23 @@
       link.as = "document";
       document.head.appendChild(link);
     };
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(run, { timeout: 6000 });
-    } else {
-      setTimeout(run, 4000);
-    }
+    var delay = function () {
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(run, { timeout: 8000 });
+      } else {
+        setTimeout(run, 6000);
+      }
+    };
+    window.addEventListener(
+      "message",
+      function onHeroReady(e) {
+        if (!e.data || e.data.type !== "mv-hero-ready") return;
+        window.removeEventListener("message", onHeroReady);
+        delay();
+      },
+      false
+    );
+    setTimeout(delay, 9000);
   }
 
   window.WeltenShellPerf = {

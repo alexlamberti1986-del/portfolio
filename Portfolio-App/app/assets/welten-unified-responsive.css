@@ -1,0 +1,115 @@
+/**
+ * Einheitliche Proportionen über alle vier Welten.
+ * Nur Handy, Tablet (≤1024) und Gross/TV (≥2560).
+ * Laptop (1025–1919) und 27″-Desktop (1920–2559) unverändert.
+ */
+
+/* ── Handy + Tablet ── */
+@media (max-width: 1024px) {
+  :root {
+    --header-air-top: 22px;
+    --header-air-bottom: 16px;
+    --header-inner-row: 52px;
+  }
+
+  .site-header {
+    gap: 10px;
+    padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-air-top));
+    padding-bottom: var(--header-air-bottom);
+    padding-left: max(clamp(12px, 3vw, 32px), env(safe-area-inset-left));
+    padding-right: max(clamp(8px, 2.2vw, 22px), env(safe-area-inset-right));
+  }
+
+  .header-left {
+    column-gap: clamp(20px, 4vw, 28px);
+    row-gap: 10px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .brand-mark,
+  .header-meta {
+    font-size: clamp(0.82rem, 2vw, 0.92rem) !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.03em !important;
+  }
+
+  .btn-menu {
+    padding: 8px 16px !important;
+    font-size: clamp(0.84rem, 2vw, 0.92rem) !important;
+    flex-shrink: 0;
+  }
+
+  h1.section-title,
+  .section-title {
+    font-size: clamp(1.35rem, 5vw, 1.75rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  h2.section-title {
+    font-size: clamp(1.2rem, 4.5vw, 1.55rem) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-inner-row: 52px;
+    --dock-h: env(safe-area-inset-bottom, 0px);
+  }
+
+  .header-left {
+    column-gap: clamp(20px, 4vw, 28px);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-inner-row: 92px;
+    --dock-h: env(safe-area-inset-bottom, 0px);
+  }
+
+  .header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 10px;
+    column-gap: 0;
+  }
+
+  .header-meta {
+    white-space: normal;
+  }
+
+  .brand-mark,
+  .header-meta {
+    font-size: clamp(0.78rem, 2.4vw, 0.88rem) !important;
+  }
+
+  .btn-menu {
+    padding: 8px 14px !important;
+    font-size: clamp(0.8rem, 2.2vw, 0.88rem) !important;
+  }
+}
+
+/* ── Gross/TV (65″ / 98″) — Proportionen synchron zu welten-large-display ── */
+@media (min-width: 2560px) {
+  .brand-mark,
+  .header-meta {
+    font-size: clamp(0.94rem, 1.1vw, 1.06rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  .btn-menu {
+    padding: 10px 18px !important;
+    font-size: clamp(0.94rem, 1.05vw, 1.02rem) !important;
+  }
+
+  h1.section-title,
+  .section-title {
+    font-size: calc(clamp(1.35rem, 2.2vw, 2rem) * var(--welten-xl-type, 1.14)) !important;
+  }
+
+  h2.section-title {
+    font-size: calc(clamp(1.15rem, 1.8vw, 1.65rem) * var(--welten-xl-type, 1.14)) !important;
+  }
+}

@@ -71,6 +71,8 @@
     "assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live",
     "assets/multiversum-parallax-v4/orbs/Multiversum.png?v=20260629mv-prof-portrait",
   ];
+  var BOOT_STARTED_AT = Date.now();
+  var HERO_BOOT_GRACE_MS = 2800;
 
   function parallaxDepsReady() {
     return !!(window.MVSceneConfig && window.MVParallaxHero);
@@ -215,14 +217,22 @@
     }
   }
 
+  function isBootGrace() {
+    return Date.now() - BOOT_STARTED_AT < HERO_BOOT_GRACE_MS;
+  }
+
   function ensureParallaxHero() {
     buildHero();
-    if (!isDesktopParallaxHero() || document.getElementById("mvParallaxHero")) return;
+    if (!isDesktopParallaxHero() || !document.getElementById("mvParallaxHero")) return;
     if (!parallaxDepsReady()) return;
     var hero = document.getElementById("mvParallaxHero");
     if (!hero) return;
     var hasCards = hero.querySelector(".world-card__image img[src]");
     if (hasCards) return;
+    if (isBootGrace()) {
+      window.setTimeout(ensureParallaxHero, 350);
+      return;
+    }
     hero.remove();
     window.__mvParallaxHeroReady = false;
     window.__mvHeroBootLock = false;
@@ -230,6 +240,7 @@
   }
 
   document.addEventListener("mv-restore-hero", function () {
+    if (isBootGrace()) return;
     buildHero();
   });
 
@@ -293,7 +304,6 @@
 
   function boot() {
     applyTheme();
-    patchMobileHeader();
     if (!isDesktopParallaxHero()) {
       /* Hero zuerst bauen — stripDecor entfernt sonst #dnaStage */
       buildStaticHero();
@@ -317,8 +327,8 @@
       if (parallax && !parallax.classList.contains("is-boot-painted")) {
         parallax.classList.add("is-boot-painted");
       }
-      document.body.setAttribute("data-boot-failsafe", "1");
       if (!document.body.classList.contains("mv-home-ready")) {
+        document.body.setAttribute("data-boot-failsafe", "1");
         notifyHeroReady();
       }
     }, 1200);
@@ -341,23 +351,6 @@
           if (el && el.id !== "mvStaticHero") el.remove();
         });
     }
-  }
-
-  function patchMobileHeader() {
-    try {
-      if (!window.matchMedia("(max-width: 640px)").matches) return;
-    } catch (e) {
-      if (window.innerWidth > 640) return;
-    }
-    var brand = document.querySelector(".site-header .brand-mark");
-    if (!brand || brand.getAttribute("data-mv-mobile-mail") === "1") return;
-    brand.setAttribute("data-mv-mobile-mail", "1");
-    brand.href = "mailto:alex.lamberti@hotmail.ch";
-    brand.setAttribute("aria-label", "E-Mail: alex.lamberti@hotmail.ch");
-    brand.textContent = "E-Mail: alex.lamberti@hotmail.ch";
-    document.querySelectorAll('.site-header .header-meta[href^="mailto:"]').forEach(function (link) {
-      if (link !== brand) link.setAttribute("hidden", "");
-    });
   }
 
   document.addEventListener("welten-chapter-change", function () {

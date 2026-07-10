@@ -5,11 +5,15 @@
 (function () {
   "use strict";
 
-  var VER = "20260708video-edge1";
+  var VER = "20260710video-stable";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
   var homeObserver = null;
+  var lastSlide = "";
+  var restartTimer = 0;
+  var restartPending = false;
+  var initialRevealDone = false;
 
   var WORLD_MAP = {
     general: "multiversum",
@@ -142,7 +146,12 @@
     video.style.opacity = "1";
   }
 
-  function restartAndPlay() {
+  function isVideoPlaying(video) {
+    if (!video) return false;
+    return !video.paused && !video.ended && video.readyState > 2 && video.currentTime > 0.12;
+  }
+
+  function restartAndPlay(force) {
     if (!canPlayVideo()) {
       pauseVideoHero();
       return;
@@ -152,16 +161,50 @@
     var video = section && section.querySelector("video");
     if (!video) return;
 
-    section.classList.remove("is-video-ready");
-    video.style.opacity = "0";
-    resetVideoEl(video);
+    if (!force && isVideoPlaying(video) && section.classList.contains("is-video-ready")) {
+      return;
+    }
+
+    if (!force && restartPending) return;
+    restartPending = true;
+    if (restartTimer) window.clearTimeout(restartTimer);
+    restartTimer = window.setTimeout(function () {
+      restartPending = false;
+      restartTimer = 0;
+      restartAndPlayNow();
+    }, force ? 0 : 120);
+  }
+
+  function restartAndPlayNow() {
+    if (!canPlayVideo()) {
+      pauseVideoHero();
+      return;
+    }
+
+    var section = document.getElementById("alWorldVideoHero");
+    var video = section && section.querySelector("video");
+    if (!video) return;
+
+    if (isVideoPlaying(video) && section.classList.contains("is-video-ready")) {
+      return;
+    }
+
+    var needsHardReset = !video.getAttribute("src") || video.error;
+    if (needsHardReset) {
+      section.classList.remove("is-video-ready");
+      video.style.opacity = "0";
+      resetVideoEl(video);
+    }
+
     video.preload = "auto";
+    video.muted = true;
+    video.volume = 0;
 
     var started = false;
     function tryPlay() {
       if (started || !canPlayVideo()) return;
       started = true;
-      resetVideoEl(video);
+      if (needsHardReset) resetVideoEl(video);
       video.muted = true;
       video.volume = 0;
       var promise = video.play();
@@ -184,9 +227,11 @@
     }
 
     video.addEventListener("canplay", tryPlay, { once: true });
-    try {
-      video.load();
-    } catch (eLoad) {}
+    if (needsHardReset) {
+      try {
+        video.load();
+      } catch (eLoad) {}
+    }
     window.setTimeout(function () {
       if (!started && video.readyState >= 2) tryPlay();
     }, 400);
@@ -310,9 +355,6 @@
     var videoHero = document.getElementById("alWorldVideoHero");
 
     document.body.setAttribute("data-welten-video-hero", "1");
-    if (document.body.getAttribute("data-world") === "general") {
-      document.body.classList.add("mv-home-ready");
-    }
 
     if (!videoHero) {
       videoHero = buildHero(worldKey);
@@ -345,9 +387,9 @@
     watchHomeInner();
     resetHomeScroll();
 
-    if (canPlayVideo()) {
+    if (canPlayVideo() && !isVideoPlaying(videoHero && videoHero.querySelector("video"))) {
       restartAndPlay();
-    } else {
+    } else if (!canPlayVideo()) {
       pauseVideoHero();
     }
   }
@@ -362,11 +404,14 @@
   }
 
   function onSlideChange() {
+    var slide = document.body.getAttribute("data-current-slide") || "home";
+    if (slide === lastSlide) return;
+    lastSlide = slide;
     if (!document.getElementById("alWorldVideoHero")) return;
     ensureVideoAfterHero();
     if (canPlayVideo()) {
       resetHomeScroll();
-      restartAndPlay();
+      restartAndPlay(slide === "home");
     } else {
       pauseVideoHero();
     }
@@ -385,7 +430,9 @@
     frameLive = true;
     frameVisible = true;
     mountVideoHero();
-    restartAndPlay();
+    if (!isVideoPlaying(getVideoEl())) {
+      restartAndPlay(true);
+    }
   }
 
   function onWorldPause() {
@@ -396,25 +443,29 @@
   }
 
   function boot() {
+    lastSlide = document.body.getAttribute("data-current-slide") || "home";
     if (frameLive) {
       var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
       if (worldKey) prefetchVideo(worldKey);
     }
     onViewportChange();
-    onSlideChange();
+  }
+
+  function bootOnce() {
+    if (initialRevealDone) return;
+    initialRevealDone = true;
+    boot();
+    setTimeout(tryEmbeddedInitialReveal, 200);
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
+    document.addEventListener("DOMContentLoaded", bootOnce);
   } else {
-    boot();
+    bootOnce();
   }
 
   window.addEventListener("load", function () {
-    boot();
-    setTimeout(tryEmbeddedInitialReveal, 80);
-    setTimeout(tryEmbeddedInitialReveal, 500);
-    setTimeout(tryEmbeddedInitialReveal, 1400);
+    if (!initialRevealDone) bootOnce();
   });
 
   if (mqNoVideo.addEventListener) {
@@ -451,11 +502,12 @@
   });
 
   try {
+    lastSlide = document.body.getAttribute("data-current-slide") || "home";
     new MutationObserver(function () {
       onSlideChange();
     }).observe(document.body, {
       attributes: true,
-      attributeFilter: ["data-current-slide", "class"],
+      attributeFilter: ["data-current-slide"],
     });
   } catch (e) {}
 

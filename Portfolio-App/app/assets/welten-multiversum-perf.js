@@ -19,13 +19,7 @@
 
   stripDecor();
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", stripDecor);
+    document.addEventListener("DOMContentLoaded", stripDecor, { once: true });
   }
-  window.addEventListener("load", stripDecor);
-  var n = 0;
-  var poll = setInterval(function () {
-    stripDecor();
-    n++;
-    if (n > 20) clearInterval(poll);
-  }, 250);
+  window.addEventListener("load", stripDecor, { once: true });
 })();

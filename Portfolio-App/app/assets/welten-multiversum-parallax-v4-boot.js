@@ -5,6 +5,8 @@
   "use strict";
 
   var V = "?v=20260629mv-prof-portrait";
+  var BOOT_AT = Date.now();
+  var BOOT_GRACE_MS = 2800;
   var ORBS = {
     multiversum: "assets/multiversum-parallax-v4/orbs/Multiversum.png" + V,
     nexora: "assets/multiversum-parallax-v4/orbs/Nexora.png" + V,
@@ -100,10 +102,16 @@
   function ensureParallaxCards() {
     var hero = document.getElementById("mvParallaxHero");
     if (!hero || !window.MVWorldCollage) return;
+    if (Date.now() - BOOT_AT < BOOT_GRACE_MS) {
+      window.setTimeout(ensureParallaxCards, 400);
+      return;
+    }
     var hasImages = hero.querySelector(".world-card__image img[src*='4welten-preview'], .world-card__image img[src*='multiversum-parallax-v4']");
     if (hasImages) return;
     if (!hero.querySelector(".world-card")) {
-      document.dispatchEvent(new CustomEvent("mv-restore-hero"));
+      if (Date.now() - BOOT_AT >= BOOT_GRACE_MS) {
+        document.dispatchEvent(new CustomEvent("mv-restore-hero"));
+      }
       return;
     }
     patchCardImages();
@@ -121,9 +129,7 @@
   function boot() {
     document.body.setAttribute("data-mv-v4-test", "1");
     patchAll();
-    requestAnimationFrame(function () {
-      requestAnimationFrame(patchAll);
-    });
+    window.setTimeout(patchAll, 600);
   }
 
   if (document.readyState === "loading") {
