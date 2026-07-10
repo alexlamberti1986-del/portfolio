@@ -2242,6 +2242,9 @@
       wrap.innerHTML = heroMarkup();
       heroEl = wrap.firstElementChild;
       heroEl.style.setProperty("--mv-scroll-vh", String(config.scrollHeightVh || 820));
+      heroEl.style.visibility = "hidden";
+      heroEl.style.opacity = "0";
+      heroEl.style.pointerEvents = "none";
 
       stage.parentNode.insertBefore(heroEl, stage);
       stage.classList.add("mv-dna-hidden");
@@ -2256,7 +2259,11 @@
       heroEl.setAttribute("data-active-world", "multiversum");
       heroEl.setAttribute("data-layout", "intro");
       updateFrame();
+      updateFrame();
       heroEl.classList.add("is-js-ready", "is-boot-painted");
+      heroEl.style.removeProperty("visibility");
+      heroEl.style.removeProperty("opacity");
+      heroEl.style.removeProperty("pointer-events");
 
       function signalReady() {
         if (window.__mvHeroReadySent) return;

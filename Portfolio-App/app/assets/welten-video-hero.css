@@ -60,6 +60,7 @@
   height: auto;
   min-height: 0;
   max-height: none;
+  overflow: visible;
   background:
     radial-gradient(ellipse 80% 60% at 50% 12%, rgba(255, 89, 178, 0.08), transparent 62%),
     radial-gradient(ellipse 60% 50% at 50% 88%, rgba(155, 107, 255, 0.06), transparent 58%),
@@ -89,18 +90,22 @@
   margin: 0;
 }
 
-/* Video-Bereich unter Menü: Multiversum +30% Höhe, kein Beschnitt oben/unten */
+/* Multiversum: Basis-Höhe — Feintuning in overrides.css */
 .al-world-video-hero--multiversum.al-world-video-hero--with-chrome .al-world-video-hero__media {
   position: relative;
   z-index: 1;
   flex: 0 0 auto;
   width: 100%;
-  height: calc((109svh - var(--header-h, 90px) * 0.35) * 1.3);
-  min-height: 811px;
-  max-height: calc((109svh - var(--header-h, 90px) * 0.35) * 1.3);
+  height: auto;
+  min-height: clamp(780px, calc((109svh - var(--header-h, 90px) * 0.35) * 1.3), 1200px);
+  max-height: none;
+  overflow: visible;
 }
 
 .al-world-video-hero--multiversum.al-world-video-hero--with-chrome .al-world-video-hero__video {
+  width: 100%;
+  height: auto;
+  max-height: clamp(780px, calc((109svh - var(--header-h, 90px) * 0.35) * 1.3), 1200px);
   object-fit: contain;
   object-position: center center;
 }
@@ -108,6 +113,7 @@
 .al-world-video-hero--multiversum.al-world-video-hero--with-chrome.al-world-video-hero--video-only {
   height: auto;
   max-height: none;
+  overflow: visible;
 }
 
 .al-world-video-hero--nexora {
@@ -149,8 +155,11 @@
   }
 
   .al-world-video-hero--multiversum.al-world-video-hero--with-chrome .al-world-video-hero__media {
-    height: calc((109vh - var(--header-h, 90px) * 0.35) * 1.3);
-    max-height: calc((109vh - var(--header-h, 90px) * 0.35) * 1.3);
+    min-height: clamp(780px, calc((109vh - var(--header-h, 90px) * 0.35) * 1.3), 1200px);
+  }
+
+  .al-world-video-hero--multiversum.al-world-video-hero--with-chrome .al-world-video-hero__video {
+    max-height: clamp(780px, calc((109vh - var(--header-h, 90px) * 0.35) * 1.3), 1200px);
   }
 }
 

@@ -59,20 +59,20 @@ body[data-world="general"]:has(#mvStaticHero) .home-hero-experience {
 }
 
 body[data-world="general"] #mvParallaxHero:not(.is-boot-painted) {
-  display: block !important;
+  display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-body[data-world="general"] #mvParallaxHero.is-boot-painted {
+body[data-world="general"] #mvParallaxHero.is-boot-painted[data-active-world="multiversum"] {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-/* Fremde Welten im Parallax nur bei aktivem Kapitel — kein Nexora-Flash beim Start */
+/* Nexora/andere Welten im Parallax komplett aus bis Kapitel aktiv */
 body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) .world-zone--nexora,
 body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) .mv-scroll-slide--nexora,
 body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) .mv-scroll-orb--nexora,
@@ -94,8 +94,9 @@ body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [
 body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [data-bg="freiraum"],
 body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [data-deco-theme="freiraum"],
 body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [data-particle-field="freiraum"] {
-  opacity: 0 !important;
+  display: none !important;
   visibility: hidden !important;
+  opacity: 0 !important;
   pointer-events: none !important;
 }
 

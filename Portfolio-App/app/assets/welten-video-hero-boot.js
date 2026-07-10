@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710video-menu";
+  var VER = "20260710fix2";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -344,6 +344,23 @@
     bindMvVideoChromeNav(section);
   }
 
+  function applyMultiversumVideoFit(section) {
+    if (!section || !section.classList.contains("al-world-video-hero--multiversum")) return;
+    var media = section.querySelector(".al-world-video-hero__media");
+    var video = section.querySelector("video");
+    if (media) {
+      media.style.overflow = "visible";
+      media.style.backgroundSize = "contain";
+    }
+    if (video) {
+      video.style.objectFit = "contain";
+      video.style.objectPosition = "center center";
+      video.style.width = "100%";
+      video.style.height = "auto";
+      video.style.maxHeight = "clamp(780px, calc((109svh - var(--header-h, 90px) * 0.35) * 1.3), 1200px)";
+    }
+  }
+
   function buildHero(worldKey) {
     var w = WORLDS[worldKey];
     var src = pickVideoSrc(worldKey);
@@ -367,6 +384,7 @@
       section.classList.add("al-world-video-hero--with-chrome");
       bindMvVideoChromeNav(section);
     }
+    applyMultiversumVideoFit(section);
 
     var video = section.querySelector("video");
     if (video) {
@@ -486,6 +504,7 @@
       videoHero.className =
         "al-world-video-hero al-world-video-hero--" + worldKey + " al-world-video-hero--video-only";
       ensureMvVideoChrome(videoHero, worldKey);
+      applyMultiversumVideoFit(videoHero);
       var video = videoHero.querySelector("video");
       var nextSrc = pickVideoSrc(worldKey);
       if (video && nextSrc && video.getAttribute("src") !== nextSrc) {

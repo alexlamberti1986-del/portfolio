@@ -61,32 +61,8 @@
   }
 
   function injectDocumentPrefetch() {
-    if (!shouldPrefetch()) return;
-    var run = function () {
-      if (document.querySelector('link[rel="prefetch"][href="NEXORA.html"]')) return;
-      var link = document.createElement("link");
-      link.rel = "prefetch";
-      link.href = "NEXORA.html";
-      link.as = "document";
-      document.head.appendChild(link);
-    };
-    var delay = function () {
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(run, { timeout: 8000 });
-      } else {
-        setTimeout(run, 6000);
-      }
-    };
-    window.addEventListener(
-      "message",
-      function onHeroReady(e) {
-        if (!e.data || e.data.type !== "mv-hero-ready") return;
-        window.removeEventListener("message", onHeroReady);
-        delay();
-      },
-      false
-    );
-    setTimeout(delay, 9000);
+    /* Kein NEXORA-Prefetch beim Start — verhindert kurzen Nexora-Flash */
+    return;
   }
 
   window.WeltenShellPerf = {
