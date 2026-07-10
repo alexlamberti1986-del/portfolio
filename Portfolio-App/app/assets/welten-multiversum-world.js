@@ -211,10 +211,12 @@
       buildHero();
       return;
     }
-    if (attempt < 100) {
+    if (attempt < 250) {
       window.setTimeout(function () {
         waitForParallaxAndBuild(attempt + 1);
       }, 40);
+    } else if (!document.body.classList.contains("mv-home-ready")) {
+      notifyHeroReady();
     }
   }
 
@@ -253,20 +255,13 @@
 
   function ensureParallaxHero() {
     buildHero();
-    if (!isDesktopParallaxHero() || !document.getElementById("mvParallaxHero")) return;
-    if (!parallaxDepsReady()) return;
-    var hero = document.getElementById("mvParallaxHero");
-    if (!hero) return;
-    var hasCards = hero.querySelector(".world-card__image img[src]");
-    if (hasCards) return;
-    if (isBootGrace()) {
-      window.setTimeout(ensureParallaxHero, 350);
+    if (!isDesktopParallaxHero()) return;
+    if (document.getElementById("mvParallaxHero")) return;
+    if (!parallaxDepsReady()) {
+      if (isBootGrace()) window.setTimeout(ensureParallaxHero, 350);
       return;
     }
-    hero.remove();
-    window.__mvParallaxHeroReady = false;
-    window.__mvHeroBootLock = false;
-    buildHero();
+    if (isBootGrace()) window.setTimeout(ensureParallaxHero, 350);
   }
 
   document.addEventListener("mv-restore-hero", function () {
@@ -348,15 +343,21 @@
     waitForParallaxAndBuild(0);
     finishBoot();
     window.setTimeout(function () {
-      if (!isDesktopParallaxHero()) return;
-      if (!document.body.classList.contains("mv-home-ready") && document.getElementById("mvParallaxHero")) {
-        var parallax = document.getElementById("mvParallaxHero");
-        if (parallax && !parallax.classList.contains("is-boot-painted")) {
-          parallax.classList.add("is-boot-painted");
-        }
+      if (!document.getElementById("mvParallaxHero") && isDesktopParallaxHero()) {
+        buildHero();
+      }
+      if (!document.body.classList.contains("mv-home-ready")) {
         notifyHeroReady();
       }
-    }, 2800);
+    }, 800);
+    window.setTimeout(function () {
+      if (!document.getElementById("mvParallaxHero") && isDesktopParallaxHero()) {
+        buildHero();
+      }
+      if (!document.body.classList.contains("mv-home-ready")) {
+        notifyHeroReady();
+      }
+    }, 2200);
   }
 
   function stripDecor() {

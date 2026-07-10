@@ -1,5 +1,5 @@
 /**
- * MULTIVERSUM — Boot: Poster → Parallax-Hero → Video → Home-Inhalt
+ * MULTIVERSUM — Kein Poster-Shell: Hero, Video und Home-Inhalt direkt sichtbar.
  */
 html,
 body {
@@ -27,104 +27,78 @@ body[data-world="general"] #slide-home.slide::-webkit-scrollbar {
   display: none;
 }
 
-/* Dekor immer aus */
+/* Alte Dekor-Ebenen aus — kein Poster-Hintergrund */
 body[data-world="general"] .bg-root,
 body[data-world="general"] .bg-grid,
 body[data-world="general"] .light-beams,
 body[data-world="general"] #particle-canvas,
 body[data-world="general"] #dnaStage,
-body[data-world="general"] .home-hero-experience,
-body[data-world="general"] #mvStaticHero {
+body[data-world="general"] .home-hero-experience:not(.welten-desktop-relocated-hero) {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
 }
 
-/* Phase 1: Poster-Shell (Header + Poster, noch kein Hero) */
-body[data-world="general"]:not(.mv-home-ready) .site-header {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: none !important;
+@media (min-width: 1024px) {
+  body[data-world="general"] #mvStaticHero {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
-body[data-world="general"]:not(.mv-home-ready) .site-header > * {
-  pointer-events: auto !important;
-}
-
-body[data-world="general"]:not(.mv-home-ready) #slidesRoot {
+/* Parallax-Hero sobald im DOM */
+body[data-world="general"] #mvParallaxHero {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-body[data-world="general"]:not(.mv-home-ready):not(:has(#mvParallaxHero.is-boot-painted)) #slide-home.slide,
-body[data-world="general"]:not(.mv-home-ready):not(:has(#mvParallaxHero.is-boot-painted)) #slide-home .slide-inner--home {
-  background: #02030b url("assets/videos/multiversum-poster.jpg") center center / cover no-repeat !important;
-}
-
-body[data-world="general"]:not(.mv-home-ready):not(:has(#mvParallaxHero.is-boot-painted)) #mvParallaxHero,
-body[data-world="general"]:not(.mv-home-ready):not(:has(#mvParallaxHero.is-boot-painted)) #alWorldVideoHero {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-body[data-world="general"]:not(.mv-home-ready) #slide-home .home-main-block {
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* Phase 2+: Parallax-Hero sichtbar sobald gemalt */
-body[data-world="general"] #mvParallaxHero.is-boot-painted {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transition: none !important;
-}
-
-body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #slide-home.slide,
-body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #slide-home .slide-inner--home {
+body[data-world="general"] #slide-home.slide,
+body[data-world="general"] #slide-home .slide-inner--home {
   background: transparent !important;
 }
 
-body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #alWorldVideoHero {
+/* Video-Hero */
+body[data-world="general"] #alWorldVideoHero {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-/* Phase 3: Home komplett + Navigation */
-body[data-world="general"].mv-home-ready .experience-rail {
+/* Home-Inhalt immer sichtbar */
+body[data-world="general"] #slide-home .home-main-block {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+body[data-world="general"] .experience-rail {
   display: grid !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-body[data-world="general"].mv-home-ready #slide-home .home-main-block {
+body[data-world="general"] .site-header {
+  display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-body[data-world="general"].mv-home-ready .site-header {
-  display: flex !important;
   pointer-events: none !important;
 }
 
-body[data-world="general"].mv-home-ready .site-header > * {
+body[data-world="general"] .site-header > * {
   pointer-events: auto !important;
 }
 
-body[data-world="general"].mv-home-ready #slidesRoot {
+body[data-world="general"] #slidesRoot {
   display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   pointer-events: auto !important;
 }
 
@@ -143,14 +117,16 @@ body[data-world="general"][data-current-slide]:not([data-current-slide="home"]) 
 }
 
 @media (max-width: 1023px) {
-  body[data-world="general"] #slide-home.slide,
-  body[data-world="general"] #slide-home .slide-inner--home {
-    background: #05070d url("assets/videos/multiversum-poster.jpg") center center / cover no-repeat !important;
-  }
-
-  body[data-world="general"].mv-home-ready #slide-home .home-main-block {
+  body[data-world="general"] #mvStaticHero {
+    display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-world="general"] #slide-home.slide,
+  body[data-world="general"] #slide-home .slide-inner--home {
+    background: transparent !important;
   }
 }
 

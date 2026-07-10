@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710flow";
+  var VER = "20260710nohide";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -351,14 +351,6 @@
       return;
     }
 
-    if (
-      document.body.getAttribute("data-world") === "general" &&
-      !document.body.classList.contains("mv-home-ready") &&
-      !document.querySelector("#mvParallaxHero.is-boot-painted")
-    ) {
-      return;
-    }
-
     var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
     if (!worldKey) return;
 
@@ -540,10 +532,10 @@
 
   try {
     new MutationObserver(function () {
+      if (document.body.getAttribute("data-world") !== "general") return;
       if (
-        document.body.getAttribute("data-world") === "general" &&
-        (document.body.classList.contains("mv-home-ready") ||
-          document.querySelector("#mvParallaxHero.is-boot-painted"))
+        document.body.classList.contains("mv-home-ready") ||
+        document.getElementById("mvParallaxHero")
       ) {
         heroReadyForVideo = true;
         mountVideoHero();
@@ -551,6 +543,8 @@
     }).observe(document.body, {
       attributes: true,
       attributeFilter: ["class"],
+      childList: true,
+      subtree: true,
     });
   } catch (e2) {}
 
