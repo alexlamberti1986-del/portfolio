@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710video-stable";
+  var VER = "20260710video-fast";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -14,6 +14,8 @@
   var restartTimer = 0;
   var restartPending = false;
   var initialRevealDone = false;
+  var heroReadyForVideo = false;
+  var enterAt = 0;
 
   var WORLD_MAP = {
     general: "multiversum",
@@ -105,7 +107,7 @@
   }
 
   function prefetchVideo(worldKey) {
-    if (!frameLive) return;
+    if (!frameLive || !heroReadyForVideo) return;
     var src = pickVideoSrc(worldKey);
     if (!src || prefetched[src]) return;
     prefetched[src] = true;
@@ -190,6 +192,11 @@
     }
 
     var needsHardReset = !video.getAttribute("src") || video.error;
+    if (!video.getAttribute("src")) {
+      var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
+      var src = pickVideoSrc(worldKey);
+      if (src) video.setAttribute("src", src);
+    }
     if (needsHardReset) {
       section.classList.remove("is-video-ready");
       video.style.opacity = "0";
@@ -240,6 +247,7 @@
   function buildHero(worldKey) {
     var w = WORLDS[worldKey];
     var src = pickVideoSrc(worldKey);
+    var deferSrc = !heroReadyForVideo;
     var section = document.createElement("section");
     section.id = "alWorldVideoHero";
     section.className =
@@ -247,13 +255,12 @@
     section.setAttribute("aria-label", w.label + " Video");
     section.innerHTML =
       '<div class="al-world-video-hero__media">' +
-      '<video class="al-world-video-hero__video" muted loop playsinline preload="' +
-      (frameLive ? "metadata" : "none") +
-      '" poster="' +
+      '<video class="al-world-video-hero__video" muted loop playsinline preload="none"' +
+      ' poster="' +
       w.poster +
-      '" src="' +
-      src +
-      '"></video></div>';
+      '"' +
+      (deferSrc ? "" : ' src="' + src + '"') +
+      "></video></div>";
 
     var video = section.querySelector("video");
     if (video) {
@@ -421,7 +428,7 @@
     gotWorldSignal = true;
     frameLive = true;
     frameVisible = false;
-    pauseVideoHero();
+    enterAt = Date.now();
     mountVideoHero();
   }
 
@@ -429,6 +436,7 @@
     gotWorldSignal = true;
     frameLive = true;
     frameVisible = true;
+    heroReadyForVideo = true;
     mountVideoHero();
     if (!isVideoPlaying(getVideoEl())) {
       restartAndPlay(true);
@@ -454,6 +462,7 @@
   function bootOnce() {
     if (initialRevealDone) return;
     initialRevealDone = true;
+    heroReadyForVideo = !isEmbedded();
     boot();
     setTimeout(tryEmbeddedInitialReveal, 200);
   }
@@ -490,6 +499,10 @@
     }
     if (e.data.type === "portfolio-world-reveal") {
       onWorldReveal();
+      return;
+    }
+    if (e.data.type === "mv-hero-ready") {
+      heroReadyForVideo = true;
       return;
     }
     if (e.data.type === "portfolio-effects") {

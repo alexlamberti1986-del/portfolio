@@ -88,6 +88,8 @@
   }
 
   function notifyHeroReady() {
+    if (window.__mvHeroReadySent) return;
+    window.__mvHeroReadySent = true;
     function finish() {
       try {
         if (document.body) document.body.classList.add("mv-home-ready");

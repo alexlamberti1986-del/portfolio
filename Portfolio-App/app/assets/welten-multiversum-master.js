@@ -625,6 +625,23 @@
     postFrame(f, { type: "portfolio-world-reveal", world: soundKey(i) });
   }
 
+  function sendWorldLiveSignals(f, j) {
+    if (!f || j !== activeIdx()) return;
+    var token = String(j) + "-" + (f.src || f.getAttribute("data-lazy-src") || "");
+    if (f.dataset.mvWorldLive === token) return;
+    f.dataset.mvWorldLive = token;
+    injectAudioGestureBridge(f, j);
+    injectProfiles(f, j);
+    postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
+    if (typeof requestAnimationFrame === "function") {
+      requestAnimationFrame(function () {
+        postFrame(f, { type: "portfolio-world-reveal", world: soundKey(j) });
+      });
+    } else {
+      postFrame(f, { type: "portfolio-world-reveal", world: soundKey(j) });
+    }
+  }
+
   function signalFrameReady(f, j) {
     if (!f) return;
     try {
@@ -636,12 +653,10 @@
       resetAttempts[j] = 0;
     } catch (e) {}
     ensureSingleBar();
-    injectProfiles(f, j);
     broadcastLang();
     postFrame(f, { type: "portfolio-effects", on: effectsOn });
     if (j === activeIdx()) {
-      postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
-      postFrame(f, { type: "portfolio-world-reveal", world: soundKey(j) });
+      sendWorldLiveSignals(f, j);
     } else {
       postFrame(f, { type: "portfolio-world-pause", paused: true });
       postFrame(f, { type: "portfolio-cleanup-transition" });
@@ -653,10 +668,7 @@
     if (i < 0) i = defaultWorld;
     var f = frames[i];
     if (!f || !frameHasSrc(f) || !frameIsReady(f)) return;
-    injectAudioGestureBridge(f, i);
-    injectProfiles(f, i);
-    postFrame(f, { type: "portfolio-world-enter", world: soundKey(i) });
-    postFrame(f, { type: "portfolio-world-reveal", world: soundKey(i) });
+    sendWorldLiveSignals(f, i);
   }
 
   function applyActive(i) {
@@ -665,6 +677,7 @@
       f.classList.toggle("is-active", on);
       f.style.pointerEvents = on ? "auto" : "none";
       if (on) {
+        f.removeAttribute("data-mv-world-live");
         postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
         applyChapter(f, sharedChapter);
         if (frameIsReady(f)) injectProfiles(f, j);
@@ -1007,25 +1020,12 @@
   broadcastLang();
   applyShellRoute();
   primeActiveFrame();
-  setTimeout(primeActiveFrame, 120);
-  setTimeout(primeActiveFrame, 700);
-  setTimeout(primeActiveFrame, 1800);
+  setTimeout(primeActiveFrame, 400);
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
     window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
   }
   requestAnimationFrame(function () {
     forceEnableWorldButtons();
   });
-  if (isCoarseMobileShell()) {
-    setTimeout(function () {
-      preloadFrame(1);
-    }, 900);
-    setTimeout(function () {
-      preloadFrame(2);
-    }, 1800);
-    setTimeout(function () {
-      preloadFrame(3);
-    }, 2600);
-  }
   window.mv4SwitchWorld = switchTo;
 })();

@@ -207,6 +207,12 @@ body[data-world="general"]:has(#mvParallaxHero.is-boot-painted) #dnaStage {
   transition: none !important;
 }
 
+body[data-world="general"].mv-home-ready #mvParallaxHero,
+body[data-world="general"].mv-home-ready #slidesRoot,
+body[data-world="general"].mv-home-ready .site-header {
+  transition: none !important;
+}
+
 #mvParallaxHero:not(.is-boot-painted) .mv-scroll-bg:not([data-bg="multiverse"]),
 #mvParallaxHero:not(.is-boot-painted) .mv-scroll-slide--nexora,
 #mvParallaxHero:not(.is-boot-painted) .mv-scroll-slide--professional,

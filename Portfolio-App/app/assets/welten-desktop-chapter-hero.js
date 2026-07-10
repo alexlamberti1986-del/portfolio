@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260706nexora-dna-off";
+  var VER = "20260710boot-fast";
   var bootTimer = null;
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
@@ -447,6 +447,14 @@
   function relocateHero() {
     removeLegacyCompactHeroes();
 
+    if (
+      document.body.getAttribute("data-world") === "general" &&
+      currentChapter() === "home" &&
+      !document.body.classList.contains("mv-home-ready")
+    ) {
+      return;
+    }
+
     if (!isDesktop()) {
       document.body.classList.remove("welten-desktop-subpage-hero--on");
       restoreHeroToHome();
@@ -557,16 +565,23 @@
     }
   });
 
-  window.addEventListener("load", function () {
-    boot();
-    setTimeout(boot, 600);
-    setTimeout(boot, 1800);
-  });
+  window.addEventListener("load", boot);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
   } else {
     boot();
+  }
+
+  if (document.body && document.body.getAttribute("data-world") === "general") {
+    try {
+      new MutationObserver(function (_muts, obs) {
+        if (document.body.classList.contains("mv-home-ready")) {
+          obs.disconnect();
+          boot();
+        }
+      }).observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    } catch (eObs) {}
   }
 
   window.WeltenDesktopChapterHero = { refresh: boot };

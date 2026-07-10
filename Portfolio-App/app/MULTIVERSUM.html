@@ -223,24 +223,31 @@
     })();
   </script>
   <style id="mv-boot-critical">html,body{background:#02030b!important}@media (max-width:1023px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience,body[data-world="general"] .home-hero-experience::before,body[data-world="general"] .home-hero-experience::after,body[data-world="general"] .neuro-core,body[data-world="general"] .neuro-core::before,body[data-world="general"] .neuro-core::after,body[data-world="general"] .dna-unified-scene,body[data-world="general"] .dna-holo-arm,body[data-world="general"] .dna-visual-stack,body[data-world="general"] #dnaPremiumCanvas,body[data-world="general"] #dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;max-height:0!important;overflow:hidden!important;background:none!important}body[data-world="general"] #slide-home.slide,body[data-world="general"] #slide-home .slide-inner--home{background:#05070d!important}}@media (min-width:1024px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{visibility:hidden!important;opacity:0!important;pointer-events:none!important}#mvParallaxHero:not(.is-boot-painted){opacity:0!important;visibility:hidden!important;pointer-events:none!important}body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) #slidesRoot,body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) .site-header{display:none!important;visibility:hidden!important;opacity:0!important}}</style>
-  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260706boot-fix" />
+  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260710boot-fast" />
   <link rel="stylesheet" href="assets/welten-multiversum-world.css?v=20260710unify" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260708rail-65" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-v4.css?v=20260706no-scroll" />
   <link rel="preload" as="image" href="assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp?v=20260629mv-v4live" fetchpriority="high" media="(min-width: 1024px)" />
   <link rel="preload" href="assets/videos/multiversum-poster.jpg" as="image" fetchpriority="high" />
-  <link rel="preload" href="assets/videos/multiversum-hero.mp4" as="video" type="video/mp4" />
   <script src="assets/welten-live-shell-early.js?v=20260704restore"></script>
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260708rail-65" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
-  <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260706perf-start" defer></script>
-  <script src="assets/welten-multiversum-world.js?v=20260710boot-stable" defer></script>
-  <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710boot-stable" defer></script>
+  <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260710boot-fast" defer></script>
+  <script src="assets/welten-multiversum-world.js?v=20260710boot-fast" defer></script>
+  <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710boot-fast" defer></script>
   <script>
     (function () {
+      function alreadyReady() {
+        try {
+          return document.body && document.body.classList.contains("mv-home-ready");
+        } catch (e) {
+          return false;
+        }
+      }
       function mobileFailsafe() {
         try {
+          if (alreadyReady()) return;
           if (!document.body || !window.matchMedia("(max-width: 1023px)").matches) return;
           document.body.classList.add("mv-home-ready");
           document.body.setAttribute("data-boot-failsafe", "1");
@@ -248,6 +255,7 @@
       }
       function desktopFailsafe() {
         try {
+          if (alreadyReady()) return;
           if (!document.body || !window.matchMedia("(min-width: 1024px)").matches) return;
           if (document.querySelector("#mvParallaxHero.is-boot-painted, #mvStaticHero")) return;
           var parallax = document.getElementById("mvParallaxHero");
@@ -255,14 +263,15 @@
           document.body.classList.add("mv-home-ready");
           document.body.setAttribute("data-boot-failsafe", "1");
           try {
-            if (window.parent && window.parent !== window) {
+            if (window.parent && window.parent !== window && !window.__mvHeroReadySent) {
+              window.__mvHeroReadySent = true;
               window.parent.postMessage({ type: "mv-hero-ready" }, "*");
             }
           } catch (e3) {}
         } catch (e2) {}
       }
-      setTimeout(mobileFailsafe, 700);
-      setTimeout(desktopFailsafe, 1500);
+      setTimeout(mobileFailsafe, 900);
+      setTimeout(desktopFailsafe, 2200);
     })();
   </script>
   <title>Alex Lamberti Multiversum für digitale Welten</title>
@@ -8760,10 +8769,10 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-mouse-paint.js?v=20260703wws-smooth" defer></script>
 
 <script src="assets/welten-mobile-hero.js?v=20260706hero-off" defer></script>
-<script src="assets/welten-desktop-chapter-hero.js?v=20260706nexora-hero" defer></script>
-<link rel="stylesheet" href="assets/welten-video-hero.css?v=20260708video-edge1" />
+<script src="assets/welten-desktop-chapter-hero.js?v=20260710boot-fast" defer></script>
+<link rel="stylesheet" href="assets/welten-video-hero.css?v=20260710video-fast" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260708video-edge1" />
-<script src="assets/welten-video-hero-boot.js?v=20260710video-stable" defer></script>
+<script src="assets/welten-video-hero-boot.js?v=20260710video-fast" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260706mobile-pass3" />
 <link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260606f" />

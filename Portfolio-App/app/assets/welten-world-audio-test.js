@@ -695,10 +695,17 @@
         return Promise.resolve();
       };
     }
-    preloadTrack("nexora");
-    preloadTrack("vertex");
-    preloadTrack("freiraum");
     preloadGeneralTrack();
+    var deferOtherTracks = function () {
+      preloadTrack("nexora");
+      preloadTrack("vertex");
+      preloadTrack("freiraum");
+    };
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(deferOtherTracks, { timeout: 12000 });
+    } else {
+      setTimeout(deferOtherTracks, 8000);
+    }
     if (!effectsEnabled()) {
       hardStopBgm();
       setSwitchFlag(false);

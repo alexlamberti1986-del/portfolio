@@ -37,7 +37,7 @@
       var a = new Audio();
       a.id = "mvWorldBgm";
       a.loop = true;
-      a.preload = "auto";
+      a.preload = "none";
       a.playsInline = true;
       a.setAttribute("playsinline", "");
       a.src = SRC;
@@ -81,8 +81,9 @@
     html, body { margin: 0; background: #02030b; }
   </style>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="MULTIVERSUM.html" as="document" fetchpriority="high" />
-  <link rel="preload" href="assets/audio/worlds/MULTIVERSUM.mp3?v=20260708audio-fix13" as="fetch" type="audio/mpeg" crossorigin />
 
   <link rel="stylesheet" href="assets/welten-font-system.css?v=20260706mob-bar" />
   <link rel="stylesheet" href="assets/welten-world-title-colors.css?v=20260705bootfix" />
@@ -218,8 +219,8 @@
     })();
   </script>
 
-  <script src="assets/welten-world-audio-test.js?v=20260708audio-fix13" defer></script>
-  <script src="assets/welten-multiversum-master.js?v=20260708audio-fix13" defer></script>
+  <script src="assets/welten-world-audio-test.js?v=20260710audio-fast" defer></script>
+  <script src="assets/welten-multiversum-master.js?v=20260710boot-fast" defer></script>
   <script src="assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="assets/welten-world-switch-preview.js?v=20260708audio-fix4" defer></script>
 </body>

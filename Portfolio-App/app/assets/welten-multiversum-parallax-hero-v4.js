@@ -2255,6 +2255,8 @@
       heroEl.classList.add("is-js-ready", "is-boot-painted");
 
       function signalReady() {
+        if (window.__mvHeroReadySent) return;
+        window.__mvHeroReadySent = true;
         try {
           document.body.classList.add("mv-home-ready");
         } catch (eReadyClass) {}

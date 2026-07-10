@@ -22,7 +22,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--navy-0, #050810);
+  background-color: var(--navy-0, #050810);
+  background-image: var(--al-hero-poster);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
 .al-world-video-hero--video-only .al-world-video-hero__video {
@@ -32,7 +36,7 @@
   object-fit: contain;
   object-position: center center;
   opacity: 0;
-  transition: opacity 280ms ease;
+  transition: opacity 180ms ease;
   transform: translateZ(0);
   backface-visibility: hidden;
 }
