@@ -30,11 +30,14 @@
     touch-action: pan-y;
   }
 
-  /* Ein Scroll-Container: aktive Folie */
+  /* Ein Scroll-Container: aktive Folie — direkt unter Header, kein Doppel-Offset */
   main.slides-root,
   #slidesRoot {
     position: relative;
     box-sizing: border-box;
+    margin-top: var(--header-h, 56px) !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     height: calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px));
     height: calc(100dvh - var(--header-h, 56px) - var(--dock-h, 0px));
     min-height: calc(100svh - var(--header-h, 56px) - var(--dock-h, 0px));
@@ -51,14 +54,14 @@
   .slide.active {
     position: absolute !important;
     inset: 0;
-    top: var(--header-h, 56px);
-    bottom: var(--dock-h, 0px);
+    top: 0 !important;
+    bottom: 0 !important;
     left: 0;
     right: 0;
     width: 100%;
     height: 100% !important;
     min-height: 0 !important;
-    max-height: none;
+    max-height: 100% !important;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -68,6 +71,12 @@
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: auto;
     touch-action: pan-y;
+    box-sizing: border-box;
+  }
+
+  .slide.active:not(#slide-home) {
+    padding-bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 28px)) !important;
+    scroll-padding-bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 28px));
   }
 
   /* NEXORA Inline (#force-nexora-final-brain-hero) + welten-ui-v10 */
@@ -289,8 +298,13 @@
   }
 
   .slide-inner {
-    padding-bottom: 0;
     margin-bottom: 0;
+  }
+
+  .slide.active:not(#slide-home) > .slide-inner,
+  .slide.active:not(#slide-home) .slide-inner {
+    padding-bottom: max(48px, calc(env(safe-area-inset-bottom, 0px) + 32px)) !important;
+    box-sizing: border-box;
   }
 
   .slide:not(#slide-home) > .slide-inner {
@@ -311,7 +325,7 @@
   html.welten-mobile body[data-world="nexora"] #slide-home.slide,
   html.welten-mobile body[data-world="nexora"] #slide-home.slide.active {
     position: absolute !important;
-    top: var(--header-h, 56px) !important;
+    top: 0 !important;
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
@@ -384,16 +398,27 @@
   .slide,
   .slide.active {
     bottom: 0 !important;
+    top: 0 !important;
+    max-height: 100% !important;
   }
 
   .slide:not(#slide-home) {
     padding-bottom: 0 !important;
   }
 
+  .slide.active:not(#slide-home) {
+    padding-bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 28px)) !important;
+  }
+
   .slide.active .slide-inner,
   .slide.active > .slide-inner {
     padding-bottom: max(20px, env(safe-area-inset-bottom, 0px)) !important;
     box-sizing: border-box;
+  }
+
+  .slide.active:not(#slide-home) .slide-inner,
+  .slide.active:not(#slide-home) > .slide-inner {
+    padding-bottom: max(48px, calc(env(safe-area-inset-bottom, 0px) + 32px)) !important;
   }
 
   #slide-home.slide.active .slide-inner--home {

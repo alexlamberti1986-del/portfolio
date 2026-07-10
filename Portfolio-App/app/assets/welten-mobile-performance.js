@@ -252,6 +252,17 @@
     var dockH = 0;
     document.documentElement.style.setProperty("--header-h", headerH + "px");
     document.documentElement.style.setProperty("--dock-h", dockH + "px");
+    var slidesRoot = document.querySelector("main.slides-root, #slidesRoot");
+    if (slidesRoot) {
+      slidesRoot.style.paddingTop = "0";
+      slidesRoot.style.paddingBottom = "0";
+      slidesRoot.style.marginTop = headerH + "px";
+    }
+    document.querySelectorAll(".slide.active").forEach(function (slide) {
+      slide.style.top = "0";
+      slide.style.bottom = "0";
+      slide.style.maxHeight = "100%";
+    });
   }
 
   function wireMobileHeroNav() {
