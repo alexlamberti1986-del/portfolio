@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710stable";
+  var VER = "20260710video-menu";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -23,6 +23,14 @@
     vertex: "professional",
     freiraum: "freiraum",
   };
+
+  var MV_NAV_FALLBACK = [
+    { id: "home", label: "Home" },
+    { id: "projects", label: "Projekte" },
+    { id: "leistungen", label: "Leistungen" },
+    { id: "about", label: "Über mich" },
+    { id: "contact", label: "Kontakt" },
+  ];
 
   var WORLDS = {
     multiversum: {
@@ -244,6 +252,98 @@
     }, 400);
   }
 
+  function getMvNavItems() {
+    var items = [];
+    document.querySelectorAll(".experience-step[data-go]").forEach(function (btn) {
+      var id = btn.getAttribute("data-go");
+      if (!id) return;
+      items.push({
+        id: id,
+        label: btn.getAttribute("data-label") || btn.textContent.trim(),
+      });
+    });
+    return items.length ? items : MV_NAV_FALLBACK;
+  }
+
+  function navigateChapter(id) {
+    if (!id) return;
+    var step = document.querySelector('.experience-step[data-go="' + id + '"]');
+    if (step) {
+      step.click();
+      return;
+    }
+    if (window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
+      window.WeltenSiteIA.navigateToChapter(id);
+      return;
+    }
+    var link = document.querySelector('.menu-links a[data-go="' + id + '"]');
+    if (link) link.click();
+  }
+
+  function syncMvVideoChromeNav() {
+    var section = document.getElementById("alWorldVideoHero");
+    if (!section || !section.classList.contains("al-world-video-hero--multiversum")) return;
+    var current = document.body.getAttribute("data-current-slide") || "home";
+    section.querySelectorAll(".mv-static-hero__nav-btn[data-go]").forEach(function (btn) {
+      var on = btn.getAttribute("data-go") === current;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-current", on ? "page" : "false");
+    });
+  }
+
+  function bindMvVideoChromeNav(section) {
+    if (!section || section.getAttribute("data-mv-chrome-bound") === "1") return;
+    section.setAttribute("data-mv-chrome-bound", "1");
+    section.querySelectorAll(".mv-static-hero__nav-btn[data-go]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        navigateChapter(btn.getAttribute("data-go"));
+      });
+    });
+    syncMvVideoChromeNav();
+  }
+
+  function buildMvVideoChromeHtml() {
+    var navHtml = getMvNavItems()
+      .map(function (item) {
+        return (
+          '<button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="' +
+          item.id +
+          '">' +
+          item.label +
+          "</button>"
+        );
+      })
+      .join("");
+    return (
+      '<div class="al-world-video-hero__chrome">' +
+      '<div class="al-world-video-hero__chrome-inner">' +
+      '<p class="mv-static-hero__eyebrow">Alex Lamberti · Portfolio</p>' +
+      '<h2 class="mv-static-hero__title al-world-video-hero__title">MULTIVERSUM</h2>' +
+      '<nav class="mv-static-hero__nav al-world-video-hero__nav" aria-label="Kapitel">' +
+      navHtml +
+      "</nav></div></div>"
+    );
+  }
+
+  function ensureMvVideoChrome(section, worldKey) {
+    if (!section || worldKey !== "multiversum") return;
+    if (section.querySelector(".al-world-video-hero__chrome")) {
+      bindMvVideoChromeNav(section);
+      syncMvVideoChromeNav();
+      return;
+    }
+    section.classList.add("al-world-video-hero--with-chrome");
+    var media = section.querySelector(".al-world-video-hero__media");
+    if (!media) return;
+    var wrap = document.createElement("div");
+    wrap.innerHTML = buildMvVideoChromeHtml();
+    var chrome = wrap.firstElementChild;
+    section.insertBefore(chrome, media);
+    bindMvVideoChromeNav(section);
+  }
+
   function buildHero(worldKey) {
     var w = WORLDS[worldKey];
     var src = pickVideoSrc(worldKey);
@@ -254,6 +354,7 @@
       "al-world-video-hero al-world-video-hero--" + worldKey + " al-world-video-hero--video-only";
     section.setAttribute("aria-label", w.label + " Video");
     section.innerHTML =
+      (worldKey === "multiversum" ? buildMvVideoChromeHtml() : "") +
       '<div class="al-world-video-hero__media">' +
       '<video class="al-world-video-hero__video" muted loop playsinline preload="none"' +
       ' poster="' +
@@ -261,6 +362,11 @@
       '"' +
       (deferSrc ? "" : ' src="' + src + '"') +
       "></video></div>";
+
+    if (worldKey === "multiversum") {
+      section.classList.add("al-world-video-hero--with-chrome");
+      bindMvVideoChromeNav(section);
+    }
 
     var video = section.querySelector("video");
     if (video) {
@@ -379,6 +485,7 @@
       ensureVideoAfterHero();
       videoHero.className =
         "al-world-video-hero al-world-video-hero--" + worldKey + " al-world-video-hero--video-only";
+      ensureMvVideoChrome(videoHero, worldKey);
       var video = videoHero.querySelector("video");
       var nextSrc = pickVideoSrc(worldKey);
       if (video && nextSrc && video.getAttribute("src") !== nextSrc) {
@@ -393,6 +500,7 @@
 
     watchHomeInner();
     resetHomeScroll();
+    syncMvVideoChromeNav();
 
     if (canPlayVideo() && !isVideoPlaying(videoHero && videoHero.querySelector("video"))) {
       restartAndPlay();
@@ -416,6 +524,7 @@
     lastSlide = slide;
     if (!document.getElementById("alWorldVideoHero")) return;
     ensureVideoAfterHero();
+    syncMvVideoChromeNav();
     if (canPlayVideo()) {
       resetHomeScroll();
       restartAndPlay(slide === "home");

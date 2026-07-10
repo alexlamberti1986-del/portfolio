@@ -59,6 +59,56 @@
   max-height: calc(117svh - var(--header-h, 90px) * 0.35);
 }
 
+.al-world-video-hero--multiversum.al-world-video-hero--with-chrome {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 12%, rgba(255, 89, 178, 0.08), transparent 62%),
+    radial-gradient(ellipse 60% 50% at 50% 88%, rgba(155, 107, 255, 0.06), transparent 58%),
+    linear-gradient(180deg, rgba(5, 7, 13, 0.98), rgba(11, 17, 27, 0.96));
+}
+
+.al-world-video-hero__chrome {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  width: 100%;
+  padding: clamp(18px, 3.2vw, 32px) clamp(16px, 4vw, 48px) clamp(10px, 2vw, 20px);
+  border-bottom: 1px solid rgba(255, 89, 178, 0.14);
+}
+
+.al-world-video-hero__chrome-inner {
+  width: min(100%, 920px);
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2vw, 16px);
+}
+
+.al-world-video-hero__title {
+  margin: 0;
+}
+
+.al-world-video-hero--with-chrome .al-world-video-hero__media {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  width: 100%;
+  height: calc(88svh - var(--header-h, 90px) - 168px);
+  min-height: 420px;
+  max-height: calc(92svh - var(--header-h, 90px) - 140px);
+}
+
+.al-world-video-hero--multiversum.al-world-video-hero--with-chrome.al-world-video-hero--video-only {
+  height: auto;
+  max-height: none;
+}
+
 .al-world-video-hero--multiversum .al-world-video-hero__video {
   object-fit: contain;
   object-position: center center;
@@ -100,6 +150,16 @@
   .al-world-video-hero--multiversum.al-world-video-hero--video-only {
     height: calc(117vh - var(--header-h, 90px) * 0.35);
     max-height: calc(117vh - var(--header-h, 90px) * 0.35);
+  }
+
+  .al-world-video-hero--multiversum.al-world-video-hero--with-chrome.al-world-video-hero--video-only {
+    height: auto;
+    max-height: none;
+  }
+
+  .al-world-video-hero--with-chrome .al-world-video-hero__media {
+    height: calc(88vh - var(--header-h, 90px) - 168px);
+    max-height: calc(92vh - var(--header-h, 90px) - 140px);
   }
 }
 
