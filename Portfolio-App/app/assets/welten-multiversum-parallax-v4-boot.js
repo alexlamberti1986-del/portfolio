@@ -32,6 +32,7 @@
   }
 
   function patchCopy() {
+    if (!document.getElementById("mvParallaxHero")) return;
     TEXT_REPLACEMENTS.forEach(function (pair) {
       document.querySelectorAll(".mv-scroll-slide h2, .mv-static-hero__tag, .mv-scroll-slide__body, .mv-scroll-slide__lead, .mv-static-hero__tag .mv-tag-blue").forEach(function (el) {
         if (el.innerHTML) el.innerHTML = el.innerHTML.replace(pair[0], pair[1]);

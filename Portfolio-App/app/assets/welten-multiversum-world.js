@@ -202,18 +202,47 @@
       });
     });
     window.__mvParallaxHeroReady = true;
-    notifyHeroReady();
+  }
+
+  function waitForParallaxAndBuild(attempt) {
+    attempt = attempt || 0;
+    if (!isDesktopParallaxHero()) return;
+    if (document.getElementById("mvParallaxHero")) return;
+    if (parallaxDepsReady()) {
+      buildHero();
+      return;
+    }
+    if (attempt < 100) {
+      window.setTimeout(function () {
+        waitForParallaxAndBuild(attempt + 1);
+      }, 40);
+    }
+  }
+
+  function removeStaleDesktopHeroes() {
+    if (!isDesktopParallaxHero()) return;
+    var stale = document.getElementById("mvStaticHero");
+    if (stale) stale.remove();
   }
 
   function buildHero() {
     if (window.__mvHeroBootLock) return;
-    if (document.getElementById("mvParallaxHero") || document.getElementById("mvStaticHero")) return;
-    if (isDesktopParallaxHero() && !parallaxDepsReady()) return;
+    if (document.getElementById("mvParallaxHero")) return;
+    if (isDesktopParallaxHero()) {
+      removeStaleDesktopHeroes();
+      if (!parallaxDepsReady()) return;
+    } else if (document.getElementById("mvStaticHero")) {
+      return;
+    }
 
     window.__mvHeroBootLock = true;
     try {
-      if (isDesktopParallaxHero() && typeof window.MVParallaxHero.build === "function" && window.MVParallaxHero.build(goChapter)) return;
+      if (isDesktopParallaxHero() && typeof window.MVParallaxHero.build === "function") {
+        if (window.MVParallaxHero.build(goChapter)) return;
+        return;
+      }
       buildStaticHero();
+      notifyHeroReady();
     } finally {
       window.__mvHeroBootLock = false;
     }
@@ -307,33 +336,28 @@
   function boot() {
     applyTheme();
     if (!isDesktopParallaxHero()) {
-      /* Hero zuerst bauen — stripDecor entfernt sonst #dnaStage */
       buildStaticHero();
       stripDecor();
       finishBoot();
+      if (!document.body.classList.contains("mv-home-ready")) {
+        notifyHeroReady();
+      }
       return;
     }
     stripDecor();
+    removeStaleDesktopHeroes();
+    waitForParallaxAndBuild(0);
     finishBoot();
-    if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
-      buildStaticHero();
-    }
-    setTimeout(function () {
+    window.setTimeout(function () {
       if (!isDesktopParallaxHero()) return;
-      if (!document.getElementById("mvParallaxHero") && !document.getElementById("mvStaticHero")) {
-        try {
-          buildStaticHero();
-        } catch (err) {}
-      }
-      var parallax = document.getElementById("mvParallaxHero");
-      if (parallax && !parallax.classList.contains("is-boot-painted")) {
-        parallax.classList.add("is-boot-painted");
-      }
-      if (!document.body.classList.contains("mv-home-ready")) {
-        document.body.setAttribute("data-boot-failsafe", "1");
+      if (!document.body.classList.contains("mv-home-ready") && document.getElementById("mvParallaxHero")) {
+        var parallax = document.getElementById("mvParallaxHero");
+        if (parallax && !parallax.classList.contains("is-boot-painted")) {
+          parallax.classList.add("is-boot-painted");
+        }
         notifyHeroReady();
       }
-    }, 1200);
+    }, 2800);
   }
 
   function stripDecor() {

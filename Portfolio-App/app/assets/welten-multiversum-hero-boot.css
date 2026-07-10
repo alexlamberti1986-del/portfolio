@@ -33,6 +33,24 @@ body[data-world="general"] #slide-home.slide::-webkit-scrollbar {
   display: none;
 }
 
+/* Während Boot: nur Poster-Shell — keine Zwischen-Hero-Varianten */
+body[data-world="general"]:not(.mv-home-ready) #mvStaticHero,
+body[data-world="general"]:not(.mv-home-ready) #mvParallaxHero,
+body[data-world="general"]:not(.mv-home-ready) #alWorldVideoHero,
+body[data-world="general"]:not(.mv-home-ready) #dnaStage,
+body[data-world="general"]:not(.mv-home-ready) .home-hero-experience {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+@media (min-width: 1024px) {
+  body[data-world="general"] #mvStaticHero {
+    display: none !important;
+  }
+}
+
 body[data-world="general"]:not(.mv-home-ready) .bg-root,
 body[data-world="general"]:not(.mv-home-ready) .bg-grid,
 body[data-world="general"]:not(.mv-home-ready) .light-beams,
@@ -74,6 +92,11 @@ body[data-world="general"]:not(.mv-home-ready) .slide:not(#slide-home) {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+body[data-world="general"].mv-home-ready #slide-home.slide,
+body[data-world="general"].mv-home-ready #slide-home .slide-inner--home {
+  background: transparent !important;
 }
 
 body[data-world="general"].mv-home-ready #mvStaticHero,

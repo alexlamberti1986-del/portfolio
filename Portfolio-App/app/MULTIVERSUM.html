@@ -223,7 +223,7 @@
     })();
   </script>
   <style id="mv-boot-critical">html,body{background:#02030b!important}@media (max-width:1023px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience,body[data-world="general"] .home-hero-experience::before,body[data-world="general"] .home-hero-experience::after,body[data-world="general"] .neuro-core,body[data-world="general"] .neuro-core::before,body[data-world="general"] .neuro-core::after,body[data-world="general"] .dna-unified-scene,body[data-world="general"] .dna-holo-arm,body[data-world="general"] .dna-visual-stack,body[data-world="general"] #dnaPremiumCanvas,body[data-world="general"] #dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;max-height:0!important;overflow:hidden!important;background:none!important}body[data-world="general"] #slide-home.slide,body[data-world="general"] #slide-home .slide-inner--home{background:#05070d url(assets/videos/multiversum-poster.jpg) center/cover no-repeat!important}}@media (min-width:1024px){body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{visibility:hidden!important;opacity:0!important;pointer-events:none!important}#mvParallaxHero:not(.is-boot-painted){opacity:0!important;visibility:hidden!important;pointer-events:none!important}body[data-world="general"]:not(.mv-home-ready) #slide-home.slide,body[data-world="general"]:not(.mv-home-ready) #slide-home .slide-inner--home{background:#02030b url(assets/videos/multiversum-poster.jpg) center/cover no-repeat!important}}</style>
-  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260710instant" />
+  <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260710clean-boot" />
   <link rel="stylesheet" href="assets/welten-multiversum-world.css?v=20260710unify" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260708rail-65" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-v4.css?v=20260706no-scroll" />
@@ -232,9 +232,9 @@
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260708rail-65" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
-  <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260710boot-fast" defer></script>
-  <script src="assets/welten-multiversum-world.js?v=20260710boot-fast" defer></script>
-  <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710boot-fast" defer></script>
+  <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260710clean-boot" defer></script>
+  <script src="assets/welten-multiversum-world.js?v=20260710clean-boot" defer></script>
+<script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710clean-boot" defer></script>
   <script>
     (function () {
       function alreadyReady() {
@@ -256,21 +256,25 @@
         try {
           if (alreadyReady()) return;
           if (!document.body || !window.matchMedia("(min-width: 1024px)").matches) return;
-          if (document.querySelector("#mvParallaxHero.is-boot-painted, #mvStaticHero")) return;
           var parallax = document.getElementById("mvParallaxHero");
-          if (parallax) parallax.classList.add("is-boot-painted");
-          document.body.classList.add("mv-home-ready");
+          if (!parallax) return;
+          if (!parallax.classList.contains("is-boot-painted")) {
+            parallax.classList.add("is-boot-painted");
+          }
           document.body.setAttribute("data-boot-failsafe", "1");
-          try {
-            if (window.parent && window.parent !== window && !window.__mvHeroReadySent) {
-              window.__mvHeroReadySent = true;
-              window.parent.postMessage({ type: "mv-hero-ready" }, "*");
-            }
-          } catch (e3) {}
+          if (!window.__mvHeroReadySent) {
+            window.__mvHeroReadySent = true;
+            document.body.classList.add("mv-home-ready");
+            try {
+              if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: "mv-hero-ready" }, "*");
+              }
+            } catch (e3) {}
+          }
         } catch (e2) {}
       }
       setTimeout(mobileFailsafe, 900);
-      setTimeout(desktopFailsafe, 2200);
+      setTimeout(desktopFailsafe, 3200);
     })();
   </script>
   <title>Alex Lamberti Multiversum für digitale Welten</title>
@@ -5434,7 +5438,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     var s = document.createElement("style");
     s.id = "mv-boot-inline-hide";
     s.textContent =
-      "body[data-world=general] .bg-root,body[data-world=general] .bg-grid,body[data-world=general] .light-beams,body[data-world=general] #particle-canvas{display:none!important}#dnaStage,.home-hero-experience,.home-hero-experience::before,.home-hero-experience::after,.neuro-core,.neuro-core::before,.neuro-core::after,.dna-unified-scene,.dna-holo-arm,#dnaPremiumCanvas,#dnaParticlesCanvas{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;overflow:hidden!important}body[data-world=general]:not(.mv-home-ready) #slide-home.slide,body[data-world=general]:not(.mv-home-ready) #slide-home .slide-inner--home{background:#02030b url(assets/videos/multiversum-poster.jpg) center/cover no-repeat!important}body[data-world=general]:not(.mv-home-ready) .experience-rail,body[data-world=general]:not(.mv-home-ready) .home-main-block,body[data-world=general]:not(.mv-home-ready) .slide:not(#slide-home){visibility:hidden!important;opacity:0!important;pointer-events:none!important}";
+      "body[data-world=general] .bg-root,body[data-world=general] .bg-grid,body[data-world=general] .light-beams,body[data-world=general] #particle-canvas{display:none!important}#dnaStage,.home-hero-experience,#mvStaticHero,#mvParallaxHero,#alWorldVideoHero{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;overflow:hidden!important;pointer-events:none!important}body[data-world=general]:not(.mv-home-ready) #slide-home.slide,body[data-world=general]:not(.mv-home-ready) #slide-home .slide-inner--home{background:#02030b url(assets/videos/multiversum-poster.jpg) center/cover no-repeat!important}body[data-world=general]:not(.mv-home-ready) .experience-rail,body[data-world=general]:not(.mv-home-ready) .home-main-block,body[data-world=general]:not(.mv-home-ready) .slide:not(#slide-home){visibility:hidden!important;opacity:0!important;pointer-events:none!important}";
     (document.head || document.documentElement).appendChild(s);
   } catch (e) {}
 })();
@@ -8760,7 +8764,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-desktop-chapter-hero.js?v=20260710boot-fast" defer></script>
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260710video-fast" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260708video-edge1" />
-<script src="assets/welten-video-hero-boot.js?v=20260710video-fast" defer></script>
+<script src="assets/welten-video-hero-boot.js?v=20260710video-clean" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260706mobile-pass3" />
 <link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260606f" />

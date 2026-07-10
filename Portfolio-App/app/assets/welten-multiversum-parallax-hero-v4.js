@@ -2225,6 +2225,8 @@
 
       var stage = document.getElementById("dnaStage");
       if (!stage) return null;
+      var staleStatic = document.getElementById("mvStaticHero");
+      if (staleStatic) staleStatic.remove();
       scrollRoot = document.getElementById("slide-home");
       if (!scrollRoot) return null;
 

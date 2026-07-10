@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710video-fast";
+  var VER = "20260710video-clean";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -351,6 +351,13 @@
       return;
     }
 
+    if (
+      document.body.getAttribute("data-world") === "general" &&
+      !document.body.classList.contains("mv-home-ready")
+    ) {
+      return;
+    }
+
     var worldKey = WORLD_MAP[document.body.getAttribute("data-world") || ""];
     if (!worldKey) return;
 
@@ -503,6 +510,7 @@
     }
     if (e.data.type === "mv-hero-ready") {
       heroReadyForVideo = true;
+      mountVideoHero();
       return;
     }
     if (e.data.type === "portfolio-effects") {
@@ -523,6 +531,21 @@
       attributeFilter: ["data-current-slide"],
     });
   } catch (e) {}
+
+  try {
+    new MutationObserver(function () {
+      if (
+        document.body.getAttribute("data-world") === "general" &&
+        document.body.classList.contains("mv-home-ready")
+      ) {
+        heroReadyForVideo = true;
+        mountVideoHero();
+      }
+    }).observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  } catch (e2) {}
 
   window.WeltenVideoHero = {
     version: VER,
