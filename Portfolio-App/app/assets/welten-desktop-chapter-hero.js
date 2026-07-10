@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710boot-fast";
+  var VER = "20260710fix3";
   var bootTimer = null;
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
@@ -487,7 +487,7 @@
       return;
     }
 
-    if (world === "nexora") {
+    if (world === "nexora" && active !== "home") {
       stripNexoraDnaStrand(getDnaHeroEl());
     }
 

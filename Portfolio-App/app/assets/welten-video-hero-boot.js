@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710fix2";
+  var VER = "20260710fix3";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -344,6 +344,40 @@
     bindMvVideoChromeNav(section);
   }
 
+  function refreshWorldHeroNav(worldKey) {
+    if (!worldKey || worldKey === "multiversum") return;
+
+    window.setTimeout(function () {
+      if (worldKey === "nexora") {
+        if (window.NexoraOrbitUI && typeof window.NexoraOrbitUI.init === "function") {
+          window.NexoraOrbitUI.init();
+        } else {
+          try {
+            document.dispatchEvent(new CustomEvent("welten-nexora-orbit-init"));
+          } catch (eOrbit) {}
+        }
+        if (window.NexoraOrbitUI && typeof window.NexoraOrbitUI.snapToChapter === "function") {
+          window.NexoraOrbitUI.snapToChapter(
+            document.body.getAttribute("data-current-slide") || "home"
+          );
+        }
+      }
+
+      if (window.WeltenDesktopChapterHero && typeof window.WeltenDesktopChapterHero.refresh === "function") {
+        window.WeltenDesktopChapterHero.refresh();
+      }
+    }, 80);
+  }
+
+  function signalVideoHeroMounted(worldKey) {
+    try {
+      document.dispatchEvent(
+        new CustomEvent("welten-video-hero-mounted", { detail: { worldKey: worldKey || "" } })
+      );
+    } catch (eMounted) {}
+    refreshWorldHeroNav(worldKey);
+  }
+
   function applyMultiversumVideoFit(section) {
     if (!section || !section.classList.contains("al-world-video-hero--multiversum")) return;
     var media = section.querySelector(".al-world-video-hero__media");
@@ -526,6 +560,8 @@
     } else if (!canPlayVideo()) {
       pauseVideoHero();
     }
+
+    signalVideoHeroMounted(worldKey);
   }
 
   function onViewportChange() {

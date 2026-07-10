@@ -32,7 +32,48 @@ body[data-welten-video-hero="1"] #slide-home #dnaStage,
 body[data-welten-video-hero="1"] #slide-home #mvParallaxHero,
 body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
   position: relative;
-  z-index: 2;
+  z-index: 3;
+}
+
+/* Nexora / Professional / Freiraum: DNA-Hero + Kapitel-Buttons über dem Video */
+@media (min-width: 1025px) {
+  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home #dnaStage,
+  body[data-welten-video-hero="1"][data-world="vertex"] #slide-home .home-hero-experience,
+  body[data-welten-video-hero="1"][data-world="vertex"] #slide-home #dnaStage,
+  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .home-hero-experience,
+  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home #dnaStage {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px))) !important;
+    min-height: clamp(520px, var(--hero-dna-h, 72svh), 900px) !important;
+    max-height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px))) !important;
+    overflow: hidden !important;
+  }
+
+  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .nexora-orbit-buttons,
+  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .nexora-orbit-ring,
+  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .nexora-orbit-button,
+  body[data-welten-video-hero="1"][data-world="vertex"] #slide-home .dna-unified-scene,
+  body[data-welten-video-hero="1"][data-world="vertex"] #slide-home .dna-ring,
+  body[data-welten-video-hero="1"][data-world="vertex"] #slide-home .dna-slide,
+  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .dna-unified-scene,
+  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .dna-ring,
+  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .dna-slide {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .nexora-orbit-buttons {
+    z-index: 28 !important;
+  }
+
+  body[data-welten-video-hero="1"] #alWorldVideoHero {
+    z-index: 2 !important;
+  }
 }
 
 /* Unterseiten: kein Video */
