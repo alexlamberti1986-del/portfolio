@@ -2267,12 +2267,11 @@
             window.parent.postMessage({ type: "mv-hero-ready" }, "*");
           }
         } catch (eReady) {}
+        try {
+          document.dispatchEvent(new CustomEvent("mv-hero-ready"));
+        } catch (eEv) {}
       }
-      if (typeof requestAnimationFrame === "function") {
-        requestAnimationFrame(signalReady);
-      } else {
-        signalReady();
-      }
+      signalReady();
 
       function finishHeavyBoot() {
         Object.keys(dom.particleFields || {}).forEach(function (theme) {

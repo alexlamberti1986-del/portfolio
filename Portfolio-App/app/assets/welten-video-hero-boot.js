@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710video-clean";
+  var VER = "20260710flow";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -353,7 +353,8 @@
 
     if (
       document.body.getAttribute("data-world") === "general" &&
-      !document.body.classList.contains("mv-home-ready")
+      !document.body.classList.contains("mv-home-ready") &&
+      !document.querySelector("#mvParallaxHero.is-boot-painted")
     ) {
       return;
     }
@@ -532,11 +533,17 @@
     });
   } catch (e) {}
 
+  document.addEventListener("mv-hero-ready", function () {
+    heroReadyForVideo = true;
+    mountVideoHero();
+  });
+
   try {
     new MutationObserver(function () {
       if (
         document.body.getAttribute("data-world") === "general" &&
-        document.body.classList.contains("mv-home-ready")
+        (document.body.classList.contains("mv-home-ready") ||
+          document.querySelector("#mvParallaxHero.is-boot-painted"))
       ) {
         heroReadyForVideo = true;
         mountVideoHero();
