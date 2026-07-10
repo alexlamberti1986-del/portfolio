@@ -1,5 +1,5 @@
 /**
- * MULTIVERSUM — Parallax-Hero: Dekor ausblenden, kein Startposter (nur Desktop)
+ * MULTIVERSUM — Parallax-Hero: Dekor ausblenden, schneller First Paint mit Poster-Shell
  */
 html,
 body {
@@ -10,7 +10,6 @@ body[data-world="general"]:not(.mv-home-ready) {
   overflow: hidden !important;
 }
 
-/* Nach Boot: wie andere Welten kein Body-Scroll (Scroll nur in .slide / #slide-home) */
 body[data-world="general"].mv-home-ready,
 body[data-world="general"][data-boot-failsafe="1"] {
   overflow: hidden !important;
@@ -21,7 +20,6 @@ html:has(body[data-world="general"][data-boot-failsafe="1"]) {
   overflow: hidden !important;
 }
 
-/* Scrollbar in Folien unsichtbar — kein grauer Balken am Rand */
 body[data-world="general"] .slide,
 body[data-world="general"] #slide-home.slide {
   scrollbar-width: none;
@@ -39,12 +37,40 @@ body[data-world="general"]:not(.mv-home-ready) .bg-root,
 body[data-world="general"]:not(.mv-home-ready) .bg-grid,
 body[data-world="general"]:not(.mv-home-ready) .light-beams,
 body[data-world="general"]:not(.mv-home-ready) #particle-canvas,
-body[data-world="general"]:not(.mv-home-ready) #slidesRoot,
-body[data-world="general"]:not(.mv-home-ready) .experience-rail,
-body[data-world="general"]:not(.mv-home-ready) .site-header,
 body[data-world="general"]:not(.mv-home-ready) .menu-overlay,
-body[data-world="general"]:not(.mv-home-ready) .welten-skip-link {
+body[data-world="general"]:not(.mv-home-ready) .experience-rail {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Sofort sichtbar während Boot: Header + Poster-Shell */
+body[data-world="general"]:not(.mv-home-ready) .site-header {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+body[data-world="general"]:not(.mv-home-ready) .site-header > * {
+  pointer-events: auto !important;
+}
+
+body[data-world="general"]:not(.mv-home-ready) #slidesRoot {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+body[data-world="general"]:not(.mv-home-ready) #slide-home.slide,
+body[data-world="general"]:not(.mv-home-ready) #slide-home .slide-inner--home {
+  background: #02030b url("assets/videos/multiversum-poster.jpg") center center / cover no-repeat !important;
+}
+
+body[data-world="general"]:not(.mv-home-ready) .home-main-block,
+body[data-world="general"]:not(.mv-home-ready) .slide:not(#slide-home) {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
@@ -67,20 +93,6 @@ body[data-world="general"].mv-home-ready #mvParallaxHero.is-boot-painted {
     pointer-events: auto !important;
     min-height: min(72vh, 640px);
   }
-
-  body[data-world="general"].mv-home-ready #slidesRoot,
-  body[data-world="general"][data-boot-failsafe="1"] #slidesRoot,
-  body[data-world="general"].mv-home-ready .site-header,
-  body[data-world="general"][data-boot-failsafe="1"] .site-header {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-
-  body[data-world="general"].mv-home-ready .site-header,
-  body[data-world="general"][data-boot-failsafe="1"] .site-header {
-    display: flex !important;
-  }
 }
 
 body[data-world="general"].mv-home-ready #mvParallaxHero.is-boot-painted {
@@ -93,18 +105,6 @@ body[data-world="general"].mv-home-ready .site-header {
   opacity: 1 !important;
 }
 
-/* Desktop: Folien erst nach Boot-Signal — nicht erst nach Parallax-Paint */
-@media (min-width: 1024px) {
-  body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) #slidesRoot,
-  body[data-world="general"]:not(.mv-home-ready):not([data-boot-failsafe="1"]) .site-header {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-}
-
-/* Failsafe: Hero/Inhalt sichtbar auch wenn Paint hängen bleibt */
 body[data-world="general"][data-boot-failsafe="1"] #mvParallaxHero,
 body[data-world="general"][data-boot-failsafe="1"] #mvStaticHero {
   display: block !important;
@@ -140,6 +140,12 @@ body[data-world="general"].mv-home-ready .site-header > * {
 
 body[data-world="general"].mv-home-ready #slidesRoot {
   display: block !important;
+  pointer-events: auto !important;
+}
+
+body[data-world="general"].mv-home-ready .home-main-block {
+  visibility: visible !important;
+  opacity: 1 !important;
   pointer-events: auto !important;
 }
 
@@ -184,7 +190,7 @@ body[data-world="general"].mv-home-ready #slidesRoot {
 
   body[data-world="general"] #slide-home.slide,
   body[data-world="general"] #slide-home .slide-inner--home {
-    background: #05070d !important;
+    background: #05070d url("assets/videos/multiversum-poster.jpg") center center / cover no-repeat !important;
     padding-top: 0 !important;
   }
 }
@@ -230,4 +236,3 @@ body[data-world="general"].mv-home-ready .site-header {
   visibility: hidden !important;
   pointer-events: none !important;
 }
-
