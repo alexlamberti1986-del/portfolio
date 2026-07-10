@@ -89,15 +89,20 @@
   margin: 0;
 }
 
-/* Video-Bereich unter Menü: gleiche Masse wie in den anderen Welten */
-.al-world-video-hero--with-chrome .al-world-video-hero__media {
+/* Video-Bereich unter Menü: Multiversum +30% Höhe, kein Beschnitt oben/unten */
+.al-world-video-hero--multiversum.al-world-video-hero--with-chrome .al-world-video-hero__media {
   position: relative;
   z-index: 1;
   flex: 0 0 auto;
   width: 100%;
-  height: calc(109svh - var(--header-h, 90px) * 0.35);
-  min-height: 624px;
-  max-height: calc(109svh - var(--header-h, 90px) * 0.35);
+  height: calc((109svh - var(--header-h, 90px) * 0.35) * 1.3);
+  min-height: 811px;
+  max-height: calc((109svh - var(--header-h, 90px) * 0.35) * 1.3);
+}
+
+.al-world-video-hero--multiversum.al-world-video-hero--with-chrome .al-world-video-hero__video {
+  object-fit: contain;
+  object-position: center center;
 }
 
 .al-world-video-hero--multiversum.al-world-video-hero--with-chrome.al-world-video-hero--video-only {
@@ -143,9 +148,9 @@
     max-height: none;
   }
 
-  .al-world-video-hero--with-chrome .al-world-video-hero__media {
-    height: calc(109vh - var(--header-h, 90px) * 0.35);
-    max-height: calc(109vh - var(--header-h, 90px) * 0.35);
+  .al-world-video-hero--multiversum.al-world-video-hero--with-chrome .al-world-video-hero__media {
+    height: calc((109vh - var(--header-h, 90px) * 0.35) * 1.3);
+    max-height: calc((109vh - var(--header-h, 90px) * 0.35) * 1.3);
   }
 }
 

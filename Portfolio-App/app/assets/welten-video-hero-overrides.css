@@ -80,15 +80,28 @@ body[data-welten-video-hero="1"]:not([data-current-slide="home"]) #alWorldVideoH
     margin-right: calc(50% - 50vw) !important;
   }
 
-  body[data-welten-video-hero="1"] .al-world-video-hero--video-only .al-world-video-hero__media,
-  body[data-welten-video-hero="1"] .al-world-video-hero--video-only .al-world-video-hero__video {
+  body[data-welten-video-hero="1"] .al-world-video-hero--multiversum.al-world-video-hero--video-only .al-world-video-hero__media,
+  body[data-welten-video-hero="1"] .al-world-video-hero--multiversum.al-world-video-hero--video-only .al-world-video-hero__video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
+
+  body[data-welten-video-hero="1"] .al-world-video-hero--multiversum.al-world-video-hero--video-only .al-world-video-hero__media {
+    background-size: contain !important;
+    background-position: center center !important;
+  }
+
+  body[data-welten-video-hero="1"] .al-world-video-hero--video-only:not(.al-world-video-hero--multiversum) .al-world-video-hero__media,
+  body[data-welten-video-hero="1"] .al-world-video-hero--video-only:not(.al-world-video-hero--multiversum) .al-world-video-hero__video {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
     object-position: center center !important;
   }
 
-  body[data-welten-video-hero="1"] .al-world-video-hero--video-only .al-world-video-hero__media {
+  body[data-welten-video-hero="1"] .al-world-video-hero--video-only:not(.al-world-video-hero--multiversum) .al-world-video-hero__media {
     background-size: cover !important;
     background-position: center center !important;
   }

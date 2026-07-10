@@ -58,11 +58,45 @@ body[data-world="general"]:has(#mvStaticHero) .home-hero-experience {
   }
 }
 
-body[data-world="general"] #mvParallaxHero {
+body[data-world="general"] #mvParallaxHero:not(.is-boot-painted) {
+  display: block !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body[data-world="general"] #mvParallaxHero.is-boot-painted {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
+}
+
+/* Fremde Welten im Parallax nur bei aktivem Kapitel — kein Nexora-Flash beim Start */
+body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) .world-zone--nexora,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) .mv-scroll-slide--nexora,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) .mv-scroll-orb--nexora,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) [data-atmo="nexora"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) [data-bg="nexora"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) [data-deco-theme="nexora"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="nexora"]) [data-particle-field="nexora"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="professional"]) .world-zone--professional,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="professional"]) .mv-scroll-slide--professional,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="professional"]) .mv-scroll-orb--professional,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="professional"]) [data-atmo="professional"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="professional"]) [data-bg="professional"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="professional"]) [data-deco-theme="professional"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="professional"]) [data-particle-field="professional"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) .world-zone--freiraum,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) .mv-scroll-slide--freiraum,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) .mv-scroll-orb--freiraum,
+body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [data-atmo="freiraum"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [data-bg="freiraum"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [data-deco-theme="freiraum"],
+body[data-world="general"] #mvParallaxHero:not([data-active-world="freiraum"]) [data-particle-field="freiraum"] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 body[data-world="general"] #slide-home.slide,

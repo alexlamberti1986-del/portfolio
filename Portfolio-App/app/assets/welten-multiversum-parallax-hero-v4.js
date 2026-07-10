@@ -2253,6 +2253,8 @@
       bindScroll();
       scrollRoot.scrollTop = 0;
       animProgress = 0;
+      heroEl.setAttribute("data-active-world", "multiversum");
+      heroEl.setAttribute("data-layout", "intro");
       updateFrame();
       heroEl.classList.add("is-js-ready", "is-boot-painted");
 
@@ -2272,10 +2274,6 @@
         } catch (eEv) {}
       }
       signalReady();
-      try {
-        document.body.classList.add("is-below-parallax");
-        if (heroEl) heroEl.classList.add("is-content-released");
-      } catch (eRelease) {}
 
       function finishHeavyBoot() {
         Object.keys(dom.particleFields || {}).forEach(function (theme) {
