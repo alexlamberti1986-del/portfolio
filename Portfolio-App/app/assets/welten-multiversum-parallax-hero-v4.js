@@ -2272,6 +2272,10 @@
         } catch (eEv) {}
       }
       signalReady();
+      try {
+        document.body.classList.add("is-below-parallax");
+        if (heroEl) heroEl.classList.add("is-content-released");
+      } catch (eRelease) {}
 
       function finishHeavyBoot() {
         Object.keys(dom.particleFields || {}).forEach(function (theme) {

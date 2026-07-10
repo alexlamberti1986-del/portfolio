@@ -1,5 +1,5 @@
 /**
- * MULTIVERSUM — Kein Poster-Shell: Hero, Video und Home-Inhalt direkt sichtbar.
+ * MULTIVERSUM — Dunkler Boot ohne Poster-Shell.
  */
 html,
 body {
@@ -27,13 +27,22 @@ body[data-world="general"] #slide-home.slide::-webkit-scrollbar {
   display: none;
 }
 
-/* Alte Dekor-Ebenen aus — kein Poster-Hintergrund */
+/* Alte Dekor-Ebenen aus */
 body[data-world="general"] .bg-root,
 body[data-world="general"] .bg-grid,
 body[data-world="general"] .light-beams,
-body[data-world="general"] #particle-canvas,
-body[data-world="general"] #dnaStage,
-body[data-world="general"] .home-hero-experience:not(.welten-desktop-relocated-hero) {
+body[data-world="general"] #particle-canvas {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* DNA-Stage nur verstecken, wenn Parallax oder Static-Hero da ist */
+body[data-world="general"]:has(#mvParallaxHero) #dnaStage,
+body[data-world="general"]:has(#mvParallaxHero) .home-hero-experience,
+body[data-world="general"]:has(#mvStaticHero) #dnaStage,
+body[data-world="general"]:has(#mvStaticHero) .home-hero-experience {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -49,7 +58,6 @@ body[data-world="general"] .home-hero-experience:not(.welten-desktop-relocated-h
   }
 }
 
-/* Parallax-Hero sobald im DOM */
 body[data-world="general"] #mvParallaxHero {
   display: block !important;
   visibility: visible !important;
@@ -62,7 +70,6 @@ body[data-world="general"] #slide-home .slide-inner--home {
   background: transparent !important;
 }
 
-/* Video-Hero */
 body[data-world="general"] #alWorldVideoHero {
   display: block !important;
   visibility: visible !important;
@@ -70,39 +77,21 @@ body[data-world="general"] #alWorldVideoHero {
   pointer-events: auto !important;
 }
 
-/* Home-Inhalt immer sichtbar */
-body[data-world="general"] #slide-home .home-main-block {
+body[data-world="general"].mv-home-ready #slide-home .home-main-block,
+body[data-world="general"].is-below-parallax #slide-home .home-main-block,
+body[data-world="general"]:has(#mvParallaxHero.is-content-released) #slide-home .home-main-block {
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-body[data-world="general"] .experience-rail {
+body[data-world="general"].mv-home-ready .experience-rail {
   display: grid !important;
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
 }
 
-body[data-world="general"] .site-header {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: none !important;
-}
-
-body[data-world="general"] .site-header > * {
-  pointer-events: auto !important;
-}
-
-body[data-world="general"] #slidesRoot {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Unterseiten: aktive Folie immer sichtbar */
 body[data-world="general"] .slide.active {
   visibility: visible !important;
   opacity: 1 !important;
@@ -122,11 +111,6 @@ body[data-world="general"][data-current-slide]:not([data-current-slide="home"]) 
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
-  }
-
-  body[data-world="general"] #slide-home.slide,
-  body[data-world="general"] #slide-home .slide-inner--home {
-    background: transparent !important;
   }
 }
 

@@ -349,15 +349,7 @@
       if (!document.body.classList.contains("mv-home-ready")) {
         notifyHeroReady();
       }
-    }, 800);
-    window.setTimeout(function () {
-      if (!document.getElementById("mvParallaxHero") && isDesktopParallaxHero()) {
-        buildHero();
-      }
-      if (!document.body.classList.contains("mv-home-ready")) {
-        notifyHeroReady();
-      }
-    }, 2200);
+    }, 3000);
   }
 
   function stripDecor() {

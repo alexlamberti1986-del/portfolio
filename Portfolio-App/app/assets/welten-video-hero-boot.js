@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710nohide";
+  var VER = "20260710stable";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -532,10 +532,10 @@
 
   try {
     new MutationObserver(function () {
-      if (document.body.getAttribute("data-world") !== "general") return;
       if (
-        document.body.classList.contains("mv-home-ready") ||
-        document.getElementById("mvParallaxHero")
+        document.body.getAttribute("data-world") === "general" &&
+        (document.body.classList.contains("mv-home-ready") ||
+          document.querySelector("#mvParallaxHero.is-boot-painted"))
       ) {
         heroReadyForVideo = true;
         mountVideoHero();
@@ -543,8 +543,6 @@
     }).observe(document.body, {
       attributes: true,
       attributeFilter: ["class"],
-      childList: true,
-      subtree: true,
     });
   } catch (e2) {}
 
