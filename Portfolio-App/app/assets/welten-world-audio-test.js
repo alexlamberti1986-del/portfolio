@@ -368,6 +368,22 @@
         earlyEl.volume = 0;
       }
     } catch (eEarlyStop) {}
+    /* Beim Verlassen von Multiversum: Iframe-0-BGM nochmals hart stoppen. */
+    if (pendingWorld && pendingWorld !== "general") {
+      stopIframeWorldBgm();
+      try {
+        var mvFrame =
+          document.querySelector('.mv4-frame[data-world="general"]') ||
+          document.querySelectorAll(".mv4-frame")[0];
+        if (mvFrame && mvFrame.contentWindow) {
+          var mvWin = mvFrame.contentWindow;
+          if (typeof mvWin.__mvStopIframeWorldBgm === "function") {
+            mvWin.__mvStopIframeWorldBgm();
+          }
+          mvWin.postMessage({ type: "mv-stop-iframe-bgm" }, "*");
+        }
+      } catch (eMvStop) {}
+    }
     /* Nur Gesture-Boot für echten Erstbesuch erlauben — nach Wechsel starten wir über switch-end. */
     initialBootDone = true;
     bootGesturePending = false;

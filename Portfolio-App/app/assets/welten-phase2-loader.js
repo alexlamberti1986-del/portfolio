@@ -26,7 +26,7 @@
     "assets/welten-perf-sprint4.js?v=20260608d",
     "assets/welten-ux-refine.js?v=20260530a",
     "assets/welten-final.js?v=20260706perf-fix",
-    "assets/welten-cleanup.js?v=20260714orbitCards1",
+    "assets/welten-cleanup.js?v=20260714orbitRevert1",
     "assets/welten-premium-review.js?v=20260531c",
     "assets/welten-final-restore.js?v=20260606c",
     "assets/welten-contact-final.js?v=20260714offerte1",

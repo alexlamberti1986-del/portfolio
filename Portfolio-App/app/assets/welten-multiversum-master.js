@@ -944,6 +944,21 @@
 
     resumeAudio();
     lockShell(masterKey(i));
+    /* Sofort Shell-Theme wechseln — nicht erst in applyActive nach Load/Cover.
+       Verhindert Multiversum-Bar/Theme-Bleed während der Transition. */
+    setMaster(i);
+    if (i !== 0 && frames[0]) {
+      frames[0].classList.remove("is-active");
+      frames[0].style.pointerEvents = "none";
+      postFrame(frames[0], { type: "portfolio-world-pause", paused: true });
+      postFrame(frames[0], { type: "portfolio-cleanup-transition" });
+    }
+    /* Wenn wir Multiversum verlassen: Frame 0 darf nicht kurzzeitig
+       reaktivieren (z. B. durch parallele Load-/Preview-Pfade). */
+    if (prev === 0 && i !== 0 && frames[0]) {
+      frames[0].classList.remove("is-active");
+      frames[0].style.pointerEvents = "none";
+    }
     var c = readChapter(frames[prev]);
     if (c) sharedChapter = c;
 
