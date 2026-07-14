@@ -1895,7 +1895,7 @@
       font-family: ui-sans-serif, system-ui, sans-serif;
     }
     body[data-world="vertex"] .dna-unified-scene::after {
-      content: "Strategie � Struktur � Wirkung";
+      content: "Strategie ? Struktur ? Wirkung";
       position: absolute;
       right: clamp(24px, 7vw, 112px);
       top: 26%;
@@ -2315,7 +2315,7 @@
       filter: hue-rotate(130deg) saturate(2.2) brightness(1.2);
     }
     body[data-world="freiraum"] .dna-unified-scene::after {
-      content: "DAYDREAMING � POP! � CREATE � FEEL";
+      content: "DAYDREAMING ? POP! ? CREATE ? FEEL";
       position: absolute;
       right: 4vw;
       top: 16%;
@@ -3123,19 +3123,15 @@ body[data-world="vertex"] .home-portrait-card,
       overflow: hidden;
     }
     .bg-root::before {
-      content: "";
-      position: absolute;
-      inset: -8%;
-      background-image:
-        linear-gradient(180deg, rgba(1, 6, 16, 0.20), rgba(1, 6, 16, 0.76)),
-        var(--virtual-data-bg) !important;
-      background-size: cover, cover !important;
-      background-position: center, center !important;
-      opacity: 0.72 !important;
-      filter: saturate(1.16) contrast(1.08) brightness(0.82) blur(0.2px);
-      transform: translate3d(0,0,0) scale(1.05);
-      animation: virtualDataFloat 42s ease-in-out infinite alternate !important;
-      will-change: transform;
+      /* Portfoliobild/nexora-virtual-data-bg bewusst nie laden ? Home + Unterseiten gleich */
+      content: none !important;
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      background: none !important;
+      background-image: none !important;
+      animation: none !important;
+      pointer-events: none !important;
     }
     .bg-root::after {
       content: "";
@@ -4001,9 +3997,14 @@ FINAL HOME MATCH PATCH - holographic AI brain landing screen
 }
 
 body.is-home .bg-root::before,
-body.is-home .bg-root::after {
+body.is-home .bg-root::after,
+body.is-subpage .bg-root::before,
+body.welten-desktop-subpage-hero--on .bg-root::before {
   opacity: 0 !important;
   display: none !important;
+  visibility: hidden !important;
+  background-image: none !important;
+  content: none !important;
 }
 
 #slide-home.slide {
@@ -8424,12 +8425,12 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-mouse-paint.js?v=20260703wws-smooth" defer></script>
 
 <script src="assets/welten-mobile-hero.js?v=20260706hero-off" defer></script>
-<link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714hero6" />
-<script src="assets/welten-desktop-chapter-hero.js?v=20260714hero6" defer></script>
-<script src="assets/welten-video-hero-boot.js?v=20260714hero6" defer></script>
+<link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260714hero7" />
+<link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero7" />
+<link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero7" />
+<link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714hero7" />
+<script src="assets/welten-desktop-chapter-hero.js?v=20260714hero7" defer></script>
+<script src="assets/welten-video-hero-boot.js?v=20260714hero7" defer></script>
 <script src="assets/welten-mobile-nexora-nav.js?v=20260606f" defer></script>
 <script src="assets/welten-nexora-mobile-fix.js?v=20260622a" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
@@ -8478,5 +8479,20 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-portraits-apply.js?v=20260626-prof-neu" defer></script>
 <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 <link rel="stylesheet" href="assets/welten-mobile-hero-off.css?v=20260706hero-off" id="welten-mobile-hero-off-stylesheet" />
+<style id="nexora-kill-portfolio-bg">
+  /* Unterseiten-Hero: kein Portfoliobild hinter Gehirn/Orbit (Home-Parit�t) */
+  body[data-world="nexora"] .bg-root::before,
+  body[data-world="nexora"].is-subpage .bg-root::before,
+  body[data-world="nexora"].welten-desktop-subpage-hero--on .bg-root::before,
+  body[data-world="nexora"] .welten-desktop-relocated-hero ~ * .bg-root::before {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    background: none !important;
+    background-image: none !important;
+    animation: none !important;
+  }
+</style>
 </body>
 </html>
