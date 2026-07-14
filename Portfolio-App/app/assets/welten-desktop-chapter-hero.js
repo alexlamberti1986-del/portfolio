@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260714heroWake1";
+  var VER = "20260714loadClean1";
   var bootTimer = null;
   var realignTimers = [];
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
@@ -586,7 +586,7 @@
       restoreHeroToHome();
       hero = getHomeHeroEl();
     } else if (!mount || !homeInner) {
-      setTimeout(boot, 320);
+      setTimeout(boot, 120);
       return;
     } else if (hasDnaHomeHero() || world !== "general") {
       hero = relocateDnaHero(active, mount, homeInner);
@@ -595,7 +595,7 @@
     }
 
     if (!hero && active !== "home") {
-      setTimeout(boot, 320);
+      setTimeout(boot, 120);
       return;
     }
 
@@ -609,9 +609,8 @@
 
     requestAnimationFrame(function () {
       pinDnaHeroTopParity();
-      setTimeout(pinDnaHeroTopParity, 80);
-      setTimeout(pinDnaHeroTopParity, 280);
-      setTimeout(pinDnaHeroTopParity, 560);
+      setTimeout(pinDnaHeroTopParity, 60);
+      setTimeout(pinDnaHeroTopParity, 180);
     });
 
     if (active !== "home") {

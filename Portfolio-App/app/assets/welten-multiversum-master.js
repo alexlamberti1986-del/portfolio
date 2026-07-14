@@ -746,7 +746,7 @@
           return;
         }
       } catch (e1) {}
-      if (++tries < 40) setTimeout(tryApply, 70);
+      if (++tries < 14) setTimeout(tryApply, 40);
     }
     tryApply();
   }
@@ -958,10 +958,7 @@
         if (fReveal) {
           setTimeout(function () {
             postFrame(fReveal, { type: "portfolio-world-reveal", world: soundKey(i) });
-          }, 120);
-          setTimeout(function () {
-            postFrame(fReveal, { type: "portfolio-world-reveal", world: soundKey(i) });
-          }, 420);
+          }, 80);
         }
       } catch (eReveal) {}
       requestAnimationFrame(setBarHeight);
@@ -1051,12 +1048,10 @@
     });
     worlds.querySelectorAll(WORLD_BTN_SEL).forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
+      /* Prefetch nur bei Absicht (Tap/Focus), nicht schon beim Hover */
       btn.addEventListener("pointerdown", function () {
         preloadFrame(idx);
       }, { passive: true });
-      btn.addEventListener("mouseenter", function () {
-        preloadFrame(idx);
-      });
       btn.addEventListener("touchstart", function () {
         preloadFrame(idx);
       }, { passive: true });
@@ -1119,7 +1114,7 @@
         },
         "*"
       );
-    }, 620);
+    }, 140);
   }
 
   window.addEventListener("message", function (e) {
@@ -1224,9 +1219,7 @@
   }
 
   setTimeout(primeActiveFrame, 400);
-  if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
-    window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
-  }
+  /* Kein Idle-Prefetch anderer Welten — nur Tap/Focus in bindWorldButtons */
   requestAnimationFrame(function () {
     forceEnableWorldButtons();
   });

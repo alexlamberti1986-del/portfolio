@@ -4,17 +4,17 @@
 (function () {
   "use strict";
 
-  /* ── Einheitliche Timing-Konstanten (alle 4 Welten gleich lang) ── */
+  /* ── Timing: kürzerer Cover, ohne Extra-Leerlauf nach dem Titel ── */
   var WWS_TIMING = {
-    WORLD_TRANSITION_DURATION: 3000,
-    EFFECT_MS: 1200,
-    TITLE_REVEAL_AT: 1000,
-    TITLE_FADE_IN: 400,
-    TITLE_HOLD: 1200,
-    TITLE_FADE_OUT: 400,
-    EXIT_MS: 400,
-    COVER_MS: 1200,
-    SOUND_DURATION_MS: 3000,
+    WORLD_TRANSITION_DURATION: 2200,
+    EFFECT_MS: 900,
+    TITLE_REVEAL_AT: 720,
+    TITLE_FADE_IN: 280,
+    TITLE_HOLD: 700,
+    TITLE_FADE_OUT: 280,
+    EXIT_MS: 280,
+    COVER_MS: 780,
+    SOUND_DURATION_MS: 2200,
   };
 
   function getTimingForWorld(worldKey) {
@@ -27,33 +27,28 @@
 
     if (worldKey === "general") {
       timing = Object.assign(timing, {
-        WORLD_TRANSITION_DURATION: 3200,
-        EFFECT_MS: 1600,
-        TITLE_REVEAL_AT: 1380,
-        TITLE_FADE_IN: 480,
-        TITLE_HOLD: 1100,
-        COVER_MS: 1100,
+        WORLD_TRANSITION_DURATION: 2400,
+        EFFECT_MS: 1100,
+        TITLE_REVEAL_AT: 900,
+        TITLE_FADE_IN: 320,
+        TITLE_HOLD: 720,
+        COVER_MS: 820,
       });
     } else if (worldKey === "nexora") {
-      var nexEffect = WWS_TIMING.EFFECT_MS;
       timing = Object.assign(timing, {
-        TITLE_REVEAL_AT: Math.round(
-          nexEffect * 0.6 +
-            5 * (nexEffect * 0.24) +
-            nexEffect * 0.48 +
-            Math.max(600, nexEffect * 0.5)
-        ),
-        TITLE_HOLD: 1000,
+        /* Titel vor Cover-Ende, kein ~3s Extra-Delay mehr */
+        TITLE_REVEAL_AT: Math.round(WWS_TIMING.EFFECT_MS * 0.85),
+        TITLE_HOLD: 680,
       });
     } else if (worldKey === "freiraum") {
       timing = Object.assign(timing, {
-        WORLD_TRANSITION_DURATION: 2900,
-        EFFECT_MS: 1600,
-        TITLE_REVEAL_AT: 1280,
-        TITLE_FADE_IN: 120,
-        TITLE_HOLD: 1100,
-        TITLE_FADE_OUT: 220,
-        COVER_MS: 700,
+        WORLD_TRANSITION_DURATION: 2100,
+        EFFECT_MS: 1100,
+        TITLE_REVEAL_AT: 860,
+        TITLE_FADE_IN: 100,
+        TITLE_HOLD: 680,
+        TITLE_FADE_OUT: 180,
+        COVER_MS: 560,
       });
     } else if (worldKey === "vertex") {
       timing = Object.assign(timing, {
@@ -1843,7 +1838,7 @@
     }
 
     bar.addEventListener(
-      "pointerenter",
+      "pointerdown",
       function (e) {
         preloadFromBtn(e.target.closest("[data-iframe]"));
       },

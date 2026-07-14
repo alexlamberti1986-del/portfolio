@@ -1,5 +1,6 @@
 /**
- * Shell Performance — Preload nur wenn sinnvoll, nie im kritischen Startpfad
+ * Shell Performance — kein Idle-Prefetch anderer Welten beim Start.
+ * Prefetch nur gezielt beim Tippen/Fokus auf einen Welt-Button (Master).
  */
 (function () {
   "use strict";
@@ -13,12 +14,8 @@
   }
 
   function shouldPrefetch() {
-    if (isMobileShell()) return false;
-    var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    if (!conn) return true;
-    if (conn.saveData) return false;
-    var slow = conn.effectiveType === "slow-2g" || conn.effectiveType === "2g" || conn.effectiveType === "3g";
-    return !slow;
+    /* Idle-Prefetch aus: verhindert Zwischenladen / Konkurrenz mit aktiver Welt */
+    return false;
   }
 
   function adjacentWorlds(activeIdx) {
@@ -36,37 +33,19 @@
     });
   }
 
-  function scheduleLazyWorldPreload(preloadFrame, activeIdx) {
-    if (!shouldPrefetch() || typeof preloadFrame !== "function") return;
-    var run = function () {
-      preloadLazyWorlds(preloadFrame, activeIdx);
-    };
-    var delay = function () {
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(run, { timeout: 7000 });
-      } else {
-        setTimeout(run, 5000);
-      }
-    };
-    window.addEventListener(
-      "message",
-      function onHeroReady(e) {
-        if (!e.data || e.data.type !== "mv-hero-ready") return;
-        window.removeEventListener("message", onHeroReady);
-        delay();
-      },
-      false
-    );
-    setTimeout(delay, 10000);
+  function scheduleLazyWorldPreload() {
+    /* Absichtlich no-op — Welten laden erst beim Tap/Focus */
+    return;
   }
 
   function injectDocumentPrefetch() {
-    /* Kein NEXORA-Prefetch beim Start — verhindert kurzen Nexora-Flash */
+    /* Kein NEXORA-Document-Prefetch beim Start */
     return;
   }
 
   window.WeltenShellPerf = {
     shouldPrefetch: shouldPrefetch,
+    isMobileShell: isMobileShell,
     preloadLazyWorlds: preloadLazyWorlds,
     scheduleLazyWorldPreload: scheduleLazyWorldPreload,
     injectDocumentPrefetch: injectDocumentPrefetch,

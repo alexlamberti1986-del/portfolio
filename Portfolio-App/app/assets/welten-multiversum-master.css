@@ -175,6 +175,16 @@ html, body {
   max-height: calc(100dvh - var(--bar-h, 56px));
 }
 
+html.welten-world-switch-lock .mv4-frame:not(.is-active) {
+  content-visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.welten-world-switch-lock .mv4-frame.is-active {
+  /* Während Overlay: keine Interaktion, kein Zwischen-UI-Flash */
+  pointer-events: none !important;
+}
+
 .mv4-frame:not(.is-active) {
   /* Volle Geometrie für korrekte svh-Heroes, aber komplett ausgeblendet (keine doppelten Bars) */
   display: block !important;
