@@ -356,3 +356,38 @@
     margin-top: calc(var(--hero-top-offset, 32px) * -0.4);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   DNA-Welten: Unterseiten-Hero oben = Home-Hero (wie Multiversum)
+   Später geladen als contact/premium → schlägt deren Paddings.
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1025px) {
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .slide.active:not(#slide-home),
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .slide.active:not(#slide-home),
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .slide.active:not(#slide-home),
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .slide.active:not(#slide-home) > .slide-inner,
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .slide.active:not(#slide-home) > .slide-inner,
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .slide.active:not(#slide-home) > .slide-inner,
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] #slide-contact .slide-inner.contact-layout,
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] #slide-contact .slide-inner.contact-layout,
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] #slide-contact .slide-inner.contact-layout {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .welten-desktop-hero-host,
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .welten-desktop-hero-host,
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .welten-desktop-hero-host {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .welten-desktop-relocated-hero.home-hero-experience,
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .welten-desktop-relocated-hero#dnaStage,
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .welten-desktop-relocated-hero#dnaStage,
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .welten-desktop-relocated-hero#dnaStage {
+    margin-top: 0 !important;
+  }
+}

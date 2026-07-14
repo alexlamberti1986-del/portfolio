@@ -97,6 +97,15 @@
   padding-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
+/* Desktop: Home + Unterseiten-Hero starten ohne Extra-Top (Multiversum-Parität) */
+@media (min-width: 1025px) {
+  #slide-home .slide-inner--home,
+  #slide-home > .slide-inner,
+  body.welten-desktop-subpage-hero--on .slide.active:not(#slide-home) > .slide-inner {
+    padding-top: 0 !important;
+  }
+}
+
 .section-title {
   margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
   line-height: 1.12;

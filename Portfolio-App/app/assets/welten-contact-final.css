@@ -1,12 +1,5 @@
 /* Kontakt FINAL — nur #slide-contact, alle Welten, responsive */
 
-/* Desktop: gleicher Hero-Start wie Home — kein Extra-Top-Padding */
-@media (min-width: 1025px) {
-  body[data-world] #slide-contact .slide-inner.contact-layout {
-    padding-top: 0 !important;
-  }
-}
-
 #slide-contact.slide {
   overflow-x: clip;
   padding-bottom: clamp(12px, 2vw, 20px) !important;
@@ -20,8 +13,16 @@
   width: 100%;
   max-width: min(1180px, calc(100vw - clamp(32px, 6vw, 128px))) !important;
   margin: 0 auto !important;
-  padding: clamp(24px, 4vw, 48px) clamp(18px, 4vw, 64px) clamp(12px, 2vw, 20px) !important;
+  /* Top bewusst 0: Hero muss auf Home-Höhe bleiben (kein clamp-Top mehr) */
+  padding: 0 clamp(18px, 4vw, 64px) clamp(12px, 2vw, 20px) !important;
   box-sizing: border-box !important;
+}
+
+@media (min-width: 1025px) {
+  body[data-world] #slide-contact .slide-inner.contact-layout,
+  body.welten-desktop-subpage-hero--on #slide-contact .slide-inner.contact-layout {
+    padding-top: 0 !important;
+  }
 }
 
 #slide-contact .slide-inner.contact-layout--form {
