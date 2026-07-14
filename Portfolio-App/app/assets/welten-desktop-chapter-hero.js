@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260714heroSwitch1";
+  var VER = "20260714heroLock1";
   var bootTimer = null;
   var realignTimers = [];
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
@@ -465,35 +465,27 @@
     } catch (e4) {}
   }
 
+  function clearPinnedHeroOffset(el) {
+    if (!el) return;
+    try {
+      el.style.removeProperty("margin-top");
+      el.style.removeProperty("padding-top");
+      el.style.removeProperty("top");
+      el.style.removeProperty("transform");
+    } catch (e) {}
+  }
+
   function pinDnaHeroTopParity() {
-    /* DNA-Welten: Hero-Oberkante = slides-root Content-Top (Home + Unterseite) */
+    /* Kein JS-Margin-Hack mehr: kämpfte gegen CSS und ließ den Hero nach Sink/Reveal wieder absacken.
+       Top-Parität läuft über welten-desktop-chapter-hero.css / unify (translateY aus, padding 0). */
     if (!isDesktop()) return;
     var world = document.body.getAttribute("data-world") || "general";
     if (world === "general") return;
-
     var hero = getDnaHeroEl();
     if (!hero) return;
-
-    var root = document.getElementById("slidesRoot") || document.querySelector("main.slides-root");
-    if (!root) return;
-
-    var host = hero.closest(".welten-desktop-hero-host") || hero;
-    host.style.removeProperty("margin-top");
-    hero.style.removeProperty("margin-top");
-
-    var rootBox = root.getBoundingClientRect();
-    var padTop = 0;
-    try {
-      padTop = parseFloat(window.getComputedStyle(root).paddingTop) || 0;
-    } catch (e) {}
-    var expectedTop = rootBox.top + padTop;
-    var actualTop = hero.getBoundingClientRect().top;
-    if (!(actualTop > 0) || !(expectedTop > -1)) return;
-    var delta = actualTop - expectedTop;
-
-    if (delta > 1 && delta < 160) {
-      host.style.setProperty("margin-top", -Math.round(delta) + "px", "important");
-    }
+    var host = hero.closest(".welten-desktop-hero-host");
+    clearPinnedHeroOffset(hero);
+    clearPinnedHeroOffset(host);
   }
 
   function relocateDnaHero(active, mount, homeInner) {
@@ -628,20 +620,24 @@
   }
 
   function scheduleWorldRevealRealign() {
-    /* Nach Weltenwechsel: erst wenn das Iframe wieder volle Größe hat (reveal) */
+    /* Nach Weltenwechsel einmal sauber neu legen — ohne Margin-Pin-Flicker */
     clearRealignTimers();
     resetSlideScroll();
     boot();
-    [0, 60, 180, 420, 780].forEach(function (ms) {
-      realignTimers.push(
-        setTimeout(function () {
-          ensureStylesheet();
-          relocateHero();
-          resetSlideScroll();
-          pinDnaHeroTopParity();
-        }, ms)
-      );
-    });
+    realignTimers.push(
+      setTimeout(function () {
+        ensureStylesheet();
+        relocateHero();
+        resetSlideScroll();
+        pinDnaHeroTopParity();
+      }, 160)
+    );
+    realignTimers.push(
+      setTimeout(function () {
+        relocateHero();
+        pinDnaHeroTopParity();
+      }, 480)
+    );
   }
 
   if (mqDesktop.addEventListener) {

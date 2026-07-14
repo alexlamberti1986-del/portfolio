@@ -441,3 +441,59 @@
     margin-top: 0 !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   DNA-Welten: Hero/Header dauerhaft oben — kein translateY-Sink,
+   kein Gap, kein Slide-Top-Padding (Home + Unterseite + Wechsel).
+   ═══════════════════════════════════════════════════════════ */
+@media (min-width: 1025px) {
+  body[data-world="nexora"],
+  body[data-world="vertex"],
+  body[data-world="freiraum"] {
+    --hero-gap: 0px;
+  }
+
+  body[data-world="nexora"] .slide,
+  body[data-world="vertex"] .slide,
+  body[data-world="freiraum"] .slide {
+    transform: none !important;
+    transition: opacity 0.35s ease, visibility 0.35s ease !important;
+    padding-top: 0 !important;
+  }
+
+  body[data-world="nexora"] .slide.active,
+  body[data-world="vertex"] .slide.active,
+  body[data-world="freiraum"] .slide.active {
+    transform: none !important;
+  }
+
+  body[data-world="nexora"] #slide-home > .slide-inner,
+  body[data-world="vertex"] #slide-home > .slide-inner,
+  body[data-world="freiraum"] #slide-home > .slide-inner,
+  body[data-world="nexora"] .slide > .slide-inner,
+  body[data-world="vertex"] .slide > .slide-inner,
+  body[data-world="freiraum"] .slide > .slide-inner {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="nexora"] #slide-home #dnaStage,
+  body[data-world="vertex"] #slide-home .home-hero-experience,
+  body[data-world="vertex"] #slide-home #dnaStage,
+  body[data-world="freiraum"] #slide-home .home-hero-experience,
+  body[data-world="freiraum"] #slide-home #dnaStage,
+  body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="vertex"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="nexora"] .welten-desktop-relocated-hero#dnaStage,
+  body[data-world="vertex"] .welten-desktop-relocated-hero#dnaStage,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero#dnaStage,
+  body[data-world="nexora"] .welten-desktop-hero-host,
+  body[data-world="vertex"] .welten-desktop-hero-host,
+  body[data-world="freiraum"] .welten-desktop-hero-host {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    top: 0 !important;
+  }
+}

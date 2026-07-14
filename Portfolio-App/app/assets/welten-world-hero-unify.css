@@ -1,7 +1,7 @@
 /**
  * Welten Hero Unify — gemeinsame Abstands-/Höhen-Verträge für NEXORA, PROFESSIONAL, FREIRAUM
  * Visuelle Themes (Farben, Videos, Effekte) bleiben in den Welt-Dateien.
- * Version: 20260713hero5
+ * Version: 20260714heroLock1
  */
 
 :root {
@@ -19,8 +19,8 @@
   /* Einheitliche Slide-/Hero-Tokens */
   --slide-pad-y: clamp(20px, 4vw, 56px);
   --slide-pad-x: clamp(18px, 4vw, 64px);
-  /* Kleinerer Gap: Hero-Inhalt rückt ~24–36px näher an den Header (kein Overlap) */
-  --hero-gap: clamp(2px, 0.5vh, 8px);
+  /* Kleinerer Gap: Hero bündig unter Header (kein Absacken durch Gap/Animation) */
+  --hero-gap: 0px;
   --hero-top-offset: 32px;
   --hero-to-next: clamp(16px, 2.5vw, 28px);
   --hero-content-max: 1180px;
