@@ -35,21 +35,27 @@ body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
   z-index: 3;
 }
 
-/* Nexora / Professional / Freiraum: DNA-Hero + Kapitel-Buttons über dem Video */
+/* Nexora / Professional / Freiraum: DNA-Hero + Kapitel-Buttons (Home + relocated) */
 @media (min-width: 1025px) {
   body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .home-hero-experience,
   body[data-welten-video-hero="1"][data-world="nexora"] #slide-home #dnaStage,
   body[data-welten-video-hero="1"][data-world="vertex"] #slide-home .home-hero-experience,
   body[data-welten-video-hero="1"][data-world="vertex"] #slide-home #dnaStage,
   body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .home-hero-experience,
-  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home #dnaStage {
+  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home #dnaStage,
+  body[data-welten-video-hero="1"][data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-welten-video-hero="1"][data-world="nexora"] .welten-desktop-relocated-hero#dnaStage,
+  body[data-welten-video-hero="1"][data-world="vertex"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-welten-video-hero="1"][data-world="vertex"] .welten-desktop-relocated-hero#dnaStage,
+  body[data-welten-video-hero="1"][data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-welten-video-hero="1"][data-world="freiraum"] .welten-desktop-relocated-hero#dnaStage {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
-    height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px))) !important;
-    min-height: clamp(520px, var(--hero-dna-h, 72svh), 900px) !important;
-    max-height: var(--hero-dna-h, calc(100svh - var(--header-h, 90px))) !important;
+    height: var(--world-hero-h, var(--hero-dna-h, calc(100svh - var(--header-h, 90px)))) !important;
+    min-height: var(--world-hero-min, clamp(480px, 58svh, 720px)) !important;
+    max-height: var(--world-hero-h, var(--hero-dna-h, calc(100svh - var(--header-h, 90px)))) !important;
     overflow: hidden !important;
   }
 
@@ -61,13 +67,23 @@ body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
   body[data-welten-video-hero="1"][data-world="vertex"] #slide-home .dna-slide,
   body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .dna-unified-scene,
   body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .dna-ring,
-  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .dna-slide {
+  body[data-welten-video-hero="1"][data-world="freiraum"] #slide-home .dna-slide,
+  body[data-welten-video-hero="1"][data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons,
+  body[data-welten-video-hero="1"][data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-ring,
+  body[data-welten-video-hero="1"][data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-button,
+  body[data-welten-video-hero="1"][data-world="vertex"] .welten-desktop-relocated-hero .dna-unified-scene,
+  body[data-welten-video-hero="1"][data-world="vertex"] .welten-desktop-relocated-hero .dna-ring,
+  body[data-welten-video-hero="1"][data-world="vertex"] .welten-desktop-relocated-hero .dna-slide,
+  body[data-welten-video-hero="1"][data-world="freiraum"] .welten-desktop-relocated-hero .dna-unified-scene,
+  body[data-welten-video-hero="1"][data-world="freiraum"] .welten-desktop-relocated-hero .dna-ring,
+  body[data-welten-video-hero="1"][data-world="freiraum"] .welten-desktop-relocated-hero .dna-slide {
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
   }
 
-  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .nexora-orbit-buttons {
+  body[data-welten-video-hero="1"][data-world="nexora"] #slide-home .nexora-orbit-buttons,
+  body[data-welten-video-hero="1"][data-world="nexora"] .welten-desktop-relocated-hero .nexora-orbit-buttons {
     z-index: 28 !important;
   }
 
@@ -76,15 +92,42 @@ body[data-welten-video-hero="1"] #slide-home #mvStaticHero {
   }
 }
 
-/* Unterseiten: kein Video */
-body[data-welten-video-hero="1"]:not([data-current-slide="home"]) #alWorldVideoHero,
-#slide-home:not(.active) #alWorldVideoHero {
+/* Unterseiten: kein Video — Ausnahme Multiversum-Chrome, der als Hero-Bühne relocated wird */
+body[data-welten-video-hero="1"]:not([data-current-slide="home"]) #alWorldVideoHero:not(.welten-desktop-relocated-hero),
+#slide-home:not(.active) #alWorldVideoHero:not(.welten-desktop-relocated-hero) {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
   min-height: 0 !important;
   overflow: hidden !important;
   pointer-events: none !important;
+}
+
+/* Multiversum: relocated Chrome+Poster auf Unterseiten = gleiche Bühne wie Home */
+@media (min-width: 1025px) {
+  body[data-world="general"] #alWorldVideoHero.welten-desktop-relocated-hero.al-world-video-hero--with-chrome {
+    display: flex !important;
+    flex-direction: column !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+
+  /* Unterseiten: Video-Fläche aus — nur Titel-/Nav-Chrome wie Homeline ohne Blackbox */
+  body[data-world="general"] #alWorldVideoHero.welten-desktop-relocated-hero .al-world-video-hero__media,
+  body[data-world="general"] #alWorldVideoHero.welten-desktop-relocated-hero .al-world-video-hero__video {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+  }
 }
 
 /* Handy + Tablet: Video komplett aus */

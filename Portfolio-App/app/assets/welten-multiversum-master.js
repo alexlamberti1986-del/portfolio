@@ -10,6 +10,7 @@
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var FRAME_PAGES = ["MULTIVERSUM.html", "NEXORA.html", "PROFESSIONAL.html", "FREIRAUM.html"];
   var SHELL_PAGES = ["3-Welten-Master-iframe.html", "index.html", ""];
+  var Router = window.WeltenShellRouter;
   var ROUTE_CHAPTER = {
     "/": "home",
     "/projekte": "projects",
@@ -17,6 +18,8 @@
     "/ueber-mich": "about",
     "/kontakt": "contact",
   };
+  var WORLD_BTN_SEL = "[data-iframe]";
+  var suppressingHistory = false;
   var PROFILE_V = "20260706prof-portrait-tablet";
   var PROFILE_BASE = "assets/images/4welten-preview/";
   var PROFILE_FILES = {
@@ -259,28 +262,122 @@
     }
   }
 
-  function chapterFromShellPath() {
+  function parseShellRoute() {
+    if (Router && typeof Router.parsePath === "function") {
+      return Router.parsePath(location.pathname || "/");
+    }
     var p = (location.pathname || "/").replace(/\/$/, "") || "/";
-    return ROUTE_CHAPTER[p] || "home";
+    return {
+      worldIdx: defaultWorld,
+      worldKey: WORLD_KEYS[defaultWorld] || "general",
+      chapter: ROUTE_CHAPTER[p] || "home",
+      known: true,
+    };
   }
 
-  function applyShellRoute() {
+  function buildShellPath(worldIdx, chapter) {
+    if (Router && typeof Router.buildPath === "function") {
+      return Router.buildPath(worldIdx, chapter);
+    }
+    var chapterPaths = {
+      home: "/",
+      projects: "/projekte",
+      leistungen: "/leistungen",
+      about: "/ueber-mich",
+      contact: "/kontakt",
+    };
+    return chapterPaths[chapter] || "/";
+  }
+
+  function syncShellUrl(worldIdx, chapter, mode) {
     if (!isLiveShell) return;
-    var ch = chapterFromShellPath();
+    worldIdx = typeof worldIdx === "number" ? worldIdx : activeIdx();
+    if (worldIdx < 0) worldIdx = defaultWorld;
+    chapter = CHAPTERS.indexOf(chapter) >= 0 ? chapter : sharedChapter || "home";
+    var path = buildShellPath(worldIdx, chapter);
+    var current = (location.pathname || "/").replace(/\/$/, "") || "/";
+    var next = path.replace(/\/$/, "") || "/";
+    if (current === next) {
+      if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
+        window.WeltenShellSEO.apply(chapter, currentLang, worldIdx);
+      }
+      updateWorldLinkState(worldIdx);
+      return;
+    }
+    suppressingHistory = true;
+    try {
+      var state = { worldIdx: worldIdx, chapter: chapter };
+      if (mode === "push") history.pushState(state, "", path);
+      else history.replaceState(state, "", path);
+    } catch (eHist) {}
+    suppressingHistory = false;
+    if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
+      window.WeltenShellSEO.apply(chapter, currentLang, worldIdx);
+    }
+    updateWorldLinkState(worldIdx);
+  }
+
+  function updateWorldLinkState(worldIdx) {
+    var shellBar = getBar();
+    if (!shellBar) return;
+    shellBar.querySelectorAll(WORLD_BTN_SEL).forEach(function (el) {
+      var idx = parseInt(el.getAttribute("data-iframe"), 10);
+      var on = idx === worldIdx;
+      el.classList.toggle("is-active", on);
+      if (el.tagName === "A") {
+        try {
+          el.setAttribute("href", buildShellPath(idx, sharedChapter || "home"));
+        } catch (eHref) {}
+        if (on) el.setAttribute("aria-current", "page");
+        else el.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function chapterFromShellPath() {
+    return parseShellRoute().chapter || "home";
+  }
+
+  function applyShellRoute(opts) {
+    if (!isLiveShell) return;
+    opts = opts || {};
+    var route = parseShellRoute();
+    var ch = route.chapter || "home";
+    var worldIdx = typeof route.worldIdx === "number" ? route.worldIdx : defaultWorld;
     sharedChapter = ch;
     if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
-      window.WeltenShellSEO.apply(ch);
+      window.WeltenShellSEO.apply(ch, currentLang, worldIdx);
     }
-    var idx = activeIdx();
-    if (idx < 0) idx = defaultWorld;
-    var f = frames[idx];
-    if (!f) return;
-    function send() {
-      postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
-      applyChapter(f, ch);
+    updateWorldLinkState(worldIdx);
+
+    function sendChapter(f) {
+      if (!f) return;
+      function send() {
+        postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
+        applyChapter(f, ch);
+      }
+      if (frameIsReady(f)) send();
+      else f.addEventListener("load", send, { once: true });
     }
-    if (frameIsReady(f)) send();
-    else f.addEventListener("load", send, { once: true });
+
+    var current = activeIdx();
+    if (current < 0) current = defaultWorld;
+    if (worldIdx !== current || opts.forceWorld) {
+      if (opts.fromPopstate) {
+        if (frameNeedsReset(frames[worldIdx], worldIdx)) resetFrame(worldIdx);
+        switchToWorldIndex(worldIdx).then(function () {
+          sendChapter(frames[worldIdx]);
+          unlockShell();
+        });
+      } else {
+        switchTo(worldIdx);
+        setTimeout(function () {
+          sendChapter(frames[worldIdx] || frames[activeIdx()]);
+        }, 80);
+      }
+      return;
+    }
+    sendChapter(frames[worldIdx] || frames[current]);
   }
 
   function postFrame(f, data) {
@@ -542,7 +639,7 @@
     if (shellBar) {
       shellBar.removeAttribute("aria-busy");
       shellBar.style.pointerEvents = "";
-      shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+      shellBar.querySelectorAll(WORLD_BTN_SEL).forEach(function (b) {
         b.disabled = false;
         b.removeAttribute("aria-disabled");
       });
@@ -555,7 +652,7 @@
     if (!shellBar) return;
     shellBar.style.pointerEvents = "auto";
     shellBar.removeAttribute("aria-busy");
-    shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
+    shellBar.querySelectorAll(WORLD_BTN_SEL).forEach(function (b) {
       b.disabled = false;
       b.removeAttribute("aria-disabled");
       b.style.pointerEvents = "auto";
@@ -589,11 +686,7 @@
 
   function setMaster(i) {
     document.body.setAttribute("data-master-world", masterKey(i));
-    var shellBar = getBar();
-    if (!shellBar) return;
-    shellBar.querySelectorAll("button[data-iframe]").forEach(function (b) {
-      b.classList.toggle("is-active", parseInt(b.getAttribute("data-iframe"), 10) === i);
-    });
+    updateWorldLinkState(i);
     updateFlags();
   }
 
@@ -689,6 +782,9 @@
     });
     setMaster(i);
     broadcastLang();
+    if (isLiveShell) {
+      syncShellUrl(i, sharedChapter, "replace");
+    }
     if (!switching) {
       unlockShell();
       forceEnableWorldButtons();
@@ -870,7 +966,7 @@
       "touchend",
       function (e) {
         if (e.target.closest("#mv4-fx") || e.target.closest(".mv4-flag")) return;
-        var btn = e.target.closest("button[data-iframe]");
+        var btn = e.target.closest(WORLD_BTN_SEL);
         if (!btn || !worlds.contains(btn)) return;
         e.preventDefault();
         activateWorldButton(btn, e);
@@ -884,11 +980,12 @@
         return;
       }
       if (e.target.closest("#mv4-fx") || e.target.closest(".mv4-flag")) return;
-      var btn = e.target.closest("button[data-iframe]");
+      var btn = e.target.closest(WORLD_BTN_SEL);
       if (!btn || !worlds.contains(btn)) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
       activateWorldButton(btn, e);
     });
-    worlds.querySelectorAll("button[data-iframe]").forEach(function (btn) {
+    worlds.querySelectorAll(WORLD_BTN_SEL).forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
       btn.addEventListener("pointerdown", function () {
         preloadFrame(idx);
@@ -981,9 +1078,13 @@
       if (!isOurFrame(e.source)) return;
       if (CHAPTERS.indexOf(e.data.chapter) >= 0) {
         sharedChapter = e.data.chapter;
-        if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
-          window.WeltenShellSEO.apply(e.data.chapter);
+        var worldIdx = activeIdx();
+        if (worldIdx < 0) worldIdx = defaultWorld;
+        if (typeof e.data.world === "string" && Router) {
+          var mapped = Router.worldIdxFromKey(e.data.world);
+          if (typeof mapped === "number") worldIdx = mapped;
         }
+        syncShellUrl(worldIdx, e.data.chapter, "push");
       }
       return;
     }
@@ -1016,10 +1117,40 @@
   window.addEventListener("focus", recoverStuckSwitch);
   setInterval(recoverStuckSwitch, 2000);
 
+  if (isLiveShell) {
+    var bootRoute = parseShellRoute();
+    if (typeof bootRoute.worldIdx === "number") defaultWorld = bootRoute.worldIdx;
+    sharedChapter = bootRoute.chapter || "home";
+  }
+
   setMaster(defaultWorld);
   broadcastLang();
-  applyShellRoute();
-  primeActiveFrame();
+
+  if (isLiveShell) {
+    if (defaultWorld !== 0 && !frameHasSrc(frames[defaultWorld])) {
+      loaded[defaultWorld] = false;
+    } else if (defaultWorld !== 0 && frameHasSrc(frames[defaultWorld])) {
+      loaded[defaultWorld] = true;
+    }
+    if (defaultWorld !== activeIdx()) {
+      switchToWorldIndex(defaultWorld).then(function () {
+        applyShellRoute({ forceWorld: false });
+        primeActiveFrame();
+        unlockShell();
+      });
+    } else {
+      applyShellRoute();
+      primeActiveFrame();
+    }
+    window.addEventListener("popstate", function () {
+      if (suppressingHistory) return;
+      applyShellRoute({ fromPopstate: true, forceWorld: true });
+    });
+  } else {
+    applyShellRoute();
+    primeActiveFrame();
+  }
+
   setTimeout(primeActiveFrame, 400);
   if (window.WeltenShellPerf && typeof window.WeltenShellPerf.scheduleLazyWorldPreload === "function") {
     window.WeltenShellPerf.scheduleLazyWorldPreload(preloadFrame, activeIdx());
@@ -1028,4 +1159,5 @@
     forceEnableWorldButtons();
   });
   window.mv4SwitchWorld = switchTo;
+  window.mv4SyncShellUrl = syncShellUrl;
 })();

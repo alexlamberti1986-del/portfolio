@@ -1845,14 +1845,14 @@
     bar.addEventListener(
       "pointerenter",
       function (e) {
-        preloadFromBtn(e.target.closest("button[data-iframe]"));
+        preloadFromBtn(e.target.closest("[data-iframe]"));
       },
       true
     );
     bar.addEventListener(
       "focusin",
       function (e) {
-        preloadFromBtn(e.target.closest("button[data-iframe]"));
+        preloadFromBtn(e.target.closest("[data-iframe]"));
       },
       true
     );
@@ -1861,8 +1861,9 @@
       "click",
       function (e) {
         if (e.target.closest("#sound-toggle") || e.target.closest("#mv4-fx")) return;
-        var btn = e.target.closest("button[data-iframe]");
+        var btn = e.target.closest("[data-iframe]");
         if (!btn) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
 
         var idx = parseInt(btn.getAttribute("data-iframe"), 10);
         if (!isFinite(idx) || idx === activeFrameIndex()) return;
@@ -1872,7 +1873,7 @@
 
         var worldKey = btn.getAttribute("data-world-key");
         if (!worldKey) {
-          worldKey = idx === 0 ? "nexora" : idx === 1 ? "vertex" : "freiraum";
+          worldKey = idx === 0 ? "general" : idx === 1 ? "nexora" : idx === 2 ? "vertex" : "freiraum";
         }
 
         playSwitch(worldKey, idx);

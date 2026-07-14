@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710fix3";
+  var VER = "20260714hero6";
   var bootTimer = null;
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
@@ -91,8 +91,14 @@
   }
 
   function getGeneralHeroEl() {
+    var relocatedVideo = document.querySelector(
+      ".welten-desktop-relocated-hero#alWorldVideoHero, #alWorldVideoHero.welten-desktop-relocated-hero"
+    );
+    if (relocatedVideo) return relocatedVideo;
     var sub = document.querySelector(".slide.active .mv-static-hero.welten-desktop-subpage-mv-hero");
     if (sub) return sub;
+    var videoHome = document.getElementById("alWorldVideoHero");
+    if (videoHome && videoHome.classList.contains("al-world-video-hero--with-chrome")) return videoHome;
     var staticHome = document.getElementById("mvStaticHero");
     if (staticHome) return staticHome;
     return document.getElementById("mvParallaxHero");
@@ -291,18 +297,18 @@
 
     var world = document.body.getAttribute("data-world") || "general";
     if (world === "general") {
+      var videoHero = document.getElementById("alWorldVideoHero");
       var staticHome = document.getElementById("mvStaticHero");
       var parallax = document.getElementById("mvParallaxHero");
+      if (videoHero) restoreElementToHome(videoHero, homeInner);
       if (staticHome) restoreElementToHome(staticHome, homeInner);
       if (parallax) restoreElementToHome(parallax, homeInner);
     }
   }
 
   function stripNexoraDnaStrand(hero) {
-    if (!hero || document.body.getAttribute("data-world") !== "nexora") return;
-    hero.querySelectorAll(".dna-holo-arm, .dna-visual-stack, #dnaVisualStack").forEach(function (el) {
-      el.remove();
-    });
+    /* Kein DOM-Strip mehr: Unterseiten-Hero muss optisch dem Home-Hero entsprechen. */
+    return;
   }
 
   function stripRelocatedHeroInlineStyles(hero) {
@@ -372,36 +378,52 @@
       return getGeneralHeroEl();
     }
 
-    var parallax = document.getElementById("mvParallaxHero");
+    var homeInner = document.querySelector("#slide-home .slide-inner");
+    var videoHero = document.getElementById("alWorldVideoHero");
     var staticHome = document.getElementById("mvStaticHero");
+    var parallax = document.getElementById("mvParallaxHero");
 
-    if (staticHome) {
-      ensureHomePlaceholder(document.querySelector("#slide-home .slide-inner"), staticHome);
-      staticHome.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
-      host.appendChild(staticHome);
-      bindHeroNavClicks(staticHome);
+    /* Gleiche Home-Bühne: Video-Chrome (Titel + Nav + Media), nicht Tall-Static/Parallax */
+    if (
+      videoHero &&
+      (videoHero.classList.contains("al-world-video-hero--with-chrome") ||
+        videoHero.classList.contains("al-world-video-hero--multiversum") ||
+        videoHero.querySelector(".al-world-video-hero__chrome"))
+    ) {
+      ensureHomePlaceholder(homeInner, videoHero);
+      if (staticHome) {
+        staticHome.classList.remove("welten-desktop-relocated-hero", "is-subpage-hero");
+      }
       if (parallax) {
         parallax.classList.remove("welten-desktop-relocated-hero", "is-subpage-hero");
       }
+      videoHero.classList.add(
+        "welten-desktop-relocated-hero",
+        "is-subpage-hero",
+        "al-world-video-hero--with-chrome"
+      );
+      host.appendChild(videoHero);
+      try {
+        videoHero.querySelectorAll("video").forEach(function (v) {
+          v.pause();
+        });
+      } catch (e) {}
+      bindHeroNavClicks(videoHero);
+      removeMvSubpageHeroes();
+      return videoHero;
+    }
+
+    if (staticHome) {
+      ensureHomePlaceholder(homeInner, staticHome);
+      staticHome.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
+      host.appendChild(staticHome);
+      bindHeroNavClicks(staticHome);
       removeMvSubpageHeroes();
       return staticHome;
     }
 
-    if (parallax) {
-      ensureHomePlaceholder(document.querySelector("#slide-home .slide-inner"), parallax);
-      parallax.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
-      host.appendChild(parallax);
-      bindHeroNavClicks(parallax);
-      removeMvSubpageHeroes();
-      return parallax;
-    }
-
     removeMvSubpageHeroes();
-    var subHero = buildMvSubpageHero(host);
-    if (parallax) {
-      parallax.classList.remove("welten-desktop-relocated-hero", "is-subpage-hero");
-    }
-    return subHero;
+    return buildMvSubpageHero(host);
   }
 
   function relocateDnaHero(active, mount, homeInner) {
@@ -544,6 +566,10 @@
   });
   document.addEventListener("mv-restore-hero", function () {
     setTimeout(boot, 80);
+  });
+  document.addEventListener("welten-video-hero-mounted", function () {
+    /* Multiversum: nach Video-Mount erneut die gleiche Home-Bühne auf Unterseiten setzen */
+    setTimeout(boot, 40);
   });
 
   try {

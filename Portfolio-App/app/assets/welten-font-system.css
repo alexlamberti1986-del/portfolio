@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Alex Lamberti — Font-System (global)
  * Google Fonts werden async in HTML geladen (welten-fonts-async.css / preconnect).
  */
@@ -13,7 +13,7 @@
 html,
 html body,
 .mv4-bar,
-.mv4-worlds button,
+.mv4-worlds [data-iframe],
 .mv4-fx,
 .mv4-flag,
 .mv-transition__title,
@@ -21,18 +21,18 @@ html body,
   font-family: var(--font-main) !important;
 }
 
-.mv4-worlds button[data-world-key="nexora"] {
+.mv4-worlds [data-iframe][data-world-key="nexora"] {
   font-family: var(--font-nexora) !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
 }
 
-.mv4-worlds button[data-world-key="vertex"] {
+.mv4-worlds [data-iframe][data-world-key="vertex"] {
   font-family: var(--font-professional) !important;
   letter-spacing: 0.02em !important;
 }
 
-.mv4-worlds button[data-world-key="freiraum"] {
+.mv4-worlds [data-iframe][data-world-key="freiraum"] {
   font-family: var(--font-freiraum) !important;
   letter-spacing: 0.03em !important;
 }

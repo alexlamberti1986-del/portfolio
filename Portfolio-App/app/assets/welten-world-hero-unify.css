@@ -1,0 +1,305 @@
+/**
+ * Welten Hero Unify — gemeinsame Abstands-/Höhen-Verträge für NEXORA, PROFESSIONAL, FREIRAUM
+ * Visuelle Themes (Farben, Videos, Effekte) bleiben in den Welt-Dateien.
+ * Version: 20260713hero5
+ */
+
+:root {
+  /* Header-Formel (sollte mit Inline-:root der Welten übereinstimmen) */
+  --header-air-top: 22px;
+  --header-air-bottom: 16px;
+  --header-inner-row: 52px;
+  --header-h-fallback: 90px;
+  --header-h: calc(
+    env(safe-area-inset-top, 0px) + var(--header-air-top) + var(--header-inner-row) +
+      var(--header-air-bottom)
+  );
+  --dock-h: env(safe-area-inset-bottom, 0px);
+
+  /* Einheitliche Slide-/Hero-Tokens */
+  --slide-pad-y: clamp(20px, 4vw, 56px);
+  --slide-pad-x: clamp(18px, 4vw, 64px);
+  /* Kleinerer Gap: Hero-Inhalt rückt ~24–36px näher an den Header (kein Overlap) */
+  --hero-gap: clamp(2px, 0.5vh, 8px);
+  --hero-top-offset: 32px;
+  --hero-to-next: clamp(16px, 2.5vw, 28px);
+  --hero-content-max: 1180px;
+
+  /* Eine Viewport-Höhe unter dem Header = DNA-/World-Hero */
+  --world-hero-h: calc(100svh - var(--header-h, var(--header-h-fallback)) - var(--dock-h, 0px));
+  --hero-dna-h: var(--world-hero-h);
+  --world-hero-min: clamp(480px, 58svh, 720px);
+
+  /* Video unter dem DNA-Hero (eine weitere Viewport-Höhe, Header abgezogen) */
+  --video-hero-h: calc(100svh - var(--header-h, var(--header-h-fallback)));
+  --video-hero-min: clamp(520px, 58svh, 780px);
+}
+
+@supports not (height: 100svh) {
+  :root {
+    --world-hero-h: calc(100vh - var(--header-h, var(--header-h-fallback)) - var(--dock-h, 0px));
+    --hero-dna-h: var(--world-hero-h);
+    --video-hero-h: calc(100vh - var(--header-h, var(--header-h-fallback)));
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-inner-row: 92px;
+  }
+}
+
+@media (min-width: 1025px) {
+  :root {
+    --hero-top-offset: 36px;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --hero-top-offset: 40px;
+  }
+}
+
+/* ── Alias: bestehende Klasse = World-Hero ── */
+.home-hero-experience,
+#dnaStage.home-hero-experience,
+.world-hero {
+  box-sizing: border-box;
+}
+
+/* ── Desktop: einheitliche DNA-/World-Hero-Höhe (alle drei Welten) ── */
+@media (min-width: 1025px) {
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="nexora"] #slide-home #dnaStage,
+  body[data-world="vertex"] #slide-home .home-hero-experience,
+  body[data-world="vertex"] #slide-home #dnaStage,
+  body[data-world="freiraum"] #slide-home .home-hero-experience,
+  body[data-world="freiraum"] #slide-home #dnaStage,
+  body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="vertex"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience {
+    height: var(--world-hero-h) !important;
+    max-height: var(--world-hero-h) !important;
+    min-height: var(--world-hero-min) !important;
+    padding-top: var(--hero-gap) !important;
+    margin-top: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Home: kein zusätzlicher Slide-Innenabstand oben (Header-Clearance nur über slides-root) */
+  body[data-world="nexora"] #slide-home.slide,
+  body[data-world="vertex"] #slide-home.slide,
+  body[data-world="freiraum"] #slide-home.slide {
+    padding-top: 0 !important;
+  }
+
+  /* Intro-Block unter DNA/Video */
+  body[data-world="nexora"] #slide-home .home-main-block,
+  body[data-world="vertex"] #slide-home .home-main-block,
+  body[data-world="freiraum"] #slide-home .home-main-block {
+    max-width: var(--hero-content-max);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0 !important;
+    padding-top: clamp(28px, 4vw, 56px) !important;
+    padding-left: var(--slide-pad-x);
+    padding-right: var(--slide-pad-x);
+    padding-bottom: clamp(14px, 2vw, 28px);
+  }
+
+  /* Unterseiten = gleiche Hero-Startlinie wie Home (kein Slide-Padding) */
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .slide.active:not(#slide-home),
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .slide.active:not(#slide-home),
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .slide.active:not(#slide-home),
+  body.welten-desktop-subpage-hero--on[data-world="general"] .slide.active:not(#slide-home) {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .slide.active:not(#slide-home) > .slide-inner,
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .slide.active:not(#slide-home) > .slide-inner,
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .slide.active:not(#slide-home) > .slide-inner,
+  body.welten-desktop-subpage-hero--on[data-world="general"] .slide.active:not(#slide-home) > .slide-inner {
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /* Unterseiten-Host: bündig mit Home-Hero, kein Negativ-Margin-Hack */
+  body[data-world="nexora"] .welten-desktop-hero-host,
+  body[data-world="vertex"] .welten-desktop-hero-host,
+  body[data-world="freiraum"] .welten-desktop-hero-host,
+  body[data-world="general"] .welten-desktop-hero-host {
+    margin-top: 0 !important;
+    margin-bottom: var(--hero-to-next) !important;
+  }
+
+  /* Inhalt nach Unterseiten-Hero */
+  body.welten-desktop-subpage-hero--on[data-world="nexora"] .slide.active:not(#slide-home) > .slide-inner > :not(.welten-desktop-hero-host):first-of-type,
+  body.welten-desktop-subpage-hero--on[data-world="vertex"] .slide.active:not(#slide-home) > .slide-inner > :not(.welten-desktop-hero-host):first-of-type,
+  body.welten-desktop-subpage-hero--on[data-world="freiraum"] .slide.active:not(#slide-home) > .slide-inner > :not(.welten-desktop-hero-host):first-of-type {
+    margin-top: 0;
+  }
+
+  /* Editorial Page-Hero (falls sichtbar): kein Fullscreen */
+  body[data-world="nexora"] .welten-page-hero,
+  body[data-world="vertex"] .welten-page-hero,
+  body[data-world="freiraum"] .welten-page-hero,
+  body[data-world="nexora"] [data-chapter-hero],
+  body[data-world="vertex"] [data-chapter-hero],
+  body[data-world="freiraum"] [data-chapter-hero] {
+    min-height: auto;
+    padding-top: clamp(12px, 2vw, 28px);
+    padding-bottom: clamp(20px, 3vw, 40px);
+  }
+
+  body[data-world="nexora"] .chapter-label,
+  body[data-world="vertex"] .chapter-label,
+  body[data-world="freiraum"] .chapter-label {
+    margin-top: 0;
+    margin-bottom: 14px;
+  }
+
+  body[data-world="nexora"] h2.section-title,
+  body[data-world="vertex"] h2.section-title,
+  body[data-world="freiraum"] h2.section-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  /* Nexora: Motiv leicht nach oben (Home + Unterseiten gleich) */
+  body[data-world="nexora"] .home-hero-experience .neuro-core {
+    top: calc(clamp(245px, 34vh, 350px) - var(--hero-top-offset)) !important;
+  }
+
+  body[data-world="nexora"] .home-hero-experience .nexora-orbit-buttons {
+    top: calc(clamp(96px, 11vh, 160px) - var(--hero-top-offset) * 0.55) !important;
+    bottom: calc(clamp(120px, 17vh, 200px) + var(--hero-top-offset) * 0.35) !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  body[data-world="nexora"] .home-hero-experience .neuro-core {
+    top: calc(clamp(300px, 48vh, 500px) - var(--hero-top-offset)) !important;
+  }
+}
+
+/* ── Video-Hero der drei Welten (nicht Multiversum) ── */
+@media (min-width: 1025px) {
+  body[data-world="nexora"] .al-world-video-hero--video-only:not(.al-world-video-hero--multiversum),
+  body[data-world="vertex"] .al-world-video-hero--video-only:not(.al-world-video-hero--multiversum),
+  body[data-world="freiraum"] .al-world-video-hero--video-only:not(.al-world-video-hero--multiversum),
+  body[data-world="nexora"] #alWorldVideoHero.al-world-video-hero--video-only,
+  body[data-world="vertex"] #alWorldVideoHero.al-world-video-hero--video-only,
+  body[data-world="freiraum"] #alWorldVideoHero.al-world-video-hero--video-only {
+    height: var(--video-hero-h) !important;
+    max-height: var(--video-hero-h) !important;
+    min-height: var(--video-hero-min) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body[data-world="nexora"] .al-world-video-hero--video-only .al-world-video-hero__media,
+  body[data-world="vertex"] .al-world-video-hero--video-only .al-world-video-hero__media,
+  body[data-world="freiraum"] .al-world-video-hero--video-only .al-world-video-hero__media {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  body[data-world="nexora"] .al-world-video-hero--video-only .al-world-video-hero__video,
+  body[data-world="vertex"] .al-world-video-hero--video-only .al-world-video-hero__video,
+  body[data-world="freiraum"] .al-world-video-hero--video-only .al-world-video-hero__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+}
+
+/* ── Tablet / Smartphone: kein Fix-Fullscreen-Hero, Header-Abstand bleibt zentral ── */
+@media (max-width: 1024px) {
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="nexora"] #slide-home #dnaStage,
+  body[data-world="vertex"] #slide-home .home-hero-experience,
+  body[data-world="vertex"] #slide-home #dnaStage,
+  body[data-world="freiraum"] #slide-home .home-hero-experience,
+  body[data-world="freiraum"] #slide-home #dnaStage {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    padding-top: var(--hero-gap) !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-main-block,
+  body[data-world="vertex"] #slide-home .home-main-block,
+  body[data-world="freiraum"] #slide-home .home-main-block {
+    max-width: var(--hero-content-max);
+    margin-top: 0 !important;
+    padding-top: clamp(18px, 4vw, 36px) !important;
+    padding-left: max(var(--slide-pad-x), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--slide-pad-x), env(safe-area-inset-right, 0px));
+  }
+
+  body[data-world="nexora"] .chapter-label,
+  body[data-world="vertex"] .chapter-label,
+  body[data-world="freiraum"] .chapter-label {
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+
+  body[data-world="nexora"] h2.section-title,
+  body[data-world="vertex"] h2.section-title,
+  body[data-world="freiraum"] h2.section-title {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+}
+
+/* Reduced motion: keine Höhen-Animationen nötig — Layout bleibt */
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-experience,
+  .al-world-video-hero--video-only {
+    scroll-margin-top: var(--header-h, var(--header-h-fallback));
+  }
+}
+
+/* ── Parität: Unterseiten-Hero = Home-Hero (nur Active-Button darf abweichen) ── */
+@media (min-width: 1025px) {
+  body.welten-desktop-subpage-hero--on .welten-desktop-hero-host {
+    display: block !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero.home-hero-experience,
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero#dnaStage {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  body.welten-desktop-subpage-hero--on .slide.active:not(#slide-home) > .slide-inner > .welten-desktop-hero-host {
+    order: -1;
+  }
+
+  /* Multiversum: relocated Video-Chrome auf Unterseiten sichtbar (gleiche Bühne wie Home) */
+  body[data-world="general"].welten-desktop-subpage-hero--on .welten-desktop-relocated-hero#alWorldVideoHero,
+  body[data-world="general"].welten-desktop-subpage-hero--on #alWorldVideoHero.welten-desktop-relocated-hero {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    pointer-events: auto !important;
+  }
+}

@@ -68,10 +68,10 @@ body[data-world="general"] .dna-orbit-group {
 
 .mv-static-hero {
   width: 100%;
-  min-height: var(--hero-dna-h, calc(100svh - 120px));
+  min-height: 0;
   display: grid;
   place-items: center;
-  padding: clamp(16px, 3vw, 32px) clamp(12px, 3vw, 24px) clamp(24px, 5vw, 48px);
+  padding: clamp(12px, 2.4vw, 28px) clamp(12px, 3vw, 24px) clamp(14px, 2.4vw, 28px);
   background:
     radial-gradient(ellipse 80% 60% at 50% 38%, rgba(255, 89, 178, 0.08), transparent 62%),
     radial-gradient(ellipse 60% 50% at 50% 72%, rgba(155, 107, 255, 0.06), transparent 58%),

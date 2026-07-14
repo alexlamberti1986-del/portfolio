@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Mobile/Tablet Shell — Welten-Bar, Touch, Abstände (≤1024px)
  * Desktop ≥1025px: keine Regeln
  */
@@ -16,7 +16,7 @@
     pointer-events: auto !important;
   }
 
-  .mv4-bar .mv4-worlds button[data-iframe] {
+  .mv4-bar .mv4-worlds [data-iframe][data-iframe] {
     min-height: 44px !important;
     min-width: 0;
     touch-action: manipulation;
@@ -62,7 +62,7 @@
     gap: 6px !important;
   }
 
-  .mv4-worlds button[data-iframe] {
+  .mv4-worlds [data-iframe][data-iframe] {
     padding: 10px 5px !important;
     font-size: clamp(7.5px, 2.35vw, 9px) !important;
     line-height: 1.15 !important;
@@ -70,7 +70,7 @@
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  .mv4-worlds button[data-iframe] {
+  .mv4-worlds [data-iframe][data-iframe] {
     padding: 10px 8px !important;
     font-size: clamp(9px, 1.2vw, 11px) !important;
   }

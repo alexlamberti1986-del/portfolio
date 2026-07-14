@@ -106,7 +106,13 @@
   }
 
   function canPlayVideo() {
-    return frameLive && frameVisible && isHomeActive() && !isVideoHidden();
+    if (frameLive && frameVisible && isHomeActive() && !isVideoHidden()) {
+      try {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+      } catch (e) {}
+      return true;
+    }
+    return false;
   }
 
   function getHomeInner() {
@@ -228,8 +234,16 @@
           .then(function () {
             markVideoReady(section, video);
           })
-          .catch(function () {
+          .catch(function (err) {
             started = false;
+            try {
+              section.classList.add("is-poster-fallback");
+              section.classList.remove("is-video-ready");
+              video.style.opacity = "0";
+            } catch (eVis) {}
+            if (typeof console !== "undefined" && console.warn) {
+              console.warn("[welten-video-hero] Autoplay blocked or failed", err);
+            }
           });
       } else {
         markVideoReady(section, video);
@@ -452,11 +466,22 @@
     );
   }
 
+  function isVideoRelocated(videoHero) {
+    return !!(
+      videoHero &&
+      (videoHero.classList.contains("welten-desktop-relocated-hero") ||
+        videoHero.classList.contains("is-subpage-hero"))
+    );
+  }
+
   function ensureVideoAfterHero() {
     var videoHero = document.getElementById("alWorldVideoHero");
     var homeInner = getHomeInner();
     var anchor = getHeroAnchor();
     if (!videoHero || !homeInner) return;
+
+    /* Unterseiten: Hero wird von chapter-hero relocated — nicht zurück nach Home ziehen */
+    if (!isHomeActive() || isVideoRelocated(videoHero)) return;
 
     if (anchor) {
       if (anchor.nextElementSibling !== videoHero) {
@@ -485,11 +510,14 @@
     if (!homeInner || homeObserver) return;
     try {
       homeObserver = new MutationObserver(function () {
-        if (!document.getElementById("alWorldVideoHero")) {
-          mountVideoHero();
+        var videoHero = document.getElementById("alWorldVideoHero");
+        if (!videoHero) {
+          if (isHomeActive()) mountVideoHero();
           return;
         }
-        ensureVideoAfterHero();
+        if (isHomeActive() && !isVideoRelocated(videoHero)) {
+          ensureVideoAfterHero();
+        }
       });
       homeObserver.observe(homeInner, { childList: true });
     } catch (e) {}
@@ -535,8 +563,30 @@
       }
     } else {
       ensureVideoAfterHero();
-      videoHero.className =
-        "al-world-video-hero al-world-video-hero--" + worldKey + " al-world-video-hero--video-only";
+      var keepRelocated = isVideoRelocated(videoHero);
+      var keepChrome = videoHero.classList.contains("al-world-video-hero--with-chrome");
+      videoHero.classList.add(
+        "al-world-video-hero",
+        "al-world-video-hero--" + worldKey,
+        "al-world-video-hero--video-only"
+      );
+      /* className nicht komplett ersetzen — Relocate-/Chrome-Flags behalten */
+      Array.prototype.slice.call(videoHero.classList).forEach(function (cls) {
+        if (
+          cls.indexOf("al-world-video-hero") === 0 ||
+          cls === "welten-desktop-relocated-hero" ||
+          cls === "is-subpage-hero"
+        ) {
+          return;
+        }
+        videoHero.classList.remove(cls);
+      });
+      if (keepRelocated) {
+        videoHero.classList.add("welten-desktop-relocated-hero", "is-subpage-hero");
+      }
+      if (keepChrome || worldKey === "multiversum") {
+        videoHero.classList.add("al-world-video-hero--with-chrome");
+      }
       ensureMvVideoChrome(videoHero, worldKey);
       applyMultiversumVideoFit(videoHero);
       var video = videoHero.querySelector("video");
@@ -577,14 +627,20 @@
     var slide = document.body.getAttribute("data-current-slide") || "home";
     if (slide === lastSlide) return;
     lastSlide = slide;
-    if (!document.getElementById("alWorldVideoHero")) return;
-    ensureVideoAfterHero();
+    var videoHero = document.getElementById("alWorldVideoHero");
+    if (!videoHero) return;
+    if (isHomeActive() && !isVideoRelocated(videoHero)) {
+      ensureVideoAfterHero();
+    }
     syncMvVideoChromeNav();
     if (canPlayVideo()) {
       resetHomeScroll();
       restartAndPlay(slide === "home");
     } else {
       pauseVideoHero();
+    }
+    if (window.WeltenDesktopChapterHero && typeof window.WeltenDesktopChapterHero.refresh === "function") {
+      window.WeltenDesktopChapterHero.refresh();
     }
   }
 

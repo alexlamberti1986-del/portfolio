@@ -164,9 +164,8 @@
     if (e.detail && e.detail.chapter) {
       apply(e.detail.chapter);
       if (window.parent !== window) {
-        try {
-          window.parent.postMessage({ type: "portfolio-chapter", chapter: e.detail.chapter }, "*");
-        } catch (err) {}
+        /* Parent URL/SEO owned by shell via portfolio-chapter from site-ia */
+        return;
       }
     }
   });

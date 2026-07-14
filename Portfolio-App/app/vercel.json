@@ -1,6 +1,22 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/multiversum", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/nexora", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/nexora/projekte", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/nexora/leistungen", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/nexora/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/nexora/kontakt", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/professional", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/professional/projekte", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/professional/leistungen", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/professional/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/professional/kontakt", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/freiraum", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/freiraum/projekte", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/freiraum/leistungen", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/freiraum/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/freiraum/kontakt", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/projekte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/leistungen", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
@@ -25,7 +41,11 @@
     { "source": "/workstyle", "destination": "/ueber-mich", "permanent": true },
     { "source": "/motivation", "destination": "/ueber-mich", "permanent": true },
     { "source": "/why", "destination": "/ueber-mich", "permanent": true },
-    { "source": "/faq", "destination": "/ueber-mich", "permanent": true }
+    { "source": "/faq", "destination": "/ueber-mich", "permanent": true },
+    { "source": "/NEXORA.html", "destination": "/nexora", "permanent": true },
+    { "source": "/PROFESSIONAL.html", "destination": "/professional", "permanent": true },
+    { "source": "/FREIRAUM.html", "destination": "/freiraum", "permanent": true },
+    { "source": "/MULTIVERSUM.html", "destination": "/", "permanent": true }
   ],
   "headers": [
     {

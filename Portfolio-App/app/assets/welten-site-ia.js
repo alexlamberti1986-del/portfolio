@@ -62,6 +62,9 @@
         pathname = window.parent.location.pathname;
       }
     } catch (e) {}
+    if (window.WeltenShellRouter && typeof window.WeltenShellRouter.parsePath === "function") {
+      return window.WeltenShellRouter.parsePath(pathname).chapter || "home";
+    }
     var p = pathname.replace(/\/$/, "") || "/";
     if (ROUTES[p]) return ROUTES[p];
     var hash = (window.location.hash || "").replace(/^#\/?/, "");
@@ -84,9 +87,70 @@
     return false;
   }
 
+  function isEmbedded() {
+    try {
+      return window.parent && window.parent !== window;
+    } catch (e) {
+      return true;
+    }
+  }
+
+  function currentWorldKey() {
+    return (document.body && document.body.getAttribute("data-world")) || "general";
+  }
+
+  function pathForChapter(chapter) {
+    chapter = resolveChapter(chapter);
+    if (window.WeltenShellRouter && typeof window.WeltenShellRouter.buildPath === "function") {
+      return window.WeltenShellRouter.buildPath(currentWorldKey(), chapter);
+    }
+    var world = currentWorldKey();
+    var slug =
+      world === "nexora"
+        ? "/nexora"
+        : world === "vertex" || world === "professional"
+          ? "/professional"
+          : world === "freiraum"
+            ? "/freiraum"
+            : "";
+    var ch = PATH_BY_CHAPTER[chapter] || "/";
+    if (chapter === "home") return slug || "/";
+    if (!slug) return ch;
+    return slug + ch;
+  }
+
+  function updateNavHrefs() {
+    document.querySelectorAll("a[data-go]").forEach(function (a) {
+      var go = a.getAttribute("data-go");
+      if (!go) return;
+      var chapter = resolveChapter(go);
+      if (!PATH_BY_CHAPTER[chapter] && chapter !== "home") return;
+      a.setAttribute("href", pathForChapter(chapter));
+    });
+  }
+
   function syncUrl(chapter) {
     chapter = resolveChapter(chapter);
-    var path = PATH_BY_CHAPTER[chapter] || "/";
+
+    if (isEmbedded()) {
+      try {
+        window.parent.postMessage(
+          {
+            type: "portfolio-chapter",
+            chapter: chapter,
+            world: currentWorldKey(),
+          },
+          "*"
+        );
+      } catch (ePost) {}
+      if (window.WeltenSEO && typeof window.WeltenSEO.apply === "function") {
+        window.WeltenSEO.apply(chapter);
+      }
+      document.dispatchEvent(new CustomEvent("welten-chapter-change", { detail: { chapter: chapter } }));
+      return;
+    }
+
+    var path = pathForChapter(chapter);
     if (window.location.pathname !== path) {
       try {
         window.history.replaceState({ chapter: chapter }, "", path);
@@ -188,9 +252,12 @@
   }
 
   function watchChapterChanges() {
+    var last = "";
     var obs = new MutationObserver(function () {
       var ch = document.body.getAttribute("data-current-slide");
-      if (ch) syncUrl(ch);
+      if (!ch || ch === last) return;
+      last = ch;
+      syncUrl(ch);
     });
     obs.observe(document.body, { attributes: true, attributeFilter: ["data-current-slide"] });
   }
@@ -270,6 +337,7 @@
     injectLeistungenGrid();
     mergeAboutContent();
     enhanceContact();
+    updateNavHrefs();
     patchNavigationClicks();
     watchChapterChanges();
     window.addEventListener("message", onParentChapterMessage);
@@ -288,6 +356,8 @@
     navigateToChapter: navigateToChapter,
     scrollToSection: scrollToSection,
     syncUrl: syncUrl,
+    updateNavHrefs: updateNavHrefs,
+    pathForChapter: pathForChapter,
     refreshMergedAbout: refreshMergedAbout,
     ROUTES: ROUTES,
   };

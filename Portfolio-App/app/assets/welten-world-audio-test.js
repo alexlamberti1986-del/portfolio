@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Hintergrundmusik pro Welt (Loop), ein Player, ein Start nach Weltenwechsel-Animation.
  */
 (function () {
@@ -456,7 +456,7 @@
 
   function isWorldSwitchTarget(target) {
     if (!target || !target.closest) return false;
-    return !!target.closest(".mv4-worlds button[data-iframe], .world-bar button[data-iframe]");
+    return !!target.closest(".mv4-worlds [data-iframe], .world-bar [data-iframe]");
   }
 
   function isExcludedBootTarget(target) {
@@ -719,7 +719,7 @@
     if (!nav || nav.dataset.worldAudioHooked === "1") return;
     nav.dataset.worldAudioHooked = "1";
     var keys = ["general", "nexora", "vertex", "freiraum"];
-    nav.querySelectorAll("button[data-iframe]").forEach(function (btn) {
+    nav.querySelectorAll("[data-iframe]").forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
       function onIntent() {
         var world = keys[idx];

@@ -174,7 +174,8 @@
       padding: 0 20px !important;
     }
 
-    #slide-home .nexora-orbit-button.is-front {
+    #slide-home .nexora-orbit-button.is-front,
+    .welten-desktop-relocated-hero .nexora-orbit-button.is-front {
       --orbit-radius: min(760px, 29.6vw) !important;
     }
   }
@@ -404,7 +405,8 @@
       padding: 0 24px !important;
     }
 
-    #slide-home .nexora-orbit-button.is-front {
+    #slide-home .nexora-orbit-button.is-front,
+    .welten-desktop-relocated-hero .nexora-orbit-button.is-front {
       --orbit-radius: min(920px, 24vw) !important;
     }
   }

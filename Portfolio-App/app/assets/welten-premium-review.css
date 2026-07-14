@@ -20,12 +20,16 @@
   min-height: 48px;
 }
 
-/* ── Nexora Orbit: gleiche Button-Hierarchie, Kontakt nicht grösser ── */
+/* ── Nexora Orbit: gleiche Button-Hierarchie (Home + relocated Unterseiten) ── */
 @media (min-width: 1025px) and (hover: hover) {
   #slide-home .nexora-orbit-button,
   #slide-home .nexora-orbit-button[data-go="contact"],
   #slide-home .nexora-orbit-button[data-go="about"],
-  #slide-home .nexora-orbit-button.is-front {
+  #slide-home .nexora-orbit-button.is-front,
+  .welten-desktop-relocated-hero .nexora-orbit-button,
+  .welten-desktop-relocated-hero .nexora-orbit-button[data-go="contact"],
+  .welten-desktop-relocated-hero .nexora-orbit-button[data-go="about"],
+  .welten-desktop-relocated-hero .nexora-orbit-button.is-front {
     width: clamp(200px, 15.5vw, 272px) !important;
     min-width: clamp(200px, 15.5vw, 272px) !important;
     max-width: clamp(200px, 15.5vw, 272px) !important;
@@ -36,7 +40,8 @@
     padding: 0 18px !important;
   }
 
-  #slide-home .nexora-orbit-button.is-front {
+  #slide-home .nexora-orbit-button.is-front,
+  .welten-desktop-relocated-hero .nexora-orbit-button.is-front {
     transform:
       translate(calc(-50% + var(--helix-x, 0px)), calc(-50% + var(--helix-y, 0px)))
       rotateY(calc(var(--i, 0) * var(--nexora-orbit-step, 72deg)))
@@ -142,13 +147,15 @@ body.welten-personality--freiraum .welten-contact-portrait {
 }
 
 @media (min-width: 1440px) {
-  #slide-home .nexora-orbit-buttons {
+  #slide-home .nexora-orbit-buttons,
+  .welten-desktop-relocated-hero .nexora-orbit-buttons {
     width: min(1180px, 86vw) !important;
   }
 }
 
 @media (min-width: 1920px) {
-  #slide-home .nexora-orbit-buttons {
+  #slide-home .nexora-orbit-buttons,
+  .welten-desktop-relocated-hero .nexora-orbit-buttons {
     width: min(1280px, 82vw) !important;
   }
 }

@@ -1,10 +1,13 @@
 /**
  * FREIRAUM Home-Hero: kein Profilbild im Hintergrund (Laptop + Desktop ≥1025px).
+ * Gilt für Home UND Unterseiten (relocated Hero) — gleiches Aussehen.
  * Kontakt + home-main-block Porträtkarte bleiben unverändert.
  */
 @media (min-width: 1025px) {
   body[data-world="freiraum"] #slide-home .home-hero-experience,
-  body[data-world="freiraum"] #slide-home #dnaStage.home-hero-experience {
+  body[data-world="freiraum"] #slide-home #dnaStage.home-hero-experience,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero#dnaStage {
     background:
       radial-gradient(circle at 16% 22%, rgba(255, 208, 48, 0.25), transparent 28%),
       radial-gradient(circle at 74% 18%, rgba(255, 48, 126, 0.24), transparent 30%),
@@ -20,7 +23,14 @@
   }
 
   body[data-world="freiraum"] #slide-home .home-hero-experience .portrait-photo,
-  body[data-world="freiraum"] #slide-home .home-hero-experience #heroPhoto {
+  body[data-world="freiraum"] #slide-home .home-hero-experience #heroPhoto,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero .portrait-photo,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero #heroPhoto,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero .home-portrait-card {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
     content: none !important;
   }
 }
