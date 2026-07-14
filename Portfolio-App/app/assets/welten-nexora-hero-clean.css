@@ -1,0 +1,58 @@
+/**
+ * NEXORA Hero: kein Profilbild hinter Gehirn/Orbit (Laptop + Desktop ≥1025px).
+ * Gilt für Home UND Unterseiten (relocated Hero) — gleiches Aussehen.
+ * Kontakt + home-main-block Porträtkarte bleiben unverändert.
+ */
+@media (min-width: 1025px) {
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience,
+  body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="nexora"] .welten-desktop-relocated-hero#dnaStage {
+    background:
+      radial-gradient(ellipse 80% 54% at 50% 34%, rgba(0, 145, 255, .24), transparent 62%),
+      radial-gradient(ellipse 42% 22% at 50% 62%, rgba(0, 190, 255, .20), transparent 70%),
+      linear-gradient(90deg, #020611 0%, #06162a 42%, #071a31 50%, #06162a 58%, #020611 100%) !important;
+    background-image:
+      radial-gradient(ellipse 80% 54% at 50% 34%, rgba(0, 145, 255, .24), transparent 62%),
+      radial-gradient(ellipse 42% 22% at 50% 62%, rgba(0, 190, 255, .20), transparent 70%),
+      linear-gradient(90deg, #020611 0%, #06162a 42%, #071a31 50%, #06162a 58%, #020611 100%) !important;
+    background-size: auto !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  }
+
+  body[data-world="nexora"] .bg-root::before,
+  body[data-world="nexora"].is-subpage .bg-root::before,
+  body[data-world="nexora"].welten-desktop-subpage-hero--on .bg-root::before {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    background: none !important;
+    background-image: none !important;
+    animation: none !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-hero-experience .portrait-photo,
+  body[data-world="nexora"] #slide-home .home-hero-experience #heroPhoto,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .portrait-photo,
+  body[data-world="nexora"] .welten-desktop-relocated-hero #heroPhoto,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .home-portrait-card,
+  body[data-world="nexora"] #dnaStage .portrait-photo,
+  body[data-world="nexora"] #dnaStage .home-portrait-card {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    content: none !important;
+  }
+
+  /* Brain-Asset ohne Portrait-Ghost */
+  body[data-world="nexora"] .home-hero-experience .neuro-core::before,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core::before {
+    background-image: url("images/nexora-home-brain-clean.png") !important;
+    background-size: contain !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+  }
+}
