@@ -87,11 +87,28 @@
     box-sizing: border-box !important;
   }
 
-  /* Home: kein zusätzlicher Slide-Innenabstand oben (Header-Clearance nur über slides-root) */
+  /* Home + Unterseiten: gleiche Hero-Startlinie (kein Slide-Top-Padding — nicht nur via JS-Klasse) */
   body[data-world="nexora"] #slide-home.slide,
   body[data-world="vertex"] #slide-home.slide,
-  body[data-world="freiraum"] #slide-home.slide {
+  body[data-world="freiraum"] #slide-home.slide,
+  body[data-world="general"] #slide-home.slide,
+  body[data-world="nexora"] .slide:not(#slide-home),
+  body[data-world="vertex"] .slide:not(#slide-home),
+  body[data-world="freiraum"] .slide:not(#slide-home),
+  body[data-world="general"] .slide:not(#slide-home) {
     padding-top: 0 !important;
+  }
+
+  body[data-world="nexora"] .slide:not(#slide-home) > .slide-inner,
+  body[data-world="vertex"] .slide:not(#slide-home) > .slide-inner,
+  body[data-world="freiraum"] .slide:not(#slide-home) > .slide-inner,
+  body[data-world="general"] .slide:not(#slide-home) > .slide-inner,
+  body[data-world="nexora"] #slide-contact .slide-inner.contact-layout,
+  body[data-world="vertex"] #slide-contact .slide-inner.contact-layout,
+  body[data-world="freiraum"] #slide-contact .slide-inner.contact-layout,
+  body[data-world="general"] #slide-contact .slide-inner.contact-layout {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
 
   /* Intro-Block unter DNA/Video */

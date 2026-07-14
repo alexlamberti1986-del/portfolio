@@ -32,6 +32,18 @@
     document
       .querySelectorAll("#heroPhoto, #contactPhoto, .home-portrait-card img.portrait-photo, .contact-visual img.portrait-photo")
       .forEach(function (img) {
+        /* Nie Portrait im Hero-Stage erzwingen (verhindert Freiraum/Nexora Flash) */
+        if (
+          img.closest &&
+          (img.closest(".home-hero-experience") ||
+            img.closest("#dnaStage") ||
+            img.closest(".welten-desktop-relocated-hero"))
+        ) {
+          img.style.display = "none";
+          img.style.visibility = "hidden";
+          img.style.opacity = "0";
+          return;
+        }
         img.removeAttribute("srcset");
         img.src = src;
         img.alt = portraitAlt();

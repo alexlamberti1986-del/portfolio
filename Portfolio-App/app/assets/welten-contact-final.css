@@ -1,5 +1,12 @@
 /* Kontakt FINAL — nur #slide-contact, alle Welten, responsive */
 
+/* Desktop: gleicher Hero-Start wie Home — kein Extra-Top-Padding */
+@media (min-width: 1025px) {
+  body[data-world] #slide-contact .slide-inner.contact-layout {
+    padding-top: 0 !important;
+  }
+}
+
 #slide-contact.slide {
   overflow-x: clip;
   padding-bottom: clamp(12px, 2vw, 20px) !important;
