@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html lang="de-CH">
+<html lang="de-CH" class="mv-shell-booting">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <style id="shell-fouc-critical">
     /* Sofort: kein SEO-/Skip-Flash vor externem CSS */
     html, body { margin: 0; background: #02030b; color: #e8eef8; }
+    /* Bis der Shell-Klasse entfernt wird (siehe Boot-Script unten), das aktive Frame
+       sanft einblenden statt den rohen Iframe-Inhalt (Kopfzeilen-Flash) sofort zu zeigen. */
+    html.mv-shell-booting .mv4-frame.is-active {
+      opacity: 0 !important;
+    }
+    html:not(.mv-shell-booting) .mv4-frame.is-active {
+      opacity: 1 !important;
+      transition: opacity .16s ease-out;
+    }
     .mv-shell-seo,
     .welten-skip-link {
       position: absolute !important;

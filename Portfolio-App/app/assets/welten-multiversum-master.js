@@ -70,14 +70,15 @@
   var resetAttempts = {};
   loaded[defaultWorld] = true;
   var SHELL_CHROME_CSS =
-    "html.welten-live-shell .mv4-bar{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}";
+    "html.welten-live-shell .mv4-bar{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}" +
+    "html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;pointer-events:none!important}";
 
   function injectPreviewShellCss(f) {
     try {
       var d = f.contentDocument;
       if (!d || !d.documentElement) return;
       d.documentElement.classList.add("mv4-preview-shell");
-      if (isLiveShell) d.documentElement.classList.add("welten-live-shell");
+      if (isLiveShell) d.documentElement.classList.add("welten-live-shell", "mv-in-shell");
       if (!d.getElementById("mv4-preview-mobile-css")) {
         var link = d.createElement("link");
         link.id = "mv4-preview-mobile-css";

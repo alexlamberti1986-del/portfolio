@@ -37,6 +37,21 @@ html.welten-live-shell .btn-menu {
   pointer-events: auto !important;
 }
 
+/* Multiversum video-hero chrome duplicates the brand/title feel already shown by
+   .site-header. In the live shell we keep the chapter nav but drop the eyebrow + title
+   so the page doesn't visibly stack a 3rd header while it boots. */
+html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,
+html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,
+html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,
+html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__title {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
 /* Multiversum-Home-Ausblendung nur unter Desktop; ab 1920px Rail erzwingen */
 @media (min-width: 1920px) {
   html.welten-live-shell body[data-world="general"]:has(#mvParallaxHero) .experience-rail,

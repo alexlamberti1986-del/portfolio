@@ -4,8 +4,8 @@
 (function () {
   "use strict";
 
-  var VERSION = "1";
-  var FORM_SRC = "assets/preview/alx-offerte-form-v4.html";
+  var VERSION = "2";
+  var FORM_SRC = "assets/preview/alx-offerte-form-v5.html";
 
   function currentLang() {
     try {
@@ -35,7 +35,7 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260714offerte-v4"
+      "&v=20260714offerte-v5"
     );
   }
 

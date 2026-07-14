@@ -1,0 +1,158 @@
+/* NEXORA – slow-rotating CSS-only 3D brain, replaces flat brain PNG behind the orbit menu. */
+:root {
+  --nexora-brain3d-glow: rgba(39, 220, 255, .55);
+}
+
+.nexora-brain3d {
+  position: absolute;
+  inset: -6% -8%;
+  z-index: 1;
+  pointer-events: none;
+  perspective: 1100px;
+  perspective-origin: 50% 42%;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+body.nexora-brain-3d-on .nexora-brain3d {
+  opacity: 1;
+}
+
+.nexora-brain3d__rotor {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.nexora-brain3d__hemi,
+.nexora-brain3d__lobe,
+.nexora-brain3d__stem,
+.nexora-brain3d__sulci,
+.nexora-brain3d__glow {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.nexora-brain3d__hemi {
+  top: 8%;
+  width: 46%;
+  height: 62%;
+  border-radius: 62% 58% 54% 60% / 68% 64% 52% 58%;
+  background: linear-gradient(155deg, rgba(120, 235, 255, .32), rgba(6, 34, 58, .55) 62%, rgba(2, 14, 26, .80));
+  border: 1px solid rgba(140, 235, 255, .55);
+  box-shadow:
+    0 0 40px var(--nexora-brain3d-glow),
+    inset 0 0 30px rgba(120, 235, 255, .30);
+  backdrop-filter: blur(.5px);
+}
+.nexora-brain3d__hemi--left {
+  left: 6%;
+  transform: translateZ(26px) rotateY(-14deg);
+}
+.nexora-brain3d__hemi--right {
+  left: 48%;
+  transform: translateZ(26px) rotateY(14deg) scaleX(-1);
+}
+
+.nexora-brain3d__lobe {
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, rgba(180, 245, 255, .55), rgba(20, 90, 140, .12) 70%, transparent 78%);
+  filter: blur(.3px);
+}
+.nexora-brain3d__lobe--frontal {
+  left: 22%;
+  top: 4%;
+  width: 30%;
+  height: 26%;
+  transform: translateZ(52px);
+}
+.nexora-brain3d__lobe--parietal {
+  left: 46%;
+  top: 2%;
+  width: 30%;
+  height: 26%;
+  transform: translateZ(44px) rotateY(6deg);
+}
+.nexora-brain3d__lobe--temporal-l {
+  left: 12%;
+  top: 40%;
+  width: 24%;
+  height: 22%;
+  transform: translateZ(18px) rotateY(-24deg);
+}
+.nexora-brain3d__lobe--temporal-r {
+  left: 62%;
+  top: 40%;
+  width: 24%;
+  height: 22%;
+  transform: translateZ(18px) rotateY(24deg);
+}
+
+.nexora-brain3d__stem {
+  left: 45%;
+  bottom: 4%;
+  width: 10%;
+  height: 20%;
+  border-radius: 40% 40% 60% 60% / 50% 50% 70% 70%;
+  background: linear-gradient(180deg, rgba(120, 235, 255, .40), rgba(10, 40, 60, .70));
+  border: 1px solid rgba(140, 235, 255, .40);
+  transform: translateZ(6px);
+}
+
+.nexora-brain3d__sulci {
+  inset: 6% 8%;
+  border-radius: 60% 55% 55% 60% / 65% 60% 55% 60%;
+  background:
+    repeating-linear-gradient(105deg, rgba(160, 240, 255, .18) 0 2px, transparent 2px 14px),
+    repeating-linear-gradient(15deg, rgba(160, 240, 255, .12) 0 2px, transparent 2px 18px);
+  mix-blend-mode: screen;
+  opacity: .7;
+  transform: translateZ(34px);
+}
+
+.nexora-brain3d__glow {
+  inset: -10%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 45%, rgba(39, 220, 255, .28), transparent 68%);
+  transform: translateZ(-30px);
+  filter: blur(6px);
+}
+
+/* Hide the flat brain PNG backgrounds once the 3D brain is active. Scoped with an extra
+   class so specificity beats the legacy world-scoped ::before rules regardless of source order. */
+body.nexora-brain-3d-on .home-hero-experience .neuro-core::before,
+body.nexora-brain-3d-on .welten-desktop-relocated-hero .neuro-core::before,
+body.nexora-brain-3d-on .welten-mobile-relocated-hero .neuro-core::before,
+body.nexora-brain-3d-on[data-world="nexora"] .home-hero-experience .neuro-core::before,
+body.nexora-brain-3d-on[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core::before,
+body.nexora-brain-3d-on[data-world="nexora"] .welten-mobile-relocated-hero .neuro-core::before {
+  background-image: none !important;
+  opacity: 0 !important;
+}
+
+@media (max-width: 1024px) {
+  .nexora-brain3d {
+    opacity: 0;
+  }
+  body.nexora-brain-3d-on .nexora-brain3d {
+    opacity: .85;
+  }
+  .nexora-brain3d__sulci,
+  .nexora-brain3d__glow {
+    display: none;
+  }
+  .nexora-brain3d__hemi,
+  .nexora-brain3d__lobe,
+  .nexora-brain3d__stem {
+    box-shadow: none;
+    backdrop-filter: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nexora-brain3d {
+    transition: none;
+  }
+}
