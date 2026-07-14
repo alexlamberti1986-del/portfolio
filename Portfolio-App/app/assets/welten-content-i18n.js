@@ -526,7 +526,7 @@
       )
         span.textContent = ui.address + ": Schulweg 603, 5324 Full-Reuenthal, Schweiz";
     });
-    var form = doc.getElementById("weltenLeadForm");
+    var form = doc.getElementById("weltenOfferteForm") || doc.getElementById("weltenLeadForm");
     if (form && ui.formTitle) form.setAttribute("title", ui.formTitle);
   }
 

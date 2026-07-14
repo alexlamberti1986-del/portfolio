@@ -27,10 +27,10 @@
   }
 
   var NAV = {
-    de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt", menu: "Menü", menuClose: "Schliessen" },
-    en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact", menu: "Menu", menuClose: "Close" },
-    fr: { home: "Accueil", projects: "Projets", leistungen: "Services", about: "À propos", contact: "Contact", menu: "Menu", menuClose: "Fermer" },
-    it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto", menu: "Menu", menuClose: "Chiudi" },
+    de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt", offerte: "Offerte", menu: "Menü", menuClose: "Schliessen" },
+    en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact", offerte: "Offer", menu: "Menu", menuClose: "Close" },
+    fr: { home: "Accueil", projects: "Projets", leistungen: "Services", about: "À propos", contact: "Contact", offerte: "Offre", menu: "Menu", menuClose: "Fermer" },
+    it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto", offerte: "Offerta", menu: "Menu", menuClose: "Chiudi" },
   };
 
   var ARIA = {

@@ -30,6 +30,7 @@
     { id: "leistungen", label: "Leistungen" },
     { id: "about", label: "Über mich" },
     { id: "contact", label: "Kontakt" },
+    { id: "offerte", label: "Offerte" },
   ];
 
   var WORLDS = {

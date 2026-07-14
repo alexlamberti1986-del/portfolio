@@ -10,6 +10,7 @@
     "/leistungen": "leistungen",
     "/ueber-mich": "about",
     "/kontakt": "contact",
+    "/offerte": "offerte",
   };
 
   var PATH_BY_CHAPTER = {
@@ -18,6 +19,7 @@
     leistungen: "/leistungen",
     about: "/ueber-mich",
     contact: "/kontakt",
+    offerte: "/offerte",
   };
 
   var ALIASES = {

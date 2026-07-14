@@ -7,20 +7,24 @@
     { "source": "/nexora/leistungen", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/nexora/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/nexora/kontakt", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/nexora/offerte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/professional", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/professional/projekte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/professional/leistungen", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/professional/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/professional/kontakt", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/professional/offerte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/freiraum", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/freiraum/projekte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/freiraum/leistungen", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/freiraum/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/freiraum/kontakt", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/freiraum/offerte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/projekte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/leistungen", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/kontakt", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/offerte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/(nexora|professional|freiraum|multiversum)/assets/(.*)", "destination": "/assets/$2" },
     { "source": "/(nexora|professional|freiraum|multiversum)/MULTIVERSUM.html", "destination": "/MULTIVERSUM.html" },
     { "source": "/(nexora|professional|freiraum|multiversum)/NEXORA.html", "destination": "/NEXORA.html" },
@@ -69,7 +73,7 @@
       ]
     },
     {
-      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt)(.*)",
+      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte)(.*)",
       "headers": [
         { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]

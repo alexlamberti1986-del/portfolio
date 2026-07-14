@@ -8,7 +8,7 @@
   var VER = "20260714loadClean1";
   var bootTimer = null;
   var realignTimers = [];
-  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
+  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
 
   function isDesktop() {
@@ -33,10 +33,10 @@
         "de";
     } catch (e) {}
     var fallback = {
-      de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt" },
-      en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact" },
-      fr: { home: "Accueil", projects: "Projets", leistungen: "Services", about: "À propos", contact: "Contact" },
-      it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto" },
+      de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt", offerte: "Offerte" },
+      en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact", offerte: "Offer" },
+      fr: { home: "Accueil", projects: "Projets", leistungen: "Services", about: "À propos", contact: "Contact", offerte: "Offre" },
+      it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto", offerte: "Offerta" },
     };
     if (window.WeltenPreviewI18n && window.WeltenPreviewI18n.NAV) {
       return (

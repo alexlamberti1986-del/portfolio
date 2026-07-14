@@ -8,7 +8,7 @@
   var TEL_DISP = "079 667 82 11";
   var MAIL = "alex.lamberti@hotmail.ch";
 
-  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
+  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var ALIASES = {
     profile: "leistungen",
     values: "about",
@@ -20,10 +20,10 @@
   };
 
   var ORBIT_NAV = {
-    de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt" },
-    en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact" },
-    fr: { home: "Accueil", projects: "Projets", leistungen: "Services", about: "À propos", contact: "Contact" },
-    it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto" },
+    de: { home: "Home", projects: "Projekte", leistungen: "Leistungen", about: "Über mich", contact: "Kontakt", offerte: "Offerte" },
+    en: { home: "Home", projects: "Projects", leistungen: "Services", about: "About", contact: "Contact", offerte: "Offer" },
+    fr: { home: "Accueil", projects: "Projets", leistungen: "Services", about: "À propos", contact: "Contact", offerte: "Offre" },
+    it: { home: "Home", projects: "Progetti", leistungen: "Servizi", about: "Chi sono", contact: "Contatto", offerte: "Offerta" },
   };
 
   var PACKS = {
@@ -535,6 +535,7 @@
       ["leistungen", nav.leistungen],
       ["about", nav.about],
       ["contact", nav.contact],
+      ["offerte", nav.offerte || "Offerte"],
     ];
 
     var ring = hero.querySelector(".nexora-orbit-ring");

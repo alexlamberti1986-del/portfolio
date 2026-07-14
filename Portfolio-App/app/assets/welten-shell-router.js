@@ -6,7 +6,7 @@
 
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var WORLD_SLUGS = ["", "nexora", "professional", "freiraum"];
-  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
+  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
 
   var CHAPTER_PATH = {
     home: "",
@@ -14,6 +14,7 @@
     leistungen: "/leistungen",
     about: "/ueber-mich",
     contact: "/kontakt",
+    offerte: "/offerte",
   };
 
   var PATH_CHAPTER = {
@@ -22,6 +23,7 @@
     "/leistungen": "leistungen",
     "/ueber-mich": "about",
     "/kontakt": "contact",
+    "/offerte": "offerte",
   };
 
   var SLUG_TO_IDX = {

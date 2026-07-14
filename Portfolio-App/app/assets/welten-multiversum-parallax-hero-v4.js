@@ -93,6 +93,7 @@
     { go: "leistungen", label: "Leistungen", sub: "Was ich anbiete" },
     { go: "about", label: "Über mich", sub: "Persönlichkeit & Kompetenz" },
     { go: "contact", label: "Kontakt", sub: "Nächster Schritt" },
+    { go: "offerte", label: "Offerte", sub: "Leistungen & Preisanfrage" },
   ];
 
   var rafId = 0;
@@ -260,6 +261,7 @@
       leistungen: "#leistungen",
       about: "#ueber-mich",
       contact: "#kontakt",
+      offerte: "#offerte",
     };
     if (targetHash) {
       var raw = String(targetHash).trim();
@@ -992,6 +994,7 @@
       leistungen: "#leistungen",
       about: "#ueber-mich",
       contact: "#kontakt",
+      offerte: "#offerte",
     };
     var hash = hashMap[go] || "#home";
     return hash === "#home" ? "MULTIVERSUM.html" : "MULTIVERSUM.html" + hash;

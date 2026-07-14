@@ -3416,6 +3416,7 @@ body[data-world="vertex"] .home-portrait-card,
     #slide-home .dna-slide[data-go="projects"]::after { content: "↗"; }
     #slide-home .dna-slide[data-go="experience"]::after { content: "▥"; }
     #slide-home .dna-slide[data-go="contact"]::after { content: "✉"; }
+    #slide-home .dna-slide[data-go="offerte"]::after { content: "◆"; }
     #slide-home .dna-slide:hover,
     #slide-home .dna-slide:focus-visible {
       transform:
@@ -5144,6 +5145,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     <button type="button" class="experience-step" data-go="leistungen" data-label="Leistungen">Leistungen</button>
     <button type="button" class="experience-step" data-go="about" data-label="Über mich">Über mich</button>
     <button type="button" class="experience-step" data-go="contact" data-label="Kontakt">Kontakt</button>
+    <button type="button" class="experience-step" data-go="offerte" data-label="Offerte">Offerte</button>
   </nav>
 
   <div class="menu-overlay" id="mainMenu" role="dialog" aria-modal="true" aria-label="Hauptmenü" hidden>
@@ -5160,6 +5162,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         <a href="/leistungen" data-go="leistungen">Leistungen</a>
         <a href="/ueber-mich" data-go="about">Über mich</a>
         <a href="/kontakt" data-go="contact">Kontakt</a>
+        <a href="/offerte" data-go="offerte">Offerte</a>
       </nav>
     </div>
   </div>
@@ -5201,6 +5204,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
                   <button type="button" class="dna-slide" data-go="leistungen" style="--i: 1; --lift: 34px; --z-depth: 36px;">Leistungen</button>
                   <button type="button" class="dna-slide" data-go="about" style="--i: 2; --lift: -36px; --z-depth: 28px;">Über mich</button>
                   <button type="button" class="dna-slide" data-go="contact" style="--i: 3; --lift: 40px; --z-depth: -30px;">Kontakt</button>
+                  <button type="button" class="dna-slide" data-go="offerte" style="--i: 5; --lift: -28px; --z-depth: 20px;">Offerte</button>
                   <button type="button" class="dna-slide" data-go="home" style="--i: 4; --lift: -32px; --z-depth: 44px;">Home</button></div></div></div>
           </div>
         </div>
@@ -5768,6 +5772,19 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         </figure>
       </div>
     </section>
+
+    <section class="slide" id="slide-offerte" data-slide="offerte" aria-label="Offerte">
+      <div class="slide-inner offerte-layout">
+        <div class="offerte-copy glass-card">
+          <p class="chapter-label">Offerte</p>
+          <h2 class="section-title">Offerte anfragen</h2>
+          <p class="prose">Wählen Sie Ihre Leistungen und erhalten Sie eine klare Einschätzung zu Aufwand und Preis.</p>
+        </div>
+        <div class="welten-leadform-wrap welten-offerte-form-wrap">
+          <iframe class="welten-leadform-frame" id="weltenOfferteForm" title="Offertenformular" scrolling="no" src="about:blank" loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -5807,7 +5824,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       }
 
       /** Reihenfolge der Kapitel ? muss zu .slide[data-slide] passen (Fortschrittsleiste entfernt). */
-      var CHAPTER_ORDER = ["home","projects","leistungen","about","contact"];
+      var CHAPTER_ORDER = ["home","projects","leistungen","about","contact","offerte"];
 
       var slides = CHAPTER_ORDER.map(function (id) {
         return document.querySelector('.slide[data-slide="' + id + '"]');
@@ -7355,7 +7372,8 @@ body[data-world="nexora"] .dna-asset {
     ['projects', 'Projekte'],
     ['leistungen', 'Leistungen'],
     ['about', 'Über mich'],
-    ['contact', 'Kontakt']
+    ['contact', 'Kontakt'],
+    ['offerte', 'Offerte']
   ];
   var ALIASES = { profile:'leistungen', values:'about', strengths:'leistungen', experience:'about', workstyle:'about', why:'about', faq:'about' };
   function resolveOrbitId(id) { return ALIASES[id] || id; }
@@ -7763,7 +7781,7 @@ body[data-world="nexora"] .dna-asset {
   if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isTouch === "function" && window.WeltenTouchEnv.isTouch()) return;
   if (window.matchMedia("(max-width: 1024px)").matches) return;
 
-  var ORDER = ['home','projects','leistungen','about','contact'];
+  var ORDER = ['home','projects','leistungen','about','contact','offerte'];
   var down = null;
 
   function isValid(id) {
@@ -7842,7 +7860,7 @@ body[data-world="nexora"] .dna-asset {
 })();
 </script>
 
-<script id="portfolio-master-bridge">(function(){if(window.parent===window)return;var CH=["home","projects","leistungen","about","contact"];function chapter(){var b=document.body&&document.body.getAttribute("data-current-slide");if(b&&CH.indexOf(b)>=0)return b;var s=document.querySelector(".slide.active[data-slide]");if(s){var id=s.getAttribute("data-slide");if(CH.indexOf(id)>=0)return id;}return"home";}function push(){try{window.parent.postMessage({type:"portfolio-chapter",chapter:chapter()},"*");}catch(e){}}function goToChapter(raw){var map={profile:"leistungen",values:"about",strengths:"leistungen",experience:"about",workstyle:"about",why:"about",faq:"about"};var id=map[raw]||raw;if(CH.indexOf(id)<0)id="home";var n=0;function tryClick(){var link=document.querySelector('.menu-links a[data-go="'+id+'"]');if(link){link.click();return;}if(++n<35)setTimeout(tryClick,45);}tryClick();}window.addEventListener("message",function(e){if(!e.data||e.data.type!=="portfolio-go-chapter")return;goToChapter(e.data.chapter);});document.addEventListener("click",function(){setTimeout(push,0);},true);window.addEventListener("load",function(){setTimeout(push,450);});if(document.body)new MutationObserver(push).observe(document.body,{attributes:true,attributeFilter:["data-current-slide"]});push();})();</script>
+<script id="portfolio-master-bridge">(function(){if(window.parent===window)return;var CH=["home","projects","leistungen","about","contact","offerte"];function chapter(){var b=document.body&&document.body.getAttribute("data-current-slide");if(b&&CH.indexOf(b)>=0)return b;var s=document.querySelector(".slide.active[data-slide]");if(s){var id=s.getAttribute("data-slide");if(CH.indexOf(id)>=0)return id;}return"home";}function push(){try{window.parent.postMessage({type:"portfolio-chapter",chapter:chapter()},"*");}catch(e){}}function goToChapter(raw){var map={profile:"leistungen",values:"about",strengths:"leistungen",experience:"about",workstyle:"about",why:"about",faq:"about"};var id=map[raw]||raw;if(CH.indexOf(id)<0)id="home";var n=0;function tryClick(){var link=document.querySelector('.menu-links a[data-go="'+id+'"]');if(link){link.click();return;}if(++n<35)setTimeout(tryClick,45);}tryClick();}window.addEventListener("message",function(e){if(!e.data||e.data.type!=="portfolio-go-chapter")return;goToChapter(e.data.chapter);});document.addEventListener("click",function(){setTimeout(push,0);},true);window.addEventListener("load",function(){setTimeout(push,450);});if(document.body)new MutationObserver(push).observe(document.body,{attributes:true,attributeFilter:["data-current-slide"]});push();})();</script>
 <style id="welten-patch-css-v1">
   .slide#slide-faq .value-card h3 { font-size: 0.98rem; margin-bottom: 0.45rem; }
   .slide#slide-faq .card-grid { margin-top: 0.75rem; }
@@ -8440,8 +8458,10 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-premium-review.js?v=20260531c" defer></script>
 <link rel="stylesheet" href="assets/welten-final-restore.css?v=20260601b" />
 <script src="assets/welten-final-restore.js?v=20260606c" defer></script>
-<link rel="stylesheet" href="assets/welten-contact-final.css?v=20260714heroAlign1" />
-<script src="assets/welten-contact-final.js?v=20260703lang-full" defer></script>
+<link rel="stylesheet" href="assets/welten-contact-final.css?v=20260714offerte1" />
+<link rel="stylesheet" href="assets/welten-offerte.css?v=20260714offerte1" />
+<script src="assets/welten-contact-final.js?v=20260714offerte1" defer></script>
+<script src="assets/welten-offerte.js?v=20260714offerte1" defer></script>
 <link rel="stylesheet" href="assets/welten-hero-hide-desktop-titles.css?v=20260606f" />
 <link rel="stylesheet" href="assets/welten-mobile-home-portrait-fix.css?v=20260626portrait" />
 <link rel="stylesheet" href="assets/welten-chapter-visuals.css?v=20260612" />

@@ -6,7 +6,7 @@
 
   var LANG_KEY = "mv-preview-lang";
   var FX_KEY = "mv-effects-on";
-  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
+  var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
   var SHELL_PAGES = ["3-Welten-Master-iframe.html", "index.html", ""];
@@ -17,6 +17,7 @@
     "/leistungen": "leistungen",
     "/ueber-mich": "about",
     "/kontakt": "contact",
+    "/offerte": "offerte",
   };
   var WORLD_BTN_SEL = "[data-iframe]";
   var suppressingHistory = false;
@@ -297,6 +298,7 @@
       leistungen: "/leistungen",
       about: "/ueber-mich",
       contact: "/kontakt",
+      offerte: "/offerte",
     };
     return chapterPaths[chapter] || "/";
   }

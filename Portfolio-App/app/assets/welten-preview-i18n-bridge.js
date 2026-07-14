@@ -37,17 +37,24 @@
   }
 
   function formWorldKey() {
+    if (window.WeltenOfferteForm && window.WeltenOfferteForm.formWorldKey) {
+      return window.WeltenOfferteForm.formWorldKey();
+    }
     if (window.WeltenContactLeadform && window.WeltenContactLeadform.formWorldKey) {
       return window.WeltenContactLeadform.formWorldKey();
     }
     var w = document.body.getAttribute("data-world") || "general";
     if (w === "vertex") return "professional";
-    if (w === "general" || w === "nexora" || w === "freiraum") return w === "general" ? "general" : w;
+    if (w === "general") return "multiversum";
+    if (w === "nexora" || w === "freiraum") return w;
     return "nexora";
   }
 
   function syncLeadForm(lang) {
-    var frame = document.getElementById("weltenLeadForm") || document.getElementById("mvLeadForm");
+    var frame =
+      document.getElementById("weltenOfferteForm") ||
+      document.getElementById("weltenLeadForm") ||
+      document.getElementById("mvLeadForm");
     if (!frame || !frame.contentWindow) return;
     try {
       frame.contentWindow.postMessage(
@@ -74,6 +81,9 @@
     syncLeadForm(code);
     if (window.WeltenContactLeadform && window.WeltenContactLeadform.syncLeadFormFrame) {
       window.WeltenContactLeadform.syncLeadFormFrame();
+    }
+    if (window.WeltenOfferteForm && window.WeltenOfferteForm.syncOfferteFrame) {
+      window.WeltenOfferteForm.syncOfferteFrame();
     }
     document.dispatchEvent(new CustomEvent("welten-lang-change", { detail: { lang: code } }));
   }

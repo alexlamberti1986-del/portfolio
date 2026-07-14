@@ -1,11 +1,10 @@
 /**
- * Kontakt — Kontaktdaten + Portrait oben, Leadformular darunter (alle Welten)
+ * Kontakt — Kontaktdaten + Portrait (ohne Formular; Formular ist unter Offerte)
  */
 (function () {
   "use strict";
 
-  var VERSION = "7";
-  var FORM_SRC = "assets/preview/alx-leadform-demo.html";
+  var VERSION = "8";
   var TEL = "+41796678211";
   var TEL_DISP = "079 667 82 11";
   var MAIL = "alex.lamberti@hotmail.ch";
@@ -27,25 +26,6 @@
     }
   }
 
-  function formWorldKey() {
-    var w = document.body.getAttribute("data-world") || "nexora";
-    if (w === "general") return "general";
-    if (w === "vertex") return "professional";
-    if (w === "freiraum") return "freiraum";
-    return "nexora";
-  }
-
-  function formFrameSrc() {
-    return (
-      FORM_SRC +
-      "?embed=1&world=" +
-      encodeURIComponent(formWorldKey()) +
-      "&lang=" +
-      encodeURIComponent(currentLang()) +
-      "&v=20260629form-layout"
-    );
-  }
-
   function contactMarkup() {
     return (
       '<div class="contact-copy glass-card">' +
@@ -65,12 +45,7 @@
       '<img class="contact-photo portrait-photo" id="contactPhoto" src="' +
       PLACEHOLDER +
       '" alt="Alex Lamberti" width="600" height="720" decoding="async" loading="lazy" />' +
-      "</figure>" +
-      '<div class="welten-leadform-wrap">' +
-      '<iframe class="welten-leadform-frame" id="weltenLeadForm" title="Leadformular" scrolling="no" src="' +
-      formFrameSrc() +
-      '" loading="lazy"></iframe>' +
-      "</div>"
+      "</figure>"
     );
   }
 
@@ -131,55 +106,12 @@
     }
   }
 
-  function resizeLeadFormFrame(height) {
-    var frame = document.getElementById("weltenLeadForm");
-    var wrap = frame && frame.closest(".welten-leadform-wrap");
-    if (!frame) return;
-    var h = parseInt(height, 10);
-    if (h > 200) {
-      frame.style.height = h + "px";
-      frame.style.minHeight = "0";
-      frame.style.maxHeight = h + "px";
-      frame.setAttribute("scrolling", "no");
-      if (wrap) {
-        wrap.style.height = h + "px";
-        wrap.style.minHeight = "0";
-        wrap.style.maxHeight = h + "px";
-      }
-    }
-  }
-
-  function syncLeadFormFrame() {
-    var frame = document.getElementById("weltenLeadForm");
-    if (!frame) return;
-
-    var nextSrc = formFrameSrc();
-    var current = frame.getAttribute("src") || "";
-    if (current.split("#")[0] !== nextSrc.split("#")[0]) {
-      frame.src = nextSrc;
-      return;
-    }
-
-    if (frame.contentWindow) {
-      try {
-        frame.contentWindow.postMessage(
-          {
-            type: "alx-preview-sync",
-            world: formWorldKey(),
-            lang: currentLang(),
-          },
-          "*"
-        );
-      } catch (e) {}
-    }
-  }
-
   function needsContactRebuild(slide) {
     if (!slide) return false;
     if (slide.dataset.weltenContactFinal !== VERSION) return true;
     if (slide.querySelector(".welten-contact-page")) return true;
+    if (slide.querySelector(".welten-leadform-wrap")) return true;
     if (!slide.querySelector(".contact-copy") || !slide.querySelector(".contact-visual")) return true;
-    if (!slide.querySelector(".welten-leadform-wrap")) return true;
     if (!slide.querySelector('.contact-actions a[href^="mailto:"]')) return true;
     return false;
   }
@@ -189,21 +121,19 @@
     if (!slide) return;
 
     if (!needsContactRebuild(slide)) {
-      slide.className = "slide-inner contact-layout contact-layout--form";
-      slide.classList.remove("contact-layout--minimal");
+      slide.className = "slide-inner contact-layout";
+      slide.classList.remove("contact-layout--minimal", "contact-layout--form");
       applyContactPortrait();
-      syncLeadFormFrame();
       return;
     }
 
-    slide.className = "slide-inner contact-layout contact-layout--form";
+    slide.className = "slide-inner contact-layout";
     slide.dataset.weltenContactFinal = VERSION;
     slide.innerHTML = contactMarkup();
     if (window.WeltenContentI18n && typeof window.WeltenContentI18n.applyContactCopy === "function") {
       window.WeltenContentI18n.applyContactCopy(document, currentLang());
     }
     applyContactPortrait();
-    syncLeadFormFrame();
   }
 
   function apply() {
@@ -221,7 +151,6 @@
     if (window.WeltenContentI18n && typeof window.WeltenContentI18n.applyContactCopy === "function") {
       window.WeltenContentI18n.applyContactCopy(document, lang);
     }
-    syncLeadFormFrame();
   });
 
   document.addEventListener("welten-chapter-change", function (e) {
@@ -230,22 +159,17 @@
 
   window.addEventListener("message", function (e) {
     if (!e.data) return;
-    if (e.data.type === "alx-form-height" && e.data.height) {
-      resizeLeadFormFrame(e.data.height);
-    }
     if (e.data.type === "portfolio-preview-lang" || e.data.type === "alx-preview-sync") {
-      syncLeadFormFrame();
       if (window.WeltenContentI18n && typeof window.WeltenContentI18n.applyContactCopy === "function") {
         try {
           var lg =
-            (e.data.lang ||
-              localStorage.getItem("mv-preview-lang") ||
-              sessionStorage.getItem("mv-preview-lang") ||
-              "de");
+            e.data.lang ||
+            localStorage.getItem("mv-preview-lang") ||
+            sessionStorage.getItem("mv-preview-lang") ||
+            "de";
           window.WeltenContentI18n.applyContactCopy(document, lg);
         } catch (eLang) {}
       }
-      return;
     }
   });
 
@@ -253,7 +177,6 @@
     new MutationObserver(function () {
       if (document.body.getAttribute("data-current-slide") === "contact") {
         applyContactPortrait();
-        syncLeadFormFrame();
       }
       syncContactPortraitFromHome();
     }).observe(document.body, {
@@ -265,7 +188,6 @@
   window.addEventListener("load", function () {
     setTimeout(function () {
       syncContactPortraitFromHome();
-      syncLeadFormFrame();
     }, 80);
   });
 
@@ -274,9 +196,4 @@
       syncContactPortraitFromHome();
     }
   });
-
-  window.WeltenContactLeadform = {
-    syncLeadFormFrame: syncLeadFormFrame,
-    formWorldKey: formWorldKey,
-  };
 })();

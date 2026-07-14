@@ -29,6 +29,7 @@
         leistungen: "Leistungen",
         about: "Über mich",
         contact: "Kontakt",
+        offerte: "Offerte",
         menu: "Menü",
         menuClose: "Schliessen",
       },
@@ -96,6 +97,11 @@
           description:
             "Kontakt zu Alex Lamberti: Telefon 079 667 82 11, E-Mail alex.lamberti@hotmail.ch, Standort Full-Reuenthal.",
         },
+        offerte: {
+          title: "Offerte | Alex Lamberti · Leistungen & Preisanfrage",
+          description:
+            "Offerte anfragen: Leistungen wählen und eine klare Einschätzung zu Aufwand und Preis von Alex Lamberti erhalten.",
+        },
       },
     },
     en: {
@@ -105,6 +111,7 @@
         leistungen: "Services",
         about: "About",
         contact: "Contact",
+        offerte: "Offer",
         menu: "Menu",
         menuClose: "Close",
       },
@@ -172,6 +179,11 @@
           description:
             "Contact Alex Lamberti: phone 079 667 82 11, email alex.lamberti@hotmail.ch, location Full-Reuenthal.",
         },
+        offerte: {
+          title: "Offer | Alex Lamberti · Services & pricing request",
+          description:
+            "Request an offer: choose services and get a clear estimate of effort and pricing from Alex Lamberti.",
+        },
       },
     },
     fr: {
@@ -181,6 +193,7 @@
         leistungen: "Services",
         about: "À propos",
         contact: "Contact",
+        offerte: "Offre",
         menu: "Menu",
         menuClose: "Fermer",
       },
@@ -248,6 +261,11 @@
           description:
             "Contact Alex Lamberti : téléphone 079 667 82 11, e-mail alex.lamberti@hotmail.ch, Full-Reuenthal.",
         },
+        offerte: {
+          title: "Offre | Alex Lamberti · Prestations et devis",
+          description:
+            "Demander une offre : choisissez vos prestations et obtenez une estimation claire du travail et du prix.",
+        },
       },
     },
     it: {
@@ -257,6 +275,7 @@
         leistungen: "Servizi",
         about: "Chi sono",
         contact: "Contatto",
+        offerte: "Offerta",
         menu: "Menu",
         menuClose: "Chiudi",
       },
@@ -323,6 +342,11 @@
           title: "Contatto | Alex Lamberti · Telefono, e-mail e indirizzo",
           description:
             "Contatto Alex Lamberti: telefono 079 667 82 11, e-mail alex.lamberti@hotmail.ch, Full-Reuenthal.",
+        },
+        offerte: {
+          title: "Offerta | Alex Lamberti · Servizi e preventivo",
+          description:
+            "Richiedi un'offerta: scegli i servizi e ottieni una stima chiara di impegno e prezzo da Alex Lamberti.",
         },
       },
     },

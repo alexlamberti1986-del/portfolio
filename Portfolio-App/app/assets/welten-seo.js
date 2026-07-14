@@ -13,6 +13,7 @@
     leistungen: "/leistungen",
     about: "/ueber-mich",
     contact: "/kontakt",
+    offerte: "/offerte",
   };
 
   function getLang() {
