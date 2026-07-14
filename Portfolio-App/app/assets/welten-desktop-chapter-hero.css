@@ -219,15 +219,29 @@
     cursor: pointer !important;
   }
 
-  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-unified-scene,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-unified-scene {
+    /* identisch zu body[data-world=freiraum] .dna-unified-scene auf Home */
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 5 !important;
+    flex: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    padding: clamp(20px, 4vw, 64px) !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+  }
+
   body[data-world="vertex"] .welten-desktop-relocated-hero .dna-unified-scene {
-    /* Gleiches Layout-Modell wie Home (.dna-unified-scene relativ + flex) */
-    position: relative !important;
-    inset: auto !important;
-    z-index: 2 !important;
-    flex: 1 1 auto !important;
-    height: auto !important;
-    min-height: 0 !important;
+    /* Professional: Szene füllt Hero wie auf Home */
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 5 !important;
+    flex: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
     max-height: none !important;
     padding: clamp(4px, 1vh, 12px) clamp(12px, 4vw, 56px) clamp(4px, 1vh, 10px) !important;
     display: flex !important;
@@ -347,13 +361,49 @@
     padding-bottom: calc(var(--hero-gap, 8px) + var(--hero-top-offset, 32px) * 0.25) !important;
   }
 
-  body[data-world="vertex"] #slide-home .dna-unified-scene,
-  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-unified-scene,
-  body[data-world="freiraum"] #slide-home .dna-unified-scene,
+  /* Freiraum: Home + Unterseite dieselbe absolute Szene (Buttons/%-Tops identisch) */
+  body[data-world="freiraum"] #slide-home .home-hero-experience .dna-unified-scene,
   body[data-world="freiraum"] .welten-desktop-relocated-hero .dna-unified-scene {
-    padding-top: 0 !important;
-    padding-bottom: clamp(10px, 1.4vh, 18px) !important;
-    margin-top: calc(var(--hero-top-offset, 32px) * -0.4);
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 5 !important;
+    flex: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    margin-top: 0 !important;
+    padding: clamp(20px, 4vw, 64px) !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+  }
+
+  body[data-world="vertex"] #slide-home .home-hero-experience .dna-unified-scene,
+  body[data-world="vertex"] .welten-desktop-relocated-hero .dna-unified-scene {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 5 !important;
+    flex: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    margin-top: 0 !important;
+    padding: clamp(4px, 1vh, 12px) clamp(12px, 4vw, 56px) clamp(4px, 1vh, 10px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-hero-experience .dna-unified-scene,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .dna-unified-scene {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 8 !important;
+    height: 100% !important;
+    min-height: inherit !important;
+    max-height: none !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
   }
 }
 

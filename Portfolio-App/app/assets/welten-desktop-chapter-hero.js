@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260714heroAlign1";
+  var VER = "20260714heroAlign2";
   var bootTimer = null;
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
