@@ -4,18 +4,19 @@
  * Kontakt + home-main-block Porträtkarte bleiben unverändert.
  */
 @media (min-width: 1025px) {
+  /* Weicher Stage-Hintergrund — kein harter schwarzer Kasten */
   body[data-world="nexora"] #slide-home .home-hero-experience,
   body[data-world="nexora"] #slide-home #dnaStage.home-hero-experience,
   body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
   body[data-world="nexora"] .welten-desktop-relocated-hero#dnaStage {
     background:
-      radial-gradient(ellipse 80% 54% at 50% 34%, rgba(0, 145, 255, .24), transparent 62%),
-      radial-gradient(ellipse 42% 22% at 50% 62%, rgba(0, 190, 255, .20), transparent 70%),
-      linear-gradient(90deg, #020611 0%, #06162a 42%, #071a31 50%, #06162a 58%, #020611 100%) !important;
+      radial-gradient(ellipse 72% 58% at 50% 42%, rgba(0, 160, 255, .22), transparent 64%),
+      radial-gradient(ellipse 48% 28% at 50% 68%, rgba(40, 140, 255, .14), transparent 72%),
+      linear-gradient(180deg, #030a18 0%, #071931 46%, #040d1c 100%) !important;
     background-image:
-      radial-gradient(ellipse 80% 54% at 50% 34%, rgba(0, 145, 255, .24), transparent 62%),
-      radial-gradient(ellipse 42% 22% at 50% 62%, rgba(0, 190, 255, .20), transparent 70%),
-      linear-gradient(90deg, #020611 0%, #06162a 42%, #071a31 50%, #06162a 58%, #020611 100%) !important;
+      radial-gradient(ellipse 72% 58% at 50% 42%, rgba(0, 160, 255, .22), transparent 64%),
+      radial-gradient(ellipse 48% 28% at 50% 68%, rgba(40, 140, 255, .14), transparent 72%),
+      linear-gradient(180deg, #030a18 0%, #071931 46%, #040d1c 100%) !important;
     background-size: auto !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
@@ -47,12 +48,24 @@
     content: none !important;
   }
 
-  /* Brain-Asset ohne Portrait-Ghost */
+  /* Brain soft über Stage legen — kein opakes Rechteck */
+  body[data-world="nexora"] .home-hero-experience .neuro-core,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core {
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
   body[data-world="nexora"] .home-hero-experience .neuro-core::before,
   body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core::before {
+    background-color: transparent !important;
     background-image: url("images/nexora-home-brain-clean.png") !important;
     background-size: contain !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
+    mix-blend-mode: screen !important;
+    filter: brightness(1.12) contrast(1.06) saturate(1.16) !important;
+    opacity: .98 !important;
   }
 }

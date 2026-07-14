@@ -8423,13 +8423,13 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-mouse-paint.js?v=20260703wws-smooth" defer></script>
 
 <script src="assets/welten-mobile-hero.js?v=20260706hero-off" defer></script>
-<link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260714hero10" />
-<link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero10" />
-<link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero10" />
-<link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714hero10" />
-<link rel="stylesheet" href="assets/welten-nexora-hero-clean.css?v=20260714hero10" />
-<script src="assets/welten-desktop-chapter-hero.js?v=20260714hero10" defer></script>
-<script src="assets/welten-video-hero-boot.js?v=20260714hero10" defer></script>
+<link rel="stylesheet" href="assets/welten-nexora-laptop-hero.css?v=20260714hero11" />
+<link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero11" />
+<link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero11" />
+<link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714hero11" />
+<link rel="stylesheet" href="assets/welten-nexora-hero-clean.css?v=20260714hero11" />
+<script src="assets/welten-desktop-chapter-hero.js?v=20260714hero11" defer></script>
+<script src="assets/welten-video-hero-boot.js?v=20260714hero11" defer></script>
 <script src="assets/welten-mobile-nexora-nav.js?v=20260606f" defer></script>
 <script src="assets/welten-nexora-mobile-fix.js?v=20260622a" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
@@ -8479,7 +8479,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-effects-governor.js?v=20260704opt" defer></script>
 <link rel="stylesheet" href="assets/welten-mobile-hero-off.css?v=20260706hero-off" id="welten-mobile-hero-off-stylesheet" />
 <style id="nexora-kill-portfolio-bg">
-  /* Unterseiten-Hero: kein Portfoliobild hinter Gehirn/Orbit (Home-Parität) */
+  /* Unterseiten-Hero: kein Portfoliobild hinter Gehirn/Orbit (Home-Parit?t) */
   body[data-world="nexora"] .bg-root::before,
   body[data-world="nexora"].is-subpage .bg-root::before,
   body[data-world="nexora"].welten-desktop-subpage-hero--on .bg-root::before {
@@ -8492,30 +8492,38 @@ body[data-world="nexora"] .faq-panel-inner {
     animation: none !important;
   }
 
-  /* --portfolio-img-nexora darf nie Hero-Hintergrund sein */
+  /* Weicher Stage-Hintergrund ? kein harter schwarzer Kasten */
   body[data-world="nexora"] #slide-home .home-hero-experience,
   body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
   body[data-world="nexora"] .welten-desktop-relocated-hero#dnaStage,
   body[data-world="nexora"] .home-hero-experience {
     background:
-      radial-gradient(ellipse 80% 54% at 50% 34%, rgba(0, 145, 255, .24), transparent 62%),
-      radial-gradient(ellipse 42% 22% at 50% 62%, rgba(0, 190, 255, .20), transparent 70%),
-      linear-gradient(90deg, #020611 0%, #06162a 42%, #071a31 50%, #06162a 58%, #020611 100%) !important;
+      radial-gradient(ellipse 72% 58% at 50% 42%, rgba(0, 160, 255, .22), transparent 64%),
+      radial-gradient(ellipse 48% 28% at 50% 68%, rgba(40, 140, 255, .14), transparent 72%),
+      linear-gradient(180deg, #030a18 0%, #071931 46%, #040d1c 100%) !important;
     background-image:
-      radial-gradient(ellipse 80% 54% at 50% 34%, rgba(0, 145, 255, .24), transparent 62%),
-      radial-gradient(ellipse 42% 22% at 50% 62%, rgba(0, 190, 255, .20), transparent 70%),
-      linear-gradient(90deg, #020611 0%, #06162a 42%, #071a31 50%, #06162a 58%, #020611 100%) !important;
+      radial-gradient(ellipse 72% 58% at 50% 42%, rgba(0, 160, 255, .22), transparent 64%),
+      radial-gradient(ellipse 48% 28% at 50% 68%, rgba(40, 140, 255, .14), transparent 72%),
+      linear-gradient(180deg, #030a18 0%, #071931 46%, #040d1c 100%) !important;
     background-size: auto !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
   }
 
+  body[data-world="nexora"] .home-hero-experience .neuro-core,
+  body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
   body[data-world="nexora"] .home-hero-experience .neuro-core::before,
   body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core::before {
+    background-color: transparent !important;
     background-image: url("assets/images/nexora-home-brain-clean.png") !important;
     background-size: contain !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
+    mix-blend-mode: screen !important;
   }
 </style>
 </body>
