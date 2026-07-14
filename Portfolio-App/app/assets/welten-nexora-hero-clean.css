@@ -60,7 +60,7 @@
   body[data-world="nexora"] .home-hero-experience .neuro-core::before,
   body[data-world="nexora"] .welten-desktop-relocated-hero .neuro-core::before {
     background-color: transparent !important;
-    background-image: url("images/nexora-home-brain-clean.png") !important;
+    background-image: url("images/nexora-home-brain-clean.png?v=20260714brainImg1") !important;
     background-size: contain !important;
     background-position: center center !important;
     background-repeat: no-repeat !important;
