@@ -5,8 +5,9 @@
 (function () {
   "use strict";
 
-  var VER = "20260714heroAlign2";
+  var VER = "20260714heroSwitch1";
   var bootTimer = null;
+  var realignTimers = [];
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
 
@@ -293,15 +294,27 @@
     if (!homeInner) return;
 
     var dna = getDnaHeroEl();
-    if (dna) restoreElementToHome(dna, homeInner);
+    if (dna) {
+      restoreElementToHome(dna, homeInner);
+      stripRelocatedHeroInlineStyles(dna);
+      dna.classList.remove("welten-desktop-relocated-hero", "is-subpage-hero");
+      dna.style.removeProperty("margin-top");
+    }
 
     var world = document.body.getAttribute("data-world") || "general";
     if (world === "general") {
       var videoHero = document.getElementById("alWorldVideoHero");
       var staticHome = document.getElementById("mvStaticHero");
       var parallax = document.getElementById("mvParallaxHero");
-      if (videoHero) restoreElementToHome(videoHero, homeInner);
-      if (staticHome) restoreElementToHome(staticHome, homeInner);
+      if (videoHero) {
+        restoreElementToHome(videoHero, homeInner);
+        videoHero.classList.remove("welten-desktop-relocated-hero", "is-subpage-hero");
+        videoHero.style.removeProperty("margin-top");
+      }
+      if (staticHome) {
+        restoreElementToHome(staticHome, homeInner);
+        staticHome.classList.remove("welten-desktop-relocated-hero", "is-subpage-hero");
+      }
       if (parallax) restoreElementToHome(parallax, homeInner);
     }
   }
@@ -426,20 +439,47 @@
     return buildMvSubpageHero(host);
   }
 
+  function clearRealignTimers() {
+    realignTimers.forEach(function (id) {
+      clearTimeout(id);
+    });
+    realignTimers = [];
+  }
+
+  function resetSlideScroll() {
+    try {
+      var root = document.getElementById("slidesRoot") || document.querySelector("main.slides-root");
+      if (root) root.scrollTop = 0;
+    } catch (e1) {}
+    try {
+      var home = document.getElementById("slide-home");
+      if (home) home.scrollTop = 0;
+    } catch (e2) {}
+    try {
+      var active = document.querySelector(".slide.active");
+      if (active) active.scrollTop = 0;
+    } catch (e3) {}
+    try {
+      if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
+      window.scrollTo(0, 0);
+    } catch (e4) {}
+  }
+
   function pinDnaHeroTopParity() {
-    /* Multiversum bleibt stabil; DNA-Welten: Hero-Oberkante = slides-root Content-Top */
+    /* DNA-Welten: Hero-Oberkante = slides-root Content-Top (Home + Unterseite) */
     if (!isDesktop()) return;
     var world = document.body.getAttribute("data-world") || "general";
-    if (world === "general" || currentChapter() === "home") return;
+    if (world === "general") return;
 
     var hero = getDnaHeroEl();
-    if (!hero || !hero.classList.contains("welten-desktop-relocated-hero")) return;
+    if (!hero) return;
 
     var root = document.getElementById("slidesRoot") || document.querySelector("main.slides-root");
     if (!root) return;
 
     var host = hero.closest(".welten-desktop-hero-host") || hero;
     host.style.removeProperty("margin-top");
+    hero.style.removeProperty("margin-top");
 
     var rootBox = root.getBoundingClientRect();
     var padTop = 0;
@@ -448,10 +488,11 @@
     } catch (e) {}
     var expectedTop = rootBox.top + padTop;
     var actualTop = hero.getBoundingClientRect().top;
+    if (!(actualTop > 0) || !(expectedTop > -1)) return;
     var delta = actualTop - expectedTop;
 
-    if (delta > 1 && delta < 140) {
-      host.style.marginTop = -Math.round(delta) + "px";
+    if (delta > 1 && delta < 160) {
+      host.style.setProperty("margin-top", -Math.round(delta) + "px", "important");
     }
   }
 
@@ -545,16 +586,18 @@
 
     syncHeroNav(active);
 
+    resetSlideScroll();
+
+    requestAnimationFrame(function () {
+      pinDnaHeroTopParity();
+      setTimeout(pinDnaHeroTopParity, 80);
+      setTimeout(pinDnaHeroTopParity, 280);
+      setTimeout(pinDnaHeroTopParity, 560);
+    });
+
     if (active !== "home") {
       suppressSubpageHeaderClutter(mount);
       scheduleSubpageCleanup(mount);
-      var slideEl = document.getElementById("slide-" + active);
-      if (slideEl) slideEl.scrollTop = 0;
-      requestAnimationFrame(function () {
-        pinDnaHeroTopParity();
-        setTimeout(pinDnaHeroTopParity, 80);
-        setTimeout(pinDnaHeroTopParity, 280);
-      });
     }
   }
 
@@ -563,7 +606,7 @@
     var existing = document.getElementById(id);
     if (existing) {
       if (existing.getAttribute("data-ver") !== VER) {
-        existing.href = "assets/welten-desktop-chapter-hero.css?v=" + VER;
+        existing.href = "/assets/welten-desktop-chapter-hero.css?v=" + VER;
         existing.setAttribute("data-ver", VER);
       }
       return;
@@ -571,7 +614,7 @@
     var link = document.createElement("link");
     link.id = id;
     link.rel = "stylesheet";
-    link.href = "assets/welten-desktop-chapter-hero.css?v=" + VER;
+    link.href = "/assets/welten-desktop-chapter-hero.css?v=" + VER;
     link.setAttribute("data-ver", VER);
     document.head.appendChild(link);
   }
@@ -582,6 +625,23 @@
       ensureStylesheet();
       relocateHero();
     }, 48);
+  }
+
+  function scheduleWorldRevealRealign() {
+    /* Nach Weltenwechsel: erst wenn das Iframe wieder volle Größe hat (reveal) */
+    clearRealignTimers();
+    resetSlideScroll();
+    boot();
+    [0, 60, 180, 420, 780].forEach(function (ms) {
+      realignTimers.push(
+        setTimeout(function () {
+          ensureStylesheet();
+          relocateHero();
+          resetSlideScroll();
+          pinDnaHeroTopParity();
+        }, ms)
+      );
+    });
   }
 
   if (mqDesktop.addEventListener) {
@@ -618,11 +678,22 @@
   } catch (e) {}
 
   window.addEventListener("message", function (e) {
-    if (e.data && e.data.type === "portfolio-preview-lang") {
+    if (!e.data) return;
+    if (e.data.type === "portfolio-preview-lang") {
       setTimeout(boot, 24);
+      return;
     }
-    if (e.data && (e.data.type === "portfolio-world-enter" || e.data.type === "portfolio-cleanup-transition")) {
-      setTimeout(boot, 80);
+    /* Cleanup im inaktiven 0×0-Iframe verdreht die Messungen — absichtlich kein boot */
+    if (e.data.type === "portfolio-cleanup-transition" || e.data.type === "portfolio-world-pause") {
+      return;
+    }
+    if (e.data.type === "portfolio-world-reveal") {
+      scheduleWorldRevealRealign();
+      return;
+    }
+    if (e.data.type === "portfolio-world-enter") {
+      /* Soft: Kapitel sync vor dem Cover-Ende; Reveal macht die harte Neuausrichtung */
+      setTimeout(boot, 120);
     }
   });
 
@@ -645,5 +716,8 @@
     } catch (eObs) {}
   }
 
-  window.WeltenDesktopChapterHero = { refresh: boot };
+  window.WeltenDesktopChapterHero = {
+    refresh: boot,
+    realign: scheduleWorldRevealRealign,
+  };
 })();

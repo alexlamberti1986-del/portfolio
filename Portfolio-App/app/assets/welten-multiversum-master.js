@@ -900,6 +900,17 @@
         );
       } catch (eAudioEnd) {}
       revealActiveFrame(i);
+      try {
+        var fReveal = frames[i];
+        if (fReveal) {
+          setTimeout(function () {
+            postFrame(fReveal, { type: "portfolio-world-reveal", world: soundKey(i) });
+          }, 120);
+          setTimeout(function () {
+            postFrame(fReveal, { type: "portfolio-world-reveal", world: soundKey(i) });
+          }, 420);
+        }
+      } catch (eReveal) {}
       requestAnimationFrame(setBarHeight);
     }
 
