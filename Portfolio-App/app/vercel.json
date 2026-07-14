@@ -41,11 +41,7 @@
     { "source": "/workstyle", "destination": "/ueber-mich", "permanent": true },
     { "source": "/motivation", "destination": "/ueber-mich", "permanent": true },
     { "source": "/why", "destination": "/ueber-mich", "permanent": true },
-    { "source": "/faq", "destination": "/ueber-mich", "permanent": true },
-    { "source": "/NEXORA.html", "destination": "/nexora", "permanent": true },
-    { "source": "/PROFESSIONAL.html", "destination": "/professional", "permanent": true },
-    { "source": "/FREIRAUM.html", "destination": "/freiraum", "permanent": true },
-    { "source": "/MULTIVERSUM.html", "destination": "/", "permanent": true }
+    { "source": "/faq", "destination": "/ueber-mich", "permanent": true }
   ],
   "headers": [
     {
