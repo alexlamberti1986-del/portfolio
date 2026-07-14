@@ -716,6 +716,19 @@
     var f = frames[i];
     if (!f) return;
     postFrame(f, { type: "portfolio-world-reveal", world: soundKey(i) });
+    try {
+      /* Iframe-Viewport nach Wake invalidate — sonst bleibt DNA-Hero-svh falsch */
+      var prev = f.style.height;
+      var box = f.getBoundingClientRect();
+      if (box.height > 0) {
+        f.style.height = Math.round(box.height + 1) + "px";
+        void f.offsetHeight;
+        f.style.height = prev || "";
+      }
+      if (f.contentWindow) {
+        f.contentWindow.dispatchEvent(new Event("resize"));
+      }
+    } catch (eNudge) {}
   }
 
   function sendWorldLiveSignals(f, j) {

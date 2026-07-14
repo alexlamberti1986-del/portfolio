@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260714heroLock1";
+  var VER = "20260714heroWake1";
   var bootTimer = null;
   var realignTimers = [];
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
@@ -465,6 +465,32 @@
     } catch (e4) {}
   }
 
+  function forceLayoutWake() {
+    try {
+      var root = document.documentElement;
+      var body = document.body;
+      var slides = document.getElementById("slidesRoot") || document.querySelector("main.slides-root");
+      var hero = getDnaHeroEl();
+      /* Layout wie nach Hard-Refresh erzwingen */
+      void root.offsetHeight;
+      if (body) void body.offsetHeight;
+      if (slides) {
+        slides.style.height = "calc(100% + 1px)";
+        void slides.offsetHeight;
+        slides.style.height = "";
+      }
+      if (hero) {
+        hero.style.transform = "translateZ(0)";
+        void hero.offsetHeight;
+        hero.style.removeProperty("transform");
+      }
+      window.dispatchEvent(new Event("resize"));
+      try {
+        window.dispatchEvent(new Event("orientationchange"));
+      } catch (eOr) {}
+    } catch (e) {}
+  }
+
   function clearPinnedHeroOffset(el) {
     if (!el) return;
     try {
@@ -472,12 +498,13 @@
       el.style.removeProperty("padding-top");
       el.style.removeProperty("top");
       el.style.removeProperty("transform");
+      el.style.removeProperty("height");
+      el.style.removeProperty("min-height");
+      el.style.removeProperty("max-height");
     } catch (e) {}
   }
 
   function pinDnaHeroTopParity() {
-    /* Kein JS-Margin-Hack mehr: kämpfte gegen CSS und ließ den Hero nach Sink/Reveal wieder absacken.
-       Top-Parität läuft über welten-desktop-chapter-hero.css / unify (translateY aus, padding 0). */
     if (!isDesktop()) return;
     var world = document.body.getAttribute("data-world") || "general";
     if (world === "general") return;
@@ -620,24 +647,22 @@
   }
 
   function scheduleWorldRevealRealign() {
-    /* Nach Weltenwechsel einmal sauber neu legen — ohne Margin-Pin-Flicker */
+    /* Nach Weltenwechsel: Relayout + Hero wie nach Hard-Refresh */
     clearRealignTimers();
+    forceLayoutWake();
     resetSlideScroll();
     boot();
-    realignTimers.push(
-      setTimeout(function () {
-        ensureStylesheet();
-        relocateHero();
-        resetSlideScroll();
-        pinDnaHeroTopParity();
-      }, 160)
-    );
-    realignTimers.push(
-      setTimeout(function () {
-        relocateHero();
-        pinDnaHeroTopParity();
-      }, 480)
-    );
+    [40, 160, 420].forEach(function (ms) {
+      realignTimers.push(
+        setTimeout(function () {
+          forceLayoutWake();
+          ensureStylesheet();
+          relocateHero();
+          resetSlideScroll();
+          pinDnaHeroTopParity();
+        }, ms)
+      );
+    });
   }
 
   if (mqDesktop.addEventListener) {

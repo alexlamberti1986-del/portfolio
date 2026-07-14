@@ -61,15 +61,13 @@ html.world-transition-lock body {
 
 .world-frame:not(.is-active),
 .mv4-frame:not(.is-active) {
-  content-visibility: hidden;
-  contain: strict;
+  /* Kein contain:strict / content-visibility — sonst 0×0-svh und Hero rutscht nach Switch */
   isolation: isolate;
 }
 
 .world-frame.is-paused:not(.is-active),
 .mv4-frame.is-paused:not(.is-active) {
-  content-visibility: hidden;
-  contain: strict;
+  isolation: isolate;
 }
 
 .world-frame.is-active:not(.is-leaving),

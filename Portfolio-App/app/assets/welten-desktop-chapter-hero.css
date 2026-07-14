@@ -461,6 +461,17 @@
     padding-top: 0 !important;
   }
 
+  body[data-world="nexora"] main.slides-root,
+  body[data-world="vertex"] main.slides-root,
+  body[data-world="freiraum"] main.slides-root,
+  body[data-world="nexora"] #slidesRoot,
+  body[data-world="vertex"] #slidesRoot,
+  body[data-world="freiraum"] #slidesRoot {
+    padding-top: 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+
   body[data-world="nexora"] .slide.active,
   body[data-world="vertex"] .slide.active,
   body[data-world="freiraum"] .slide.active {
