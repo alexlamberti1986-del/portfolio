@@ -95,9 +95,18 @@ html.world-transition-lock body {
 
   .world-frame,
   .mv4-frame {
-    top: var(--bar-h, 120px) !important;
-    height: calc(100svh - var(--bar-h, 120px)) !important;
-    height: calc(100dvh - var(--bar-h, 120px)) !important;
-    max-height: calc(100dvh - var(--bar-h, 120px)) !important;
+    top: var(--bar-h, 88px) !important;
+    height: calc(100svh - var(--bar-h, 88px)) !important;
+    height: calc(100dvh - var(--bar-h, 88px)) !important;
+    max-height: calc(100dvh - var(--bar-h, 88px)) !important;
   }
+}
+
+html.welten-world-switch-lock .mv4-frame,
+html.welten-world-switch-lock .mv4-frame.is-active,
+html.welten-world-switch-lock .mv4-frame.is-active:not(.is-leaving) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  clip-path: inset(100%) !important;
 }

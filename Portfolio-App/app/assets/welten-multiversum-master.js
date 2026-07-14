@@ -68,7 +68,7 @@
   }
   var loaded = {};
   var resetAttempts = {};
-  loaded[defaultWorld] = true;
+  loaded[defaultWorld] = false;
   var SHELL_CHROME_CSS =
     "html.welten-live-shell .mv4-bar{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}" +
     "html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;pointer-events:none!important}";
@@ -635,6 +635,7 @@
 
   function lockShell(targetWorld) {
     switching = true;
+    document.documentElement.classList.add("welten-world-switch-lock");
     window.__worldTransitionRunning = true;
     switchLockSince = Date.now();
     try {
@@ -778,6 +779,7 @@
 
   function sendWorldLiveSignals(f, j) {
     if (!f || j !== activeIdx()) return;
+    if (switching) return;
     var token = String(j) + "-" + (f.src || f.getAttribute("data-lazy-src") || "");
     if (f.dataset.mvWorldLive === token) return;
     f.dataset.mvWorldLive = token;
@@ -806,7 +808,7 @@
     ensureSingleBar();
     broadcastLang();
     postFrame(f, { type: "portfolio-effects", on: effectsOn });
-    if (j === activeIdx()) {
+    if (j === activeIdx() && !switching) {
       sendWorldLiveSignals(f, j);
       applyChapter(f, sharedChapter || parseShellRoute().chapter || "home");
     } else {
@@ -1235,9 +1237,9 @@
   ensureSingleBar();
 
   if (isLiveShell) {
-    if (defaultWorld !== 0 && !frameHasSrc(frames[defaultWorld])) {
+    if (!frameHasSrc(frames[defaultWorld])) {
       loaded[defaultWorld] = false;
-    } else if (defaultWorld !== 0 && frameHasSrc(frames[defaultWorld])) {
+    } else if (frameHasSrc(frames[defaultWorld])) {
       loaded[defaultWorld] = true;
     }
     switchToWorldIndex(defaultWorld).then(function () {

@@ -397,6 +397,12 @@
         new CustomEvent("welten-video-hero-mounted", { detail: { worldKey: worldKey || "" } })
       );
     } catch (eMounted) {}
+    try {
+      if (window.parent && window.parent !== window && !window.__mvHeroReadySent) {
+        window.__mvHeroReadySent = true;
+        window.parent.postMessage({ type: "mv-hero-ready" }, "*");
+      }
+    } catch (eReady) {}
     refreshWorldHeroNav(worldKey);
   }
 

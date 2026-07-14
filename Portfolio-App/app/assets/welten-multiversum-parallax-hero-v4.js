@@ -97,6 +97,7 @@
   ];
 
   var rafId = 0;
+  var frozen = false;
   var scrollRoot = null;
   var heroEl = null;
   var dom = {};
@@ -2071,9 +2072,29 @@
   }
 
   function requestTick() {
-    if (rafId) return;
+    if (frozen || rafId) return;
     rafId = window.requestAnimationFrame(updateFrame);
   }
+
+  function freezeHero() {
+    frozen = true;
+    if (rafId) { window.cancelAnimationFrame(rafId); rafId = 0; }
+    if (heroEl) {
+      heroEl.setAttribute("data-active-world", "multiversum");
+      heroEl.classList.remove("is-world-focus");
+    }
+    try { document.body.classList.remove("is-world-focus"); } catch (e) {}
+  }
+  function unfreezeHero() {
+    if (!frozen) return;
+    frozen = false;
+    requestTick();
+  }
+  window.addEventListener("message", function (e) {
+    if (!e.data) return;
+    if (e.data.type === "portfolio-world-pause" || e.data.type === "portfolio-cleanup-transition") freezeHero();
+    if (e.data.type === "portfolio-world-enter" || e.data.type === "portfolio-world-reveal") unfreezeHero();
+  });
 
   function heroMaxScroll() {
     if (!scrollRoot || !heroEl) return 0;
@@ -2317,6 +2338,7 @@
   }
 
   function destroy() {
+    freezeHero();
     if (rafId) window.cancelAnimationFrame(rafId);
     if (scrollRoot && onScrollHandler) scrollRoot.removeEventListener("scroll", onScrollHandler);
     window.removeEventListener("resize", onResize);

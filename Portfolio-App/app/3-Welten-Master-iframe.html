@@ -59,7 +59,8 @@
       }
       /* Multiversum: erst freigeben wenn Hero ready — verhindert Header-/Chrome-Flash */
       window.addEventListener("message", function (e) {
-        if (!e.data || e.data.type !== "mv-hero-ready") return;
+        if (!e.data) return;
+        if (e.data.type !== "mv-hero-ready" && e.data.type !== "portfolio-world-ready") return;
         releaseShell();
       });
       /* Andere Welten als Default (kein mv-hero-ready): nach Iframe-Load freigeben */
@@ -79,7 +80,7 @@
         } catch (err) {}
         active.addEventListener("load", releaseNonMv, { once: true });
       });
-      setTimeout(releaseShell, 5200);
+      setTimeout(releaseShell, 2200);
     })();
   </script>
   <script>
@@ -142,15 +143,26 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="/MULTIVERSUM.html" as="document" fetchpriority="high" />
+  <script>
+(function () {
+  var p = (location.pathname || "/").replace(/\/$/, "") || "/";
+  if (!(p === "/" || p.indexOf("/multiversum") === 0)) return;
+  var l = document.createElement("link");
+  l.rel = "preload";
+  l.as = "document";
+  l.href = "/MULTIVERSUM.html?v=20260714perfIso1";
+  l.fetchPriority = "high";
+  document.head.appendChild(l);
+})();
+</script>
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/assets/welten-font-system.css?v=20260710fonts-async" />
   <link rel="stylesheet" href="/assets/welten-world-title-colors.css?v=20260705bootfix" />
-  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260714mvBoot1" />
+  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260714perfIso1" />
   <link rel="stylesheet" href="/assets/welten-mobile-shell-fixes.css?v=20260706mobile-pass1" />
-  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260714mvBoot1" />
-  <link rel="stylesheet" href="/assets/shell-performance.css?v=20260714heroWake1" />
+  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260714perfIso1" />
+  <link rel="stylesheet" href="/assets/shell-performance.css?v=20260714perfIso1" />
   <link rel="stylesheet" href="/assets/welten-shell-accessibility.css?v=20260714heroWake1" />
   <script src="/assets/welten-translations.js?v=20260706perf-fix" defer></script>
   <script src="/assets/welten-shell-router.js?v=20260713routing" defer></script>
@@ -245,7 +257,8 @@
     </div>
   </header>
 
-  <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM" src="/MULTIVERSUM.html?v=20260714mvBoot1"></iframe>
+  <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM"
+  data-lazy-src="/MULTIVERSUM.html?v=20260714perfIso1" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="nexora" title="NEXORA" data-lazy-src="/NEXORA.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="vertex" title="PROFESSIONAL" data-lazy-src="/PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="freiraum" title="FREIRAUM" data-lazy-src="/FREIRAUM.html" src="about:blank"></iframe>
@@ -257,7 +270,6 @@
         if (p.indexOf("/nexora") === 0) idx = 1;
         else if (p.indexOf("/professional") === 0) idx = 2;
         else if (p.indexOf("/freiraum") === 0) idx = 3;
-        if (!idx) return;
         var frames = document.querySelectorAll(".mv4-frame");
         var links = document.querySelectorAll(".mv4-worlds [data-iframe]");
         var keys = ["general", "nexora", "vertex", "freiraum"];
@@ -267,7 +279,10 @@
           f.style.pointerEvents = on ? "auto" : "none";
           if (on) {
             var lazy = f.getAttribute("data-lazy-src");
-            if (lazy && (!f.getAttribute("src") || f.src === "about:blank")) f.src = lazy;
+            var cur = f.getAttribute("src") || "";
+            if (lazy && (!cur || /about:blank/i.test(cur) || /about:blank/i.test(f.src || ""))) {
+              f.src = lazy;
+            }
           }
         });
         links.forEach(function (a) {
@@ -286,7 +301,7 @@
     id="mvWorldBgm"
     loop
     playsinline
-    preload="auto"
+    preload="none"
     style="display:none"
     aria-hidden="true"
   ></audio>
@@ -316,9 +331,9 @@
     })();
   </script>
 
-  <script src="/assets/welten-world-audio-test.js?v=20260714mvBoot1" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260714mvBoot1" defer></script>
+  <script src="/assets/welten-world-audio-test.js?v=20260714perfIso1" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260714perfIso1" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
-  <script src="/assets/welten-world-switch-preview.js?v=20260714mvBoot1" defer></script>
+  <script src="/assets/welten-world-switch-preview.js?v=20260714perfIso1" defer></script>
 </body>
 </html>

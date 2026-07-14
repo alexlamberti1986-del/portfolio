@@ -787,17 +787,7 @@
         return Promise.resolve();
       };
     }
-    preloadGeneralTrack();
-    var deferOtherTracks = function () {
-      preloadTrack("nexora");
-      preloadTrack("vertex");
-      preloadTrack("freiraum");
-    };
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(deferOtherTracks, { timeout: 12000 });
-    } else {
-      setTimeout(deferOtherTracks, 8000);
-    }
+    if (activeWorld() === "general") preloadGeneralTrack();
     if (!effectsEnabled()) {
       hardStopBgm();
       setSwitchFlag(false);

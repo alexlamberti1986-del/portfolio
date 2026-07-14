@@ -294,6 +294,7 @@
       "</h2>" +
       "</div>";
 
+    el.style.backgroundColor = "#02030b";
     return el;
   }
 
