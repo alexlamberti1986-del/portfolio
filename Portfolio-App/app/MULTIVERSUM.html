@@ -6298,9 +6298,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       if (chapterIndex(hash) >= 0) {
         goToChapter(hash, false);
         if (history.replaceState) history.replaceState({ chapter: hash }, "", location.pathname + location.search);
-      } else {
-        goToChapter("home", false);
-      }
+      } else if (window.parent === window) { goToChapter("home", false); }
 
       /* --- über mich: Tab-Inhalte (HTML mit mehreren Abstzen) --- */
       var personaCopy = {
@@ -8181,7 +8179,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
 })();
 </script>
 
-<script id="portfolio-master-bridge">(function(){if(window.parent===window)return;var CH=["home","projects","leistungen","about","contact"];function chapter(){var b=document.body&&document.body.getAttribute("data-current-slide");if(b&&CH.indexOf(b)>=0)return b;var s=document.querySelector(".slide.active[data-slide]");if(s){var id=s.getAttribute("data-slide");if(CH.indexOf(id)>=0)return id;}return"home";}function push(){try{window.parent.postMessage({type:"portfolio-chapter",chapter:chapter()},"*");}catch(e){}}function goToChapter(raw){var map={profile:"leistungen",values:"about",strengths:"leistungen",experience:"about",workstyle:"about",why:"about",faq:"about"};var id=map[raw]||raw;if(CH.indexOf(id)<0)id="home";var n=0;function tryClick(){var link=document.querySelector('.menu-links a[data-go="'+id+'"]');if(link){link.click();return;}if(++n<35)setTimeout(tryClick,45);}tryClick();}window.addEventListener("message",function(e){if(!e.data||e.data.type!=="portfolio-go-chapter")return;goToChapter(e.data.chapter);});document.addEventListener("click",function(){setTimeout(push,0);},true);window.addEventListener("load",push);if(document.body)new MutationObserver(push).observe(document.body,{attributes:true,attributeFilter:["data-current-slide"]});push();})();</script>
+<script id="portfolio-master-bridge">(function(){if(window.parent===window)return;var CH=["home","projects","leistungen","about","contact"];function chapter(){var b=document.body&&document.body.getAttribute("data-current-slide");if(b&&CH.indexOf(b)>=0)return b;var s=document.querySelector(".slide.active[data-slide]");if(s){var id=s.getAttribute("data-slide");if(CH.indexOf(id)>=0)return id;}return"home";}function push(){try{window.parent.postMessage({type:"portfolio-chapter",chapter:chapter()},"*");}catch(e){}}function goToChapter(raw){var map={profile:"leistungen",values:"about",strengths:"leistungen",experience:"about",workstyle:"about",why:"about",faq:"about"};var id=map[raw]||raw;if(CH.indexOf(id)<0)id="home";var n=0;function tryClick(){var link=document.querySelector('.menu-links a[data-go="'+id+'"]');if(link){link.click();return;}if(++n<35)setTimeout(tryClick,45);}tryClick();}window.addEventListener("message",function(e){if(!e.data||e.data.type!=="portfolio-go-chapter")return;goToChapter(e.data.chapter);});document.addEventListener("click",function(){setTimeout(push,0);},true);window.addEventListener("load",function(){setTimeout(push,450);});if(document.body)new MutationObserver(push).observe(document.body,{attributes:true,attributeFilter:["data-current-slide"]});push();})();</script>
 <style id="welten-patch-css-v1">
   .slide#slide-faq .value-card h3 { font-size: 0.98rem; margin-bottom: 0.45rem; }
   .slide#slide-faq .card-grid { margin-top: 0.75rem; }

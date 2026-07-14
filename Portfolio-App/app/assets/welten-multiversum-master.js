@@ -55,6 +55,7 @@
   var switching = false;
   var effectsOn = true;
   var currentLang = "de";
+  var routeBootUntil = 0;
   var PREVIEW_MOBILE_CSS = "/assets/welten-multiversum-preview-mobile.css?v=20260623mv2";
   var FONT_SYSTEM_CSS = "/assets/welten-font-system.css?v=20260629fonts3";
   var TITLE_COLORS_CSS = "/assets/welten-world-title-colors.css?v=20260705bootfix";
@@ -345,6 +346,7 @@
     var ch = route.chapter || "home";
     var worldIdx = typeof route.worldIdx === "number" ? route.worldIdx : defaultWorld;
     sharedChapter = ch;
+    if (!opts.fromPopstate) lockRouteFromUrl(opts.bootMs || 2800);
     if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
       window.WeltenShellSEO.apply(ch, currentLang, worldIdx);
     }
@@ -353,7 +355,6 @@
     function sendChapter(f) {
       if (!f) return;
       function send() {
-        postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
         applyChapter(f, ch);
       }
       if (frameIsReady(f)) send();
@@ -367,6 +368,12 @@
         if (frameNeedsReset(frames[worldIdx], worldIdx)) resetFrame(worldIdx);
         switchToWorldIndex(worldIdx).then(function () {
           sendChapter(frames[worldIdx]);
+          setTimeout(function () {
+            sendChapter(frames[worldIdx]);
+          }, 200);
+          setTimeout(function () {
+            sendChapter(frames[worldIdx]);
+          }, 600);
           unlockShell();
         });
       } else {
@@ -374,10 +381,22 @@
         setTimeout(function () {
           sendChapter(frames[worldIdx] || frames[activeIdx()]);
         }, 80);
+        setTimeout(function () {
+          sendChapter(frames[worldIdx] || frames[activeIdx()]);
+        }, 320);
+        setTimeout(function () {
+          sendChapter(frames[worldIdx] || frames[activeIdx()]);
+        }, 800);
       }
       return;
     }
     sendChapter(frames[worldIdx] || frames[current]);
+    setTimeout(function () {
+      sendChapter(frames[worldIdx] || frames[current]);
+    }, 200);
+    setTimeout(function () {
+      sendChapter(frames[worldIdx] || frames[current]);
+    }, 600);
   }
 
   function postFrame(f, data) {
@@ -700,16 +719,40 @@
     return null;
   }
 
+  function lockRouteFromUrl(ms) {
+    routeBootUntil = Date.now() + (ms || 2800);
+  }
+
+  function routeBootActive() {
+    return Date.now() < routeBootUntil;
+  }
+
   function applyChapter(f, id) {
     var ch = CHAPTERS.indexOf(id) >= 0 ? id : "home";
+    if (!f) return;
     postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
-    try {
-      var d = f.contentDocument;
-      if (d) {
+    var tries = 0;
+    function tryApply() {
+      try {
+        var d = f.contentDocument;
+        if (!d) throw new Error("no doc");
+        if (d.body && d.body.getAttribute("data-current-slide") === ch) return;
         var link = d.querySelector('.menu-links a[data-go="' + ch + '"]');
-        if (link) link.click();
-      }
-    } catch (e1) {}
+        if (link) {
+          link.click();
+          return;
+        }
+        var btn =
+          d.querySelector('.experience-step[data-go="' + ch + '"]') ||
+          d.querySelector('[data-go="' + ch + '"]');
+        if (btn) {
+          btn.click();
+          return;
+        }
+      } catch (e1) {}
+      if (++tries < 40) setTimeout(tryApply, 70);
+    }
+    tryApply();
   }
 
   function revealActiveFrame(i) {
@@ -763,6 +806,7 @@
     postFrame(f, { type: "portfolio-effects", on: effectsOn });
     if (j === activeIdx()) {
       sendWorldLiveSignals(f, j);
+      applyChapter(f, sharedChapter || parseShellRoute().chapter || "home");
     } else {
       postFrame(f, { type: "portfolio-world-pause", paused: true });
       postFrame(f, { type: "portfolio-cleanup-transition" });
@@ -1101,6 +1145,15 @@
     if (e.data.type === "portfolio-chapter" && typeof e.data.chapter === "string") {
       if (!isOurFrame(e.source)) return;
       if (CHAPTERS.indexOf(e.data.chapter) >= 0) {
+        var urlChapter = parseShellRoute().chapter || "home";
+        /* Während Boot: URL ist Source of Truth — frühes iframe-"home" darf nicht überschreiben */
+        if (routeBootActive() && e.data.chapter !== urlChapter) {
+          sharedChapter = urlChapter;
+          var bootFrame = frames[activeIdx()];
+          if (bootFrame) applyChapter(bootFrame, urlChapter);
+          syncShellUrl(activeIdx() < 0 ? defaultWorld : activeIdx(), urlChapter, "replace");
+          return;
+        }
         sharedChapter = e.data.chapter;
         var worldIdx = activeIdx();
         if (worldIdx < 0) worldIdx = defaultWorld;
@@ -1108,7 +1161,7 @@
           var mapped = Router.worldIdxFromKey(e.data.world);
           if (typeof mapped === "number") worldIdx = mapped;
         }
-        syncShellUrl(worldIdx, e.data.chapter, "push");
+        syncShellUrl(worldIdx, e.data.chapter, routeBootActive() ? "replace" : "push");
       }
       return;
     }
@@ -1145,6 +1198,7 @@
     var bootRoute = parseShellRoute();
     if (typeof bootRoute.worldIdx === "number") defaultWorld = bootRoute.worldIdx;
     sharedChapter = bootRoute.chapter || "home";
+    lockRouteFromUrl(3200);
   }
 
   setMaster(defaultWorld);
