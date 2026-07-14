@@ -49,18 +49,37 @@
   </style>
   <script>
     (function () {
+      var released = false;
       function releaseShell() {
+        if (released) return;
+        released = true;
         document.documentElement.classList.remove("mv-shell-booting", "mv-splash-active", "mv-splash-done");
         var splash = document.getElementById("mvSplashBoot");
         if (splash) splash.remove();
       }
+      /* Multiversum: erst freigeben wenn Hero ready — verhindert Header-/Chrome-Flash */
       window.addEventListener("message", function (e) {
         if (!e.data || e.data.type !== "mv-hero-ready") return;
         releaseShell();
       });
-      releaseShell();
-      document.addEventListener("DOMContentLoaded", releaseShell);
-      setTimeout(releaseShell, 250);
+      /* Andere Welten als Default (kein mv-hero-ready): nach Iframe-Load freigeben */
+      document.addEventListener("DOMContentLoaded", function () {
+        var active = document.querySelector(".mv4-frame.is-active");
+        if (!active) return;
+        var src = active.getAttribute("src") || "";
+        if (/MULTIVERSUM\.html/i.test(src)) return;
+        function releaseNonMv() {
+          setTimeout(releaseShell, 80);
+        }
+        try {
+          if (active.contentDocument && active.contentDocument.readyState === "complete") {
+            releaseNonMv();
+            return;
+          }
+        } catch (err) {}
+        active.addEventListener("load", releaseNonMv, { once: true });
+      });
+      setTimeout(releaseShell, 5200);
     })();
   </script>
   <script>
@@ -128,9 +147,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/assets/welten-font-system.css?v=20260710fonts-async" />
   <link rel="stylesheet" href="/assets/welten-world-title-colors.css?v=20260705bootfix" />
-  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260714mvIso2" />
+  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260714mvBoot1" />
   <link rel="stylesheet" href="/assets/welten-mobile-shell-fixes.css?v=20260706mobile-pass1" />
-  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260714mvIso2" />
+  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260714mvBoot1" />
   <link rel="stylesheet" href="/assets/shell-performance.css?v=20260714heroWake1" />
   <link rel="stylesheet" href="/assets/welten-shell-accessibility.css?v=20260714heroWake1" />
   <script src="/assets/welten-translations.js?v=20260706perf-fix" defer></script>
@@ -226,7 +245,7 @@
     </div>
   </header>
 
-  <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM" src="/MULTIVERSUM.html?v=20260714mvIso2"></iframe>
+  <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM" src="/MULTIVERSUM.html?v=20260714mvBoot1"></iframe>
   <iframe class="mv4-frame" data-world="nexora" title="NEXORA" data-lazy-src="/NEXORA.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="vertex" title="PROFESSIONAL" data-lazy-src="/PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="freiraum" title="FREIRAUM" data-lazy-src="/FREIRAUM.html" src="about:blank"></iframe>
@@ -297,9 +316,9 @@
     })();
   </script>
 
-  <script src="/assets/welten-world-audio-test.js?v=20260714mvIso2" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260714mvIso2" defer></script>
+  <script src="/assets/welten-world-audio-test.js?v=20260714mvBoot1" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260714mvBoot1" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
-  <script src="/assets/welten-world-switch-preview.js?v=20260714mvIso2" defer></script>
+  <script src="/assets/welten-world-switch-preview.js?v=20260714mvBoot1" defer></script>
 </body>
 </html>

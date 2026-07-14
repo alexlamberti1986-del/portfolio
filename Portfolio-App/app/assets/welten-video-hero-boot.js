@@ -331,11 +331,18 @@
         );
       })
       .join("");
+    var inShell =
+      document.documentElement.classList.contains("mv-in-shell") ||
+      document.documentElement.classList.contains("welten-live-shell");
+    /* Im Shell bereits .site-header — kein zweites MULTIVERSUM-Title-Banner */
+    var brandHtml = inShell
+      ? ""
+      : '<p class="mv-static-hero__eyebrow">Alex Lamberti · Portfolio</p>' +
+        '<h2 class="mv-static-hero__title al-world-video-hero__title">MULTIVERSUM</h2>';
     return (
       '<div class="al-world-video-hero__chrome">' +
       '<div class="al-world-video-hero__chrome-inner">' +
-      '<p class="mv-static-hero__eyebrow">Alex Lamberti · Portfolio</p>' +
-      '<h2 class="mv-static-hero__title al-world-video-hero__title">MULTIVERSUM</h2>' +
+      brandHtml +
       '<nav class="mv-static-hero__nav al-world-video-hero__nav" aria-label="Kapitel">' +
       navHtml +
       "</nav></div></div>"
@@ -548,6 +555,23 @@
 
     var videoHero = document.getElementById("alWorldVideoHero");
 
+    /* Bereits fertig gemountet: nur soft sync, kein Remount → kein Header-Flash */
+    if (
+      videoHero &&
+      videoHero.getAttribute("data-mounted-world") === worldKey &&
+      videoHero.querySelector("video")
+    ) {
+      ensureMvVideoChrome(videoHero, worldKey);
+      applyMultiversumVideoFit(videoHero);
+      syncMvVideoChromeNav();
+      if (canPlayVideo() && !isVideoPlaying(videoHero.querySelector("video"))) {
+        restartAndPlay();
+      } else if (!canPlayVideo()) {
+        pauseVideoHero();
+      }
+      return;
+    }
+
     document.body.setAttribute("data-welten-video-hero", "1");
 
     if (!videoHero) {
@@ -601,6 +625,8 @@
         } catch (eLoad) {}
       }
     }
+
+    if (videoHero) videoHero.setAttribute("data-mounted-world", worldKey);
 
     watchHomeInner();
     resetHomeScroll();
@@ -752,12 +778,15 @@
   });
 
   try {
+    var videoHeroClassBound = false;
     new MutationObserver(function () {
+      if (videoHeroClassBound) return;
       if (
         document.body.getAttribute("data-world") === "general" &&
         (document.body.classList.contains("mv-home-ready") ||
           document.querySelector("#mvParallaxHero.is-boot-painted"))
       ) {
+        videoHeroClassBound = true;
         heroReadyForVideo = true;
         mountVideoHero();
       }

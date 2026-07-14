@@ -38,9 +38,13 @@
     var src =
       "assets/images/4welten-preview/general/" +
       encodeURIComponent("MULTIVERSUM PROFILBILD für HOME und Kontakt.png") +
-      "?v=20260626-prof-neu";
+      "?v=20260714mvBoot1";
     document.querySelectorAll(".home-portrait-card img, #contactPhoto, .contact-photo, #heroPhoto").forEach(function (img) {
-      img.src = src;
+      if (!img.getAttribute("src") || /data:image\/gif/i.test(img.getAttribute("src") || "")) {
+        img.src = src;
+      } else if (img.getAttribute("src").indexOf("MULTIVERSUM") === -1) {
+        img.src = src;
+      }
       img.removeAttribute("srcset");
     });
   }
@@ -157,6 +161,14 @@
 
   function buildStaticHero() {
     if (document.getElementById("mvStaticHero")) return;
+    /* Desktop + Shell: kein zweiter Header — Parallax/Video übernehmen */
+    if (isDesktopParallaxHero()) return;
+    if (
+      document.documentElement.classList.contains("mv-in-shell") ||
+      document.documentElement.classList.contains("welten-live-shell")
+    ) {
+      /* Mobil im Shell: nur Nav, keine Titel-Zeile (sonst doppelter Header-Flash) */
+    }
 
     var stage = document.getElementById("dnaStage");
     var mount =
@@ -176,10 +188,17 @@
       return '<button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="' + item.id + '">' + item.label + "</button>";
     }).join("");
 
+    var inShell =
+      document.documentElement.classList.contains("mv-in-shell") ||
+      document.documentElement.classList.contains("welten-live-shell");
+    var brandHtml = inShell
+      ? ""
+      : '<p class="mv-static-hero__eyebrow">Alex Lamberti · Portfolio</p>' +
+        '<h1 class="mv-static-hero__title">MULTIVERSUM</h1>';
+
     hero.innerHTML =
       '<div class="mv-static-hero__inner">' +
-      '<p class="mv-static-hero__eyebrow">Alex Lamberti · Portfolio</p>' +
-      '<h1 class="mv-static-hero__title">MULTIVERSUM</h1>' +
+      brandHtml +
       '<p class="mv-static-hero__tag" data-i18n="home.tag">' +
       '<span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
       '<nav class="mv-static-hero__nav" aria-label="Kapitel">' +

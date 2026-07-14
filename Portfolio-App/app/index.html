@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html lang="de-CH">
+<html lang="de-CH" class="mv-shell-booting">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <style id="shell-fouc-critical">
     /* Sofort: kein SEO-/Skip-Flash vor externem CSS */
     html, body { margin: 0; background: #02030b; color: #e8eef8; }
+    html.mv-shell-booting .mv4-frame.is-active {
+      opacity: 0 !important;
+    }
+    html:not(.mv-shell-booting) .mv4-frame.is-active {
+      opacity: 1 !important;
+      transition: opacity .16s ease-out;
+    }
     .mv-shell-seo,
     .welten-skip-link {
       position: absolute !important;
@@ -40,7 +47,10 @@
   </style>
   <script>
     (function () {
+      var released = false;
       function releaseShell() {
+        if (released) return;
+        released = true;
         document.documentElement.classList.remove("mv-shell-booting", "mv-splash-active", "mv-splash-done");
         var splash = document.getElementById("mvSplashBoot");
         if (splash) splash.remove();
@@ -49,9 +59,23 @@
         if (!e.data || e.data.type !== "mv-hero-ready") return;
         releaseShell();
       });
-      releaseShell();
-      document.addEventListener("DOMContentLoaded", releaseShell);
-      setTimeout(releaseShell, 250);
+      document.addEventListener("DOMContentLoaded", function () {
+        var active = document.querySelector(".mv4-frame.is-active");
+        if (!active) return;
+        var src = active.getAttribute("src") || "";
+        if (/MULTIVERSUM\.html/i.test(src)) return;
+        function releaseNonMv() {
+          setTimeout(releaseShell, 80);
+        }
+        try {
+          if (active.contentDocument && active.contentDocument.readyState === "complete") {
+            releaseNonMv();
+            return;
+          }
+        } catch (err) {}
+        active.addEventListener("load", releaseNonMv, { once: true });
+      });
+      setTimeout(releaseShell, 5200);
     })();
   </script>
   <script>
@@ -217,7 +241,7 @@
     </div>
   </header>
 
-  <iframe class="mv4-frame is-active" title="MULTIVERSUM" src="/MULTIVERSUM.html?v=20260710fix3"></iframe>
+  <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM" src="/MULTIVERSUM.html?v=20260714mvBoot1"></iframe>
   <iframe class="mv4-frame" title="NEXORA" data-lazy-src="/NEXORA.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" title="PROFESSIONAL" data-lazy-src="/PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" title="FREIRAUM" data-lazy-src="/FREIRAUM.html" src="about:blank"></iframe>

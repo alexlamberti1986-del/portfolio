@@ -261,18 +261,27 @@
       else ensureLocalBgm();
     })();
   </script>
-  <style id="mv-boot-critical">html,body{background:#02030b!important}body[data-world="general"] .bg-root,body[data-world="general"] .bg-grid,body[data-world="general"] .light-beams,body[data-world="general"] #particle-canvas,body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero.is-boot-painted[data-active-world="multiversum"]{display:block!important;visibility:visible!important;opacity:1!important}body[data-world="general"] #mvParallaxHero .world-zone--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero [data-bg="nexora"],body[data-world="general"] #mvParallaxHero [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero [data-particle-field="nexora"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .world-zone--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-bg="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-particle-field="nexora"]{display:revert!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}@media (min-width:1024px){body[data-world="general"] #mvStaticHero{display:none!important}}</style>
+  <style id="mv-boot-critical">html,body{background:#02030b!important}body[data-world="general"] .bg-root,body[data-world="general"] .bg-grid,body[data-world="general"] .light-beams,body[data-world="general"] #particle-canvas,body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero.is-boot-painted[data-active-world="multiversum"]{display:block!important;visibility:visible!important;opacity:1!important}body[data-world="general"] #mvParallaxHero .world-zone--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero [data-bg="nexora"],body[data-world="general"] #mvParallaxHero [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero [data-particle-field="nexora"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .world-zone--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-bg="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-particle-field="nexora"]{display:revert!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}@media (min-width:1024px){body[data-world="general"] #mvStaticHero{display:none!important}html.mv-in-shell #mvStaticHero,html.welten-live-shell #mvStaticHero{display:none!important;visibility:hidden!important}}html.mv-in-shell .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero__eyebrow,html.mv-in-shell .mv-static-hero__title,html.mv-in-shell .al-world-video-hero__title,html.welten-live-shell .mv-static-hero__eyebrow,html.welten-live-shell .al-world-video-hero__eyebrow,html.welten-live-shell .mv-static-hero__title,html.welten-live-shell .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;pointer-events:none!important}</style>
   <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260710fix3" />
   <link rel="stylesheet" href="assets/welten-multiversum-world.css?v=20260710unify" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260708rail-65" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-v4.css?v=20260706no-scroll" />
   <link rel="preload" href="assets/videos/multiversum-poster.jpg" as="image" fetchpriority="high" />
+  <link rel="preload" as="image" fetchpriority="high" href="assets/images/4welten-preview/general/MULTIVERSUM%20PROFILBILD%20f%C3%BCr%20HOME%20und%20Kontakt.png?v=20260714mvBoot1" />
+  <script>
+    window.PORTFOLIO_INLINE_IMAGES = window.PORTFOLIO_INLINE_IMAGES || {
+      general:
+        "assets/images/4welten-preview/general/" +
+        encodeURIComponent("MULTIVERSUM PROFILBILD für HOME und Kontakt.png") +
+        "?v=20260714mvBoot1"
+    };
+  </script>
   <script src="assets/welten-live-shell-early.js?v=20260704restore"></script>
-  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260714headerFlash1" />
+  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260714mvBoot1" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260710fix3" defer></script>
-  <script src="assets/welten-multiversum-world.js?v=20260710fix3" defer></script>
+  <script src="assets/welten-multiversum-world.js?v=20260714mvBoot1" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
   <script>
     (function () {
@@ -5646,11 +5655,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
               <img
                 id="heroPhoto"
                 class="portrait-photo"
-                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                src="assets/images/4welten-preview/general/MULTIVERSUM%20PROFILBILD%20f%C3%BCr%20HOME%20und%20Kontakt.png?v=20260714mvBoot1"
                 alt="Alex Lamberti"
                 width="800"
                 height="1000"
                 decoding="async"
+                fetchpriority="high"
               />
             </figure>
           </div>
@@ -6170,11 +6180,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
           <img
             class="contact-photo portrait-photo"
             id="contactPhoto"
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+            src="assets/images/4welten-preview/general/MULTIVERSUM%20PROFILBILD%20f%C3%BCr%20HOME%20und%20Kontakt.png?v=20260714mvBoot1"
             alt="Alex Lamberti"
             width="600"
             height="720"
             decoding="async"
+            loading="lazy"
           />
           
         </figure>
@@ -7112,11 +7123,16 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   <script>
     (function ultraFinalAssetsAndCopy(){
       "use strict";
+      var INLINE = window.PORTFOLIO_INLINE_IMAGES || {};
+      var FALLBACK =
+        "assets/images/4welten-preview/general/" +
+        encodeURIComponent("MULTIVERSUM PROFILBILD für HOME und Kontakt.png") +
+        "?v=20260714mvBoot1";
       var ASSETS = {
-        general: window.PORTFOLIO_INLINE_IMAGES.general,
-        nexora: window.PORTFOLIO_INLINE_IMAGES.nexora,
-        vertex: window.PORTFOLIO_INLINE_IMAGES.vertex,
-        freiraum: window.PORTFOLIO_INLINE_IMAGES.freiraum
+        general: INLINE.general || FALLBACK,
+        nexora: INLINE.nexora || FALLBACK,
+        vertex: INLINE.vertex || FALLBACK,
+        freiraum: INLINE.freiraum || FALLBACK
       };
       var COPY = {
         general: {
@@ -7148,7 +7164,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       function world(){ return document.body.getAttribute("data-world") || "general"; }
 
       function setImg(img, src, alt){
-        if (!img) return;
+        if (!img || !src) return;
         img.removeAttribute("srcset");
         img.src = src;
         img.alt = alt || "";
@@ -7311,6 +7327,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
   function applyFinalPortraits() {
     var w = world();
     var src = IMAGES[w];
+    if (!src) return;
     var alt = w === "nexora" ? "NEXORA KI-Portrait" : (w === "freiraum" ? "FREIRAUM Kunst-Portrait" : "Alex Lamberti Professional Portrait");
     document.querySelectorAll("img.portrait-photo, #heroPhoto, #contactPhoto").forEach(function(img) {
       img.removeAttribute("srcset");
@@ -8802,7 +8819,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714xlHero1" />
-<script src="assets/welten-video-hero-boot.js?v=20260714hero6" defer></script>
+<script src="assets/welten-video-hero-boot.js?v=20260714mvBoot1" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260710mobile-subpage1" />
 <script src="assets/welten-mobile-performance.js?v=20260710mobile-subpage1" defer></script>
