@@ -203,10 +203,21 @@
   }
 
   function ensureSingleBar() {
-    var bars = document.querySelectorAll(".mv4-bar");
-    for (var i = 1; i < bars.length; i++) {
-      bars[i].remove();
+    var bars = document.querySelectorAll("body > .mv4-bar, body .mv4-bar");
+    var kept = null;
+    for (var i = 0; i < bars.length; i++) {
+      var el = bars[i];
+      if (el.closest && el.closest(".mv4-frame")) continue;
+      if (!kept) {
+        kept = el;
+        continue;
+      }
+      try {
+        el.remove();
+      } catch (eRem) {}
     }
+    if (kept) bar = kept;
+    else bar = document.querySelector(".mv4-bar");
   }
 
   function getBar() {
@@ -343,14 +354,14 @@
     if (!isLiveShell) return;
     opts = opts || {};
     var route = parseShellRoute();
-    var ch = route.chapter || "home";
+    var ch = opts.forceHome ? "home" : route.chapter || "home";
     var worldIdx = typeof route.worldIdx === "number" ? route.worldIdx : defaultWorld;
     sharedChapter = ch;
-    if (!opts.fromPopstate) lockRouteFromUrl(opts.bootMs || 2800);
     if (window.WeltenShellSEO && typeof window.WeltenShellSEO.apply === "function") {
       window.WeltenShellSEO.apply(ch, currentLang, worldIdx);
     }
     updateWorldLinkState(worldIdx);
+    syncShellUrl(worldIdx, ch, "replace");
 
     function sendChapter(f) {
       if (!f) return;
@@ -363,40 +374,25 @@
 
     var current = activeIdx();
     if (current < 0) current = defaultWorld;
+
+    /* Initial / Popstate: ohne FX-Switch, sonst doppelte Bars / Multiversum-Glitch */
     if (worldIdx !== current || opts.forceWorld) {
-      if (opts.fromPopstate) {
-        if (frameNeedsReset(frames[worldIdx], worldIdx)) resetFrame(worldIdx);
-        switchToWorldIndex(worldIdx).then(function () {
+      if (frameNeedsReset(frames[worldIdx], worldIdx)) resetFrame(worldIdx);
+      switchToWorldIndex(worldIdx).then(function () {
+        sendChapter(frames[worldIdx]);
+        setTimeout(function () {
           sendChapter(frames[worldIdx]);
-          setTimeout(function () {
-            sendChapter(frames[worldIdx]);
-          }, 200);
-          setTimeout(function () {
-            sendChapter(frames[worldIdx]);
-          }, 600);
-          unlockShell();
-        });
-      } else {
-        switchTo(worldIdx);
-        setTimeout(function () {
-          sendChapter(frames[worldIdx] || frames[activeIdx()]);
-        }, 80);
-        setTimeout(function () {
-          sendChapter(frames[worldIdx] || frames[activeIdx()]);
-        }, 320);
-        setTimeout(function () {
-          sendChapter(frames[worldIdx] || frames[activeIdx()]);
-        }, 800);
-      }
+          ensureSingleBar();
+        }, 180);
+        unlockShell();
+      });
       return;
     }
     sendChapter(frames[worldIdx] || frames[current]);
     setTimeout(function () {
       sendChapter(frames[worldIdx] || frames[current]);
-    }, 200);
-    setTimeout(function () {
-      sendChapter(frames[worldIdx] || frames[current]);
-    }, 600);
+      ensureSingleBar();
+    }, 180);
   }
 
   function postFrame(f, data) {
@@ -1145,13 +1141,9 @@
     if (e.data.type === "portfolio-chapter" && typeof e.data.chapter === "string") {
       if (!isOurFrame(e.source)) return;
       if (CHAPTERS.indexOf(e.data.chapter) >= 0) {
-        var urlChapter = parseShellRoute().chapter || "home";
-        /* Während Boot: URL ist Source of Truth — frühes iframe-"home" darf nicht überschreiben */
-        if (routeBootActive() && e.data.chapter !== urlChapter) {
-          sharedChapter = urlChapter;
-          var bootFrame = frames[activeIdx()];
-          if (bootFrame) applyChapter(bootFrame, urlChapter);
-          syncShellUrl(activeIdx() < 0 ? defaultWorld : activeIdx(), urlChapter, "replace");
+        /* Während Early-Boot keine URL von iframe-home überschreiben lassen */
+        if (routeBootActive()) {
+          sharedChapter = sharedChapter || "home";
           return;
         }
         sharedChapter = e.data.chapter;
@@ -1161,7 +1153,7 @@
           var mapped = Router.worldIdxFromKey(e.data.world);
           if (typeof mapped === "number") worldIdx = mapped;
         }
-        syncShellUrl(worldIdx, e.data.chapter, routeBootActive() ? "replace" : "push");
+        syncShellUrl(worldIdx, e.data.chapter, "push");
       }
       return;
     }
@@ -1197,12 +1189,17 @@
   if (isLiveShell) {
     var bootRoute = parseShellRoute();
     if (typeof bootRoute.worldIdx === "number") defaultWorld = bootRoute.worldIdx;
-    sharedChapter = bootRoute.chapter || "home";
-    lockRouteFromUrl(3200);
+    /* Unterseiten-Refresh → saubere Welt-Home (kein Kapitel-Restore-Glitch / doppelte Bars) */
+    sharedChapter = "home";
+    lockRouteFromUrl(1800);
+    if (bootRoute.chapter && bootRoute.chapter !== "home") {
+      syncShellUrl(defaultWorld, "home", "replace");
+    }
   }
 
   setMaster(defaultWorld);
   broadcastLang();
+  ensureSingleBar();
 
   if (isLiveShell) {
     if (defaultWorld !== 0 && !frameHasSrc(frames[defaultWorld])) {
@@ -1210,16 +1207,13 @@
     } else if (defaultWorld !== 0 && frameHasSrc(frames[defaultWorld])) {
       loaded[defaultWorld] = true;
     }
-    if (defaultWorld !== activeIdx()) {
-      switchToWorldIndex(defaultWorld).then(function () {
-        applyShellRoute({ forceWorld: false });
-        primeActiveFrame();
-        unlockShell();
-      });
-    } else {
-      applyShellRoute();
+    switchToWorldIndex(defaultWorld).then(function () {
+      applyShellRoute({ forceHome: true, forceWorld: false });
       primeActiveFrame();
-    }
+      ensureSingleBar();
+      unlockShell();
+      setTimeout(ensureSingleBar, 300);
+    });
     window.addEventListener("popstate", function () {
       if (suppressingHistory) return;
       applyShellRoute({ fromPopstate: true, forceWorld: true });

@@ -176,7 +176,7 @@ html, body {
 }
 
 .mv4-frame:not(.is-active) {
-  /* Volle Fläche behalten — display:none/0×0 kaputt-svh-Layout der DNA-Heroes nach Weltenwechsel */
+  /* Volle Geometrie für korrekte svh-Heroes, aber komplett ausgeblendet (keine doppelten Bars) */
   display: block !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -189,18 +189,29 @@ html, body {
   max-height: calc(100dvh - var(--bar-h, 56px)) !important;
   overflow: hidden !important;
   z-index: 0 !important;
+  clip-path: inset(100%) !important;
 }
 
 .mv4-frame.is-active {
   display: block !important;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  z-index: 1;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 1 !important;
   left: 0 !important;
   top: var(--bar-h, 56px) !important;
   width: 100% !important;
   height: calc(100dvh - var(--bar-h, 56px)) !important;
+  clip-path: none !important;
+}
+
+/* Nur die erste Shell-Bar darf sichtbar sein */
+body > .mv4-bar ~ .mv4-bar {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
 }
 
 /* MULTIVERSUM (general) */
