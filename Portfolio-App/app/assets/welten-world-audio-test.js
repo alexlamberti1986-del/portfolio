@@ -9,10 +9,10 @@
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
   var TRACKS = {
-    general: "assets/audio/worlds/MULTIVERSUM.mp3?v=" + VERSION,
-    nexora: "assets/audio/worlds/NEXORA.mp3?v=" + VERSION,
-    vertex: "assets/audio/worlds/PROFESSIONAL.mp3?v=" + VERSION,
-    freiraum: "assets/audio/worlds/FREIRAUM.mp3?v=" + VERSION,
+    general: "/assets/audio/worlds/MULTIVERSUM.mp3?v=" + VERSION,
+    nexora: "/assets/audio/worlds/NEXORA.mp3?v=" + VERSION,
+    vertex: "/assets/audio/worlds/PROFESSIONAL.mp3?v=" + VERSION,
+    freiraum: "/assets/audio/worlds/FREIRAUM.mp3?v=" + VERSION,
   };
 
   var bgmEl = null;

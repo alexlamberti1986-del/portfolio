@@ -8,7 +8,7 @@
   var FX_KEY = "mv-effects-on";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
-  var FRAME_PAGES = ["MULTIVERSUM.html", "NEXORA.html", "PROFESSIONAL.html", "FREIRAUM.html"];
+  var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
   var SHELL_PAGES = ["3-Welten-Master-iframe.html", "index.html", ""];
   var Router = window.WeltenShellRouter;
   var ROUTE_CHAPTER = {
@@ -21,7 +21,7 @@
   var WORLD_BTN_SEL = "[data-iframe]";
   var suppressingHistory = false;
   var PROFILE_V = "20260706prof-portrait-tablet";
-  var PROFILE_BASE = "assets/images/4welten-preview/";
+  var PROFILE_BASE = "/assets/images/4welten-preview/";
   var PROFILE_FILES = {
     general: "MULTIVERSUM PROFILBILD für HOME und Kontakt.png",
     nexora: "NEXORA PROFILBILD für HOME und Kontakt.png",
@@ -55,9 +55,9 @@
   var switching = false;
   var effectsOn = true;
   var currentLang = "de";
-  var PREVIEW_MOBILE_CSS = "assets/welten-multiversum-preview-mobile.css?v=20260623mv2";
-  var FONT_SYSTEM_CSS = "assets/welten-font-system.css?v=20260629fonts3";
-  var TITLE_COLORS_CSS = "assets/welten-world-title-colors.css?v=20260705bootfix";
+  var PREVIEW_MOBILE_CSS = "/assets/welten-multiversum-preview-mobile.css?v=20260623mv2";
+  var FONT_SYSTEM_CSS = "/assets/welten-font-system.css?v=20260629fonts3";
+  var TITLE_COLORS_CSS = "/assets/welten-world-title-colors.css?v=20260705bootfix";
   var isLiveShell = document.body && document.body.getAttribute("data-live-shell") === "1";
   var defaultWorld = 0;
   if (document.body && document.body.getAttribute("data-live-default")) {
@@ -792,7 +792,7 @@
     setTimeout(function () {
       var f = frames[i];
       if (f) injectProfiles(f, i);
-    }, 400);
+    }, 0);
   }
 
   function loadFrame(i) {
