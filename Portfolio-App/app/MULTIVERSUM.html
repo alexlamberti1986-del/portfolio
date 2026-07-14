@@ -127,6 +127,24 @@
         return false;
       }
 
+      /* Nur abspielen, wenn der Shell-Parent Multiversum tatsächlich als
+         aktive Welt führt — verhindert, dass dieses (verborgene) Frame-0
+         seine Early-BGM über Gesture-/Scroll-Relays erneut startet, während
+         eine andere Welt aktiv ist oder gerade eingewechselt wird. */
+      function parentWorldIsGeneral() {
+        try {
+          var p = window.parent;
+          if (p.document && p.document.body) {
+            var mw = p.document.body.getAttribute("data-master-world");
+            if (mw) return mw === "general";
+          }
+          if (typeof p.mv4ActiveFrameIndex === "function") {
+            return p.mv4ActiveFrameIndex() === 0;
+          }
+        } catch (e) {}
+        return true;
+      }
+
       function tryBootFromParentApi() {
         try {
           if (parentEffectsOff() || parentSwitchBlocked()) return false;
@@ -140,7 +158,14 @@
       }
 
       function playLocalBgm() {
-        if (started || pending || parentAlreadyPlaying() || parentSwitchBlocked() || parentEffectsOff()) {
+        if (
+          started ||
+          pending ||
+          parentAlreadyPlaying() ||
+          parentSwitchBlocked() ||
+          parentEffectsOff() ||
+          !parentWorldIsGeneral()
+        ) {
           return;
         }
         pending = true;
@@ -189,7 +214,14 @@
       }
 
       function relay(e) {
-        if (started || parentAlreadyPlaying() || parentSwitchBlocked() || parentEffectsOff()) return;
+        if (
+          started ||
+          parentAlreadyPlaying() ||
+          parentSwitchBlocked() ||
+          parentEffectsOff() ||
+          !parentWorldIsGeneral()
+        )
+          return;
         if (e && isExcluded(e.target)) return;
         tryBootFromParentApi();
         playLocalBgm();

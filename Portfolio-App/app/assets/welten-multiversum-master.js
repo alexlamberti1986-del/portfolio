@@ -695,7 +695,10 @@
     if (now - lastWorldBtnAt < 80) return;
     lastWorldBtnAt = now;
     recoverStuckSwitch();
-    purgeSwitchOverlays();
+    /* Overlay NICHT hier purgen — sonst entsteht eine kurze ungecoverte Lücke,
+       bevor der neue Wechsel/Cover startet. purgeSwitchOverlays() nur noch
+       innerhalb von switchTo()/recoverStuckSwitch(), nachdem der Lock/Cover
+       für den neuen Wechsel bereits läuft. */
     forceEnableWorldButtons();
     var idx = parseInt(btn.getAttribute("data-iframe"), 10);
     if (!isFinite(idx)) return;
@@ -827,10 +830,16 @@
       f.style.pointerEvents = on ? "auto" : "none";
       if (on) {
         f.removeAttribute("data-mv-world-live");
-        postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
-        applyChapter(f, sharedChapter);
-        if (frameIsReady(f)) injectProfiles(f, j);
-        else f.addEventListener("load", function () { injectProfiles(f, j); }, { once: true });
+        /* Während eines animierten Wechsels (switching===true) NICHT enter/
+           Kapitel/Profile senden — das würde Multiversum-Header/Hero mitten im
+           Cover booten lassen. Das passiert erst in finishTransition() nach
+           dem Unlock (Overlay bereits weg). */
+        if (!switching) {
+          postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
+          applyChapter(f, sharedChapter);
+          if (frameIsReady(f)) injectProfiles(f, j);
+          else f.addEventListener("load", function () { injectProfiles(f, j); }, { once: true });
+        }
       } else {
         postFrame(f, { type: "portfolio-world-pause", paused: true });
         postFrame(f, { type: "portfolio-cleanup-transition" });
@@ -844,11 +853,11 @@
     if (!switching) {
       unlockShell();
       forceEnableWorldButtons();
+      setTimeout(function () {
+        var f = frames[i];
+        if (f) injectProfiles(f, i);
+      }, 0);
     }
-    setTimeout(function () {
-      var f = frames[i];
-      if (f) injectProfiles(f, i);
-    }, 0);
   }
 
   function loadFrame(i) {
@@ -955,6 +964,17 @@
           new CustomEvent("welten-audio-switch-end", { detail: { world: masterKey(i) } })
         );
       } catch (eAudioEnd) {}
+      /* Erst jetzt (Overlay weg, switching===false) enter/Kapitel/Profile für
+         die Zielwelt senden — applyActive() hat das während des Wechsels
+         bewusst unterdrückt, damit Header/Hero nicht mitten im Cover booten. */
+      var fActive = frames[i];
+      if (fActive) {
+        fActive.removeAttribute("data-mv-world-live");
+        postFrame(fActive, { type: "portfolio-world-enter", world: soundKey(i) });
+        applyChapter(fActive, sharedChapter);
+        if (frameIsReady(fActive)) injectProfiles(fActive, i);
+        else fActive.addEventListener("load", function () { injectProfiles(fActive, i); }, { once: true });
+      }
       revealActiveFrame(i);
       try {
         var fReveal = frames[i];

@@ -356,6 +356,18 @@
     switchGeneration += 1;
     setSwitchFlag(true);
     hardStopBgm();
+    /* Zusätzliche Absicherung: Early-BGM-Element explizit stumm/pausiert,
+       auch falls hardStopBgm() es aus irgendeinem Grund nicht erfasst hat
+       (z. B. durch Re-Zuweisung von window.__mvWorldAudioEarly). */
+    try {
+      var earlyEl = window.__mvWorldAudioEarly;
+      if (earlyEl) {
+        earlyEl.pause();
+        earlyEl.currentTime = 0;
+        earlyEl.muted = true;
+        earlyEl.volume = 0;
+      }
+    } catch (eEarlyStop) {}
     /* Nur Gesture-Boot für echten Erstbesuch erlauben — nach Wechsel starten wir über switch-end. */
     initialBootDone = true;
     bootGesturePending = false;

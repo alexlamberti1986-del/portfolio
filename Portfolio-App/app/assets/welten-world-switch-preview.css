@@ -28,6 +28,16 @@
   pointer-events: all;
 }
 
+/* Blickdichter Cover-Zustand ab dem allerersten Paint (synchron per JS gesetzt,
+   bevor der Browser layouten kann) — verhindert das Fade-von-0-Sichtfenster,
+   in dem das darunterliegende Frame (oft Multiversum) kurz durchscheint. */
+.welten-world-switch.is-covered {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: all !important;
+  transition: none !important;
+}
+
 .welten-world-switch.is-exiting {
   opacity: 0;
   transition-duration: var(--wws-exit-duration, 400ms);

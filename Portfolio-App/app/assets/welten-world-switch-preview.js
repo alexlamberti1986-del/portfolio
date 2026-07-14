@@ -1689,6 +1689,9 @@
     var overlay = buildOverlay(worldKey);
     activeOverlay = overlay;
     document.body.appendChild(overlay);
+    /* Sofort blickdicht ab dem ersten Paint — kein Fade-von-0-Loch, in dem
+       das darunterliegende Frame (oft Multiversum) durchscheinen kann. */
+    overlay.classList.add("is-covered");
     document.documentElement.classList.add("welten-world-switch-lock");
 
     var frameReady =
@@ -1764,21 +1767,36 @@
         return;
       }
       if (activeOverlay._wwsFinishing) return;
-      activeOverlay._wwsFinishing = true;
-      stopCanvas(activeOverlay);
-      activeOverlay.classList.remove("is-entering");
-      activeOverlay.classList.add("is-exiting");
-      wwsLater(function () {
-        if (activeOverlay) {
-          activeOverlay.remove();
-          activeOverlay = null;
-        }
-        document.documentElement.classList.remove("welten-world-switch-lock");
-        running = false;
-        window.__wwsPreviewOwnsSound = false;
-        wwsClearTimers();
-        wwsCallTransitionEnd();
-      }, exitMs);
+
+      function doExit() {
+        if (!activeOverlay || activeOverlay._wwsFinishing) return;
+        activeOverlay._wwsFinishing = true;
+        stopCanvas(activeOverlay);
+        activeOverlay.classList.remove("is-entering");
+        /* is-covered erzwingt opacity:1 ohne Transition — muss weg, damit
+           is-exiting sichtbar auf 0 ausblenden kann. */
+        activeOverlay.classList.remove("is-covered");
+        activeOverlay.classList.add("is-exiting");
+        wwsLater(function () {
+          if (activeOverlay) {
+            activeOverlay.remove();
+            activeOverlay = null;
+          }
+          document.documentElement.classList.remove("welten-world-switch-lock");
+          running = false;
+          window.__wwsPreviewOwnsSound = false;
+          wwsClearTimers();
+          wwsCallTransitionEnd();
+        }, exitMs);
+      }
+
+      /* Sicherheitsnetz: erst aufdecken, wenn die Zielwelt wirklich aktiv ist —
+         sonst nochmal versuchen, statt mit der falschen Welt sichtbar zu werden. */
+      if (activeFrameIndex() !== targetIdx && typeof window.switchToWorldIndex === "function") {
+        Promise.resolve(window.switchToWorldIndex(targetIdx)).then(doExit, doExit);
+        return;
+      }
+      doExit();
     }
 
     wwsLater(function () {
@@ -1811,18 +1829,33 @@
 
     wwsLater(function () {
       if (!running) return;
-      wwsClearTimers();
-      document.querySelectorAll(".welten-world-switch").forEach(function (el) {
+      var doneAlready = overlay && overlay._wwsSwitchDone;
+      function cleanupFailsafe() {
+        wwsClearTimers();
+        document.querySelectorAll(".welten-world-switch").forEach(function (el) {
+          try {
+            stopCanvas(el);
+            el.remove();
+          } catch (eRm) {}
+        });
+        activeOverlay = null;
+        document.documentElement.classList.remove("welten-world-switch-lock");
+        running = false;
+        window.__wwsPreviewOwnsSound = false;
+        wwsCallTransitionEnd();
+      }
+      /* Failsafe griff, bevor der Zielwelt-Wechsel bestätigt wurde — noch
+         einmal versuchen, damit wir nicht mit dem Cover verschwinden, während
+         die falsche Welt aktiv bleibt. */
+      if (!doneAlready && typeof window.switchToWorldIndex === "function") {
         try {
-          stopCanvas(el);
-          el.remove();
-        } catch (eRm) {}
-      });
-      activeOverlay = null;
-      document.documentElement.classList.remove("welten-world-switch-lock");
-      running = false;
-      window.__wwsPreviewOwnsSound = false;
-      wwsCallTransitionEnd();
+          Promise.resolve(window.switchToWorldIndex(targetIdx)).then(cleanupFailsafe, cleanupFailsafe);
+        } catch (eFailsafeSwitch) {
+          cleanupFailsafe();
+        }
+        return;
+      }
+      cleanupFailsafe();
     }, getTransitionFailsafeMs(timing));
   }
 

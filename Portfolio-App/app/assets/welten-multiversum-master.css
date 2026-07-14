@@ -180,9 +180,17 @@ html.welten-world-switch-lock .mv4-frame:not(.is-active) {
   pointer-events: none !important;
 }
 
+/* Während des Wechsels (Cover aktiv) ALLE Welt-Frames hart ausblenden —
+   auch das aktive/Ziel-Frame. Das Overlay deckt die UX ab, daher darf hier
+   kein Frame durchscheinen (v.a. Multiversum-Frame 0, das sonst hinter dem
+   halbtransparenten Cover mitmischt). Sichtbar wird das Ziel-Frame erst,
+   sobald die Lock-Klasse entfernt wird (siehe finishTransition). */
+html.welten-world-switch-lock .mv4-frame,
 html.welten-world-switch-lock .mv4-frame.is-active {
-  /* Während Overlay: keine Interaktion, kein Zwischen-UI-Flash */
+  opacity: 0 !important;
+  visibility: hidden !important;
   pointer-events: none !important;
+  clip-path: inset(100%) !important;
 }
 
 .mv4-frame:not(.is-active) {
