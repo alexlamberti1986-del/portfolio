@@ -7365,6 +7365,8 @@ body[data-world="nexora"] .dna-asset {
   }
 </style>
 
+<link rel="stylesheet" href="assets/welten-nexora-orbit-cards.css?v=20260714orbitCards1" />
+<script src="assets/welten-nexora-orbit-cards.js?v=20260714orbitCards1"></script>
 <script id="nexora-orbit-buttons-final-patch">
 (function () {
   var items = [
@@ -7377,6 +7379,20 @@ body[data-world="nexora"] .dna-asset {
   ];
   var ALIASES = { profile:'leistungen', values:'about', strengths:'leistungen', experience:'about', workstyle:'about', why:'about', faq:'about' };
   function resolveOrbitId(id) { return ALIASES[id] || id; }
+
+  function fillOrbitCard(btn, id, label) {
+    if (window.WeltenNexoraOrbitCards && typeof window.WeltenNexoraOrbitCards.fillOrbitButton === 'function') {
+      window.WeltenNexoraOrbitCards.fillOrbitButton(btn, id, label);
+      return;
+    }
+    btn.classList.add('nexora-orbit-card');
+    btn.setAttribute('data-go', id);
+    btn.innerHTML =
+      '<span class="nexora-orbit-card__media" aria-hidden="true">' +
+      '<img class="nexora-orbit-card__img" src="assets/images/nexora-chapter-cards/' + id + '.png?v=20260714orbitCards1" alt="" loading="lazy" decoding="async" />' +
+      '</span>' +
+      '<span class="nexora-orbit-card__label">' + label + '</span>';
+  }
 
   function isTouchUI() {
     if (window.WeltenTouchEnv && typeof window.WeltenTouchEnv.isMobileLayout === "function") {
@@ -7455,23 +7471,34 @@ body[data-world="nexora"] .dna-asset {
     var expectedOrbitIds = items.map(function (item) { return item[0]; });
     var orbitButtonsMatch =
       existingOrbitIds.length === expectedOrbitIds.length &&
-      existingOrbitIds.every(function (id, idx) { return id === expectedOrbitIds[idx]; });
+      existingOrbitIds.every(function (id, idx) { return id === expectedOrbitIds[idx]; }) &&
+      !!ring.querySelector('.nexora-orbit-card__media');
 
     if (!orbitButtonsMatch) {
       existingOrbitButtons.forEach(function (b) { b.remove(); });
       items.forEach(function (item, index) {
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'nexora-orbit-button';
-        btn.setAttribute('data-go', item[0]);
+        btn.className = 'nexora-orbit-button nexora-orbit-card';
         btn.style.setProperty('--i', index);
-        btn.textContent = item[1];
+        fillOrbitCard(btn, item[0], item[1]);
         btn.addEventListener('click', function (event) {
           event.preventDefault();
           event.stopPropagation();
           navigateTo(item[0]);
         });
         ring.appendChild(btn);
+      });
+    } else {
+      existingOrbitButtons.forEach(function (btn, index) {
+        var item = items[index];
+        if (!item) return;
+        if (window.WeltenNexoraOrbitCards && typeof window.WeltenNexoraOrbitCards.syncOrbitButtonLabel === 'function') {
+          window.WeltenNexoraOrbitCards.syncOrbitButtonLabel(btn, item[1]);
+        } else {
+          var label = btn.querySelector('.nexora-orbit-card__label');
+          if (label) label.textContent = item[1];
+        }
       });
     }
 
@@ -8445,6 +8472,8 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-video-hero-boot.js?v=20260714livefix2" defer></script>
 <script src="assets/welten-mobile-nexora-nav.js?v=20260606f" defer></script>
 <script src="assets/welten-nexora-mobile-fix.js?v=20260622a" defer></script>
+<link rel="stylesheet" href="assets/welten-nexora-orbit-cards.css?v=20260714orbitCards1" />
+<script src="assets/welten-nexora-orbit-cards.js?v=20260714orbitCards1" defer></script>
 <link rel="stylesheet" href="assets/welten-desktop-contact-links.css" />
 <link rel="stylesheet" href="assets/welten-mobile-overrides.css?v=20260710mobile-subpage1" />
 <link rel="stylesheet" href="assets/welten-mobile-portraits.css?v=20260621live1" />

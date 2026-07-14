@@ -551,19 +551,32 @@
         var match = orbitItems.find(function (item) {
           return item[0] === go;
         });
-        if (match) btn.textContent = match[1];
+        if (match) {
+          if (window.WeltenNexoraOrbitCards && typeof window.WeltenNexoraOrbitCards.syncOrbitButtonLabel === "function") {
+            window.WeltenNexoraOrbitCards.syncOrbitButtonLabel(btn, match[1]);
+          } else {
+            var labelEl = btn.querySelector(".nexora-orbit-card__label");
+            if (labelEl) labelEl.textContent = match[1];
+            else btn.textContent = match[1];
+          }
+        }
       });
-      if (ring.querySelectorAll(".nexora-orbit-button").length !== orbitItems.length) {
+      var hasCards = !!ring.querySelector(".nexora-orbit-card__media");
+      if (ring.querySelectorAll(".nexora-orbit-button").length !== orbitItems.length || !hasCards) {
         ring.querySelectorAll(".nexora-orbit-button").forEach(function (b) {
           b.remove();
         });
         orbitItems.forEach(function (item, index) {
           var el = document.createElement("button");
           el.type = "button";
-          el.className = "nexora-orbit-button";
-          el.setAttribute("data-go", item[0]);
+          el.className = "nexora-orbit-button nexora-orbit-card";
           el.style.setProperty("--i", index);
-          el.textContent = item[1];
+          if (window.WeltenNexoraOrbitCards && typeof window.WeltenNexoraOrbitCards.fillOrbitButton === "function") {
+            window.WeltenNexoraOrbitCards.fillOrbitButton(el, item[0], item[1]);
+          } else {
+            el.setAttribute("data-go", item[0]);
+            el.textContent = item[1];
+          }
           ring.appendChild(el);
         });
       }

@@ -1,0 +1,104 @@
+/* NEXORA Orbit — Folien-Karten (Bild + Titel) ums Gehirn */
+
+.home-hero-experience .nexora-orbit-button.nexora-orbit-card,
+.welten-desktop-relocated-hero .nexora-orbit-button.nexora-orbit-card {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  width: clamp(168px, 13.2vw, 236px) !important;
+  min-width: clamp(168px, 13.2vw, 236px) !important;
+  max-width: clamp(168px, 13.2vw, 236px) !important;
+  height: clamp(176px, 15.6vw, 248px) !important;
+  min-height: clamp(176px, 15.6vw, 248px) !important;
+  max-height: clamp(176px, 15.6vw, 248px) !important;
+  padding: 8px 8px 10px !important;
+  gap: 8px !important;
+  border-radius: 18px !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  line-height: 1.15 !important;
+  text-transform: none !important;
+  letter-spacing: 0.02em !important;
+}
+
+.home-hero-experience .nexora-orbit-card__media,
+.welten-desktop-relocated-hero .nexora-orbit-card__media {
+  display: block !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(142, 220, 255, 0.28) !important;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(80, 190, 255, 0.22), transparent 52%),
+    linear-gradient(160deg, rgba(8, 24, 48, 0.95), rgba(2, 8, 18, 0.98)) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+}
+
+.home-hero-experience .nexora-orbit-card__img,
+.welten-desktop-relocated-hero .nexora-orbit-card__img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  pointer-events: none !important;
+  transform: scale(1.02) !important;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.home-hero-experience .nexora-orbit-button.nexora-orbit-card.is-front .nexora-orbit-card__img,
+.home-hero-experience .nexora-orbit-button.nexora-orbit-card:hover .nexora-orbit-card__img,
+.welten-desktop-relocated-hero .nexora-orbit-button.nexora-orbit-card.is-front .nexora-orbit-card__img,
+.welten-desktop-relocated-hero .nexora-orbit-button.nexora-orbit-card:hover .nexora-orbit-card__img {
+  transform: scale(1.06) !important;
+}
+
+.home-hero-experience .nexora-orbit-card__label,
+.welten-desktop-relocated-hero .nexora-orbit-card__label {
+  display: block !important;
+  flex: 0 0 auto !important;
+  padding: 2px 4px 0 !important;
+  font-size: clamp(0.78rem, 0.95vw, 1.02rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  text-align: center !important;
+  color: #f2f8ff !important;
+  text-shadow: 0 0 14px rgba(126, 224, 255, 0.35) !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+@media (max-width: 1024px) {
+  .home-hero-experience .nexora-orbit-button.nexora-orbit-card,
+  .welten-desktop-relocated-hero .nexora-orbit-button.nexora-orbit-card {
+    width: min(78vw, 280px) !important;
+    min-width: 0 !important;
+    max-width: min(78vw, 280px) !important;
+    height: auto !important;
+    min-height: 168px !important;
+    max-height: none !important;
+  }
+
+  .home-hero-experience .nexora-orbit-card__media,
+  .welten-desktop-relocated-hero .nexora-orbit-card__media {
+    aspect-ratio: 16 / 10 !important;
+    height: auto !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  .home-hero-experience .nexora-orbit-button.nexora-orbit-card,
+  .welten-desktop-relocated-hero .nexora-orbit-button.nexora-orbit-card {
+    width: clamp(200px, 11vw, 260px) !important;
+    min-width: clamp(200px, 11vw, 260px) !important;
+    max-width: clamp(200px, 11vw, 260px) !important;
+    height: clamp(200px, 13vw, 270px) !important;
+    min-height: clamp(200px, 13vw, 270px) !important;
+    max-height: clamp(200px, 13vw, 270px) !important;
+  }
+}
