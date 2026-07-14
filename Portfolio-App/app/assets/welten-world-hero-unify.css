@@ -1,7 +1,7 @@
 /**
  * Welten Hero Unify — gemeinsame Abstands-/Höhen-Verträge für NEXORA, PROFESSIONAL, FREIRAUM
  * Visuelle Themes (Farben, Videos, Effekte) bleiben in den Welt-Dateien.
- * Version: 20260714heroLock1
+ * Version: 20260714xlHero1
  */
 
 :root {
@@ -58,6 +58,33 @@
 @media (min-width: 1440px) {
   :root {
     --hero-top-offset: 40px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --hero-top-offset: 44px;
+    --hero-content-max: min(1280px, 72vw);
+    --world-hero-min: clamp(520px, 58svh, 820px);
+    --video-hero-min: clamp(560px, 56svh, 920px);
+  }
+}
+
+@media (min-width: 2560px) {
+  :root {
+    --hero-top-offset: 52px;
+    --hero-content-max: min(1575px, 61.5vw);
+    --world-hero-min: clamp(560px, 55svh, 960px);
+    --video-hero-min: clamp(640px, 55svh, 1100px);
+  }
+}
+
+@media (min-width: 3840px) {
+  :root {
+    --hero-top-offset: 64px;
+    --hero-content-max: min(2360px, 61.5vw);
+    --world-hero-min: clamp(640px, 52svh, 1200px);
+    --video-hero-min: clamp(720px, 52svh, 1400px);
   }
 }
 

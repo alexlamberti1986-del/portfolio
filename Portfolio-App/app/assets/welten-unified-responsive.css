@@ -91,7 +91,20 @@
   }
 }
 
-/* ── Gross/TV (65″ / 98″) — Proportionen synchron zu welten-large-display ── */
+/* ── Gross/TV (27″ / 65″ / 98″) — Proportionen synchron zu welten-large-display ── */
+@media (min-width: 1920px) {
+  .brand-mark,
+  .header-meta {
+    font-size: clamp(0.9rem, 1vw, 1.02rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  .btn-menu {
+    padding: 10px 16px !important;
+    font-size: clamp(0.9rem, 1vw, 1rem) !important;
+  }
+}
+
 @media (min-width: 2560px) {
   .brand-mark,
   .header-meta {

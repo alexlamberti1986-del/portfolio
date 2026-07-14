@@ -25,10 +25,9 @@ Outputs in `dist/`:
 
 - `main.js` — Electron main process (window, security, GPU)
 - `preload.js` — safe bridge to renderer
-- `app/index.html` — shell (world bar, lazy iframes, audio toggle)
-- `app/shell.js` — world switching logic
-- `app/NEXORA.html`, `PROFESSIONAL.html`, `FREIRAUM.html`
-- `app/assets/` — charts, images, audio
+- `app/index.html` / `app/3-Welten-Master-iframe.html` — shell (world bar, iframes)
+- `app/MULTIVERSUM.html`, `NEXORA.html`, `PROFESSIONAL.html`, `FREIRAUM.html`
+- `app/assets/` — CSS/JS, media, audio
 
 ## Development vs production
 

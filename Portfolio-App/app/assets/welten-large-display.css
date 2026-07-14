@@ -1,8 +1,79 @@
 /**
- * Large displays (65″ / 98″) — proportional to 27″ desktop baseline.
- * 65″ @ 150% Windows-Skalierung liefert oft genau 2560px CSS-Breite → ab 2560px.
- * Laptop/Tablet/Handy (≤1919) und klassischer Desktop (1920–2559) unverändert.
+ * Large displays — 27″ Desktop bis 98″ TV.
+ * 1920+ = klassischer Grossmonitor / 27″+
+ * 2560+ = 65″ @ typ. 150% Windows-Skalierung
+ * 3840+ = native 4K / 98″
+ * Laptop/Tablet/Handy (≤1919): unverändert (andere Stylesheets).
  */
+
+/* ── Gemeinsame Hero-Top-Locks für alle Grossbild-Stufen ── */
+@media (min-width: 1920px) {
+  :root {
+    --hero-gap: 0px;
+    --hero-top-offset: 44px;
+    --hero-content-max: min(1280px, 72vw);
+    --world-hero-min: clamp(520px, 58svh, 820px);
+    --video-hero-min: clamp(560px, 56svh, 920px);
+    --welten-xl-content: min(1280px, 72vw);
+  }
+
+  /* Kein Slide-Top-Padding — sonst rutscht DNA-Hero nach Switch/Refresh */
+  body[data-world="nexora"] .slide,
+  body[data-world="vertex"] .slide,
+  body[data-world="freiraum"] .slide,
+  body[data-world="general"] #slide-home.slide,
+  body.welten-desktop-subpage-hero--on .slide.active:not(#slide-home),
+  body.welten-desktop-subpage-hero--on .slide.active:not(#slide-home) > .slide-inner {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  body[data-world="nexora"] #slide-home .home-hero-experience,
+  body[data-world="vertex"] #slide-home .home-hero-experience,
+  body[data-world="freiraum"] #slide-home .home-hero-experience,
+  body[data-world="nexora"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="vertex"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="freiraum"] .welten-desktop-relocated-hero.home-hero-experience,
+  body[data-world="nexora"] .welten-desktop-hero-host,
+  body[data-world="vertex"] .welten-desktop-hero-host,
+  body[data-world="freiraum"] .welten-desktop-hero-host {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  #slide-home.slide {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .home-main-block,
+  .slide-inner--home .home-main-block,
+  .hero-inner,
+  .hero-content {
+    max-width: var(--hero-content-max) !important;
+  }
+
+  /* Seiten-Nav auf 27″+ */
+  .experience-rail,
+  body[data-world="general"] .experience-rail,
+  body[data-world="nexora"] .experience-rail,
+  body[data-world="vertex"] .experience-rail,
+  body[data-world="freiraum"] .experience-rail,
+  html.welten-live-shell .experience-rail {
+    display: grid !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 800 !important;
+  }
+
+  .slide:not(#slide-home) {
+    padding-top: 0 !important;
+    padding-left: clamp(28px, 3.6vw, 80px) !important;
+    padding-right: clamp(120px, 6.2vw, 180px) !important;
+    padding-bottom: 28px !important;
+  }
+}
 
 /* ── 65″ tier: 4K @ ~150 % scaling / ultrawide (inkl. genau 2560px) ── */
 @media (min-width: 2560px) {
@@ -20,6 +91,11 @@
     --header-air-bottom: 18px;
     --radius-lg: 32px;
     --radius-md: 20px;
+    --hero-top-offset: 52px;
+    --hero-content-max: min(1575px, 61.5vw);
+    --world-hero-min: clamp(560px, 55svh, 960px);
+    --video-hero-min: clamp(640px, 55svh, 1100px);
+    --hero-gap: 0px;
   }
 
   .slide-inner,
@@ -31,8 +107,24 @@
     max-width: var(--welten-xl-content) !important;
   }
 
-  .slide {
-    padding: clamp(24px, 3.2vw, 64px) clamp(28px, 3.6vw, 80px) 28px !important;
+  /* Nur L/R/Bottom — Top bleibt 0 für Hero-Parität */
+  .slide:not(#slide-home) {
+    padding-top: 0 !important;
+    padding-left: clamp(28px, 3.6vw, 80px) !important;
+    padding-right: clamp(120px, 6.2vw, 180px) !important;
+    padding-bottom: 28px !important;
+  }
+
+  #slide-home.slide {
+    padding-top: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  body[data-world="nexora"] .slide,
+  body[data-world="vertex"] .slide,
+  body[data-world="freiraum"] .slide {
+    padding-top: 0 !important;
   }
 
   /* Seiten-Nav sichtbar + mehr Freiraum rechts (kein Überlapp mit Boxen/Karten) */
@@ -51,16 +143,6 @@
     pointer-events: auto !important;
     z-index: 800 !important;
     right: max(32px, env(safe-area-inset-right)) !important;
-  }
-
-  @media (min-width: 1920px) {
-    .slide {
-      padding-right: clamp(120px, 6.2vw, 180px) !important;
-    }
-
-    #slide-home.slide {
-      padding-right: 0 !important;
-    }
   }
 
   .brand-mark,
@@ -288,6 +370,11 @@
     --header-air-bottom: 20px;
     --radius-lg: 36px;
     --radius-md: 22px;
+    --hero-top-offset: 64px;
+    --hero-content-max: min(2360px, 61.5vw);
+    --world-hero-min: clamp(640px, 52svh, 1200px);
+    --video-hero-min: clamp(720px, 52svh, 1400px);
+    --hero-gap: 0px;
   }
 
   .slide-inner,
@@ -299,8 +386,23 @@
     max-width: var(--welten-xl-content) !important;
   }
 
-  .slide {
-    padding: clamp(28px, 2.8vw, 80px) clamp(36px, 3.2vw, 112px) 32px !important;
+  .slide:not(#slide-home) {
+    padding-top: 0 !important;
+    padding-left: clamp(36px, 3.2vw, 112px) !important;
+    padding-right: clamp(140px, 5.5vw, 200px) !important;
+    padding-bottom: 32px !important;
+  }
+
+  #slide-home.slide {
+    padding-top: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  body[data-world="nexora"] .slide,
+  body[data-world="vertex"] .slide,
+  body[data-world="freiraum"] .slide {
+    padding-top: 0 !important;
   }
 
   .experience-rail,
@@ -321,11 +423,13 @@
   }
 
   @media (min-width: 1920px) {
-    .slide {
+    .slide:not(#slide-home) {
+      padding-top: 0 !important;
       padding-right: clamp(148px, 5.5vw, 240px) !important;
     }
 
     #slide-home.slide {
+      padding-top: 0 !important;
       padding-right: 0 !important;
     }
   }
