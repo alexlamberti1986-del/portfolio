@@ -186,9 +186,17 @@
     if (cta) {
       var btns = cta.querySelectorAll(".btn");
       btns.forEach(function (btn) {
-        if (btn.textContent.indexOf("über") >= 0 || btn.textContent.indexOf("Über") >= 0) {
-          btn.setAttribute("data-go", "contact");
-          btn.textContent = "Kontakt aufnehmen";
+        var go = (btn.getAttribute("data-go") || "").toLowerCase();
+        var label = (btn.textContent || "").toLowerCase();
+        /* Nie „Über mich“ auf Kontakt umbiegen — CTA bleibt About */
+        if (
+          go === "about" ||
+          label.indexOf("über") >= 0 ||
+          label.indexOf("about") >= 0 ||
+          label.indexOf("propos") >= 0 ||
+          label.indexOf("chi sono") >= 0
+        ) {
+          btn.setAttribute("data-go", "about");
         }
       });
     }

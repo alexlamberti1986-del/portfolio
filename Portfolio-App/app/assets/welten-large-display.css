@@ -73,6 +73,35 @@
     padding-right: clamp(120px, 6.2vw, 180px) !important;
     padding-bottom: 28px !important;
   }
+
+  /* Home: Text/Karten freiräumen; Videos/Hero-Stage volle Breite behalten */
+  #slide-home .home-main-block,
+  #slide-home .home-layout,
+  #slide-home .home-copy {
+    max-width: min(var(--hero-content-max), calc(100vw - 200px)) !important;
+    box-sizing: border-box !important;
+  }
+
+  #slide-home .al-world-video-hero,
+  #slide-home #alWorldVideoHero,
+  #slide-home .home-hero-experience,
+  #slide-home #mvParallaxHero,
+  #slide-home .mv-scroll-story,
+  body.welten-desktop-subpage-hero--on .welten-desktop-relocated-hero.al-world-video-hero {
+    max-width: none !important;
+    width: 100% !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Offerte & alle Unterseiten: gleicher Rail-Freiraum wie 26″ */
+  #slide-offerte,
+  #slide-projects,
+  #slide-leistungen,
+  #slide-about,
+  #slide-contact {
+    padding-right: clamp(120px, 6.2vw, 180px) !important;
+  }
 }
 
 /* ── 65″ tier: 4K @ ~150 % scaling / ultrawide (inkl. genau 2560px) ── */
@@ -214,13 +243,27 @@
   #slide-projects .slide-inner,
   #slide-leistungen .slide-inner,
   #slide-about .slide-inner,
-  #slide-contact .slide-inner {
+  #slide-contact .slide-inner,
+  #slide-offerte .slide-inner {
     box-sizing: border-box !important;
   }
 
   .slide:not(#slide-home) .slide-inner {
-    max-width: min(var(--welten-xl-content), calc(100vw - 220px)) !important;
+    max-width: min(var(--welten-xl-content), calc(100vw - 240px)) !important;
     margin-inline: auto !important;
+  }
+
+  #slide-home .home-main-block,
+  #slide-home .home-layout {
+    max-width: min(var(--hero-content-max), calc(100vw - 240px)) !important;
+  }
+
+  #slide-home .al-world-video-hero,
+  #slide-home #alWorldVideoHero,
+  #slide-home .home-hero-experience,
+  #slide-home #mvParallaxHero {
+    max-width: none !important;
+    width: 100% !important;
   }
 
   .section-title,
@@ -480,6 +523,19 @@
   .slide:not(#slide-home) .slide-inner {
     max-width: min(var(--welten-xl-content), calc(100vw - 280px)) !important;
     margin-inline: auto !important;
+  }
+
+  #slide-home .home-main-block,
+  #slide-home .home-layout {
+    max-width: min(var(--hero-content-max), calc(100vw - 280px)) !important;
+  }
+
+  #slide-home .al-world-video-hero,
+  #slide-home #alWorldVideoHero,
+  #slide-home .home-hero-experience,
+  #slide-home #mvParallaxHero {
+    max-width: none !important;
+    width: 100% !important;
   }
 
   .section-title,

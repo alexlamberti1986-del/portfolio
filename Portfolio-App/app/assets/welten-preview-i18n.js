@@ -709,7 +709,10 @@
     }
     var cta = copy.querySelectorAll(".cta-row .btn");
     if (cta[0] && h.cta1) cta[0].textContent = h.cta1;
-    if (cta[1] && h.cta2) cta[1].textContent = h.cta2;
+    if (cta[1] && h.cta2) {
+      cta[1].textContent = h.cta2;
+      cta[1].setAttribute("data-go", "about");
+    }
     var tag = doc.querySelector(".mv-world-hero__tag");
     if (tag && h.tag) tag.textContent = h.tag;
     var staticTag = doc.querySelector(".mv-static-hero__tag");

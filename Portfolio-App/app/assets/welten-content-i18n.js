@@ -345,8 +345,14 @@
   function applyHomeCtas(doc, lang) {
     var pack = lp(CTA, lang);
     doc.querySelectorAll("#slide-home .cta-row .btn").forEach(function (btn, i) {
-      if (i === 0 && pack.cta1) btn.textContent = pack.cta1;
-      if (i === 1 && pack.cta2) btn.textContent = pack.cta2;
+      if (i === 0 && pack.cta1) {
+        btn.textContent = pack.cta1;
+        if (!btn.getAttribute("data-go")) btn.setAttribute("data-go", "projects");
+      }
+      if (i === 1 && pack.cta2) {
+        btn.textContent = pack.cta2;
+        btn.setAttribute("data-go", "about");
+      }
     });
   }
 
