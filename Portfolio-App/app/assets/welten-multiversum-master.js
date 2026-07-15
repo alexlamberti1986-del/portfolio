@@ -1108,6 +1108,7 @@
       postFrame(f, { type: "portfolio-world-pause", paused: true });
       postFrame(f, { type: "portfolio-cleanup-transition" });
       postFrame(f, { type: "mv-stop-iframe-bgm" });
+      if (j === 0) postFrame(f, { type: "mv-galaxy-hard-hide" });
       try {
         var win = f.contentWindow;
         if (win && typeof win.__mvStopIframeWorldBgm === "function") {
@@ -1118,6 +1119,7 @@
     /* Extra hard-stop Multiversum-Audio (Frame 0) */
     if (i !== 0 && frames[0]) {
       hardHideFrame(frames[0]);
+      postFrame(frames[0], { type: "mv-galaxy-hard-hide" });
       try {
         var mvWin = frames[0].contentWindow;
         if (mvWin && typeof mvWin.__mvStopIframeWorldBgm === "function") {

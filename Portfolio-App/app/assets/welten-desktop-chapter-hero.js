@@ -5,11 +5,12 @@
 (function () {
   "use strict";
 
-  var VER = "20260715galaxy13";
+  var VER = "20260715galaxy14";
   var bootTimer = null;
   var realignTimers = [];
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var mqDesktop = window.matchMedia("(min-width: 1025px)");
+  var mqGalaxy = window.matchMedia("(min-width: 1280px) and (min-height: 700px)");
 
   function isDesktop() {
     return mqDesktop.matches;
@@ -96,9 +97,16 @@
       ".welten-desktop-relocated-hero#alWorldVideoHero, #alWorldVideoHero.welten-desktop-relocated-hero"
     );
     if (relocatedVideo) return relocatedVideo;
-    /* Galaxy Walk Home: Kapitel-Nav bleibt auf #slide-home — nicht als Unterseiten-Hero behandeln */
+    /* Galaxy Walk Home (nur ~14″+): Kapitel-Nav bleibt auf #slide-home — nicht als Unterseiten-Hero */
     var galaxyChrome = document.getElementById("alGalaxyHomeChrome");
-    if (galaxyChrome && document.getElementById("alGalaxyGangHero")) return galaxyChrome;
+    if (
+      galaxyChrome &&
+      document.getElementById("alGalaxyGangHero") &&
+      document.body.getAttribute("data-welten-galaxy-hero") === "1" &&
+      mqGalaxy.matches
+    ) {
+      return galaxyChrome;
+    }
     var sub = document.querySelector(
       ".slide.active .mv-static-hero.welten-desktop-subpage-mv-hero:not(#alGalaxyHomeChrome):not(.al-galaxy-home-chrome)"
     );

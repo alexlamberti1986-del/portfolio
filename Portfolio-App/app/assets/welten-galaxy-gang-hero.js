@@ -1,18 +1,20 @@
 /**
  * Multiversum Home — Galaxy Walk als Hero + Kapitel-Nav + sichtbarer Home-Inhalt.
+ * Galaxy nur ab ~14″ Laptop: (min-width: 1280px) and (min-height: 700px).
  * Schwerer Iframe-Download erst nach idle; Overlay kurz; kein Tab-Blocker.
  */
 (function () {
   "use strict";
 
-  window.__mvUseGalaxyHome = true;
-
-  var VER = "20260715galaxy13";
+  var VER = "20260715galaxy14";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
-  var ENABLED = true;
+  /* ~14″ Laptop+; Tablets (auch Landscape ~1024–1366) bleiben aus. */
+  var GALAXY_MQ = "(min-width: 1280px) and (min-height: 700px)";
+  var mqGalaxy = window.matchMedia ? window.matchMedia(GALAXY_MQ) : null;
   var iframeSrcStarted = false;
   var markedReady = false;
+  var galaxyLive = false;
   var CHAPTERS = [
     { id: "home", label: "Home" },
     { id: "projects", label: "Projekte" },
@@ -21,6 +23,22 @@
     { id: "contact", label: "Kontakt" },
     { id: "offerte", label: "Offerte" },
   ];
+
+  function isGalaxyViewport() {
+    try {
+      if (mqGalaxy) return !!mqGalaxy.matches;
+      return window.innerWidth >= 1280 && window.innerHeight >= 700;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function setUseGalaxyFlag(on) {
+    window.__mvUseGalaxyHome = !!on;
+  }
+
+  /* Default off until viewport gate passes — no phone/tablet iframe load. */
+  setUseGalaxyFlag(isGalaxyViewport());
 
   function worldKey() {
     return document.body.getAttribute("data-world") || "";
@@ -43,7 +61,7 @@
     try {
       document.body.classList.add("mv-home-ready");
       document.body.classList.add("is-below-parallax");
-      document.body.setAttribute("data-welten-galaxy-hero", "1");
+      if (galaxyLive) document.body.setAttribute("data-welten-galaxy-hero", "1");
       document.dispatchEvent(new CustomEvent("mv-hero-ready"));
       document.dispatchEvent(new CustomEvent("welten-galaxy-hero-mounted"));
     } catch (e) {}
@@ -104,6 +122,12 @@
       chrome.style.opacity = "0";
       chrome.style.pointerEvents = "none";
     }
+    var section = document.getElementById("alGalaxyGangHero");
+    if (section) {
+      section.style.visibility = "hidden";
+      section.style.opacity = "0";
+      section.style.pointerEvents = "none";
+    }
     try {
       if (typeof window.__mvStopIframeWorldBgm === "function") {
         window.__mvStopIframeWorldBgm();
@@ -112,6 +136,7 @@
   }
 
   function endOutboundLeave() {
+    if (!galaxyLive || !isGalaxyViewport()) return;
     try {
       document.documentElement.classList.remove("mv-galaxy-outbound");
       document.body.classList.remove("mv-galaxy-outbound");
@@ -121,6 +146,12 @@
       chrome.style.visibility = "";
       chrome.style.opacity = "";
       chrome.style.pointerEvents = "";
+    }
+    var section = document.getElementById("alGalaxyGangHero");
+    if (section) {
+      section.style.visibility = "";
+      section.style.opacity = "";
+      section.style.pointerEvents = "";
     }
   }
 
@@ -135,7 +166,14 @@
     });
   }
 
+  function insertAfter(ref, node) {
+    if (!ref || !node || !ref.parentNode) return;
+    if (ref.nextSibling) ref.parentNode.insertBefore(node, ref.nextSibling);
+    else ref.parentNode.appendChild(node);
+  }
+
   function ensureChapterNav() {
+    if (!isGalaxyViewport()) return;
     var nav = document.getElementById("alGalaxyChapterNav");
     var wrap = document.getElementById("alGalaxyHomeChrome");
     var section = document.getElementById("alGalaxyGangHero");
@@ -160,8 +198,8 @@
           );
         }).join("") +
         "</nav></div>";
-      /* Chrome OBERHALB des Galaxy Walks */
-      section.parentNode.insertBefore(wrap, section);
+      /* Chrome UNTERHALB des Galaxy Walks */
+      insertAfter(section, wrap);
       nav = wrap.querySelector("#alGalaxyChapterNav");
     } else if (wrap) {
       /* Bestehendes Markup an Unterseiten-Struktur angleichen */
@@ -180,9 +218,9 @@
       if (nav) nav.classList.remove("al-galaxy-chapter-nav");
     }
 
-    /* Chrome immer direkt vor dem Galaxy-Hero halten */
-    if (wrap && section && wrap.parentNode === section.parentNode && wrap.nextElementSibling !== section) {
-      section.parentNode.insertBefore(wrap, section);
+    /* Chrome immer direkt NACH dem Galaxy-Hero halten */
+    if (wrap && section && wrap.parentNode === section.parentNode && section.nextElementSibling !== wrap) {
+      insertAfter(section, wrap);
     }
 
     if (nav && nav.getAttribute("data-galaxy-nav-bound") !== "1") {
@@ -251,6 +289,7 @@
 
   function onGalaxyNavigate(e) {
     if (!e || !e.data || e.data.type !== "galaxy-navigate") return;
+    if (!galaxyLive) return;
     var frame = document.getElementById("alGalaxyGangFrame");
     if (frame && e.source && frame.contentWindow && e.source !== frame.contentWindow) return;
 
@@ -289,6 +328,7 @@
 
   function startIframeSrc(frame) {
     if (!frame || iframeSrcStarted) return;
+    if (!isGalaxyViewport() || !galaxyLive) return;
     if (!isHomeActive()) return;
     var wanted = frame.getAttribute("data-src") || SRC;
     var current = frame.getAttribute("src") || "";
@@ -300,6 +340,15 @@
     frame.setAttribute("src", wanted);
   }
 
+  function blankGalaxyIframe(frame) {
+    if (!frame) return;
+    try {
+      frame.removeAttribute("src");
+      frame.src = "about:blank";
+    } catch (eBlank) {}
+    iframeSrcStarted = false;
+  }
+
   function setGalaxyIframePaused(paused) {
     var section = document.getElementById("alGalaxyGangHero");
     var frame = document.getElementById("alGalaxyGangFrame");
@@ -308,7 +357,7 @@
       if (paused) {
         section.style.visibility = "hidden";
         section.style.pointerEvents = "none";
-      } else if (isMultiversum() && isHomeActive()) {
+      } else if (galaxyLive && isMultiversum() && isHomeActive()) {
         section.style.visibility = "";
         section.style.pointerEvents = "";
       }
@@ -321,30 +370,121 @@
         if (frame.contentWindow) {
           frame.contentWindow.postMessage({ type: "portfolio-world-pause", paused: true }, "*");
         }
-      } else {
+      } else if (galaxyLive) {
         frame.style.visibility = "";
         frame.style.pointerEvents = "";
       }
     } catch (ePause) {}
   }
 
+  function hideGalaxyDom() {
+    var section = document.getElementById("alGalaxyGangHero");
+    var chrome = document.getElementById("alGalaxyHomeChrome");
+    var frame = document.getElementById("alGalaxyGangFrame");
+    if (section) {
+      section.classList.remove("is-galaxy-live", "is-ready");
+      section.setAttribute("hidden", "");
+      section.setAttribute("aria-hidden", "true");
+      section.style.display = "none";
+      section.style.visibility = "hidden";
+      section.style.opacity = "0";
+      section.style.pointerEvents = "none";
+      section.style.height = "0";
+      section.style.minHeight = "0";
+      section.style.maxHeight = "0";
+      section.style.overflow = "hidden";
+    }
+    if (chrome) {
+      chrome.setAttribute("hidden", "");
+      chrome.setAttribute("aria-hidden", "true");
+      chrome.style.display = "none";
+      chrome.style.visibility = "hidden";
+      chrome.style.opacity = "0";
+      chrome.style.pointerEvents = "none";
+    }
+    if (frame) {
+      try {
+        if (frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: "portfolio-world-pause", paused: true }, "*");
+        }
+      } catch (eP) {}
+      blankGalaxyIframe(frame);
+    }
+  }
+
+  function showGalaxyDom() {
+    var section = document.getElementById("alGalaxyGangHero");
+    var chrome = document.getElementById("alGalaxyHomeChrome");
+    if (section) {
+      section.removeAttribute("hidden");
+      section.removeAttribute("aria-hidden");
+      section.classList.add("is-galaxy-live");
+      section.style.removeProperty("display");
+      section.style.removeProperty("visibility");
+      section.style.removeProperty("opacity");
+      section.style.removeProperty("pointer-events");
+      section.style.removeProperty("height");
+      section.style.removeProperty("min-height");
+      section.style.removeProperty("max-height");
+      section.style.removeProperty("overflow");
+    }
+    if (chrome) {
+      chrome.removeAttribute("hidden");
+      chrome.removeAttribute("aria-hidden");
+      chrome.style.removeProperty("display");
+      chrome.style.removeProperty("visibility");
+      chrome.style.removeProperty("opacity");
+      chrome.style.removeProperty("pointer-events");
+    }
+  }
+
+  function restoreFallbackHero() {
+    try {
+      document.dispatchEvent(new CustomEvent("mv-restore-hero"));
+    } catch (eRest) {}
+  }
+
+  function teardownGalaxy(opts) {
+    opts = opts || {};
+    var wasLive = galaxyLive;
+    galaxyLive = false;
+    setUseGalaxyFlag(false);
+    markedReady = false;
+    try {
+      document.body.removeAttribute("data-welten-galaxy-hero");
+    } catch (eAttr) {}
+    try {
+      document.documentElement.classList.remove("mv-galaxy-outbound");
+      document.body.classList.remove("mv-galaxy-outbound");
+    } catch (eOut) {}
+    hideGalaxyDom();
+    if (wasLive || opts.forceRestore) restoreFallbackHero();
+  }
+
   function onShellWorldMessage(e) {
     if (!e || !e.data || !e.data.type) return;
     var t = e.data.type;
-    if (t === "portfolio-world-pause" || t === "mv-stop-iframe-bgm" || t === "portfolio-cleanup-transition") {
+    if (
+      t === "portfolio-world-pause" ||
+      t === "mv-stop-iframe-bgm" ||
+      t === "portfolio-cleanup-transition" ||
+      t === "mv-galaxy-hard-hide"
+    ) {
       beginOutboundLeave();
       return;
     }
     if (t === "portfolio-world-enter" || t === "portfolio-world-reveal") {
+      if (!galaxyLive || !isGalaxyViewport()) return;
       endOutboundLeave();
       if (isMultiversum() && isHomeActive()) setGalaxyIframePaused(false);
     }
   }
 
   function scheduleHeavyGalaxyLoad(frame, section) {
-    if (!frame) return;
+    if (!frame || !isGalaxyViewport() || !galaxyLive) return;
 
     function kick() {
+      if (!galaxyLive || !isGalaxyViewport()) return;
       startIframeSrc(frame);
     }
 
@@ -365,30 +505,42 @@
     frame.addEventListener(
       "load",
       function () {
+        if (!galaxyLive) return;
         markUiReady(section);
       },
       { once: true }
     );
     /* Overlay schnell weg — Seite ist schon nutzbar */
     window.setTimeout(function () {
+      if (!galaxyLive) return;
       markUiReady(section);
     }, 1800);
   }
 
   function ensureHero() {
-    if (!ENABLED || !isMultiversum()) return;
+    if (!isMultiversum()) return;
+    if (!isGalaxyViewport()) {
+      teardownGalaxy({ forceRestore: true });
+      return;
+    }
 
     var section = document.getElementById("alGalaxyGangHero");
     var frame = document.getElementById("alGalaxyGangFrame");
     if (!section || !frame) return;
 
+    setUseGalaxyFlag(true);
+    galaxyLive = true;
+    showGalaxyDom();
     purgeLegacyHeroes();
     document.body.setAttribute("data-welten-galaxy-hero", "1");
     ensureChapterNav();
     revealHomeContent();
     signalReady();
 
-    if (!isHomeActive()) return;
+    if (!isHomeActive()) {
+      setGalaxyIframePaused(true);
+      return;
+    }
 
     if (!frame.getAttribute("data-src")) {
       frame.setAttribute("data-src", SRC);
@@ -397,11 +549,7 @@
     var srcNow = frame.getAttribute("src") || "";
     if (srcNow.indexOf("galaxy-gang/") !== -1 && document.readyState !== "complete") {
       frame.setAttribute("data-src", srcNow);
-      try {
-        frame.removeAttribute("src");
-        frame.src = "about:blank";
-      } catch (eBlank) {}
-      iframeSrcStarted = false;
+      blankGalaxyIframe(frame);
     }
 
     scheduleHeavyGalaxyLoad(frame, section);
@@ -409,23 +557,57 @@
 
   function sync() {
     if (!isMultiversum()) return;
+    if (!isGalaxyViewport()) {
+      teardownGalaxy({ forceRestore: true });
+      revealHomeContent();
+      return;
+    }
     ensureHero();
     syncChapterNav();
     revealHomeContent();
   }
 
+  function onViewportChange() {
+    sync();
+  }
+
   function boot() {
-    window.__mvUseGalaxyHome = true;
-    if (!isMultiversum()) return;
+    if (!isMultiversum()) {
+      setUseGalaxyFlag(false);
+      hideGalaxyDom();
+      return;
+    }
+
+    if (!isGalaxyViewport()) {
+      teardownGalaxy({ forceRestore: false });
+      /* Fallback hero via world.js path when __mvUseGalaxyHome is false */
+      setUseGalaxyFlag(false);
+      hideGalaxyDom();
+      revealHomeContent();
+      try {
+        document.body.classList.add("mv-home-ready", "is-below-parallax");
+      } catch (eReady) {}
+    } else {
+      setUseGalaxyFlag(true);
+      ensureHero();
+    }
+
     window.addEventListener("message", onGalaxyNavigate);
     window.addEventListener("message", onShellWorldMessage);
-    ensureHero();
-
     window.addEventListener("portfolio-world-reveal", sync);
     window.addEventListener("portfolio-world-enter", sync);
 
+    if (mqGalaxy) {
+      if (typeof mqGalaxy.addEventListener === "function") {
+        mqGalaxy.addEventListener("change", onViewportChange);
+      } else if (typeof mqGalaxy.addListener === "function") {
+        mqGalaxy.addListener(onViewportChange);
+      }
+    }
+
     try {
       new MutationObserver(function () {
+        if (!galaxyLive || !isGalaxyViewport()) return;
         syncChapterNav();
         if (!isHomeActive()) return;
         if (
@@ -459,6 +641,9 @@
   window.WeltenGalaxyGangHero = {
     remount: ensureHero,
     sync: sync,
+    teardown: teardownGalaxy,
+    isEnabled: isGalaxyViewport,
     version: VER,
+    mq: GALAXY_MQ,
   };
 })();
