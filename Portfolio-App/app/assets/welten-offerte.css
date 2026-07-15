@@ -2,19 +2,30 @@
 
 #slide-offerte.slide {
   overflow-x: clip;
-  padding-bottom: clamp(12px, 2vw, 20px) !important;
+  padding-bottom: clamp(8px, 1.5vw, 16px) !important;
+  /* Kein erzwungenes Vollbild — sonst Leerraum unter dem Formular */
+  min-height: 0 !important;
+  height: auto !important;
+  align-content: start !important;
+}
+
+#slide-offerte.slide.active {
+  min-height: 0 !important;
 }
 
 #slide-offerte .slide-inner.offerte-layout {
   display: grid !important;
   grid-template-columns: 1fr !important;
-  gap: clamp(20px, 3vw, 36px) !important;
+  gap: clamp(16px, 2.4vw, 28px) !important;
   align-items: start !important;
+  align-content: start !important;
   width: 100%;
   max-width: min(1280px, calc(100vw - clamp(32px, 6vw, 128px))) !important;
   margin: 0 auto !important;
-  padding: 0 clamp(18px, 4vw, 64px) clamp(12px, 2vw, 20px) !important;
+  padding: 0 clamp(18px, 4vw, 64px) clamp(8px, 1.5vw, 16px) !important;
   box-sizing: border-box !important;
+  min-height: 0 !important;
+  height: auto !important;
 }
 
 @media (min-width: 1025px) {
@@ -22,10 +33,18 @@
   body.welten-desktop-subpage-hero--on #slide-offerte .slide-inner.offerte-layout {
     padding-top: 0 !important;
   }
+
+  /* Desktop-Subpage-Hero: Offerte-Inhalt direkt unter Hero, kein Stretch darunter */
+  body.welten-desktop-subpage-hero--on #slide-offerte.slide.active,
+  body.welten-desktop-subpage-hero--on #slide-offerte.slide.active > .slide-inner.offerte-layout {
+    min-height: 0 !important;
+    height: auto !important;
+  }
 }
 
 #slide-offerte .offerte-copy {
   max-width: 42rem;
+  margin-bottom: 0;
 }
 
 #slide-offerte .welten-leadform-wrap,
@@ -33,16 +52,19 @@
   min-width: 0;
   width: 100%;
   height: auto;
-  margin: 0;
+  min-height: 0 !important;
+  max-height: none;
+  margin: 0 0 clamp(4px, 1vw, 12px) 0 !important;
   overflow: hidden;
   border-radius: var(--radius-lg, 28px);
   line-height: 0;
+  flex-grow: 0 !important;
 }
 
 #slide-offerte .welten-leadform-frame {
   display: block;
   width: 100%;
-  min-height: 0;
+  min-height: 0 !important;
   height: auto;
   margin: 0;
   padding: 0;
@@ -61,12 +83,28 @@
   #slide-offerte .slide-inner.offerte-layout {
     display: flex !important;
     flex-direction: column !important;
-    gap: 14px !important;
-    padding: 14px 14px 18px !important;
+    gap: 12px !important;
+    padding: 12px 14px 12px !important;
     max-width: min(720px, calc(100vw - 20px)) !important;
   }
 
   #slide-offerte .offerte-copy {
     padding: 16px !important;
+  }
+
+  #slide-offerte .welten-leadform-wrap,
+  #slide-offerte .welten-offerte-form-wrap {
+    margin-bottom: 8px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #slide-offerte.slide {
+    padding-bottom: 8px !important;
+  }
+
+  #slide-offerte .slide-inner.offerte-layout {
+    gap: 10px !important;
+    padding: 10px 12px 8px !important;
   }
 }

@@ -35,7 +35,7 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260714offerte-v5"
+      "&v=20260715offerteGap1"
     );
   }
 
