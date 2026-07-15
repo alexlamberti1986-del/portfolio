@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /*-test.html
 Disallow: /MULTIVERSUM-flight*
+Disallow: /_tmp
+Disallow: /_tmp-*
 
 Sitemap: https://www.alexlamberti.ch/sitemap.xml
