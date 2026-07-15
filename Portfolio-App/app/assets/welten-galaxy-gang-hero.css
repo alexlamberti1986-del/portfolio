@@ -1,17 +1,18 @@
-/* Multiversum Home: Galaxy-Gang statt Video-Hero */
+/* Multiversum Home: Galaxy-Gang als Haupt-Hero (ersetzt Video + überlagert Parallax) */
 
 #alGalaxyGangHero.al-galaxy-gang-hero {
   position: relative;
-  z-index: 3;
+  z-index: 8;
   width: 100%;
+  max-width: none;
   margin: 0 0 clamp(12px, 2vw, 24px);
-  border-radius: clamp(18px, 2vw, 28px);
+  border-radius: 0;
   overflow: hidden;
   isolation: isolate;
   background: #05070f;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
-  min-height: clamp(520px, calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px) - 48px), 980px);
-  height: clamp(520px, calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px) - 48px), 980px);
+  box-shadow: none;
+  min-height: calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px));
+  height: calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px));
 }
 
 #alGalaxyGangHero .al-galaxy-gang-hero__frame {
@@ -22,37 +23,73 @@
   background: #05070f;
 }
 
+#alGalaxyGangHero .al-galaxy-gang-hero__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(96, 220, 255, 0.12), transparent 42%),
+    linear-gradient(180deg, #070b16 0%, #05070f 100%);
+  color: #dcecff;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  transition: opacity 0.35s ease;
+}
+
+#alGalaxyGangHero.is-ready .al-galaxy-gang-hero__loading {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Parallax-/Static-Hero aus — Galaxy ist die Home-Bühne */
+body[data-welten-galaxy-hero="1"][data-current-slide="home"] #mvParallaxHero,
+body[data-welten-galaxy-hero="1"][data-current-slide="home"] #mvStaticHero,
+body[data-welten-galaxy-hero="1"][data-current-slide="home"] #dnaStage,
+body[data-welten-galaxy-hero="1"][data-current-slide="home"] .home-hero-experience,
+body[data-welten-galaxy-hero="1"] #slide-home.active #mvParallaxHero,
+body[data-welten-galaxy-hero="1"] #slide-home.active #mvStaticHero {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
 body[data-welten-galaxy-hero="1"] #slide-home .al-world-video-hero--multiversum,
 body[data-welten-galaxy-hero="1"] #alWorldVideoHero.al-world-video-hero--multiversum {
   display: none !important;
 }
 
-/* Weniger Doppel-Hero-Rauschen unter Galaxy */
-body[data-welten-galaxy-hero="1"][data-current-slide="home"] #mvParallaxHero .mv-scroll-story__rail,
-body[data-welten-galaxy-hero="1"][data-current-slide="home"] #mvParallaxHero .world-core-label {
-  opacity: 0.35;
+body[data-welten-galaxy-hero="1"] #slide-home.slide {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body[data-welten-galaxy-hero="1"] #slide-home .slide-inner,
+body[data-welten-galaxy-hero="1"] #slide-home .slide-inner--home {
+  display: block;
+  min-height: min-content;
+  padding-top: 0 !important;
 }
 
 @media (max-width: 1024px) {
   #alGalaxyGangHero.al-galaxy-gang-hero {
-    min-height: min(78svh, 720px);
-    height: min(78svh, 720px);
-    border-radius: 18px;
-    margin-bottom: 12px;
-  }
-}
-
-@media (max-width: 640px) {
-  #alGalaxyGangHero.al-galaxy-gang-hero {
-    min-height: min(72svh, 640px);
-    height: min(72svh, 640px);
-    border-radius: 14px;
+    min-height: calc(100svh - var(--header-h, 72px) - var(--dock-h, 0px));
+    height: calc(100svh - var(--header-h, 72px) - var(--dock-h, 0px));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #alGalaxyGangHero.al-galaxy-gang-hero {
-    min-height: 480px;
-    height: 480px;
+  #alGalaxyGangHero .al-galaxy-gang-hero__loading {
+    transition: none;
   }
 }
