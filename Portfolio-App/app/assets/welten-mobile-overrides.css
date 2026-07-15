@@ -197,7 +197,7 @@
   }
 
   .welten-desktop-hero-host,
-  .welten-desktop-subpage-mv-hero,
+  .welten-desktop-subpage-mv-hero:not(#alGalaxyHomeChrome):not(.al-galaxy-home-chrome),
   .welten-desktop-relocated-hero.is-subpage-hero {
     display: none !important;
     visibility: hidden !important;

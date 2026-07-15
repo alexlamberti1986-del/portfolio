@@ -7,7 +7,7 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy12";
+  var VER = "20260715galaxy13";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -427,7 +427,22 @@
     try {
       new MutationObserver(function () {
         syncChapterNav();
-        if (isHomeActive()) revealHomeContent();
+        if (!isHomeActive()) return;
+        if (
+          document.documentElement.classList.contains("mv-galaxy-outbound") ||
+          document.body.classList.contains("mv-galaxy-outbound")
+        ) {
+          return;
+        }
+        ensureChapterNav();
+        revealHomeContent();
+        var chrome = document.getElementById("alGalaxyHomeChrome");
+        if (chrome) {
+          chrome.style.removeProperty("visibility");
+          chrome.style.removeProperty("opacity");
+          chrome.style.removeProperty("pointer-events");
+          chrome.style.removeProperty("display");
+        }
       }).observe(document.body, {
         attributes: true,
         attributeFilter: ["data-current-slide", "class"],

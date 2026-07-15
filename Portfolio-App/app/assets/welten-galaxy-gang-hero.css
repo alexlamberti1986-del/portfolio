@@ -273,3 +273,64 @@ body.mv-galaxy-outbound #alGalaxyHomeChrome,
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+/*
+ * Gegen mobile/desktop Hide-Regeln (.mv-static-hero / .welten-desktop-subpage-mv-hero):
+ * Multiversum-Home Kapitel-Nav muss über Galaxy Walk bleiben.
+ */
+html body[data-world="general"] #slide-home #alGalaxyHomeChrome.al-galaxy-home-chrome,
+html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome,
+html body[data-world="general"]:has(#alGalaxyGangHero) #slide-home #alGalaxyHomeChrome.mv-static-hero {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  clip-path: none !important;
+}
+
+html body[data-world="general"] #slide-home #alGalaxyHomeChrome .mv-static-hero__nav,
+html body[data-world="general"] #slide-home #alGalaxyChapterNav,
+html body[data-world="general"] #slide-home #alGalaxyHomeChrome .mv-static-hero__nav-btn {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  clip: auto !important;
+  clip-path: none !important;
+}
+
+html body[data-world="general"] #slide-home #alGalaxyHomeChrome .mv-static-hero__nav,
+html body[data-world="general"] #slide-home #alGalaxyChapterNav {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: inherit;
+}
+
+/* Shell: Titel/Eyebrow aus, Nav-Buttons bleiben (siehe Regeln oben) */
+html.welten-live-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__nav,
+html.welten-live-shell body[data-world="general"] #alGalaxyChapterNav,
+html.mv-in-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__nav,
+html.mv-in-shell body[data-world="general"] #alGalaxyChapterNav,
+html.welten-live-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+html.mv-in-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__nav-btn {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  height: auto !important;
+}

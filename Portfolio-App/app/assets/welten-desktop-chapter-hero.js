@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260714loadClean1";
+  var VER = "20260715galaxy13";
   var bootTimer = null;
   var realignTimers = [];
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
@@ -96,7 +96,12 @@
       ".welten-desktop-relocated-hero#alWorldVideoHero, #alWorldVideoHero.welten-desktop-relocated-hero"
     );
     if (relocatedVideo) return relocatedVideo;
-    var sub = document.querySelector(".slide.active .mv-static-hero.welten-desktop-subpage-mv-hero");
+    /* Galaxy Walk Home: Kapitel-Nav bleibt auf #slide-home — nicht als Unterseiten-Hero behandeln */
+    var galaxyChrome = document.getElementById("alGalaxyHomeChrome");
+    if (galaxyChrome && document.getElementById("alGalaxyGangHero")) return galaxyChrome;
+    var sub = document.querySelector(
+      ".slide.active .mv-static-hero.welten-desktop-subpage-mv-hero:not(#alGalaxyHomeChrome):not(.al-galaxy-home-chrome)"
+    );
     if (sub) return sub;
     var videoHome = document.getElementById("alWorldVideoHero");
     if (videoHome && videoHome.classList.contains("al-world-video-hero--with-chrome")) return videoHome;
@@ -256,6 +261,8 @@
 
   function removeMvSubpageHeroes() {
     document.querySelectorAll(".welten-desktop-subpage-mv-hero").forEach(function (el) {
+      /* Multiversum-Home Galaxy-Nav darf nicht mit Unterseiten-Klonen entfernt werden */
+      if (el.id === "alGalaxyHomeChrome" || el.classList.contains("al-galaxy-home-chrome")) return;
       el.remove();
     });
   }

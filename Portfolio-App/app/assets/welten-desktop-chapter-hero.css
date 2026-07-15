@@ -2,7 +2,7 @@
 
 @media (max-width: 1024px) {
   .welten-desktop-hero-host,
-  .welten-desktop-subpage-mv-hero {
+  .welten-desktop-subpage-mv-hero:not(#alGalaxyHomeChrome):not(.al-galaxy-home-chrome) {
     display: none !important;
   }
 }
