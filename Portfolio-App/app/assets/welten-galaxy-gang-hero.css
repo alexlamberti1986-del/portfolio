@@ -52,7 +52,7 @@ html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero {
   visibility: hidden;
 }
 
-/* Kapitel-Buttons unter Galaxy — immer sichtbar */
+/* Kapitel-Buttons OBERHALB Galaxy — immer sichtbar */
 html body[data-world="general"] #alGalaxyHomeChrome.al-galaxy-home-chrome,
 html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome,
 .al-galaxy-home-chrome {
@@ -64,7 +64,7 @@ html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome
   gap: 12px !important;
   width: 100% !important;
   max-width: min(1100px, calc(100% - 24px)) !important;
-  margin: clamp(10px, 1.8vw, 20px) auto clamp(6px, 1.2vw, 14px) !important;
+  margin: clamp(6px, 1.2vw, 14px) auto clamp(10px, 1.6vw, 18px) !important;
   padding: 0 12px !important;
   box-sizing: border-box !important;
   visibility: visible !important;

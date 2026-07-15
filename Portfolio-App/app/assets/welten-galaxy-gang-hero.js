@@ -7,9 +7,9 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy7";
+  var VER = "20260715galaxy8";
   var SRC =
-    "/assets/galaxy-gang/alexlamberti-galaxy-gang-v36-final-self-contained.html?v=" + VER;
+    "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   var ENABLED = true;
   var iframeSrcStarted = false;
   var markedReady = false;
@@ -124,15 +124,14 @@
           );
         }).join("") +
         "</nav>";
-      if (section.nextSibling) section.parentNode.insertBefore(wrap, section.nextSibling);
-      else section.parentNode.appendChild(wrap);
+      /* Chrome OBERHALB des Galaxy Walks */
+      section.parentNode.insertBefore(wrap, section);
       nav = wrap.querySelector("#alGalaxyChapterNav");
     }
 
-    /* Chrome vor home-main-block halten */
-    var homeMain = document.querySelector("#slide-home .home-main-block");
-    if (wrap && homeMain && wrap.parentNode === homeMain.parentNode && wrap.nextElementSibling !== homeMain) {
-      homeMain.parentNode.insertBefore(wrap, homeMain);
+    /* Chrome immer direkt vor dem Galaxy-Hero halten */
+    if (wrap && section && wrap.parentNode === section.parentNode && wrap.nextElementSibling !== section) {
+      section.parentNode.insertBefore(wrap, section);
     }
 
     if (nav && nav.getAttribute("data-galaxy-nav-bound") !== "1") {

@@ -279,7 +279,7 @@
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script>window.__mvUseGalaxyHome=true;</script>
-<script src="assets/welten-galaxy-gang-hero.js?v=20260715galaxy7" defer></script>
+<script src="assets/welten-galaxy-gang-hero.js?v=20260715galaxy8" defer></script>
 <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260715galaxy3" defer></script>
   <script src="assets/welten-multiversum-world.js?v=20260715galaxy3" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
@@ -5532,26 +5532,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     <!-- WP: Section Home  oben Full-Width DNA-Experience, darunter Intro + Bild -->
     <section class="slide active" id="slide-home" data-slide="home" aria-label="Startseite">
       <div class="slide-inner slide-inner--home">
-        <!-- Galaxy Walk = Multiversum Home-Hero (ersetzt Video/Parallax) -->
-        <section id="alGalaxyGangHero" class="al-galaxy-gang-hero" aria-label="Alex Lamberti Galaxy Gang" data-static-galaxy="1">
-          <div class="al-galaxy-gang-hero__loading">Galaxy Walk wird geladen …</div>
-          <iframe
-            id="alGalaxyGangFrame"
-            class="al-galaxy-gang-hero__frame"
-            title="Alex Lamberti Galaxy Gang"
-            loading="eager"
-            allow="fullscreen"
-            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v36-final-self-contained.html?v=20260715galaxy7"
-          ></iframe>
-        </section>
-        <script>
-          try {
-            window.__mvUseGalaxyHome = true;
-            document.body && document.body.setAttribute("data-welten-galaxy-hero", "1");
-            document.body && document.body.classList.add("mv-home-ready", "is-below-parallax");
-          } catch (eGalFlag) {}
-        </script>
-        <!-- Kapitel-Nav unter Galaxy (statisch, nicht erst per JS) -->
+        <!-- Kapitel-Nav OBERHALB Galaxy -->
         <div id="alGalaxyHomeChrome" class="al-galaxy-home-chrome">
           <p class="al-galaxy-home-chrome__tag"><span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>
           <nav id="alGalaxyChapterNav" class="mv-static-hero__nav al-galaxy-chapter-nav" aria-label="Kapitel">
@@ -5563,6 +5544,25 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
             <button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="offerte">Offerte</button>
           </nav>
         </div>
+        <!-- Galaxy Walk = Multiversum Home-Hero (ersetzt Video/Parallax) -->
+        <section id="alGalaxyGangHero" class="al-galaxy-gang-hero" aria-label="Alex Lamberti Galaxy Gang" data-static-galaxy="1">
+          <div class="al-galaxy-gang-hero__loading">Galaxy Walk wird geladen …</div>
+          <iframe
+            id="alGalaxyGangFrame"
+            class="al-galaxy-gang-hero__frame"
+            title="Alex Lamberti Galaxy Gang"
+            loading="eager"
+            allow="fullscreen"
+            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260715galaxy8"
+          ></iframe>
+        </section>
+        <script>
+          try {
+            window.__mvUseGalaxyHome = true;
+            document.body && document.body.setAttribute("data-welten-galaxy-hero", "1");
+            document.body && document.body.classList.add("mv-home-ready", "is-below-parallax");
+          } catch (eGalFlag) {}
+        </script>
         <!-- Full-Width: DNA fix; nur Kapitel-Folien drehen sich (dnaOrbitGroup) -->
         <div class="home-hero-experience" id="dnaStage" aria-label="Kapitel wählen: ziehen zum Drehen, vordere Karte antippen" hidden>
           <canvas class="dna-particles-canvas" id="dnaParticlesCanvas" aria-hidden="true"></canvas>
@@ -8851,7 +8851,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-desktop-chapter-hero.js?v=20260714loadClean1" defer></script>
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260715galaxy7" />
+<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260715galaxy8" />
 <link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714xlHero1" />
 <script src="assets/welten-video-hero-boot.js?v=20260715galaxy1" defer></script>
 
