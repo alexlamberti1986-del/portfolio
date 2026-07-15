@@ -7,7 +7,7 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy9";
+  var VER = "20260715galaxy10";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -177,14 +177,29 @@
   }
 
   function forwardToShell(payload) {
+    var world = String(payload.world || "nexora").toLowerCase();
+    var go = payload.go || "home";
+    var CHAPTER_PATH = {
+      home: "",
+      projects: "/projekte",
+      leistungen: "/leistungen",
+      about: "/ueber-mich",
+      contact: "/kontakt",
+      offerte: "/offerte",
+    };
+    var href = payload.href || "";
+    if (!href) {
+      var base = world === "multiversum" || world === "general" ? "" : "/" + world;
+      href = (base + (CHAPTER_PATH[go] || "")) || "/";
+    }
     try {
       if (window.parent && window.parent !== window) {
         window.parent.postMessage(
           {
             type: "alex:switch-world",
-            world: payload.world,
-            go: payload.go || "home",
-            href: payload.href || "",
+            world: world,
+            go: go,
+            href: href,
             targetHash: payload.targetHash || "",
           },
           "*"
@@ -192,12 +207,10 @@
         return true;
       }
     } catch (e) {}
-    if (payload.href) {
-      try {
-        window.location.assign(payload.href);
-        return true;
-      } catch (e2) {}
-    }
+    try {
+      window.location.assign(href);
+      return true;
+    } catch (e2) {}
     return false;
   }
 

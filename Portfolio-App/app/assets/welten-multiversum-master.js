@@ -1006,7 +1006,8 @@
   window.preloadWorldIndex = loadFrame;
   window.mv4ActiveFrameIndex = activeIdx;
 
-  function switchTo(i) {
+  function switchTo(i, opts) {
+    opts = opts || {};
     if (i < 0 || i > 3) return;
     forceEnableWorldButtons();
     recoverStuckSwitch();
@@ -1028,6 +1029,7 @@
     if (prev === i) {
       unlockShell();
       applyChapter(frames[i], sharedChapter);
+      if (isLiveShell) syncShellUrl(i, sharedChapter, "push");
       return;
     }
 
@@ -1051,8 +1053,11 @@
         } catch (eStop) {}
         frames[0].classList.remove("is-active");
       }
-    var c = readChapter(frames[prev]);
-    if (c) sharedChapter = c;
+    /* Galaxy/Deep-Link: Kapitel nicht mit vorheriger Welt überschreiben */
+    if (!opts.preserveChapter) {
+      var c = readChapter(frames[prev]);
+      if (c) sharedChapter = c;
+    }
 
     var wKey = worldSwitchKey(i);
     var transitionDone = false;
@@ -1261,9 +1266,17 @@
 
   function postScrollToActiveFrame(targetHash, goChapter) {
     if (!targetHash && !goChapter) return;
-    setTimeout(function () {
+    var tries = 0;
+    function send() {
+      tries += 1;
       var activeFrame = document.querySelector(".mv4-frame.is-active");
-      if (!activeFrame || !activeFrame.contentWindow) return;
+      if (!activeFrame || !activeFrame.contentWindow) {
+        if (tries < 12) setTimeout(send, 120);
+        return;
+      }
+      if (goChapter && CHAPTERS.indexOf(goChapter) >= 0) {
+        applyChapter(activeFrame, goChapter);
+      }
       activeFrame.contentWindow.postMessage(
         {
           type: "alex:scroll-to-section",
@@ -1272,7 +1285,10 @@
         },
         "*"
       );
-    }, 140);
+      /* Nochmal nach Transition/Load nachschieben */
+      if (tries < 4) setTimeout(send, 280 * tries);
+    }
+    setTimeout(send, 160);
   }
 
   window.addEventListener("message", function (e) {
@@ -1286,12 +1302,14 @@
       if (!isTrustedMessageSource(e.source)) return;
       var idx = worldIndexFromKey(e.data.world);
       if (idx !== undefined) {
-        if (typeof e.data.go === "string" && CHAPTERS.indexOf(e.data.go) >= 0) {
-          sharedChapter = e.data.go;
-        }
+        var goChapter =
+          typeof e.data.go === "string" && CHAPTERS.indexOf(e.data.go) >= 0 ? e.data.go : "home";
+        sharedChapter = goChapter;
         if (frameNeedsReset(frames[idx], idx)) resetFrame(idx);
-        switchTo(idx);
-        postScrollToActiveFrame(e.data.targetHash, e.data.go);
+        /* Kapitel bewusst behalten — sonst überschreibt switchTo mit Home der Quellwelt */
+        switchTo(idx, { preserveChapter: true });
+        if (isLiveShell) syncShellUrl(idx, sharedChapter, "push");
+        postScrollToActiveFrame(e.data.targetHash, goChapter);
         return;
       }
       if (e.data.href && typeof e.data.href === "string") {
