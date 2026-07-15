@@ -116,6 +116,48 @@ html body[data-world="general"] #alGalaxyHomeChrome {
     box-sizing: border-box !important;
   }
 
+  /* Tagline: gleiche Verlaufs-Spans wie Unterseiten (kein reines Weiss) */
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag {
+    color: rgba(232, 238, 248, 0.78) !important;
+    -webkit-text-fill-color: currentColor;
+    font-size: clamp(11px, 1.35vw, 14px) !important;
+    letter-spacing: 0.12em !important;
+    text-align: center;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-blue,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-warm,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-blue,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-warm {
+    background: var(--mv-gradient-text, linear-gradient(90deg, #5ec4ff, #9b6bff, #ff59b2, #ff9b37, #ffd86a)) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-white,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-white {
+    background: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: #eef3ff !important;
+    -webkit-text-fill-color: #eef3ff !important;
+  }
+
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn {
+    min-width: 0 !important;
+    max-width: 100%;
+    font-size: clamp(10px, 1.15vw, 12px) !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   /* Im Shell: kein doppelter Multiversum-Titel (wie bei Unterseiten) */
   html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__eyebrow,
   html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__title,

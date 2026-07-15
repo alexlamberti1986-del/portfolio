@@ -4,8 +4,10 @@
 (function () {
   "use strict";
 
-  var VERSION = "2";
+  var VERSION = "3";
   var FORM_SRC = "assets/preview/alx-offerte-form-v5.html";
+  var FORM_CACHE = "20260715typeFix1";
+  var FORM_TYPO_STYLE_ID = "welten-offerte-typo-fix";
 
   function currentLang() {
     try {
@@ -35,8 +37,76 @@
       encodeURIComponent(formWorldKey()) +
       "&lang=" +
       encodeURIComponent(currentLang()) +
-      "&v=20260715offerteGap1"
+      "&v=" +
+      FORM_CACHE
     );
+  }
+
+  function injectFormTypography(frame) {
+    var doc;
+    try {
+      doc = frame && frame.contentDocument;
+    } catch (e) {
+      return;
+    }
+    if (!doc || !doc.head) return;
+
+    if (!doc.getElementById(FORM_TYPO_STYLE_ID)) {
+      var style = doc.createElement("style");
+      style.id = FORM_TYPO_STYLE_ID;
+      style.textContent =
+        ".sum-item,.hero-point,.select-card,.card-body,.step-tab,.pill,.mini{min-width:0;max-width:100%;box-sizing:border-box}" +
+        ".sum-item span{display:inline-block!important;max-width:100%;box-sizing:border-box;padding:5px 9px;border-radius:999px;letter-spacing:.06em!important;overflow-wrap:anywhere;word-break:break-word;white-space:normal!important;line-height:1.25}" +
+        ".hero-point span{display:block;max-width:100%;overflow-wrap:anywhere;word-break:break-word;hyphens:auto;line-height:1.25}" +
+        ".select-card h3,.step-tab b,.pill{overflow-wrap:anywhere;word-break:break-word;hyphens:auto}" +
+        "@media (max-width:767px){" +
+        ".sum-item span{font-size:10px!important;letter-spacing:.03em!important;padding:4px 8px;text-transform:none!important}" +
+        ".hero-point{min-width:0;overflow:hidden}" +
+        ".hero-point span{font-size:10px;line-height:1.2}" +
+        ".hero-point strong{font-size:clamp(16px,5.5vw,20px)}" +
+        ".step-tab{min-width:0;flex:0 0 auto;max-width:78vw}" +
+        ".step-tab b{white-space:normal!important;overflow:visible!important;text-overflow:unset!important;font-size:12px;line-height:1.2}" +
+        ".panel h2{overflow-wrap:anywhere;hyphens:auto}" +
+        ".select-card h3{font-size:clamp(16px,4.8vw,20px);letter-spacing:-.02em}" +
+        ".pill{padding:10px 12px;font-size:13px;line-height:1.2}" +
+        ".mini{font-size:10px;letter-spacing:.05em;white-space:normal;max-width:100%}" +
+        "}" +
+        "@media (max-width:420px){" +
+        ".sum-item span{font-size:9.5px!important;letter-spacing:.02em!important}" +
+        ".hero-points{gap:7px}" +
+        ".step-tab{padding:8px 9px}" +
+        ".step-tab b{font-size:11px}" +
+        "}";
+      doc.head.appendChild(style);
+    }
+
+    /* Lange DE-Labels kürzen, damit sie in Mobile-Chips passen */
+    doc.querySelectorAll(".sum-item span").forEach(function (el) {
+      if (/^Dienstleistungen$/i.test((el.textContent || "").trim())) {
+        el.textContent = "Leistungen";
+      }
+    });
+    doc.querySelectorAll(".hero-point span").forEach(function (el) {
+      if (/Dienstleistungsbereiche/i.test(el.textContent || "")) {
+        el.textContent = "Leistungsbereiche";
+      }
+    });
+  }
+
+  function bindFormTypography(frame) {
+    if (!frame || frame.getAttribute("data-typo-bound") === "1") return;
+    frame.setAttribute("data-typo-bound", "1");
+    frame.addEventListener("load", function () {
+      injectFormTypography(frame);
+      try {
+        var doc = frame.contentDocument;
+        if (!doc || !doc.body || frame._typoObserver) return;
+        frame._typoObserver = new MutationObserver(function () {
+          injectFormTypography(frame);
+        });
+        frame._typoObserver.observe(doc.body, { childList: true, subtree: true, characterData: true });
+      } catch (e) {}
+    });
   }
 
   function offerteMarkup() {
@@ -76,6 +146,8 @@
     var frame = document.getElementById("weltenOfferteForm");
     if (!frame) return;
 
+    bindFormTypography(frame);
+
     var nextSrc = formFrameSrc();
     var current = frame.getAttribute("src") || "";
     if (current === "about:blank" || current.split("#")[0] !== nextSrc.split("#")[0]) {
@@ -85,6 +157,8 @@
       frame.src = nextSrc;
       return;
     }
+
+    injectFormTypography(frame);
 
     if (frame.contentWindow) {
       try {

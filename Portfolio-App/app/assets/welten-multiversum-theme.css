@@ -375,15 +375,23 @@ body[data-world="general"] .mv-static-hero__title {
 }
 
 body[data-world="general"] .mv-static-hero__tag .mv-tag-blue,
-body[data-world="general"] .mv-static-hero__tag .mv-tag-warm {
+body[data-world="general"] .mv-static-hero__tag .mv-tag-warm,
+body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-blue,
+body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-warm {
   background: var(--mv-gradient-text) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
 }
 
-body[data-world="general"] .mv-static-hero__tag .mv-tag-white {
+body[data-world="general"] .mv-static-hero__tag .mv-tag-white,
+body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-white {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
   color: #eef3ff !important;
+  -webkit-text-fill-color: #eef3ff !important;
 }
 
 /* UI-Akzente */

@@ -715,8 +715,9 @@
     }
     var tag = doc.querySelector(".mv-world-hero__tag");
     if (tag && h.tag) tag.textContent = h.tag;
-    var staticTag = doc.querySelector(".mv-static-hero__tag");
-    if (staticTag && h.tag) {
+    var staticTags = doc.querySelectorAll(".mv-static-hero__tag");
+    staticTags.forEach(function (staticTag) {
+      if (!staticTag || !h.tag) return;
       var spans = staticTag.querySelectorAll("span");
       var parts = String(h.tag)
         .split(/\.\s*/)
@@ -728,10 +729,13 @@
         spans[0].textContent = parts[0] + ".";
         spans[1].textContent = parts[1] + ".";
         spans[2].textContent = parts[2] + (/\.$/.test(h.tag) || parts[2].indexOf("!") < 0 ? "." : "");
+      } else if (spans.length >= 3) {
+        /* Spans behalten (Gradient), Text nicht plattwerfen */
+        return;
       } else {
         staticTag.textContent = h.tag;
       }
-    }
+    });
     var eyebrow = doc.querySelector(".mv-static-hero__eyebrow");
     if (eyebrow) {
       var eyebrowPack = {

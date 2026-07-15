@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260715galaxy14";
+  var VER = "20260715typeFix1";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~14″ Laptop+; Tablets (auch Landscape ~1024–1366) bleiben aus. */
@@ -326,14 +326,67 @@
     forwardToShell({ world: world, go: go, href: href });
   }
 
+  var LABEL_FIT_STYLE_ID = "welten-galaxy-label-fit";
+
+  function injectGalaxyLabelFit(frame) {
+    var doc;
+    try {
+      doc = frame && frame.contentDocument;
+    } catch (e) {
+      return;
+    }
+    if (!doc || !doc.head) return;
+    if (doc.getElementById(LABEL_FIT_STYLE_ID)) return;
+    var style = doc.createElement("style");
+    style.id = LABEL_FIT_STYLE_ID;
+    style.textContent =
+      "html body .world-panel .subpage-card span," +
+      "html body .world-panel .subpage-card:hover span," +
+      "html body .world-panel .subpage-card:focus span," +
+      "html body .world-panel .subpage-card:active span{" +
+      "white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important;" +
+      "overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important;" +
+      "font-size:clamp(8.5px,min(.78vw,1.35vh),17px)!important;" +
+      "letter-spacing:clamp(.03em,.06em,.08em)!important;line-height:1.08!important;" +
+      "padding:clamp(8px,.7vw,16px) clamp(6px,.65vw,14px)!important;box-sizing:border-box!important}" +
+      "html body .world-panel[data-world='freiraum'] .subpage-card span," +
+      "html body .world-panel[data-world='freiraum'] .subpage-card:hover span," +
+      "html body .world-panel[data-world='freiraum'] .subpage-card:focus span," +
+      "html body .world-panel[data-world='freiraum'] .subpage-card:active span{" +
+      "font-size:clamp(9px,.72vw,11px)!important;letter-spacing:.04em!important;" +
+      "white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important}" +
+      "html body .world-panel[data-world='freiraum'] .world-detail-label," +
+      "html body .overview-card[data-world='freiraum'] .overview-label strong{" +
+      "letter-spacing:clamp(.06em,.10em,.14em)!important;" +
+      "font-size:clamp(11px,min(1.1vw,1.9vh),28px)!important;" +
+      "white-space:nowrap!important;max-width:100%!important;" +
+      "overflow:hidden!important;text-overflow:ellipsis!important}";
+    doc.head.appendChild(style);
+  }
+
+  function bindGalaxyLabelFit(frame) {
+    if (!frame || frame.getAttribute("data-label-fit-bound") === "1") return;
+    frame.setAttribute("data-label-fit-bound", "1");
+    frame.addEventListener("load", function () {
+      injectGalaxyLabelFit(frame);
+    });
+    try {
+      if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
+        injectGalaxyLabelFit(frame);
+      }
+    } catch (e) {}
+  }
+
   function startIframeSrc(frame) {
     if (!frame || iframeSrcStarted) return;
     if (!isGalaxyViewport() || !galaxyLive) return;
     if (!isHomeActive()) return;
+    bindGalaxyLabelFit(frame);
     var wanted = frame.getAttribute("data-src") || SRC;
     var current = frame.getAttribute("src") || "";
     if (current.indexOf("galaxy-gang/") !== -1) {
       iframeSrcStarted = true;
+      injectGalaxyLabelFit(frame);
       return;
     }
     iframeSrcStarted = true;
