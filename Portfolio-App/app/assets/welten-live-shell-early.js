@@ -5,9 +5,9 @@
       window.parent.document.body &&
       window.parent.document.body.getAttribute("data-live-shell") === "1"
     ) {
-      document.documentElement.classList.add("welten-live-shell");
+      document.documentElement.classList.add("welten-live-shell", "mv-in-shell");
     }
   } catch (e) {
-    document.documentElement.classList.add("welten-live-shell");
+    document.documentElement.classList.add("welten-live-shell", "mv-in-shell");
   }
 })();

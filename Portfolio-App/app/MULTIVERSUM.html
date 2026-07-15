@@ -142,7 +142,8 @@
             return p.mv4ActiveFrameIndex() === 0;
           }
         } catch (e) {}
-        return true;
+        /* Fail closed: ohne Bestätigung vom Parent keine Early-BGM */
+        return false;
       }
 
       function tryBootFromParentApi() {
@@ -183,7 +184,12 @@
           return;
         }
         function onOk() {
-          if (parentSwitchBlocked() || parentAlreadyPlaying() || parentEffectsOff()) {
+          if (
+            parentSwitchBlocked() ||
+            parentAlreadyPlaying() ||
+            parentEffectsOff() ||
+            !parentWorldIsGeneral()
+          ) {
             stopLocalBgm();
             return;
           }
@@ -228,17 +234,10 @@
       }
 
       var opts = { capture: true, passive: true };
+      /* Nur direkte Gesten — kein wheel/scroll/touchmove-Autostart in der Shell */
       window.addEventListener("pointerdown", relay, opts);
       window.addEventListener("click", relay, opts);
       window.addEventListener("touchstart", relay, opts);
-      window.addEventListener("wheel", relay, opts);
-      window.addEventListener(
-        "scroll",
-        function () {
-          relay(null);
-        },
-        { capture: true, passive: true }
-      );
 
       window.addEventListener("message", function (e) {
         if (!e.data) return;
@@ -275,8 +274,8 @@
         "?v=20260714mvBoot1"
     };
   </script>
-  <script src="assets/welten-live-shell-early.js?v=20260704restore"></script>
-  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260714mvBoot1" />
+  <script src="assets/welten-live-shell-early.js?v=20260714mvNuke1"></script>
+  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260714mvNuke1" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260714perfIso1" defer></script>

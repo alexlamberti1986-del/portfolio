@@ -72,7 +72,7 @@
   }
 
   function activeWorld() {
-    return document.body.getAttribute("data-master-world") || "general";
+    return document.body.getAttribute("data-master-world") || "";
   }
 
   function collectBgmElements() {
@@ -241,6 +241,7 @@
   }
 
   function playBgm(world, token, fadeMs, switchGen) {
+    if (!world || !TRACKS[world]) return;
     if (!canPlayNow(token, world, switchGen)) {
       if (switchGen === 0) bootGesturePending = false;
       return;
@@ -356,6 +357,7 @@
     switchGeneration += 1;
     setSwitchFlag(true);
     hardStopBgm();
+    stopIframeWorldBgm();
     /* Zusätzliche Absicherung: Early-BGM-Element explizit stumm/pausiert,
        auch falls hardStopBgm() es aus irgendeinem Grund nicht erfasst hat
        (z. B. durch Re-Zuweisung von window.__mvWorldAudioEarly). */
@@ -368,7 +370,8 @@
         earlyEl.volume = 0;
       }
     } catch (eEarlyStop) {}
-    /* Beim Verlassen von Multiversum: Iframe-0-BGM nochmals hart stoppen. */
+    /* Beim Verlassen von Multiversum: Iframe-0-BGM nochmals hart stoppen
+       und General-Track nie mittendrin neu starten — erst onSwitchEnd. */
     if (pendingWorld && pendingWorld !== "general") {
       stopIframeWorldBgm();
       try {
@@ -383,6 +386,8 @@
           mvWin.postMessage({ type: "mv-stop-iframe-bgm" }, "*");
         }
       } catch (eMvStop) {}
+      /* General-Track hart gehalten — kein Restart bis switch-end mit general */
+      hardStopBgm();
     }
     /* Nur Gesture-Boot für echten Erstbesuch erlauben — nach Wechsel starten wir über switch-end. */
     initialBootDone = true;
@@ -398,7 +403,7 @@
       return;
     }
     world = world || pendingWorld || activeWorld();
-    if (!TRACKS[world]) {
+    if (!world || !TRACKS[world]) {
       setSwitchFlag(false);
       return;
     }

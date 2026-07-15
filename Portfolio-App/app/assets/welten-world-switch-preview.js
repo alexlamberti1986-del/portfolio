@@ -162,10 +162,10 @@
         el.remove();
       } catch (eRm) {}
     });
-    document.documentElement.classList.remove("welten-world-switch-lock");
     running = false;
     window.__wwsPreviewOwnsSound = false;
     if (!skipEnd) wwsCallTransitionEnd();
+    document.documentElement.classList.remove("welten-world-switch-lock");
   }
 
   function wwsCallTransitionEnd() {
@@ -1760,11 +1760,11 @@
 
     function finishExit() {
       if (!activeOverlay) {
+        wwsCallTransitionEnd();
         document.documentElement.classList.remove("welten-world-switch-lock");
         running = false;
         window.__wwsPreviewOwnsSound = false;
         wwsClearTimers();
-        wwsCallTransitionEnd();
         return;
       }
       if (activeOverlay._wwsFinishing) return;
@@ -1779,6 +1779,8 @@
         activeOverlay.classList.remove("is-covered");
         activeOverlay.classList.add("is-exiting");
         wwsLater(function () {
+          /* Keep lock while applying target world */
+          wwsCallTransitionEnd();
           if (activeOverlay) {
             activeOverlay.remove();
             activeOverlay = null;
@@ -1787,7 +1789,6 @@
           running = false;
           window.__wwsPreviewOwnsSound = false;
           wwsClearTimers();
-          wwsCallTransitionEnd();
         }, exitMs);
       }
 
@@ -1840,10 +1841,10 @@
           } catch (eRm) {}
         });
         activeOverlay = null;
-        document.documentElement.classList.remove("welten-world-switch-lock");
         running = false;
         window.__wwsPreviewOwnsSound = false;
         wwsCallTransitionEnd();
+        document.documentElement.classList.remove("welten-world-switch-lock");
       }
       /* Failsafe griff, bevor der Zielwelt-Wechsel bestätigt wurde — noch
          einmal versuchen, damit wir nicht mit dem Cover verschwinden, während

@@ -950,16 +950,25 @@
        Verhindert Multiversum-Bar/Theme-Bleed während der Transition. */
     setMaster(i);
     if (i !== 0 && frames[0]) {
-      frames[0].classList.remove("is-active");
       frames[0].style.pointerEvents = "none";
       postFrame(frames[0], { type: "portfolio-world-pause", paused: true });
       postFrame(frames[0], { type: "portfolio-cleanup-transition" });
-    }
-    /* Wenn wir Multiversum verlassen: Frame 0 darf nicht kurzzeitig
-       reaktivieren (z. B. durch parallele Load-/Preview-Pfade). */
-    if (prev === 0 && i !== 0 && frames[0]) {
-      frames[0].classList.remove("is-active");
-      frames[0].style.pointerEvents = "none";
+      postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
+      try {
+        var mvWin = frames[0].contentWindow;
+        if (mvWin && typeof mvWin.__mvStopIframeWorldBgm === "function") {
+          mvWin.__mvStopIframeWorldBgm();
+        }
+      } catch (eStop) {}
+      /* Kill Multiversum document entirely — prevents paint + iframe BGM bleed */
+      if (frameHasSrc(frames[0])) {
+        frames[0].removeAttribute("data-mv-world-live");
+        frames[0].classList.remove("is-active");
+        frames[0].src = "about:blank";
+        loaded[0] = false;
+      } else {
+        frames[0].classList.remove("is-active");
+      }
     }
     var c = readChapter(frames[prev]);
     if (c) sharedChapter = c;
@@ -971,6 +980,16 @@
       if (transitionDone) return;
       transitionDone = true;
       window.__wwsOnTransitionEnd = null;
+      /* Frame 0 zuerst killen — bevor Lock/Overlay fällt */
+      if (i !== 0 && frames[0] && frameHasSrc(frames[0])) {
+        try {
+          postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
+        } catch (eBlankStop) {}
+        frames[0].src = "about:blank";
+        loaded[0] = false;
+        frames[0].classList.remove("is-active");
+        frames[0].style.pointerEvents = "none";
+      }
       unlockShell();
       forceEnableWorldButtons();
       purgeSwitchOverlays();
@@ -1088,16 +1107,15 @@
     });
     worlds.querySelectorAll(WORLD_BTN_SEL).forEach(function (btn) {
       var idx = parseInt(btn.getAttribute("data-iframe"), 10);
-      /* Prefetch nur bei Absicht (Tap/Focus), nicht schon beim Hover */
-      btn.addEventListener("pointerdown", function () {
+      /* Prefetch nur den Button der Absicht (data-iframe) — nie Frame 0
+         indirekt über andere Welten. Multiversum-Default überspringt preloadFrame. */
+      function intentPreload() {
+        if (!Number.isFinite(idx)) return;
         preloadFrame(idx);
-      }, { passive: true });
-      btn.addEventListener("touchstart", function () {
-        preloadFrame(idx);
-      }, { passive: true });
-      btn.addEventListener("focus", function () {
-        preloadFrame(idx);
-      });
+      }
+      btn.addEventListener("pointerdown", intentPreload, { passive: true });
+      btn.addEventListener("touchstart", intentPreload, { passive: true });
+      btn.addEventListener("focus", intentPreload);
     });
   }
 
@@ -1183,7 +1201,10 @@
         }
         sharedChapter = e.data.chapter;
         var worldIdx = activeIdx();
-        if (worldIdx < 0) worldIdx = defaultWorld;
+        if (worldIdx < 0) {
+          if (switching) return;
+          worldIdx = defaultWorld;
+        }
         if (typeof e.data.world === "string" && Router) {
           var mapped = Router.worldIdxFromKey(e.data.world);
           if (typeof mapped === "number") worldIdx = mapped;

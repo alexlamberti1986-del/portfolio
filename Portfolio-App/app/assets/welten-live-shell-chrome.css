@@ -11,11 +11,22 @@ html.welten-live-shell .mv4-bar {
 
 html.welten-live-shell .site-header {
   display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
   height: auto !important;
   min-height: unset !important;
   overflow: visible !important;
+  pointer-events: none !important;
+}
+
+/* Bis Multiversum-Home ready: Site-Header verstecken — sonst kurz doppelter Chrome mit Parent-.mv4-bar */
+html.welten-live-shell body:not(.mv-home-ready) .site-header {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html.welten-live-shell body.mv-home-ready .site-header {
+  visibility: visible !important;
+  opacity: 1 !important;
   pointer-events: none !important;
 }
 
