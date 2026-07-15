@@ -58,7 +58,7 @@
       shellMain: {
         h1: "Alex Lamberti · Multiversum für digitale Welten",
         intro:
-          "Digital Marketing, Webdesign und Strategie. Drei Welten. Eine kreative Identität: NEXORA für digitale Zukunft, PROFESSIONAL für Projekte und Zusammenarbeit, FREIRAUM für kreative Ideen und Experimente.",
+          "Digital Marketing, Webdesign und Strategie. Vier Welten. Eine kreative Identität: NEXORA für digitale Zukunft, PROFESSIONAL für Projekte und Zusammenarbeit, FREIRAUM für kreative Ideen und Experimente.",
         navAria: "Welten und Kapitel",
         navMultiversum: "MULTIVERSUM — Start",
         navProjects: "Projekte",
@@ -140,7 +140,7 @@
       shellMain: {
         h1: "Alex Lamberti · Multiverse for digital worlds",
         intro:
-          "Digital marketing, web design and strategy. Three worlds. One creative identity: NEXORA for digital future, PROFESSIONAL for projects and collaboration, FREIRAUM for creative ideas and experiments.",
+          "Digital marketing, web design and strategy. Four worlds. One creative identity: NEXORA for digital future, PROFESSIONAL for projects and collaboration, FREIRAUM for creative ideas and experiments.",
         navAria: "Worlds and chapters",
         navMultiversum: "MULTIVERSUM — Home",
         navProjects: "Projects",
@@ -222,7 +222,7 @@
       shellMain: {
         h1: "Alex Lamberti · Multivers pour mondes digitaux",
         intro:
-          "Marketing digital, web design et stratégie. Trois mondes. Une identité créative : NEXORA pour le futur digital, PROFESSIONAL pour les projets et la collaboration, FREIRAUM pour les idées créatives et les expériences.",
+          "Marketing digital, web design et stratégie. Quatre mondes. Une identité créative : NEXORA pour le futur digital, PROFESSIONAL pour les projets et la collaboration, FREIRAUM pour les idées créatives et les expériences.",
         navAria: "Mondes et chapitres",
         navMultiversum: "MULTIVERSUM — Accueil",
         navProjects: "Projets",
@@ -304,7 +304,7 @@
       shellMain: {
         h1: "Alex Lamberti · Multiverso per mondi digitali",
         intro:
-          "Marketing digitale, web design e strategia. Tre mondi. Un'identità creativa: NEXORA per il futuro digitale, PROFESSIONAL per progetti e collaborazione, FREIRAUM per idee creative e sperimentazioni.",
+          "Marketing digitale, web design e strategia. Quattro mondi. Un'identità creativa: NEXORA per il futuro digitale, PROFESSIONAL per progetti e collaborazione, FREIRAUM per idee creative e sperimentazioni.",
         navAria: "Mondi e capitoli",
         navMultiversum: "MULTIVERSUM — Home",
         navProjects: "Progetti",

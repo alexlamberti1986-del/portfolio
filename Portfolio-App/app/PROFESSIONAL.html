@@ -6,7 +6,7 @@
   Alex Lamberti  Portfolio-Experience (eine Datei, keine Pflicht-Bibliotheken)
 
   WordPress / Elementor  grobe Zuordnung:
-  - Globale Farben & AbstÄnde      ? Elementor: Site Settings / Custom CSS (:root-Variablen)
+  - Globale Farben & Abstände      ? Elementor: Site Settings / Custom CSS (:root-Variablen)
   - Hintergrund + Grid + Partikel ? Section Hintergrund + HTML-Widget (Canvas) oder weglassen
   - Fortschrittsleiste             ? entfernt (nur noch Header)
   - Header (Logo + Menü)           ? Theme Builder Header oder Section sticky
@@ -46,9 +46,9 @@
       --radius-lg: 28px;
       --radius-md: 18px;
       /*
-        HEADER-ABSTAND (HÖhe bis Folienbeginn):
+        HEADER-ABSTAND (Höhe bis Folienbeginn):
         --header-air-top / --header-air-bottom = Luft unter Safe-Area & unter der Zeile.
-        Wert erhÖhen ? gesamter Header + Menü weiter nach unten.
+        Wert erhöhen ? gesamter Header + Menü weiter nach unten.
       */
       --header-air-top: 22px;
       --header-air-bottom: 16px;
@@ -61,7 +61,7 @@
       --slide-pad-x: clamp(18px, 4vw, 64px);
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
       /*
-        DNA-BLOCK: genau eine BildschirmhÖhe unter dem Header ? erst Scrollen zeigt Marketing mit Wirkung.
+        DNA-BLOCK: genau eine Bildschirmhöhe unter dem Header ? erst Scrollen zeigt Marketing mit Wirkung.
         svh = stabiler auf Mobil; als Fallback dient dieselbe Rechnung mit vh in älteren Browsern.
       */
       --hero-dna-h: calc(100svh - var(--header-h) - var(--dock-h));
@@ -190,7 +190,7 @@
       justify-content: space-between;
       gap: 10px;
       box-sizing: border-box;
-      /* HEADER-ABSTAND nach unten: zusÄtzlich zu --header-air-* in :root */
+      /* HEADER-ABSTAND nach unten: zusätzlich zu --header-air-* in :root */
       padding-top: calc(env(safe-area-inset-top, 0px) + var(--header-air-top));
       padding-bottom: var(--header-air-bottom);
       padding-left: max(clamp(12px, 3vw, 32px), env(safe-area-inset-left));
@@ -436,7 +436,7 @@
     }
 
     /*
-      Hero-DNA: feste BlockhÖhe = eine Viewport-HÖhe unter Header ? kein endloses Scrollen im leeren Bereich.
+      Hero-DNA: feste Blockhöhe = eine Viewport-Höhe unter Header ? kein endloses Scrollen im leeren Bereich.
       Erst darunter: .home-main-block (Marketing mit Wirkung).
     */
     .home-hero-experience {
@@ -554,7 +554,7 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.14);
     }
 
-    /* 3D-Szene: fllt den DNA-Block flexibel; HÖhe kommt vom Helix-Container (nicht aus berschssigem min-height) */
+    /* 3D-Szene: füllt den DNA-Block flexibel; Höhe kommt vom Helix-Container (nicht aus überschüssigem min-height) */
     .dna-unified-scene {
       position: relative;
       z-index: 2;
@@ -663,7 +663,7 @@
       overflow: visible;
     }
 
-    /* Folienring: grÖsserer Radius (--dna-orbit-radius), stÄrkere Y-/Z-Variation via Inline-Variablen */
+    /* Folienring: grösserer Radius (--dna-orbit-radius), stärkere Y-/Z-Variation via Inline-Variablen */
     .dna-ring-scene {
       position: absolute;
       left: 50%;
@@ -1422,7 +1422,7 @@
     }
     @media (max-width: 480px) {
       :root {
-        /* zweizeiliges Header-Layout: hÖhere Zeilenreserve */
+        /* zweizeiliges Header-Layout: höhere Zeilenreserve */
         --header-inner-row: 92px;
         --dock-h: env(safe-area-inset-bottom, 0px);
       }
@@ -1442,7 +1442,7 @@
     /* =============================================================================
        7. Barrierefreiheit: wenig Bewegung
        ============================================================================= */
-    /* DNA-Hero: Laptop / Tablet  etwas kleinere Helix, gleiche Viewport-HÖhe */
+    /* DNA-Hero: Laptop / Tablet  etwas kleinere Helix, gleiche Viewport-Höhe */
     @media (max-width: 1100px) {
       :root {
         --dna-orbit-radius: min(48vw, 360px);
@@ -1452,7 +1452,7 @@
       }
     }
 
-    /* Ultrabreite Screens: Orbit darf wachsen, BlockhÖhe bleibt --hero-dna-h */
+    /* Ultrabreite Screens: Orbit darf wachsen, Blockhöhe bleibt --hero-dna-h */
     @media (min-width: 1536px) {
       :root {
         --dna-orbit-radius: min(42vw, 520px);
@@ -1502,7 +1502,7 @@
 
     /* =============================================================================
        8. Drei Designwelten: NEXORA / Professional / FREIRAUM
-       Inhalt bleibt identisch  Farben, Atmosphre, Foto-Look und Hero-Hintergrund wechseln.
+       Inhalt bleibt identisch  Farben, Atmosphäre, Foto-Look und Hero-Hintergrund wechseln.
        ============================================================================= */
     body {
       transition: background 0.45s var(--ease), color 0.45s var(--ease);
@@ -2226,7 +2226,7 @@
       visibility: hidden !important;
     }
     body[data-world="vertex"] .dna-unified-scene::before {
-      content: "BUSINESS" !important;
+      content: "PROFESSIONAL" !important;
       color: rgba(0,0,0,.045);
       letter-spacing: .12em;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
@@ -2654,7 +2654,7 @@ body[data-world="nexora"] .dna-premium-canvas { opacity: .62 !important; }
        FINAL VISUAL UPDATE
        - keine Texte/Captions direkt auf Bildern
        - NEXORA: kein Foto von Alex, sondern virtuelles KI-/Hologramm-Bild
-       - FREIRAUM: kein Foto von Alex, sondern abstraktes GemÄlde
+       - FREIRAUM: kein Foto von Alex, sondern abstraktes Gemälde
        - Professional: Originalbild bleibt, Buttons mittig unter Schriftzug
        - FREIRAUM: Navigationsbuttons mittiger im Kunstbild
        ========================================================== */
@@ -2681,7 +2681,7 @@ body[data-world="nexora"] .dna-premium-canvas { opacity: .62 !important; }
       visibility: hidden !important;
     }
 
-    /* NEXORA: virtuelles KI-PortrÄt, nicht als Alex-Foto */
+    /* NEXORA: virtuelles KI-Porträt, nicht als Alex-Foto */
     body[data-world="nexora"] .home-portrait-card,
     body[data-world="nexora"] .contact-visual {
       background:
@@ -2737,7 +2737,7 @@ body[data-world="nexora"] .dna-premium-canvas { opacity: .62 !important; }
       50% { transform: translateY(-2%) scale(1.018); opacity: 1; }
     }
 
-    /* FREIRAUM: abstraktes Kunst-/GemÄlde-Bild statt Personenfoto */
+    /* FREIRAUM: abstraktes Kunst-/Gemälde-Bild statt Personenfoto */
     body[data-world="freiraum"] .home-portrait-card,
     body[data-world="freiraum"] .contact-visual {
       border: 0 !important;
@@ -2839,7 +2839,7 @@ body[data-world="nexora"] .dna-premium-canvas { opacity: .62 !important; }
   
 
     /* ==========================================================
-       FINAL POLISH: drei Welten stÄrker differenzieren
+       FINAL POLISH: drei Welten stärker differenzieren
        - NEXORA: virtuelles KI-Bild, Hologramm-Finishing
        - Professional: Originalfoto, zentrale Business-Navigation
        - FREIRAUM: Kunstbild, Buttons weiter links und nicht über Titel
@@ -3830,7 +3830,7 @@ body[data-world="vertex"] .home-portrait-card,
     <section class="slide active" id="slide-home" data-slide="home" aria-label="Startseite">
       <div class="slide-inner slide-inner--home">
         <!-- Full-Width: DNA fix; nur Kapitel-Folien drehen sich (dnaOrbitGroup) -->
-        <div class="home-hero-experience" id="dnaStage" aria-label="Kapitel wÄhlen: ziehen zum Drehen, vordere Karte antippen">
+        <div class="home-hero-experience" id="dnaStage" aria-label="Kapitel wählen: ziehen zum Drehen, vordere Karte antippen">
           <canvas class="dna-particles-canvas" id="dnaParticlesCanvas" aria-hidden="true"></canvas>
           <canvas class="dna-premium-canvas" id="dnaPremiumCanvas" aria-hidden="true"></canvas>
           <div class="dna-unified-scene">
@@ -3917,22 +3917,22 @@ body[data-world="vertex"] .home-portrait-card,
         <div class="home-main-block">
           <div class="home-layout home-layout--intro">
             <div class="home-copy">
-              <p class="world-intro" id="worldIntro">BUSINESS · Klar · Professionell · Vertrauensvoll</p>
+              <p class="world-intro" id="worldIntro">PROFESSIONAL · Klar · Professionell · Vertrauensvoll</p>
               <!-- welten-home-v1 -->
               <h1>Digital Marketing mit Klarheit, Verantwortung und Wirkung.</h1>
-              <p class="lead">Klar denken. VerlÄsslich handeln. Professionell Wirkung schaffen.</p>
+              <p class="lead">Klar denken. Verlässlich handeln. Professionell Wirkung schaffen.</p>
               <p class="more">Ich entwickle Marketing- und Webprojekte mit einem hohen Anspruch an Qualität, Struktur und Verlässlichkeit. Dabei verbinde ich strategisches Denken, saubere Umsetzung und ein starkes Verständnis für Kunden, Marken und Zielgruppen.</p>
               <p class="more">PROFESSIONAL steht für meine strukturierte und verantwortungsbewusste Arbeitsweise. Ich sehe Digital Marketing nicht als reine Gestaltung, sondern als Zusammenspiel aus Analyse, Kommunikation, Vertrauen und konsequenter Umsetzung.</p>
-              <p class="more">Jede Website, jede Kampagne und jeder Markenauftritt sollte ein klares Ziel verfolgen: Menschen erreichen, Orientierung schaffen und Unternehmen glaubwrdig positionieren. Mir ist wichtig, dass digitale Projekte nicht nur Ästhetisch berzeugen, sondern auch verstÄndlich, effizient und nachhaltig aufgebaut sind.</p>
-              <p class="more">Ich arbeite gerne an der Schnittstelle zwischen KundenbedÜrfnissen, Unternehmenszielen und kreativer Umsetzung. Verlässlichkeit, transparente Kommunikation und ein sauberer Projektablauf sind für mich zentrale Grundlagen erfolgreicher Zusammenarbeit. Ich bringe Projekte mit Fokus, Verantwortung und Qualitätsbewusstsein voran.</p>
+              <p class="more">Jede Website, jede Kampagne und jeder Markenauftritt sollte ein klares Ziel verfolgen: Menschen erreichen, Orientierung schaffen und Unternehmen glaubwürdig positionieren. Mir ist wichtig, dass digitale Projekte nicht nur ästhetisch überzeugen, sondern auch verständlich, effizient und nachhaltig aufgebaut sind.</p>
+              <p class="more">Ich arbeite gerne an der Schnittstelle zwischen Kundenbedürfnissen, Unternehmenszielen und kreativer Umsetzung. Verlässlichkeit, transparente Kommunikation und ein sauberer Projektablauf sind für mich zentrale Grundlagen erfolgreicher Zusammenarbeit. Ich bringe Projekte mit Fokus, Verantwortung und Qualitätsbewusstsein voran.</p>
               <ul class="prose">
                 <li>Strukturierte Projektführung von der Idee bis zur Umsetzung</li>
                 <li>Klare Kommunikation mit Kunden, Teams und Partnern</li>
                 <li>Qualitätsbewusstsein in Design, Inhalt und Nutzerführung</li>
                 <li>Digital Marketing mit Fokus auf Vertrauen und Resultate</li>
-                <li>Verantwortungsvolle Arbeitsweise mit Blick frs Detail</li>
-                <li>Verständnis für Markenwirkung, Zielgruppen und KundenbedÜrfnisse</li>
-                <li>VerlÄssliche Umsetzung auch bei komplexeren Aufgaben</li>
+                <li>Verantwortungsvolle Arbeitsweise mit Blick fürs Detail</li>
+                <li>Verständnis für Markenwirkung, Zielgruppen und Kundenbedürfnisse</li>
+                <li>Verlässliche Umsetzung auch bei komplexeren Aufgaben</li>
               </ul>
               <div class="cta-row">
                 <button type="button" class="btn btn-primary" data-go="projects">Projekte ansehen</button>
@@ -3960,29 +3960,29 @@ body[data-world="vertex"] .home-portrait-card,
       <div class="slide-inner about-grid about-grid--text-only">
         <div>
           <p class="chapter-label">Über mich</p>
-          <h2 class="section-title">Ich verbinde Markenverstndnis, digitale Przision und echte Umsetzungskraft.</h2>
+          <h2 class="section-title">Ich verbinde Markenverstndnis, digitale Präzision und echte Umsetzungskraft.</h2>
           <div class="glass-card" style="padding:clamp(18px,3vw,28px);margin-top:1.25rem;" data-welten-about-extra="professional">
             <p class="chapter-label">PROFESSIONAL</p>
             <h3 class="section-title" style="font-size:1.2rem;">Professionelles Arbeiten mit klarem Anspruch</h3>
-            <p class="prose">Professionelles Arbeiten bedeutet für mich, Verantwortung zu Übernehmen, sauber zu kommunizieren und Aufgaben mit einem hohen Qualitätsanspruch umzusetzen. Ich mchte nicht nur Erwartungen erfüllen, sondern durch Verlässlichkeit, Eigeninitiative und klare Ergebnisse Vertrauen schaffen.</p>
-            <p class="prose">Besonders wichtig ist mir, dass Projekte strukturiert gefhrt werden. Gute Ideen brauchen nicht nur Kreativitt, sondern auch Prioritten, Timing, Abstimmung und ein klares Ziel. Genau diese Verbindung aus Organisation, Kommunikation und Umsetzung macht für mich starke Arbeit aus.</p>
+            <p class="prose">Professionelles Arbeiten bedeutet für mich, Verantwortung zu Übernehmen, sauber zu kommunizieren und Aufgaben mit einem hohen Qualitätsanspruch umzusetzen. Ich möchte nicht nur Erwartungen erfüllen, sondern durch Verlässlichkeit, Eigeninitiative und klare Ergebnisse Vertrauen schaffen.</p>
+            <p class="prose">Besonders wichtig ist mir, dass Projekte strukturiert geführt werden. Gute Ideen brauchen nicht nur Kreativität, sondern auch Prioritäten, Timing, Abstimmung und ein klares Ziel. Genau diese Verbindung aus Organisation, Kommunikation und Umsetzung macht für mich starke Arbeit aus.</p>
             <div class="card-grid card-grid--three" style="margin-top:1rem;">
-              <article class="value-card glass-card"><h3>Verantwortung</h3><p>Ich stehe hinter meinen Aufgaben und bernehme Verantwortung für Qualität, Timing und Ergebnis. Was ich anpacke, mchte ich sauber und verlÄsslich abschliessen.</p></article>
+              <article class="value-card glass-card"><h3>Verantwortung</h3><p>Ich stehe hinter meinen Aufgaben und übernehme Verantwortung für Qualität, Timing und Ergebnis. Was ich anpacke, möchte ich sauber und verlässlich abschliessen.</p></article>
               <article class="value-card glass-card"><h3>Kommunikation</h3><p>Offene und klare Kommunikation ist für mich entscheidend. Sie schafft Vertrauen, reduziert Missverstndnisse und macht Zusammenarbeit effizienter.</p></article>
               <article class="value-card glass-card"><h3>Qualität</h3><p>Ich achte auf Details, Struktur und Wirkung. Qualität bedeutet für mich, dass ein Ergebnis nicht nur fertig ist, sondern wirklich berzeugt.</p></article>
             </div>
           </div>
           <p class="prose">Seit 2024 arbeite ich als Key-Account- und Marketing-Spezialist und begleite Kundenprojekte ganzheitlich  von der ersten Analyse über die strategische Ausrichtung bis zur operativen Umsetzung. Ich denke Projekte konsequent aus Sicht von Marke, Zielgruppe und messbarer Wirkung.</p>
-          <p class="prose">Mein Hintergrund im Visual Merchandising hat mein Gespr für Inszenierung, visuelle Klarheit, Raumwirkung und Nutzerführung stark geprgt. Heute verbinde ich diese Erfahrung mit digitalem Marketing, Website-Konzeption, Suchmaschinenoptimierung, Content-Struktur und beratender Projektführung.</p>
-          <p class="prose">Was mich auszeichnet, ist die Kombination aus positiver Energie, Verbindlichkeit und Struktur. Ich kann komplexe Themen verstÄndlich machen, Menschen abholen, Ideen in klare nächste Schritte bersetzen und Ergebnisse liefern, auf die sich Teams, Kundinnen und Kunden verlassen können.</p>
+          <p class="prose">Mein Hintergrund im Visual Merchandising hat mein Gespür für Inszenierung, visuelle Klarheit, Raumwirkung und Nutzerführung stark geprägt. Heute verbinde ich diese Erfahrung mit digitalem Marketing, Website-Konzeption, Suchmaschinenoptimierung, Content-Struktur und beratender Projektführung.</p>
+          <p class="prose">Was mich auszeichnet, ist die Kombination aus positiver Energie, Verbindlichkeit und Struktur. Ich kann komplexe Themen verständlich machen, Menschen abholen, Ideen in klare nächste Schritte übersetzen und Ergebnisse liefern, auf die sich Teams, Kundinnen und Kunden verlassen können.</p>
 
-          <div class="persona-tabs" role="tablist" aria-label="Persnliche Schwerpunkte">
-            <button type="button" class="on" role="tab" aria-selected="true" data-persona="p">Persnlichkeit</button>
+          <div class="persona-tabs" role="tablist" aria-label="Persönliche Schwerpunkte">
+            <button type="button" class="on" role="tab" aria-selected="true" data-persona="p">Persönlichkeit</button>
             <button type="button" role="tab" aria-selected="false" data-persona="w">Werte</button>
             <button type="button" role="tab" aria-selected="false" data-persona="k">Kompetenzen &amp; Arbeitsweise</button>
           </div>
           <div class="persona-panel" id="personaPanel">
-            <h3 id="personaTitle">Persnlichkeit</h3>
+            <h3 id="personaTitle">Persönlichkeit</h3>
             <div id="personaBody" class="persona-body prose"></div>
           </div>
         </div>
@@ -3993,10 +3993,10 @@ body[data-world="vertex"] .home-portrait-card,
     <section class="slide" id="slide-values" data-welten-deprecated="1" data-welten-deprecated="1" data-welten-deprecated="1" data-slide="values" aria-label="Werte" data-welten-values-v1>
       <div class="slide-inner">
         <p class="chapter-label">Werte</p>
-        <h2 class="section-title">Persnliche Werte</h2>
-        <p class="prose">Meine Werte prgen, wie ich arbeite, kommuniziere und Verantwortung bernehme. Sie sind für mich nicht nur schöne Begriffe, sondern konkrete Orientierung im Alltag. Besonders im Digital Marketing ist es wichtig, klar, glaubwrdig und bewusst zu handeln.</p>
+        <h2 class="section-title">Persönliche Werte</h2>
+        <p class="prose">Meine Werte prägen, wie ich arbeite, kommuniziere und Verantwortung übernehme. Sie sind für mich nicht nur schöne Begriffe, sondern konkrete Orientierung im Alltag. Besonders im Digital Marketing ist es wichtig, klar, glaubwürdig und bewusst zu handeln.</p>
         <div class="welten-values-zigzag" data-welten-values-zigzag>
-          <div class="vz-row vz-row--left glass-card"><div class="vz-kicker">01</div><div><h3>Verlässlichkeit</h3><p>Zusagen einhalten, Verantwortung Übernehmen, Aufgaben zu Ende bringen.</p></div></div>
+          <div class="vz-row vz-row--left glass-card"><div class="vz-kicker">01</div><div><h3>Verlässlichkeit</h3><p>Zusagen einhalten, Verantwortung übernehmen, Aufgaben zu Ende bringen.</p></div></div>
           <div class="vz-row vz-row--right glass-card"><div class="vz-kicker">02</div><div><h3>Qualitätsanspruch</h3><p>Durchdachte, saubere und langfristig tragfhige Ergebnisse.</p></div></div>
           <div class="vz-row vz-row--left glass-card"><div class="vz-kicker">03</div><div><h3>Eigeninitiative</h3><p>Aktiv mitdenken, Lösungen einbringen, Verantwortung packen.</p></div></div>
           <div class="vz-row vz-row--right glass-card"><div class="vz-kicker">04</div><div><h3>Lernbereitschaft</h3><p>Offen für neue Tools, Methoden und Technologien.</p></div></div>
@@ -4014,7 +4014,7 @@ body[data-world="vertex"] .home-portrait-card,
         <p class="prose">Diese Stärken nutze ich in digitalen Projekten  von der Konzeption über Inhalte und Gestaltung bis zur Umsetzung und Verbesserung.</p>
         <div class="welten-strengths-lanes" data-welten-leistungen-lanes>
           <div class="sl-col glass-card"><h3>Fokus</h3><ul class="sl-list"><li>Machermentalitt &amp; Zielklarheit</li><li>Digitales Systemdenken</li><li>Conversion-Orientierung</li></ul></div>
-          <div class="sl-col glass-card"><h3>Ausdruck</h3><ul class="sl-list"><li>Content &amp; Sprache</li><li>Kreativitt mit Marke im Blick</li><li>Kommunikation im Team</li></ul></div>
+          <div class="sl-col glass-card"><h3>Ausdruck</h3><ul class="sl-list"><li>Content &amp; Sprache</li><li>Kreativität mit Marke im Blick</li><li>Kommunikation im Team</li></ul></div>
         </div>
       </div>
     </section>
@@ -4068,7 +4068,7 @@ body[data-world="vertex"] .home-portrait-card,
               <iframe data-lazy-src="https://360clean.ch/offertenformular/" title="Vorschau 360clean.ch" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <h3>360clean.ch / Offertenformular</h3>
-            <p class="block">Mehrstufiges Offertenformular mit gefhrtem Anfrageprozess und klarer Nutzerführung.</p>
+            <p class="block">Mehrstufiges Offertenformular mit geführtem Anfrageprozess und klarer Nutzerführung.</p>
             <p class="block"><strong>Besonders</strong>Schritt-fr-Schritt-Erlebnis, bessere Orientierung und eine niedrigere Hrde für Anfragen.</p>
             <p class="block"><strong>Kompetenz</strong>Anfrageprozess, Nutzerführung, Optimierung der Anfragequote.</p>
             <div class="project-card__actions">
@@ -4092,8 +4092,8 @@ body[data-world="vertex"] .home-portrait-card,
               <iframe data-lazy-src="https://chesa-cherma.ch/" title="Vorschau chesa-cherma.ch" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <h3>chesa-cherma.ch</h3>
-            <p class="block">Atmosphrischer Auftritt mit starker Bildsprache und klarer Story rund um Erlebnis und Aufenthalt.</p>
-            <p class="block"><strong>Besonders</strong>Atmosphre und Premium-Eindruck in Bild und Story, ergnzt durch eine direkte Terminbuchung über den Kalendereintrag.</p>
+            <p class="block">Atmosphärischer Auftritt mit starker Bildsprache und klarer Story rund um Erlebnis und Aufenthalt.</p>
+            <p class="block"><strong>Besonders</strong>Atmosphäre und Premium-Eindruck in Bild und Story, ergänzt durch eine direkte Terminbuchung über den Kalendereintrag.</p>
             <p class="block"><strong>Kompetenz</strong>Experience-Design, Bildfhrung, Premium-Wahrnehmung und klare Buchungslogik.</p>
             <div class="project-card__actions">
               <a class="btn-open" href="https://chesa-cherma.ch/" target="_blank" rel="noopener noreferrer">Projekt Öffnen</a>
@@ -4132,7 +4132,7 @@ body[data-world="vertex"] .home-portrait-card,
           <article class="project-card glass-card project-card--preview">
             <div class="project-card__preview"><iframe data-lazy-src="assets/projects/leadformulare/sanitrend.html" title="Vorschau Sanitrend" loading="lazy"></iframe></div>
             <h3>Sanitrend</h3>
-            <p class="block">Mehrstufiges Leadformular für Sanitr, Badumbau und Sanierung  klar gefhrt und conversion-orientiert.</p>
+            <p class="block">Mehrstufiges Leadformular für Sanitr, Badumbau und Sanierung  klar geführt und conversion-orientiert.</p>
             <div class="project-card__actions">
               <a class="btn-open" href="assets/projects/leadformulare/sanitrend.html" target="_blank" rel="noopener noreferrer">Demo ansehen</a>
             </div>
@@ -4214,7 +4214,7 @@ body[data-world="vertex"] .home-portrait-card,
           <article class="project-card glass-card project-card--preview">
             <div class="project-card__preview"><iframe data-lazy-src="assets/projects/visitenkarten/burgunder-handwerk.html" title="Vorschau burgunder-handwerk" loading="lazy"></iframe></div>
             <h3>burgunder-handwerk</h3>
-            <p class="block">Handwerklich geprgte digitale Karte mit Vertrauen und klarer Kontaktlogik.</p>
+            <p class="block">Handwerklich geprägte digitale Karte mit Vertrauen und klarer Kontaktlogik.</p>
             <div class="project-card__actions">
               <a class="btn-open" href="assets/projects/visitenkarten/burgunder-handwerk.html" target="_blank" rel="noopener noreferrer">Projekt Öffnen</a>
             </div>
@@ -4258,7 +4258,7 @@ body[data-world="vertex"] .home-portrait-card,
       <div class="slide-inner">
         <p class="chapter-label">Erfahrung</p>
         <h2 class="section-title">Vom Markenraum zur digitalen Strategie.</h2>
-        <p class="prose">Ein Werdegang aus Handel, Inszenierung und digitaler Umsetzung  geprgt von fundierter Ausbildung, praktischer Erfahrung und gezielter Weiterentwicklung.</p>
+        <p class="prose">Ein Werdegang aus Handel, Inszenierung und digitaler Umsetzung  geprägt von fundierter Ausbildung, praktischer Erfahrung und gezielter Weiterentwicklung.</p>
 
         <h3 class="exp-block-title">Berufserfahrung</h3>
         <div class="timeline">
@@ -4346,8 +4346,8 @@ body[data-world="vertex"] .home-portrait-card,
       <div class="slide-inner">
         <p class="chapter-label">Profil</p>
         <h2 class="section-title">Mein Profil im Digital Marketing</h2>
-        <p class="prose"><strong>Digital Marketing</strong> bedeutet für mich, Marken sichtbar, verstÄndlich und relevant zu machen. Ich interessiere mich besonders für die Verbindung aus Website-Konzeption, SEO, Content, Nutzerführung, visueller Gestaltung und kundenorientierter Kommunikation.</p>
-        <p class="prose">Dabei denke ich nicht nur in einzelnen <strong>Massnahmen</strong>, sondern in ganzheitlichen digitalen Auftritten, die strategisch aufgebaut sind und langfristig Wirkung entfalten. Eine starke digitale Prsenz entsteht für mich dann, wenn Inhalte, Design, Technik und Zielgruppenverstndnis sauber zusammenspielen.</p>
+        <p class="prose"><strong>Digital Marketing</strong> bedeutet für mich, Marken sichtbar, verständlich und relevant zu machen. Ich interessiere mich besonders für die Verbindung aus Website-Konzeption, SEO, Content, Nutzerführung, visueller Gestaltung und kundenorientierter Kommunikation.</p>
+        <p class="prose">Dabei denke ich nicht nur in einzelnen <strong>Massnahmen</strong>, sondern in ganzheitlichen digitalen Auftritten, die strategisch aufgebaut sind und langfristig Wirkung entfalten. Eine starke digitale Präsenz entsteht für mich dann, wenn Inhalte, Design, Technik und Zielgruppenverstndnis sauber zusammenspielen.</p>
         <div class="welten-profile9" data-welten-profile9>
           <div class="p9-cell glass-card"><h3>Websites &amp; Marken</h3><p>Website-Konzeption und digitale Markenauftritte mit klarer Nutzerführung.</p></div>
           <div class="p9-cell glass-card"><h3>SEO &amp; Struktur</h3><p>SEO-Grundlagen und Inhaltsarchitektur für Auffindbarkeit.</p></div>
@@ -4355,7 +4355,7 @@ body[data-world="vertex"] .home-portrait-card,
           <div class="p9-cell glass-card"><h3>Conversion &amp; Anfragen</h3><p>Nutzerführung und klare nächste Schritte.</p></div>
           <div class="p9-cell glass-card"><h3>Koordination</h3><p>Projektablauf, Abstimmung und Qualität im Blick.</p></div>
           <div class="p9-cell glass-card"><h3>Markenwirkung</h3><p>Konsistente Bildsprache über alle Touchpoints.</p></div>
-          <div class="p9-cell glass-card"><h3>Customer Journeys</h3><p>Entscheidungswege online verstÄndlich machen.</p></div>
+          <div class="p9-cell glass-card"><h3>Customer Journeys</h3><p>Entscheidungswege online verständlich machen.</p></div>
           <div class="p9-cell glass-card"><h3>Moderne Tools</h3><p>KI &amp; Automatisierung mit pragmatischem Nutzenfokus.</p></div>
           <div class="p9-cell glass-card"><h3>Analytics &amp; Lernen</h3><p>Erkenntnisse aus Daten und Tests in die nächste Iteration nehmen.</p></div>
         </div>
@@ -4369,9 +4369,9 @@ body[data-world="vertex"] .home-portrait-card,
         <p class="prose">Ich arbeite gerne strukturiert, aber nicht starr. Für mich beginnt jedes gute Projekt mit <strong>Verständnis</strong>: Was ist das Ziel? Wer soll erreicht werden? Welche Botschaft soll ankommen? Erst wenn diese Grundlage klar ist, entstehen Ideen, die wirklich passen.</p>
         <ol class="welten-workstyle-pipeline" data-welten-workstyle-pipeline>
           <li class="wp-step glass-card"><span class="wp-n">1</span><div><h3>Verstehen</h3><p>Ziele, Zielgruppe, Marke und Ausgangslage sauber erfassen.</p></div></li>
-          <li class="wp-step glass-card"><span class="wp-n">2</span><div><h3>Strukturieren</h3><p>Informationen ordnen, damit Inhalte berzeugend wirken.</p></div></li>
+          <li class="wp-step glass-card"><span class="wp-n">2</span><div><h3>Strukturieren</h3><p>Informationen ordnen, damit Inhalte überzeugend wirken.</p></div></li>
           <li class="wp-step glass-card"><span class="wp-n">3</span><div><h3>Gestalten</h3><p>Design, Tonality und UX zur Marke passend verbinden.</p></div></li>
-          <li class="wp-step glass-card"><span class="wp-n">4</span><div><h3>Optimieren</h3><p>Feedback und Messung in Verbesserungen bersetzen.</p></div></li>
+          <li class="wp-step glass-card"><span class="wp-n">4</span><div><h3>Optimieren</h3><p>Feedback und Messung in Verbesserungen übersetzen.</p></div></li>
         </ol>
       </div>
     </section>
@@ -4380,7 +4380,7 @@ body[data-world="vertex"] .home-portrait-card,
       <div class="slide-inner">
         <p class="chapter-label">Motivation</p>
         <h2 class="section-title">Motivation &amp; Fokus</h2>
-        <p class="prose"><strong>Digital Marketing</strong> verbindet viele Dinge, die mich begeistern: Kreativitt, Strategie, Kommunikation, Technologie und Menschenverstndnis. Es geht darum, Marken sichtbar zu machen, Inhalte sinnvoll aufzubauen und digitale Erlebnisse zu schaffen, die Vertrauen erzeugen.</p>
+        <p class="prose"><strong>Digital Marketing</strong> verbindet viele Dinge, die mich begeistern: Kreativität, Strategie, Kommunikation, Technologie und Menschenverständnis. Es geht darum, Marken sichtbar zu machen, Inhalte sinnvoll aufzubauen und digitale Erlebnisse zu schaffen, die Vertrauen erzeugen.</p>
         <p class="prose">Mich motiviert besonders, dass Digital Marketing nie stillsteht. Neue Tools, Plattformen, Suchverhalten und Erwartungen verndern stndig, wie Menschen mit Marken in Kontakt kommen. Genau diese Dynamik macht den Bereich für mich spannend.</p>
         <div class="card-grid card-grid--three">
           <article class="value-card glass-card"><h3>Sichtbarkeit</h3><p>Weil digitale Sichtbarkeit heute entscheidend ist.</p></article>
@@ -4405,7 +4405,7 @@ body[data-world="vertex"] .home-portrait-card,
             <span class="faq-ico" aria-hidden="true"></span>
           </button>
           <div class="faq-panel" hidden>
-            <div class="faq-panel-inner">Ich arbeite strukturiert, verbindlich und lsungsorientiert. Mir ist wichtig, Ziele klar zu verstehen, Prioritten sauber zu setzen und Projekte Schritt für Schritt voranzubringen.</div>
+            <div class="faq-panel-inner">Ich arbeite strukturiert, verbindlich und lsungsorientiert. Mir ist wichtig, Ziele klar zu verstehen, Prioritäten sauber zu setzen und Projekte Schritt für Schritt voranzubringen.</div>
           </div>
         </div>
         <div class="faq-item">
@@ -4423,7 +4423,7 @@ body[data-world="vertex"] .home-portrait-card,
             <span class="faq-ico" aria-hidden="true"></span>
           </button>
           <div class="faq-panel" hidden>
-            <div class="faq-panel-inner">Vertrauen, klare Kommunikation und gegenseitige Wertschtzung  ich arbeite gerne im Team und mchte ein Umfeld positiv mitgestalten.</div>
+            <div class="faq-panel-inner">Vertrauen, klare Kommunikation und gegenseitige Wertschtzung  ich arbeite gerne im Team und möchte ein Umfeld positiv mitgestalten.</div>
           </div>
         </div>
         <div class="faq-item">
@@ -4441,7 +4441,7 @@ body[data-world="vertex"] .home-portrait-card,
             <span class="faq-ico" aria-hidden="true"></span>
           </button>
           <div class="faq-panel" hidden>
-            <div class="faq-panel-inner">Die Verbindung aus Strategie, Kreativitt und messbarer Wirkung  Inhalte so aufbauen, dass sie Vertrauen schaffen.</div>
+            <div class="faq-panel-inner">Die Verbindung aus Strategie, Kreativität und messbarer Wirkung  Inhalte so aufbauen, dass sie Vertrauen schaffen.</div>
           </div>
         </div>
         <div class="faq-item">
@@ -4455,7 +4455,7 @@ body[data-world="vertex"] .home-portrait-card,
         </div>
         <div class="faq-item">
           <button type="button" class="faq-q" aria-expanded="false" id="faq-pro-7">
-            <span class="faq-q-text">Was macht mich als Persnlichkeit aus?</span>
+            <span class="faq-q-text">Was macht mich als Persönlichkeit aus?</span>
             <span class="faq-ico" aria-hidden="true"></span>
           </button>
           <div class="faq-panel" hidden>
@@ -4480,9 +4480,9 @@ body[data-world="vertex"] .home-portrait-card,
         <div class="glass-card" style="padding: clamp(24px, 4vw, 40px);">
           <p class="chapter-label">Kontakt</p>
           <h2 class="section-title" data-welten-contact-v1>Bereit für den nächsten Schritt.</h2>
-          <p class="prose">Ich freue mich auf Möglichkeiten, bei denen ich meine Erfahrung in Markeninszenierung, Kundenkommunikation und digitalem Marketing gezielt einbringen kann. Besonders spannend sind für mich Unternehmen, die Wert auf Qualität, klare Kommunikation, kreative Ideen und eine starke digitale Prsenz legen.</p>
-          <p class="prose">Ob Website, Content, Kampagne, Projektkoordination oder Markenauftritt  ich mchte meine Fhigkeiten dort einsetzen, wo sie Wirkung erzeugen und weiter wachsen können.</p>
-          <p class="prose" style="font-weight:600;margin-top:0.75rem;">Lassen Sie uns ins Gesprch kommen.</p>
+          <p class="prose">Ich freue mich auf Möglichkeiten, bei denen ich meine Erfahrung in Markeninszenierung, Kundenkommunikation und digitalem Marketing gezielt einbringen kann. Besonders spannend sind für mich Unternehmen, die Wert auf Qualität, klare Kommunikation, kreative Ideen und eine starke digitale Präsenz legen.</p>
+          <p class="prose">Ob Website, Content, Kampagne, Projektkoordination oder Markenauftritt  ich möchte meine Fhigkeiten dort einsetzen, wo sie Wirkung erzeugen und weiter wachsen können.</p>
+          <p class="prose" style="font-weight:600;margin-top:0.75rem;">Lassen Sie uns ins Gespürch kommen.</p>
           <p class="prose">Ob Website, Markenauftritt, digitale Sichtbarkeit oder ein konkretes Kundenprojekt: Ich freue mich über den Austausch und reagiere schnell, verbindlich und unkompliziert.</p>
           <p class="prose">Für mich beginnt gute Zusammenarbeit mit Zuhren, Verstehen und einer klaren Einordnung der nächsten Schritte. Deshalb ist der erste Kontakt bewusst einfach gehalten: kurz schreiben, anrufen oder direkt die Adresse Öffnen.</p>
           <div class="contact-actions">
@@ -4529,7 +4529,7 @@ body[data-world="vertex"] .home-portrait-card,
       /* --- Drei Designwelten: NEXORA / Professional / FREIRAUM --- */
       var WORLD_COPY = {
         nexora: "NEXORA · Virtuell  AI  Zukunft",
-        vertex: "BUSINESS · Klar · Professionell · Vertrauensvoll",
+        vertex: "PROFESSIONAL · Klar · Professionell · Vertrauensvoll",
         freiraum: "FREIRAUM · Kreativ  Emotional  Nahbar"
       };
       function setWorldTheme(world) {
@@ -4684,14 +4684,14 @@ body[data-world="vertex"] .home-portrait-card,
       /* --- über mich: Tab-Inhalte (HTML mit mehreren Abstzen) --- */
       var personaCopy = {
         p: {
-          title: "Persnlichkeit",
+          title: "Persönlichkeit",
           html:
             "<ul>" +
             "<li>Positive, offene und motivierende Art mit echtem Interesse am Menschen hinter jedem Projekt.</li>" +
             "<li>Starke soziale Kompetenz: Ich hre zu, verbinde Perspektiven und schaffe Vertrauen in der Zusammenarbeit.</li>" +
-            "<li>Natürliche Prsenz kombiniert mit Nahbarkeit, Humor und professionaler Klarheit.</li>" +
+            "<li>Natürliche Präsenz kombiniert mit Nahbarkeit, Humor und professioneller Klarheit.</li>" +
             "<li>Ich bringe Energie in Teams, ohne den Fokus zu verlieren  konstruktiv, lsungsorientiert und respektvoll.</li>" +
-            "<li>Komplexe Situationen erfasse ich schnell und bersetze sie in klare, verstÄndliche nächste Schritte.</li>" +
+            "<li>Komplexe Situationen erfasse ich schnell und bersetze sie in klare, verständliche nächste Schritte.</li>" +
             "<li>Meine Stärke liegt darin, Menschen zu motivieren, Potenziale sichtbar zu machen und gemeinsam Momentum aufzubauen.</li>" +
             "</ul>"
         },
@@ -4704,7 +4704,7 @@ body[data-world="vertex"] .home-portrait-card,
             "<li>Qualitätsbewusstsein: Für mich zhlt nicht nur, dass etwas fertig wird, sondern wie professional es wirkt.</li>" +
             "<li>Respekt und Klarheit: Gute Zusammenarbeit braucht ehrliche Kommunikation, saubere Erwartungen und gegenseitiges Vertrauen.</li>" +
             "<li>Weiterentwicklung: Ich suche Herausforderungen, lerne schnell und nutze Feedback, um besser zu werden.</li>" +
-            "<li>Herzblut: Ich mchte Arbeit leisten, die sichtbar ist, Sinn macht und Menschen berzeugt.</li>" +
+            "<li>Herzblut: Ich möchte Arbeit leisten, die sichtbar ist, Sinn macht und Menschen berzeugt.</li>" +
             "</ul>"
         },
         k: {
@@ -4715,7 +4715,7 @@ body[data-world="vertex"] .home-portrait-card,
             "<li>Website-Konzeption mit Fokus auf Nutzerführung, Content-Logik, Markenwirkung und Conversion.</li>" +
             "<li>Suchmaschinenoptimierung und digitale Sichtbarkeit mit Blick auf Struktur, Inhalte und Zielgruppenrelevanz.</li>" +
             "<li>Marken- und Designverstndnis aus über 15 Jahren Erfahrung in visueller Inszenierung und Prsentation.</li>" +
-            "<li>Key-Account-Perspektive: Beziehungen pflegen, Anforderungen verstehen, Prioritten setzen und Ergebnisse sichern.</li>" +
+            "<li>Key-Account-Perspektive: Beziehungen pflegen, Anforderungen verstehen, Prioritäten setzen und Ergebnisse sichern.</li>" +
             "<li>Strukturierte Arbeitsweise mit klaren Prozessen, sauberer Kommunikation und hoher Umsetzungsdisziplin.</li>" +
             "<li>Schnelle Auffassungsgabe, lsungsorientiertes Denken und der Anspruch, Ideen professional zu Ende zu bringen.</li>" +
             "</ul>"
@@ -5216,10 +5216,10 @@ body[data-world="vertex"] .home-portrait-card,
         }
       });
 
-      /** PortrÄt-Pfade nacheinander testen (README: alex-business.webp, alex-portrait-round.webp, PNG mÖglich). */
+      /** Porträt-Pfade nacheinander testen (README: alex-business.webp, alex-portrait-round.webp, PNG mÖglich). */
       var PORTRAIT_SRC_CHAIN = [window.PORTFOLIO_INLINE_IMAGES.vertex];
 
-      /** Fehlendes PortrÄt nach allen Pfaden: Hinweis einblenden (Bilder erst dann ausblenden). */
+      /** Fehlendes Porträt nach allen Pfaden: Hinweis einblenden (Bilder erst dann ausblenden). */
       function showImageFallback(firstImg) {
         var box = firstImg && firstImg.parentNode;
         if (!box || box.dataset.imgFallback) return;
@@ -5230,7 +5230,7 @@ body[data-world="vertex"] .home-portrait-card,
         var ph = document.createElement("div");
         ph.className = "hero-placeholder";
         ph.style.minHeight = "280px";
-        ph.innerHTML = "Das eingebettete PortrÄt konnte nicht geladen werden.";
+        ph.innerHTML = "Das eingebettete Porträt konnte nicht geladen werden.";
         box.appendChild(ph);
       }
 
@@ -5265,11 +5265,11 @@ body[data-world="vertex"] .home-portrait-card,
           nexora: {
             intro: 'NEXORA · Virtuell  AI  Zukunft',
             h1: 'NEXORA',
-            lead: 'Digitale Markenwirkung mit Persnlichkeit, Przision und Zukunftsblick.',
-            more: 'NEXORA steht für meine digitale Seite: strategisches Denken, technisches Verständnis und die Fhigkeit, Marken in moderne Online-Erlebnisse zu bersetzen. Gerade heute reicht Sichtbarkeit allein nicht mehr aus  ein Auftritt muss Orientierung geben, Vertrauen schaffen und gleichzeitig zukunftsfhig bleiben.'
+            lead: 'Digitale Markenwirkung mit Persönlichkeit, Präzision und Zukunftsblick.',
+            more: 'NEXORA steht für meine digitale Seite: strategisches Denken, technisches Verständnis und die Fhigkeit, Marken in moderne Online-Erlebnisse zu übersetzen. Gerade heute reicht Sichtbarkeit allein nicht mehr aus  ein Auftritt muss Orientierung geben, Vertrauen schaffen und gleichzeitig zukunftsfhig bleiben.'
           },
           vertex: {
-            intro: 'PROFESSIONAL · Klar  Strukturiert  Geschftlich',
+            intro: 'PROFESSIONAL · Klar  Strukturiert  Geschäftlich',
             h1: 'PROFESSIONAL',
             lead: 'Klar auftreten, Vertrauen schaffen und Entscheidungen erleichtern.',
             more: 'Die Business-Welt setzt auf Ruhe, Struktur und Vertrauen. Das Originalbild bleibt bewusst unverflscht  kombiniert mit klarer Typografie, schwarzen Buttons und einer reduzierten, hochwertigen Gesamtwirkung.'
@@ -5278,7 +5278,7 @@ body[data-world="vertex"] .home-portrait-card,
             intro: 'FREIRAUM · Kreativ  Emotional  Nahbar',
             h1: 'FREIRAUM',
             lead: 'Ideen sichtbar machen, Emotionen wecken und Menschen erreichen.',
-            more: 'FREIRAUM steht für meine kreative Energie: Marken nicht nur funktional aufzubauen, sondern ihnen Charakter, Atmosphre und Wiedererkennung zu geben. Kreativitt ist für mich kein Selbstzweck  sie hilft, komplexe Botschaften verstÄndlich zu machen, Emotionen auszulsen und echte Verbindung zur Zielgruppe aufzubauen.'
+            more: 'FREIRAUM steht für meine kreative Energie: Marken nicht nur funktional aufzubauen, sondern ihnen Charakter, Atmosphäre und Wiedererkennung zu geben. Kreativität ist für mich kein Selbstzweck  sie hilft, komplexe Botschaften verständlich zu machen, Emotionen auszulösen und echte Verbindung zur Zielgruppe aufzubauen.'
           }
         };
         function applyCopy(){
@@ -5343,11 +5343,11 @@ body[data-world="vertex"] .home-portrait-card,
           nexora: {
             intro: 'NEXORA · Virtuell  AI  Zukunft',
             h1: 'NEXORA',
-            lead: 'Digitale Markenwirkung mit Persnlichkeit, Przision und Zukunftsblick.',
-            more: 'NEXORA steht für meine digitale Seite: strategisches Denken, technisches Verständnis und die Fhigkeit, Marken in moderne Online-Erlebnisse zu bersetzen. Gerade heute reicht Sichtbarkeit allein nicht mehr aus  ein Auftritt muss Orientierung geben, Vertrauen schaffen und gleichzeitig zukunftsfhig bleiben.'
+            lead: 'Digitale Markenwirkung mit Persönlichkeit, Präzision und Zukunftsblick.',
+            more: 'NEXORA steht für meine digitale Seite: strategisches Denken, technisches Verständnis und die Fhigkeit, Marken in moderne Online-Erlebnisse zu übersetzen. Gerade heute reicht Sichtbarkeit allein nicht mehr aus  ein Auftritt muss Orientierung geben, Vertrauen schaffen und gleichzeitig zukunftsfhig bleiben.'
           },
           vertex: {
-            intro: 'PROFESSIONAL · Klar  Strukturiert  Geschftlich',
+            intro: 'PROFESSIONAL · Klar  Strukturiert  Geschäftlich',
             h1: 'PROFESSIONAL',
             lead: 'Klar auftreten, Vertrauen schaffen und Entscheidungen erleichtern.',
             more: 'Die Business-Welt setzt auf Ruhe, Struktur und Vertrauen. Das Originalbild bleibt bewusst unverflscht  kombiniert mit klarer Typografie, schwarzen Buttons und einer reduzierten, hochwertigen Gesamtwirkung.'
@@ -5356,7 +5356,7 @@ body[data-world="vertex"] .home-portrait-card,
             intro: 'FREIRAUM · Kreativ  Emotional  Nahbar',
             h1: 'FREIRAUM',
             lead: 'Ideen sichtbar machen, Emotionen wecken und Menschen erreichen.',
-            more: 'FREIRAUM steht für meine kreative Energie: Marken nicht nur funktional aufzubauen, sondern ihnen Charakter, Atmosphre und Wiedererkennung zu geben. Kreativitt ist für mich kein Selbstzweck  sie hilft, komplexe Botschaften verstÄndlich zu machen, Emotionen auszulsen und echte Verbindung zur Zielgruppe aufzubauen.'
+            more: 'FREIRAUM steht für meine kreative Energie: Marken nicht nur funktional aufzubauen, sondern ihnen Charakter, Atmosphäre und Wiedererkennung zu geben. Kreativität ist für mich kein Selbstzweck  sie hilft, komplexe Botschaften verständlich zu machen, Emotionen auszulösen und echte Verbindung zur Zielgruppe aufzubauen.'
           }
         };
         function applyCopy(){
@@ -5400,20 +5400,20 @@ body[data-world="vertex"] .home-portrait-card,
         nexora: {
           intro: "NEXORA · Virtuell  AI  Zukunft",
           h1: "NEXORA",
-          lead: "Digitale Markenwirkung mit Persnlichkeit, Przision und Zukunftsblick.",
-          more: "NEXORA steht für meine digitale Seite: strategisches Denken, technisches Verständnis und die Fhigkeit, Marken in moderne Online-Erlebnisse zu bersetzen. Gerade heute reicht Sichtbarkeit allein nicht mehr aus  ein Auftritt muss Orientierung geben, Vertrauen schaffen und gleichzeitig zukunftsfhig bleiben."
+          lead: "Digitale Markenwirkung mit Persönlichkeit, Präzision und Zukunftsblick.",
+          more: "NEXORA steht für meine digitale Seite: strategisches Denken, technisches Verständnis und die Fhigkeit, Marken in moderne Online-Erlebnisse zu übersetzen. Gerade heute reicht Sichtbarkeit allein nicht mehr aus  ein Auftritt muss Orientierung geben, Vertrauen schaffen und gleichzeitig zukunftsfhig bleiben."
         },
         vertex: {
-          intro: "PROFESSIONAL · Klar  Strukturiert  Geschftlich",
+          intro: "PROFESSIONAL · Klar  Strukturiert  Geschäftlich",
           h1: "PROFESSIONAL",
           lead: "Klar auftreten, Vertrauen schaffen und Entscheidungen erleichtern.",
-          more: "PROFESSIONAL zeigt, wie ich in Projekten arbeite: strukturiert, verbindlich und mit einem klaren Blick für Ziele, Wirkung und Qualität. Ein professionaler Auftritt ist wichtig, weil er Vertrauen aufbaut, Kompetenz sichtbar macht und Kundinnen und Kunden vom ersten Moment an Sicherheit gibt."
+          more: "PROFESSIONAL zeigt, wie ich in Projekten arbeite: strukturiert, verbindlich und mit einem klaren Blick für Ziele, Wirkung und Qualität. Ein professioneller Auftritt ist wichtig, weil er Vertrauen aufbaut, Kompetenz sichtbar macht und Kundinnen und Kunden vom ersten Moment an Sicherheit gibt."
         },
         freiraum: {
           intro: "FREIRAUM · Kreativ  Emotional  Nahbar",
           h1: "FREIRAUM",
           lead: "Ideen sichtbar machen, Emotionen wecken und Menschen erreichen.",
-          more: "FREIRAUM steht für meine kreative Energie: Marken nicht nur funktional aufzubauen, sondern ihnen Charakter, Atmosphre und Wiedererkennung zu geben. Kreativitt ist für mich kein Selbstzweck  sie hilft, komplexe Botschaften verstÄndlich zu machen, Emotionen auszulsen und echte Verbindung zur Zielgruppe aufzubauen."
+          more: "FREIRAUM steht für meine kreative Energie: Marken nicht nur funktional aufzubauen, sondern ihnen Charakter, Atmosphäre und Wiedererkennung zu geben. Kreativität ist für mich kein Selbstzweck  sie hilft, komplexe Botschaften verständlich zu machen, Emotionen auszulösen und echte Verbindung zur Zielgruppe aufzubauen."
         }
       };
 
@@ -5431,8 +5431,8 @@ body[data-world="vertex"] .home-portrait-card,
         var c = COPY[w] || COPY.nexora;
         var hero = document.getElementById("heroPhoto");
         var contact = document.getElementById("contactPhoto");
-        setImg(hero, ASSETS[w] || ASSETS.nexora, w === "vertex" ? "Alex Lamberti" : (w === "freiraum" ? "Knstlerisches FREIRAUM-Motiv" : "Virtuelles NEXORA-Motiv"));
-        setImg(contact, ASSETS[w] || ASSETS.nexora, w === "vertex" ? "Alex Lamberti" : (w === "freiraum" ? "Knstlerisches FREIRAUM-Motiv" : "Virtuelles NEXORA-Motiv"));
+        setImg(hero, ASSETS[w] || ASSETS.nexora, w === "vertex" ? "Alex Lamberti" : (w === "freiraum" ? "Künstlerisches FREIRAUM-Motiv" : "Virtuelles NEXORA-Motiv"));
+        setImg(contact, ASSETS[w] || ASSETS.nexora, w === "vertex" ? "Alex Lamberti" : (w === "freiraum" ? "Künstlerisches FREIRAUM-Motiv" : "Virtuelles NEXORA-Motiv"));
 
         /* Home-Texte: WeltenPreviewI18n */
 

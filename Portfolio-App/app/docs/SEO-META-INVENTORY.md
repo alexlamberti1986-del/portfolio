@@ -10,10 +10,11 @@ Inventory of **existing** title/description sources. Runtime values come from `a
 | --- | --- |
 | title | Alex Lamberti Multiversum für digitale Welten |
 | description | Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Digital Marketing, Webdesign und Strategie in vier digitalen Welten. |
-| og:description | …Drei digitale Welten für Ideen, Projekte und Kreativität. (**note:** “drei” vs meta “vier”) |
+| og:description | Same as meta description (vier Welten) — Phase 2 aligned |
 | canonical | https://www.alexlamberti.ch/ |
 | robots | (unset) |
 | og:image | https://www.alexlamberti.ch/assets/og-image.jpg |
+| early boot | `assets/welten-shell-seo-boot.js` sets title/description/canonical/OG + SEO H1 from pathname before deferred scripts |
 
 ---
 
@@ -60,7 +61,7 @@ Parallel `seo` blocks exist in `welten-translations.js` (EN full; FR/IT present)
 | PROFESSIONAL.html | Alex Lamberti \| PROFESSIONAL · Projekte & Zusammenarbeit | PROFESSIONAL-specific (was BUSINESS + generic) |
 | FREIRAUM.html | Alex Lamberti \| FREIRAUM · Kreative Welt | FREIRAUM-specific (was generic duplicate) |
 
-Visible home H1s still world-specific (see AUDIT-BEFORE); FREIRAUM H1 has encoding issues (CONTENT-TODO C-20).
+Visible home H1s remain world-specific; FREIRAUM H1 encoding fixed in Phase 2 (was C-20).
 
 ---
 

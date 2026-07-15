@@ -25,9 +25,9 @@ Status: `open` | `confirmed` | `wontfix`
 | ID | Item | Finding | Owner action | Status |
 | --- | --- | --- | --- | --- |
 | C-10 | Offerte form brand | Still “Digital Plus” / `digitalplus-gmbh-leadformular` | Confirm rebrand to Alex Lamberti wording | open |
-| C-11 | Offerte submit | `dataset.submissionMode='local-only'` — **no real send** | Decide endpoint (email API, Formspree, custom) + privacy | open |
+| C-11 | Offerte submit | `dataset.submissionMode='local-only'` — **no real send**; success UI now honest (local-only + mailto). Still needs real endpoint | Decide endpoint (email API, Formspree, custom) + privacy | open — deferred |
 | C-12 | Guide prices in form | Copied Digital Plus price logic | Confirm which prices (if any) may appear publicly | open |
-| C-13 | Success copy | “Digital Plus meldet sich…” | Replace once brand confirmed | open |
+| C-13 | Success copy | Honest local-only / mailto (was “Digital Plus meldet sich…”) | Replace again once brand + endpoint confirmed | partially fixed |
 | C-14 | Analytics vendor | None installed | Choose tool + consent copy (CH/DSG) | open |
 
 ---
@@ -36,10 +36,10 @@ Status: `open` | `confirmed` | `wontfix`
 
 | ID | Item | Finding | Status |
 | --- | --- | --- | --- |
-| C-20 | FREIRAUM H1 / body encoding | Mojibake: `Kreativitt`, `Persnlichkeit`, `Atmosphre`, etc. | open |
-| C-21 | PROFESSIONAL body encoding | `verlÄsslich`, `glaubwrdig`, `Ästhetisch`, `berzeugen`, `KundenbedÜrfnisse` | open |
-| C-22 | PROFESSIONAL world-intro “BUSINESS” | UI kicker still says BUSINESS while brand is PROFESSIONAL | open |
-| C-23 | Shell SEO “drei Welten” vs “vier Welten” | Mixed count in OG/static strings historically | open |
+| C-20 | FREIRAUM H1 / body encoding | Mojibake fixed Phase 2 (`Kreativität`, `Persönlichkeit`, `Atmosphäre`, …) | done |
+| C-21 | PROFESSIONAL body encoding | Mojibake fixed Phase 2 (`verlässlich`, `glaubwürdig`, `ästhetisch`, `überzeugen`, `Kundenbedürfnisse`, …) | done |
+| C-22 | PROFESSIONAL world-intro “BUSINESS” | UI kicker + related CSS/JS now PROFESSIONAL | done |
+| C-23 | Shell SEO “drei Welten” vs “vier Welten” | Aligned to vier/four/quatre/quattro in shell static + translations + SEO fallbacks | done |
 | C-24 | Testimonials / logos / stats | Do not invent — list only if owner supplies real quotes | open |
 
 ---

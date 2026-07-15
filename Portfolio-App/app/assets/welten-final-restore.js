@@ -15,7 +15,7 @@
   var WORLD_INTRO = {
     general: "MULTIVERSUM · Mix · Strategie · Begeisterung",
     nexora: "NEXORA · Virtuell · AI · Zukunft",
-    vertex: "BUSINESS · Klar · Professionell · Vertrauensvoll",
+    vertex: "PROFESSIONAL · Klar · Professionell · Vertrauensvoll",
     freiraum: "FREIRAUM · Kreativ · Emotional · Nahbar",
   };
 
