@@ -1,17 +1,19 @@
 /**
- * Multiversum Home — Galaxy-Gang als einziger Home-Hero.
- * Setzt __mvUseGalaxyHome, damit Parallax/Static gar nicht erst gebaut werden.
+ * Multiversum Home — Galaxy Walk als Hero.
+ * Wichtig: Iframe-Src erst NACH dem Document-Load setzen, sonst bleibt
+ * der Browser-Tab ewig am Laden (64 MB Child-Frame blockiert parent load).
  */
 (function () {
   "use strict";
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy4";
+  var VER = "20260715galaxy5";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v36-final-self-contained.html?v=" + VER;
   var ENABLED = true;
-  var retryTimer = 0;
+  var iframeSrcStarted = false;
+  var markedReady = false;
 
   function worldKey() {
     return document.body.getAttribute("data-world") || "";
@@ -30,19 +32,10 @@
     return !current || current === "home";
   }
 
-  function getHomeInner() {
-    var slideHome = document.getElementById("slide-home");
-    if (!slideHome) return null;
-    return (
-      slideHome.querySelector(".slide-inner--home") ||
-      slideHome.querySelector(".slide-inner") ||
-      slideHome
-    );
-  }
-
   function signalReady() {
     try {
       document.body.classList.add("mv-home-ready");
+      document.body.setAttribute("data-welten-galaxy-hero", "1");
       document.dispatchEvent(new CustomEvent("mv-hero-ready"));
       document.dispatchEvent(new CustomEvent("welten-galaxy-hero-mounted"));
     } catch (e) {}
@@ -52,6 +45,15 @@
         window.parent.postMessage({ type: "mv-hero-ready" }, "*");
       }
     } catch (e2) {}
+  }
+
+  function markUiReady(section) {
+    if (!section) section = document.getElementById("alGalaxyGangHero");
+    if (section) section.classList.add("is-ready");
+    if (!markedReady) {
+      markedReady = true;
+      signalReady();
+    }
   }
 
   function purgeLegacyHeroes() {
@@ -64,17 +66,6 @@
       rail.setAttribute("hidden", "");
     });
     document.body.removeAttribute("data-welten-video-hero");
-  }
-
-  function removeHero() {
-    var el = document.getElementById("alGalaxyGangHero");
-    if (el && el.getAttribute("data-static-galaxy") === "1") {
-      /* Static HTML-Hero nie entfernen — nur Flag/Ready syncen */
-      document.body.setAttribute("data-welten-galaxy-hero", "1");
-      return;
-    }
-    if (el) el.remove();
-    document.body.removeAttribute("data-welten-galaxy-hero");
   }
 
   function navigateLocalChapter(go) {
@@ -146,129 +137,115 @@
     forwardToShell({ world: world, go: go, href: href });
   }
 
-  function placeHero(section, inner) {
-    if (inner.firstChild !== section) {
-      inner.insertBefore(section, inner.firstChild);
-    }
-  }
-
-  function markReady(section) {
-    if (!section) return;
-    section.classList.add("is-ready");
-    signalReady();
-  }
-
-  function mountHero() {
-    if (!ENABLED || !isMultiversum() || !isHomeActive()) {
-      removeHero();
+  function startIframeSrc(frame) {
+    if (!frame || iframeSrcStarted) return;
+    var wanted = frame.getAttribute("data-src") || SRC;
+    var current = frame.getAttribute("src") || "";
+    /* Bereits korrekte Src (statisches HTML) — nicht neu setzen */
+    if (current.indexOf("galaxy-gang/") !== -1) {
+      iframeSrcStarted = true;
       return;
     }
+    iframeSrcStarted = true;
+    frame.setAttribute("src", wanted);
+  }
 
-    var inner = getHomeInner();
-    if (!inner) {
-      if (retryTimer) window.clearTimeout(retryTimer);
-      retryTimer = window.setTimeout(mountHero, 120);
-      return;
+  /**
+   * Startet den schweren Galaxy-Download erst nachdem das Multiversum-Dokument
+   * selbst fertig ist — sonst hängt der Tab-Spinner an child frame load.
+   */
+  function scheduleHeavyGalaxyLoad(frame, section) {
+    if (!frame) return;
+
+    function kick() {
+      startIframeSrc(frame);
     }
+
+    if (document.readyState === "complete") {
+      window.setTimeout(kick, 50);
+    } else {
+      window.addEventListener(
+        "load",
+        function () {
+          window.setTimeout(kick, 50);
+        },
+        { once: true }
+      );
+      /* Fallback falls load durch andere Langläufer verzögert wird */
+      window.setTimeout(kick, 1200);
+    }
+
+    frame.addEventListener(
+      "load",
+      function () {
+        markUiReady(section);
+      },
+      { once: true }
+    );
+    /* Overlay spätestens nach 20s aus — Download kann länger brauchen */
+    window.setTimeout(function () {
+      markUiReady(section);
+    }, 20000);
+  }
+
+  function ensureHero() {
+    if (!ENABLED || !isMultiversum()) return;
+
+    var section = document.getElementById("alGalaxyGangHero");
+    var frame = document.getElementById("alGalaxyGangFrame");
+    if (!section || !frame) return;
 
     purgeLegacyHeroes();
+    document.body.setAttribute("data-welten-galaxy-hero", "1");
 
-    var existing = document.getElementById("alGalaxyGangHero");
-    if (existing) {
-      placeHero(existing, inner);
-      document.body.setAttribute("data-welten-galaxy-hero", "1");
-      var frame = document.getElementById("alGalaxyGangFrame");
-      if (frame) {
-        frame.addEventListener(
-          "load",
-          function () {
-            markReady(existing);
-          },
-          { once: true }
-        );
-        try {
-          if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
-            markReady(existing);
-          }
-        } catch (eReady) {}
-      }
-      signalReady();
+    /* Sofort Shell freigeben — unabhängig vom 64MB-Download */
+    signalReady();
+
+    if (!isHomeActive()) {
+      /* Auf Unterseiten Src nicht starten (spart Bandbreite) */
       return;
     }
 
-    var section = document.createElement("section");
-    section.id = "alGalaxyGangHero";
-    section.className = "al-galaxy-gang-hero";
-    section.setAttribute("aria-label", "Alex Lamberti Galaxy Gang");
+    if (!frame.getAttribute("data-src")) {
+      frame.setAttribute("data-src", SRC);
+    }
 
-    var loading = document.createElement("div");
-    loading.className = "al-galaxy-gang-hero__loading";
-    loading.textContent = "Galaxy Walk wird geladen …";
-    section.appendChild(loading);
+    /* Eager-Src aus dem HTML entfernen → Document kann complete werden */
+    var srcNow = frame.getAttribute("src") || "";
+    if (srcNow.indexOf("galaxy-gang/") !== -1 && document.readyState !== "complete") {
+      frame.setAttribute("data-src", srcNow);
+      try {
+        frame.removeAttribute("src");
+        frame.src = "about:blank";
+      } catch (eBlank) {}
+      iframeSrcStarted = false;
+    }
 
-    var iframe = document.createElement("iframe");
-    iframe.id = "alGalaxyGangFrame";
-    iframe.className = "al-galaxy-gang-hero__frame";
-    iframe.title = "Alex Lamberti Galaxy Gang";
-    iframe.loading = "eager";
-    iframe.setAttribute("allow", "fullscreen");
-    iframe.src = SRC;
-    section.appendChild(iframe);
-
-    placeHero(section, inner);
-    document.body.setAttribute("data-welten-galaxy-hero", "1");
-    signalReady();
-
-    iframe.addEventListener("load", function () {
-      markReady(section);
-    });
-    window.setTimeout(function () {
-      markReady(section);
-    }, 15000);
+    scheduleHeavyGalaxyLoad(frame, section);
   }
 
   function sync() {
-    if (!isMultiversum()) {
-      removeHero();
-      return;
-    }
-    if (isHomeActive()) mountHero();
-    else removeHero();
+    if (!isMultiversum()) return;
+    ensureHero();
   }
 
   function boot() {
     window.__mvUseGalaxyHome = true;
     if (!isMultiversum()) return;
     window.addEventListener("message", onGalaxyNavigate);
-    sync();
+    ensureHero();
 
-    var obs = new MutationObserver(function () {
-      if (isHomeActive() && window.__mvUseGalaxyHome) {
-        purgeLegacyHeroes();
-        mountHero();
-      } else {
-        sync();
-      }
-    });
-    try {
-      obs.observe(document.body, {
-        attributes: true,
-        attributeFilter: ["data-current-slide", "class"],
-      });
-    } catch (e) {}
+    window.addEventListener("portfolio-world-reveal", sync);
+    window.addEventListener("portfolio-world-enter", sync);
 
     var home = document.getElementById("slide-home");
     if (home) {
       try {
-        obs.observe(home, { attributes: true, attributeFilter: ["class"], childList: true, subtree: false });
-      } catch (e2) {}
+        new MutationObserver(function () {
+          if (isHomeActive()) ensureHero();
+        }).observe(home, { attributes: true, attributeFilter: ["class"] });
+      } catch (eObs) {}
     }
-
-    window.addEventListener("portfolio-world-reveal", sync);
-    window.addEventListener("portfolio-world-enter", sync);
-    [80, 200, 500, 1000, 2000, 4000].forEach(function (ms) {
-      window.setTimeout(sync, ms);
-    });
   }
 
   if (document.readyState === "loading") {
@@ -277,5 +254,9 @@
     boot();
   }
 
-  window.WeltenGalaxyGangHero = { remount: mountHero, sync: sync, version: VER };
+  window.WeltenGalaxyGangHero = {
+    remount: ensureHero,
+    sync: sync,
+    version: VER,
+  };
 })();
