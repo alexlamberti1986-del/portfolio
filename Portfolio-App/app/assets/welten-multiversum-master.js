@@ -1037,27 +1037,20 @@
        Verhindert Multiversum-Bar/Theme-Bleed während der Transition. */
     setMaster(i);
     setGlobalMenuExpanded(false);
-    if (i !== 0 && frames[0]) {
-      frames[0].style.pointerEvents = "none";
-      postFrame(frames[0], { type: "portfolio-world-pause", paused: true });
-      postFrame(frames[0], { type: "portfolio-cleanup-transition" });
-      postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
-      try {
-        var mvWin = frames[0].contentWindow;
-        if (mvWin && typeof mvWin.__mvStopIframeWorldBgm === "function") {
-          mvWin.__mvStopIframeWorldBgm();
-        }
-      } catch (eStop) {}
-      /* Kill Multiversum document entirely — prevents paint + iframe BGM bleed */
-      if (frameHasSrc(frames[0])) {
-        frames[0].removeAttribute("data-mv-world-live");
-        frames[0].classList.remove("is-active");
-        frames[0].src = "about:blank";
-        loaded[0] = false;
-      } else {
+      /* Multiversum pausieren — NICHT blanken (Galaxy Walk sonst jedes Mal ~20s neu) */
+      if (i !== 0 && frames[0]) {
+        frames[0].style.pointerEvents = "none";
+        postFrame(frames[0], { type: "portfolio-world-pause", paused: true });
+        postFrame(frames[0], { type: "portfolio-cleanup-transition" });
+        postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
+        try {
+          var mvWin = frames[0].contentWindow;
+          if (mvWin && typeof mvWin.__mvStopIframeWorldBgm === "function") {
+            mvWin.__mvStopIframeWorldBgm();
+          }
+        } catch (eStop) {}
         frames[0].classList.remove("is-active");
       }
-    }
     var c = readChapter(frames[prev]);
     if (c) sharedChapter = c;
 
@@ -1068,16 +1061,6 @@
       if (transitionDone) return;
       transitionDone = true;
       window.__wwsOnTransitionEnd = null;
-      /* Frame 0 zuerst killen — bevor Lock/Overlay fällt */
-      if (i !== 0 && frames[0] && frameHasSrc(frames[0])) {
-        try {
-          postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
-        } catch (eBlankStop) {}
-        frames[0].src = "about:blank";
-        loaded[0] = false;
-        frames[0].classList.remove("is-active");
-        frames[0].style.pointerEvents = "none";
-      }
       unlockShell();
       forceEnableWorldButtons();
       purgeSwitchOverlays();

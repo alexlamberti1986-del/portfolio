@@ -1,19 +1,26 @@
 /**
- * Multiversum Home — Galaxy Walk als Hero.
- * Wichtig: Iframe-Src erst NACH dem Document-Load setzen, sonst bleibt
- * der Browser-Tab ewig am Laden (64 MB Child-Frame blockiert parent load).
+ * Multiversum Home — Galaxy Walk als Hero + Kapitel-Nav + sichtbarer Home-Inhalt.
+ * Schwerer Iframe-Download erst nach idle; Overlay kurz; kein Tab-Blocker.
  */
 (function () {
   "use strict";
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy5";
+  var VER = "20260715galaxy6";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v36-final-self-contained.html?v=" + VER;
   var ENABLED = true;
   var iframeSrcStarted = false;
   var markedReady = false;
+  var CHAPTERS = [
+    { id: "home", label: "Home" },
+    { id: "projects", label: "Projekte" },
+    { id: "leistungen", label: "Leistungen" },
+    { id: "about", label: "Über mich" },
+    { id: "contact", label: "Kontakt" },
+    { id: "offerte", label: "Offerte" },
+  ];
 
   function worldKey() {
     return document.body.getAttribute("data-world") || "";
@@ -35,6 +42,7 @@
   function signalReady() {
     try {
       document.body.classList.add("mv-home-ready");
+      document.body.classList.add("is-below-parallax");
       document.body.setAttribute("data-welten-galaxy-hero", "1");
       document.dispatchEvent(new CustomEvent("mv-hero-ready"));
       document.dispatchEvent(new CustomEvent("welten-galaxy-hero-mounted"));
@@ -61,10 +69,6 @@
       var el = document.getElementById(id);
       if (el) el.remove();
     });
-    document.querySelectorAll(".experience-rail").forEach(function (rail) {
-      rail.style.setProperty("display", "none", "important");
-      rail.setAttribute("hidden", "");
-    });
     document.body.removeAttribute("data-welten-video-hero");
   }
 
@@ -85,6 +89,68 @@
       return true;
     }
     return false;
+  }
+
+  function syncChapterNav() {
+    var nav = document.getElementById("alGalaxyChapterNav");
+    if (!nav) return;
+    var current = document.body.getAttribute("data-current-slide") || "home";
+    nav.querySelectorAll("[data-go]").forEach(function (btn) {
+      var on = btn.getAttribute("data-go") === current;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-current", on ? "page" : "false");
+    });
+  }
+
+  function ensureChapterNav() {
+    if (document.getElementById("alGalaxyChapterNav")) {
+      syncChapterNav();
+      return;
+    }
+    var section = document.getElementById("alGalaxyGangHero");
+    if (!section || !section.parentNode) return;
+
+    var wrap = document.createElement("div");
+    wrap.id = "alGalaxyHomeChrome";
+    wrap.className = "al-galaxy-home-chrome";
+    wrap.innerHTML =
+      '<p class="al-galaxy-home-chrome__tag"><span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
+      '<nav id="alGalaxyChapterNav" class="mv-static-hero__nav al-galaxy-chapter-nav" aria-label="Kapitel">' +
+      CHAPTERS.map(function (item) {
+        return (
+          '<button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="' +
+          item.id +
+          '">' +
+          item.label +
+          "</button>"
+        );
+      }).join("") +
+      "</nav>";
+
+    if (section.nextSibling) {
+      section.parentNode.insertBefore(wrap, section.nextSibling);
+    } else {
+      section.parentNode.appendChild(wrap);
+    }
+
+    wrap.querySelectorAll("[data-go]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        navigateLocalChapter(btn.getAttribute("data-go"));
+        syncChapterNav();
+      });
+    });
+    syncChapterNav();
+  }
+
+  function revealHomeContent() {
+    var block = document.querySelector("#slide-home .home-main-block");
+    if (!block) return;
+    block.removeAttribute("hidden");
+    block.style.visibility = "visible";
+    block.style.opacity = "1";
+    block.style.pointerEvents = "auto";
+    block.style.display = "";
   }
 
   function forwardToShell(payload) {
@@ -139,9 +205,9 @@
 
   function startIframeSrc(frame) {
     if (!frame || iframeSrcStarted) return;
+    if (!isHomeActive()) return;
     var wanted = frame.getAttribute("data-src") || SRC;
     var current = frame.getAttribute("src") || "";
-    /* Bereits korrekte Src (statisches HTML) — nicht neu setzen */
     if (current.indexOf("galaxy-gang/") !== -1) {
       iframeSrcStarted = true;
       return;
@@ -150,10 +216,6 @@
     frame.setAttribute("src", wanted);
   }
 
-  /**
-   * Startet den schweren Galaxy-Download erst nachdem das Multiversum-Dokument
-   * selbst fertig ist — sonst hängt der Tab-Spinner an child frame load.
-   */
   function scheduleHeavyGalaxyLoad(frame, section) {
     if (!frame) return;
 
@@ -161,19 +223,19 @@
       startIframeSrc(frame);
     }
 
-    if (document.readyState === "complete") {
-      window.setTimeout(kick, 50);
-    } else {
-      window.addEventListener(
-        "load",
-        function () {
-          window.setTimeout(kick, 50);
-        },
-        { once: true }
-      );
-      /* Fallback falls load durch andere Langläufer verzögert wird */
-      window.setTimeout(kick, 1200);
+    function afterDocReady(cb) {
+      if (document.readyState === "complete") cb();
+      else window.addEventListener("load", cb, { once: true });
     }
+
+    afterDocReady(function () {
+      /* Idle = flüssiger First Paint; Fallback nach 400ms */
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(kick, { timeout: 900 });
+      } else {
+        window.setTimeout(kick, 400);
+      }
+    });
 
     frame.addEventListener(
       "load",
@@ -182,10 +244,10 @@
       },
       { once: true }
     );
-    /* Overlay spätestens nach 20s aus — Download kann länger brauchen */
+    /* Overlay schnell weg — Seite ist schon nutzbar */
     window.setTimeout(function () {
       markUiReady(section);
-    }, 20000);
+    }, 1800);
   }
 
   function ensureHero() {
@@ -197,20 +259,16 @@
 
     purgeLegacyHeroes();
     document.body.setAttribute("data-welten-galaxy-hero", "1");
-
-    /* Sofort Shell freigeben — unabhängig vom 64MB-Download */
+    ensureChapterNav();
+    revealHomeContent();
     signalReady();
 
-    if (!isHomeActive()) {
-      /* Auf Unterseiten Src nicht starten (spart Bandbreite) */
-      return;
-    }
+    if (!isHomeActive()) return;
 
     if (!frame.getAttribute("data-src")) {
       frame.setAttribute("data-src", SRC);
     }
 
-    /* Eager-Src aus dem HTML entfernen → Document kann complete werden */
     var srcNow = frame.getAttribute("src") || "";
     if (srcNow.indexOf("galaxy-gang/") !== -1 && document.readyState !== "complete") {
       frame.setAttribute("data-src", srcNow);
@@ -227,6 +285,8 @@
   function sync() {
     if (!isMultiversum()) return;
     ensureHero();
+    syncChapterNav();
+    revealHomeContent();
   }
 
   function boot() {
@@ -238,14 +298,15 @@
     window.addEventListener("portfolio-world-reveal", sync);
     window.addEventListener("portfolio-world-enter", sync);
 
-    var home = document.getElementById("slide-home");
-    if (home) {
-      try {
-        new MutationObserver(function () {
-          if (isHomeActive()) ensureHero();
-        }).observe(home, { attributes: true, attributeFilter: ["class"] });
-      } catch (eObs) {}
-    }
+    try {
+      new MutationObserver(function () {
+        syncChapterNav();
+        if (isHomeActive()) revealHomeContent();
+      }).observe(document.body, {
+        attributes: true,
+        attributeFilter: ["data-current-slide", "class"],
+      });
+    } catch (eObs) {}
   }
 
   if (document.readyState === "loading") {
