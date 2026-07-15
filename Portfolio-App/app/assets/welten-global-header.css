@@ -1,18 +1,31 @@
 /* Shell owns site chrome: brand + contact + menu above world switcher */
-:root {
-  --global-header-h: 64px;
-  --world-nav-h: 56px;
-  --total-header-h: calc(var(--global-header-h) + var(--world-nav-h));
-}
 
-.mv4-global-header {
+/* Fixed stack — height measured once; does NOT depend on --total-header-h (no drift) */
+.mv4-shell-chrome {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 2147483646;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.mv4-shell-chrome > * {
+  pointer-events: auto;
+}
+
+.mv4-global-header {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  z-index: 1;
   box-sizing: border-box;
-  min-height: var(--global-header-h, 64px);
+  flex-shrink: 0;
+  /* NEVER tie min-height to measured --global-header-h (causes ResizeObserver loop) */
+  min-height: 0;
   pointer-events: none;
   transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
 }
@@ -30,7 +43,6 @@
   margin: 0 auto;
   box-sizing: border-box;
   padding: calc(10px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px));
-  min-height: inherit;
 }
 
 .mv4-global-header__left {
@@ -110,10 +122,15 @@
   opacity: 0.85;
 }
 
-/* World switcher sits under global header; frames use total chrome height */
-.mv4-bar {
-  top: var(--global-header-h, 64px) !important;
+/* World switcher lives in the fixed chrome stack — not independently measured */
+.mv4-shell-chrome .mv4-bar {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  z-index: 1 !important;
   padding-top: 10px !important;
+  flex-shrink: 0;
 }
 
 .mv4-frame,

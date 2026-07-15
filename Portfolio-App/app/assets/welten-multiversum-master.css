@@ -9,14 +9,14 @@ html, body {
 :root {
   --global-header-h: 64px;
   --world-nav-h: 56px;
-  --total-header-h: calc(var(--global-header-h) + var(--world-nav-h));
-  /* Compatibility alias: existing FOUC/layout rules use --bar-h as total chrome height */
-  --bar-h: var(--total-header-h);
+  --total-header-h: 120px;
+  /* Compatibility alias: FOUC/layout rules use --bar-h as total chrome height */
+  --bar-h: 120px;
 }
 
 .mv4-bar {
   position: fixed;
-  top: var(--global-header-h, 64px);
+  top: 0;
   left: 0;
   right: 0;
   z-index: 2147483647 !important;
@@ -28,6 +28,13 @@ html, body {
   padding: 10px 12px;
   padding-top: 10px;
   transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+/* When nested in chrome stack, positioning comes from welten-global-header.css */
+.mv4-shell-chrome .mv4-bar {
+  position: relative;
+  top: auto;
+  z-index: 1 !important;
 }
 
 .mv4-logo {

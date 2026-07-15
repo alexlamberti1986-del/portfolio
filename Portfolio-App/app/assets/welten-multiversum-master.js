@@ -116,29 +116,53 @@
     } catch (e) {}
   }
 
+  var lastChromeH = 0;
+  var chromeMeasureLock = false;
+
   function setBarHeight() {
+    if (chromeMeasureLock) return;
+    var stack = document.querySelector(".mv4-shell-chrome");
     var globalHeader = document.querySelector(".mv4-global-header");
     var shellBar = getBar();
     var root = document.documentElement;
     var globalH = 64;
     var worldNavH = 56;
-    if (globalHeader) {
-      globalH = Math.ceil(globalHeader.getBoundingClientRect().height);
+    var total = 120;
+
+    /* Prefer measuring the fixed chrome stack as one unit — height does NOT
+       depend on --total-header-h, so ResizeObserver cannot drift downward. */
+    if (stack) {
+      total = Math.ceil(stack.getBoundingClientRect().height);
+    } else {
+      if (globalHeader) globalH = Math.ceil(globalHeader.getBoundingClientRect().height);
+      if (shellBar) worldNavH = Math.ceil(shellBar.getBoundingClientRect().height);
       if (globalH < 48) globalH = 64;
-    }
-    if (shellBar) {
-      worldNavH = Math.ceil(shellBar.getBoundingClientRect().height);
       if (worldNavH < 48) worldNavH = 56;
-      try {
-        if (window.matchMedia("(max-width: 1024px)").matches && worldNavH < 72) worldNavH = 72;
-      } catch (e) {}
+      total = globalH + worldNavH;
     }
-    var total = globalH + worldNavH;
-    root.style.setProperty("--global-header-h", globalH + "px");
-    root.style.setProperty("--world-nav-h", worldNavH + "px");
+
+    /* Hard caps: prevent iframe from collapsing if measurement ever spikes */
+    try {
+      var maxChrome = Math.floor(window.innerHeight * 0.42);
+      if (maxChrome < 120) maxChrome = 120;
+      if (total > maxChrome) total = maxChrome;
+    } catch (eCap) {
+      if (total > 220) total = 220;
+    }
+    if (total < 96) total = 120;
+
+    if (Math.abs(total - lastChromeH) < 1) return;
+    lastChromeH = total;
+
+    chromeMeasureLock = true;
     root.style.setProperty("--total-header-h", total + "px");
-    /* Alias so FOUC + legacy rules using --bar-h keep working */
     root.style.setProperty("--bar-h", total + "px");
+    /* Keep split vars for positioning bar under brand only if stack absent */
+    if (!stack) {
+      root.style.setProperty("--global-header-h", globalH + "px");
+      root.style.setProperty("--world-nav-h", worldNavH + "px");
+    }
+    chromeMeasureLock = false;
   }
 
   function getActiveFrame() {
@@ -265,18 +289,20 @@
   }
 
   function ensureSingleBar() {
+    var preferred = document.querySelector(".mv4-shell-chrome > .mv4-bar");
     var bars = document.querySelectorAll("body > .mv4-bar, body .mv4-bar");
-    var kept = null;
+    var kept = preferred || null;
     for (var i = 0; i < bars.length; i++) {
       var el = bars[i];
       if (el.closest && el.closest(".mv4-frame")) continue;
-      if (!kept) {
-        kept = el;
+      if (kept) {
+        if (el === kept) continue;
+        try {
+          el.remove();
+        } catch (eRem) {}
         continue;
       }
-      try {
-        el.remove();
-      } catch (eRem) {}
+      kept = el;
     }
     if (kept) bar = kept;
     else bar = document.querySelector(".mv4-bar");
@@ -1133,9 +1159,13 @@
   setBarHeight();
   window.addEventListener("resize", setBarHeight, { passive: true });
   if (typeof ResizeObserver !== "undefined") {
-    if (getBar()) new ResizeObserver(setBarHeight).observe(getBar());
-    var globalHeaderEl = document.querySelector(".mv4-global-header");
-    if (globalHeaderEl) new ResizeObserver(setBarHeight).observe(globalHeaderEl);
+    var chromeStack = document.querySelector(".mv4-shell-chrome");
+    if (chromeStack) {
+      new ResizeObserver(function () {
+        if (chromeMeasureLock) return;
+        setBarHeight();
+      }).observe(chromeStack);
+    }
   }
 
   (function bindGlobalHeader() {
