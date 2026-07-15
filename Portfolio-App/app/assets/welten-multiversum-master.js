@@ -916,8 +916,9 @@
     frames.forEach(function (f, j) {
       var on = j === i;
       f.classList.toggle("is-active", on);
-      f.style.pointerEvents = on ? "auto" : "none";
       if (on) {
+        f.classList.remove("is-leaving", "is-paused");
+        f.style.pointerEvents = "auto";
         f.removeAttribute("data-mv-world-live");
         /* Während eines animierten Wechsels (switching===true) NICHT enter/
            Kapitel/Profile senden — das würde Multiversum-Header/Hero mitten im
@@ -930,8 +931,12 @@
           else f.addEventListener("load", function () { injectProfiles(f, j); }, { once: true });
         }
       } else {
+        f.classList.add("is-paused");
+        f.classList.remove("is-leaving");
+        f.style.pointerEvents = "none";
         postFrame(f, { type: "portfolio-world-pause", paused: true });
         postFrame(f, { type: "portfolio-cleanup-transition" });
+        postFrame(f, { type: "mv-stop-iframe-bgm" });
       }
     });
     setMaster(i);
@@ -1033,26 +1038,40 @@
       return;
     }
 
+    /* AudioContext nur unlocken — keine Welt-BGM hier (sonst Multiversum-Bleed). */
     resumeAudio();
     lockShell(masterKey(i));
     /* Sofort Shell-Theme wechseln — nicht erst in applyActive nach Load/Cover.
        Verhindert Multiversum-Bar/Theme-Bleed während der Transition. */
     setMaster(i);
     setGlobalMenuExpanded(false);
-      /* Multiversum pausieren — NICHT blanken (Galaxy Walk sonst jedes Mal ~20s neu) */
-      if (i !== 0 && frames[0]) {
-        frames[0].style.pointerEvents = "none";
-        postFrame(frames[0], { type: "portfolio-world-pause", paused: true });
-        postFrame(frames[0], { type: "portfolio-cleanup-transition" });
-        postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
-        try {
-          var mvWin = frames[0].contentWindow;
-          if (mvWin && typeof mvWin.__mvStopIframeWorldBgm === "function") {
-            mvWin.__mvStopIframeWorldBgm();
-          }
-        } catch (eStop) {}
-        frames[0].classList.remove("is-active");
-      }
+    /* Sofort ALLE Nicht-Ziel-Frames ausblenden/pausieren — kein Multiversum-Flash,
+       kein BGM-Bleed. Multiversum (0) NICHT blanken (Galaxy Walk sonst ~20s neu). */
+    frames.forEach(function (f, j) {
+      if (!f || j === i) return;
+      f.classList.remove("is-active");
+      f.classList.add("is-leaving", "is-paused");
+      f.style.pointerEvents = "none";
+      postFrame(f, { type: "portfolio-world-pause", paused: true });
+      postFrame(f, { type: "portfolio-cleanup-transition" });
+      postFrame(f, { type: "mv-stop-iframe-bgm" });
+      try {
+        var win = f.contentWindow;
+        if (win && typeof win.__mvStopIframeWorldBgm === "function") {
+          win.__mvStopIframeWorldBgm();
+        }
+      } catch (eStopAll) {}
+    });
+    /* Extra hard-stop Multiversum-Audio (Frame 0) */
+    if (i !== 0 && frames[0]) {
+      try {
+        var mvWin = frames[0].contentWindow;
+        if (mvWin && typeof mvWin.__mvStopIframeWorldBgm === "function") {
+          mvWin.__mvStopIframeWorldBgm();
+        }
+      } catch (eStop) {}
+      postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
+    }
     /* Galaxy/Deep-Link: Kapitel nicht mit vorheriger Welt überschreiben */
     if (!opts.preserveChapter) {
       var c = readChapter(frames[prev]);
@@ -1066,6 +1085,22 @@
       if (transitionDone) return;
       transitionDone = true;
       window.__wwsOnTransitionEnd = null;
+      /* Zuerst Frames isolieren — erst dann Lock/Overlay weg (kein Zwischen-Flash) */
+      frames.forEach(function (f, j) {
+        if (!f) return;
+        if (j === i) {
+          f.classList.add("is-active");
+          f.classList.remove("is-leaving", "is-paused");
+          f.style.pointerEvents = "auto";
+        } else {
+          f.classList.remove("is-active");
+          f.classList.add("is-paused");
+          f.classList.remove("is-leaving");
+          f.style.pointerEvents = "none";
+          postFrame(f, { type: "portfolio-world-pause", paused: true });
+          postFrame(f, { type: "mv-stop-iframe-bgm" });
+        }
+      });
       unlockShell();
       forceEnableWorldButtons();
       purgeSwitchOverlays();

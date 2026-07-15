@@ -7,7 +7,7 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy10";
+  var VER = "20260715galaxy11";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -252,6 +252,46 @@
     frame.setAttribute("src", wanted);
   }
 
+  function setGalaxyIframePaused(paused) {
+    var section = document.getElementById("alGalaxyGangHero");
+    var frame = document.getElementById("alGalaxyGangFrame");
+    if (section) {
+      section.classList.toggle("is-world-paused", !!paused);
+      if (paused) {
+        section.style.visibility = "hidden";
+        section.style.pointerEvents = "none";
+      } else if (isMultiversum() && isHomeActive()) {
+        section.style.visibility = "";
+        section.style.pointerEvents = "";
+      }
+    }
+    if (!frame) return;
+    try {
+      if (paused) {
+        frame.style.visibility = "hidden";
+        frame.style.pointerEvents = "none";
+        if (frame.contentWindow) {
+          frame.contentWindow.postMessage({ type: "portfolio-world-pause", paused: true }, "*");
+        }
+      } else {
+        frame.style.visibility = "";
+        frame.style.pointerEvents = "";
+      }
+    } catch (ePause) {}
+  }
+
+  function onShellWorldMessage(e) {
+    if (!e || !e.data || !e.data.type) return;
+    var t = e.data.type;
+    if (t === "portfolio-world-pause" || t === "mv-stop-iframe-bgm" || t === "portfolio-cleanup-transition") {
+      setGalaxyIframePaused(true);
+      return;
+    }
+    if (t === "portfolio-world-enter" || t === "portfolio-world-reveal") {
+      if (isMultiversum() && isHomeActive()) setGalaxyIframePaused(false);
+    }
+  }
+
   function scheduleHeavyGalaxyLoad(frame, section) {
     if (!frame) return;
 
@@ -329,6 +369,7 @@
     window.__mvUseGalaxyHome = true;
     if (!isMultiversum()) return;
     window.addEventListener("message", onGalaxyNavigate);
+    window.addEventListener("message", onShellWorldMessage);
     ensureHero();
 
     window.addEventListener("portfolio-world-reveal", sync);

@@ -204,6 +204,15 @@ html.welten-world-switch-lock .mv4-frame.is-active {
   clip-path: inset(100%) !important;
 }
 
+html.welten-world-switch-lock .mv4-frame.is-leaving,
+html.welten-world-switch-lock .mv4-frame.is-paused {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  clip-path: inset(100%) !important;
+  z-index: 0 !important;
+}
+
 /* Multiversum-Frame nur sichtbar wenn wirklich Multiversum aktiv */
 body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"],
 body:not([data-master-world="general"]) .mv4-frame[data-world="general"] {
