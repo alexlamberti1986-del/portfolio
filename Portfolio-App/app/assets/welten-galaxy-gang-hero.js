@@ -7,7 +7,7 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy6";
+  var VER = "20260715galaxy7";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v36-final-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -103,43 +103,49 @@
   }
 
   function ensureChapterNav() {
-    if (document.getElementById("alGalaxyChapterNav")) {
-      syncChapterNav();
-      return;
-    }
+    var nav = document.getElementById("alGalaxyChapterNav");
+    var wrap = document.getElementById("alGalaxyHomeChrome");
     var section = document.getElementById("alGalaxyGangHero");
-    if (!section || !section.parentNode) return;
 
-    var wrap = document.createElement("div");
-    wrap.id = "alGalaxyHomeChrome";
-    wrap.className = "al-galaxy-home-chrome";
-    wrap.innerHTML =
-      '<p class="al-galaxy-home-chrome__tag"><span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
-      '<nav id="alGalaxyChapterNav" class="mv-static-hero__nav al-galaxy-chapter-nav" aria-label="Kapitel">' +
-      CHAPTERS.map(function (item) {
-        return (
-          '<button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="' +
-          item.id +
-          '">' +
-          item.label +
-          "</button>"
-        );
-      }).join("") +
-      "</nav>";
-
-    if (section.nextSibling) {
-      section.parentNode.insertBefore(wrap, section.nextSibling);
-    } else {
-      section.parentNode.appendChild(wrap);
+    if (!nav && section && section.parentNode) {
+      wrap = document.createElement("div");
+      wrap.id = "alGalaxyHomeChrome";
+      wrap.className = "al-galaxy-home-chrome";
+      wrap.innerHTML =
+        '<p class="al-galaxy-home-chrome__tag"><span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
+        '<nav id="alGalaxyChapterNav" class="mv-static-hero__nav al-galaxy-chapter-nav" aria-label="Kapitel">' +
+        CHAPTERS.map(function (item) {
+          return (
+            '<button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="' +
+            item.id +
+            '">' +
+            item.label +
+            "</button>"
+          );
+        }).join("") +
+        "</nav>";
+      if (section.nextSibling) section.parentNode.insertBefore(wrap, section.nextSibling);
+      else section.parentNode.appendChild(wrap);
+      nav = wrap.querySelector("#alGalaxyChapterNav");
     }
 
-    wrap.querySelectorAll("[data-go]").forEach(function (btn) {
-      btn.addEventListener("click", function (e) {
-        e.preventDefault();
-        navigateLocalChapter(btn.getAttribute("data-go"));
-        syncChapterNav();
+    /* Chrome vor home-main-block halten */
+    var homeMain = document.querySelector("#slide-home .home-main-block");
+    if (wrap && homeMain && wrap.parentNode === homeMain.parentNode && wrap.nextElementSibling !== homeMain) {
+      homeMain.parentNode.insertBefore(wrap, homeMain);
+    }
+
+    if (nav && nav.getAttribute("data-galaxy-nav-bound") !== "1") {
+      nav.setAttribute("data-galaxy-nav-bound", "1");
+      nav.querySelectorAll("[data-go]").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          navigateLocalChapter(btn.getAttribute("data-go"));
+          syncChapterNav();
+        });
       });
-    });
+    }
     syncChapterNav();
   }
 
