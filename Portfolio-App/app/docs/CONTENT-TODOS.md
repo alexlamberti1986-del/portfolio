@@ -49,9 +49,10 @@ Status: `open` | `confirmed` | `wontfix`
 | ID | Item | Notes | Status |
 | --- | --- | --- | --- |
 | C-30 | hreflang strategy | FR/IT UI exist; no hreflang links | open |
-| C-31 | World-scoped chapter uniqueness | Phase 3: brief chapter intros + world-toned about notes via `welten-brief-content.js`; deeper body differentiation still open | partial |
+| C-31 | World-scoped chapter uniqueness | Phase 4: world-specific Leistungen/Projekte/Kontakt packs in `welten-brief-content.js`; about world notes retained | done |
 | C-32 | Indexing policy for world × chapter URLs | All rewritten; sitemap expanded Phase 1 — confirm intended index set | open |
 | C-33 | Privacy / Impressum pages | Minimal `/impressum` + `/datenschutz` stubs live (email only). Full CH legal block waits on C-01/C-03 | partial |
+| C-34 | Dedicated Leistungs-URLs §8 | `/webdesign` `/digital-marketing` `/digitale-strategie` live Phase 4 | done |
 
 ---
 

@@ -9,6 +9,11 @@
   --font-freiraum: "Syne", system-ui, sans-serif;
 }
 
+/*
+ * Google Fonts stylesheets are loaded with &display=swap (font-display: swap).
+ * Keep system fallbacks above so text remains visible while webfonts resolve.
+ */
+
 /* ── Master-Shell (3-Welten-Master-iframe) ── */
 html,
 html body,

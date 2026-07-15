@@ -1,0 +1,204 @@
+/* Shared styles for dedicated service landing pages (§8 brief) */
+:root {
+  color-scheme: dark;
+  --bg: #070b14;
+  --text: #e8eef8;
+  --muted: rgba(232, 238, 248, 0.72);
+  --accent: #8ec5ff;
+  --line: rgba(255, 255, 255, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: linear-gradient(165deg, #070b14 0%, #10182a 55%, #0a1220 100%);
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 1000;
+  padding: 12px 16px;
+  background: #0a1220;
+  color: var(--text);
+  text-decoration: none;
+  border: 2px solid rgba(142, 197, 255, 0.6);
+  border-radius: 8px;
+}
+
+.skip:focus,
+.skip:focus-visible {
+  left: 12px;
+  top: 12px;
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+a {
+  color: var(--accent);
+}
+
+a:focus-visible {
+  outline: 2px solid rgba(142, 197, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.site-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px clamp(1rem, 4vw, 2rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-bar > a {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.site-bar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  align-items: center;
+}
+
+.site-bar nav a {
+  text-decoration: none;
+  color: var(--muted);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-bar nav a[aria-current="page"] {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.site-bar .cta {
+  color: var(--text);
+  border: 1px solid rgba(142, 197, 255, 0.45);
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: rgba(142, 197, 255, 0.12);
+}
+
+main {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+h1 {
+  font-size: clamp(1.55rem, 3.4vw, 2.15rem);
+  line-height: 1.2;
+  margin: 0 0 1rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 2rem 0 0.65rem;
+}
+
+.lede {
+  font-size: 1.05rem;
+}
+
+.note,
+.muted {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+li + li {
+  margin-top: 0.35rem;
+}
+
+.faq details {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  margin: 0.65rem 0;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.faq summary {
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.faq details[open] summary {
+  margin-bottom: 0.4rem;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--text);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(99, 102, 241,.35));
+  border: 1px solid rgba(125, 211, 252, 0.45);
+}
+
+footer {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3rem) 2.5rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

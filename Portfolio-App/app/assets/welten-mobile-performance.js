@@ -405,8 +405,24 @@
     });
   }
 
+  function stripHeavyMobilePreloads() {
+    if (!isMobileContext()) return;
+    document.querySelectorAll('link[rel="preload"]').forEach(function (link) {
+      var as = (link.getAttribute("as") || "").toLowerCase();
+      var href = link.getAttribute("href") || "";
+      if (as === "video" || /\/videos\/.+\.(mp4|webm)/i.test(href)) {
+        link.remove();
+        return;
+      }
+      if (as === "image" && /\/videos\//i.test(href)) {
+        link.remove();
+      }
+    });
+  }
+
   function apply() {
     setMobileClasses();
+    stripHeavyMobilePreloads();
     disableMousePaint();
     tuneParticleCanvas();
     allowHeroPanY();

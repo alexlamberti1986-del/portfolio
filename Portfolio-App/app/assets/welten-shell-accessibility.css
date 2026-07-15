@@ -97,3 +97,24 @@ html.welten-tab-hidden .mv4-frame {
     max-width: 38vw;
   }
 }
+
+/* Axe-obvious leftovers: interactive targets + landmark names */
+.mv4-menu-btn,
+.mv4-fx,
+.mv4-flag {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.mv4-worlds a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.faq-q,
+.faq-question,
+button.faq-q {
+  min-height: 44px;
+}
+

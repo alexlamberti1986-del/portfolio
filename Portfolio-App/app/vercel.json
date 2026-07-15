@@ -27,6 +27,9 @@
     { "source": "/offerte", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/impressum", "destination": "/impressum.html" },
     { "source": "/datenschutz", "destination": "/datenschutz.html" },
+    { "source": "/webdesign", "destination": "/webdesign.html" },
+    { "source": "/digital-marketing", "destination": "/digital-marketing.html" },
+    { "source": "/digitale-strategie", "destination": "/digitale-strategie.html" },
     { "source": "/(nexora|professional|freiraum|multiversum)/assets/(.*)", "destination": "/assets/$2" },
     { "source": "/(nexora|professional|freiraum|multiversum)/MULTIVERSUM.html", "destination": "/MULTIVERSUM.html" },
     { "source": "/(nexora|professional|freiraum|multiversum)/NEXORA.html", "destination": "/NEXORA.html" },
@@ -75,7 +78,7 @@
       ]
     },
     {
-      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte|impressum|datenschutz)(.*)",
+      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte|impressum|datenschutz|webdesign|digital-marketing|digitale-strategie)(.*)",
       "headers": [
         { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]

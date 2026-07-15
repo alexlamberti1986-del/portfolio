@@ -1,8 +1,16 @@
 # AUDIT-AFTER — alexlamberti.ch
 
-**Status:** Phase 1–3 complete (2026-07-15). Full Lighthouse/CWV after-audit still pending real measurement.
+**Status:** Phase 1–4 complete (2026-07-15). Full Lighthouse/CWV after-audit still pending real measurement.
 
-## Phase 3 completed (this session)
+## Phase 4 completed (this session)
+
+- Dedicated `/webdesign`, `/digital-marketing`, `/digitale-strategie` pages + vercel/sitemap/shell links
+- Deeper world×chapter chapter intros (Leistungen / Projekte / Kontakt)
+- Homepage benefit/process/FAQ in shell SEO; in-frame inject only outside Galaxy desktop
+- 404 page copy per brief §22 + main nav
+- Video preload/metadata + mobile poster preload skip; a11y 44px shell targets
+
+## Phase 3 completed
 
 - Brief-aligned DE copy for Leistungen / Projekte / Über mich / Kontakt + Multiversum world blurbs
 - Primary CTA → **Projekt besprechen**; shell SEO crawl block updated
@@ -34,4 +42,3 @@
 - [ ] Re-check Galaxy Walk ≥1280×700 constraints still hold
 - [ ] Owner-confirmed contact/social/schema facts
 - [ ] Full impressum postal block after owner confirm
-- [ ] Optional dedicated Leistungs-URLs (§8 brief)

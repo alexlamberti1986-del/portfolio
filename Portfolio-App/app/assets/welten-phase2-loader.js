@@ -13,14 +13,14 @@
     "assets/projects-accordion.js?v=20260613a",
     "assets/welten-form-service-images.js?v=20260629vk2",
     "assets/welten-projects-services.js?v=20260629vk2",
-    "assets/welten-mobile-performance.js?v=20260608d",
+    "assets/welten-mobile-performance.js?v=20260715phase4",
     "assets/welten-skills-charts.js?v=20260706matrix5",
     "assets/portfolio-images.js?v=20260629-prof-portrait",
     "assets/welten-preview-images.js?v=20260629-prof-portrait",
     "assets/welten-mouse-paint.js?v=20260703wws-smooth",
     "assets/welten-mobile-hero.js?v=20260706hero-off",
     "assets/welten-seo.js?v=20260706perf-fix",
-    "assets/welten-site-ia.js?v=20260706perf-fix",
+    "assets/welten-site-ia.js?v=20260715phase4",
     "assets/welten-visual-sprint2.js?v=20260714ctaAbout1",
     "assets/welten-perf-sprint3.js?v=20260602b",
     "assets/welten-perf-sprint4.js?v=20260608d",
@@ -46,6 +46,8 @@
     loaded = true;
     SCRIPTS.forEach(function (src) {
       if (document.querySelector('script[data-phase2-src="' + src + '"]')) return;
+      var base = src.split("?")[0];
+      if (document.querySelector('script[src*="' + base + '"]')) return;
       var s = document.createElement("script");
       s.src = src.indexOf("?") >= 0 ? src : src + "?v=" + VER;
       s.defer = true;

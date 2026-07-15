@@ -123,6 +123,7 @@
 
   function prefetchVideo(worldKey) {
     if (!frameLive || !heroReadyForVideo) return;
+    if (isVideoHidden()) return;
     var src = pickVideoSrc(worldKey);
     if (!src || prefetched[src]) return;
     prefetched[src] = true;
@@ -218,7 +219,7 @@
       resetVideoEl(video);
     }
 
-    video.preload = "auto";
+    video.preload = "metadata";
     video.muted = true;
     video.volume = 0;
 

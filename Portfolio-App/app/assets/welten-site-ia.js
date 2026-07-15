@@ -42,18 +42,75 @@
   var SERVICES = [
     {
       title: "Webdesign",
+      href: "/webdesign",
+      linkLabel: "Mehr über Webdesign",
       desc:
         "Individuelle Websites mit klarer Nutzerführung, starker visueller Identität und einer technischen Basis, die auf allen relevanten Geräten überzeugt.",
     },
     {
       title: "Digital Marketing",
+      href: "/digital-marketing",
+      linkLabel: "Mehr über Digital Marketing",
       desc:
         "Durchdachte digitale Massnahmen, die Angebote sichtbar machen, relevante Zielgruppen erreichen und aus Aufmerksamkeit konkrete nächste Schritte entwickeln.",
     },
     {
       title: "Digitale Strategie",
+      href: "/digitale-strategie",
+      linkLabel: "Mehr über digitale Strategie",
       desc:
         "Struktur für digitale Vorhaben: Ziele schärfen, Möglichkeiten priorisieren und aus einzelnen Ideen einen nachvollziehbaren Plan entwickeln.",
+    },
+  ];
+
+  var HOME_PROCESS = [
+    {
+      title: "Verstehen",
+      text:
+        "Zu Beginn werden Ausgangslage, Zielgruppe, Anforderungen und das gewünschte Ergebnis gemeinsam eingeordnet.",
+    },
+    {
+      title: "Strukturieren",
+      text:
+        "Aus den Informationen entsteht eine klare Seitenstruktur, Priorisierung und inhaltliche Richtung.",
+    },
+    {
+      title: "Gestalten und umsetzen",
+      text:
+        "Design, Inhalte, Interaktionen und Technik werden zu einem konsistenten digitalen Auftritt verbunden.",
+    },
+    {
+      title: "Prüfen und veröffentlichen",
+      text:
+        "Vor dem Start werden Darstellung, Geschwindigkeit, Bedienbarkeit und technische Grundlagen sorgfältig kontrolliert.",
+    },
+  ];
+
+  var HOME_FAQ = [
+    {
+      q: "Welche digitalen Leistungen werden angeboten?",
+      a:
+        "Der Schwerpunkt liegt auf Webdesign, digitalem Marketing und strategischer Begleitung. Je nach Projekt können einzelne Leistungen oder eine zusammenhängende Gesamtlösung umgesetzt werden.",
+    },
+    {
+      q: "Kann auch eine bestehende Website optimiert werden?",
+      a:
+        "Ja. Bestehende Websites können hinsichtlich Gestaltung, Nutzerführung, Inhalt, Geschwindigkeit und technischer SEO-Grundlagen analysiert und gezielt weiterentwickelt werden.",
+    },
+    {
+      q: "Wie beginnt eine Zusammenarbeit?",
+      a:
+        "Am Anfang steht ein unverbindliches Gespräch über die Ausgangslage, die Ziele und den gewünschten Umfang. Danach kann eine passende Vorgehensweise definiert werden.",
+    },
+    {
+      q: "Arbeitest du auch mit Unternehmen ausserhalb deiner Region?",
+      a:
+        "Die Zusammenarbeit kann grundsätzlich digital und ortsunabhängig erfolgen.",
+    },
+    {
+      q: "Was kostet ein digitales Projekt?",
+      a:
+        "Der Aufwand hängt vom Umfang, den benötigten Funktionen und dem gewünschten Ergebnis ab. Nach einem ersten Austausch kann der Rahmen realistisch eingeschätzt werden.",
     },
   ];
 
@@ -185,8 +242,85 @@
     document.dispatchEvent(new CustomEvent("welten-chapter-change", { detail: { chapter: chapter } }));
   }
 
+  function isGalaxyDesktopHome() {
+    try {
+      if (document.body.getAttribute("data-welten-galaxy-hero") !== "1") return false;
+      return window.matchMedia("(min-width: 1280px) and (min-height: 700px)").matches;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function injectHomeExtras() {
-    /* Home endet nach Hero + 2 Buttons · keine Zusatzsektionen */
+    /* Galaxy Walk ≥1280×700: keep first viewport untouched — brief blocks live in shell SEO. */
+    if (isGalaxyDesktopHome()) return;
+
+    var slide = document.querySelector("#slide-home .slide-inner");
+    if (!slide || slide.querySelector("[data-welten-home-brief='1']")) return;
+
+    var wrap = document.createElement("div");
+    wrap.className = "welten-home-brief";
+    wrap.setAttribute("data-welten-home-brief", "1");
+
+    var benefit = document.createElement("section");
+    benefit.className = "welten-home-brief__section";
+    benefit.setAttribute("aria-labelledby", "welten-home-benefit-title");
+    benefit.innerHTML =
+      '<p class="chapter-label">Nicht nur schön, sondern sinnvoll</p>' +
+      '<h2 id="welten-home-benefit-title" class="section-title">Design erhält erst dann Wert, wenn es Orientierung schafft.</h2>' +
+      '<p class="prose">Eine Website soll Besucher nicht mit Möglichkeiten überfordern. Sie soll verständlich zeigen, worum es geht, Vertrauen aufbauen und den nächsten Schritt erleichtern. Deshalb werden Gestaltung, Inhalt, Nutzerführung und Technik nicht getrennt betrachtet, sondern als zusammenhängendes digitales Erlebnis entwickelt.</p>' +
+      "<ul class=\"prose\">" +
+      "<li>Klare Positionierung</li>" +
+      "<li>Verständliche Nutzerführung</li>" +
+      "<li>Eigenständiges Erscheinungsbild</li>" +
+      "<li>Responsives Design</li>" +
+      "<li>Technisch saubere Umsetzung</li>" +
+      "<li>SEO-Grundlagen von Beginn an</li>" +
+      "</ul>";
+
+    var process = document.createElement("section");
+    process.className = "welten-home-brief__section";
+    process.setAttribute("aria-labelledby", "welten-home-process-title");
+    var processHtml =
+      '<p class="chapter-label">Zusammenarbeit</p>' +
+      '<h2 id="welten-home-process-title" class="section-title">Von der ersten Idee bis zur digitalen Umsetzung.</h2>' +
+      '<p class="prose">Ein klarer Ablauf schafft Sicherheit, reduziert unnötige Korrekturen und sorgt dafür, dass Gestaltung und Zielsetzung nicht auseinanderdriften.</p>' +
+      '<ol class="welten-home-brief__steps">';
+    HOME_PROCESS.forEach(function (step, i) {
+      processHtml +=
+        "<li><strong>" +
+        (i + 1) +
+        ". " +
+        step.title +
+        "</strong><span>" +
+        step.text +
+        "</span></li>";
+    });
+    processHtml += "</ol>";
+    process.innerHTML = processHtml;
+
+    var faq = document.createElement("section");
+    faq.className = "welten-home-brief__section";
+    faq.setAttribute("aria-labelledby", "welten-home-faq-title");
+    var faqHtml =
+      '<p class="chapter-label">FAQ</p>' +
+      '<h2 id="welten-home-faq-title" class="section-title">Häufige Fragen</h2>' +
+      '<div class="welten-home-brief__faq">';
+    HOME_FAQ.forEach(function (item, i) {
+      faqHtml +=
+        '<details class="welten-home-brief__details"><summary>' +
+        item.q +
+        "</summary><p>" +
+        item.a +
+        "</p></details>";
+    });
+    faqHtml += "</div>";
+    faq.innerHTML = faqHtml;
+
+    wrap.appendChild(benefit);
+    wrap.appendChild(process);
+    wrap.appendChild(faq);
+    slide.appendChild(wrap);
   }
 
   function injectLeistungenGrid() {
@@ -195,17 +329,26 @@
 
     var existing = slide.querySelector(".welten-leistungen-grid");
     if (existing) {
-      if (existing.getAttribute("data-brief") === "3") return;
+      if (existing.getAttribute("data-brief") === "4") return;
       existing.remove();
     }
 
     var grid = document.createElement("div");
     grid.className = "welten-leistungen-grid";
-    grid.setAttribute("data-brief", "3");
+    grid.setAttribute("data-brief", "4");
     SERVICES.forEach(function (s) {
       var card = document.createElement("article");
       card.className = "welten-leistung-card glass-card";
-      card.innerHTML = "<h3>" + s.title + "</h3><p>" + s.desc + "</p>";
+      card.innerHTML =
+        "<h3>" +
+        s.title +
+        "</h3><p>" +
+        s.desc +
+        '</p><p><a class="welten-leistung-link" href="' +
+        s.href +
+        '" target="_top" rel="noopener">' +
+        s.linkLabel +
+        "</a></p>";
       grid.appendChild(card);
     });
 
