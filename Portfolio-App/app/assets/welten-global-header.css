@@ -1,0 +1,341 @@
+/* Shell owns site chrome: brand + contact + menu above world switcher */
+:root {
+  --global-header-h: 64px;
+  --world-nav-h: 56px;
+  --total-header-h: calc(var(--global-header-h) + var(--world-nav-h));
+}
+
+.mv4-global-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2147483646;
+  box-sizing: border-box;
+  min-height: var(--global-header-h, 64px);
+  pointer-events: none;
+  transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+
+.mv4-global-header > * {
+  pointer-events: auto;
+}
+
+.mv4-global-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: min(1400px, 100%);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 10px max(12px, env(safe-area-inset-left, 0px));
+  min-height: inherit;
+}
+
+.mv4-global-header__left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: clamp(20px, 3vw, 32px);
+  row-gap: 6px;
+  min-width: 0;
+  flex: 1;
+}
+
+.mv4-brand,
+.mv4-meta {
+  font-family: "Space Grotesk", "Manrope", system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-size: clamp(0.82rem, 2vw, 0.92rem);
+  line-height: 1.25;
+  color: inherit;
+  text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.mv4-brand span {
+  font-weight: 600;
+}
+
+.mv4-meta {
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.mv4-meta:hover,
+.mv4-meta:focus-visible {
+  opacity: 0.92;
+}
+
+.mv4-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 16px;
+  margin: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  font-size: clamp(0.84rem, 2vw, 0.92rem);
+  cursor: pointer;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.mv4-menu-btn:focus-visible {
+  outline: 2px solid rgba(125, 211, 252, 0.85);
+  outline-offset: 2px;
+}
+
+.mv4-menu-btn__lines {
+  display: grid;
+  gap: 4px;
+  width: 19px;
+}
+
+.mv4-menu-btn__lines span {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.85;
+}
+
+/* World switcher sits under global header; frames use total chrome height */
+.mv4-bar {
+  top: var(--global-header-h, 64px) !important;
+  padding-top: 10px !important;
+}
+
+.mv4-frame,
+.mv4-frame.is-active,
+.mv4-frame:not(.is-active) {
+  top: var(--total-header-h, var(--bar-h, 120px)) !important;
+  height: calc(100dvh - var(--total-header-h, var(--bar-h, 120px))) !important;
+  max-height: calc(100dvh - var(--total-header-h, var(--bar-h, 120px))) !important;
+}
+
+/* ——— MULTIVERSUM / general ——— */
+body[data-master-world="general"] .mv4-global-header {
+  color: #eef3ff;
+  background: rgba(5, 7, 13, 0.96);
+  border-bottom: 1px solid rgba(255, 89, 178, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+body[data-master-world="general"] .mv4-brand span {
+  background: linear-gradient(90deg, #5ec4ff, #9b6bff 22%, #ff59b2 48%, #ff9b37 72%, #ffd86a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+body[data-master-world="general"] .mv4-meta:hover,
+body[data-master-world="general"] .mv4-meta:focus-visible {
+  color: #ff59b2;
+  opacity: 1;
+}
+
+body[data-master-world="general"] .mv4-menu-btn {
+  border-radius: 999px;
+  background: rgba(16, 22, 34, 0.55);
+  border-color: rgba(255, 89, 178, 0.28);
+}
+
+body[data-master-world="general"] .mv4-menu-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 89, 178, 0.48);
+  box-shadow: 0 14px 28px rgba(255, 89, 178, 0.14);
+}
+
+/* ——— NEXORA ——— */
+body[data-master-world="nexora"] .mv4-global-header {
+  color: #e8eef8;
+  background: rgba(5, 8, 16, 0.95);
+  border-bottom: 1px solid rgba(101, 217, 255, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+body[data-master-world="nexora"] .mv4-brand {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: -0.04em;
+}
+
+body[data-master-world="nexora"] .mv4-brand span {
+  color: #65d9ff;
+  text-shadow: 0 0 18px rgba(101, 217, 255, 0.28);
+}
+
+body[data-master-world="nexora"] .mv4-meta:hover,
+body[data-master-world="nexora"] .mv4-meta:focus-visible {
+  color: #65d9ff;
+  opacity: 1;
+}
+
+body[data-master-world="nexora"] .mv4-menu-btn {
+  border-radius: 12px;
+  background: rgba(18, 32, 56, 0.55);
+  border-color: rgba(142, 197, 255, 0.28);
+  box-shadow: 0 0 20px rgba(0, 194, 255, 0.08);
+}
+
+body[data-master-world="nexora"] .mv4-menu-btn:hover {
+  border-color: rgba(101, 217, 255, 0.55);
+  box-shadow: 0 0 28px rgba(0, 194, 255, 0.22);
+}
+
+/* ——— PROFESSIONAL / vertex ——— */
+body[data-master-world="vertex"] .mv4-global-header {
+  color: #111;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body[data-master-world="vertex"] .mv4-brand,
+body[data-master-world="vertex"] .mv4-meta {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+}
+
+body[data-master-world="vertex"] .mv4-brand span {
+  color: #333;
+  font-weight: 700;
+}
+
+body[data-master-world="vertex"] .mv4-meta:hover,
+body[data-master-world="vertex"] .mv4-meta:focus-visible {
+  color: #000;
+  opacity: 1;
+}
+
+body[data-master-world="vertex"] .mv4-menu-btn {
+  border-radius: 0;
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+body[data-master-world="vertex"] .mv4-menu-btn:hover {
+  background: #000;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+body[data-master-world="vertex"] .mv4-menu-btn:focus-visible {
+  outline-color: #111;
+}
+
+/* ——— FREIRAUM ——— */
+body[data-master-world="freiraum"] .mv4-global-header {
+  color: #fff4e8;
+  background: rgba(42, 18, 48, 0.94);
+  border-bottom: 1px solid rgba(255, 209, 102, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+body[data-master-world="freiraum"] .mv4-brand span {
+  color: #ffd166;
+}
+
+body[data-master-world="freiraum"] .mv4-meta:hover,
+body[data-master-world="freiraum"] .mv4-meta:focus-visible {
+  color: #ff9bb8;
+  opacity: 1;
+}
+
+body[data-master-world="freiraum"] .mv4-menu-btn {
+  border-radius: 22px 14px 26px 12px / 18px 24px 14px 28px;
+  background: rgba(55, 24, 62, 0.72);
+  border-color: rgba(255, 209, 102, 0.42);
+}
+
+body[data-master-world="freiraum"] .mv4-menu-btn:hover {
+  transform: translateY(-1px) rotate(-0.4deg);
+  border-color: rgba(255, 209, 102, 0.7);
+  box-shadow: 0 12px 28px rgba(255, 111, 174, 0.16);
+}
+
+/* Mobile: brand + menu row 1; meta compact row 2 */
+@media (max-width: 720px) {
+  .mv4-global-header__inner {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 6px 10px;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    padding-bottom: 8px;
+  }
+
+  .mv4-global-header__left {
+    flex: 1 1 auto;
+    min-width: 0;
+    order: 1;
+  }
+
+  .mv4-brand {
+    order: 0;
+  }
+
+  .mv4-menu-btn {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .mv4-meta {
+    flex: 1 1 100%;
+    font-size: 0.72rem;
+    letter-spacing: -0.02em;
+    opacity: 0.88;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .mv4-global-header__left {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: 8px;
+    row-gap: 2px;
+    width: 100%;
+  }
+
+  .mv4-brand {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+  }
+
+  .mv4-meta {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .mv4-global-header__inner > .mv4-menu-btn {
+    position: absolute;
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    right: max(10px, env(safe-area-inset-right, 0px));
+  }
+
+  .mv4-global-header__inner {
+    position: relative;
+    padding-right: 88px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mv4-bar {
+    padding-top: 8px !important;
+  }
+}

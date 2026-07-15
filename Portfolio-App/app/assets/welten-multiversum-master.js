@@ -71,7 +71,9 @@
   loaded[defaultWorld] = false;
   var SHELL_CHROME_CSS =
     "html.welten-live-shell .mv4-bar{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}" +
+    "html.welten-live-shell .site-header{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important}" +
     "html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;pointer-events:none!important}";
+  var MENU_BRIDGE_SRC = "/assets/welten-shell-menu-bridge.js?v=20260715globalHeader1";
 
   function injectPreviewShellCss(f) {
     try {
@@ -115,14 +117,72 @@
   }
 
   function setBarHeight() {
+    var globalHeader = document.querySelector(".mv4-global-header");
     var shellBar = getBar();
-    if (!shellBar) return;
-    var h = Math.ceil(shellBar.getBoundingClientRect().height);
-    if (h < 48) h = 56;
+    var root = document.documentElement;
+    var globalH = 64;
+    var worldNavH = 56;
+    if (globalHeader) {
+      globalH = Math.ceil(globalHeader.getBoundingClientRect().height);
+      if (globalH < 48) globalH = 64;
+    }
+    if (shellBar) {
+      worldNavH = Math.ceil(shellBar.getBoundingClientRect().height);
+      if (worldNavH < 48) worldNavH = 56;
+      try {
+        if (window.matchMedia("(max-width: 1024px)").matches && worldNavH < 72) worldNavH = 72;
+      } catch (e) {}
+    }
+    var total = globalH + worldNavH;
+    root.style.setProperty("--global-header-h", globalH + "px");
+    root.style.setProperty("--world-nav-h", worldNavH + "px");
+    root.style.setProperty("--total-header-h", total + "px");
+    /* Alias so FOUC + legacy rules using --bar-h keep working */
+    root.style.setProperty("--bar-h", total + "px");
+  }
+
+  function getActiveFrame() {
+    var i = activeIdx();
+    if (i < 0) i = defaultWorld;
+    return frames[i] || null;
+  }
+
+  function postToActiveFrame(data) {
+    var f = getActiveFrame();
+    if (!f) return;
+    postFrame(f, data);
+  }
+
+  function setGlobalMenuExpanded(open) {
+    var btn = document.getElementById("mv4GlobalMenu");
+    if (!btn) return;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Menü schliessen" : "Menü öffnen");
+  }
+
+  function injectMenuBridge(f) {
+    if (!isLiveShell) return;
     try {
-      if (window.matchMedia("(max-width: 1024px)").matches && h < 72) h = 72;
+      var d = f.contentDocument;
+      if (!d || !d.documentElement) return;
+      if (d.getElementById("mv4-shell-menu-bridge")) return;
+      var s = d.createElement("script");
+      s.id = "mv4-shell-menu-bridge";
+      s.src = MENU_BRIDGE_SRC;
+      s.defer = true;
+      (d.head || d.documentElement).appendChild(s);
     } catch (e) {}
-    document.documentElement.style.setProperty("--bar-h", h + "px");
+  }
+
+  function goMultiversumHome(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    sharedChapter = "home";
+    setGlobalMenuExpanded(false);
+    switchTo(0);
+    syncShellUrl(0, "home", "push");
   }
 
   function activeIdx() {
@@ -602,6 +662,7 @@
   function injectProfiles(f, i) {
     injectAudioGestureBridge(f, i);
     injectPreviewShellCss(f);
+    injectMenuBridge(f);
     try {
       var d = f.contentDocument;
       if (!d) return;
@@ -949,6 +1010,7 @@
     /* Sofort Shell-Theme wechseln — nicht erst in applyActive nach Load/Cover.
        Verhindert Multiversum-Bar/Theme-Bleed während der Transition. */
     setMaster(i);
+    setGlobalMenuExpanded(false);
     if (i !== 0 && frames[0]) {
       frames[0].style.pointerEvents = "none";
       postFrame(frames[0], { type: "portfolio-world-pause", paused: true });
@@ -1070,9 +1132,34 @@
   updateFlags();
   setBarHeight();
   window.addEventListener("resize", setBarHeight, { passive: true });
-  if (getBar() && typeof ResizeObserver !== "undefined") {
-    new ResizeObserver(setBarHeight).observe(getBar());
+  if (typeof ResizeObserver !== "undefined") {
+    if (getBar()) new ResizeObserver(setBarHeight).observe(getBar());
+    var globalHeaderEl = document.querySelector(".mv4-global-header");
+    if (globalHeaderEl) new ResizeObserver(setBarHeight).observe(globalHeaderEl);
   }
+
+  (function bindGlobalHeader() {
+    var menuBtn = document.getElementById("mv4GlobalMenu");
+    if (menuBtn && !menuBtn.dataset.mv4MenuBound) {
+      menuBtn.dataset.mv4MenuBound = "1";
+      menuBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        setGlobalMenuExpanded(true);
+        postToActiveFrame({ type: "portfolio-open-menu" });
+      });
+    }
+    document.querySelectorAll("[data-go-multiversum]").forEach(function (el) {
+      if (el.dataset.mv4BrandBound === "1") return;
+      el.dataset.mv4BrandBound = "1";
+      el.addEventListener("click", goMultiversumHome);
+    });
+    window.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape" && e.keyCode !== 27) return;
+      setGlobalMenuExpanded(false);
+      postToActiveFrame({ type: "portfolio-close-menu" });
+    });
+  })();
 
   var suppressWorldClickUntil = 0;
 
@@ -1177,6 +1264,11 @@
 
   window.addEventListener("message", function (e) {
     if (!e.data) return;
+    if (e.data.type === "portfolio-menu-state") {
+      if (!isTrustedMessageSource(e.source)) return;
+      setGlobalMenuExpanded(!!e.data.open);
+      return;
+    }
     if (e.data.type === "alex:switch-world") {
       if (!isTrustedMessageSource(e.source)) return;
       var idx = worldIndexFromKey(e.data.world);
@@ -1225,10 +1317,12 @@
   frames.forEach(function (f, j) {
     f.addEventListener("load", function () {
       injectAudioGestureBridge(f, j);
+      injectMenuBridge(f);
       signalFrameReady(f, j);
     });
     if (frameHasSrc(f) && frameIsReady(f)) {
       injectAudioGestureBridge(f, j);
+      injectMenuBridge(f);
       signalFrameReady(f, j);
     }
   });

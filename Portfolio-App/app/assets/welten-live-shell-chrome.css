@@ -1,4 +1,4 @@
-/* Live-Shell: doppelte Shell-.mv4-bar im Iframe ausblenden — Site-Header & Rail bleiben sichtbar */
+/* Live-Shell: iframe chrome owned by parent — hide duplicate .mv4-bar + .site-header */
 html.welten-live-shell .mv4-bar {
   display: none !important;
   visibility: hidden !important;
@@ -9,29 +9,17 @@ html.welten-live-shell .mv4-bar {
   opacity: 0 !important;
 }
 
+/* Shell owns the site header — never show iframe .site-header in live shell */
 html.welten-live-shell .site-header {
-  display: flex !important;
-  height: auto !important;
-  min-height: unset !important;
-  overflow: visible !important;
-  pointer-events: none !important;
-}
-
-/* Bis Multiversum-Home ready: Site-Header verstecken — sonst kurz doppelter Chrome mit Parent-.mv4-bar */
-html.welten-live-shell body:not(.mv-home-ready) .site-header {
-  opacity: 0 !important;
+  display: none !important;
   visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
   pointer-events: none !important;
-}
-
-html.welten-live-shell body.mv-home-ready .site-header {
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: none !important;
-}
-
-html.welten-live-shell .site-header > * {
-  pointer-events: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 html.welten-live-shell .experience-rail {
@@ -41,16 +29,14 @@ html.welten-live-shell .experience-rail {
   pointer-events: auto !important;
 }
 
-html.welten-live-shell .btn-menu {
-  display: inline-flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
+/* btn-menu lives inside hidden .site-header; keep rule for non-header clones if any */
+html.welten-live-shell .site-header .btn-menu {
+  display: none !important;
+  pointer-events: none !important;
 }
 
 /* Multiversum video-hero chrome duplicates the brand/title feel already shown by
-   .site-header. In the live shell we keep the chapter nav but drop the eyebrow + title
-   so the page doesn't visibly stack a 3rd header while it boots. */
+   the shell global header. Keep chapter nav; drop eyebrow + title. */
 html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,
 html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,
 html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,

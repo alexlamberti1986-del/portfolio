@@ -37,6 +37,9 @@
   border: 0;
 }
 
+.mv4-menu-btn:focus-visible,
+.mv4-brand:focus-visible,
+.mv4-meta:focus-visible,
 .mv4-bar button:focus-visible,
 .mv4-fx:focus-visible,
 .mv4-flag:focus-visible {
