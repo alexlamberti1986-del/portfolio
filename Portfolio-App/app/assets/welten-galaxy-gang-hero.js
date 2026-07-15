@@ -7,7 +7,7 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy8";
+  var VER = "20260715galaxy9";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -110,10 +110,13 @@
     if (!nav && section && section.parentNode) {
       wrap = document.createElement("div");
       wrap.id = "alGalaxyHomeChrome";
-      wrap.className = "al-galaxy-home-chrome";
+      wrap.className = "mv-static-hero welten-desktop-subpage-mv-hero al-galaxy-home-chrome";
+      wrap.setAttribute("aria-label", "MULTIVERSUM");
       wrap.innerHTML =
-        '<p class="al-galaxy-home-chrome__tag"><span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
-        '<nav id="alGalaxyChapterNav" class="mv-static-hero__nav al-galaxy-chapter-nav" aria-label="Kapitel">' +
+        '<div class="mv-static-hero__inner">' +
+        '<p class="mv-static-hero__tag" data-i18n="home.tag">' +
+        '<span class="mv-tag-blue">Vier Welten.</span> <span class="mv-tag-white">Ein Ziel.</span> <span class="mv-tag-warm">Deine Vision.</span></p>' +
+        '<nav id="alGalaxyChapterNav" class="mv-static-hero__nav" aria-label="Kapitel">' +
         CHAPTERS.map(function (item) {
           return (
             '<button type="button" class="mv-static-hero__nav-btn mv-form-btn" data-go="' +
@@ -123,10 +126,25 @@
             "</button>"
           );
         }).join("") +
-        "</nav>";
+        "</nav></div>";
       /* Chrome OBERHALB des Galaxy Walks */
       section.parentNode.insertBefore(wrap, section);
       nav = wrap.querySelector("#alGalaxyChapterNav");
+    } else if (wrap) {
+      /* Bestehendes Markup an Unterseiten-Struktur angleichen */
+      wrap.classList.add("mv-static-hero", "welten-desktop-subpage-mv-hero", "al-galaxy-home-chrome");
+      if (!wrap.querySelector(".mv-static-hero__inner")) {
+        var inner = document.createElement("div");
+        inner.className = "mv-static-hero__inner";
+        while (wrap.firstChild) inner.appendChild(wrap.firstChild);
+        wrap.appendChild(inner);
+      }
+      var tag = wrap.querySelector(".al-galaxy-home-chrome__tag");
+      if (tag) {
+        tag.className = "mv-static-hero__tag";
+        tag.setAttribute("data-i18n", "home.tag");
+      }
+      if (nav) nav.classList.remove("al-galaxy-chapter-nav");
     }
 
     /* Chrome immer direkt vor dem Galaxy-Hero halten */

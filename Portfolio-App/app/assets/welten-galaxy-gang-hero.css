@@ -1,6 +1,6 @@
-/* Multiversum Home: Galaxy Walk + Kapitel-Nav + scrollbarer Home-Inhalt */
+/* Multiversum Home: Galaxy Walk + Kapitel-Nav (wie Unterseiten) + Home-Inhalt */
 
-/* Höhe: niemals Vollbild — sonst verschwindet der Home-Inhalt unter dem Fold */
+/* Höhe: genug Luft gegen Abschneiden, aber nicht Vollbild */
 html body[data-world="general"] #alGalaxyGangHero.al-galaxy-gang-hero,
 html body[data-world="general"]:has(#alGalaxyGangHero) #alGalaxyGangHero,
 html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero {
@@ -16,9 +16,9 @@ html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero {
   overflow: hidden !important;
   isolation: isolate;
   background: #05070f !important;
-  min-height: clamp(380px, 58svh, 680px) !important;
-  height: clamp(380px, 58svh, 680px) !important;
-  max-height: min(680px, 70svh) !important;
+  min-height: clamp(480px, 66svh, 820px) !important;
+  height: clamp(480px, 66svh, 820px) !important;
+  max-height: min(820px, 78svh) !important;
 }
 
 #alGalaxyGangHero .al-galaxy-gang-hero__frame {
@@ -27,6 +27,7 @@ html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero {
   height: 100%;
   border: 0;
   background: #05070f;
+  transform: none !important;
 }
 
 #alGalaxyGangHero .al-galaxy-gang-hero__loading {
@@ -52,54 +53,54 @@ html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero {
   visibility: hidden;
 }
 
-/* Kapitel-Buttons OBERHALB Galaxy — immer sichtbar */
-html body[data-world="general"] #alGalaxyHomeChrome.al-galaxy-home-chrome,
-html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome,
-.al-galaxy-home-chrome {
+/*
+ * Home-Chrome: gleiche mv-static-hero Struktur wie Unterseiten.
+ * Keine eigenen Button-Styles — Styling kommt aus welten-multiversum-world.css
+ * + welten-desktop-chapter-hero.css / Theme.
+ */
+html body[data-world="general"] #alGalaxyHomeChrome.mv-static-hero,
+html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome.mv-static-hero,
+html body[data-world="general"] #alGalaxyHomeChrome.welten-desktop-subpage-mv-hero {
   position: relative !important;
   z-index: 32 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 12px !important;
-  width: 100% !important;
-  max-width: min(1100px, calc(100% - 24px)) !important;
-  margin: clamp(6px, 1.2vw, 14px) auto clamp(10px, 1.6vw, 18px) !important;
-  padding: 0 12px !important;
-  box-sizing: border-box !important;
+  display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  pointer-events: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 0 !important;
   height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding-top: clamp(12px, 2vh, 28px) !important;
+  padding-bottom: clamp(10px, 1.6vh, 22px) !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  pointer-events: auto !important;
   overflow: visible !important;
 }
 
-.al-galaxy-home-chrome__tag {
-  margin: 0 !important;
-  text-align: center;
-  font-size: clamp(0.9rem, 1.5vw, 1.12rem);
-  letter-spacing: 0.04em;
-  color: #e8f0ff;
-}
-
-html body[data-world="general"] .al-galaxy-chapter-nav.mv-static-hero__nav,
-.al-galaxy-chapter-nav.mv-static-hero__nav {
+html body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__inner {
   display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-  gap: 8px !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: clamp(10px, 1.5vh, 16px) !important;
   width: 100% !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  height: auto !important;
+  max-width: min(980px, calc(100% - 32px)) !important;
+  margin: 0 auto !important;
+  padding: 0 16px !important;
+  box-sizing: border-box !important;
 }
 
-html body[data-world="general"] .al-galaxy-chapter-nav .mv-static-hero__nav-btn {
-  display: inline-flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
+/* Im Shell: kein doppelter Multiversum-Titel (wie bei Unterseiten) */
+html.welten-live-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__eyebrow,
+html.welten-live-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__title,
+html.mv-in-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__eyebrow,
+html.mv-in-shell body[data-world="general"] #alGalaxyHomeChrome .mv-static-hero__title {
+  display: none !important;
 }
 
 /* Legacy-Hero aus */
@@ -165,48 +166,28 @@ html body[data-welten-galaxy-hero="1"] #slide-home .slide-inner--home {
   overflow: visible !important;
 }
 
-/* ── Laptop ~14″ (kurze Höhe / mittelbreite Displays) ── */
+/* ── Laptop ~14″: höherer Rahmen, kein Scale-Crop ── */
 @media (max-width: 1600px) and (max-height: 980px) and (min-width: 1025px) {
   html body[data-world="general"] #alGalaxyGangHero.al-galaxy-gang-hero,
   html body[data-world="general"]:has(#alGalaxyGangHero) #alGalaxyGangHero {
-    min-height: clamp(300px, 48svh, 520px) !important;
-    height: clamp(300px, 48svh, 520px) !important;
-    max-height: min(520px, 52svh) !important;
+    min-height: clamp(520px, 72svh, 740px) !important;
+    height: clamp(520px, 72svh, 740px) !important;
+    max-height: min(740px, 82svh) !important;
   }
 
   #alGalaxyGangHero .al-galaxy-gang-hero__frame {
-    width: 112%;
-    height: 112%;
-    max-width: none;
-    transform: scale(0.89);
-    transform-origin: top center;
-  }
-
-  .al-galaxy-home-chrome {
-    gap: 8px !important;
-    margin-top: 8px !important;
-  }
-
-  .al-galaxy-chapter-nav .mv-static-hero__nav-btn {
-    min-height: 40px;
-    padding: 8px 14px;
-    font-size: 0.92rem;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
   }
 }
 
-@media (max-width: 1366px) and (max-height: 850px) and (min-width: 1025px) {
+@media (max-width: 1366px) and (max-height: 900px) and (min-width: 1025px) {
   html body[data-world="general"] #alGalaxyGangHero.al-galaxy-gang-hero,
   html body[data-world="general"]:has(#alGalaxyGangHero) #alGalaxyGangHero {
-    min-height: clamp(260px, 44svh, 440px) !important;
-    height: clamp(260px, 44svh, 440px) !important;
-    max-height: min(440px, 48svh) !important;
-  }
-
-  #alGalaxyGangHero .al-galaxy-gang-hero__frame {
-    width: 120%;
-    height: 120%;
-    transform: scale(0.83);
-    transform-origin: top center;
+    min-height: clamp(480px, 74svh, 680px) !important;
+    height: clamp(480px, 74svh, 680px) !important;
+    max-height: min(680px, 84svh) !important;
   }
 }
 
@@ -214,33 +195,22 @@ html body[data-welten-galaxy-hero="1"] #slide-home .slide-inner--home {
 @media (min-width: 1800px) and (min-height: 1000px) {
   html body[data-world="general"] #alGalaxyGangHero.al-galaxy-gang-hero,
   html body[data-world="general"]:has(#alGalaxyGangHero) #alGalaxyGangHero {
-    min-height: clamp(520px, 62svh, 780px) !important;
-    height: clamp(520px, 62svh, 780px) !important;
-    max-height: min(780px, 72svh) !important;
-  }
-
-  #alGalaxyGangHero .al-galaxy-gang-hero__frame {
-    width: 100%;
-    height: 100%;
-    transform: none;
+    min-height: clamp(560px, 64svh, 860px) !important;
+    height: clamp(560px, 64svh, 860px) !important;
+    max-height: min(860px, 74svh) !important;
   }
 }
 
 @media (max-width: 1024px) {
   html body[data-world="general"] #alGalaxyGangHero.al-galaxy-gang-hero,
   html body[data-world="general"]:has(#alGalaxyGangHero) #alGalaxyGangHero {
-    min-height: clamp(300px, 52svh, 560px) !important;
-    height: clamp(300px, 52svh, 560px) !important;
-    max-height: min(560px, 58svh) !important;
+    min-height: clamp(380px, 58svh, 620px) !important;
+    height: clamp(380px, 58svh, 620px) !important;
+    max-height: min(620px, 66svh) !important;
   }
 
-  #alGalaxyGangHero .al-galaxy-gang-hero__frame {
-    width: 100%;
-    height: 100%;
-    transform: none;
-  }
-
-  .al-galaxy-home-chrome {
-    gap: 8px !important;
+  html body[data-world="general"] #alGalaxyHomeChrome.mv-static-hero {
+    padding-top: clamp(16px, 3vw, 28px) !important;
+    padding-bottom: clamp(12px, 2vw, 20px) !important;
   }
 }
