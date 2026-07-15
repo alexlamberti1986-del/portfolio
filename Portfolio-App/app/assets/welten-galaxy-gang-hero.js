@@ -7,7 +7,7 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy3";
+  var VER = "20260715galaxy4";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v36-final-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -68,6 +68,11 @@
 
   function removeHero() {
     var el = document.getElementById("alGalaxyGangHero");
+    if (el && el.getAttribute("data-static-galaxy") === "1") {
+      /* Static HTML-Hero nie entfernen — nur Flag/Ready syncen */
+      document.body.setAttribute("data-welten-galaxy-hero", "1");
+      return;
+    }
     if (el) el.remove();
     document.body.removeAttribute("data-welten-galaxy-hero");
   }
@@ -172,6 +177,21 @@
     if (existing) {
       placeHero(existing, inner);
       document.body.setAttribute("data-welten-galaxy-hero", "1");
+      var frame = document.getElementById("alGalaxyGangFrame");
+      if (frame) {
+        frame.addEventListener(
+          "load",
+          function () {
+            markReady(existing);
+          },
+          { once: true }
+        );
+        try {
+          if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
+            markReady(existing);
+          }
+        } catch (eReady) {}
+      }
       signalReady();
       return;
     }
