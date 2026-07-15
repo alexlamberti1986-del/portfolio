@@ -4,6 +4,45 @@ Session log for the Multiversum static site. Append newest entries at the top.
 
 ---
 
+## 2026-07-15 — Phase 3 (brief copy + SEO + a11y + legal stubs + perf)
+
+Owner-free pass from the PDF brief. Multiversum / Galaxy Walk identity preserved.
+
+### Content uniqueness
+
+1. **`assets/welten-brief-content.js`** (new) — applies brief DE templates to chapter titles/intros (Leistungen, Projekte, Über mich, Kontakt), world-toned Multiversum notes, home CTAs (`Projekt besprechen` primary → contact; `Projekte ansehen` secondary), Offerte H2 rename.
+2. **`welten-site-ia.js`** — Leistungen cards reduced to brief’s three disciplines (Webdesign, Digital Marketing, Digitale Strategie) with full brief descriptions; grid versioned `data-brief="3"`.
+3. **`welten-final-restore.js`** — Kontakt rebuild uses brief H2/intro + primary CTA button.
+4. **`welten-translations.js` + shell SEO boot/runtime** — meta title/description + shellMain Multiversum world blurbs aligned to brief; contact meta no longer forces phone into description.
+5. **MULTIVERSUM.html** — remaining mojibake (`Markenverständnis`, `überzeugt`, `Unterstützung`, `tragfähige`, projects intro).
+
+### SEO / crawlability
+
+1. Shell static head + SEO `<main>` (`3-Welten-Master-iframe.html` / `index.html`) — unique home title/description; crawlable Multiversum explanations; legal links; primary CTA wording.
+2. Schema in `welten-shell-seo.js` + `welten-seo.js` — **name + url only** (phone/jobTitle/address/LocalBusiness/sameAs omitted pending owner confirm).
+3. **`impressum.html` / `datenschutz.html`** — reachable minimal pages (email only; address/phone deferred in copy).
+4. **`vercel.json`** rewrites + charset headers; **`sitemap.xml`** adds impressum/datenschutz.
+
+### Accessibility / mobile / perf
+
+1. **`welten-shell-accessibility.css`** — skip-link focus-visible, world-nav focus, reduced-motion, overflow-wrap / header meta ellipsis.
+2. Chip/title overflow-wrap in `welten-visual-sprint2.css`.
+3. **`welten-mobile-performance.js`** — pause offscreen / hidden `<video>` via IntersectionObserver.
+4. Escape-to-close shell menu already present (confirmed).
+
+### Explicitly deferred (owner / measurement)
+
+- C-01–C-07 contact/social/jobTitle/schema expansions
+- C-10–C-13 Digital Plus rebrand, prices, real offerte backend
+- C-14 analytics + consent
+- C-24 testimonials/stats
+- C-30 hreflang; C-31 deeper world×chapter differentiation beyond tone notes
+- Full impressum legal block (postal address after C-03)
+- Lighthouse/CWV (not measured this session)
+- Dedicated `/webdesign` `/digital-marketing` `/digitale-strategie` routes (brief §8 — optional later)
+
+---
+
 ## 2026-07-15 — Phase 2 (encoding + SEO boot + offerte honesty)
 
 ### Encoding / mojibake

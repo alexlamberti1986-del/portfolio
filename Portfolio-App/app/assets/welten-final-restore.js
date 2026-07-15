@@ -76,18 +76,16 @@
     slide.innerHTML =
       '<div class="glass-card" style="padding: clamp(24px, 4vw, 40px);">' +
       '<p class="chapter-label">Kontakt</p>' +
-      '<h2 class="section-title">Bereit für den nächsten Schritt.</h2>' +
-      '<p class="prose">Ich freue mich auf Möglichkeiten, bei denen ich meine Erfahrung in Markeninszenierung, Kundenkommunikation und digitalem Marketing gezielt einbringen kann. Besonders spannend sind für mich Unternehmen, die Wert auf Qualität, klare Kommunikation, kreative Ideen und eine starke digitale Präsenz legen.</p>' +
-      '<p class="prose">Ob Website, Content, Kampagne, Projektkoordination oder Markenauftritt – ich möchte meine Fähigkeiten dort einsetzen, wo sie Wirkung erzeugen und weiter wachsen können.</p>' +
-      '<p class="prose" style="font-weight:600;margin-top:0.75rem;">Lassen Sie uns ins Gespräch kommen.</p>' +
-      '<p class="prose">Ob Website, Markenauftritt, digitale Sichtbarkeit oder ein konkretes Kundenprojekt: Ich freue mich über den Austausch und reagiere schnell, verbindlich und unkompliziert.</p>' +
-      '<p class="prose">Für mich beginnt gute Zusammenarbeit mit Zuhören, Verstehen und einer klaren Einordnung der nächsten Schritte. Deshalb ist der erste Kontakt bewusst einfach gehalten: kurz schreiben, anrufen oder direkt die Adresse öffnen.</p>' +
+      '<h2 class="section-title">Lass uns über dein digitales Vorhaben sprechen.</h2>' +
+      '<p class="prose">Ob bereits eine konkrete Idee besteht oder zunächst Klarheit über die nächsten Schritte benötigt wird: Beschreibe kurz die Ausgangslage und das gewünschte Ziel. Ich melde mich anschliessend mit einer ersten Einschätzung.</p>' +
+      '<p class="prose">Für mich beginnt gute Zusammenarbeit mit Zuhören und einer klaren Einordnung der nächsten Schritte. Deshalb ist der erste Kontakt bewusst einfach gehalten.</p>' +
       '<div class="contact-actions">' +
       '<a href="mailto:' + MAIL + '"><span>E-Mail: ' + MAIL + '</span><span>→</span></a>' +
       '<a href="tel:' + TEL + '"><span>Telefon: ' + TEL_DISP + '</span><span>→</span></a>' +
       '<a href="' +
       MAP +
       '" target="_blank" rel="noopener noreferrer"><span>Adresse: Schulweg 603, 5324 Full-Reuenthal, Schweiz</span><span>→</span></a>' +
+      '<button type="button" class="btn btn-primary" data-go="offerte" data-brief-cta="1">Projekt besprechen</button>' +
       "</div></div>" +
       '<figure class="contact-visual glass-card" aria-label="Kontakt">' +
       '<img class="contact-photo portrait-photo" id="contactPhoto" src="' +

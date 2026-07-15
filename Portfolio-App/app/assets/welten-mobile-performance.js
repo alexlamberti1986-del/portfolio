@@ -368,6 +368,43 @@
     );
   }
 
+  function pauseOffscreenMedia() {
+    var videos = document.querySelectorAll("video");
+    if (!videos.length) return;
+    if (typeof IntersectionObserver === "undefined") {
+      videos.forEach(function (v) {
+        try {
+          if (document.hidden) v.pause();
+        } catch (e) {}
+      });
+      return;
+    }
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          var v = entry.target;
+          try {
+            if (entry.isIntersecting && !document.hidden) {
+              if (v.dataset.weltenAutoplay === "1" && v.paused) {
+                var p = v.play();
+                if (p && p.catch) p.catch(function () {});
+              }
+            } else if (!v.paused) {
+              v.pause();
+            }
+          } catch (err) {}
+        });
+      },
+      { root: null, threshold: 0.12 }
+    );
+    videos.forEach(function (v) {
+      if (v.hasAttribute("autoplay") || v.dataset.autoplay === "1") {
+        v.dataset.weltenAutoplay = "1";
+      }
+      io.observe(v);
+    });
+  }
+
   function apply() {
     setMobileClasses();
     disableMousePaint();
@@ -379,6 +416,7 @@
     fixSlidesLayout();
     wireMobileHeroNav();
     ensureWorldUnpaused();
+    pauseOffscreenMedia();
   }
 
   apply();

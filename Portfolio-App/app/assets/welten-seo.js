@@ -66,6 +66,7 @@
 
   function injectSchema() {
     if (document.getElementById("welten-schema-jsonld")) return;
+    /* Only name + url until owner confirms phone/address/jobTitle/sameAs */
     var data = {
       "@context": "https://schema.org",
       "@graph": [
@@ -73,54 +74,15 @@
           "@type": "Person",
           "@id": BASE + "/#person",
           name: "Alex Lamberti",
-          jobTitle: "Digital Marketing Spezialist",
-          email: "alex.lamberti@hotmail.ch",
-          telephone: "+41796678211",
           url: BASE,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Schulweg 603",
-            addressLocality: "Full-Reuenthal",
-            postalCode: "5324",
-            addressCountry: "CH",
-          },
-        },
-        {
-          "@type": "Organization",
-          "@id": BASE + "/#organization",
-          name: "Alex Lamberti",
-          url: BASE,
-          logo: OG_IMAGE,
-          sameAs: [],
         },
         {
           "@type": "WebSite",
           "@id": BASE + "/#website",
           url: BASE,
-          name: "Alex Lamberti Portfolio",
-          publisher: { "@id": BASE + "/#organization" },
+          name: "Alex Lamberti Multiversum",
+          publisher: { "@id": BASE + "/#person" },
           inLanguage: "de-CH",
-        },
-        {
-          "@type": "LocalBusiness",
-          "@id": BASE + "/#localbusiness",
-          name: "Alex Lamberti",
-          image: OG_IMAGE,
-          url: BASE,
-          telephone: "+41796678211",
-          email: "alex.lamberti@hotmail.ch",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Schulweg 603",
-            addressLocality: "Full-Reuenthal",
-            postalCode: "5324",
-            addressCountry: "CH",
-          },
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: 47.599,
-            longitude: 8.204,
-          },
         },
       ],
     };

@@ -58,49 +58,56 @@
       shellMain: {
         h1: "Alex Lamberti · Multiversum für digitale Welten",
         intro:
-          "Digital Marketing, Webdesign und Strategie. Vier Welten. Eine kreative Identität: NEXORA für digitale Zukunft, PROFESSIONAL für Projekte und Zusammenarbeit, FREIRAUM für kreative Ideen und Experimente.",
+          "Digitale Auftritte, die Ideen in Wirkung verwandeln. Webdesign, digitales Marketing und Strategie — im Multiversum mit NEXORA, PROFESSIONAL und FREIRAUM.",
         navAria: "Welten und Kapitel",
         navMultiversum: "MULTIVERSUM — Start",
         navProjects: "Projekte",
         navServices: "Leistungen",
         navAbout: "Über Alex Lamberti",
-        navContact: "Kontakt aufnehmen",
-        nexoraDesc: "Die Zukunftswelt für digitale Ideen, Systeme, Visionen und neue Konzepte.",
-        professionalDesc: "Projekte, Referenzen, Leistungen und professionelle Zusammenarbeit mit Alex Lamberti.",
-        freiraumDesc: "Persönliche Ideen, kreative Experimente und freie Projekte.",
+        navContact: "Projekt besprechen",
+        navLegalImpressum: "Impressum",
+        navLegalPrivacy: "Datenschutz",
+        nexoraDesc:
+          "NEXORA ist der Raum für neue Möglichkeiten, technologische Entwicklungen und Konzepte, die über klassische digitale Lösungen hinausdenken.",
+        professionalDesc:
+          "PROFESSIONAL zeigt konkrete Leistungen, ausgewählte Arbeiten und den strukturierten Weg von der ersten Idee bis zur fertigen Umsetzung.",
+        freiraumDesc:
+          "FREIRAUM ist der Ort für kreative Versuche, visuelle Studien und Projekte, bei denen Neugier wichtiger ist als ein festgelegtes Ergebnis.",
         emailLabel: "E-Mail:",
         phoneLabel: "Tel:",
+        footerTagline:
+          "Digitale Konzepte, Websites und Marketinglösungen mit einer klaren Idee und einer eigenständigen visuellen Sprache.",
       },
       seo: {
         home: {
-          title: "Alex Lamberti Multiversum für digitale Welten",
+          title: "Alex Lamberti | Webdesign, Marketing & Digitale Strategie",
           description:
-            "Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Digital Marketing, Webdesign und Strategie in vier digitalen Welten.",
+            "Alex Lamberti entwickelt individuelle Websites, digitale Marketinglösungen und klare Strategien. Entdecke das Multiversum mit NEXORA, PROFESSIONAL und FREIRAUM.",
         },
         projects: {
-          title: "Projekte | Alex Lamberti · Websites, Leadformulare & Visitenkarten",
+          title: "Digitale Projekte und ausgewählte Arbeiten | Alex Lamberti",
           description:
-            "Ausgewählte Projekte von Alex Lamberti: Websites, Leadformulare und digitale Visitenkarten mit klarer Handschrift.",
+            "Ausgewählte Projekte aus Webdesign, digitalem Marketing und Konzeption. Entdecke Aufgaben, Lösungswege und Umsetzungen von Alex Lamberti.",
         },
         leistungen: {
-          title: "Leistungen | Alex Lamberti · Branding, Webdesign & Marketing",
+          title: "Digitale Leistungen für Unternehmen | Alex Lamberti",
           description:
-            "Leistungen von Alex Lamberti: Branding, Webdesign, Marketing, Strategie, Content und Website-Optimierung.",
+            "Webdesign, digitales Marketing und strategische Unterstützung aus einer Hand. Entdecke die digitalen Leistungen von Alex Lamberti.",
         },
         about: {
-          title: "Über mich | Alex Lamberti · Digital Marketing Spezialist",
+          title: "Über Alex Lamberti | Kreativität mit digitaler Struktur",
           description:
-            "Wer ist Alex Lamberti? Werdegang, Arbeitsweise, Werte und Kompetenzen im Digital Marketing.",
+            "Lerne Alex Lamberti, seine Arbeitsweise und seinen Blick auf Webdesign, digitale Kommunikation und kreative Technologie kennen.",
         },
         contact: {
-          title: "Kontakt | Alex Lamberti · Telefon, E-Mail & Standort",
+          title: "Kontakt und Projektanfrage | Alex Lamberti",
           description:
-            "Kontakt zu Alex Lamberti: Telefon 079 667 82 11, E-Mail alex.lamberti@hotmail.ch, Standort Full-Reuenthal.",
+            "Du planst eine Website, ein digitales Marketingprojekt oder brauchst strategische Unterstützung? Nimm unverbindlich Kontakt mit Alex Lamberti auf.",
         },
         offerte: {
-          title: "Offerte | Alex Lamberti · Leistungen & Preisanfrage",
+          title: "Projekt besprechen | Alex Lamberti",
           description:
-            "Offerte anfragen: Leistungen wählen und eine klare Einschätzung zu Aufwand und Preis von Alex Lamberti erhalten.",
+            "Beschreibe kurz dein Vorhaben und erhalte eine erste Einschätzung zu Leistungen und Aufwand von Alex Lamberti.",
         },
       },
     },

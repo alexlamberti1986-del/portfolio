@@ -198,7 +198,17 @@ body[data-world="freiraum"] .welten-highlight-card::after {
 .welten-service-pill {
   border-radius: 999px !important;
   padding: 11px 18px !important;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.welten-leistung-card h3,
+.welten-leistung-card p,
+.section-title,
+.chapter-label,
+.prose {
+  overflow-wrap: anywhere;
 }
 
 .welten-service-pill:hover {

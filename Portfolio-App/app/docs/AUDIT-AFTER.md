@@ -1,8 +1,17 @@
 # AUDIT-AFTER — alexlamberti.ch
 
-**Status:** Phase 1 + Phase 2 complete (2026-07-15). Full Lighthouse/CWV after-audit still pending real measurement.
+**Status:** Phase 1–3 complete (2026-07-15). Full Lighthouse/CWV after-audit still pending real measurement.
 
-## Phase 2 completed (this session)
+## Phase 3 completed (this session)
+
+- Brief-aligned DE copy for Leistungen / Projekte / Über mich / Kontakt + Multiversum world blurbs
+- Primary CTA → **Projekt besprechen**; shell SEO crawl block updated
+- Schema reduced to Person/WebSite **name + url**
+- Reachable Impressum/Datenschutz stubs (no invented address)
+- a11y focus / reduced-motion / overflow-wrap; offscreen video pause
+- Sitemap + Vercel rewrites for legal pages
+
+## Phase 2 completed
 
 - Encoding/mojibake cleaned in FREIRAUM / PROFESSIONAL (and related worlds); PROFESSIONAL BUSINESS kicker → PROFESSIONAL
 - Early shell SEO boot (`welten-shell-seo-boot.js`) for unique title/description/canonical/H1 from path
@@ -24,4 +33,5 @@
 - [ ] Wire offerte submission path to a real endpoint (currently local-only)
 - [ ] Re-check Galaxy Walk ≥1280×700 constraints still hold
 - [ ] Owner-confirmed contact/social/schema facts
-- [ ] Deeper world × chapter copy differentiation (beyond home)
+- [ ] Full impressum postal block after owner confirm
+- [ ] Optional dedicated Leistungs-URLs (§8 brief)

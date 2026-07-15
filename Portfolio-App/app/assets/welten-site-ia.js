@@ -40,12 +40,21 @@
   ];
 
   var SERVICES = [
-    { title: "Branding", desc: "Markenauftritte mit klarer Positionierung und Wiedererkennung." },
-    { title: "Webdesign", desc: "Websites mit Nutzerführung, Struktur und Conversion-Fokus." },
-    { title: "Marketing", desc: "Digitale Kampagnen, Content und Sichtbarkeit." },
-    { title: "Strategie", desc: "Vom Ziel zur Umsetzung · durchdacht und messbar." },
-    { title: "Content", desc: "SEO-orientierte Inhalte, die gefunden und verstanden werden." },
-    { title: "Optimierung", desc: "Performance, SEO und Conversion kontinuierlich verbessern." },
+    {
+      title: "Webdesign",
+      desc:
+        "Individuelle Websites mit klarer Nutzerführung, starker visueller Identität und einer technischen Basis, die auf allen relevanten Geräten überzeugt.",
+    },
+    {
+      title: "Digital Marketing",
+      desc:
+        "Durchdachte digitale Massnahmen, die Angebote sichtbar machen, relevante Zielgruppen erreichen und aus Aufmerksamkeit konkrete nächste Schritte entwickeln.",
+    },
+    {
+      title: "Digitale Strategie",
+      desc:
+        "Struktur für digitale Vorhaben: Ziele schärfen, Möglichkeiten priorisieren und aus einzelnen Ideen einen nachvollziehbaren Plan entwickeln.",
+    },
   ];
 
   function resolveChapter(raw) {
@@ -182,10 +191,17 @@
 
   function injectLeistungenGrid() {
     var slide = document.querySelector("#slide-leistungen .slide-inner");
-    if (!slide || slide.querySelector(".welten-leistungen-grid")) return;
+    if (!slide) return;
+
+    var existing = slide.querySelector(".welten-leistungen-grid");
+    if (existing) {
+      if (existing.getAttribute("data-brief") === "3") return;
+      existing.remove();
+    }
 
     var grid = document.createElement("div");
     grid.className = "welten-leistungen-grid";
+    grid.setAttribute("data-brief", "3");
     SERVICES.forEach(function (s) {
       var card = document.createElement("article");
       card.className = "welten-leistung-card glass-card";

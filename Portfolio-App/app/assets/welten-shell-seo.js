@@ -13,50 +13,50 @@
   var WORLD_HOME = {
     general: {
       de: {
-        title: "Alex Lamberti Multiversum für digitale Welten",
+        title: "Alex Lamberti | Webdesign, Marketing & Digitale Strategie",
         description:
-          "Entdecke das Multiversum von Alex Lamberti mit NEXORA, PROFESSIONAL und FREIRAUM. Digital Marketing, Webdesign und Strategie in vier digitalen Welten.",
+          "Alex Lamberti entwickelt individuelle Websites, digitale Marketinglösungen und klare Strategien. Entdecke das Multiversum mit NEXORA, PROFESSIONAL und FREIRAUM.",
       },
       en: {
-        title: "Alex Lamberti Multiverse for digital worlds",
+        title: "Alex Lamberti | Web design, marketing & digital strategy",
         description:
-          "Explore Alex Lamberti's multiverse with NEXORA, PROFESSIONAL and FREIRAUM. Digital marketing, web design and strategy across four digital worlds.",
+          "Alex Lamberti builds individual websites, digital marketing solutions and clear strategies across the Multiverse with NEXORA, PROFESSIONAL and FREIRAUM.",
       },
     },
     nexora: {
       de: {
         title: "NEXORA | Alex Lamberti · Digitale Zukunftswelt",
         description:
-          "NEXORA von Alex Lamberti: digitale Zukunft, Systeme, Visionen und neue Konzepte für Marketing, Web und Strategie.",
+          "NEXORA von Alex Lamberti: Raum für neue Möglichkeiten, Systeme und Konzepte jenseits klassischer digitaler Lösungen.",
       },
       en: {
         title: "NEXORA | Alex Lamberti · Digital future world",
         description:
-          "NEXORA by Alex Lamberti: digital future, systems, visions and new concepts for marketing, web and strategy.",
+          "NEXORA by Alex Lamberti: space for new possibilities, systems and concepts beyond classic digital solutions.",
       },
     },
     vertex: {
       de: {
         title: "PROFESSIONAL | Alex Lamberti · Projekte & Zusammenarbeit",
         description:
-          "PROFESSIONAL von Alex Lamberti: Projekte, Referenzen, Leistungen und professionelle Zusammenarbeit.",
+          "PROFESSIONAL von Alex Lamberti: konkrete Leistungen, ausgewählte Arbeiten und der Weg von der Idee bis zur Umsetzung.",
       },
       en: {
         title: "PROFESSIONAL | Alex Lamberti · Projects & collaboration",
         description:
-          "PROFESSIONAL by Alex Lamberti: projects, references, services and professional collaboration.",
+          "PROFESSIONAL by Alex Lamberti: concrete services, selected work and the path from idea to delivery.",
       },
     },
     freiraum: {
       de: {
         title: "FREIRAUM | Alex Lamberti · Kreativität & Experimente",
         description:
-          "FREIRAUM von Alex Lamberti: persönliche Ideen, kreative Experimente und freie Projekte.",
+          "FREIRAUM von Alex Lamberti: kreative Versuche, visuelle Studien und freie Projekte mit Raum für Neugier.",
       },
       en: {
         title: "FREIRAUM | Alex Lamberti · Creativity & experiments",
         description:
-          "FREIRAUM by Alex Lamberti: personal ideas, creative experiments and free projects.",
+          "FREIRAUM by Alex Lamberti: creative experiments, visual studies and free projects driven by curiosity.",
       },
     },
   };
@@ -155,6 +155,7 @@
 
   function injectSchema() {
     if (document.getElementById("welten-shell-schema-jsonld")) return;
+    /* Only confirmed-safe fields — phone/address/jobTitle/sameAs deferred (CONTENT-TODOS) */
     var data = {
       "@context": "https://schema.org",
       "@graph": [
@@ -162,9 +163,6 @@
           "@type": "Person",
           "@id": BASE + "/#person",
           name: "Alex Lamberti",
-          jobTitle: "Digital Marketing Spezialist",
-          email: "alex.lamberti@hotmail.ch",
-          telephone: "+41796678211",
           url: BASE,
         },
         {

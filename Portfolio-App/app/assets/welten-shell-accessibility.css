@@ -1,4 +1,4 @@
-/* Shell — Skip-Link, Focus, SEO-Fallback */
+/* Shell — Skip-Link, Focus, SEO-Fallback, reduced motion, typography overflow */
 
 .welten-skip-link {
   position: absolute;
@@ -17,12 +17,15 @@
   border: 2px solid rgba(142, 197, 255, 0.5);
 }
 
-.welten-skip-link:focus {
+.welten-skip-link:focus,
+.welten-skip-link:focus-visible {
   left: 12px;
   top: calc(env(safe-area-inset-top, 0px) + 12px);
   width: auto;
   height: auto;
   overflow: visible;
+  outline: 2px solid rgba(142, 197, 255, 0.95);
+  outline-offset: 2px;
 }
 
 .mv-shell-seo {
@@ -42,7 +45,8 @@
 .mv4-meta:focus-visible,
 .mv4-bar button:focus-visible,
 .mv4-fx:focus-visible,
-.mv4-flag:focus-visible {
+.mv4-flag:focus-visible,
+.mv4-worlds a:focus-visible {
   outline: 2px solid rgba(142, 197, 255, 0.85);
   outline-offset: 2px;
 }
@@ -53,4 +57,43 @@ html.mv-effects-off .mv4-frame {
 
 html.welten-tab-hidden .mv4-frame {
   content-visibility: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body,
+  .mv4-shell-chrome,
+  .mv4-frame,
+  .mv4-worlds a,
+  .mv4-fx {
+    scroll-behavior: auto !important;
+  }
+  .mv4-worlds a,
+  .mv4-fx,
+  .mv4-menu-btn,
+  .mv4-flag {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Long German words / chip wrap hygiene in shell + frames context */
+.mv4-global-header,
+.mv4-bar,
+.mv-shell-seo {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.mv4-meta {
+  max-width: min(42vw, 16rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .mv4-meta {
+    max-width: 38vw;
+  }
 }

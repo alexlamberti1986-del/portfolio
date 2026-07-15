@@ -25,6 +25,8 @@
     { "source": "/ueber-mich", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/kontakt", "destination": "/3-Welten-Master-iframe.html" },
     { "source": "/offerte", "destination": "/3-Welten-Master-iframe.html" },
+    { "source": "/impressum", "destination": "/impressum.html" },
+    { "source": "/datenschutz", "destination": "/datenschutz.html" },
     { "source": "/(nexora|professional|freiraum|multiversum)/assets/(.*)", "destination": "/assets/$2" },
     { "source": "/(nexora|professional|freiraum|multiversum)/MULTIVERSUM.html", "destination": "/MULTIVERSUM.html" },
     { "source": "/(nexora|professional|freiraum|multiversum)/NEXORA.html", "destination": "/NEXORA.html" },
@@ -73,7 +75,7 @@
       ]
     },
     {
-      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte)(.*)",
+      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte|impressum|datenschutz)(.*)",
       "headers": [
         { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]
