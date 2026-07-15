@@ -1654,7 +1654,21 @@ body[data-world] .side.summary{width:100%;max-width:none}
 
 <!-- ALX_OFFERTE_EMBED -->
 <style>
-html.alx-embed,html.alx-embed body{background:transparent!important;overflow:hidden!important}
+html.alx-embed,
+html.alx-embed body{
+  background:transparent!important;
+  overflow:hidden!important;
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+}
+html.alx-embed .dp-wrap{
+  padding-bottom:8px!important;
+  min-height:0!important;
+}
+html.alx-embed .dp-shell{
+  margin-bottom:0!important;
+}
 </style>
 <script>
 (function(){
@@ -1688,8 +1702,9 @@ html.alx-embed,html.alx-embed body{background:transparent!important;overflow:hid
 
   function postHeight(){
     if (window.parent === window) return;
-    var root = document.querySelector('.dp-shell') || document.body;
-    var h = Math.ceil(Math.max(root.scrollHeight, root.offsetHeight, document.documentElement.scrollHeight));
+    var root = document.querySelector('.dp-shell') || document.querySelector('.dp-wrap') || document.body;
+    /* Nur Shell-Inhalt messen — nicht document/body (min-height:100dvh) */
+    var h = Math.ceil(Math.max(root.scrollHeight || 0, root.offsetHeight || 0));
     if (!h || h < 200) h = 480;
     try { window.parent.postMessage({ type: 'alx-form-height', height: h }, '*'); } catch (e) {}
   }
