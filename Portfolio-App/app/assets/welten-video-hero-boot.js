@@ -540,6 +540,13 @@
   function mountVideoHero() {
     if (!ENABLED) return;
 
+    var worldKeyEarly = WORLD_MAP[document.body.getAttribute("data-world") || ""];
+    /* Multiversum: Galaxy-Gang ersetzt den Video-Hero */
+    if (worldKeyEarly === "multiversum") {
+      removeVideoHero();
+      return;
+    }
+
     if (isVideoHidden()) {
       pauseVideoHero();
       removeVideoHero();

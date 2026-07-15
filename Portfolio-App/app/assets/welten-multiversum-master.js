@@ -1303,6 +1303,9 @@
       if (!isTrustedMessageSource(e.source)) return;
       var idx = worldIndexFromKey(e.data.world);
       if (idx !== undefined) {
+        if (typeof e.data.go === "string" && CHAPTERS.indexOf(e.data.go) >= 0) {
+          sharedChapter = e.data.go;
+        }
         if (frameNeedsReset(frames[idx], idx)) resetFrame(idx);
         switchTo(idx);
         postScrollToActiveFrame(e.data.targetHash, e.data.go);
