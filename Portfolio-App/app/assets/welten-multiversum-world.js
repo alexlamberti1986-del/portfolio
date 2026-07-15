@@ -349,6 +349,24 @@
 
   function boot() {
     applyTheme();
+    /* Galaxy Walk = Multiversum-Home-Hero (kein Parallax/Static) */
+    if (window.__mvUseGalaxyHome) {
+      stripDecor();
+      try {
+        var stalePx = document.getElementById("mvParallaxHero");
+        if (stalePx) stalePx.remove();
+        var staleSt = document.getElementById("mvStaticHero");
+        if (staleSt) staleSt.remove();
+      } catch (eGal) {}
+      finishBoot();
+      if (window.WeltenGalaxyGangHero && typeof window.WeltenGalaxyGangHero.remount === "function") {
+        window.WeltenGalaxyGangHero.remount();
+      }
+      if (!document.body.classList.contains("mv-home-ready")) {
+        notifyHeroReady();
+      }
+      return;
+    }
     if (!isDesktopParallaxHero()) {
       buildStaticHero();
       stripDecor();

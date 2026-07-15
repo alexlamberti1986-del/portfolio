@@ -2236,6 +2236,8 @@
   }
 
   function buildParallaxHero(goChapter) {
+    /* Galaxy Walk ersetzt den Scroll-/Parallax-Hero auf Multiversum Home */
+    if (window.__mvUseGalaxyHome) return null;
     if (window.__mvParallaxBuilding || document.getElementById("mvParallaxHero")) return document.getElementById("mvParallaxHero");
     if (document.body.getAttribute("data-world") !== "general") return null;
     if (!isDesktopParallaxHero()) return null;

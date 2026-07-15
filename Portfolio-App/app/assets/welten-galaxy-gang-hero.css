@@ -1,16 +1,15 @@
-/* Multiversum Home: Galaxy-Gang als Haupt-Hero (ersetzt Video + überlagert Parallax) */
+/* Multiversum Home: Galaxy Walk als einziger Hero */
 
 #alGalaxyGangHero.al-galaxy-gang-hero {
   position: relative;
-  z-index: 8;
+  z-index: 30;
   width: 100%;
   max-width: none;
-  margin: 0 0 clamp(12px, 2vw, 24px);
+  margin: 0;
   border-radius: 0;
   overflow: hidden;
   isolation: isolate;
   background: #05070f;
-  box-shadow: none;
   min-height: calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px));
   height: calc(100svh - var(--header-h, 90px) - var(--dock-h, 0px));
 }
@@ -46,27 +45,22 @@
   visibility: hidden;
 }
 
-/* Parallax-/Static-Hero aus — Galaxy ist die Home-Bühne */
-body[data-welten-galaxy-hero="1"][data-current-slide="home"] #mvParallaxHero,
-body[data-welten-galaxy-hero="1"][data-current-slide="home"] #mvStaticHero,
-body[data-welten-galaxy-hero="1"][data-current-slide="home"] #dnaStage,
-body[data-welten-galaxy-hero="1"][data-current-slide="home"] .home-hero-experience,
-body[data-welten-galaxy-hero="1"] #slide-home.active #mvParallaxHero,
-body[data-welten-galaxy-hero="1"] #slide-home.active #mvStaticHero {
+/* Spezifität >= mv-boot-critical display:block für Parallax */
+body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero,
+body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero.is-boot-painted,
+body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero.is-boot-painted[data-active-world="multiversum"],
+body[data-world="general"][data-welten-galaxy-hero="1"] #mvStaticHero,
+body[data-world="general"][data-welten-galaxy-hero="1"] #alWorldVideoHero,
+body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail,
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail {
   display: none !important;
   visibility: hidden !important;
+  opacity: 0 !important;
   height: 0 !important;
   min-height: 0 !important;
   max-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
   overflow: hidden !important;
   pointer-events: none !important;
-}
-
-body[data-welten-galaxy-hero="1"] #slide-home .al-world-video-hero--multiversum,
-body[data-welten-galaxy-hero="1"] #alWorldVideoHero.al-world-video-hero--multiversum {
-  display: none !important;
 }
 
 body[data-welten-galaxy-hero="1"] #slide-home.slide {
@@ -85,11 +79,5 @@ body[data-welten-galaxy-hero="1"] #slide-home .slide-inner--home {
   #alGalaxyGangHero.al-galaxy-gang-hero {
     min-height: calc(100svh - var(--header-h, 72px) - var(--dock-h, 0px));
     height: calc(100svh - var(--header-h, 72px) - var(--dock-h, 0px));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #alGalaxyGangHero .al-galaxy-gang-hero__loading {
-    transition: none;
   }
 }

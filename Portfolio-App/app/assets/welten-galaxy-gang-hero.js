@@ -1,11 +1,13 @@
 /**
- * Multiversum Home — Galaxy-Gang als sichtbarer Haupt-Hero (ersetzt Video/Parallax).
- * Navigations-Bridge: galaxy-navigate → Shell (alex:switch-world) / Kapitel.
+ * Multiversum Home — Galaxy-Gang als einziger Home-Hero.
+ * Setzt __mvUseGalaxyHome, damit Parallax/Static gar nicht erst gebaut werden.
  */
 (function () {
   "use strict";
 
-  var VER = "20260715galaxy2";
+  window.__mvUseGalaxyHome = true;
+
+  var VER = "20260715galaxy3";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v36-final-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -40,6 +42,7 @@
 
   function signalReady() {
     try {
+      document.body.classList.add("mv-home-ready");
       document.dispatchEvent(new CustomEvent("mv-hero-ready"));
       document.dispatchEvent(new CustomEvent("welten-galaxy-hero-mounted"));
     } catch (e) {}
@@ -49,6 +52,18 @@
         window.parent.postMessage({ type: "mv-hero-ready" }, "*");
       }
     } catch (e2) {}
+  }
+
+  function purgeLegacyHeroes() {
+    ["mvParallaxHero", "mvStaticHero", "alWorldVideoHero"].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.remove();
+    });
+    document.querySelectorAll(".experience-rail").forEach(function (rail) {
+      rail.style.setProperty("display", "none", "important");
+      rail.setAttribute("hidden", "");
+    });
+    document.body.removeAttribute("data-welten-video-hero");
   }
 
   function removeHero() {
@@ -127,7 +142,6 @@
   }
 
   function placeHero(section, inner) {
-    /* Immer ganz oben auf Home — sichtbar statt unter Parallax */
     if (inner.firstChild !== section) {
       inner.insertBefore(section, inner.firstChild);
     }
@@ -151,6 +165,8 @@
       retryTimer = window.setTimeout(mountHero, 120);
       return;
     }
+
+    purgeLegacyHeroes();
 
     var existing = document.getElementById("alGalaxyGangHero");
     if (existing) {
@@ -181,21 +197,14 @@
 
     placeHero(section, inner);
     document.body.setAttribute("data-welten-galaxy-hero", "1");
-
-    var videoHero = document.getElementById("alWorldVideoHero");
-    if (videoHero && videoHero.classList.contains("al-world-video-hero--multiversum")) {
-      videoHero.remove();
-      document.body.removeAttribute("data-welten-video-hero");
-    }
+    signalReady();
 
     iframe.addEventListener("load", function () {
       markReady(section);
     });
-    /* 67MB: dennoch Shell-Ready früh setzen, Loading-Overlay bleibt bis load */
-    window.setTimeout(signalReady, 400);
     window.setTimeout(function () {
       markReady(section);
-    }, 12000);
+    }, 15000);
   }
 
   function sync() {
@@ -208,12 +217,18 @@
   }
 
   function boot() {
+    window.__mvUseGalaxyHome = true;
     if (!isMultiversum()) return;
     window.addEventListener("message", onGalaxyNavigate);
     sync();
 
     var obs = new MutationObserver(function () {
-      sync();
+      if (isHomeActive() && window.__mvUseGalaxyHome) {
+        purgeLegacyHeroes();
+        mountHero();
+      } else {
+        sync();
+      }
     });
     try {
       obs.observe(document.body, {
@@ -225,24 +240,13 @@
     var home = document.getElementById("slide-home");
     if (home) {
       try {
-        obs.observe(home, { attributes: true, attributeFilter: ["class"] });
+        obs.observe(home, { attributes: true, attributeFilter: ["class"], childList: true, subtree: false });
       } catch (e2) {}
-      try {
-        obs.observe(home, { childList: true, subtree: true });
-      } catch (e3) {}
     }
 
     window.addEventListener("portfolio-world-reveal", sync);
     window.addEventListener("portfolio-world-enter", sync);
-    window.addEventListener("portfolio-world-pause", function () {
-      /* keep DOM; iframe pauses via browser while hidden */
-    });
-    document.addEventListener("mv-hero-ready", function () {
-      if (isHomeActive()) mountHero();
-    });
-
-    /* Parallax baut Home asynchron — mehrmals nachziehen */
-    [200, 600, 1200, 2500, 5000].forEach(function (ms) {
+    [80, 200, 500, 1000, 2000, 4000].forEach(function (ms) {
       window.setTimeout(sync, ms);
     });
   }
