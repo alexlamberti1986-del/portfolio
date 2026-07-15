@@ -165,7 +165,8 @@
     running = false;
     window.__wwsPreviewOwnsSound = false;
     if (!skipEnd) wwsCallTransitionEnd();
-    document.documentElement.classList.remove("welten-world-switch-lock");
+    /* Lock ownership: master finishTransition / recoverStuckSwitch.
+       Abort must NOT drop lock — Multiversum paints through the gap. */
   }
 
   function wwsCallTransitionEnd() {
@@ -1761,7 +1762,6 @@
     function finishExit() {
       if (!activeOverlay) {
         wwsCallTransitionEnd();
-        document.documentElement.classList.remove("welten-world-switch-lock");
         running = false;
         window.__wwsPreviewOwnsSound = false;
         wwsClearTimers();
@@ -1773,23 +1773,22 @@
         if (!activeOverlay || activeOverlay._wwsFinishing) return;
         activeOverlay._wwsFinishing = true;
         stopCanvas(activeOverlay);
+        /* Stay fully opaque (is-covered) while master activates the target under lock.
+           Fading root opacity previously made Multiversum (warm frame 0) peek through. */
+        activeOverlay.classList.add("is-covered");
         activeOverlay.classList.remove("is-entering");
-        /* is-covered erzwingt opacity:1 ohne Transition — muss weg, damit
-           is-exiting sichtbar auf 0 ausblenden kann. */
-        activeOverlay.classList.remove("is-covered");
-        activeOverlay.classList.add("is-exiting");
+        /* Apply target first while cover still solid */
+        wwsCallTransitionEnd();
         wwsLater(function () {
-          /* Keep lock while applying target world */
-          wwsCallTransitionEnd();
           if (activeOverlay) {
             activeOverlay.remove();
             activeOverlay = null;
           }
-          document.documentElement.classList.remove("welten-world-switch-lock");
+          /* Master owns welten-world-switch-lock removal */
           running = false;
           window.__wwsPreviewOwnsSound = false;
           wwsClearTimers();
-        }, exitMs);
+        }, Math.max(60, Math.min(exitMs, 120)));
       }
 
       /* Sicherheitsnetz: erst aufdecken, wenn die Zielwelt wirklich aktiv ist —
@@ -1844,7 +1843,7 @@
         running = false;
         window.__wwsPreviewOwnsSound = false;
         wwsCallTransitionEnd();
-        document.documentElement.classList.remove("welten-world-switch-lock");
+        /* Master owns lock removal */
       }
       /* Failsafe griff, bevor der Zielwelt-Wechsel bestätigt wurde — noch
          einmal versuchen, damit wir nicht mit dem Cover verschwinden, während

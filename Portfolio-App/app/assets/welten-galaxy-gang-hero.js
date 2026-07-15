@@ -7,7 +7,7 @@
 
   window.__mvUseGalaxyHome = true;
 
-  var VER = "20260715galaxy11";
+  var VER = "20260715galaxy12";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   var ENABLED = true;
@@ -74,13 +74,9 @@
 
   function navigateLocalChapter(go) {
     go = go || "home";
+    /* Prefer real site menu — never fall through to Galaxy chrome [data-go] */
     if (window.WeltenSiteIA && typeof window.WeltenSiteIA.navigateToChapter === "function") {
       window.WeltenSiteIA.navigateToChapter(go);
-      return true;
-    }
-    var step = document.querySelector('.experience-step[data-go="' + go + '"]');
-    if (step) {
-      step.click();
       return true;
     }
     var link = document.querySelector('.menu-links a[data-go="' + go + '"]');
@@ -88,7 +84,44 @@
       link.click();
       return true;
     }
+    var step = document.querySelector('.experience-step[data-go="' + go + '"]');
+    if (step) {
+      step.click();
+      return true;
+    }
     return false;
+  }
+
+  function beginOutboundLeave() {
+    try {
+      document.documentElement.classList.add("mv-galaxy-outbound");
+      document.body.classList.add("mv-galaxy-outbound");
+    } catch (eOut) {}
+    setGalaxyIframePaused(true);
+    var chrome = document.getElementById("alGalaxyHomeChrome");
+    if (chrome) {
+      chrome.style.visibility = "hidden";
+      chrome.style.opacity = "0";
+      chrome.style.pointerEvents = "none";
+    }
+    try {
+      if (typeof window.__mvStopIframeWorldBgm === "function") {
+        window.__mvStopIframeWorldBgm();
+      }
+    } catch (eBgm) {}
+  }
+
+  function endOutboundLeave() {
+    try {
+      document.documentElement.classList.remove("mv-galaxy-outbound");
+      document.body.classList.remove("mv-galaxy-outbound");
+    } catch (eEnd) {}
+    var chrome = document.getElementById("alGalaxyHomeChrome");
+    if (chrome) {
+      chrome.style.visibility = "";
+      chrome.style.opacity = "";
+      chrome.style.pointerEvents = "";
+    }
   }
 
   function syncChapterNav() {
@@ -192,6 +225,8 @@
       var base = world === "multiversum" || world === "general" ? "" : "/" + world;
       href = (base + (CHAPTER_PATH[go] || "")) || "/";
     }
+    /* Immediately hide Multiversum chrome/Galaxy before shell cover — no MV bleed */
+    beginOutboundLeave();
     try {
       if (window.parent && window.parent !== window) {
         window.parent.postMessage(
@@ -224,6 +259,19 @@
     var href = e.data.href || "";
 
     if (world === "multiversum" || world === "general") {
+      /* Subpage inside Multiversum: hide Galaxy Walk first, then jump to chapter */
+      if (go && go !== "home") {
+        setGalaxyIframePaused(true);
+        var homeChrome = document.getElementById("alGalaxyHomeChrome");
+        if (homeChrome) {
+          homeChrome.style.visibility = "hidden";
+          homeChrome.style.opacity = "0";
+          homeChrome.style.pointerEvents = "none";
+        }
+      } else {
+        endOutboundLeave();
+        setGalaxyIframePaused(false);
+      }
       navigateLocalChapter(go);
       try {
         if (window.parent && window.parent !== window) {
@@ -284,10 +332,11 @@
     if (!e || !e.data || !e.data.type) return;
     var t = e.data.type;
     if (t === "portfolio-world-pause" || t === "mv-stop-iframe-bgm" || t === "portfolio-cleanup-transition") {
-      setGalaxyIframePaused(true);
+      beginOutboundLeave();
       return;
     }
     if (t === "portfolio-world-enter" || t === "portfolio-world-reveal") {
+      endOutboundLeave();
       if (isMultiversum() && isHomeActive()) setGalaxyIframePaused(false);
     }
   }

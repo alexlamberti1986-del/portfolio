@@ -54,6 +54,8 @@
   var fxBtn = document.getElementById("mv4-fx");
   var sharedChapter = "home";
   var switching = false;
+  var pendingSwitchTarget = -1;
+  var switchGeneration = 0;
   var effectsOn = true;
   var currentLang = "de";
   var routeBootUntil = 0;
@@ -315,18 +317,57 @@
     return bar;
   }
 
-  function purgeSwitchOverlays() {
+  function purgeSwitchOverlays(keepLock) {
     document.querySelectorAll(".welten-world-switch").forEach(function (el) {
       try {
         el.remove();
       } catch (e) {}
     });
-    document.documentElement.classList.remove("welten-world-switch-lock");
+    if (!keepLock) {
+      document.documentElement.classList.remove("welten-world-switch-lock");
+    }
+  }
+
+  function clearInlineFrameHide(f) {
+    if (!f || !f.style) return;
+    try {
+      f.style.removeProperty("opacity");
+      f.style.removeProperty("visibility");
+      f.style.removeProperty("pointer-events");
+      f.style.removeProperty("clip-path");
+      f.style.removeProperty("z-index");
+    } catch (eClear) {}
+  }
+
+  /* Inline hard-hide: warm Multiversum iframe can still composite under contested CSS lock. */
+  function hardHideFrame(f) {
+    if (!f) return;
+    f.classList.remove("is-active");
+    f.classList.add("is-leaving", "is-paused");
+    f.style.pointerEvents = "none";
+    f.setAttribute("aria-hidden", "true");
+    try {
+      f.style.setProperty("opacity", "0", "important");
+      f.style.setProperty("visibility", "hidden", "important");
+      f.style.setProperty("pointer-events", "none", "important");
+      f.style.setProperty("clip-path", "inset(100%)", "important");
+      f.style.setProperty("z-index", "0", "important");
+    } catch (eHide) {}
+  }
+
+  function hardShowFrame(f) {
+    if (!f) return;
+    f.classList.add("is-active");
+    f.classList.remove("is-leaving", "is-paused");
+    f.style.pointerEvents = "auto";
+    f.removeAttribute("aria-hidden");
+    clearInlineFrameHide(f);
   }
 
   function clearSwitchLock() {
-    purgeSwitchOverlays();
+    purgeSwitchOverlays(false);
     switchLockSince = 0;
+    pendingSwitchTarget = -1;
     if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
       window.WeltenWorldSwitchPreview.abort(true);
     }
@@ -338,10 +379,13 @@
     var locked = document.documentElement.classList.contains("welten-world-switch-lock");
     var staleOverlay = document.querySelector(".welten-world-switch.is-entering, .welten-world-switch.is-exiting");
     if (staleOverlay && !locked && !switching) {
-      purgeSwitchOverlays();
+      purgeSwitchOverlays(false);
     }
+    /* Preview/abort may drop lock while switch still runs — re-lock, never bare unlock
+       (that left Multiversum able to paint with no cover). */
     if (switching && !locked) {
-      unlockShell();
+      document.documentElement.classList.add("welten-world-switch-lock");
+      switchLockSince = switchLockSince || Date.now();
       return;
     }
     if (switching && locked && switchLockSince && Date.now() - switchLockSince > 9000) {
@@ -915,25 +959,30 @@
   function applyActive(i) {
     frames.forEach(function (f, j) {
       var on = j === i;
-      f.classList.toggle("is-active", on);
       if (on) {
-        f.classList.remove("is-leaving", "is-paused");
-        f.style.pointerEvents = "auto";
-        f.removeAttribute("data-mv-world-live");
-        /* Während eines animierten Wechsels (switching===true) NICHT enter/
-           Kapitel/Profile senden — das würde Multiversum-Header/Hero mitten im
-           Cover booten lassen. Das passiert erst in finishTransition() nach
-           dem Unlock (Overlay bereits weg). */
-        if (!switching) {
+        if (switching) {
+          /* Under cover: mark target ready but keep hard-hidden until finishTransition
+             removes the lock — no Multiversum peek, no mid-cover enter. */
+          f.classList.add("is-active");
+          f.classList.remove("is-leaving");
+          f.classList.add("is-paused");
+          f.style.pointerEvents = "none";
+          f.setAttribute("aria-hidden", "true");
+          try {
+            f.style.setProperty("opacity", "0", "important");
+            f.style.setProperty("visibility", "hidden", "important");
+            f.style.setProperty("clip-path", "inset(100%)", "important");
+          } catch (eKeepCover) {}
+        } else {
+          hardShowFrame(f);
+          f.removeAttribute("data-mv-world-live");
           postFrame(f, { type: "portfolio-world-enter", world: soundKey(j) });
           applyChapter(f, sharedChapter);
           if (frameIsReady(f)) injectProfiles(f, j);
           else f.addEventListener("load", function () { injectProfiles(f, j); }, { once: true });
         }
       } else {
-        f.classList.add("is-paused");
-        f.classList.remove("is-leaving");
-        f.style.pointerEvents = "none";
+        hardHideFrame(f);
         postFrame(f, { type: "portfolio-world-pause", paused: true });
         postFrame(f, { type: "portfolio-cleanup-transition" });
         postFrame(f, { type: "mv-stop-iframe-bgm" });
@@ -1021,7 +1070,9 @@
         if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
           window.WeltenWorldSwitchPreview.abort(true);
         }
-        purgeSwitchOverlays();
+        /* Keep CSS lock while aborting — avoid Multiversum peek between abort and new cover */
+        purgeSwitchOverlays(true);
+        document.documentElement.classList.add("welten-world-switch-lock");
       } else {
         unlockShell();
       }
@@ -1038,6 +1089,10 @@
       return;
     }
 
+    switchGeneration += 1;
+    var myGen = switchGeneration;
+    pendingSwitchTarget = i;
+
     /* AudioContext nur unlocken — keine Welt-BGM hier (sonst Multiversum-Bleed). */
     resumeAudio();
     lockShell(masterKey(i));
@@ -1045,13 +1100,11 @@
        Verhindert Multiversum-Bar/Theme-Bleed während der Transition. */
     setMaster(i);
     setGlobalMenuExpanded(false);
-    /* Sofort ALLE Nicht-Ziel-Frames ausblenden/pausieren — kein Multiversum-Flash,
+    /* Sofort ALLE Nicht-Ziel-Frames hart ausblenden/pausieren — kein Multiversum-Flash,
        kein BGM-Bleed. Multiversum (0) NICHT blanken (Galaxy Walk sonst ~20s neu). */
     frames.forEach(function (f, j) {
       if (!f || j === i) return;
-      f.classList.remove("is-active");
-      f.classList.add("is-leaving", "is-paused");
-      f.style.pointerEvents = "none";
+      hardHideFrame(f);
       postFrame(f, { type: "portfolio-world-pause", paused: true });
       postFrame(f, { type: "portfolio-cleanup-transition" });
       postFrame(f, { type: "mv-stop-iframe-bgm" });
@@ -1064,6 +1117,7 @@
     });
     /* Extra hard-stop Multiversum-Audio (Frame 0) */
     if (i !== 0 && frames[0]) {
+      hardHideFrame(frames[0]);
       try {
         var mvWin = frames[0].contentWindow;
         if (mvWin && typeof mvWin.__mvStopIframeWorldBgm === "function") {
@@ -1081,61 +1135,87 @@
     var wKey = worldSwitchKey(i);
     var transitionDone = false;
 
-    function finishTransition() {
-      if (transitionDone) return;
-      transitionDone = true;
-      window.__wwsOnTransitionEnd = null;
-      /* Zuerst Frames isolieren — erst dann Lock/Overlay weg (kein Zwischen-Flash) */
+    function revealTargetAfterLock() {
+      if (myGen !== switchGeneration) return;
+      /* Confirm Multiversum (and peers) stay non-active before lock drops */
       frames.forEach(function (f, j) {
         if (!f) return;
         if (j === i) {
-          f.classList.add("is-active");
-          f.classList.remove("is-leaving", "is-paused");
-          f.style.pointerEvents = "auto";
+          hardShowFrame(f);
         } else {
-          f.classList.remove("is-active");
-          f.classList.add("is-paused");
+          hardHideFrame(f);
           f.classList.remove("is-leaving");
-          f.style.pointerEvents = "none";
+          f.classList.add("is-paused");
           postFrame(f, { type: "portfolio-world-pause", paused: true });
           postFrame(f, { type: "mv-stop-iframe-bgm" });
         }
       });
+      if (i !== 0 && frames[0] && frames[0].classList.contains("is-active")) {
+        hardHideFrame(frames[0]);
+      }
+      pendingSwitchTarget = -1;
       unlockShell();
       forceEnableWorldButtons();
-      purgeSwitchOverlays();
-      document.documentElement.classList.remove("welten-world-switch-lock");
-      switchLockSince = 0;
-      try {
-        document.dispatchEvent(
-          new CustomEvent("welten-audio-switch-end", { detail: { world: masterKey(i) } })
-        );
-      } catch (eAudioEnd) {}
-      /* Erst jetzt (Overlay weg, switching===false) enter/Kapitel/Profile für
-         die Zielwelt senden — applyActive() hat das während des Wechsels
-         bewusst unterdrückt, damit Header/Hero nicht mitten im Cover booten. */
-      var fActive = frames[i];
-      if (fActive) {
-        fActive.removeAttribute("data-mv-world-live");
-        postFrame(fActive, { type: "portfolio-world-enter", world: soundKey(i) });
-        applyChapter(fActive, sharedChapter);
-        if (frameIsReady(fActive)) injectProfiles(fActive, i);
-        else fActive.addEventListener("load", function () { injectProfiles(fActive, i); }, { once: true });
-      }
-      revealActiveFrame(i);
-      try {
-        var fReveal = frames[i];
-        if (fReveal) {
-          setTimeout(function () {
-            postFrame(fReveal, { type: "portfolio-world-reveal", world: soundKey(i) });
-          }, 80);
-        }
-      } catch (eReveal) {}
-      requestAnimationFrame(setBarHeight);
+      purgeSwitchOverlays(true);
+      /* Double-rAF: paint target under lock, then drop lock (no Multiversum peek) */
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (myGen !== switchGeneration) return;
+          if (i !== 0 && frames[0]) hardHideFrame(frames[0]);
+          if (frames[i]) hardShowFrame(frames[i]);
+          document.documentElement.classList.remove("welten-world-switch-lock");
+          switchLockSince = 0;
+          purgeSwitchOverlays(false);
+          try {
+            document.dispatchEvent(
+              new CustomEvent("welten-audio-switch-end", { detail: { world: masterKey(i) } })
+            );
+          } catch (eAudioEnd) {}
+          var fActive = frames[i];
+          if (fActive) {
+            fActive.removeAttribute("data-mv-world-live");
+            postFrame(fActive, { type: "portfolio-world-enter", world: soundKey(i) });
+            applyChapter(fActive, sharedChapter);
+            if (frameIsReady(fActive)) injectProfiles(fActive, i);
+            else
+              fActive.addEventListener(
+                "load",
+                function () {
+                  injectProfiles(fActive, i);
+                },
+                { once: true }
+              );
+          }
+          revealActiveFrame(i);
+          try {
+            var fReveal = frames[i];
+            if (fReveal) {
+              setTimeout(function () {
+                postFrame(fReveal, { type: "portfolio-world-reveal", world: soundKey(i) });
+              }, 80);
+            }
+          } catch (eReveal) {}
+          requestAnimationFrame(setBarHeight);
+          if (opts.afterReveal && typeof opts.afterReveal === "function") {
+            try {
+              opts.afterReveal();
+            } catch (eAfter) {}
+          }
+        });
+      });
+    }
+
+    function finishTransition() {
+      if (transitionDone) return;
+      if (myGen !== switchGeneration) return;
+      transitionDone = true;
+      window.__wwsOnTransitionEnd = null;
+      revealTargetAfterLock();
     }
 
     if (!effectsOn) {
-      purgeSwitchOverlays();
+      purgeSwitchOverlays(true);
+      document.documentElement.classList.add("welten-world-switch-lock");
       if (window.WeltenWorldSwitchPreview && typeof window.WeltenWorldSwitchPreview.abort === "function") {
         window.WeltenWorldSwitchPreview.abort(true);
       }
@@ -1163,6 +1243,7 @@
             timing.EXIT_MS +
             900;
         setTimeout(function () {
+          if (myGen !== switchGeneration) return;
           if (switching) finishTransition();
         }, safetyMs);
         return;
@@ -1299,14 +1380,25 @@
     return true;
   }
 
-  function postScrollToActiveFrame(targetHash, goChapter) {
+  function postScrollToActiveFrame(targetHash, goChapter, targetIdx) {
     if (!targetHash && !goChapter) return;
     var tries = 0;
     function send() {
       tries += 1;
-      var activeFrame = document.querySelector(".mv4-frame.is-active");
-      if (!activeFrame || !activeFrame.contentWindow) {
-        if (tries < 12) setTimeout(send, 120);
+      if (switching || document.documentElement.classList.contains("welten-world-switch-lock")) {
+        if (tries < 40) setTimeout(send, 120);
+        return;
+      }
+      var activeFrame =
+        typeof targetIdx === "number" && frames[targetIdx]
+          ? frames[targetIdx]
+          : document.querySelector(".mv4-frame.is-active");
+      if (!activeFrame || !activeFrame.classList.contains("is-active") || !activeFrame.contentWindow) {
+        if (tries < 24) setTimeout(send, 120);
+        return;
+      }
+      if (typeof targetIdx === "number" && activeIdx() !== targetIdx) {
+        if (tries < 24) setTimeout(send, 120);
         return;
       }
       if (goChapter && CHAPTERS.indexOf(goChapter) >= 0) {
@@ -1320,7 +1412,6 @@
         },
         "*"
       );
-      /* Nochmal nach Transition/Load nachschieben */
       if (tries < 4) setTimeout(send, 280 * tries);
     }
     setTimeout(send, 160);
@@ -1341,10 +1432,16 @@
           typeof e.data.go === "string" && CHAPTERS.indexOf(e.data.go) >= 0 ? e.data.go : "home";
         sharedChapter = goChapter;
         if (frameNeedsReset(frames[idx], idx)) resetFrame(idx);
-        /* Kapitel bewusst behalten — sonst überschreibt switchTo mit Home der Quellwelt */
-        switchTo(idx, { preserveChapter: true });
+        var targetHash = e.data.targetHash || "";
+        /* Kapitel bewusst behalten — sonst überschreibt switchTo mit Home der Quellwelt.
+           Scroll/Kapitel erst nach Reveal (kein Multiversum mid-switch applyChapter). */
+        switchTo(idx, {
+          preserveChapter: true,
+          afterReveal: function () {
+            postScrollToActiveFrame(targetHash, goChapter, idx);
+          },
+        });
         if (isLiveShell) syncShellUrl(idx, sharedChapter, "push");
-        postScrollToActiveFrame(e.data.targetHash, goChapter);
         return;
       }
       if (e.data.href && typeof e.data.href === "string") {
@@ -1354,6 +1451,14 @@
     }
     if (e.data.type === "portfolio-chapter" && typeof e.data.chapter === "string") {
       if (!isOurFrame(e.source)) return;
+      /* Während Weltwechsel keine Chapter-URL auf Multiversum (Default 0) mappen */
+      if (
+        switching ||
+        document.documentElement.classList.contains("welten-world-switch-lock") ||
+        pendingSwitchTarget >= 0
+      ) {
+        return;
+      }
       if (CHAPTERS.indexOf(e.data.chapter) >= 0) {
         /* Während Early-Boot keine URL von iframe-home überschreiben lassen */
         if (routeBootActive()) {
@@ -1363,12 +1468,15 @@
         sharedChapter = e.data.chapter;
         var worldIdx = activeIdx();
         if (worldIdx < 0) {
-          if (switching) return;
           worldIdx = defaultWorld;
         }
         if (typeof e.data.world === "string" && Router) {
           var mapped = Router.worldIdxFromKey(e.data.world);
-          if (typeof mapped === "number") worldIdx = mapped;
+          if (typeof mapped === "number" && mapped >= 0) worldIdx = mapped;
+        }
+        /* Nur aktive Welt akzeptieren — kein Cross-World chapter bleed */
+        if (worldIdx !== activeIdx() && activeIdx() >= 0) {
+          worldIdx = activeIdx();
         }
         syncShellUrl(worldIdx, e.data.chapter, "push");
       }

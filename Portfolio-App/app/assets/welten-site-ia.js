@@ -81,8 +81,20 @@
       link.click();
       return true;
     }
-    var btn = document.querySelector('[data-go="' + id + '"]');
-    if (btn) {
+    var step = document.querySelector('.experience-step[data-go="' + id + '"]');
+    if (step) {
+      step.click();
+      return true;
+    }
+    /* Avoid Galaxy home chrome [data-go] — that can remount Multiversum UI mid-nav */
+    var btn = document.querySelector(
+      '.mv-static-hero__nav-btn[data-go="' +
+        id +
+        '"], #alGalaxyChapterNav [data-go="' +
+        id +
+        '"]'
+    );
+    if (btn && document.body.getAttribute("data-current-slide") === "home" && id === "home") {
       btn.click();
       return true;
     }

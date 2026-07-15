@@ -262,3 +262,14 @@ html body[data-welten-galaxy-hero="1"] #slide-home .slide-inner--home {
     max-height: min(1100px, 82svh) !important;
   }
 }
+
+/* Outbound leave (Galaxy → andere Welt / Kapitel): sofort weg, bevor Shell-Cover */
+html.mv-galaxy-outbound #alGalaxyGangHero,
+html.mv-galaxy-outbound #alGalaxyHomeChrome,
+body.mv-galaxy-outbound #alGalaxyGangHero,
+body.mv-galaxy-outbound #alGalaxyHomeChrome,
+#alGalaxyGangHero.is-world-paused {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
