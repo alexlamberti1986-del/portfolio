@@ -725,15 +725,26 @@
           return p.trim();
         })
         .filter(Boolean);
+      if (spans.length < 3 && parts.length >= 3) {
+        staticTag.innerHTML =
+          '<span class="mv-tag-blue"></span> <span class="mv-tag-white"></span> <span class="mv-tag-warm"></span>';
+        spans = staticTag.querySelectorAll("span");
+      }
       if (spans.length >= 3 && parts.length >= 3) {
         spans[0].textContent = parts[0] + ".";
         spans[1].textContent = parts[1] + ".";
         spans[2].textContent = parts[2] + (/\.$/.test(h.tag) || parts[2].indexOf("!") < 0 ? "." : "");
+        spans[0].className = "mv-tag-blue";
+        spans[1].className = "mv-tag-white";
+        spans[2].className = "mv-tag-warm";
       } else if (spans.length >= 3) {
         /* Spans behalten (Gradient), Text nicht plattwerfen */
         return;
       } else {
-        staticTag.textContent = h.tag;
+        staticTag.innerHTML =
+          '<span class="mv-tag-blue">' +
+          String(h.tag).replace(/</g, "&lt;") +
+          "</span>";
       }
     });
     var eyebrow = doc.querySelector(".mv-static-hero__eyebrow");
@@ -862,7 +873,6 @@
     }
     applyNav(doc, lang);
     applyAria(doc, lang);
-    applyHome(doc, world, lang);
     if (slides) {
       applySlide(doc, "slide-about", slides.about);
       applySlide(doc, "slide-leistungen", slides.leistungen);
@@ -872,12 +882,17 @@
     applyAboutExtra(doc, world, lang);
     applyParallax(doc, lang);
     doc.querySelectorAll("[data-i18n]").forEach(function (el) {
+      /* Gradient-Tagline: Spans behalten — applyHome setzt den Text danach */
+      if (el.classList && el.classList.contains("mv-static-hero__tag")) return;
+      if (el.querySelector && el.querySelector(".mv-tag-blue, .mv-tag-white, .mv-tag-warm")) return;
       var key = el.getAttribute("data-i18n");
       var parts = key.split(".");
       var val = SLIDES[world] && SLIDES[world][lang];
       for (var i = 0; i < parts.length && val; i++) val = val[parts[i]];
       if (typeof val === "string") el.textContent = val;
     });
+    /* Nach data-i18n: Tagline-Spans mit Verlauf setzen (nicht plattwerfen) */
+    applyHome(doc, world, lang);
   }
 
   root.WeltenPreviewI18n = {
