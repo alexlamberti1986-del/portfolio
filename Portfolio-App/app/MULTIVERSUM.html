@@ -43,6 +43,22 @@
         pointer-events: auto !important;
       }
     }
+    /* Shell: Parent entscheidet — Iframe oft < 640px hoch */
+    @media (min-width: 1025px) {
+      html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero,
+      html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero,
+      html.welten-live-shell body[data-world="general"] #alGalaxyGangHero.is-galaxy-live,
+      html.mv-in-shell body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: clamp(480px, 62svh, 920px) !important;
+        min-height: clamp(480px, 62svh, 920px) !important;
+        max-height: min(920px, 78svh) !important;
+        overflow: hidden !important;
+        pointer-events: auto !important;
+      }
+    }
   </style>
 <!--
   Alex Lamberti  Portfolio-Experience (eine Datei, keine Pflicht-Bibliotheken)
@@ -307,12 +323,12 @@
         "?v=20260714mvBoot1"
     };
   </script>
-  <script src="assets/welten-live-shell-early.js?v=20260716mvBleed9"></script>
-  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260716mvBleed9" />
+  <script src="assets/welten-live-shell-early.js?v=20260716mvBleed10"></script>
+  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260716mvBleed10" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script>window.__mvUseGalaxyHome=!!(window.matchMedia&&window.matchMedia('(min-width:1025px) and (min-height:640px)').matches);</script>
-<script src="assets/welten-galaxy-gang-hero.js?v=20260716galaxy21" defer></script>
+<script src="assets/welten-galaxy-gang-hero.js?v=20260716galaxy22" defer></script>
 <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260715galaxy3" defer></script>
   <script src="assets/welten-multiversum-world.js?v=20260715galaxy3" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
@@ -5607,7 +5623,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
             title="Alex Lamberti Galaxy Gang"
             loading="eager"
             allow="fullscreen"
-            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260716galaxy21"
+            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260716galaxy22"
           ></iframe>
         </section>
         <!-- Kapitel-Nav UNTERHALB Galaxy — gleiche Struktur wie Multiversum-Unterseiten -->
@@ -5626,14 +5642,24 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
         </div>
         <script>
           try {
-            var mqGal = window.matchMedia && window.matchMedia("(min-width:1025px) and (min-height:640px)");
-            window.__mvUseGalaxyHome = !!(mqGal && mqGal.matches);
+            var useGal = false;
+            try {
+              if (window.parent && window.parent !== window) {
+                useGal = (window.parent.innerWidth || 0) >= 1025 && (window.parent.innerHeight || 0) >= 640;
+              } else {
+                var mqGal = window.matchMedia && window.matchMedia("(min-width:1025px) and (min-height:640px)");
+                useGal = !!(mqGal && mqGal.matches);
+              }
+            } catch (eMq) {
+              useGal = window.innerWidth >= 1025 && window.innerHeight >= 640;
+            }
+            window.__mvUseGalaxyHome = !!useGal;
             if (window.__mvUseGalaxyHome) {
               document.body && document.body.setAttribute("data-welten-galaxy-hero", "1");
               var sec = document.getElementById("alGalaxyGangHero");
               var chrome = document.getElementById("alGalaxyHomeChrome");
               var galFrame = document.getElementById("alGalaxyGangFrame");
-              if (sec) { sec.removeAttribute("hidden"); sec.classList.add("is-galaxy-live"); }
+              if (sec) { sec.removeAttribute("hidden"); sec.classList.add("is-galaxy-live", "is-ready"); }
               if (chrome) chrome.removeAttribute("hidden");
               if (galFrame) {
                 var gSrc = galFrame.getAttribute("data-src");
@@ -5642,7 +5668,6 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
                   galFrame.setAttribute("src", gSrc);
                 }
               }
-              if (sec) sec.classList.add("is-ready");
               try {
                 if (window.parent && window.parent !== window && !window.__mvHeroReadySent) {
                   window.__mvHeroReadySent = true;
@@ -8941,7 +8966,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-desktop-chapter-hero.js?v=20260716galaxy15" defer></script>
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260716galaxy21" />
+<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260716galaxy22" />
 <link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714xlHero1" />
 <script src="assets/welten-video-hero-boot.js?v=20260715phase4" defer></script>
 

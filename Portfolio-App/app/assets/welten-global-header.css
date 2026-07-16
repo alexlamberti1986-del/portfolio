@@ -284,59 +284,16 @@ body[data-master-world="freiraum"] .mv4-menu-btn:hover {
   box-shadow: 0 12px 28px rgba(255, 111, 174, 0.16);
 }
 
-/* Mobile: brand + menu row 1; meta compact row 2 */
+/* Mobile: brand row 1; E-Mail + Tel getrennt in row 2 (kein Overlap) */
 @media (max-width: 720px) {
   .mv4-global-header__inner {
+    position: relative;
     flex-wrap: wrap;
     align-items: flex-start;
     gap: 6px 10px;
     padding-top: calc(8px + env(safe-area-inset-top, 0px));
     padding-bottom: 8px;
-  }
-
-  .mv4-global-header__left {
-    flex: 1 1 auto;
-    min-width: 0;
-    order: 1;
-  }
-
-  .mv4-brand {
-    order: 0;
-  }
-
-  .mv4-menu-btn {
-    order: 2;
-    margin-left: auto;
-  }
-
-  .mv4-meta {
-    flex: 1 1 100%;
-    font-size: 0.72rem;
-    letter-spacing: -0.02em;
-    opacity: 0.88;
-    min-height: 32px;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .mv4-global-header__left {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    column-gap: 8px;
-    row-gap: 2px;
-    width: 100%;
-  }
-
-  .mv4-brand {
-    grid-column: 1;
-    grid-row: 1;
-    align-self: center;
-  }
-
-  .mv4-meta {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    padding-right: 88px;
   }
 
   .mv4-global-header__inner > .mv4-menu-btn {
@@ -345,9 +302,66 @@ body[data-master-world="freiraum"] .mv4-menu-btn:hover {
     right: max(10px, env(safe-area-inset-right, 0px));
   }
 
-  .mv4-global-header__inner {
-    position: relative;
-    padding-right: 88px;
+  .mv4-global-header__left {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    row-gap: 4px;
+    width: 100%;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .mv4-brand {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    align-self: center;
+  }
+
+  .mv4-meta {
+    font-size: 0.72rem;
+    letter-spacing: -0.02em;
+    opacity: 0.88;
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    max-width: 100%;
+    flex: 0 1 auto;
+  }
+
+  .mv4-meta[href^="mailto:"] {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .mv4-meta[href^="tel:"] {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 420px) {
+  .mv4-global-header__left {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .mv4-meta[href^="mailto:"],
+  .mv4-meta[href^="tel:"] {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .mv4-meta[href^="mailto:"] {
+    grid-row: 2;
+  }
+
+  .mv4-meta[href^="tel:"] {
+    grid-row: 3;
   }
 }
 

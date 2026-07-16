@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260716galaxy21";
+  var VER = "20260716galaxy22";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
@@ -29,10 +29,22 @@
 
   function isGalaxyViewport() {
     try {
+      /* Im Live-Shell ist das Iframe bereits um den Header gekürzt —
+         Parent-Viewport entscheiden, sonst scheitert min-height:640 oft. */
+      if (window.parent && window.parent !== window) {
+        var pw = window.parent.innerWidth || 0;
+        var ph = window.parent.innerHeight || 0;
+        if (pw >= 1025 && ph >= 640) return true;
+        if (pw > 0 && ph > 0) return false;
+      }
       if (mqGalaxy) return !!mqGalaxy.matches;
       return window.innerWidth >= 1025 && window.innerHeight >= 640;
     } catch (e) {
-      return false;
+      try {
+        return window.innerWidth >= 1025 && window.innerHeight >= 640;
+      } catch (e2) {
+        return false;
+      }
     }
   }
 
