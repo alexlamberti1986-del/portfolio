@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de-CH">
 <head>
   <meta charset="UTF-8" />
@@ -29,6 +29,19 @@
       clip: rect(0, 0, 0, 0) !important;
       position: absolute !important;
       width: 1px !important;
+    }
+    @media (min-width: 1025px) and (min-height: 640px) {
+      html body[data-world="general"] #alGalaxyGangHero.is-galaxy-live,
+      html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        height: clamp(520px, 68svh, 920px) !important;
+        min-height: clamp(520px, 68svh, 920px) !important;
+        max-height: min(920px, 78svh) !important;
+        overflow: hidden !important;
+        pointer-events: auto !important;
+      }
     }
   </style>
 <!--
@@ -279,7 +292,7 @@
       if (!effectsAllowed) stopLocalBgm();
     })();
   </script>
-  <style id="mv-boot-critical">html,body{background:#02030b!important}body[data-world="general"] .bg-root,body[data-world="general"] .bg-grid,body[data-world="general"] .light-beams,body[data-world="general"] #particle-canvas,body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #alGalaxyGangHero,body[data-world="general"] #alGalaxyHomeChrome{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;min-height:0!important;max-height:0!important;overflow:hidden!important}@media (min-width:1025px) and (min-height:640px){body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero,body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero.is-boot-painted,body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero.is-boot-painted[data-active-world="multiversum"],body[data-world="general"][data-welten-galaxy-hero="1"] #mvStaticHero,body[data-world="general"][data-welten-galaxy-hero="1"] #dnaStage,body[data-world="general"][data-welten-galaxy-hero="1"] .home-hero-experience,body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;min-height:0!important;overflow:hidden!important}body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:40!important;width:100%!important;height:auto!important;min-height:clamp(520px,68svh,920px)!important;max-height:min(920px,78svh)!important}body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome{display:block!important;visibility:visible!important;opacity:1!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;pointer-events:auto!important}body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home .home-main-block{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;height:auto!important;overflow:visible!important}body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home.slide{overflow-y:auto!important}}body[data-world="general"]:not([data-welten-galaxy-hero="1"]) #mvParallaxHero.is-boot-painted[data-active-world="multiversum"]{display:block!important;visibility:visible!important;opacity:1!important}body[data-world="general"] #mvParallaxHero .world-zone--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero [data-bg="nexora"],body[data-world="general"] #mvParallaxHero [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero [data-particle-field="nexora"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .world-zone--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-bg="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-particle-field="nexora"]{display:revert!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}@media (min-width:1024px){body[data-world="general"] #mvStaticHero{display:none!important}html.mv-in-shell #mvStaticHero,html.welten-live-shell #mvStaticHero{display:none!important;visibility:hidden!important}}html.mv-in-shell .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero__eyebrow,html.mv-in-shell .mv-static-hero__title,html.mv-in-shell .al-world-video-hero__title,html.welten-live-shell .mv-static-hero__eyebrow,html.welten-live-shell .al-world-video-hero__eyebrow,html.welten-live-shell .mv-static-hero__title,html.welten-live-shell .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;pointer-events:none!important}</style>
+  <style id="mv-boot-critical">html,body{background:#02030b!important}body[data-world="general"] .bg-root,body[data-world="general"] .bg-grid,body[data-world="general"] .light-beams,body[data-world="general"] #particle-canvas,body[data-world="general"] #dnaStage,body[data-world="general"] .home-hero-experience{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #alGalaxyGangHero:not(.is-galaxy-live),body[data-world="general"] #alGalaxyHomeChrome[hidden]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;min-height:0!important;max-height:0!important;overflow:hidden!important}@media (min-width:1025px) and (min-height:640px){body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero,body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero.is-boot-painted,body[data-world="general"][data-welten-galaxy-hero="1"] #mvParallaxHero.is-boot-painted[data-active-world="multiversum"],body[data-world="general"][data-welten-galaxy-hero="1"] #mvStaticHero,body[data-world="general"][data-welten-galaxy-hero="1"] #dnaStage,body[data-world="general"][data-welten-galaxy-hero="1"] .home-hero-experience,body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;height:0!important;min-height:0!important;overflow:hidden!important}body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero,body[data-world="general"] #alGalaxyGangHero.is-galaxy-live{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:40!important;width:100%!important;height:clamp(520px,68svh,920px)!important;min-height:clamp(520px,68svh,920px)!important;max-height:min(920px,78svh)!important}body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome{display:block!important;visibility:visible!important;opacity:1!important;height:auto!important;min-height:0!important;max-height:none!important;overflow:visible!important;pointer-events:auto!important}body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home .home-main-block{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;height:auto!important;overflow:visible!important}body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home.slide{overflow-y:auto!important}}body[data-world="general"]:not([data-welten-galaxy-hero="1"]) #mvParallaxHero.is-boot-painted[data-active-world="multiversum"]{display:block!important;visibility:visible!important;opacity:1!important}body[data-world="general"] #mvParallaxHero .world-zone--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero [data-bg="nexora"],body[data-world="general"] #mvParallaxHero [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero [data-particle-field="nexora"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .world-zone--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-slide--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] .mv-scroll-orb--nexora,body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-atmo="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-bg="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-deco-theme="nexora"],body[data-world="general"] #mvParallaxHero[data-active-world="nexora"] [data-particle-field="nexora"]{display:revert!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}@media (min-width:1024px){body[data-world="general"] #mvStaticHero{display:none!important}html.mv-in-shell #mvStaticHero,html.welten-live-shell #mvStaticHero{display:none!important;visibility:hidden!important}}html.mv-in-shell .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero__eyebrow,html.mv-in-shell .mv-static-hero__title,html.mv-in-shell .al-world-video-hero__title,html.welten-live-shell .mv-static-hero__eyebrow,html.welten-live-shell .al-world-video-hero__eyebrow,html.welten-live-shell .mv-static-hero__title,html.welten-live-shell .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;pointer-events:none!important}</style>
   <link rel="stylesheet" href="assets/welten-multiversum-hero-boot.css?v=20260710fix3" />
   <link rel="stylesheet" href="assets/welten-multiversum-world.css?v=20260715typeFix1" />
   <link rel="stylesheet" href="assets/welten-multiversum-parallax-hero.css?v=20260708rail-65" />
@@ -294,12 +307,12 @@
         "?v=20260714mvBoot1"
     };
   </script>
-  <script src="assets/welten-live-shell-early.js?v=20260714mvNuke1"></script>
+  <script src="assets/welten-live-shell-early.js?v=20260716mvBleed6"></script>
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260715globalHeader1" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script>window.__mvUseGalaxyHome=!!(window.matchMedia&&window.matchMedia('(min-width:1025px) and (min-height:640px)').matches);</script>
-<script src="assets/welten-galaxy-gang-hero.js?v=20260716galaxy18" defer></script>
+<script src="assets/welten-galaxy-gang-hero.js?v=20260716galaxy19" defer></script>
 <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260715galaxy3" defer></script>
   <script src="assets/welten-multiversum-world.js?v=20260715galaxy3" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
@@ -5561,7 +5574,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
             title="Alex Lamberti Galaxy Gang"
             loading="eager"
             allow="fullscreen"
-            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260716galaxy18"
+            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260716galaxy19"
           ></iframe>
         </section>
         <!-- Kapitel-Nav UNTERHALB Galaxy — gleiche Struktur wie Multiversum-Unterseiten -->
@@ -5586,8 +5599,16 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
               document.body && document.body.setAttribute("data-welten-galaxy-hero", "1");
               var sec = document.getElementById("alGalaxyGangHero");
               var chrome = document.getElementById("alGalaxyHomeChrome");
+              var galFrame = document.getElementById("alGalaxyGangFrame");
               if (sec) { sec.removeAttribute("hidden"); sec.classList.add("is-galaxy-live"); }
               if (chrome) chrome.removeAttribute("hidden");
+              if (galFrame) {
+                var gSrc = galFrame.getAttribute("data-src");
+                var gCur = galFrame.getAttribute("src") || "";
+                if (gSrc && (!gCur || /about:blank/i.test(gCur))) {
+                  galFrame.setAttribute("src", gSrc);
+                }
+              }
               try {
                 if (window.parent && window.parent !== window && !window.__mvHeroReadySent) {
                   window.__mvHeroReadySent = true;
@@ -8886,7 +8907,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-desktop-chapter-hero.js?v=20260716galaxy15" defer></script>
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260716galaxy18" />
+<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260716galaxy19" />
 <link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714xlHero1" />
 <script src="assets/welten-video-hero-boot.js?v=20260715phase4" defer></script>
 

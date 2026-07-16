@@ -474,6 +474,28 @@
     } catch (eShow) {}
   }
 
+  function forceRevealActiveFrame() {
+    document.documentElement.classList.remove("mv-shell-booting", "welten-world-switch-lock");
+    window.__worldTransitionRunning = false;
+    window.__mvInWorldSwitch = false;
+    switching = false;
+    pendingSwitchTarget = -1;
+    switchLockSince = 0;
+    purgeSwitchOverlays(false);
+    var i = masterIdx();
+    if (i < 0) i = defaultWorld;
+    frames.forEach(function (f, j) {
+      if (!f) return;
+      if (j === i) {
+        f.removeAttribute("data-mv-quarantined");
+        hardShowFrame(f);
+      } else {
+        hardHideFrame(f);
+      }
+    });
+    forceEnableWorldButtons();
+  }
+
   function clearSwitchLock() {
     purgeSwitchOverlays(false);
     switchLockSince = 0;
@@ -498,18 +520,26 @@
       switchLockSince = switchLockSince || Date.now();
       return;
     }
-    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 9000) {
+    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 1800) {
       pendingSwitchTarget = -1;
       enforceFrameExclusivity();
       purgeSwitchOverlays(false);
       unlockShell();
+      forceRevealActiveFrame();
       return;
     }
-    if (locked && !switching && switchLockSince && Date.now() - switchLockSince > 9000) {
+    if (locked && !switching && switchLockSince && Date.now() - switchLockSince > 1200) {
       pendingSwitchTarget = -1;
       enforceFrameExclusivity();
       purgeSwitchOverlays(false);
       unlockShell();
+      forceRevealActiveFrame();
+      return;
+    }
+    if (locked && !switching && !switchLockSince) {
+      purgeSwitchOverlays(false);
+      unlockShell();
+      forceRevealActiveFrame();
       return;
     }
     if (shellBar) {
@@ -1738,10 +1768,18 @@
       if (masterBoot && masterBoot !== masterKey(defaultWorld)) return;
       clearSwitchLock();
       applyShellRoute({ forceHome: true, forceWorld: false });
+      forceRevealActiveFrame();
       primeActiveFrame();
       ensureSingleChrome();
       unlockShell();
       setTimeout(ensureSingleChrome, 300);
+      setTimeout(function () {
+        if (bootGen !== switchGeneration) return;
+        if (switching || pendingSwitchTarget >= 0) return;
+        var mwLater = document.body.getAttribute("data-master-world") || "";
+        if (mwLater && mwLater !== masterKey(defaultWorld)) return;
+        forceRevealActiveFrame();
+      }, 600);
     });
     window.addEventListener("popstate", function () {
       if (suppressingHistory) return;
