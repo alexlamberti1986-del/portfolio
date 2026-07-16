@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "3";
+  var VERSION = "4";
   var FORM_SRC = "assets/preview/alx-offerte-form-v5.html";
   var FORM_CACHE = "20260715typeFix1";
   var FORM_TYPO_STYLE_ID = "welten-offerte-typo-fix";
@@ -111,11 +111,6 @@
 
   function offerteMarkup() {
     return (
-      '<div class="offerte-copy glass-card">' +
-      '<p class="chapter-label">Offerte</p>' +
-      '<h2 class="section-title">Offerte anfragen</h2>' +
-      '<p class="prose">Wählen Sie Ihre Leistungen und erhalten Sie eine klare Einschätzung zu Aufwand und Preis.</p>' +
-      "</div>" +
       '<div class="welten-leadform-wrap welten-offerte-form-wrap">' +
       '<iframe class="welten-leadform-frame" id="weltenOfferteForm" title="Offertenformular" scrolling="no" src="' +
       formFrameSrc() +
@@ -177,7 +172,7 @@
   function needsOfferteRebuild(slide) {
     if (!slide) return false;
     if (slide.dataset.weltenOfferte !== VERSION) return true;
-    if (!slide.querySelector(".offerte-copy")) return true;
+    if (slide.querySelector(".offerte-copy")) return true;
     if (!slide.querySelector(".welten-offerte-form-wrap")) return true;
     if (!slide.querySelector("#weltenOfferteForm")) return true;
     return false;

@@ -16,7 +16,7 @@
 #slide-offerte .slide-inner.offerte-layout {
   display: grid !important;
   grid-template-columns: 1fr !important;
-  gap: clamp(16px, 2.4vw, 28px) !important;
+  gap: 0 !important;
   align-items: start !important;
   align-content: start !important;
   width: 100%;
@@ -40,11 +40,6 @@
     min-height: 0 !important;
     height: auto !important;
   }
-}
-
-#slide-offerte .offerte-copy {
-  max-width: 42rem;
-  margin-bottom: 0;
 }
 
 #slide-offerte .welten-leadform-wrap,
@@ -83,13 +78,9 @@
   #slide-offerte .slide-inner.offerte-layout {
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 0 !important;
     padding: 12px 14px 12px !important;
     max-width: min(720px, calc(100vw - 20px)) !important;
-  }
-
-  #slide-offerte .offerte-copy {
-    padding: 16px !important;
   }
 
   #slide-offerte .welten-leadform-wrap,
@@ -104,7 +95,7 @@
   }
 
   #slide-offerte .slide-inner.offerte-layout {
-    gap: 10px !important;
+    gap: 0 !important;
     padding: 10px 12px 8px !important;
   }
 }

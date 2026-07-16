@@ -227,22 +227,12 @@
     });
   }
 
-  function patchOfferteTitle() {
-    var slide = document.getElementById("slide-offerte");
-    if (!slide) return;
-    var title = slide.querySelector("h2.section-title, .section-title");
-    if (title && /Offerte anfragen/i.test(title.textContent || "")) {
-      title.textContent = "Projekt besprechen";
-    }
-  }
-
   function apply() {
     patchHomeCtas();
     patchChapter("slide-leistungen", packFor("leistungen"));
     patchChapter("slide-projects", packFor("projects"));
     patchAbout();
     patchContact();
-    patchOfferteTitle();
   }
 
   if (document.readyState === "loading") {
