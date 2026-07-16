@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260716galaxy17";
+  var VER = "20260716galaxy18";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
@@ -135,6 +135,27 @@
     return false;
   }
 
+  function clearOutboundInlineStyles() {
+    var chrome = document.getElementById("alGalaxyHomeChrome");
+    if (chrome) {
+      chrome.style.removeProperty("visibility");
+      chrome.style.removeProperty("opacity");
+      chrome.style.removeProperty("pointer-events");
+      chrome.style.removeProperty("display");
+    }
+    var section = document.getElementById("alGalaxyGangHero");
+    if (section) {
+      section.style.removeProperty("visibility");
+      section.style.removeProperty("opacity");
+      section.style.removeProperty("pointer-events");
+      section.style.removeProperty("display");
+      section.style.removeProperty("height");
+      section.style.removeProperty("min-height");
+      section.style.removeProperty("max-height");
+      section.style.removeProperty("overflow");
+    }
+  }
+
   function beginOutboundLeave() {
     try {
       document.documentElement.classList.add("mv-galaxy-outbound");
@@ -168,18 +189,7 @@
       document.documentElement.classList.remove("mv-galaxy-outbound");
       document.body.classList.remove("mv-galaxy-outbound");
     } catch (eEnd) {}
-    var chrome = document.getElementById("alGalaxyHomeChrome");
-    if (chrome) {
-      chrome.style.visibility = "";
-      chrome.style.opacity = "";
-      chrome.style.pointerEvents = "";
-    }
-    var section = document.getElementById("alGalaxyGangHero");
-    if (section) {
-      section.style.visibility = "";
-      section.style.opacity = "";
-      section.style.pointerEvents = "";
-    }
+    clearOutboundInlineStyles();
   }
 
   function syncChapterNav() {
@@ -436,10 +446,12 @@
       section.classList.toggle("is-world-paused", !!paused);
       if (paused) {
         section.style.visibility = "hidden";
+        section.style.opacity = "0";
         section.style.pointerEvents = "none";
       } else if (galaxyLive && isMultiversum() && isHomeActive()) {
-        section.style.visibility = "";
-        section.style.pointerEvents = "";
+        section.style.removeProperty("visibility");
+        section.style.removeProperty("opacity");
+        section.style.removeProperty("pointer-events");
       }
     }
     if (!frame) return;
@@ -544,12 +556,22 @@
   function onShellWorldMessage(e) {
     if (!e || !e.data || !e.data.type) return;
     var t = e.data.type;
+    if (t === "mv-galaxy-hard-hide") {
+      if (parentShellAllowsMvLive() && isMultiversum() && isHomeActive()) {
+        setGalaxyIframePaused(true);
+        return;
+      }
+      beginOutboundLeave();
+      return;
+    }
     if (
       t === "portfolio-world-pause" ||
       t === "mv-stop-iframe-bgm" ||
-      t === "portfolio-cleanup-transition" ||
-      t === "mv-galaxy-hard-hide"
+      t === "portfolio-cleanup-transition"
     ) {
+      if (parentShellAllowsMvLive() && isMultiversum() && isHomeActive()) {
+        return;
+      }
       beginOutboundLeave();
       return;
     }
@@ -573,22 +595,16 @@
 
     function kick() {
       if (!galaxyLive || !isGalaxyViewport()) return;
+      if (!parentShellAllowsMvLive()) return;
       startIframeSrc(frame);
     }
 
-    function afterDocReady(cb) {
-      if (document.readyState === "complete") cb();
-      else window.addEventListener("load", cb, { once: true });
+    /* Galaxy sofort starten — kein Idle-Warten (verhindert „wird geladen“-Hänger) */
+    if (typeof requestAnimationFrame === "function") {
+      requestAnimationFrame(kick);
+    } else {
+      kick();
     }
-
-    afterDocReady(function () {
-      /* Idle = flüssiger First Paint; Fallback nach 400ms */
-      if (window.requestIdleCallback) {
-        window.requestIdleCallback(kick, { timeout: 900 });
-      } else {
-        window.setTimeout(kick, 400);
-      }
-    });
 
     frame.addEventListener(
       "load",
@@ -598,11 +614,11 @@
       },
       { once: true }
     );
-    /* Overlay schnell weg — Seite ist schon nutzbar */
+    /* Overlay nach max. 2.5s weg — Seite bleibt nutzbar */
     window.setTimeout(function () {
       if (!galaxyLive) return;
       markUiReady(section);
-    }, 1800);
+    }, 2500);
   }
 
   function ensureHero() {
@@ -627,6 +643,7 @@
     document.body.setAttribute("data-welten-galaxy-hero", "1");
     ensureChapterNav();
     revealHomeContent();
+    endOutboundLeave();
     signalReady();
 
     if (!isHomeActive()) {

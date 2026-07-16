@@ -15,7 +15,8 @@
   </script>
   <style id="mv-shell-chrome-critical">
     html.welten-live-shell .site-header,
-    html.welten-live-shell .mv4-bar {
+    html.welten-live-shell .mv4-bar,
+    html.welten-live-shell .welten-skip-link {
       display: none !important;
       visibility: hidden !important;
       height: 0 !important;
@@ -25,6 +26,9 @@
       pointer-events: none !important;
       margin: 0 !important;
       padding: 0 !important;
+      clip: rect(0, 0, 0, 0) !important;
+      position: absolute !important;
+      width: 1px !important;
     }
   </style>
 <!--
@@ -295,7 +299,7 @@
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script>window.__mvUseGalaxyHome=!!(window.matchMedia&&window.matchMedia('(min-width:1025px) and (min-height:640px)').matches);</script>
-<script src="assets/welten-galaxy-gang-hero.js?v=20260716galaxy17" defer></script>
+<script src="assets/welten-galaxy-gang-hero.js?v=20260716galaxy18" defer></script>
 <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260715galaxy3" defer></script>
   <script src="assets/welten-multiversum-world.js?v=20260715galaxy3" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
@@ -5557,7 +5561,7 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
             title="Alex Lamberti Galaxy Gang"
             loading="eager"
             allow="fullscreen"
-            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260716galaxy15"
+            src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260716galaxy18"
           ></iframe>
         </section>
         <!-- Kapitel-Nav UNTERHALB Galaxy — gleiche Struktur wie Multiversum-Unterseiten -->
@@ -5584,6 +5588,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
               var chrome = document.getElementById("alGalaxyHomeChrome");
               if (sec) { sec.removeAttribute("hidden"); sec.classList.add("is-galaxy-live"); }
               if (chrome) chrome.removeAttribute("hidden");
+              try {
+                if (window.parent && window.parent !== window && !window.__mvHeroReadySent) {
+                  window.__mvHeroReadySent = true;
+                  window.parent.postMessage({ type: "mv-hero-ready" }, "*");
+                }
+              } catch (eReadyMsg) {}
             }
             document.body && document.body.classList.add("mv-home-ready", "is-below-parallax");
           } catch (eGalFlag) {}
@@ -8876,7 +8886,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-desktop-chapter-hero.js?v=20260716galaxy15" defer></script>
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260716galaxy15" />
+<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260716galaxy18" />
 <link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714xlHero1" />
 <script src="assets/welten-video-hero-boot.js?v=20260715phase4" defer></script>
 

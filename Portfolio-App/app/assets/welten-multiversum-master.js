@@ -74,6 +74,7 @@
   var SHELL_CHROME_CSS =
     "html.welten-live-shell .mv4-bar{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}" +
     "html.welten-live-shell .site-header{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important}" +
+    "html.welten-live-shell .welten-skip-link{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}" +
     "html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;pointer-events:none!important}";
   var MENU_BRIDGE_SRC = "/assets/welten-shell-menu-bridge.js?v=20260715globalHeader1";
 
@@ -365,6 +366,31 @@
     else bar = document.querySelector(".mv4-bar");
   }
 
+  function ensureSingleChrome() {
+    ensureSingleBar();
+    var keptStack =
+      document.getElementById("mv4ShellChrome") || document.querySelector(".mv4-shell-chrome");
+    document.querySelectorAll(".mv4-shell-chrome, #mv4ShellChrome").forEach(function (stack) {
+      if (!stack || stack === keptStack) return;
+      if (stack.closest && stack.closest(".mv4-frame")) return;
+      try {
+        stack.remove();
+      } catch (eStack) {}
+    });
+    document.querySelectorAll("body > .mv4-global-header").forEach(function (hdr) {
+      if (hdr.closest && hdr.closest(".mv4-shell-chrome")) return;
+      try {
+        hdr.remove();
+      } catch (eHdr) {}
+    });
+    document.querySelectorAll("body > .mv4-bar").forEach(function (b) {
+      if (b.closest && b.closest(".mv4-shell-chrome")) return;
+      try {
+        b.remove();
+      } catch (eBar) {}
+    });
+  }
+
   function getBar() {
     if (!bar || !document.body.contains(bar)) {
       bar = document.querySelector(".mv4-bar");
@@ -609,7 +635,7 @@
         sendChapter(frames[worldIdx]);
         setTimeout(function () {
           sendChapter(frames[worldIdx]);
-          ensureSingleBar();
+          ensureSingleChrome();
         }, 180);
         if (!switching && pendingSwitchTarget < 0) unlockShell();
       });
@@ -618,7 +644,7 @@
     sendChapter(frames[worldIdx] || frames[current]);
     setTimeout(function () {
       sendChapter(frames[worldIdx] || frames[current]);
-      ensureSingleBar();
+      ensureSingleChrome();
     }, 180);
   }
 
@@ -880,7 +906,10 @@
     switching = false;
     window.__worldTransitionRunning = false;
     window.__mvInWorldSwitch = false;
-    switchLockSince = 0;
+    if (pendingSwitchTarget < 0) {
+      document.documentElement.classList.remove("welten-world-switch-lock");
+      switchLockSince = 0;
+    }
     var shellBar = getBar();
     if (shellBar) {
       shellBar.removeAttribute("aria-busy");
@@ -1043,7 +1072,7 @@
       }
       resetAttempts[j] = 0;
     } catch (e) {}
-    ensureSingleBar();
+    ensureSingleChrome();
     broadcastLang();
     postFrame(f, { type: "portfolio-effects", on: effectsOn });
     var mi = masterIdx();
@@ -1058,6 +1087,11 @@
     } else {
       if (j === 0 && f.getAttribute("data-mv-quarantined") === "1") {
         quarantineMultiversum();
+        return;
+      }
+      /* Live-Multiversum nie pausieren/hard-hide — verhindert Galaxy-Deadlock beim Boot */
+      if (j === 0 && mi === 0 && f.classList.contains("is-active") && f.getAttribute("data-mv-quarantined") !== "1") {
+        sendWorldLiveSignals(f, 0);
         return;
       }
       postFrame(f, { type: "portfolio-world-pause", paused: true });
@@ -1211,7 +1245,7 @@
         unlockShell();
       }
     }
-    ensureSingleBar();
+    ensureSingleChrome();
     if (frameNeedsReset(frames[i], i)) {
       resetFrame(i);
     }
@@ -1661,7 +1695,7 @@
     }
   });
 
-  ensureSingleBar();
+  ensureSingleChrome();
   clearSwitchLock();
   recoverStuckSwitch();
   forceEnableWorldButtons();
@@ -1683,7 +1717,7 @@
 
   setMaster(defaultWorld);
   broadcastLang();
-  ensureSingleBar();
+  ensureSingleChrome();
 
   if (isLiveShell) {
     if (!frameHasSrc(frames[defaultWorld])) {
@@ -1700,14 +1734,14 @@
       /* User may already be mid-switch to another world — never unlock/prime Multiversum */
       if (bootGen !== switchGeneration) return;
       if (switching || pendingSwitchTarget >= 0) return;
-      if (document.documentElement.classList.contains("welten-world-switch-lock")) return;
       var masterBoot = document.body.getAttribute("data-master-world") || "";
       if (masterBoot && masterBoot !== masterKey(defaultWorld)) return;
+      clearSwitchLock();
       applyShellRoute({ forceHome: true, forceWorld: false });
       primeActiveFrame();
-      ensureSingleBar();
+      ensureSingleChrome();
       unlockShell();
-      setTimeout(ensureSingleBar, 300);
+      setTimeout(ensureSingleChrome, 300);
     });
     window.addEventListener("popstate", function () {
       if (suppressingHistory) return;
