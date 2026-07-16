@@ -8,26 +8,43 @@
   var timer = 0;
   var observer = null;
 
+  function hideEl(el) {
+    if (!el) return;
+    try {
+      el.setAttribute("hidden", "");
+      el.setAttribute("aria-hidden", "true");
+      el.style.cssText =
+        "display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important;margin:0!important;padding:0!important;position:absolute!important;left:-9999px!important";
+    } catch (eHide) {}
+  }
+
   function stripIframeChrome() {
     if (done) return;
     var found = false;
     try {
+      /* site-header NUR verstecken — #openMenu muss für Scripts erhalten bleiben */
+      document.querySelectorAll(".site-header").forEach(function (el) {
+        found = true;
+        hideEl(el);
+      });
+      /* Echte Shell-Duplikate / Skip-Link entfernen */
       document
-        .querySelectorAll(".site-header, .welten-skip-link, body > .mv4-bar, body > .mv4-global-header")
+        .querySelectorAll(
+          ".welten-skip-link, body > .mv4-bar, body > .mv4-global-header, .mv4-shell-chrome, #mv4ShellChrome"
+        )
         .forEach(function (el) {
           found = true;
           try {
             el.remove();
           } catch (eRem) {
-            el.setAttribute("hidden", "");
-            el.style.cssText =
-              "display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;pointer-events:none!important";
+            hideEl(el);
           }
         });
     } catch (e2) {}
-    /* Nach erstem erfolgreichen Strip: Observer stoppen (sonst Main-Thread-Freeze) */
     if (found || document.body) {
-      var still = document.querySelector(".site-header, .welten-skip-link, body > .mv4-bar");
+      var still = document.querySelector(
+        "body > .mv4-bar, body > .mv4-global-header, .mv4-shell-chrome, #mv4ShellChrome"
+      );
       if (!still) {
         done = true;
         if (observer) {
@@ -58,7 +75,6 @@
     observer = new MutationObserver(scheduleStrip);
     observer.observe(document.documentElement, { childList: true, subtree: true });
   } catch (eObs) {}
-  /* Hard-Stop nach 3s — nie dauerhaft mutieren */
   window.setTimeout(function () {
     done = true;
     if (observer) {

@@ -115,12 +115,20 @@
           chrome.id = "mv4-shell-chrome-css-v2";
         }
         chrome.textContent = SHELL_CHROME_CSS;
-        /* Nested shell / duplicate chrome im Iframe sofort entfernen */
+        /* Nested shell entfernen; site-header nur verstecken (#openMenu behalten) */
         try {
-          d.querySelectorAll(".mv4-shell-chrome, #mv4ShellChrome, body > .mv4-global-header, body > .mv4-bar, .site-header, .welten-skip-link").forEach(function (el) {
+          d.querySelectorAll(".mv4-shell-chrome, #mv4ShellChrome, body > .mv4-global-header, body > .mv4-bar, .welten-skip-link").forEach(function (el) {
             try {
               el.remove();
             } catch (eRem) {}
+          });
+          d.querySelectorAll(".site-header").forEach(function (el) {
+            try {
+              el.setAttribute("hidden", "");
+              el.setAttribute("aria-hidden", "true");
+              el.style.cssText =
+                "display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important;position:absolute!important;left:-9999px!important";
+            } catch (eHide) {}
           });
         } catch (eStrip) {}
       }
@@ -353,7 +361,8 @@
       }
       try {
         var doc = f.contentDocument;
-        if (doc && doc.querySelector(".mv4-shell-chrome, .mv4-frame[data-lazy-src], #mv4ShellChrome")) {
+        /* Nur echte Shell-Chrome, NICHT Projekt-Previews mit data-lazy-src */
+        if (doc && doc.querySelector("body > .mv4-shell-chrome, body > #mv4ShellChrome, body > .mv4-frame[data-world]")) {
           return true;
         }
       } catch (eDoc) {}
@@ -1123,7 +1132,10 @@
         return;
       }
       try {
-        if (f.contentDocument && f.contentDocument.querySelector(".mv4-frame[data-lazy-src], #mv4ShellChrome")) {
+        if (
+          f.contentDocument &&
+          f.contentDocument.querySelector("body > .mv4-shell-chrome, body > #mv4ShellChrome, body > .mv4-frame[data-world]")
+        ) {
           resetFrame(j);
           return;
         }

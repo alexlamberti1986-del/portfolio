@@ -4536,7 +4536,7 @@ body[data-world="vertex"] .home-portrait-card,
         }, 450);
       }
 
-      openBtn.addEventListener("click", openMenu);
+      openBtn && openBtn.addEventListener("click", openMenu);
       closeBtn.addEventListener("click", closeMenu);
       menu.addEventListener("click", function (e) {
         if (e.target === menu) closeMenu();

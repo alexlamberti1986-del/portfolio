@@ -326,8 +326,8 @@
         "?v=20260714mvBoot1"
     };
   </script>
-  <script src="assets/welten-live-shell-early.js?v=20260716mvBleed11"></script>
-  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260716mvBleed11" />
+  <script src="assets/welten-live-shell-early.js?v=20260716mvBleed12"></script>
+  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260716mvBleed12" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script>window.__mvUseGalaxyHome=!!(window.matchMedia&&window.matchMedia('(min-width:1025px) and (min-height:640px)').matches);</script>
@@ -5570,13 +5570,18 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
     </button>
   </header>
   <script>
-    /* Sofort nach Parse: Iframe-Header entfernen — kein zweiter Header-Flash im Shell */
+    /* Sofort nach Parse: Iframe-Header nur verstecken — #openMenu bleibt für Scripts */
     (function () {
       try {
         if (window.parent === window) return;
         document.documentElement.classList.add("welten-live-shell", "mv-in-shell");
         var h = document.querySelector("header.site-header");
-        if (h) h.remove();
+        if (h) {
+          h.setAttribute("hidden", "");
+          h.setAttribute("aria-hidden", "true");
+          h.style.cssText =
+            "display:none!important;visibility:hidden!important;height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important;position:absolute!important;left:-9999px!important";
+        }
         var sk = document.querySelector(".welten-skip-link");
         if (sk) sk.remove();
       } catch (eHdr) {}
@@ -6480,22 +6485,24 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
       }
 
       function openMenu() {
+        if (!menu) return;
         menu.removeAttribute("hidden");
         menu.classList.add("open");
-        openBtn.setAttribute("aria-expanded", "true");
+        if (openBtn) openBtn.setAttribute("aria-expanded", "true");
       }
 
       function closeMenu() {
+        if (!menu) return;
         menu.classList.remove("open");
-        openBtn.setAttribute("aria-expanded", "false");
+        if (openBtn) openBtn.setAttribute("aria-expanded", "false");
         setTimeout(function () {
           if (!menu.classList.contains("open")) menu.setAttribute("hidden", "");
         }, 450);
       }
 
-      openBtn.addEventListener("click", openMenu);
-      closeBtn.addEventListener("click", closeMenu);
-      menu.addEventListener("click", function (e) {
+      openBtn && openBtn.addEventListener("click", openMenu);
+      closeBtn && closeBtn.addEventListener("click", closeMenu);
+      menu && menu.addEventListener("click", function (e) {
         if (e.target === menu) closeMenu();
       });
 
