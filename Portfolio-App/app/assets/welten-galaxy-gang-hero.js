@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260716galaxy15";
+  var VER = "20260716galaxy17";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
@@ -554,13 +554,17 @@
       return;
     }
     if (t === "portfolio-world-enter" || t === "portfolio-world-reveal") {
-      if (!galaxyLive || !isGalaxyViewport()) return;
+      if (!isGalaxyViewport()) return;
       if (!parentShellAllowsMvLive()) {
         beginOutboundLeave();
         return;
       }
+      sync();
       endOutboundLeave();
-      if (isMultiversum() && isHomeActive()) setGalaxyIframePaused(false);
+      if (isMultiversum() && isHomeActive()) {
+        ensureHero();
+        setGalaxyIframePaused(false);
+      }
     }
   }
 
@@ -607,6 +611,10 @@
       teardownGalaxy({ forceRestore: true });
       return;
     }
+    if (!parentShellAllowsMvLive()) {
+      beginOutboundLeave();
+      return;
+    }
 
     var section = document.getElementById("alGalaxyGangHero");
     var frame = document.getElementById("alGalaxyGangFrame");
@@ -646,6 +654,10 @@
       revealHomeContent();
       return;
     }
+    if (!parentShellAllowsMvLive()) {
+      beginOutboundLeave();
+      return;
+    }
     ensureHero();
     syncChapterNav();
     revealHomeContent();
@@ -678,9 +690,6 @@
 
     window.addEventListener("message", onGalaxyNavigate);
     window.addEventListener("message", onShellWorldMessage);
-    window.addEventListener("portfolio-world-reveal", sync);
-    window.addEventListener("portfolio-world-enter", sync);
-
     if (mqGalaxy) {
       if (typeof mqGalaxy.addEventListener === "function") {
         mqGalaxy.addEventListener("change", onViewportChange);
@@ -691,7 +700,7 @@
 
     try {
       new MutationObserver(function () {
-        if (!galaxyLive || !isGalaxyViewport()) return;
+        if (!isGalaxyViewport()) return;
         if (!parentShellAllowsMvLive()) return;
         syncChapterNav();
         if (!isHomeActive()) return;
@@ -701,6 +710,7 @@
         ) {
           return;
         }
+        sync();
         ensureChapterNav();
         revealHomeContent();
         var chrome = document.getElementById("alGalaxyHomeChrome");
