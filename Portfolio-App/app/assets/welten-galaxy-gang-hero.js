@@ -46,6 +46,9 @@
         var mw = p.document.body.getAttribute("data-master-world");
         if (mw && mw !== "general") return false;
       }
+      if (typeof p.mv4MasterFrameIndex === "function" && p.mv4MasterFrameIndex() !== 0) {
+        return false;
+      }
       if (typeof p.mv4ActiveFrameIndex === "function" && p.mv4ActiveFrameIndex() !== 0) {
         return false;
       }

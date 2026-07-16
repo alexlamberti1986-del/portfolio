@@ -211,12 +211,66 @@
     syncShellUrl(0, "home", "push");
   }
 
-  function activeIdx() {
+  function activeIdxFromClass() {
     var idx = -1;
     frames.forEach(function (f, j) {
-      if (f.classList.contains("is-active")) idx = j;
+      if (f && f.classList.contains("is-active")) idx = j;
     });
     return idx;
+  }
+
+  /* data-master-world ist die einzige Wahrheit — nicht stale is-active auf Frame 0. */
+  function masterIdx() {
+    var mw = document.body.getAttribute("data-master-world") || "";
+    var mi = WORLD_KEYS.indexOf(mw);
+    if (mi >= 0) return mi;
+    if (switching && pendingSwitchTarget >= 0) return pendingSwitchTarget;
+    return activeIdxFromClass();
+  }
+
+  function activeIdx() {
+    return masterIdx();
+  }
+
+  function canApplyWorld(i, opts) {
+    opts = opts || {};
+    if (opts.routeIntent && opts.force) return true;
+    if (switching || pendingSwitchTarget >= 0) {
+      return pendingSwitchTarget < 0 || i === pendingSwitchTarget;
+    }
+    var mw = document.body.getAttribute("data-master-world") || "";
+    var mi = WORLD_KEYS.indexOf(mw);
+    if (mi >= 0 && mi !== i) return false;
+    return true;
+  }
+
+  function enforceFrameExclusivity() {
+    if (switching && pendingSwitchTarget >= 0) {
+      frames.forEach(function (f, j) {
+        if (!f || j === pendingSwitchTarget) return;
+        hardHideFrame(f);
+        if (j === 0) {
+          postFrame(f, { type: "mv-galaxy-hard-hide" });
+          postFrame(f, { type: "mv-stop-iframe-bgm" });
+        }
+      });
+      return;
+    }
+    if (document.documentElement.classList.contains("welten-world-switch-lock")) return;
+    var mi = masterIdx();
+    if (mi < 0) return;
+    frames.forEach(function (f, j) {
+      if (!f) return;
+      if (j === mi) {
+        hardShowFrame(f);
+      } else {
+        hardHideFrame(f);
+        if (j === 0) {
+          postFrame(f, { type: "mv-galaxy-hard-hide" });
+          postFrame(f, { type: "mv-stop-iframe-bgm" });
+        }
+      }
+    });
   }
 
   function soundKey(i) {
@@ -397,11 +451,17 @@
       return;
     }
     if (switching && locked && switchLockSince && Date.now() - switchLockSince > 9000) {
-      clearSwitchLock();
+      pendingSwitchTarget = -1;
+      enforceFrameExclusivity();
+      purgeSwitchOverlays(false);
+      unlockShell();
       return;
     }
     if (locked && !switching && switchLockSince && Date.now() - switchLockSince > 9000) {
-      clearSwitchLock();
+      pendingSwitchTarget = -1;
+      enforceFrameExclusivity();
+      purgeSwitchOverlays(false);
+      unlockShell();
       return;
     }
     if (shellBar) {
@@ -411,6 +471,9 @@
         shellBar.style.pointerEvents = "";
       }
       requestAnimationFrame(setBarHeight);
+    }
+    if (!switching && !locked) {
+      enforceFrameExclusivity();
     }
   }
 
@@ -520,7 +583,7 @@
     if (worldIdx !== current || opts.forceWorld) {
       if (frameNeedsReset(frames[worldIdx], worldIdx)) resetFrame(worldIdx);
       /* force: intentional route change may differ from current master-world */
-      switchToWorldIndex(worldIdx, { force: true }).then(function () {
+      switchToWorldIndex(worldIdx, { force: true, routeIntent: true }).then(function () {
         sendChapter(frames[worldIdx]);
         setTimeout(function () {
           sendChapter(frames[worldIdx]);
@@ -849,9 +912,17 @@
   }
 
   function setMaster(i) {
+    if (switching && pendingSwitchTarget >= 0 && i !== pendingSwitchTarget) return false;
+    var mw = document.body.getAttribute("data-master-world") || "";
+    var curIdx = WORLD_KEYS.indexOf(mw);
+    if (!switching && pendingSwitchTarget < 0 && i === 0 && curIdx > 0) return false;
     document.body.setAttribute("data-master-world", masterKey(i));
     updateWorldLinkState(i);
     updateFlags();
+    if (!switching && !document.documentElement.classList.contains("welten-world-switch-lock")) {
+      enforceFrameExclusivity();
+    }
+    return true;
   }
 
   function readChapter(f) {
@@ -920,7 +991,7 @@
   }
 
   function sendWorldLiveSignals(f, j) {
-    if (!f || j !== activeIdx()) return;
+    if (!f || j !== masterIdx()) return;
     if (switching || pendingSwitchTarget >= 0) return;
     if (document.documentElement.classList.contains("welten-world-switch-lock")) return;
     var masterLive = document.body.getAttribute("data-master-world") || "";
@@ -953,13 +1024,12 @@
     ensureSingleBar();
     broadcastLang();
     postFrame(f, { type: "portfolio-effects", on: effectsOn });
-    var masterNow = document.body.getAttribute("data-master-world") || "";
+    var mi = masterIdx();
     var isLiveTarget =
-      j === activeIdx() &&
+      j === mi &&
       !switching &&
       pendingSwitchTarget < 0 &&
-      !document.documentElement.classList.contains("welten-world-switch-lock") &&
-      masterNow === masterKey(j);
+      !document.documentElement.classList.contains("welten-world-switch-lock");
     if (isLiveTarget) {
       sendWorldLiveSignals(f, j);
       applyChapter(f, sharedChapter || parseShellRoute().chapter || "home");
@@ -972,8 +1042,8 @@
   }
 
   function primeActiveFrame() {
-    var i = activeIdx();
-    if (i < 0) i = defaultWorld;
+    var i = masterIdx();
+    if (i < 0) return;
     var f = frames[i];
     if (!f || !frameHasSrc(f) || !frameIsReady(f)) return;
     sendWorldLiveSignals(f, i);
@@ -981,29 +1051,7 @@
 
   function applyActive(i, opts) {
     opts = opts || {};
-    /*
-      ROOT CAUSE GUARD: Boot's switchToWorldIndex(0) can resolve AFTER the user
-      already started switching to Freiraum/Nexora/Professional. Without this,
-      late applyActive(0) re-sets data-master-world=general, re-adds is-active on
-      Multiversum, hard-hides the real target, and unlockShell() clears switch
-      flags — Multiversum home/header/music bleed through the cover.
-    */
-    if (!opts.force) {
-      if (
-        (switching ||
-          document.documentElement.classList.contains("welten-world-switch-lock") ||
-          pendingSwitchTarget >= 0) &&
-        pendingSwitchTarget >= 0 &&
-        i !== pendingSwitchTarget
-      ) {
-        return false;
-      }
-      if (!switching && pendingSwitchTarget < 0) {
-        var masterNow = document.body.getAttribute("data-master-world") || "";
-        var masterIdx = WORLD_KEYS.indexOf(masterNow);
-        if (masterIdx >= 0 && masterIdx !== i) return false;
-      }
-    }
+    if (!canApplyWorld(i, opts)) return false;
     frames.forEach(function (f, j) {
       var on = j === i;
       if (on) {
@@ -1321,6 +1369,7 @@
           }
         } catch (eReveal) {}
         requestAnimationFrame(setBarHeight);
+        enforceFrameExclusivity();
         if (opts.afterReveal && typeof opts.afterReveal === "function") {
           try {
             opts.afterReveal();
@@ -1627,11 +1676,13 @@
 
   frames.forEach(function (f, j) {
     f.addEventListener("load", function () {
+      injectPreviewShellCss(f);
       injectAudioGestureBridge(f, j);
       injectMenuBridge(f);
       signalFrameReady(f, j);
     });
     if (frameHasSrc(f) && frameIsReady(f)) {
+      injectPreviewShellCss(f);
       injectAudioGestureBridge(f, j);
       injectMenuBridge(f);
       signalFrameReady(f, j);
@@ -1669,7 +1720,7 @@
       loaded[defaultWorld] = true;
     }
     var bootGen = switchGeneration;
-    switchToWorldIndex(defaultWorld, { gen: bootGen, requireGen: true }).then(function () {
+    switchToWorldIndex(defaultWorld, { gen: bootGen, requireGen: true, routeIntent: true }).then(function () {
       /* User may already be mid-switch to another world — never unlock/prime Multiversum */
       if (bootGen !== switchGeneration) return;
       if (switching || pendingSwitchTarget >= 0) return;
@@ -1698,4 +1749,5 @@
   });
   window.mv4SwitchWorld = switchTo;
   window.mv4SyncShellUrl = syncShellUrl;
+  window.mv4MasterFrameIndex = masterIdx;
 })();
