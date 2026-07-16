@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260716mvBleed14";
+  var VERSION = "20260716mvBleed15";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;

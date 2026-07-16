@@ -20,7 +20,7 @@
     "assets/welten-mouse-paint.js?v=20260703wws-smooth",
     "assets/welten-mobile-hero.js?v=20260706hero-off",
     "assets/welten-seo.js?v=20260706perf-fix",
-    "assets/welten-site-ia.js?v=20260715phase4",
+    "assets/welten-site-ia.js?v=20260716mvBleed15",
     "assets/welten-visual-sprint2.js?v=20260714ctaAbout1",
     "assets/welten-perf-sprint3.js?v=20260602b",
     "assets/welten-perf-sprint4.js?v=20260608d",

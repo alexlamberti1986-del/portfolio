@@ -331,3 +331,55 @@ body[data-world="general"] .mv-scroll-slide--multiversum .mv-scroll-slide__enter
   text-shadow: none !important;
   filter: drop-shadow(0 0 16px var(--freiraum-title-glow)) drop-shadow(0 2px 10px rgba(0, 0, 0, 0.5));
 }
+
+/*
+ * Descender safety — background-clip:text + tight line-height clips g/y/p/q/j
+ * (esp. FREIRAUM gold / Multiversum gradient titles). Modest room only.
+ */
+body[data-world="freiraum"] h1,
+body[data-world="freiraum"] h2,
+body[data-world="freiraum"] h3.section-title,
+body[data-world="freiraum"] h3.exp-block-title,
+body[data-world="freiraum"] .home-copy h1,
+body[data-world="freiraum"] .section-title,
+body[data-world="freiraum"] .welten-mobile-hero-title,
+body[data-world="general"] h1,
+body[data-world="general"] h2.section-title,
+body[data-world="general"] .home-copy h1,
+body[data-world="general"] .section-title,
+body[data-world="general"] .welten-page-hero__title,
+body[data-world="nexora"] h1,
+body[data-world="nexora"] h2.section-title,
+body[data-world="nexora"] .home-copy h1,
+body[data-world="nexora"] .section-title,
+body[data-world="vertex"] h1,
+body[data-world="vertex"] h2.section-title,
+body[data-world="vertex"] .home-copy h1,
+body[data-world="vertex"] .section-title,
+#slide-home .home-copy h1,
+h2.section-title,
+.section-title,
+.welten-section-head h2,
+.welten-cta-band h2,
+.mv-scroll-slide h2,
+.world-copy h2,
+.mv-scroll-slide__lead,
+.welten-mobile-hero-title {
+  line-height: 1.22 !important;
+  padding-bottom: 0.1em !important;
+  overflow: visible !important;
+}
+
+.slide:not(#slide-home) > .slide-inner > .section-title {
+  line-height: 1.22 !important;
+  padding-bottom: 0.1em !important;
+  overflow: visible !important;
+}
+
+body.welten-chapter-visuals--on .welten-chapter-box h2,
+body.welten-chapter-visuals--on .welten-chapter-box h3,
+body.welten-chapter-visuals--on .welten-chapter-box .section-title {
+  line-height: 1.22 !important;
+  padding-bottom: 0.1em !important;
+  overflow: visible !important;
+}

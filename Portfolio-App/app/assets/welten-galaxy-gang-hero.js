@@ -393,18 +393,20 @@
       "white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important;" +
       "overflow:hidden!important;text-overflow:ellipsis!important;max-width:100%!important;" +
       "font-size:clamp(8.5px,min(.78vw,1.35vh),17px)!important;" +
-      "letter-spacing:clamp(.03em,.06em,.08em)!important;line-height:1.08!important;" +
-      "padding:clamp(8px,.7vw,16px) clamp(6px,.65vw,14px)!important;box-sizing:border-box!important}" +
+      "letter-spacing:clamp(.03em,.06em,.08em)!important;line-height:1.25!important;" +
+      "padding:clamp(8px,.7vw,16px) clamp(6px,.65vw,14px) clamp(11px,.8vw,18px)!important;box-sizing:border-box!important}" +
       "html body .world-panel[data-world='freiraum'] .subpage-card span," +
       "html body .world-panel[data-world='freiraum'] .subpage-card:hover span," +
       "html body .world-panel[data-world='freiraum'] .subpage-card:focus span," +
       "html body .world-panel[data-world='freiraum'] .subpage-card:active span{" +
       "font-size:clamp(9px,.72vw,11px)!important;letter-spacing:.04em!important;" +
+      "line-height:1.25!important;padding-bottom:clamp(11px,.8vw,18px)!important;" +
       "white-space:nowrap!important;word-break:normal!important;overflow-wrap:normal!important}" +
       "html body .world-panel[data-world='freiraum'] .world-detail-label," +
       "html body .overview-card[data-world='freiraum'] .overview-label strong{" +
       "letter-spacing:clamp(.06em,.10em,.14em)!important;" +
       "font-size:clamp(11px,min(1.1vw,1.9vh),28px)!important;" +
+      "line-height:1.25!important;padding-bottom:.12em!important;" +
       "white-space:nowrap!important;max-width:100%!important;" +
       "overflow:hidden!important;text-overflow:ellipsis!important}";
     doc.head.appendChild(style);

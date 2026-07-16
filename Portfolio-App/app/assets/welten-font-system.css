@@ -292,12 +292,17 @@ body[data-world="freiraum"] .menu-kicker {
   body h1,
   body .home-copy h1 {
     font-size: clamp(1.65rem, 8.2vw, 2.2rem) !important;
-    line-height: 1.1 !important;
+    line-height: 1.22 !important;
+    padding-bottom: 0.08em !important;
+    overflow: visible !important;
   }
 
   body h2.section-title,
   body .section-title {
     font-size: clamp(1.28rem, 6.4vw, 1.72rem) !important;
+    line-height: 1.22 !important;
+    padding-bottom: 0.08em !important;
+    overflow: visible !important;
   }
 
   body[data-world="nexora"] .world-intro,

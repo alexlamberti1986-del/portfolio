@@ -242,21 +242,13 @@
     document.dispatchEvent(new CustomEvent("welten-chapter-change", { detail: { chapter: chapter } }));
   }
 
-  function isGalaxyDesktopHome() {
-    try {
-      if (document.body.getAttribute("data-welten-galaxy-hero") !== "1") return false;
-      return window.matchMedia("(min-width: 1025px) and (min-height: 640px)").matches;
-    } catch (e) {
-      return false;
-    }
-  }
-
   function injectHomeExtras() {
-    /* Galaxy Walk ≥1025×640: keep first viewport untouched — brief blocks live in shell SEO. */
-    if (isGalaxyDesktopHome()) return;
-
     var slide = document.querySelector("#slide-home .slide-inner");
     if (!slide || slide.querySelector("[data-welten-home-brief='1']")) return;
+
+    /* Mount under home-main-block so Galaxy Walk / hero stays first-viewport clean */
+    var mount = document.querySelector("#slide-home .home-main-block") || slide;
+    var isMultiversum = (document.body.getAttribute("data-world") || "") === "general";
 
     var wrap = document.createElement("div");
     wrap.className = "welten-home-brief";
@@ -265,18 +257,33 @@
     var benefit = document.createElement("section");
     benefit.className = "welten-home-brief__section";
     benefit.setAttribute("aria-labelledby", "welten-home-benefit-title");
-    benefit.innerHTML =
-      '<p class="chapter-label">Nicht nur schön, sondern sinnvoll</p>' +
-      '<h2 id="welten-home-benefit-title" class="section-title">Design erhält erst dann Wert, wenn es Orientierung schafft.</h2>' +
-      '<p class="prose">Eine Website soll Besucher nicht mit Möglichkeiten überfordern. Sie soll verständlich zeigen, worum es geht, Vertrauen aufbauen und den nächsten Schritt erleichtern. Deshalb werden Gestaltung, Inhalt, Nutzerführung und Technik nicht getrennt betrachtet, sondern als zusammenhängendes digitales Erlebnis entwickelt.</p>' +
-      "<ul class=\"prose\">" +
-      "<li>Klare Positionierung</li>" +
-      "<li>Verständliche Nutzerführung</li>" +
-      "<li>Eigenständiges Erscheinungsbild</li>" +
-      "<li>Responsives Design</li>" +
-      "<li>Technisch saubere Umsetzung</li>" +
-      "<li>SEO-Grundlagen von Beginn an</li>" +
-      "</ul>";
+    if (isMultiversum) {
+      benefit.innerHTML =
+        '<p class="chapter-label">Nicht nur schön, sondern sinnvoll</p>' +
+        '<h2 id="welten-home-benefit-title" class="section-title">Welten entfalten Wirkung, wenn sie Orientierung schaffen.</h2>' +
+        '<p class="prose">MULTIVERSUM ist mehr als ein Einstieg. Unter dem Galaxy Walk folgen klare Inhalte: worum es geht, wie Zusammenarbeit funktioniert und welche nächsten Schritte sinnvoll sind. Gestaltung, Botschaft, Nutzerführung und Technik greifen als ein digitales Erlebnis ineinander.</p>' +
+        "<ul class=\"prose\">" +
+        "<li>Vier Welten unter einem Portfolio-Dach</li>" +
+        "<li>Klare Positionierung und verständliche Führung</li>" +
+        "<li>Eigenständiges Erscheinungsbild mit System</li>" +
+        "<li>Responsives Design auf allen Geräten</li>" +
+        "<li>Technisch saubere Umsetzung</li>" +
+        "<li>SEO-Grundlagen von Beginn an</li>" +
+        "</ul>";
+    } else {
+      benefit.innerHTML =
+        '<p class="chapter-label">Nicht nur schön, sondern sinnvoll</p>' +
+        '<h2 id="welten-home-benefit-title" class="section-title">Design erhält erst dann Wert, wenn es Orientierung schafft.</h2>' +
+        '<p class="prose">Eine Website soll Besucher nicht mit Möglichkeiten überfordern. Sie soll verständlich zeigen, worum es geht, Vertrauen aufbauen und den nächsten Schritt erleichtern. Deshalb werden Gestaltung, Inhalt, Nutzerführung und Technik nicht getrennt betrachtet, sondern als zusammenhängendes digitales Erlebnis entwickelt.</p>' +
+        "<ul class=\"prose\">" +
+        "<li>Klare Positionierung</li>" +
+        "<li>Verständliche Nutzerführung</li>" +
+        "<li>Eigenständiges Erscheinungsbild</li>" +
+        "<li>Responsives Design</li>" +
+        "<li>Technisch saubere Umsetzung</li>" +
+        "<li>SEO-Grundlagen von Beginn an</li>" +
+        "</ul>";
+    }
 
     var process = document.createElement("section");
     process.className = "welten-home-brief__section";
@@ -284,7 +291,11 @@
     var processHtml =
       '<p class="chapter-label">Zusammenarbeit</p>' +
       '<h2 id="welten-home-process-title" class="section-title">Von der ersten Idee bis zur digitalen Umsetzung.</h2>' +
-      '<p class="prose">Ein klarer Ablauf schafft Sicherheit, reduziert unnötige Korrekturen und sorgt dafür, dass Gestaltung und Zielsetzung nicht auseinanderdriften.</p>' +
+      '<p class="prose">' +
+      (isMultiversum
+        ? "Ob über Galaxy Walk oder direkt im Inhalt: ein klarer Ablauf schafft Sicherheit, reduziert unnötige Korrekturen und hält Gestaltung und Zielsetzung zusammen."
+        : "Ein klarer Ablauf schafft Sicherheit, reduziert unnötige Korrekturen und sorgt dafür, dass Gestaltung und Zielsetzung nicht auseinanderdriften.") +
+      "</p>" +
       '<ol class="welten-home-brief__steps">';
     HOME_PROCESS.forEach(function (step, i) {
       processHtml +=
@@ -302,11 +313,40 @@
     var faq = document.createElement("section");
     faq.className = "welten-home-brief__section";
     faq.setAttribute("aria-labelledby", "welten-home-faq-title");
+    var faqItems = isMultiversum
+      ? [
+          {
+            q: "Was ist MULTIVERSUM?",
+            a:
+              "MULTIVERSUM ist das übergeordnete Portfolio: ein Einstieg über Galaxy Walk und darunter strukturierte Inhalte zu Projekten, Leistungen, Über mich und Kontakt — mit vier Welten unter einem Dach.",
+          },
+          {
+            q: "Welche digitalen Leistungen werden angeboten?",
+            a:
+              "Der Schwerpunkt liegt auf Webdesign, digitalem Marketing und strategischer Begleitung. Je nach Projekt können einzelne Leistungen oder eine zusammenhängende Gesamtlösung umgesetzt werden.",
+          },
+          {
+            q: "Wie beginnt eine Zusammenarbeit?",
+            a:
+              "Am Anfang steht ein unverbindliches Gespräch über die Ausgangslage, die Ziele und den gewünschten Umfang. Danach kann eine passende Vorgehensweise definiert werden.",
+          },
+          {
+            q: "Kann auch eine bestehende Website optimiert werden?",
+            a:
+              "Ja. Bestehende Websites können hinsichtlich Gestaltung, Nutzerführung, Inhalt, Geschwindigkeit und technischer SEO-Grundlagen analysiert und gezielt weiterentwickelt werden.",
+          },
+          {
+            q: "Was kostet ein digitales Projekt?",
+            a:
+              "Der Aufwand hängt vom Umfang, den benötigten Funktionen und dem gewünschten Ergebnis ab. Nach einem ersten Austausch kann der Rahmen realistisch eingeschätzt werden.",
+          },
+        ]
+      : HOME_FAQ;
     var faqHtml =
       '<p class="chapter-label">FAQ</p>' +
       '<h2 id="welten-home-faq-title" class="section-title">Häufige Fragen</h2>' +
       '<div class="welten-home-brief__faq">';
-    HOME_FAQ.forEach(function (item, i) {
+    faqItems.forEach(function (item) {
       faqHtml +=
         '<details class="welten-home-brief__details"><summary>' +
         item.q +
@@ -320,7 +360,7 @@
     wrap.appendChild(benefit);
     wrap.appendChild(process);
     wrap.appendChild(faq);
-    slide.appendChild(wrap);
+    mount.appendChild(wrap);
   }
 
   function injectLeistungenGrid() {

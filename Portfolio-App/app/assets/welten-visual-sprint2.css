@@ -113,10 +113,12 @@ body[data-world="nexora"] {
 
 .slide:not(#slide-home) > .slide-inner > .section-title {
   font-size: clamp(1.85rem, 4.5vw, 3rem);
-  line-height: 1.08;
+  line-height: 1.22;
   letter-spacing: -0.035em;
   max-width: 20ch;
   margin-bottom: 0.75rem;
+  padding-bottom: 0.08em;
+  overflow: visible;
 }
 
 /* ── Home: Bento Highlights ── */
@@ -396,8 +398,10 @@ body[data-world="freiraum"] .welten-cta-band::before {
 /* ── Home Intro Typography ── */
 #slide-home .home-copy h1 {
   font-size: clamp(1.85rem, 4.8vw, 3.1rem) !important;
-  line-height: 1.08 !important;
+  line-height: 1.22 !important;
   letter-spacing: -0.04em !important;
+  padding-bottom: 0.08em !important;
+  overflow: visible !important;
 }
 
 #slide-home .home-copy .lead {

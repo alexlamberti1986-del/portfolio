@@ -147,7 +147,7 @@ body[data-world="freiraum"] .welten-service-pill {
   outline-offset: 2px;
 }
 
-/* Home brief blocks (§6.4 / §6.6 / §6.9) — skipped on Galaxy desktop */
+/* Home brief blocks (§6.4 / §6.6 / §6.9) — below hero / Galaxy Walk */
 .welten-home-brief {
   width: min(920px, 100%);
   margin: clamp(1.5rem, 4vw, 3rem) auto 0;
@@ -205,12 +205,6 @@ body[data-world="freiraum"] .welten-service-pill {
 
 .welten-home-brief__details[open] summary {
   margin-bottom: 0.35rem;
-}
-
-@media (min-width: 1025px) and (min-height: 640px) {
-  body[data-welten-galaxy-hero="1"] .welten-home-brief {
-    display: none !important;
-  }
 }
 
 /* Kontakt: 3 Karten */
