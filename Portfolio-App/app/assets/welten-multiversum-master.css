@@ -266,6 +266,17 @@ html.welten-world-switch-lock .mv4-frame.is-active.is-paused {
   transform: none !important;
 }
 
+/* is-leaving / mid-cover pause beat bare .is-active (prevents Multiversum peek) */
+.mv4-frame.is-active.is-leaving,
+.mv4-frame.is-active.is-paused {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
+  z-index: 0 !important;
+}
+
 /* Nur die erste Shell-Bar darf sichtbar sein */
 body > .mv4-bar ~ .mv4-bar {
   display: none !important;

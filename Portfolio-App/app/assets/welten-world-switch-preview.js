@@ -1779,8 +1779,31 @@
         activeOverlay.classList.remove("is-entering");
         /* Apply target first while cover still solid */
         wwsCallTransitionEnd();
-        /* Hold cover long enough for double-rAF unlock + paint of target only */
-        wwsLater(function () {
+        /* Hold cover until Multiversum is confirmed non-active AND master matches target */
+        function coverSafeToDrop() {
+          try {
+            var master = document.body.getAttribute("data-master-world") || "";
+            var keys = ["general", "nexora", "vertex", "freiraum"];
+            var want = keys[targetIdx] || "";
+            if (want && master && master !== want) return false;
+            var frames = document.querySelectorAll(".mv4-frame");
+            if (targetIdx !== 0 && frames[0] && frames[0].classList.contains("is-active")) {
+              return false;
+            }
+            if (activeFrameIndex() !== targetIdx) return false;
+            if (document.documentElement.classList.contains("welten-world-switch-lock")) {
+              return false;
+            }
+          } catch (eSafe) {}
+          return true;
+        }
+        var dropTries = 0;
+        function dropCover() {
+          dropTries += 1;
+          if (!coverSafeToDrop() && dropTries < 40) {
+            wwsLater(dropCover, 40);
+            return;
+          }
           if (activeOverlay) {
             activeOverlay.remove();
             activeOverlay = null;
@@ -1789,7 +1812,8 @@
           running = false;
           window.__wwsPreviewOwnsSound = false;
           wwsClearTimers();
-        }, Math.max(140, Math.min(exitMs + 80, 280)));
+        }
+        wwsLater(dropCover, Math.max(140, Math.min(exitMs + 80, 280)));
       }
 
       /* Sicherheitsnetz: erst aufdecken, wenn die Zielwelt wirklich aktiv ist —

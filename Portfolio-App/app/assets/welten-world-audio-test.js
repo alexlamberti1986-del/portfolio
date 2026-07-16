@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260710mobile-audio1";
+  var VERSION = "20260716mvBleed2";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
@@ -152,16 +152,39 @@
     stopIframeWorldBgm();
   }
 
-  function stopIframeWorldBgm() {
-    document.querySelectorAll(".mv4-frame").forEach(function (frame) {
+  function stopIframeWorldBgm(opts) {
+    opts = opts || {};
+    var master = activeWorld();
+    var activeIdx = -1;
+    try {
+      if (typeof window.mv4ActiveFrameIndex === "function") {
+        activeIdx = window.mv4ActiveFrameIndex();
+      }
+    } catch (eIdx) {}
+    document.querySelectorAll(".mv4-frame").forEach(function (frame, idx) {
       try {
+        /* On switch-end: never pause the live target world — only kill Multiversum / peers */
+        if (opts.onlyNonActive) {
+          if (activeIdx >= 0 && idx === activeIdx) return;
+          if (master && master !== "general" && frame.getAttribute("data-world") !== "general") {
+            /* Still stop BGM helpers on sibling worlds, but skip enter-target */
+            if (idx === activeIdx) return;
+          }
+        }
         var win = frame.contentWindow;
         if (!win) return;
         if (typeof win.__mvStopIframeWorldBgm === "function") {
           win.__mvStopIframeWorldBgm();
         }
         win.postMessage({ type: "mv-stop-iframe-bgm" }, "*");
-        win.postMessage({ type: "portfolio-world-pause", paused: true }, "*");
+        if (opts.onlyNonActive) {
+          if (frame.getAttribute("data-world") === "general" || idx === 0) {
+            win.postMessage({ type: "portfolio-world-pause", paused: true }, "*");
+            win.postMessage({ type: "mv-galaxy-hard-hide" }, "*");
+          }
+        } else {
+          win.postMessage({ type: "portfolio-world-pause", paused: true }, "*");
+        }
       } catch (e) {}
     });
   }
@@ -418,8 +441,11 @@
       }
       /* Nur Zielwelt — Multiversum-BGM darf nach Switch nie mitlaufen */
       if (activeWorld() !== world) return;
-      stopIframeWorldBgm();
+      stopIframeWorldBgm({ onlyNonActive: true });
       hardStopBgm();
+      if (world !== "general") {
+        stopIframeWorldBgm({ onlyNonActive: true });
+      }
       if (isTouchMobile()) resumeAudioCtx();
       playBgm(world, token, isTouchMobile() ? 160 : SWITCH_END_FADE_MS, expectedSwitch);
     }

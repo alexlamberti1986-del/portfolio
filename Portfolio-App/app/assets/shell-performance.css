@@ -10,7 +10,7 @@
 }
 
 .world-frame.is-active:not(.is-leaving),
-.mv4-frame.is-active:not(.is-leaving) {
+.mv4-frame.is-active:not(.is-leaving):not(.is-paused) {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
@@ -73,7 +73,7 @@ html.world-transition-lock body {
 }
 
 .world-frame.is-active:not(.is-leaving),
-.mv4-frame.is-active:not(.is-leaving) {
+.mv4-frame.is-active:not(.is-leaving):not(.is-paused) {
   content-visibility: visible;
 }
 

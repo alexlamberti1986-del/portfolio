@@ -6,14 +6,25 @@
   <style id="shell-fouc-critical">
     /* Sofort: kein SEO-/Skip-Flash vor externem CSS */
     html, body { margin: 0; background: #02030b; color: #e8eef8; }
-    /* Bis der Shell-Klasse entfernt wird (siehe Boot-Script unten), das aktive Frame
-       sanft einblenden statt den rohen Iframe-Inhalt (Kopfzeilen-Flash) sofort zu zeigen. */
-    html.mv-shell-booting .mv4-frame.is-active {
+    html.mv-shell-booting .mv4-frame.is-active,
+    html.welten-world-switch-lock .mv4-frame,
+    html.welten-world-switch-lock .mv4-frame.is-active {
       opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
-    html:not(.mv-shell-booting) .mv4-frame.is-active {
+    html:not(.mv-shell-booting):not(.welten-world-switch-lock) .mv4-frame.is-active {
       opacity: 1 !important;
       transition: opacity .16s ease-out;
+    }
+    body:not([data-master-world="general"]) .mv4-frame[data-world="general"],
+    body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"] {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      clip-path: inset(100%) !important;
+      transform: translate3d(-200%, 0, 0) !important;
+      z-index: 0 !important;
     }
     .mv-shell-seo,
     .welten-skip-link {
@@ -158,7 +169,7 @@
   var l = document.createElement("link");
   l.rel = "preload";
   l.as = "document";
-  l.href = "/MULTIVERSUM.html?v=20260716galaxy15";
+  l.href = "/MULTIVERSUM.html?v=20260716mvBleed2";
   l.fetchPriority = "high";
   document.head.appendChild(l);
 })();
@@ -167,11 +178,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/assets/welten-font-system.css?v=20260710fonts-async" />
   <link rel="stylesheet" href="/assets/welten-world-title-colors.css?v=20260705bootfix" />
-  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260716galaxy15" />
+  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260716mvBleed2" />
   <link rel="stylesheet" href="/assets/welten-global-header.css?v=20260715headerFix1" />
   <link rel="stylesheet" href="/assets/welten-mobile-shell-fixes.css?v=20260706mobile-pass1" />
-  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260716galaxy15" />
-  <link rel="stylesheet" href="/assets/shell-performance.css?v=20260716galaxy15" />
+  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260716mvBleed2" />
+  <link rel="stylesheet" href="/assets/shell-performance.css?v=20260716mvBleed2" />
   <link rel="stylesheet" href="/assets/welten-shell-accessibility.css?v=20260715phase4" />
   <script src="/assets/welten-translations.js?v=20260715phase3" defer></script>
   <script src="/assets/welten-shell-router.js?v=20260713routing" defer></script>
@@ -342,7 +353,7 @@
   </div>
 
   <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM"
-  data-lazy-src="/MULTIVERSUM.html?v=20260716galaxy15" src="about:blank"></iframe>
+  data-lazy-src="/MULTIVERSUM.html?v=20260716mvBleed2" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="nexora" title="NEXORA" data-lazy-src="/NEXORA.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="vertex" title="PROFESSIONAL" data-lazy-src="/PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="freiraum" title="FREIRAUM" data-lazy-src="/FREIRAUM.html" src="about:blank"></iframe>
@@ -415,9 +426,9 @@
     })();
   </script>
 
-  <script src="/assets/welten-world-audio-test.js?v=20260716galaxy15" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260716galaxy15" defer></script>
+  <script src="/assets/welten-world-audio-test.js?v=20260716mvBleed2" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260716mvBleed2" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
-  <script src="/assets/welten-world-switch-preview.js?v=20260716galaxy15" defer></script>
+  <script src="/assets/welten-world-switch-preview.js?v=20260716mvBleed2" defer></script>
 </body>
 </html>
