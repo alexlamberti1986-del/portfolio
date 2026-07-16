@@ -72,7 +72,7 @@
   var resetAttempts = {};
   loaded[defaultWorld] = false;
   var SHELL_CHROME_CSS =
-    "html.welten-live-shell .mv4-bar{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}" +
+    "html.welten-live-shell .mv4-bar,html.welten-live-shell .mv4-shell-chrome,html.welten-live-shell .mv4-global-header,html.welten-live-shell #mv4ShellChrome{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}" +
     "html.welten-live-shell .site-header{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important}" +
     "html.welten-live-shell .welten-skip-link{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}" +
     "html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;pointer-events:none!important}";
@@ -115,6 +115,14 @@
           chrome.id = "mv4-shell-chrome-css-v2";
         }
         chrome.textContent = SHELL_CHROME_CSS;
+        /* Nested shell / duplicate chrome im Iframe sofort entfernen */
+        try {
+          d.querySelectorAll(".mv4-shell-chrome, #mv4ShellChrome, body > .mv4-global-header, body > .mv4-bar, .site-header, .welten-skip-link").forEach(function (el) {
+            try {
+              el.remove();
+            } catch (eRem) {}
+          });
+        } catch (eStrip) {}
       }
     } catch (e) {}
   }
@@ -324,16 +332,36 @@
     return parts[parts.length - 1] || "";
   }
 
+  function normalizeFramePage(name) {
+    return String(name || "")
+      .replace(/^\//, "")
+      .split("?")[0]
+      .split("#")[0]
+      .toLowerCase();
+  }
+
   function frameNeedsReset(f, i) {
     if (!f || i < 0 || i > 3) return false;
-    var expected = FRAME_PAGES[i];
+    var expected = normalizeFramePage(FRAME_PAGES[i]);
     try {
-      var file = framePageName(f.contentWindow.location.pathname);
-      if (!file || SHELL_PAGES.indexOf(file) >= 0) return true;
-      if (file !== expected && file.toLowerCase() !== expected.toLowerCase()) return true;
+      var loc = f.contentWindow.location;
+      var path = loc.pathname || "";
+      var file = normalizeFramePage(framePageName(path));
+      /* Nested shell (/ oder index) — immer hart zurücksetzen */
+      if (!file || file === "index.html" || file === "3-welten-master-iframe.html") {
+        return true;
+      }
+      try {
+        var doc = f.contentDocument;
+        if (doc && doc.querySelector(".mv4-shell-chrome, .mv4-frame[data-lazy-src], #mv4ShellChrome")) {
+          return true;
+        }
+      } catch (eDoc) {}
+      if (file !== expected) return true;
       return false;
     } catch (e) {
-      return !frameHasSrc(f) || f.src.indexOf(expected) < 0;
+      var src = f.getAttribute("src") || f.src || "";
+      return !frameHasSrc(f) || normalizeFramePage(src).indexOf(expected.replace(/\.html$/, "")) < 0;
     }
   }
 
@@ -341,8 +369,9 @@
     var f = frames[i];
     if (!f) return;
     resetAttempts[i] = (resetAttempts[i] || 0) + 1;
-    if (resetAttempts[i] > 2) return;
-    f.src = FRAME_PAGES[i];
+    if (resetAttempts[i] > 3) return;
+    var lazy = f.getAttribute("data-lazy-src");
+    f.src = lazy || FRAME_PAGES[i];
     loaded[i] = false;
   }
 
@@ -1088,14 +1117,21 @@
   function signalFrameReady(f, j) {
     if (!f) return;
     try {
-      var file = framePageName(f.contentWindow.location.pathname);
-      if (SHELL_PAGES.indexOf(file) >= 0) {
+      var file = normalizeFramePage(framePageName(f.contentWindow.location.pathname));
+      if (!file || file === "index.html" || file === "3-welten-master-iframe.html") {
         resetFrame(j);
         return;
       }
+      try {
+        if (f.contentDocument && f.contentDocument.querySelector(".mv4-frame[data-lazy-src], #mv4ShellChrome")) {
+          resetFrame(j);
+          return;
+        }
+      } catch (eNest) {}
       resetAttempts[j] = 0;
     } catch (e) {}
     ensureSingleChrome();
+    injectPreviewShellCss(f);
     broadcastLang();
     postFrame(f, { type: "portfolio-effects", on: effectsOn });
     var mi = masterIdx();

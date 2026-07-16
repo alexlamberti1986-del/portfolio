@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260716mvBleed2";
+  var VERSION = "20260716mvBleed11";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
@@ -431,21 +431,41 @@
       return;
     }
     var expectedSwitch = switchGeneration;
-    var token = playToken;
+    var token = ++playToken;
 
     function start() {
       if (expectedSwitch !== switchGeneration) return;
+      /* Lock nicht ewig blockieren — nach Timeout trotzdem Musik starten */
       if (isVisualAnimationLocked()) {
         waitForAnimationEnd(start);
         return;
       }
-      /* Nur Zielwelt — Multiversum-BGM darf nach Switch nie mitlaufen */
-      if (activeWorld() !== world) return;
+      var master = activeWorld();
+      if (master && master !== world) {
+        world = master;
+      }
+      if (!TRACKS[world]) {
+        setSwitchFlag(false);
+        return;
+      }
       stopIframeWorldBgm({ onlyNonActive: true });
       hardStopBgm();
       if (world !== "general") {
         stopIframeWorldBgm({ onlyNonActive: true });
+        try {
+          var mvFrame =
+            document.querySelector('.mv4-frame[data-world="general"]') ||
+            document.querySelectorAll(".mv4-frame")[0];
+          if (mvFrame && mvFrame.contentWindow) {
+            var mvWin = mvFrame.contentWindow;
+            if (typeof mvWin.__mvStopIframeWorldBgm === "function") {
+              mvWin.__mvStopIframeWorldBgm();
+            }
+            mvWin.postMessage({ type: "mv-stop-iframe-bgm" }, "*");
+          }
+        } catch (eMv) {}
       }
+      setSwitchFlag(false);
       if (isTouchMobile()) resumeAudioCtx();
       playBgm(world, token, isTouchMobile() ? 160 : SWITCH_END_FADE_MS, expectedSwitch);
     }
@@ -843,6 +863,22 @@
     var world = (e.detail && e.detail.world) || pendingWorld || activeWorld();
     onSwitchEnd(world);
   });
+
+  /* Fallback: wenn Switch-End verpasst wurde, trotzdem Welt-Musik starten */
+  try {
+    var lastAudioMaster = activeWorld();
+    new MutationObserver(function () {
+      var w = activeWorld();
+      if (!w || w === lastAudioMaster) return;
+      lastAudioMaster = w;
+      if (!effectsEnabled() || !TRACKS[w]) return;
+      window.setTimeout(function () {
+        if (activeWorld() !== w) return;
+        if (window.__mvInWorldSwitch || isVisualAnimationLocked()) return;
+        onSwitchEnd(w);
+      }, 450);
+    }).observe(document.body, { attributes: true, attributeFilter: ["data-master-world"] });
+  } catch (eObsAudio) {}
 
   document.addEventListener("mv-effects-change", function (e) {
     var on = !!(e.detail && e.detail.on);
