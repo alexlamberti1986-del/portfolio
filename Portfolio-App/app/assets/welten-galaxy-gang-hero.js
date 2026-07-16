@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260716galaxy20";
+  var VER = "20260716galaxy21";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
@@ -15,6 +15,9 @@
   var iframeSrcStarted = false;
   var markedReady = false;
   var galaxyLive = false;
+  var heavyLoadBound = false;
+  var syncRunning = false;
+  var slideObsTimer = 0;
   var CHAPTERS = [
     { id: "home", label: "Home" },
     { id: "projects", label: "Projekte" },
@@ -431,6 +434,7 @@
       frame.src = "about:blank";
     } catch (eBlank) {}
     iframeSrcStarted = false;
+    heavyLoadBound = false;
   }
 
   function setGalaxyIframePaused(paused) {
@@ -589,17 +593,17 @@
 
     function kick() {
       if (!galaxyLive || !isGalaxyViewport()) return;
-      /* Parent-Lock darf Galaxy-Src nicht blockieren — sonst permanent «wird geladen» */
       startIframeSrc(frame);
     }
 
-    /* Galaxy sofort starten — kein Idle-Warten (verhindert „wird geladen“-Hänger) */
     if (typeof requestAnimationFrame === "function") {
       requestAnimationFrame(kick);
     } else {
       kick();
     }
 
+    if (heavyLoadBound) return;
+    heavyLoadBound = true;
     frame.addEventListener(
       "load",
       function () {
@@ -608,11 +612,10 @@
       },
       { once: true }
     );
-    /* Overlay nach max. 2.5s weg — Seite bleibt nutzbar */
     window.setTimeout(function () {
       if (!galaxyLive) return;
       markUiReady(section);
-    }, 2500);
+    }, 1200);
   }
 
   function ensureHero() {
@@ -661,19 +664,25 @@
   }
 
   function sync() {
-    if (!isMultiversum()) return;
-    if (!isGalaxyViewport()) {
-      teardownGalaxy({ forceRestore: true });
+    if (syncRunning) return;
+    syncRunning = true;
+    try {
+      if (!isMultiversum()) return;
+      if (!isGalaxyViewport()) {
+        teardownGalaxy({ forceRestore: true });
+        revealHomeContent();
+        return;
+      }
+      if (!parentShellAllowsMvLive()) {
+        beginOutboundLeave();
+        return;
+      }
+      ensureHero();
+      syncChapterNav();
       revealHomeContent();
-      return;
+    } finally {
+      syncRunning = false;
     }
-    if (!parentShellAllowsMvLive()) {
-      beginOutboundLeave();
-      return;
-    }
-    ensureHero();
-    syncChapterNav();
-    revealHomeContent();
   }
 
   function onViewportChange() {
@@ -711,31 +720,32 @@
       }
     }
 
+    /* Nur Kapitelwechsel beobachten — body class-Mutationen lösten Endlos-Sync aus */
     try {
       new MutationObserver(function () {
-        if (!isGalaxyViewport()) return;
-        if (!parentShellAllowsMvLive()) return;
-        syncChapterNav();
-        if (!isHomeActive()) return;
-        if (
-          document.documentElement.classList.contains("mv-galaxy-outbound") ||
-          document.body.classList.contains("mv-galaxy-outbound")
-        ) {
-          return;
-        }
-        sync();
-        ensureChapterNav();
-        revealHomeContent();
-        var chrome = document.getElementById("alGalaxyHomeChrome");
-        if (chrome) {
-          chrome.style.removeProperty("visibility");
-          chrome.style.removeProperty("opacity");
-          chrome.style.removeProperty("pointer-events");
-          chrome.style.removeProperty("display");
-        }
+        if (slideObsTimer) return;
+        slideObsTimer = window.setTimeout(function () {
+          slideObsTimer = 0;
+          if (!isGalaxyViewport()) return;
+          if (!parentShellAllowsMvLive()) return;
+          if (
+            document.documentElement.classList.contains("mv-galaxy-outbound") ||
+            document.body.classList.contains("mv-galaxy-outbound")
+          ) {
+            return;
+          }
+          syncChapterNav();
+          if (!isHomeActive()) {
+            setGalaxyIframePaused(true);
+            return;
+          }
+          endOutboundLeave();
+          ensureHero();
+          revealHomeContent();
+        }, 50);
       }).observe(document.body, {
         attributes: true,
-        attributeFilter: ["data-current-slide", "class"],
+        attributeFilter: ["data-current-slide"],
       });
     } catch (eObs) {}
   }

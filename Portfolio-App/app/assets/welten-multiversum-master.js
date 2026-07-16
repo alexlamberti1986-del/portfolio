@@ -513,14 +513,8 @@
     if (staleOverlay && !locked && !switching) {
       purgeSwitchOverlays(false);
     }
-    /* Preview/abort may drop lock while switch still runs — re-lock, never bare unlock
-       (that left Multiversum able to paint with no cover). */
-    if (switching && !locked) {
-      document.documentElement.classList.add("welten-world-switch-lock");
-      switchLockSince = switchLockSince || Date.now();
-      return;
-    }
-    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 1800) {
+    /* Nie dauerhaft re-locken — bei hängendem Switch nach kurzer Zeit freigeben */
+    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 1400) {
       pendingSwitchTarget = -1;
       enforceFrameExclusivity();
       purgeSwitchOverlays(false);
@@ -528,15 +522,15 @@
       forceRevealActiveFrame();
       return;
     }
-    if (locked && !switching && switchLockSince && Date.now() - switchLockSince > 1200) {
+    if (switching && !locked && switchLockSince && Date.now() - switchLockSince > 1400) {
       pendingSwitchTarget = -1;
-      enforceFrameExclusivity();
-      purgeSwitchOverlays(false);
       unlockShell();
       forceRevealActiveFrame();
       return;
     }
-    if (locked && !switching && !switchLockSince) {
+    if (locked && !switching) {
+      pendingSwitchTarget = -1;
+      enforceFrameExclusivity();
       purgeSwitchOverlays(false);
       unlockShell();
       forceRevealActiveFrame();
@@ -936,10 +930,9 @@
     switching = false;
     window.__worldTransitionRunning = false;
     window.__mvInWorldSwitch = false;
-    if (pendingSwitchTarget < 0) {
-      document.documentElement.classList.remove("welten-world-switch-lock");
-      switchLockSince = 0;
-    }
+    pendingSwitchTarget = -1;
+    document.documentElement.classList.remove("welten-world-switch-lock", "mv-shell-booting");
+    switchLockSince = 0;
     var shellBar = getBar();
     if (shellBar) {
       shellBar.removeAttribute("aria-busy");
