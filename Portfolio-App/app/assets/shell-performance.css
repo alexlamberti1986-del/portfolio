@@ -137,6 +137,15 @@ html.welten-world-switch-lock .mv4-frame.is-paused {
   transform: translate3d(-200%, 0, 0) !important;
 }
 
+/* Boot-Klasse allein darf den aktiven Frame nicht mehr blockieren */
+html.mv-shell-booting:not(.welten-world-switch-lock) .mv4-frame.is-active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  clip-path: none !important;
+  transform: none !important;
+}
+
 /* Nach Unlock: Nicht-Ziel-Frames bleiben hart weg (kein Multiversum-Peek) */
 .mv4-frame.is-leaving,
 .mv4-frame.is-paused:not(.is-active) {

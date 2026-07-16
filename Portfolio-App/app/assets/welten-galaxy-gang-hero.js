@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260716galaxy19";
+  var VER = "20260716galaxy20";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
@@ -589,7 +589,7 @@
 
     function kick() {
       if (!galaxyLive || !isGalaxyViewport()) return;
-      if (!parentShellAllowsMvLive()) return;
+      /* Parent-Lock darf Galaxy-Src nicht blockieren — sonst permanent «wird geladen» */
       startIframeSrc(frame);
     }
 
@@ -622,7 +622,12 @@
       return;
     }
     if (!parentShellAllowsMvLive()) {
-      beginOutboundLeave();
+      /* Boot-Rennen: nicht verstecken, kurz später erneut versuchen */
+      window.setTimeout(function () {
+        if (isMultiversum() && isHomeActive() && parentShellAllowsMvLive()) {
+          ensureHero();
+        }
+      }, 250);
       return;
     }
 

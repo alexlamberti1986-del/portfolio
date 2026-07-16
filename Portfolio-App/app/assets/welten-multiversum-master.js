@@ -1727,6 +1727,7 @@
 
   ensureSingleChrome();
   clearSwitchLock();
+  forceRevealActiveFrame();
   recoverStuckSwitch();
   forceEnableWorldButtons();
 
