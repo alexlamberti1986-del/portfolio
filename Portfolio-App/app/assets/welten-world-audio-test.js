@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var VERSION = "20260716mvBleed11";
+  var VERSION = "20260716mvBleed13";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
@@ -12,6 +12,7 @@
     general: "/assets/audio/worlds/MULTIVERSUM.mp3?v=" + VERSION,
     nexora: "/assets/audio/worlds/NEXORA.mp3?v=" + VERSION,
     vertex: "/assets/audio/worlds/PROFESSIONAL.mp3?v=" + VERSION,
+    professional: "/assets/audio/worlds/PROFESSIONAL.mp3?v=" + VERSION,
     freiraum: "/assets/audio/worlds/FREIRAUM.mp3?v=" + VERSION,
   };
 
@@ -375,6 +376,30 @@
     tick();
   }
 
+  function primeNextWorldTrack(world) {
+    if (!world || !TRACKS[world]) return;
+    resumeAudioCtx();
+    var el = ensureBgm();
+    var src = TRACKS[world];
+    var pathOnly = src.split("?")[0];
+    el.loop = true;
+    el.playsInline = true;
+    el.setAttribute("playsinline", "");
+    el.muted = true;
+    el.volume = 0;
+    if (!el.src || el.src.indexOf(pathOnly) < 0) {
+      el.src = src;
+      try {
+        el.load();
+      } catch (eLoad) {}
+    }
+    try {
+      var p = el.play();
+      if (p && typeof p.then === "function") p.catch(function () {});
+    } catch (ePlay) {}
+    window.__mvMobileAudioPrimedAt = Date.now();
+  }
+
   function onSwitchStart(targetWorld) {
     if (targetWorld) pendingWorld = targetWorld;
     switchGeneration += 1;
@@ -417,6 +442,10 @@
     bootGesturePending = false;
     unhookBootGesture();
     if (pendingWorld) preloadTrack(pendingWorld);
+    /* User-Gesture: nächsten Welt-Track stumm primen, damit Unmute nach Animation zuverlässiger greift */
+    if (pendingWorld && TRACKS[pendingWorld]) {
+      primeNextWorldTrack(pendingWorld);
+    }
   }
 
   function onSwitchEnd(world) {
@@ -431,7 +460,6 @@
       return;
     }
     var expectedSwitch = switchGeneration;
-    var token = ++playToken;
 
     function start() {
       if (expectedSwitch !== switchGeneration) return;
@@ -449,7 +477,9 @@
         return;
       }
       stopIframeWorldBgm({ onlyNonActive: true });
+      /* hardStopBgm increments playToken — capture token AFTER stop so playBgm accepts it */
       hardStopBgm();
+      var token = ++playToken;
       if (world !== "general") {
         stopIframeWorldBgm({ onlyNonActive: true });
         try {
