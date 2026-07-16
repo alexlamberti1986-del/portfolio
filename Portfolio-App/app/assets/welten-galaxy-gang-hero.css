@@ -1,5 +1,5 @@
 /* Multiversum Home: Galaxy Walk + Kapitel-Nav (wie Unterseiten) + Home-Inhalt
- * Galaxy nur ab ~14″: (min-width: 1280px) and (min-height: 700px).
+ * Galaxy ab ~13″: (min-width: 1025px) and (min-height: 640px).
  */
 
 /* ── Default / phone / tablet / small laptop: kein Galaxy UI ── */
@@ -20,8 +20,8 @@ html body[data-world="general"] #alGalaxyHomeChrome {
   border: 0 !important;
 }
 
-/* ── Galaxy enabled (~14″ laptop+) ── */
-@media (min-width: 1280px) and (min-height: 700px) {
+/* ── Galaxy enabled (~13″ laptop+) ── */
+@media (min-width: 1025px) and (min-height: 640px) {
   html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
   html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero,
   html body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {

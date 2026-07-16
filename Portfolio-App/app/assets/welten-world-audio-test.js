@@ -416,8 +416,10 @@
         waitForAnimationEnd(start);
         return;
       }
-      /* Iframe-BGM hart stoppen, damit nach Animation nur der Shell-Player läuft */
+      /* Nur Zielwelt — Multiversum-BGM darf nach Switch nie mitlaufen */
+      if (activeWorld() !== world) return;
       stopIframeWorldBgm();
+      hardStopBgm();
       if (isTouchMobile()) resumeAudioCtx();
       playBgm(world, token, isTouchMobile() ? 160 : SWITCH_END_FADE_MS, expectedSwitch);
     }

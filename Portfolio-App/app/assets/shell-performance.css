@@ -18,6 +18,8 @@
   transition: none !important;
   content-visibility: visible;
   contain: none;
+  transform: none !important;
+  clip-path: none !important;
 }
 
 .world-frame.is-leaving,
@@ -132,6 +134,7 @@ html.welten-world-switch-lock .mv4-frame.is-paused {
   visibility: hidden !important;
   pointer-events: none !important;
   clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
 }
 
 /* Nach Unlock: Nicht-Ziel-Frames bleiben hart weg (kein Multiversum-Peek) */
@@ -141,6 +144,7 @@ html.welten-world-switch-lock .mv4-frame.is-paused {
   visibility: hidden !important;
   pointer-events: none !important;
   clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
   z-index: 0 !important;
 }
 
@@ -151,6 +155,7 @@ body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"] {
   visibility: hidden !important;
   pointer-events: none !important;
   clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
   z-index: 0 !important;
   content-visibility: hidden;
 }
@@ -161,4 +166,5 @@ html.welten-world-switch-lock .mv4-frame.is-active.is-paused {
   visibility: hidden !important;
   pointer-events: none !important;
   clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
 }

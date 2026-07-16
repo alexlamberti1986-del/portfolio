@@ -207,7 +207,7 @@ body[data-world="freiraum"] .welten-service-pill {
   margin-bottom: 0.35rem;
 }
 
-@media (min-width: 1280px) and (min-height: 700px) {
+@media (min-width: 1025px) and (min-height: 640px) {
   body[data-welten-galaxy-hero="1"] .welten-home-brief {
     display: none !important;
   }

@@ -202,6 +202,7 @@ html.welten-world-switch-lock .mv4-frame.is-active {
   visibility: hidden !important;
   pointer-events: none !important;
   clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
 }
 
 html.welten-world-switch-lock .mv4-frame.is-leaving,
@@ -220,6 +221,7 @@ body:not([data-master-world="general"]) .mv4-frame[data-world="general"] {
   visibility: hidden !important;
   pointer-events: none !important;
   clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
   z-index: 0 !important;
   content-visibility: hidden !important;
 }
@@ -247,6 +249,7 @@ html.welten-world-switch-lock .mv4-frame.is-active.is-paused {
   overflow: hidden !important;
   z-index: 0 !important;
   clip-path: inset(100%) !important;
+  transform: translate3d(-200%, 0, 0) !important;
 }
 
 .mv4-frame.is-active {
@@ -260,6 +263,7 @@ html.welten-world-switch-lock .mv4-frame.is-active.is-paused {
   width: 100% !important;
   height: calc(100dvh - var(--total-header-h, var(--bar-h, 120px))) !important;
   clip-path: none !important;
+  transform: none !important;
 }
 
 /* Nur die erste Shell-Bar darf sichtbar sein */

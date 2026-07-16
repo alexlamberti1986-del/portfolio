@@ -336,6 +336,7 @@
       f.style.removeProperty("pointer-events");
       f.style.removeProperty("clip-path");
       f.style.removeProperty("z-index");
+      f.style.removeProperty("transform");
     } catch (eClear) {}
   }
 
@@ -352,6 +353,8 @@
       f.style.setProperty("pointer-events", "none", "important");
       f.style.setProperty("clip-path", "inset(100%)", "important");
       f.style.setProperty("z-index", "0", "important");
+      /* Extra compositor kill without blanking src (Galaxy Walk stays warm) */
+      f.style.setProperty("transform", "translate3d(-200%, 0, 0)", "important");
     } catch (eHide) {}
   }
 
@@ -768,6 +771,7 @@
     switching = true;
     document.documentElement.classList.add("welten-world-switch-lock");
     window.__worldTransitionRunning = true;
+    window.__mvInWorldSwitch = true;
     switchLockSince = Date.now();
     try {
       document.dispatchEvent(
@@ -784,6 +788,7 @@
   function unlockShell() {
     switching = false;
     window.__worldTransitionRunning = false;
+    window.__mvInWorldSwitch = false;
     switchLockSince = 0;
     var shellBar = getBar();
     if (shellBar) {
@@ -1139,35 +1144,52 @@
 
     function revealTargetAfterLock() {
       if (myGen !== switchGeneration) return;
-      /* Confirm Multiversum (and peers) stay non-active before lock drops */
+      /* Confirm Multiversum (and peers) stay non-active before lock drops.
+         Keep switch COVER opaque — do not purge overlays here (bleed gap). */
       frames.forEach(function (f, j) {
         if (!f) return;
         if (j === i) {
-          hardShowFrame(f);
+          /* Still under lock CSS + cover: mark active but keep compositor-safe hide
+             until the double-rAF unlock paints only the target. */
+          f.classList.add("is-active");
+          f.classList.remove("is-leaving");
+          f.classList.add("is-paused");
+          f.style.pointerEvents = "none";
+          f.setAttribute("aria-hidden", "true");
+          try {
+            f.style.setProperty("opacity", "0", "important");
+            f.style.setProperty("visibility", "hidden", "important");
+            f.style.setProperty("clip-path", "inset(100%)", "important");
+            f.style.removeProperty("transform");
+          } catch (eKeep) {}
         } else {
           hardHideFrame(f);
           f.classList.remove("is-leaving");
           f.classList.add("is-paused");
           postFrame(f, { type: "portfolio-world-pause", paused: true });
           postFrame(f, { type: "mv-stop-iframe-bgm" });
+          if (j === 0) postFrame(f, { type: "mv-galaxy-hard-hide" });
         }
       });
-      if (i !== 0 && frames[0] && frames[0].classList.contains("is-active")) {
+      if (i !== 0 && frames[0]) {
         hardHideFrame(frames[0]);
+        postFrame(frames[0], { type: "mv-galaxy-hard-hide" });
+        postFrame(frames[0], { type: "mv-stop-iframe-bgm" });
       }
       pendingSwitchTarget = -1;
-      unlockShell();
       forceEnableWorldButtons();
-      purgeSwitchOverlays(true);
-      /* Double-rAF: paint target under lock, then drop lock (no Multiversum peek) */
+      /* Double-rAF: paint target under lock+cover, then drop lock (cover still up) */
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           if (myGen !== switchGeneration) return;
-          if (i !== 0 && frames[0]) hardHideFrame(frames[0]);
+          if (i !== 0 && frames[0]) {
+            hardHideFrame(frames[0]);
+            postFrame(frames[0], { type: "mv-galaxy-hard-hide" });
+          }
           if (frames[i]) hardShowFrame(frames[i]);
           document.documentElement.classList.remove("welten-world-switch-lock");
           switchLockSince = 0;
-          purgeSwitchOverlays(false);
+          unlockShell();
           try {
             document.dispatchEvent(
               new CustomEvent("welten-audio-switch-end", { detail: { world: masterKey(i) } })

@@ -1,16 +1,16 @@
 /**
  * Multiversum Home — Galaxy Walk als Hero + Kapitel-Nav + sichtbarer Home-Inhalt.
- * Galaxy nur ab ~14″ Laptop: (min-width: 1280px) and (min-height: 700px).
- * Schwerer Iframe-Download erst nach idle; Overlay kurz; kein Tab-Blocker.
+ * Galaxy ab ~13″ Laptop: (min-width: 1025px) and (min-height: 640px).
+ * Phone/Tablet (≤1024px Breite) bleiben ohne Galaxy. Schwerer Iframe erst nach idle.
  */
 (function () {
   "use strict";
 
-  var VER = "20260715typeFix1";
+  var VER = "20260716galaxy15";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
-  /* ~14″ Laptop+; Tablets (auch Landscape ~1024–1366) bleiben aus. */
-  var GALAXY_MQ = "(min-width: 1280px) and (min-height: 700px)";
+  /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
+  var GALAXY_MQ = "(min-width: 1025px) and (min-height: 640px)";
   var mqGalaxy = window.matchMedia ? window.matchMedia(GALAXY_MQ) : null;
   var iframeSrcStarted = false;
   var markedReady = false;
@@ -27,8 +27,30 @@
   function isGalaxyViewport() {
     try {
       if (mqGalaxy) return !!mqGalaxy.matches;
-      return window.innerWidth >= 1280 && window.innerHeight >= 700;
+      return window.innerWidth >= 1025 && window.innerHeight >= 640;
     } catch (e) {
+      return false;
+    }
+  }
+
+  /* Shell-Parent: Multiversum darf Galaxy nur zeigen, wenn wirklich aktiv (kein Bleed). */
+  function parentShellAllowsMvLive() {
+    try {
+      var p = window.parent;
+      if (!p || p === window) return true;
+      if (p.__worldTransitionRunning || p.__mvInWorldSwitch) return false;
+      if (p.document && p.document.documentElement.classList.contains("welten-world-switch-lock")) {
+        return false;
+      }
+      if (p.document && p.document.body) {
+        var mw = p.document.body.getAttribute("data-master-world");
+        if (mw && mw !== "general") return false;
+      }
+      if (typeof p.mv4ActiveFrameIndex === "function" && p.mv4ActiveFrameIndex() !== 0) {
+        return false;
+      }
+      return true;
+    } catch (eAllow) {
       return false;
     }
   }
@@ -137,6 +159,8 @@
 
   function endOutboundLeave() {
     if (!galaxyLive || !isGalaxyViewport()) return;
+    /* Nie Galaxy/Chrome zurückholen, wenn Shell schon eine andere Welt zeigt */
+    if (!parentShellAllowsMvLive()) return;
     try {
       document.documentElement.classList.remove("mv-galaxy-outbound");
       document.body.classList.remove("mv-galaxy-outbound");
@@ -528,6 +552,10 @@
     }
     if (t === "portfolio-world-enter" || t === "portfolio-world-reveal") {
       if (!galaxyLive || !isGalaxyViewport()) return;
+      if (!parentShellAllowsMvLive()) {
+        beginOutboundLeave();
+        return;
+      }
       endOutboundLeave();
       if (isMultiversum() && isHomeActive()) setGalaxyIframePaused(false);
     }
@@ -661,6 +689,7 @@
     try {
       new MutationObserver(function () {
         if (!galaxyLive || !isGalaxyViewport()) return;
+        if (!parentShellAllowsMvLive()) return;
         syncChapterNav();
         if (!isHomeActive()) return;
         if (

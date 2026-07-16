@@ -1779,6 +1779,7 @@
         activeOverlay.classList.remove("is-entering");
         /* Apply target first while cover still solid */
         wwsCallTransitionEnd();
+        /* Hold cover long enough for double-rAF unlock + paint of target only */
         wwsLater(function () {
           if (activeOverlay) {
             activeOverlay.remove();
@@ -1788,7 +1789,7 @@
           running = false;
           window.__wwsPreviewOwnsSound = false;
           wwsClearTimers();
-        }, Math.max(60, Math.min(exitMs, 120)));
+        }, Math.max(140, Math.min(exitMs + 80, 280)));
       }
 
       /* Sicherheitsnetz: erst aufdecken, wenn die Zielwelt wirklich aktiv ist —

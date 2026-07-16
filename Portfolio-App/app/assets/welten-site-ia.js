@@ -245,14 +245,14 @@
   function isGalaxyDesktopHome() {
     try {
       if (document.body.getAttribute("data-welten-galaxy-hero") !== "1") return false;
-      return window.matchMedia("(min-width: 1280px) and (min-height: 700px)").matches;
+      return window.matchMedia("(min-width: 1025px) and (min-height: 640px)").matches;
     } catch (e) {
       return false;
     }
   }
 
   function injectHomeExtras() {
-    /* Galaxy Walk ≥1280×700: keep first viewport untouched — brief blocks live in shell SEO. */
+    /* Galaxy Walk ≥1025×640: keep first viewport untouched — brief blocks live in shell SEO. */
     if (isGalaxyDesktopHome()) return;
 
     var slide = document.querySelector("#slide-home .slide-inner");
