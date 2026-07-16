@@ -150,7 +150,8 @@ html.welten-world-switch-lock .mv4-frame.is-paused {
 
 /* Outbound: Multiversum darf nie über Theme/Bar hinaus noch compositen */
 body:not([data-master-world="general"]) .mv4-frame[data-world="general"],
-body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"] {
+body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"],
+.mv4-frame[data-mv-quarantined="1"] {
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;

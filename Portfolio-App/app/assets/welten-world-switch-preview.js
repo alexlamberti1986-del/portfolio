@@ -1787,7 +1787,11 @@
             var want = keys[targetIdx] || "";
             if (want && master && master !== want) return false;
             var frames = document.querySelectorAll(".mv4-frame");
-            if (targetIdx !== 0 && frames[0] && frames[0].classList.contains("is-active")) {
+            if (targetIdx !== 0) {
+              if (master === "general") return false;
+              if (frames[0] && frames[0].getAttribute("data-mv-quarantined") !== "1") return false;
+            }
+            if (typeof window.mv4MasterFrameIndex === "function" && window.mv4MasterFrameIndex() !== targetIdx) {
               return false;
             }
             if (activeFrameIndex() !== targetIdx) return false;
@@ -1818,15 +1822,15 @@
 
       /* Sicherheitsnetz: erst aufdecken, wenn die Zielwelt wirklich aktiv ist —
          sonst nochmal versuchen, statt mit der falschen Welt sichtbar zu werden. */
-      if (activeFrameIndex() !== targetIdx && typeof window.switchToWorldIndex === "function") {
-        Promise.resolve(window.switchToWorldIndex(targetIdx)).then(doExit, doExit);
+      if (activeFrameIndex() !== targetIdx && typeof window.preloadWorldIndex === "function") {
+        Promise.resolve(window.preloadWorldIndex(targetIdx)).then(doExit, doExit);
         return;
       }
       doExit();
     }
 
     wwsLater(function () {
-      var switchFn = window.switchToWorldIndex;
+      var switchFn = window.preloadWorldIndex;
       frameReady
         .then(function () {
           return typeof switchFn === "function" ? Promise.resolve(switchFn(targetIdx)) : Promise.resolve();
@@ -1873,9 +1877,9 @@
       /* Failsafe griff, bevor der Zielwelt-Wechsel bestätigt wurde — noch
          einmal versuchen, damit wir nicht mit dem Cover verschwinden, während
          die falsche Welt aktiv bleibt. */
-      if (!doneAlready && typeof window.switchToWorldIndex === "function") {
+      if (!doneAlready && typeof window.preloadWorldIndex === "function") {
         try {
-          Promise.resolve(window.switchToWorldIndex(targetIdx)).then(cleanupFailsafe, cleanupFailsafe);
+          Promise.resolve(window.preloadWorldIndex(targetIdx)).then(cleanupFailsafe, cleanupFailsafe);
         } catch (eFailsafeSwitch) {
           cleanupFailsafe();
         }

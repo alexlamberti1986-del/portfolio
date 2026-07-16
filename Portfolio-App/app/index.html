@@ -19,7 +19,8 @@
       transition: opacity .16s ease-out;
     }
     body:not([data-master-world="general"]) .mv4-frame[data-world="general"],
-    body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"] {
+    body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"],
+    .mv4-frame[data-mv-quarantined="1"] {
       opacity: 0 !important;
       visibility: hidden !important;
       pointer-events: none !important;
@@ -168,7 +169,7 @@
   var l = document.createElement("link");
   l.rel = "preload";
   l.as = "document";
-  l.href = "/MULTIVERSUM.html?v=20260716mvBleed2";
+  l.href = "/MULTIVERSUM.html?v=20260716mvBleed4";
   l.fetchPriority = "high";
   document.head.appendChild(l);
 })();
@@ -177,11 +178,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="/assets/welten-font-system.css?v=20260710fonts-async" />
   <link rel="stylesheet" href="/assets/welten-world-title-colors.css?v=20260705bootfix" />
-  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260716mvBleed2" />
+  <link rel="stylesheet" href="/assets/welten-multiversum-master.css?v=20260716mvBleed4" />
   <link rel="stylesheet" href="/assets/welten-global-header.css?v=20260715headerFix1" />
   <link rel="stylesheet" href="/assets/welten-mobile-shell-fixes.css?v=20260706mobile-pass1" />
-  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260716mvBleed2" />
-  <link rel="stylesheet" href="/assets/shell-performance.css?v=20260716mvBleed2" />
+  <link rel="stylesheet" href="/assets/welten-world-switch-preview.css?v=20260716mvBleed4" />
+  <link rel="stylesheet" href="/assets/shell-performance.css?v=20260716mvBleed4" />
   <link rel="stylesheet" href="/assets/welten-shell-accessibility.css?v=20260715phase4" />
   <script src="/assets/welten-translations.js?v=20260715phase3" defer></script>
   <script src="/assets/welten-shell-router.js?v=20260713routing" defer></script>
@@ -352,7 +353,7 @@
   </div>
 
   <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM"
-  data-lazy-src="/MULTIVERSUM.html?v=20260716mvBleed2" src="about:blank"></iframe>
+  data-lazy-src="/MULTIVERSUM.html?v=20260716mvBleed4" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="nexora" title="NEXORA" data-lazy-src="/NEXORA.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="vertex" title="PROFESSIONAL" data-lazy-src="/PROFESSIONAL.html" src="about:blank"></iframe>
   <iframe class="mv4-frame" data-world="freiraum" title="FREIRAUM" data-lazy-src="/FREIRAUM.html" src="about:blank"></iframe>
@@ -372,11 +373,19 @@
           f.classList.toggle("is-active", on);
           f.style.pointerEvents = on ? "auto" : "none";
           if (on) {
+            f.removeAttribute("data-mv-quarantined");
             var lazy = f.getAttribute("data-lazy-src");
             var cur = f.getAttribute("src") || "";
             if (lazy && (!cur || /about:blank/i.test(cur) || /about:blank/i.test(f.src || ""))) {
               f.src = lazy;
             }
+          } else {
+            if (i === 0) f.setAttribute("data-mv-quarantined", "1");
+            f.style.setProperty("opacity", "0", "important");
+            f.style.setProperty("visibility", "hidden", "important");
+            f.style.setProperty("clip-path", "inset(100%)", "important");
+            f.style.setProperty("transform", "translate3d(-200%, 0, 0)", "important");
+            f.style.setProperty("pointer-events", "none", "important");
           }
         });
         links.forEach(function (a) {
@@ -425,9 +434,9 @@
     })();
   </script>
 
-  <script src="/assets/welten-world-audio-test.js?v=20260716mvBleed2" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260716mvBleed3" defer></script>
+  <script src="/assets/welten-world-audio-test.js?v=20260716mvBleed4" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260716mvBleed4" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
-  <script src="/assets/welten-world-switch-preview.js?v=20260716mvBleed2" defer></script>
+  <script src="/assets/welten-world-switch-preview.js?v=20260716mvBleed4" defer></script>
 </body>
 </html>
