@@ -4,10 +4,12 @@
 (function () {
   "use strict";
 
-  var VERSION = "5";
+  var VERSION = "6";
   var FORM_SRC = "assets/preview/alx-offerte-form-v5.html";
-  var FORM_CACHE = "20260717weltenformFinal1";
+  var FORM_CACHE = "20260717formHeight1";
   var FORM_TYPO_STYLE_ID = "welten-offerte-typo-fix";
+  var DEFAULT_FRAME_HEIGHT = 2400;
+  var heightWatchTimer = 0;
 
   function currentLang() {
     try {
@@ -124,16 +126,95 @@
     var wrap = frame && frame.closest(".welten-leadform-wrap");
     if (!frame) return;
     var h = parseInt(height, 10);
-    if (h > 200) {
-      frame.style.height = h + "px";
-      frame.style.minHeight = "0";
-      frame.style.maxHeight = h + "px";
-      frame.setAttribute("scrolling", "no");
-      if (wrap) {
-        wrap.style.height = h + "px";
-        wrap.style.minHeight = "0";
-        wrap.style.maxHeight = h + "px";
-      }
+    if (!(h > 200)) h = DEFAULT_FRAME_HEIGHT;
+    frame.style.height = h + "px";
+    frame.style.minHeight = h + "px";
+    frame.style.maxHeight = "none";
+    frame.setAttribute("scrolling", "no");
+    if (wrap) {
+      wrap.style.height = h + "px";
+      wrap.style.minHeight = h + "px";
+      wrap.style.maxHeight = "none";
+    }
+  }
+
+  function measureFormHeight(frame) {
+    try {
+      var doc = frame && frame.contentDocument;
+      if (!doc || !doc.documentElement) return 0;
+      var body = doc.body;
+      var root = doc.documentElement;
+      var shell = doc.querySelector(".dp-wrap") || doc.querySelector(".dp-shell") || body;
+      var candidates = [
+        shell && shell.scrollHeight,
+        shell && shell.offsetHeight,
+        body && body.scrollHeight,
+        body && body.offsetHeight,
+        root && root.scrollHeight,
+        root && root.offsetHeight,
+      ];
+      var max = 0;
+      candidates.forEach(function (v) {
+        var n = parseInt(v, 10) || 0;
+        if (n > max) max = n;
+      });
+      return max > 0 ? max + 24 : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  function syncFormHeight(frame) {
+    frame = frame || document.getElementById("weltenOfferteForm");
+    if (!frame) return;
+    var h = measureFormHeight(frame);
+    if (h > 200) resizeOfferteFrame(h);
+    else if (!frame.style.height || parseInt(frame.style.height, 10) < 400) {
+      resizeOfferteFrame(DEFAULT_FRAME_HEIGHT);
+    }
+  }
+
+  function injectHeightReporter(frame) {
+    var doc;
+    try {
+      doc = frame && frame.contentDocument;
+    } catch (e) {
+      return;
+    }
+    if (!doc || !doc.body || doc.getElementById("welten-offerte-height-reporter")) return;
+    var script = doc.createElement("script");
+    script.id = "welten-offerte-height-reporter";
+    script.textContent =
+      "(function(){function h(){try{var el=document.querySelector('.dp-wrap')||document.body;var n=Math.max(el.scrollHeight||0,el.offsetHeight||0,document.documentElement.scrollHeight||0);if(n>200&&window.parent)window.parent.postMessage({type:'alx-form-height',height:n+24},'*');}catch(e){}}h();window.addEventListener('load',h);window.addEventListener('resize',h);if(window.ResizeObserver){try{new ResizeObserver(h).observe(document.body);}catch(e2){}}setInterval(h,800);})();";
+    doc.body.appendChild(script);
+  }
+
+  function bindFormHeight(frame) {
+    if (!frame || frame.getAttribute("data-height-bound") === "1") return;
+    frame.setAttribute("data-height-bound", "1");
+    resizeOfferteFrame(DEFAULT_FRAME_HEIGHT);
+    function onReady() {
+      injectFormTypography(frame);
+      injectHeightReporter(frame);
+      syncFormHeight(frame);
+      if (heightWatchTimer) clearInterval(heightWatchTimer);
+      heightWatchTimer = window.setInterval(function () {
+        if (document.body.getAttribute("data-current-slide") !== "offerte") return;
+        syncFormHeight(frame);
+      }, 700);
+      window.setTimeout(function () {
+        syncFormHeight(frame);
+      }, 120);
+      window.setTimeout(function () {
+        syncFormHeight(frame);
+      }, 600);
+      window.setTimeout(function () {
+        syncFormHeight(frame);
+      }, 1600);
+    }
+    frame.addEventListener("load", onReady);
+    if (frame.contentDocument && frame.contentDocument.readyState === "complete") {
+      onReady();
     }
   }
 
@@ -142,6 +223,7 @@
     if (!frame) return;
 
     bindFormTypography(frame);
+    bindFormHeight(frame);
 
     var nextSrc = formFrameSrc();
     var current = frame.getAttribute("src") || "";
@@ -149,11 +231,14 @@
       try {
         localStorage.setItem("alex-lamberti-world", formWorldKey());
       } catch (e) {}
+      resizeOfferteFrame(DEFAULT_FRAME_HEIGHT);
       frame.src = nextSrc;
       return;
     }
 
     injectFormTypography(frame);
+    injectHeightReporter(frame);
+    syncFormHeight(frame);
 
     if (frame.contentWindow) {
       try {

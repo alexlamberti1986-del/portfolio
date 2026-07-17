@@ -47,10 +47,10 @@
   min-width: 0;
   width: 100%;
   height: auto;
-  min-height: 0 !important;
+  min-height: 2400px !important;
   max-height: none;
   margin: 0 0 clamp(4px, 1vw, 12px) 0 !important;
-  overflow: hidden;
+  overflow: visible;
   border-radius: var(--radius-lg, 28px);
   line-height: 0;
   flex-grow: 0 !important;
@@ -59,8 +59,8 @@
 #slide-offerte .welten-leadform-frame {
   display: block;
   width: 100%;
-  min-height: 0 !important;
-  height: auto;
+  min-height: 2400px !important;
+  height: 2400px;
   margin: 0;
   padding: 0;
   vertical-align: top;
