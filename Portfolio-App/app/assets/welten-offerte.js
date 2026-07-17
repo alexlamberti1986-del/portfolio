@@ -4,9 +4,9 @@
 (function () {
   "use strict";
 
-  var VERSION = "4";
+  var VERSION = "5";
   var FORM_SRC = "assets/preview/alx-offerte-form-v5.html";
-  var FORM_CACHE = "20260715typeFix1";
+  var FORM_CACHE = "20260717weltenformFinal1";
   var FORM_TYPO_STYLE_ID = "welten-offerte-typo-fix";
 
   function currentLang() {
