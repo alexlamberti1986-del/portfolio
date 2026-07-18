@@ -1,8 +1,9 @@
 /**
- * Desktop Stage Scale — nur Desktop (min-width: 1025px), gleiche Grenze wie die bestehende Shell.
- * Referenzbühne: 1920 × 1080
- * scale = min(viewportW / 1920, viewportH / 1080)
- * Nutzt visualViewport wenn verfügbar.
+ * Desktop Stage Scale v2 — nur Desktop (min-width: 1025px).
+ * Referenz: 1920 × 1080
+ * scale = Math.min(viewportW / 1920, viewportH / 1080)
+ * visualViewport bevorzugt; Fallback innerWidth/innerHeight.
+ * Mobile/Tablet: vollständig deaktiviert (gleiche Grenze wie Shell).
  */
 (function () {
   var REF_W = 1920;
@@ -13,6 +14,8 @@
   var raf = 0;
   var disposed = false;
   var listeners = [];
+  var lastScale = null;
+  var worldObserver = null;
 
   function getViewportSize() {
     var vv = window.visualViewport;
@@ -34,8 +37,18 @@
     }
   }
 
+  function syncBackgroundWorld() {
+    var bg = document.querySelector(".desktop-background");
+    if (!bg || !document.body) return;
+    var world = document.body.getAttribute("data-master-world") || "general";
+    bg.setAttribute("data-world", world);
+  }
+
   function ensureStructure() {
-    if (document.getElementById("desktopViewport")) return;
+    if (document.getElementById("desktopViewport")) {
+      syncBackgroundWorld();
+      return;
+    }
 
     var body = document.body;
     if (!body) return;
@@ -52,17 +65,13 @@
     bg.className = "desktop-background";
     bg.setAttribute("aria-hidden", "true");
 
-    var slot = document.createElement("div");
-    slot.className = "desktop-stage-slot";
-    slot.id = "desktopStageSlot";
-
     var stage = document.createElement("div");
     stage.id = "desktopStage";
     stage.className = "desktop-stage";
+    stage.setAttribute("data-desktop-safe-area", "1");
 
-    slot.appendChild(stage);
     viewport.appendChild(bg);
-    viewport.appendChild(slot);
+    viewport.appendChild(stage);
 
     var insertBefore = null;
     if (chrome && chrome.parentNode === body) {
@@ -81,38 +90,53 @@
     frames.forEach(function (f) {
       stage.appendChild(f);
     });
+
+    syncBackgroundWorld();
+  }
+
+  function calculateDesktopScale() {
+    var vp = getViewportSize();
+    var scaleX = vp.width / REF_W;
+    var scaleY = vp.height / REF_H;
+    var scale = Math.min(scaleX, scaleY);
+    if (!isFinite(scale) || scale <= 0) scale = 1;
+    return Math.round(scale * 10000) / 10000;
   }
 
   function applyScale() {
     if (disposed) return;
     ensureStructure();
+    syncBackgroundWorld();
 
     root.style.setProperty("--desktop-ref-w", REF_W + "px");
     root.style.setProperty("--desktop-ref-h", REF_H + "px");
 
     if (!isDesktop()) {
-      root.classList.remove("desktop-stage-active");
-      root.style.setProperty("--desktop-scale", "1");
-      root.setAttribute("data-desktop-scale", "1");
-      try {
-        window.dispatchEvent(new CustomEvent("mv-desktop-stage-updated", { detail: { scale: 1 } }));
-      } catch (eEvtOff) {}
+      if (lastScale !== 1 || root.classList.contains("desktop-stage-active")) {
+        root.classList.remove("desktop-stage-active");
+        root.style.setProperty("--desktop-scale", "1");
+        root.setAttribute("data-desktop-scale", "1");
+        lastScale = 1;
+        try {
+          window.dispatchEvent(new CustomEvent("mv-desktop-stage-updated", { detail: { scale: 1 } }));
+        } catch (eEvtOff) {}
+      }
       return;
     }
 
-    var vp = getViewportSize();
-    var scale = Math.min(vp.width / REF_W, vp.height / REF_H);
-    if (!isFinite(scale) || scale <= 0) scale = 1;
-    /* Leichte Rundung gegen Subpixel-Flackern */
-    scale = Math.round(scale * 10000) / 10000;
+    var scale = calculateDesktopScale();
+    var changed = lastScale !== scale || !root.classList.contains("desktop-stage-active");
 
     root.classList.add("desktop-stage-active");
     root.style.setProperty("--desktop-scale", String(scale));
     root.setAttribute("data-desktop-scale", String(scale));
+    lastScale = scale;
 
-    try {
-      window.dispatchEvent(new CustomEvent("mv-desktop-stage-updated", { detail: { scale: scale } }));
-    } catch (eEvt) {}
+    if (changed) {
+      try {
+        window.dispatchEvent(new CustomEvent("mv-desktop-stage-updated", { detail: { scale: scale } }));
+      } catch (eEvt) {}
+    }
   }
 
   function scheduleApply() {
@@ -134,12 +158,61 @@
     disposed = true;
     if (raf) cancelAnimationFrame(raf);
     raf = 0;
+    if (worldObserver) {
+      try {
+        worldObserver.disconnect();
+      } catch (eObs) {}
+      worldObserver = null;
+    }
     listeners.forEach(function (l) {
       try {
-        l.target.removeEventListener(l.type, l.handler, l.opts);
+        if (l.type === "ro" && l.target && l.target.removeEventListener) {
+          l.target.removeEventListener();
+        } else {
+          l.target.removeEventListener(l.type, l.handler, l.opts);
+        }
       } catch (e) {}
     });
     listeners = [];
+  }
+
+  function runVisibilityAudit() {
+    if (!root.classList.contains("desktop-stage-active")) {
+      return { active: false };
+    }
+    var vp = getViewportSize();
+    var critical = document.querySelectorAll("[data-viewport-critical]");
+    var clipped = [];
+    var tol = 2;
+    for (var i = 0; i < critical.length; i++) {
+      var el = critical[i];
+      var rect = el.getBoundingClientRect();
+      var ok =
+        rect.left >= -tol &&
+        rect.top >= -tol &&
+        rect.right <= vp.width + tol &&
+        rect.bottom <= vp.height + tol;
+      if (!ok) {
+        clipped.push({
+          el: el,
+          rect: {
+            left: rect.left,
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+          },
+        });
+      }
+    }
+    return {
+      active: true,
+      scale: lastScale,
+      viewport: vp,
+      scrollOk:
+        document.documentElement.scrollWidth <= vp.width + 1 &&
+        document.documentElement.scrollHeight <= vp.height + 1,
+      clipped: clipped,
+    };
   }
 
   function boot() {
@@ -153,11 +226,16 @@
       } else if (mq.addListener) {
         mq.addListener(scheduleApply);
         listeners.push({
-          target: mq,
-          type: "change",
-          handler: scheduleApply,
+          target: {
+            removeEventListener: function () {
+              try {
+                mq.removeListener(scheduleApply);
+              } catch (eRm) {}
+            },
+          },
+          type: "ro",
+          handler: null,
           opts: undefined,
-          legacy: true,
         });
       }
     } catch (eMq) {}
@@ -179,7 +257,11 @@
         ro.observe(root);
         if (document.body) ro.observe(document.body);
         listeners.push({
-          target: { removeEventListener: function () { ro.disconnect(); } },
+          target: {
+            removeEventListener: function () {
+              ro.disconnect();
+            },
+          },
           type: "ro",
           handler: null,
           opts: undefined,
@@ -187,21 +269,43 @@
       } catch (eRo) {}
     }
 
-    /* Screen-/Display-Wechsel (wo unterstützt) */
     try {
       if (window.screen && screen.orientation && screen.orientation.addEventListener) {
         on(screen.orientation, "change", scheduleApply, { passive: true });
       }
     } catch (eOr) {}
 
+    if (document.body && typeof MutationObserver !== "undefined") {
+      try {
+        worldObserver = new MutationObserver(function () {
+          syncBackgroundWorld();
+        });
+        worldObserver.observe(document.body, {
+          attributes: true,
+          attributeFilter: ["data-master-world"],
+        });
+      } catch (eMo) {}
+    }
+
+    /* Shell-Chrome als kritische Viewport-Elemente markieren */
+    try {
+      var chromeEl = document.getElementById("mv4ShellChrome");
+      if (chromeEl && !chromeEl.hasAttribute("data-viewport-critical")) {
+        chromeEl.setAttribute("data-viewport-critical", "1");
+      }
+    } catch (eCrit) {}
+
     window.__mvDesktopStage = {
       apply: applyScale,
       dispose: dispose,
+      audit: runVisibilityAudit,
       getScale: function () {
         return parseFloat(root.getAttribute("data-desktop-scale") || "1") || 1;
       },
+      getViewportSize: getViewportSize,
       REF_W: REF_W,
       REF_H: REF_H,
+      DESKTOP_MQ: DESKTOP_MQ,
     };
   }
 

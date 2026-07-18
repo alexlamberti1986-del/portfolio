@@ -1,6 +1,9 @@
 /**
- * Desktop Stage — proportionale Skalierung der Shell-Bühne (nur Desktop ≥1025px).
- * Mobile/Tablet: Wrapper ist transparent, keine Skalierung.
+ * Desktop Stage v2 — drei Ebenen (nur Desktop ≥1025px).
+ * 1) .desktop-viewport  — voller CSS-Viewport
+ * 2) .desktop-background — vollflächig, weltbezogen (kein leerer Letterbox-Rand)
+ * 3) .desktop-stage     — 1920×1080 Inhaltsbühne, uniform scale(min)
+ * Mobile/Tablet: Wrapper transparent, keine Skalierung.
  */
 
 :root {
@@ -22,11 +25,7 @@
 }
 
 .desktop-stage-slot {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  position: relative;
+  display: contents;
 }
 
 .desktop-stage {
@@ -38,7 +37,7 @@
   transform: none;
 }
 
-/* ── Desktop aktiv: feste Referenzbühne + transform scale ── */
+/* ── Desktop aktiv ── */
 html.desktop-stage-active,
 html.desktop-stage-active body {
   width: 100%;
@@ -50,14 +49,13 @@ html.desktop-stage-active .desktop-viewport {
   position: fixed;
   inset: 0;
   z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
-  min-height: 100%;
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background: #02030b;
+  isolation: isolate;
+  background: #05070d;
 }
 
 html.desktop-stage-active .desktop-background {
@@ -65,39 +63,93 @@ html.desktop-stage-active .desktop-background {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(40, 55, 95, 0.35), transparent 70%),
-    #02030b;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
   pointer-events: none;
 }
 
-/* Layout-Box = visuelle Grösse (sonst Scrollbars durch transform) */
-html.desktop-stage-active .desktop-stage-slot {
-  position: relative;
-  z-index: 1;
-  width: calc(var(--desktop-ref-w) * var(--desktop-scale));
-  height: calc(var(--desktop-ref-h) * var(--desktop-scale));
-  min-height: 0;
-  flex-shrink: 0;
-  overflow: hidden;
+html.desktop-stage-active .desktop-background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 35%, rgba(55, 75, 130, 0.45), transparent 68%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(120, 40, 90, 0.18), transparent 55%),
+    linear-gradient(180deg, #070a14 0%, #05070d 55%, #03040a 100%);
 }
 
+/* Weltbezogene Vollflächen-Hintergründe (Letterbox = gestaltete Fläche) */
+html.desktop-stage-active body[data-master-world="general"] .desktop-background::before,
+html.desktop-stage-active .desktop-background[data-world="general"]::before {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255, 120, 60, 0.22), transparent 55%),
+    radial-gradient(ellipse 95% 80% at 50% 35%, rgba(120, 60, 180, 0.55), transparent 62%),
+    radial-gradient(ellipse 55% 50% at 8% 70%, rgba(40, 90, 200, 0.35), transparent 52%),
+    radial-gradient(ellipse 50% 45% at 92% 65%, rgba(180, 40, 120, 0.28), transparent 50%),
+    linear-gradient(165deg, #12081c 0%, #080612 40%, #04030a 100%);
+}
+
+html.desktop-stage-active body[data-master-world="nexora"] .desktop-background::before,
+html.desktop-stage-active .desktop-background[data-world="nexora"]::before {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 28%, rgba(40, 110, 180, 0.38), transparent 62%),
+    radial-gradient(ellipse 45% 40% at 85% 75%, rgba(20, 180, 200, 0.16), transparent 50%),
+    linear-gradient(180deg, #060a14 0%, #050810 50%, #03060e 100%);
+}
+
+html.desktop-stage-active body[data-master-world="vertex"] .desktop-background::before,
+html.desktop-stage-active .desktop-background[data-world="vertex"]::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 20%, rgba(255, 255, 255, 0.7), transparent 60%),
+    linear-gradient(180deg, #f7f5f1 0%, #f4f2ee 45%, #ebe7e0 100%);
+}
+
+html.desktop-stage-active body[data-master-world="freiraum"] .desktop-background::before,
+html.desktop-stage-active .desktop-background[data-world="freiraum"]::before {
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 30%, rgba(140, 60, 160, 0.42), transparent 65%),
+    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(180, 100, 40, 0.2), transparent 55%),
+    linear-gradient(165deg, #241330 0%, #1c1026 50%, #140a1c 100%);
+}
+
+html.desktop-stage-active .desktop-background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
+}
+
+html.desktop-stage-active body[data-master-world="vertex"] .desktop-background::after,
+html.desktop-stage-active .desktop-background[data-world="vertex"]::after {
+  opacity: 0.2;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+/* Inhaltsbühne: absolute + translate/scale — kein Layout-Overflow */
 html.desktop-stage-active .desktop-stage {
   position: absolute;
-  top: 0;
-  left: 0;
+  left: 50%;
+  top: 50%;
   z-index: 1;
   width: var(--desktop-ref-w);
   height: var(--desktop-ref-h);
   min-height: 0;
   overflow: hidden;
-  transform: scale(var(--desktop-scale));
-  transform-origin: top left;
+  transform: translate(-50%, -50%) scale(var(--desktop-scale));
+  transform-origin: center center;
   will-change: transform;
-  background: #02030b;
+  background: transparent;
 }
 
-/* Fixed/absolute Shell-Elemente beziehen sich auf die skalierte Bühne */
 html.desktop-stage-active .desktop-stage .mv4-shell-chrome {
   position: absolute;
   top: 0;
@@ -119,8 +171,17 @@ html.desktop-stage-active .desktop-stage .mv4-frame:not(.is-active) {
   max-height: calc(var(--desktop-ref-h) - var(--total-header-h, var(--bar-h, 120px))) !important;
 }
 
-/* Weltwechsel-Overlay deckt die Bühne ab (nicht den Letterbox-Rand) */
 html.desktop-stage-active .desktop-stage .welten-world-switch {
   position: absolute;
   inset: 0;
+}
+
+/* Safe-Area-Hinweis (nur Debug, wenn data-desktop-safe-outline=1) */
+html.desktop-stage-active[data-desktop-safe-outline="1"] .desktop-stage::after {
+  content: "";
+  position: absolute;
+  inset: 24px;
+  border: 1px dashed rgba(125, 211, 252, 0.35);
+  pointer-events: none;
+  z-index: 999999;
 }
