@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de-CH">
 <head>
   <meta charset="UTF-8" />
@@ -333,7 +333,7 @@
         "?v=20260714mvBoot1"
     };
   </script>
-  <script src="assets/welten-live-shell-early.js?v=20260718desktopScale1"></script>
+  <script src="assets/welten-live-shell-early.js?v=20260718galaxyStage2"></script>
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260716mvBleed12" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
@@ -342,7 +342,12 @@
       var useGal = false;
       try {
         if (window.parent && window.parent !== window) {
-          useGal = (window.parent.innerWidth || 0) >= 1025 && (window.parent.innerHeight || 0) >= 640;
+          var parentRoot = window.parent.document && window.parent.document.documentElement;
+          if (parentRoot && parentRoot.classList.contains("desktop-stage-active")) {
+            useGal = true;
+          } else {
+            useGal = (window.parent.innerWidth || 0) >= 1025 && (window.parent.innerHeight || 0) >= 640;
+          }
         } else {
           useGal = !!(window.matchMedia && window.matchMedia("(min-width:1025px) and (min-height:640px)").matches);
         }
@@ -354,7 +359,7 @@
       window.__mvUseGalaxyHome = !!useGal;
     })();
   </script>
-<script src="assets/welten-galaxy-gang-hero.js?v=20260718tvParity1" defer></script>
+<script src="assets/welten-galaxy-gang-hero.js?v=20260718galaxyStage2" defer></script>
 <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260715galaxy3" defer></script>
   <script src="assets/welten-multiversum-world.js?v=20260715galaxy3" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
@@ -5676,7 +5681,12 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
             var useGal = false;
             try {
               if (window.parent && window.parent !== window) {
-                useGal = (window.parent.innerWidth || 0) >= 1025 && (window.parent.innerHeight || 0) >= 640;
+                var parentRoot2 = window.parent.document && window.parent.document.documentElement;
+                if (parentRoot2 && parentRoot2.classList.contains("desktop-stage-active")) {
+                  useGal = true;
+                } else {
+                  useGal = (window.parent.innerWidth || 0) >= 1025 && (window.parent.innerHeight || 0) >= 640;
+                }
               } else {
                 var mqGal = window.matchMedia && window.matchMedia("(min-width:1025px) and (min-height:640px)");
                 useGal = !!(mqGal && mqGal.matches);
@@ -9018,7 +9028,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-contact-final.css?v=20260714offerte-v5" />
 <link rel="stylesheet" href="assets/welten-offerte.css?v=20260717formHeight1" />
 <script src="assets/welten-contact-final.js?v=20260714offerte-v5" defer></script>
-<script src="assets/welten-offerte.js?v=20260717formHeight1" defer></script>
+<script src="assets/welten-offerte.js?v=20260718worldSync2" defer></script>
 <link rel="stylesheet" href="assets/welten-hero-hide-desktop-titles.css?v=20260606f" />
 <link rel="stylesheet" href="assets/welten-mobile-home-portrait-fix.css?v=20260626portrait" />
 <link rel="stylesheet" href="assets/welten-chapter-visuals.css?v=20260706mobile-pass3" />

@@ -53,7 +53,8 @@
       try {
         var parentRoot = window.parent.document.documentElement;
         if (parentRoot && parentRoot.classList.contains("desktop-stage-active")) {
-          pw = 1920;
+          var stageW = parseFloat(parentRoot.getAttribute("data-desktop-stage-w") || "1920");
+          pw = isFinite(stageW) && stageW > 0 ? stageW : 1920;
           ph = 1080;
         }
       } catch (eStage) {}

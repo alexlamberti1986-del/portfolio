@@ -1532,11 +1532,11 @@
   function broadcastParentViewport() {
     var width = window.innerWidth || 0;
     var height = window.innerHeight || 0;
-    /* Desktop-Stage: Iframes sollen die Referenzbühne sehen (1920×1080),
-       nicht den ggf. durch OS-Skalierung verkleinerten CSS-Viewport. */
+    /* Desktop-Stage: Iframes sehen die Bühnengrösse (Höhe 1080, Breite dynamisch). */
     try {
       if (document.documentElement.classList.contains("desktop-stage-active")) {
-        width = 1920;
+        var stageW = parseFloat(document.documentElement.getAttribute("data-desktop-stage-w") || "1920");
+        width = isFinite(stageW) && stageW > 0 ? stageW : 1920;
         height = 1080;
       }
     } catch (eVp) {}

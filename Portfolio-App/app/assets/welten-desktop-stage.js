@@ -1,7 +1,10 @@
 /**
  * Desktop Stage Scale v2 — nur Desktop (min-width: 1025px).
  * Referenz: 1920 × 1080
- * scale = Math.min(viewportW / 1920, viewportH / 1080)
+ * Viewport-füllend ohne Letterbox links/rechts:
+ * scale = viewportH / 1080
+ * stageWidth = viewportW / scale  (mind. Design bleibt proportional, Bühne wird bei Ultrawide breiter)
+ * Einheitliches scale() — keine Verzerrung.
  * visualViewport bevorzugt; Fallback innerWidth/innerHeight.
  * Mobile/Tablet: vollständig deaktiviert (gleiche Grenze wie Shell).
  */
@@ -96,11 +99,17 @@
 
   function calculateDesktopScale() {
     var vp = getViewportSize();
-    var scaleX = vp.width / REF_W;
-    var scaleY = vp.height / REF_H;
-    var scale = Math.min(scaleX, scaleY);
+    /* Höhe füllt den Viewport; Breite der Bühne passt sich an → keine Seitenränder. */
+    var scale = vp.height / REF_H;
     if (!isFinite(scale) || scale <= 0) scale = 1;
-    return Math.round(scale * 10000) / 10000;
+    scale = Math.round(scale * 10000) / 10000;
+    var stageW = vp.width / scale;
+    if (!isFinite(stageW) || stageW < 1025) stageW = REF_W;
+    stageW = Math.round(stageW * 100) / 100;
+    root.style.setProperty("--desktop-ref-w", stageW + "px");
+    root.style.setProperty("--desktop-ref-h", REF_H + "px");
+    root.setAttribute("data-desktop-stage-w", String(Math.round(stageW)));
+    return scale;
   }
 
   function applyScale() {
@@ -108,10 +117,10 @@
     ensureStructure();
     syncBackgroundWorld();
 
-    root.style.setProperty("--desktop-ref-w", REF_W + "px");
     root.style.setProperty("--desktop-ref-h", REF_H + "px");
 
     if (!isDesktop()) {
+      root.style.setProperty("--desktop-ref-w", REF_W + "px");
       if (lastScale !== 1 || root.classList.contains("desktop-stage-active")) {
         root.classList.remove("desktop-stage-active");
         root.style.setProperty("--desktop-scale", "1");

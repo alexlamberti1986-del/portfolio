@@ -4,9 +4,9 @@
 (function () {
   "use strict";
 
-  var VERSION = "6";
+  var VERSION = "7";
   var FORM_SRC = "assets/preview/alx-offerte-form-v5.html";
-  var FORM_CACHE = "20260717formHeight1";
+  var FORM_CACHE = "20260718worldSync2";
   var FORM_TYPO_STYLE_ID = "welten-offerte-typo-fix";
   var DEFAULT_FRAME_HEIGHT = 2400;
   var heightWatchTimer = 0;
@@ -296,6 +296,22 @@
   document.addEventListener("welten-chapter-change", function (e) {
     if (e && e.detail && e.detail.chapter === "offerte") applyOfferte();
   });
+
+  /* Weltwechsel innerhalb derselben Seite (data-world) → Formular-Theme syncen */
+  try {
+    if (document.body && typeof MutationObserver !== "undefined") {
+      var lastWorldKey = formWorldKey();
+      new MutationObserver(function () {
+        var next = formWorldKey();
+        if (next === lastWorldKey) return;
+        lastWorldKey = next;
+        try {
+          localStorage.setItem("alex-lamberti-world", next);
+        } catch (eLs) {}
+        syncOfferteFrame();
+      }).observe(document.body, { attributes: true, attributeFilter: ["data-world"] });
+    }
+  } catch (eMo) {}
 
   window.addEventListener("message", function (e) {
     if (!e.data) return;

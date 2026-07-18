@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260718tvParity1";
+  var VER = "20260718galaxyStage2";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
@@ -27,15 +27,36 @@
     { id: "offerte", label: "Offerte" },
   ];
 
+  function parentStageDesktopSize() {
+    try {
+      if (!window.parent || window.parent === window) return null;
+      var root = window.parent.document && window.parent.document.documentElement;
+      if (root && root.classList.contains("desktop-stage-active")) {
+        var stageW = parseFloat(root.getAttribute("data-desktop-stage-w") || "1920");
+        return {
+          w: isFinite(stageW) && stageW > 0 ? stageW : 1920,
+          h: 1080,
+        };
+      }
+      return {
+        w: window.parent.innerWidth || 0,
+        h: window.parent.innerHeight || 0,
+      };
+    } catch (e) {
+      return null;
+    }
+  }
+
   function isGalaxyViewport() {
     try {
       /* Im Live-Shell ist das Iframe bereits um den Header gekürzt —
-         Parent-Viewport entscheiden, sonst scheitert min-height:640 oft. */
-      if (window.parent && window.parent !== window) {
-        var pw = window.parent.innerWidth || 0;
-        var ph = window.parent.innerHeight || 0;
-        if (pw >= 1025 && ph >= 640) return true;
-        if (pw > 0 && ph > 0) return false;
+         Parent-Viewport entscheiden, sonst scheitert min-height:640 oft.
+         Bei aktiver Desktop-Stage gilt die Referenzbühne (nicht der
+         durch OS-Zoom verkleinerte CSS-Viewport). */
+      var parentSize = parentStageDesktopSize();
+      if (parentSize) {
+        if (parentSize.w >= 1025 && parentSize.h >= 640) return true;
+        if (parentSize.w > 0 && parentSize.h > 0) return false;
       }
       if (mqGalaxy) return !!mqGalaxy.matches;
       return window.innerWidth >= 1025 && window.innerHeight >= 640;
@@ -569,11 +590,9 @@
     if (!e || !e.data || !e.data.type) return;
     var t = e.data.type;
     if (t === "mv-galaxy-hard-hide") {
-      if (parentShellAllowsMvLive() && isMultiversum() && isHomeActive()) {
-        setGalaxyIframePaused(true);
-        return;
-      }
+      /* Immer hart ausblenden — kein Early-Return bei Race mit data-master-world. */
       beginOutboundLeave();
+      setGalaxyIframePaused(true);
       return;
     }
     if (

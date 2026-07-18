@@ -884,7 +884,28 @@ body[data-world="freiraum"] .world-btn.active,body[data-world="freiraum"] .btn-p
     updateHeroWorld();updateCardImages();
   }
   function watchAreas(){ ['#categoryArea','#serviceArea'].forEach(sel=>{ const el=$(sel); if(!el) return; new MutationObserver(()=>setTimeout(updateCardImages,0)).observe(el,{childList:true,subtree:true}); }); }
-  function init(){setBrand();buildHeaderTools();setHero();watchAreas();let startWorld='multiversum';try{const saved=localStorage.getItem('alex-lamberti-world');if(WORLD[saved])startWorld=saved}catch(_){}applyWorld(startWorld)}
+  function resolveStartWorld(){
+    try{
+      const params=new URLSearchParams(location.search||'');
+      const fromUrl=(params.get('world')||'').toLowerCase();
+      if(WORLD[fromUrl]) return fromUrl;
+    }catch(_){}
+    try{
+      const saved=localStorage.getItem('alex-lamberti-world');
+      if(WORLD[saved]) return saved;
+    }catch(_){}
+    return 'multiversum';
+  }
+  function init(){
+    setBrand();buildHeaderTools();setHero();watchAreas();
+    applyWorld(resolveStartWorld());
+    try{
+      window.addEventListener('message',function(e){
+        if(!e||!e.data||e.data.type!=='alx-preview-sync') return;
+        if(e.data.world && WORLD[e.data.world]) applyWorld(e.data.world);
+      });
+    }catch(_){}
+  }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
