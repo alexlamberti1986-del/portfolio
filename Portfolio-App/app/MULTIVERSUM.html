@@ -9,11 +9,18 @@
       try {
         if (window.parent !== window) {
           document.documentElement.classList.add("welten-live-shell", "mv-in-shell");
+        } else {
+          document.documentElement.classList.add("welten-standalone");
         }
-      } catch (e) {}
+      } catch (e) {
+        document.documentElement.classList.add("welten-live-shell", "mv-in-shell");
+      }
     })();
   </script>
   <style id="mv-shell-chrome-critical">
+    /* Default: Header aus — nur standalone sichtbar (kein Doppel-Header-Blitz) */
+    html:not(.welten-standalone) .site-header,
+    html:not(.welten-standalone) .welten-skip-link,
     html.welten-live-shell .site-header,
     html.welten-live-shell .mv4-bar,
     html.welten-live-shell .mv4-shell-chrome,
@@ -39,9 +46,9 @@
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        height: clamp(520px, 68svh, 920px) !important;
-        min-height: clamp(520px, 68svh, 920px) !important;
-        max-height: min(920px, 78svh) !important;
+        height: clamp(520px, 68vh, 920px) !important;
+        min-height: clamp(520px, 68vh, 920px) !important;
+        max-height: min(920px, 78vh) !important;
         overflow: hidden !important;
         pointer-events: auto !important;
       }
@@ -55,9 +62,9 @@
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        height: clamp(480px, 62svh, 920px) !important;
-        min-height: clamp(480px, 62svh, 920px) !important;
-        max-height: min(920px, 78svh) !important;
+        height: clamp(480px, 62vh, 920px) !important;
+        min-height: clamp(480px, 62vh, 920px) !important;
+        max-height: min(920px, 78vh) !important;
         overflow: hidden !important;
         pointer-events: auto !important;
       }
@@ -326,12 +333,12 @@
         "?v=20260714mvBoot1"
     };
   </script>
-  <script src="assets/welten-live-shell-early.js?v=20260716mvBleed12"></script>
+  <script src="assets/welten-live-shell-early.js?v=20260718tvParity1"></script>
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260716mvBleed12" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script>window.__mvUseGalaxyHome=!!(window.matchMedia&&window.matchMedia('(min-width:1025px) and (min-height:640px)').matches);</script>
-<script src="assets/welten-galaxy-gang-hero.js?v=20260716mvBleed15" defer></script>
+<script src="assets/welten-galaxy-gang-hero.js?v=20260718tvParity1" defer></script>
 <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260715galaxy3" defer></script>
   <script src="assets/welten-multiversum-world.js?v=20260715galaxy3" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
@@ -8972,7 +8979,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-desktop-chapter-hero.js?v=20260716galaxy15" defer></script>
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260716galaxy22" />
+<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260718tvParity1" />
 <link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714xlHero1" />
 <script src="assets/welten-video-hero-boot.js?v=20260715phase4" defer></script>
 
@@ -9009,9 +9016,10 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" media="print" onload="this.media='all'" />
 <link rel="stylesheet" href="assets/welten-font-system.css?v=20260716mvBleed15" />
 <link rel="stylesheet" href="assets/welten-world-title-colors.css?v=20260716mvBleed15" />
-<link rel="stylesheet" href="assets/welten-desktop-rail-clearance.css?v=20260708rail-65" />
+<link rel="stylesheet" href="assets/welten-desktop-rail-clearance.css?v=20260718tvParity1" />
 <link rel="stylesheet" href="assets/welten-multiversum-legacy-kill.css?v=20260706boot-clean2" />
-<link rel="stylesheet" href="assets/welten-large-display.css?v=20260714xlRail1" />
+<link rel="stylesheet" href="assets/welten-large-display.css?v=20260718tvParity1" />
+<link rel="stylesheet" href="assets/welten-tv-desktop-parity.css?v=20260718tvParity1" />
 <link rel="stylesheet" href="assets/welten-unified-responsive.css?v=20260714xlHero1" />
 <link rel="stylesheet" href="assets/welten-mobile-hero-off.css?v=20260715galaxy14" id="welten-mobile-hero-off-stylesheet" />
 <script src="assets/welten-phase2-loader.js?v=20260710phase2" defer></script>

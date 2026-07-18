@@ -1,0 +1,164 @@
+/**
+ * TV / Grossbild-Parität (26″–98″): Galaxy Walk, Kapitel-Nav und Seiten-Rail
+ * wie auf ~26″ Desktop — auch wenn das Welt-Iframe < 640px hoch ist
+ * (Shell-Chrome frisst Höhe) oder hover:none (TV-Browser).
+ */
+:root {
+  --welten-galaxy-h: clamp(520px, 68vh, 920px);
+}
+
+/* Shell / Parent-Desktop: Galaxy ohne Iframe-min-height:640 */
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero,
+html.welten-live-shell body[data-world="general"] #alGalaxyGangHero.is-galaxy-live,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero,
+html.mv-in-shell body[data-world="general"] #alGalaxyGangHero.is-galaxy-live,
+html.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero,
+html.welten-parent-desktop body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 30 !important;
+  width: 100% !important;
+  max-width: none !important;
+  height: var(--welten-galaxy-h) !important;
+  min-height: var(--welten-galaxy-h) !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #05070f !important;
+}
+
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero .al-galaxy-gang-hero__frame,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero .al-galaxy-gang-hero__frame,
+html.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero .al-galaxy-gang-hero__frame {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+  transform: none !important;
+}
+
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome,
+html.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome,
+html.welten-live-shell body[data-world="general"] #alGalaxyGangHero.is-galaxy-live ~ #alGalaxyHomeChrome,
+html.mv-in-shell body[data-world="general"] #alGalaxyGangHero.is-galaxy-live ~ #alGalaxyHomeChrome {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  position: relative !important;
+  width: 100% !important;
+}
+
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav,
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyChapterNav,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyChapterNav,
+html.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav,
+html.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyChapterNav {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  height: auto !important;
+}
+
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+html.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Seiten-Rail ab ~26″ */
+@media (min-width: 1920px) {
+  .experience-rail,
+  body[data-world="nexora"] .experience-rail,
+  body[data-world="vertex"] .experience-rail,
+  body[data-world="freiraum"] .experience-rail,
+  html.welten-live-shell .experience-rail {
+    display: grid !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 900 !important;
+    position: fixed !important;
+    right: max(22px, env(safe-area-inset-right)) !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+
+  body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+html.welten-parent-xl .experience-rail,
+html.welten-parent-xl body[data-world="nexora"] .experience-rail,
+html.welten-parent-xl body[data-world="vertex"] .experience-rail,
+html.welten-parent-xl body[data-world="freiraum"] .experience-rail,
+html.welten-parent-xl.welten-live-shell .experience-rail {
+  display: grid !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  z-index: 900 !important;
+  position: fixed !important;
+  right: max(22px, env(safe-area-inset-right)) !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+html.welten-parent-xl body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail,
+html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail,
+html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] .experience-rail {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+@media (min-width: 1025px) {
+  #slide-home .nexora-orbit-button,
+  .welten-desktop-relocated-hero .nexora-orbit-button,
+  body[data-world="freiraum"] #slide-home .dna-slide,
+  body[data-world="vertex"] #slide-home .dna-slide,
+  .welten-desktop-relocated-hero .dna-slide {
+    pointer-events: auto !important;
+  }
+}
+
+@media (min-width: 1800px) {
+  :root {
+    --welten-galaxy-h: clamp(620px, 70vh, 1100px);
+  }
+}
+
+@media (min-width: 2560px) {
+  :root {
+    --welten-galaxy-h: clamp(720px, 68vh, 1280px);
+  }
+}
+
+@media (min-width: 3840px) {
+  :root {
+    --welten-galaxy-h: clamp(820px, 62vh, 1480px);
+  }
+}

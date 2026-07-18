@@ -38,9 +38,9 @@ html body[data-world="general"] #alGalaxyHomeChrome {
     overflow: hidden !important;
     isolation: isolate;
     background: #05070f !important;
-    min-height: clamp(520px, 68svh, 920px) !important;
-    height: clamp(520px, 68svh, 920px) !important;
-    max-height: min(920px, 78svh) !important;
+    min-height: clamp(520px, 68vh, 920px) !important;
+    height: clamp(520px, 68vh, 920px) !important;
+    max-height: min(920px, 78vh) !important;
     pointer-events: auto !important;
   }
 }
@@ -69,9 +69,9 @@ html body[data-world="general"] #alGalaxyHomeChrome {
     overflow: hidden !important;
     isolation: isolate;
     background: #05070f !important;
-    min-height: clamp(480px, 62svh, 920px) !important;
-    height: clamp(480px, 62svh, 920px) !important;
-    max-height: min(920px, 78svh) !important;
+    min-height: clamp(480px, 62vh, 920px) !important;
+    height: clamp(480px, 62vh, 920px) !important;
+    max-height: min(920px, 78vh) !important;
     pointer-events: auto !important;
   }
 }
@@ -261,9 +261,9 @@ html body[data-world="general"] #alGalaxyHomeChrome {
   @media (max-width: 1600px) and (max-height: 980px) {
     html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
     html body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {
-      min-height: clamp(540px, 72svh, 780px) !important;
-      height: clamp(540px, 72svh, 780px) !important;
-      max-height: min(780px, 84svh) !important;
+      min-height: clamp(540px, 72vh, 780px) !important;
+      height: clamp(540px, 72vh, 780px) !important;
+      max-height: min(780px, 84vh) !important;
     }
 
     #alGalaxyGangHero .al-galaxy-gang-hero__frame {
@@ -276,9 +276,9 @@ html body[data-world="general"] #alGalaxyHomeChrome {
   @media (max-width: 1366px) and (max-height: 900px) {
     html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
     html body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {
-      min-height: clamp(500px, 74svh, 720px) !important;
-      height: clamp(500px, 74svh, 720px) !important;
-      max-height: min(720px, 86svh) !important;
+      min-height: clamp(500px, 74vh, 720px) !important;
+      height: clamp(500px, 74vh, 720px) !important;
+      max-height: min(720px, 86vh) !important;
     }
   }
 
@@ -286,27 +286,27 @@ html body[data-world="general"] #alGalaxyHomeChrome {
   @media (min-width: 1800px) and (min-height: 1000px) {
     html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
     html body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {
-      min-height: clamp(620px, 70svh, 1000px) !important;
-      height: clamp(620px, 70svh, 1000px) !important;
-      max-height: min(1000px, 78svh) !important;
+      min-height: clamp(620px, 70vh, 1000px) !important;
+      height: clamp(620px, 70vh, 1000px) !important;
+      max-height: min(1000px, 78vh) !important;
     }
   }
 
   @media (min-width: 1800px) and (min-height: 1200px) {
     html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
     html body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {
-      min-height: clamp(680px, 72svh, 1080px) !important;
-      height: clamp(680px, 72svh, 1080px) !important;
-      max-height: min(1080px, 80svh) !important;
+      min-height: clamp(680px, 72vh, 1080px) !important;
+      height: clamp(680px, 72vh, 1080px) !important;
+      max-height: min(1080px, 80vh) !important;
     }
   }
 
   @media (min-width: 1800px) and (min-height: 1440px) {
     html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyGangHero.al-galaxy-gang-hero,
     html body[data-world="general"] #alGalaxyGangHero.is-galaxy-live {
-      min-height: clamp(720px, 74svh, 1100px) !important;
-      height: clamp(720px, 74svh, 1100px) !important;
-      max-height: min(1100px, 82svh) !important;
+      min-height: clamp(720px, 74vh, 1100px) !important;
+      height: clamp(720px, 74vh, 1100px) !important;
+      max-height: min(1100px, 82vh) !important;
     }
   }
 

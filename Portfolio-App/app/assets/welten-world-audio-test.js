@@ -1,10 +1,10 @@
-ï»¿/**
+/**
  * Hintergrundmusik pro Welt (Loop), ein Player, ein Start nach Weltenwechsel-Animation.
  */
 (function () {
   "use strict";
 
-  var VERSION = "20260716mvBleed15";
+  var VERSION = "20260718tvParity1";
   var TARGET_VOLUME = 0.4;
   var FADE_MS = 220;
   var SWITCH_END_FADE_MS = 80;
@@ -164,7 +164,7 @@
     } catch (eIdx) {}
     document.querySelectorAll(".mv4-frame").forEach(function (frame, idx) {
       try {
-        /* On switch-end: never pause the live target world â€” only kill Multiversum / peers */
+        /* On switch-end: never pause the live target world — only kill Multiversum / peers */
         if (opts.onlyNonActive) {
           if (activeIdx >= 0 && idx === activeIdx) return;
           if (master && master !== "general" && frame.getAttribute("data-world") !== "general") {
@@ -406,7 +406,7 @@
     setSwitchFlag(true);
     hardStopBgm();
     stopIframeWorldBgm();
-    /* ZusÃ¤tzliche Absicherung: Early-BGM-Element explizit stumm/pausiert,
+    /* Zusätzliche Absicherung: Early-BGM-Element explizit stumm/pausiert,
        auch falls hardStopBgm() es aus irgendeinem Grund nicht erfasst hat
        (z. B. durch Re-Zuweisung von window.__mvWorldAudioEarly). */
     try {
@@ -419,7 +419,7 @@
       }
     } catch (eEarlyStop) {}
     /* Beim Verlassen von Multiversum: Iframe-0-BGM nochmals hart stoppen
-       und General-Track nie mittendrin neu starten â€” erst onSwitchEnd. */
+       und General-Track nie mittendrin neu starten — erst onSwitchEnd. */
     if (pendingWorld && pendingWorld !== "general") {
       stopIframeWorldBgm();
       try {
@@ -434,15 +434,15 @@
           mvWin.postMessage({ type: "mv-stop-iframe-bgm" }, "*");
         }
       } catch (eMvStop) {}
-      /* General-Track hart gehalten â€” kein Restart bis switch-end mit general */
+      /* General-Track hart gehalten — kein Restart bis switch-end mit general */
       hardStopBgm();
     }
-    /* Nur Gesture-Boot fÃ¼r echten Erstbesuch erlauben â€” nach Wechsel starten wir Ã¼ber switch-end. */
+    /* Nur Gesture-Boot für echten Erstbesuch erlauben — nach Wechsel starten wir über switch-end. */
     initialBootDone = true;
     bootGesturePending = false;
     unhookBootGesture();
     if (pendingWorld) preloadTrack(pendingWorld);
-    /* User-Gesture: nÃ¤chsten Welt-Track stumm primen, damit Unmute nach Animation zuverlÃ¤ssiger greift */
+    /* User-Gesture: nächsten Welt-Track stumm primen, damit Unmute nach Animation zuverlässiger greift */
     if (pendingWorld && TRACKS[pendingWorld]) {
       primeNextWorldTrack(pendingWorld);
     }
@@ -463,7 +463,7 @@
 
     function start() {
       if (expectedSwitch !== switchGeneration) return;
-      /* Lock nicht ewig blockieren â€” nach Timeout trotzdem Musik starten */
+      /* Lock nicht ewig blockieren — nach Timeout trotzdem Musik starten */
       if (isVisualAnimationLocked()) {
         waitForAnimationEnd(start);
         return;
@@ -477,7 +477,7 @@
         return;
       }
       stopIframeWorldBgm({ onlyNonActive: true });
-      /* hardStopBgm increments playToken â€” capture token AFTER stop so playBgm accepts it */
+      /* hardStopBgm increments playToken — capture token AFTER stop so playBgm accepts it */
       hardStopBgm();
       var token = ++playToken;
       if (world !== "general") {
@@ -777,7 +777,7 @@
         if (activeWorld() !== "general") return;
         var currentlyOn = effectsEnabled();
         if (!currentlyOn) {
-          /* Effekte werden gerade eingeschaltet â†’ danach Musik starten */
+          /* Effekte werden gerade eingeschaltet ? danach Musik starten */
           document.addEventListener(
             "mv-effects-change",
             function onFxOn(ev) {
@@ -790,7 +790,7 @@
           );
           return;
         }
-        /* Effekte sind an und werden gleich ausgeschaltet â†’ kein Boot */
+        /* Effekte sind an und werden gleich ausgeschaltet ? kein Boot */
         if (fx.getAttribute("aria-pressed") === "true") return;
         bootFromUserGesture(null);
       },

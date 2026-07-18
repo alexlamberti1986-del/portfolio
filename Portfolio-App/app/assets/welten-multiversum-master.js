@@ -60,8 +60,8 @@
   var currentLang = "de";
   var routeBootUntil = 0;
   var PREVIEW_MOBILE_CSS = "/assets/welten-multiversum-preview-mobile.css?v=20260623mv2";
-  var FONT_SYSTEM_CSS = "/assets/welten-font-system.css?v=20260716mvBleed15";
-  var TITLE_COLORS_CSS = "/assets/welten-world-title-colors.css?v=20260716mvBleed15";
+  var FONT_SYSTEM_CSS = "/assets/welten-font-system.css?v=20260718tvParity1";
+  var TITLE_COLORS_CSS = "/assets/welten-world-title-colors.css?v=20260718tvParity1";
   var isLiveShell = document.body && document.body.getAttribute("data-live-shell") === "1";
   var defaultWorld = 0;
   if (document.body && document.body.getAttribute("data-live-default")) {
@@ -160,13 +160,14 @@
       total = globalH + worldNavH;
     }
 
-    /* Hard caps: prevent iframe from collapsing if measurement ever spikes */
+    /* Hard caps: keep world iframe tall enough for desktop UI (≥640 CSS px) */
     try {
-      var maxChrome = Math.floor(window.innerHeight * 0.42);
-      if (maxChrome < 120) maxChrome = 120;
+      var maxChrome = Math.floor(window.innerHeight * 0.32);
+      if (maxChrome < 96) maxChrome = 96;
+      if (maxChrome > 180) maxChrome = 180;
       if (total > maxChrome) total = maxChrome;
     } catch (eCap) {
-      if (total > 220) total = 220;
+      if (total > 160) total = 160;
     }
     if (total < 96) total = 120;
 
@@ -1512,6 +1513,24 @@
   updateFlags();
   setBarHeight();
   window.addEventListener("resize", setBarHeight, { passive: true });
+  window.addEventListener(
+    "resize",
+    function () {
+      broadcastParentViewport();
+    },
+    { passive: true }
+  );
+
+  function broadcastParentViewport() {
+    var payload = {
+      type: "mv-parent-viewport",
+      width: window.innerWidth || 0,
+      height: window.innerHeight || 0,
+    };
+    frames.forEach(function (f) {
+      postFrame(f, payload);
+    });
+  }
   if (typeof ResizeObserver !== "undefined") {
     var chromeStack = document.querySelector(".mv4-shell-chrome");
     if (chromeStack) {
@@ -1790,6 +1809,9 @@
   setMaster(defaultWorld);
   broadcastLang();
   ensureSingleChrome();
+  broadcastParentViewport();
+  setTimeout(broadcastParentViewport, 200);
+  setTimeout(broadcastParentViewport, 800);
 
   if (isLiveShell) {
     if (!frameHasSrc(frames[defaultWorld])) {
