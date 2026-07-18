@@ -1690,7 +1690,9 @@
 
     var overlay = buildOverlay(worldKey);
     activeOverlay = overlay;
-    document.body.appendChild(overlay);
+    /* Overlay in die Desktop-Bühne hängen, damit es mit skaliert */
+    var stageMount = document.getElementById("desktopStage");
+    (stageMount || document.body).appendChild(overlay);
     /* Sofort blickdicht ab dem ersten Paint — kein Fade-von-0-Loch, in dem
        das darunterliegende Frame (oft Multiversum) durchscheinen kann. */
     overlay.classList.add("is-covered");

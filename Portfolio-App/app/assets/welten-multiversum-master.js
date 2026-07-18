@@ -1520,12 +1520,30 @@
     },
     { passive: true }
   );
+  window.addEventListener(
+    "mv-desktop-stage-updated",
+    function () {
+      setBarHeight();
+      broadcastParentViewport();
+    },
+    { passive: true }
+  );
 
   function broadcastParentViewport() {
+    var width = window.innerWidth || 0;
+    var height = window.innerHeight || 0;
+    /* Desktop-Stage: Iframes sollen die Referenzbühne sehen (1920×1080),
+       nicht den ggf. durch OS-Skalierung verkleinerten CSS-Viewport. */
+    try {
+      if (document.documentElement.classList.contains("desktop-stage-active")) {
+        width = 1920;
+        height = 1080;
+      }
+    } catch (eVp) {}
     var payload = {
       type: "mv-parent-viewport",
-      width: window.innerWidth || 0,
-      height: window.innerHeight || 0,
+      width: width,
+      height: height,
     };
     frames.forEach(function (f) {
       postFrame(f, payload);

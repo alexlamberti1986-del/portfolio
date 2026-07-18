@@ -50,6 +50,13 @@
     try {
       var pw = window.parent.innerWidth || 0;
       var ph = window.parent.innerHeight || 0;
+      try {
+        var parentRoot = window.parent.document.documentElement;
+        if (parentRoot && parentRoot.classList.contains("desktop-stage-active")) {
+          pw = 1920;
+          ph = 1080;
+        }
+      } catch (eStage) {}
       if (pw > 0 && ph > 0) applyParentViewportClasses(pw, ph);
     } catch (eSync) {}
   }
