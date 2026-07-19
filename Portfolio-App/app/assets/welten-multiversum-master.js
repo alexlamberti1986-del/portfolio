@@ -416,14 +416,17 @@
         stack.remove();
       } catch (eStack) {}
     });
-    document.querySelectorAll("body > .mv4-global-header").forEach(function (hdr) {
-      if (hdr.closest && hdr.closest(".mv4-shell-chrome")) return;
+    /* Auch ausserhalb von body> — z.B. nach Stage-Wrap oder Fehlplatzierung */
+    document.querySelectorAll(".mv4-global-header").forEach(function (hdr) {
+      if (!hdr || (keptStack && keptStack.contains(hdr))) return;
+      if (hdr.closest && hdr.closest(".mv4-frame")) return;
       try {
         hdr.remove();
       } catch (eHdr) {}
     });
-    document.querySelectorAll("body > .mv4-bar").forEach(function (b) {
-      if (b.closest && b.closest(".mv4-shell-chrome")) return;
+    document.querySelectorAll(".mv4-bar").forEach(function (b) {
+      if (!b || (keptStack && keptStack.contains(b))) return;
+      if (b.closest && b.closest(".mv4-frame")) return;
       try {
         b.remove();
       } catch (eBar) {}
@@ -1532,12 +1535,18 @@
   function broadcastParentViewport() {
     var width = window.innerWidth || 0;
     var height = window.innerHeight || 0;
-    /* Desktop-Stage: Iframes sehen die Bühnengrösse (Höhe 1080, Breite dynamisch). */
     try {
       if (document.documentElement.classList.contains("desktop-stage-active")) {
         var stageW = parseFloat(document.documentElement.getAttribute("data-desktop-stage-w") || "1920");
+        var stageH =
+          parseFloat(
+            String(getComputedStyle(document.documentElement).getPropertyValue("--desktop-ref-h") || "").replace(
+              "px",
+              ""
+            )
+          ) || 960;
         width = isFinite(stageW) && stageW > 0 ? stageW : 1920;
-        height = 1080;
+        height = isFinite(stageH) && stageH > 0 ? stageH : 960;
       }
     } catch (eVp) {}
     var payload = {

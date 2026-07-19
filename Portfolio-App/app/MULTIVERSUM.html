@@ -46,11 +46,62 @@
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
+        position: relative !important;
+        width: 100% !important;
+        max-width: none !important;
         height: clamp(520px, 68vh, 920px) !important;
         min-height: clamp(520px, 68vh, 920px) !important;
         max-height: min(920px, 78vh) !important;
         overflow: hidden !important;
         pointer-events: auto !important;
+        background: #05070f !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+      }
+      html body[data-world="general"] #alGalaxyGangHero .al-galaxy-gang-hero__frame,
+      html body[data-world="general"] #alGalaxyGangFrame {
+        display: block !important;
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 100% !important;
+        min-height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        border: 0 !important;
+        background: #05070f !important;
+        opacity: 0;
+        visibility: hidden;
+      }
+      html body[data-world="general"] #alGalaxyGangHero.is-ready .al-galaxy-gang-hero__frame,
+      html body[data-world="general"] #alGalaxyGangHero.is-ready #alGalaxyGangFrame {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+      html body[data-world="general"] #alGalaxyGangHero .al-galaxy-gang-hero__loading {
+        position: absolute !important;
+        inset: 0 !important;
+        z-index: 2 !important;
+        display: grid !important;
+        place-items: center !important;
+        margin: 0 !important;
+        padding: 16px !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+        color: rgba(232, 238, 248, 0.85) !important;
+        font: 600 14px/1.4 "Space Grotesk", system-ui, sans-serif !important;
+        background:
+          radial-gradient(circle at 50% 40%, rgba(96, 220, 255, 0.12), transparent 42%),
+          #05070f !important;
+      }
+      html body[data-world="general"] #alGalaxyGangHero.is-ready .al-galaxy-gang-hero__loading {
+        display: none !important;
       }
     }
     /* Shell: Parent entscheidet — Iframe oft < 640px hoch */
@@ -62,11 +113,51 @@
         display: block !important;
         visibility: visible !important;
         opacity: 1 !important;
+        position: relative !important;
+        width: 100% !important;
         height: clamp(480px, 62vh, 920px) !important;
         min-height: clamp(480px, 62vh, 920px) !important;
         max-height: min(920px, 78vh) !important;
         overflow: hidden !important;
         pointer-events: auto !important;
+        background: #05070f !important;
+      }
+      html.welten-live-shell body[data-world="general"] #alGalaxyGangHero .al-galaxy-gang-hero__frame,
+      html.mv-in-shell body[data-world="general"] #alGalaxyGangHero .al-galaxy-gang-hero__frame,
+      html.welten-live-shell body[data-world="general"] #alGalaxyGangFrame,
+      html.mv-in-shell body[data-world="general"] #alGalaxyGangFrame {
+        display: block !important;
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        border: 0 !important;
+        opacity: 0;
+        visibility: hidden;
+      }
+      html.welten-live-shell body[data-world="general"] #alGalaxyGangHero.is-ready .al-galaxy-gang-hero__frame,
+      html.mv-in-shell body[data-world="general"] #alGalaxyGangHero.is-ready .al-galaxy-gang-hero__frame,
+      html.welten-live-shell body[data-world="general"] #alGalaxyGangHero.is-ready #alGalaxyGangFrame,
+      html.mv-in-shell body[data-world="general"] #alGalaxyGangHero.is-ready #alGalaxyGangFrame {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+      html.welten-live-shell body[data-world="general"] #alGalaxyGangHero .al-galaxy-gang-hero__loading,
+      html.mv-in-shell body[data-world="general"] #alGalaxyGangHero .al-galaxy-gang-hero__loading {
+        position: absolute !important;
+        inset: 0 !important;
+        z-index: 2 !important;
+        display: grid !important;
+        place-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 16px !important;
+        overflow: hidden !important;
+      }
+      html.welten-live-shell body[data-world="general"] #alGalaxyGangHero.is-ready .al-galaxy-gang-hero__loading,
+      html.mv-in-shell body[data-world="general"] #alGalaxyGangHero.is-ready .al-galaxy-gang-hero__loading {
+        display: none !important;
       }
     }
   </style>
@@ -335,6 +426,7 @@
   </script>
   <script src="assets/welten-live-shell-early.js?v=20260718galaxyStage2"></script>
   <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260716mvBleed12" />
+  <link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260719loadFix1" />
   <script src="assets/welten-multiversum-world-collage-config-v4.js?v=20260706start" defer></script>
   <script src="assets/welten-multiversum-scene-config-v4.js?v=20260706start" defer></script>
   <script>
@@ -359,7 +451,7 @@
       window.__mvUseGalaxyHome = !!useGal;
     })();
   </script>
-<script src="assets/welten-galaxy-gang-hero.js?v=20260718galaxyStage2" defer></script>
+<script src="assets/welten-galaxy-gang-hero.js?v=20260719loadFix1" defer></script>
 <script src="assets/welten-multiversum-parallax-hero-v4.js?v=20260715galaxy3" defer></script>
   <script src="assets/welten-multiversum-world.js?v=20260715galaxy3" defer></script>
 <script src="assets/welten-multiversum-parallax-v4-boot.js?v=20260710fix3" defer></script>
@@ -5658,6 +5750,8 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
             class="al-galaxy-gang-hero__frame"
             title="Alex Lamberti Galaxy Gang"
             loading="eager"
+            width="1920"
+            height="1080"
             allow="fullscreen"
             src="about:blank" data-src="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=20260716galaxy22"
           ></iframe>
@@ -5700,13 +5794,24 @@ body[data-world="nexora"] button[aria-label*="Previous"] {
               var sec = document.getElementById("alGalaxyGangHero");
               var chrome = document.getElementById("alGalaxyHomeChrome");
               var galFrame = document.getElementById("alGalaxyGangFrame");
-              if (sec) { sec.removeAttribute("hidden"); sec.classList.add("is-galaxy-live", "is-ready"); }
+              /* is-ready erst nach iframe-load — kein 300×150-Blitz / kein vorzeitiges Loading-Hide */
+              if (sec) {
+                sec.removeAttribute("hidden");
+                sec.classList.add("is-galaxy-live");
+                sec.classList.remove("is-ready");
+              }
               if (chrome) chrome.removeAttribute("hidden");
               if (galFrame) {
                 var gSrc = galFrame.getAttribute("data-src");
                 var gCur = galFrame.getAttribute("src") || "";
                 if (gSrc && (!gCur || /about:blank/i.test(gCur))) {
                   galFrame.setAttribute("src", gSrc);
+                }
+                if (!galFrame.getAttribute("data-ready-bound")) {
+                  galFrame.setAttribute("data-ready-bound", "1");
+                  galFrame.addEventListener("load", function () {
+                    if (sec) sec.classList.add("is-ready");
+                  });
                 }
               }
               try {
@@ -9005,7 +9110,7 @@ body[data-world="nexora"] .faq-panel-inner {
 <script src="assets/welten-desktop-chapter-hero.js?v=20260716galaxy15" defer></script>
 <link rel="stylesheet" href="assets/welten-video-hero.css?v=20260714hero6" />
 <link rel="stylesheet" href="assets/welten-video-hero-overrides.css?v=20260714hero6" />
-<link rel="stylesheet" href="assets/welten-galaxy-gang-hero.css?v=20260718tvParity1" />
+
 <link rel="stylesheet" href="assets/welten-world-hero-unify.css?v=20260714xlHero1" />
 <script src="assets/welten-video-hero-boot.js?v=20260715phase4" defer></script>
 

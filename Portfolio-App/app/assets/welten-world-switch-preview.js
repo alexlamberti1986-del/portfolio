@@ -139,12 +139,30 @@
 
   function wwsCanvasSize(canvas, ctx) {
     var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    var w = Math.floor(window.innerWidth);
-    var h = Math.floor(window.innerHeight);
+    var w = 0;
+    var h = 0;
+    try {
+      var host =
+        (canvas && canvas.parentElement) ||
+        document.querySelector(".welten-world-switch") ||
+        document.getElementById("desktopStage");
+      if (host) {
+        var rect = host.getBoundingClientRect();
+        /* Bei transform:scale am Parent sind clientWidth die Layout-Pixel der Stage */
+        w = Math.floor(host.clientWidth || rect.width || 0);
+        h = Math.floor(host.clientHeight || rect.height || 0);
+      }
+    } catch (eHost) {}
+    if (!(w > 0 && h > 0)) {
+      w = Math.floor(window.innerWidth || 0);
+      h = Math.floor(window.innerHeight || 0);
+    }
+    if (!(w > 0)) w = 1920;
+    if (!(h > 0)) h = 1080;
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
     if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return { w: w, h: h };
   }
@@ -1025,6 +1043,31 @@
 
     resize();
 
+    try {
+      window.addEventListener("resize", resize, { passive: true });
+      window.addEventListener("mv-desktop-stage-updated", resize, { passive: true });
+      var ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(resize) : null;
+      if (ro) {
+        ro.observe(overlay);
+        if (canvas.parentElement) ro.observe(canvas.parentElement);
+      }
+      var prevStop = overlay._wwsStopCanvas;
+      overlay._wwsStopCanvas = function () {
+        runningAnim = false;
+        if (overlay._wwsRaf) cancelAnimationFrame(overlay._wwsRaf);
+        try {
+          window.removeEventListener("resize", resize);
+          window.removeEventListener("mv-desktop-stage-updated", resize);
+        } catch (eRm) {}
+        if (ro) {
+          try {
+            ro.disconnect();
+          } catch (eRo) {}
+        }
+        if (typeof prevStop === "function") prevStop();
+      };
+    } catch (eBind) {}
+
     function draw(now) {
       if (!runningAnim) return;
       var elapsed = now - startTime;
@@ -1690,9 +1733,8 @@
 
     var overlay = buildOverlay(worldKey);
     activeOverlay = overlay;
-    /* Overlay in die Desktop-Bühne hängen, damit es mit skaliert */
-    var stageMount = document.getElementById("desktopStage");
-    (stageMount || document.body).appendChild(overlay);
+    /* Fullscreen-Cover auf body — deckt Header + Stage vollständig ab */
+    document.body.appendChild(overlay);
     /* Sofort blickdicht ab dem ersten Paint — kein Fade-von-0-Loch, in dem
        das darunterliegende Frame (oft Multiversum) durchscheinen kann. */
     overlay.classList.add("is-covered");

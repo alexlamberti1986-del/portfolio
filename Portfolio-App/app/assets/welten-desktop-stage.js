@@ -1,16 +1,15 @@
 /**
- * Desktop Stage Scale v2 — nur Desktop (min-width: 1025px).
- * Referenz: 1920 × 1080
- * Viewport-füllend ohne Letterbox links/rechts:
- * scale = viewportH / 1080
- * stageWidth = viewportW / scale  (mind. Design bleibt proportional, Bühne wird bei Ultrawide breiter)
- * Einheitliches scale() — keine Verzerrung.
- * visualViewport bevorzugt; Fallback innerWidth/innerHeight.
- * Mobile/Tablet: vollständig deaktiviert (gleiche Grenze wie Shell).
+ * Desktop Stage v3 — nur Desktop ≥1025px.
+ * Shell-Chrome bleibt AUSSERHALB der Stage (Viewport-Ebene) → kein Doppel-Header
+ * durch transform-Containing-Blocks. Nur Welt-Iframes werden proportional skaliert.
+ *
+ * scale = availH / refContentH
+ * stageW = availW / scale  → volle Breite, keine Seitenränder
  */
 (function () {
   var REF_W = 1920;
   var REF_H = 1080;
+  var REF_HEADER = 120;
   var DESKTOP_MQ = "(min-width: 1025px)";
   var root = document.documentElement;
   var mq = null;
@@ -29,6 +28,21 @@
       width: window.innerWidth || root.clientWidth || REF_W,
       height: window.innerHeight || root.clientHeight || REF_H,
     };
+  }
+
+  function measureBarH() {
+    try {
+      var chrome = document.getElementById("mv4ShellChrome");
+      if (chrome) {
+        var h = chrome.getBoundingClientRect().height;
+        if (h > 40 && h < 280) return Math.round(h);
+      }
+    } catch (e) {}
+    var css =
+      parseFloat(getComputedStyle(root).getPropertyValue("--bar-h")) ||
+      parseFloat(getComputedStyle(root).getPropertyValue("--total-header-h")) ||
+      REF_HEADER;
+    return css > 40 ? css : REF_HEADER;
   }
 
   function isDesktop() {
@@ -58,7 +72,7 @@
 
     var chrome = document.getElementById("mv4ShellChrome");
     var frames = Array.prototype.slice.call(document.querySelectorAll("iframe.mv4-frame"));
-    if (!chrome && !frames.length) return;
+    if (!frames.length) return;
 
     var viewport = document.createElement("div");
     viewport.id = "desktopViewport";
@@ -76,20 +90,18 @@
     viewport.appendChild(bg);
     viewport.appendChild(stage);
 
-    var insertBefore = null;
+    /* Chrome bleibt auf body (Viewport-Ebene) — nicht in die Stage. */
+    var insertBefore = frames[0] && frames[0].parentNode === body ? frames[0] : null;
     if (chrome && chrome.parentNode === body) {
-      insertBefore = chrome;
-    } else if (frames[0] && frames[0].parentNode === body) {
-      insertBefore = frames[0];
-    }
-
-    if (insertBefore) {
+      /* Viewport nach Chrome einfügen */
+      if (chrome.nextSibling) body.insertBefore(viewport, chrome.nextSibling);
+      else body.appendChild(viewport);
+    } else if (insertBefore) {
       body.insertBefore(viewport, insertBefore);
     } else {
       body.appendChild(viewport);
     }
 
-    if (chrome) stage.appendChild(chrome);
     frames.forEach(function (f) {
       stage.appendChild(f);
     });
@@ -99,16 +111,26 @@
 
   function calculateDesktopScale() {
     var vp = getViewportSize();
-    /* Höhe füllt den Viewport; Breite der Bühne passt sich an → keine Seitenränder. */
-    var scale = vp.height / REF_H;
+    var barH = measureBarH();
+    var availW = Math.max(1, vp.width);
+    var availH = Math.max(1, vp.height - barH);
+    var refContentH = Math.max(1, REF_H - REF_HEADER);
+
+    root.style.setProperty("--desktop-bar-h", barH + "px");
+
+    /* Verfügbaren Bereich unter dem Header voll ausfüllen */
+    var scale = availH / refContentH;
     if (!isFinite(scale) || scale <= 0) scale = 1;
     scale = Math.round(scale * 10000) / 10000;
-    var stageW = vp.width / scale;
+
+    var stageW = availW / scale;
     if (!isFinite(stageW) || stageW < 1025) stageW = REF_W;
     stageW = Math.round(stageW * 100) / 100;
+
     root.style.setProperty("--desktop-ref-w", stageW + "px");
-    root.style.setProperty("--desktop-ref-h", REF_H + "px");
+    root.style.setProperty("--desktop-ref-h", refContentH + "px");
     root.setAttribute("data-desktop-stage-w", String(Math.round(stageW)));
+    root.setAttribute("data-desktop-bar-h", String(barH));
     return scale;
   }
 
@@ -117,10 +139,9 @@
     ensureStructure();
     syncBackgroundWorld();
 
-    root.style.setProperty("--desktop-ref-h", REF_H + "px");
-
     if (!isDesktop()) {
       root.style.setProperty("--desktop-ref-w", REF_W + "px");
+      root.style.setProperty("--desktop-ref-h", REF_H - REF_HEADER + "px");
       if (lastScale !== 1 || root.classList.contains("desktop-stage-active")) {
         root.classList.remove("desktop-stage-active");
         root.style.setProperty("--desktop-scale", "1");
@@ -185,54 +206,14 @@
     listeners = [];
   }
 
-  function runVisibilityAudit() {
-    if (!root.classList.contains("desktop-stage-active")) {
-      return { active: false };
-    }
-    var vp = getViewportSize();
-    var critical = document.querySelectorAll("[data-viewport-critical]");
-    var clipped = [];
-    var tol = 2;
-    for (var i = 0; i < critical.length; i++) {
-      var el = critical[i];
-      var rect = el.getBoundingClientRect();
-      var ok =
-        rect.left >= -tol &&
-        rect.top >= -tol &&
-        rect.right <= vp.width + tol &&
-        rect.bottom <= vp.height + tol;
-      if (!ok) {
-        clipped.push({
-          el: el,
-          rect: {
-            left: rect.left,
-            top: rect.top,
-            right: rect.right,
-            bottom: rect.bottom,
-          },
-        });
-      }
-    }
-    return {
-      active: true,
-      scale: lastScale,
-      viewport: vp,
-      scrollOk:
-        document.documentElement.scrollWidth <= vp.width + 1 &&
-        document.documentElement.scrollHeight <= vp.height + 1,
-      clipped: clipped,
-    };
-  }
-
   function boot() {
     ensureStructure();
     applyScale();
 
     try {
       mq = window.matchMedia(DESKTOP_MQ);
-      if (mq.addEventListener) {
-        on(mq, "change", scheduleApply);
-      } else if (mq.addListener) {
+      if (mq.addEventListener) on(mq, "change", scheduleApply);
+      else if (mq.addListener) {
         mq.addListener(scheduleApply);
         listeners.push({
           target: {
@@ -265,6 +246,8 @@
         var ro = new ResizeObserver(scheduleApply);
         ro.observe(root);
         if (document.body) ro.observe(document.body);
+        var chrome = document.getElementById("mv4ShellChrome");
+        if (chrome) ro.observe(chrome);
         listeners.push({
           target: {
             removeEventListener: function () {
@@ -296,18 +279,9 @@
       } catch (eMo) {}
     }
 
-    /* Shell-Chrome als kritische Viewport-Elemente markieren */
-    try {
-      var chromeEl = document.getElementById("mv4ShellChrome");
-      if (chromeEl && !chromeEl.hasAttribute("data-viewport-critical")) {
-        chromeEl.setAttribute("data-viewport-critical", "1");
-      }
-    } catch (eCrit) {}
-
     window.__mvDesktopStage = {
       apply: applyScale,
       dispose: dispose,
-      audit: runVisibilityAudit,
       getScale: function () {
         return parseFloat(root.getAttribute("data-desktop-scale") || "1") || 1;
       },

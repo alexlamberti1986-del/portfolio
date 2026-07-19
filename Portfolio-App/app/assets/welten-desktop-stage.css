@@ -1,15 +1,13 @@
 /**
- * Desktop Stage v2 — drei Ebenen (nur Desktop ≥1025px).
- * 1) .desktop-viewport  — voller CSS-Viewport
- * 2) .desktop-background — vollflächig, weltbezogen (kein leerer Letterbox-Rand)
- * 3) .desktop-stage     — 1920×1080 Inhaltsbühne, uniform scale(min)
- * Mobile/Tablet: Wrapper transparent, keine Skalierung.
+ * Desktop Stage v3 — Chrome auf Viewport-Ebene, nur Iframes skaliert.
+ * Mobile/Tablet: Wrapper transparent.
  */
 
 :root {
   --desktop-ref-w: 1920px;
-  --desktop-ref-h: 1080px;
+  --desktop-ref-h: 960px;
   --desktop-scale: 1;
+  --desktop-bar-h: 120px;
 }
 
 .desktop-viewport {
@@ -22,10 +20,6 @@
 .desktop-background {
   display: none;
   pointer-events: none;
-}
-
-.desktop-stage-slot {
-  display: contents;
 }
 
 .desktop-stage {
@@ -45,17 +39,46 @@ html.desktop-stage-active body {
   overflow: hidden !important;
 }
 
+/* Shell-Chrome: immer echte Viewport-Ebene — nie in der Stage */
+html.desktop-stage-active .mv4-shell-chrome,
+html.desktop-stage-active #mv4ShellChrome {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  transform: none !important;
+  z-index: 2147483646 !important;
+}
+
+/* Nur ein Chrome-Stack sichtbar */
+html.desktop-stage-active .mv4-shell-chrome ~ .mv4-shell-chrome,
+html.desktop-stage-active #mv4ShellChrome ~ #mv4ShellChrome,
+html.desktop-stage-active .desktop-stage .mv4-shell-chrome,
+html.desktop-stage-active .desktop-stage #mv4ShellChrome {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
 html.desktop-stage-active .desktop-viewport {
   position: fixed;
-  inset: 0;
+  top: var(--desktop-bar-h, var(--bar-h, 120px));
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
   width: 100%;
-  height: 100%;
-  height: 100vh;
-  height: 100dvh;
+  height: auto;
   overflow: hidden;
   isolation: isolate;
   background: #05070d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 html.desktop-stage-active .desktop-background {
@@ -75,18 +98,14 @@ html.desktop-stage-active .desktop-background::before {
   inset: 0;
   background:
     radial-gradient(ellipse 90% 70% at 50% 35%, rgba(55, 75, 130, 0.45), transparent 68%),
-    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(120, 40, 90, 0.18), transparent 55%),
     linear-gradient(180deg, #070a14 0%, #05070d 55%, #03040a 100%);
 }
 
-/* Weltbezogene Vollflächen-Hintergründe (Letterbox = gestaltete Fläche) */
 html.desktop-stage-active body[data-master-world="general"] .desktop-background::before,
 html.desktop-stage-active .desktop-background[data-world="general"]::before {
   background:
     radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255, 120, 60, 0.22), transparent 55%),
     radial-gradient(ellipse 95% 80% at 50% 35%, rgba(120, 60, 180, 0.55), transparent 62%),
-    radial-gradient(ellipse 55% 50% at 8% 70%, rgba(40, 90, 200, 0.35), transparent 52%),
-    radial-gradient(ellipse 50% 45% at 92% 65%, rgba(180, 40, 120, 0.28), transparent 50%),
     linear-gradient(165deg, #12081c 0%, #080612 40%, #04030a 100%);
 }
 
@@ -94,7 +113,6 @@ html.desktop-stage-active body[data-master-world="nexora"] .desktop-background::
 html.desktop-stage-active .desktop-background[data-world="nexora"]::before {
   background:
     radial-gradient(ellipse 90% 70% at 50% 28%, rgba(40, 110, 180, 0.38), transparent 62%),
-    radial-gradient(ellipse 45% 40% at 85% 75%, rgba(20, 180, 200, 0.16), transparent 50%),
     linear-gradient(180deg, #060a14 0%, #050810 50%, #03060e 100%);
 }
 
@@ -109,32 +127,9 @@ html.desktop-stage-active body[data-master-world="freiraum"] .desktop-background
 html.desktop-stage-active .desktop-background[data-world="freiraum"]::before {
   background:
     radial-gradient(ellipse 90% 70% at 50% 30%, rgba(140, 60, 160, 0.42), transparent 65%),
-    radial-gradient(ellipse 50% 45% at 20% 80%, rgba(180, 100, 40, 0.2), transparent 55%),
     linear-gradient(165deg, #241330 0%, #1c1026 50%, #140a1c 100%);
 }
 
-html.desktop-stage-active .desktop-background::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.35;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
-}
-
-html.desktop-stage-active body[data-master-world="vertex"] .desktop-background::after,
-html.desktop-stage-active .desktop-background[data-world="vertex"]::after {
-  opacity: 0.2;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-}
-
-/* Inhaltsbühne: absolute + translate/scale — kein Layout-Overflow */
 html.desktop-stage-active .desktop-stage {
   position: absolute;
   left: 50%;
@@ -150,38 +145,30 @@ html.desktop-stage-active .desktop-stage {
   background: transparent;
 }
 
-html.desktop-stage-active .desktop-stage .mv4-shell-chrome {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-}
-
+/* Iframes füllen die Stage (Header liegt ausserhalb) */
 html.desktop-stage-active .desktop-stage .mv4-frame,
 html.desktop-stage-active .desktop-stage .mv4-frame.is-active,
 html.desktop-stage-active .desktop-stage .mv4-frame:not(.is-active) {
   position: absolute !important;
   left: 0 !important;
   right: 0 !important;
-  top: var(--total-header-h, var(--bar-h, 120px)) !important;
+  top: 0 !important;
   bottom: 0 !important;
   width: 100% !important;
-  height: calc(var(--desktop-ref-h) - var(--total-header-h, var(--bar-h, 120px))) !important;
-  max-height: calc(var(--desktop-ref-h) - var(--total-header-h, var(--bar-h, 120px))) !important;
+  height: 100% !important;
+  max-height: none !important;
 }
 
+/* Weltwechsel: Overlay deckt Stage ab; Fullscreen-Cover separat auf body */
 html.desktop-stage-active .desktop-stage .welten-world-switch {
   position: absolute;
   inset: 0;
 }
 
-/* Safe-Area-Hinweis (nur Debug, wenn data-desktop-safe-outline=1) */
-html.desktop-stage-active[data-desktop-safe-outline="1"] .desktop-stage::after {
-  content: "";
-  position: absolute;
-  inset: 24px;
-  border: 1px dashed rgba(125, 211, 252, 0.35);
-  pointer-events: none;
-  z-index: 999999;
+html.desktop-stage-active body > .welten-world-switch {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 2147483645 !important;
 }
