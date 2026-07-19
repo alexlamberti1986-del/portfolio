@@ -1,0 +1,17 @@
+﻿CLEANUP BASELINE - cleanup-live-parity
+Generated: 2026-07-19 13:25:19
+Branch: cleanup-live-parity
+
+Portfolio-App (excluding .git and node_modules):
+  File count: 351
+  Total size: 229863187 bytes (224475.77 KB / 219.21 MB)
+
+Portfolio-App/app:
+  File count: 335
+  Total size: 229834408 bytes (224447.66 KB / 219.19 MB)
+
+Raw bytes:
+  Portfolio-App_bytes=229863187
+  Portfolio-App_files=351
+  app_bytes=229834408
+  app_files=335
