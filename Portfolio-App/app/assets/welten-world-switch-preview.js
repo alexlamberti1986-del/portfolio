@@ -36,17 +36,17 @@
       });
     } else if (worldKey === "nexora") {
       timing = Object.assign(timing, {
-        /* Titel vor Cover-Ende, kein ~3s Extra-Delay mehr */
+        /* Titel vor Cover-Ende; Hold +1s zum Lesen der Schriftzüge */
         TITLE_REVEAL_AT: Math.round(WWS_TIMING.EFFECT_MS * 0.85),
-        TITLE_HOLD: 680,
+        TITLE_HOLD: 1680,
       });
     } else if (worldKey === "freiraum") {
       timing = Object.assign(timing, {
-        WORLD_TRANSITION_DURATION: 2100,
+        WORLD_TRANSITION_DURATION: 3100,
         EFFECT_MS: 1100,
         TITLE_REVEAL_AT: 860,
         TITLE_FADE_IN: 100,
-        TITLE_HOLD: 680,
+        TITLE_HOLD: 1680,
         TITLE_FADE_OUT: 180,
         COVER_MS: 560,
       });
