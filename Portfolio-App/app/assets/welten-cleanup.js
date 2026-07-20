@@ -308,12 +308,6 @@
     return ALIASES[id] || id;
   }
 
-  function removeFooter() {
-    document.querySelectorAll(".welten-site-footer").forEach(function (el) {
-      el.remove();
-    });
-  }
-
   function applyAllPortraits() {
     var IMG = window.PORTFOLIO_INLINE_IMAGES || {};
     var w = document.body.getAttribute("data-world") || "nexora";
@@ -591,7 +585,6 @@
 
   function apply(lang) {
     lang = lang || getLang();
-    removeFooter();
     rebuildContactPremium();
     enhanceHomeStory(lang);
     removeHomeClosing();

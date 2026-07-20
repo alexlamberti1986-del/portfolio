@@ -1,0 +1,189 @@
+/* Shared world footer — legal strip, world accents */
+
+.welten-site-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8800;
+  padding: 0;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.welten-site-footer.is-home-soft {
+  opacity: 0.72;
+}
+
+.welten-site-footer.is-hidden {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none !important;
+}
+
+.welten-site-footer__inner {
+  pointer-events: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 18px;
+  margin: 0 auto;
+  max-width: min(1120px, calc(100% - 24px));
+  padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  border-radius: 14px 14px 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 0;
+  background: rgba(8, 12, 22, 0.55);
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.22);
+  color: rgba(236, 242, 255, 0.9);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+}
+
+.welten-site-footer__brand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  min-width: 0;
+  flex: 1 1 220px;
+}
+
+.welten-site-footer__world {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--footer-accent, #ff59b2);
+}
+
+.welten-site-footer__tag {
+  opacity: 0.78;
+  max-width: 52ch;
+}
+
+.welten-site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px 12px;
+  flex: 0 1 auto;
+}
+
+.welten-site-footer a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+}
+
+.welten-site-footer a:hover,
+.welten-site-footer a:focus-visible {
+  opacity: 1;
+  border-bottom-color: currentColor;
+  outline: none;
+}
+
+.welten-site-footer__sep {
+  opacity: 0.35;
+  user-select: none;
+}
+
+.welten-site-footer__copy {
+  opacity: 0.62;
+  white-space: nowrap;
+}
+
+/* World accents */
+body[data-world="general"] .welten-site-footer {
+  --footer-accent: #ff59b2;
+}
+
+body[data-world="nexora"] .welten-site-footer {
+  --footer-accent: #8ec5ff;
+}
+
+body[data-world="nexora"] .welten-site-footer__inner {
+  color: rgba(232, 238, 248, 0.92);
+  background: rgba(6, 14, 28, 0.58);
+  border-color: rgba(142, 197, 255, 0.22);
+}
+
+body[data-world="vertex"] .welten-site-footer {
+  --footer-accent: #5b6b7c;
+}
+
+body[data-world="vertex"] .welten-site-footer__inner {
+  color: rgba(17, 17, 17, 0.78);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(17, 17, 17, 0.12);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+}
+
+body[data-world="freiraum"] .welten-site-footer {
+  --footer-accent: #ffc66f;
+}
+
+body[data-world="freiraum"] .welten-site-footer__inner {
+  color: rgba(255, 248, 239, 0.92);
+  background: rgba(28, 16, 10, 0.55);
+  border-color: rgba(255, 198, 111, 0.24);
+}
+
+/* Keep slide content above the bar */
+@media (min-width: 1025px) {
+  body.has-welten-footer main.slides-root,
+  body.has-welten-footer #slidesRoot {
+    padding-bottom: 4.25rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .welten-site-footer__inner {
+    justify-content: center;
+    text-align: center;
+    border-radius: 12px 12px 0 0;
+    max-width: calc(100% - 12px);
+    padding: 9px 12px;
+    padding-bottom: calc(9px + env(safe-area-inset-bottom, 0px));
+    font-size: 0.72rem;
+  }
+
+  .welten-site-footer__brand {
+    justify-content: center;
+    flex: 1 1 100%;
+  }
+
+  .welten-site-footer__tag {
+    display: none;
+  }
+
+  .welten-site-footer__nav {
+    justify-content: center;
+    width: 100%;
+  }
+
+  body.has-welten-footer main.slides-root,
+  body.has-welten-footer #slidesRoot {
+    padding-bottom: 3.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welten-site-footer__world {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welten-site-footer {
+    transition: none;
+  }
+}

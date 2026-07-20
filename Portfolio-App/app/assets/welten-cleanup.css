@@ -1,11 +1,4 @@
-/* Welten Cleanup — Kontakt premium, Nav Mobile, Leistungen, FAQ, kein Footer */
-
-/* ── Footer entfernt ── */
-.welten-site-footer {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
+/* Welten Cleanup — Kontakt premium, Nav Mobile, Leistungen, FAQ */
 
 /* ── Kontakt: siehe welten-contact-final.css ── */
 

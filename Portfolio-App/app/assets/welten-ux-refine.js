@@ -18,10 +18,6 @@
       });
   }
 
-  function injectFooter() {
-    /* Footer entfernt — Kontakt nur in Navigation und Kontaktseite */
-  }
-
   function injectMenuContact() {
     var panel = document.querySelector(".menu-panel");
     if (!panel || panel.querySelector(".menu-contact-meta")) return;
@@ -39,7 +35,6 @@
 
   function apply() {
     removeInjectedBlocks();
-    injectFooter();
     injectMenuContact();
     ensureContactMapOnly();
   }

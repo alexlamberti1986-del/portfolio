@@ -368,14 +368,13 @@
   }
 }
 
-/* Unterer Dock-/Footer-Balken aus — Safe-Area nur im scrollbaren Inhalt */
+/* Unterer Dock-Balken aus — Footer bleibt sichtbar; Safe-Area im Inhalt */
 @media (max-width: 1024px) {
   .chapter-dock,
   .dock-scene,
   #dockScene,
   #progressRail,
-  .progress-rail,
-  .welten-site-footer {
+  .progress-rail {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
