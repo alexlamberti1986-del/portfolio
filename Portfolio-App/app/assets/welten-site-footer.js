@@ -211,11 +211,12 @@
       "</ul>" +
       "</nav>" +
       "</div>" +
+      "</div>" +
+      /* Copyright outside rounded shell so it is not clipped with the card edge */
       '<div class="welten-site-footer__bar">' +
       '<span class="welten-site-footer__copy">© ' +
       YEAR +
       " Alex Lamberti</span>" +
-      "</div>" +
       "</div>"
     );
   }
@@ -252,11 +253,20 @@
   function ensureEndSpacer(footer) {
     if (!footer || !footer.parentNode) return;
     var next = footer.nextElementSibling;
-    if (next && next.classList.contains("welten-site-footer-end")) return next;
-    var spacer = document.createElement("div");
-    spacer.className = "welten-site-footer-end";
-    spacer.setAttribute("aria-hidden", "true");
-    footer.parentNode.insertBefore(spacer, footer.nextSibling);
+    var spacer =
+      next && next.classList.contains("welten-site-footer-end")
+        ? next
+        : null;
+    if (!spacer) {
+      spacer = document.createElement("div");
+      spacer.className = "welten-site-footer-end";
+      spacer.setAttribute("aria-hidden", "true");
+      footer.parentNode.insertBefore(spacer, footer.nextSibling);
+    }
+    var isHome = footer.classList.contains("is-home-footer");
+    /* Home: extra clearance so © clears the desktop-stage / iframe clip edge */
+    spacer.style.height = isHome ? "160px" : "88px";
+    spacer.style.minHeight = spacer.style.height;
     return spacer;
   }
 

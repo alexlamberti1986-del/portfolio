@@ -120,8 +120,10 @@
   align-items: center;
   justify-content: flex-start;
   gap: 8px 16px;
-  padding: 14px 32px 16px;
-  border-top: 1px solid var(--footer-line);
+  margin: 0 auto;
+  max-width: min(1180px, calc(100% - 32px));
+  padding: 16px 8px 8px;
+  border-top: 0;
   color: var(--footer-muted);
   font-size: calc(0.95rem * var(--footer-type, 1));
 }
@@ -131,21 +133,34 @@
 }
 
 .welten-site-footer__copy {
-  opacity: 0.9;
+  opacity: 0.95;
+  display: inline-block;
+  padding: 4px 0 8px;
+  line-height: 1.4;
 }
 
 /* Scroll clearance so © is never clipped at the iframe/stage bottom */
 .welten-site-footer-end {
   flex-shrink: 0;
   width: 100%;
-  height: clamp(48px, 6vh, 80px);
+  height: 88px;
+  min-height: 88px;
   pointer-events: none;
-  visibility: hidden;
+  opacity: 0;
 }
 
 #slide-home.is-footer-host .welten-site-footer-end,
 .welten-site-footer.is-home-footer + .welten-site-footer-end {
-  height: clamp(64px, 8vh, 104px);
+  height: 160px;
+  min-height: 160px;
+}
+
+.welten-site-footer.is-home-footer {
+  padding-bottom: 0.5rem;
+}
+
+.welten-site-footer.is-home-footer .welten-site-footer__bar {
+  padding-bottom: 12px;
 }
 
 /* Active slide becomes the scrollport */
@@ -153,10 +168,10 @@
   display: flex !important;
   flex-direction: column;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
+  overflow-y: scroll !important;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  scroll-padding-bottom: 4rem;
+  scroll-padding-bottom: 8rem;
   padding-bottom: 0 !important;
 }
 
@@ -210,7 +225,8 @@
 }
 
 #slide-offerte.is-footer-host .welten-site-footer-end {
-  height: clamp(40px, 5vh, 64px);
+  height: 64px !important;
+  min-height: 64px !important;
 }
 
 body[data-world="general"] .welten-site-footer {
@@ -286,7 +302,8 @@ body[data-world="freiraum"] .welten-site-footer {
 
   .welten-site-footer__bar {
     font-size: calc(1.02rem * var(--footer-type, 1.12));
-    padding: 16px 36px 18px;
+    padding: 18px 12px 10px;
+    max-width: min(1180px, calc(100% - 48px));
   }
 
   .welten-site-footer.is-offerte-footer,
@@ -296,7 +313,7 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .welten-site-footer.is-home-footer {
-    padding-bottom: 1.5rem;
+    padding-bottom: 0.25rem;
   }
 
   .welten-site-footer__shell {
@@ -304,24 +321,27 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .slide.is-footer-host {
-    scroll-padding-bottom: 5rem;
+    scroll-padding-bottom: 10rem;
     padding-bottom: 0 !important;
+    overflow-y: scroll !important;
   }
 
   #slide-home.is-footer-host .welten-site-footer-end,
   .welten-site-footer.is-home-footer + .welten-site-footer-end {
-    height: clamp(72px, 9vh, 120px);
+    height: 160px !important;
+    min-height: 160px !important;
   }
 
   .slide.is-footer-host > .slide-inner.is-footer-fill {
-    /* Less empty void between short chapters and footer */
     min-height: 62%;
   }
 
   .slide.is-footer-host.active,
   .slide.active.is-footer-host,
-  #slide-home.is-footer-host {
-    overflow-y: auto !important;
+  #slide-home.is-footer-host,
+  #slide-home.is-footer-host.active {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
   }
 }
 
@@ -363,7 +383,7 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .welten-site-footer__bar {
-    padding: 12px 18px 14px;
+    padding: 14px 8px 8px;
     font-size: calc(0.95rem * var(--footer-type, 1.06));
   }
 
@@ -373,11 +393,13 @@ body[data-world="freiraum"] .welten-site-footer {
 
   .slide.is-footer-host {
     padding-bottom: 0 !important;
+    overflow-y: scroll !important;
   }
 
   #slide-home.is-footer-host .welten-site-footer-end,
   .welten-site-footer.is-home-footer + .welten-site-footer-end {
-    height: clamp(56px, 7vh, 96px);
+    height: 140px !important;
+    min-height: 140px !important;
   }
 }
 
