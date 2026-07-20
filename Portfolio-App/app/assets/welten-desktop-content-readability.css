@@ -108,39 +108,72 @@
 
   /*
    * Desktop: Text/Buttons nie kleiner als Shell-Weltenleiste.
-   * max(..., bestehender Wert) → nur Anhebung, nie Verkleinerung.
+   * max(shell, 1em) → nur Anhebung kleiner Werte, Grössere bleiben.
    */
   html.welten-live-shell.welten-parent-desktop .world-btn {
-    min-height: var(--welten-shell-nav-min-h) !important;
-    padding-top: max(var(--welten-shell-nav-pad-y), 8px, 0.5em) !important;
-    padding-bottom: max(var(--welten-shell-nav-pad-y), 8px, 0.5em) !important;
-    padding-left: max(var(--welten-shell-nav-pad-x), 12px, 0.65em) !important;
-    padding-right: max(var(--welten-shell-nav-pad-x), 12px, 0.65em) !important;
+    min-height: max(var(--welten-shell-nav-min-h), 1em) !important;
+    padding-top: max(var(--welten-shell-nav-pad-y), 0.5em) !important;
+    padding-bottom: max(var(--welten-shell-nav-pad-y), 0.5em) !important;
+    padding-left: max(var(--welten-shell-nav-pad-x), 0.65em) !important;
+    padding-right: max(var(--welten-shell-nav-pad-x), 0.65em) !important;
   }
 
   html.welten-live-shell.welten-parent-desktop .world-btn span {
-    font-size: max(var(--welten-shell-nav-font), 0.68rem, 0.74rem) !important;
+    font-size: max(var(--welten-shell-nav-font), 1em) !important;
+    letter-spacing: 0.04em !important;
+    font-weight: 700 !important;
   }
 
   html.welten-live-shell.welten-parent-desktop .world-btn small {
-    font-size: max(calc(var(--welten-shell-nav-font) * 0.88), 0.58rem, 0.62rem) !important;
+    font-size: max(calc(var(--welten-shell-nav-font) * 0.88), 0.85em) !important;
   }
 
+  /* Hero-Navigation: DNA / Orbit / Galaxy / Multiversum */
   html.welten-live-shell.welten-parent-desktop .dna-slide,
   html.welten-live-shell.welten-parent-desktop .dna-slide.hero-button,
   html.welten-live-shell.welten-parent-desktop .hero-button,
-  html.welten-live-shell.welten-parent-desktop .welten-desktop-relocated-hero .dna-slide {
-    font-size: max(var(--welten-shell-nav-font), clamp(0.78rem, 0.72vw, 1rem), 0.82rem, 0.65rem) !important;
-    padding-top: max(var(--welten-shell-nav-pad-y), clamp(11px, 0.85vw, 16px), 9px) !important;
-    padding-bottom: max(var(--welten-shell-nav-pad-y), clamp(11px, 0.85vw, 16px), 9px) !important;
-    padding-left: max(var(--welten-shell-nav-pad-x), clamp(15px, 1.1vw, 24px), 14px) !important;
-    padding-right: max(var(--welten-shell-nav-pad-x), clamp(15px, 1.1vw, 24px), 14px) !important;
-    min-height: var(--welten-shell-nav-min-h) !important;
+  html.welten-live-shell.welten-parent-desktop .welten-desktop-relocated-hero .dna-slide,
+  html.welten-live-shell.welten-parent-desktop #slide-home .dna-slide,
+  html.welten-live-shell.welten-parent-desktop .home-hero-experience .dna-slide,
+  html.welten-live-shell.welten-parent-desktop body[data-world="vertex"] .dna-slide,
+  html.welten-live-shell.welten-parent-desktop body[data-world="freiraum"] .dna-slide,
+  html.welten-live-shell.welten-parent-desktop body[data-world="nexora"] .dna-slide {
+    font-size: max(var(--welten-shell-nav-font), 1em) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    min-height: max(var(--welten-shell-nav-min-h), 1em) !important;
+    padding-top: max(var(--welten-shell-nav-pad-y), 0.5em) !important;
+    padding-bottom: max(var(--welten-shell-nav-pad-y), 0.5em) !important;
+    padding-left: max(var(--welten-shell-nav-pad-x), 0.65em) !important;
+    padding-right: max(var(--welten-shell-nav-pad-x), 0.65em) !important;
+    line-height: 1.25 !important;
   }
 
   html.welten-live-shell.welten-parent-desktop .nexora-orbit-button,
-  html.welten-live-shell.welten-parent-desktop .welten-desktop-relocated-hero .nexora-orbit-button {
-    font-size: max(var(--welten-shell-nav-font), clamp(0.92rem, 0.82vw, 1.08rem)) !important;
+  html.welten-live-shell.welten-parent-desktop .welten-desktop-relocated-hero .nexora-orbit-button,
+  html.welten-live-shell.welten-parent-desktop #slide-home .nexora-orbit-button {
+    font-size: max(var(--welten-shell-nav-font), 1em) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    min-height: max(var(--welten-shell-nav-min-h), 1em) !important;
+    padding-top: max(var(--welten-shell-nav-pad-y), 0.5em) !important;
+    padding-bottom: max(var(--welten-shell-nav-pad-y), 0.5em) !important;
+    padding-left: max(var(--welten-shell-nav-pad-x), 0.65em) !important;
+    padding-right: max(var(--welten-shell-nav-pad-x), 0.65em) !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop .mv-static-hero__nav-btn,
+  html.welten-live-shell.welten-parent-desktop .mv-form-btn.mv-static-hero__nav-btn,
+  html.welten-live-shell.welten-parent-desktop #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+  html.welten-live-shell.welten-parent-desktop body[data-world="general"] .mv-static-hero__nav-btn {
+    font-size: max(var(--welten-shell-nav-font), 1em) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em !important;
+    min-height: max(var(--welten-shell-nav-min-h), 1em) !important;
+    padding-top: max(var(--welten-shell-nav-pad-y), 0.55em) !important;
+    padding-bottom: max(var(--welten-shell-nav-pad-y), 0.55em) !important;
+    padding-left: max(var(--welten-shell-nav-pad-x), 0.85em) !important;
+    padding-right: max(var(--welten-shell-nav-pad-x), 0.85em) !important;
   }
 
   html.welten-live-shell.welten-parent-desktop .btn,
@@ -148,9 +181,10 @@
   html.welten-live-shell.welten-parent-desktop .cta-row .btn,
   html.welten-live-shell.welten-parent-desktop .welten-cta-band__actions .btn,
   html.welten-live-shell.welten-parent-desktop .dock-card,
-  html.welten-live-shell.welten-parent-desktop .projects-accordion__trigger {
-    font-size: max(var(--welten-shell-nav-font), 1rem, 0.95rem, 0.88rem) !important;
-    min-height: var(--welten-shell-nav-min-h) !important;
+  html.welten-live-shell.welten-parent-desktop .projects-accordion__trigger,
+  html.welten-live-shell.welten-parent-desktop .menu-links a {
+    font-size: max(var(--welten-shell-nav-font), 1em) !important;
+    min-height: max(var(--welten-shell-nav-min-h), 1em) !important;
     padding-top: max(var(--welten-shell-nav-pad-y), 0.55em) !important;
     padding-bottom: max(var(--welten-shell-nav-pad-y), 0.55em) !important;
     padding-left: max(var(--welten-shell-nav-pad-x), 0.85em) !important;
@@ -159,9 +193,34 @@
 
   html.welten-live-shell.welten-parent-desktop .chapter-label,
   html.welten-live-shell.welten-parent-desktop .world-intro,
-  html.welten-live-shell.welten-parent-desktop .experience-step,
   html.welten-live-shell.welten-parent-desktop .projects-accordion__label {
-    font-size: max(var(--welten-shell-nav-font), 0.72rem, 0.75rem, 0.78rem) !important;
+    font-size: max(var(--welten-shell-nav-font), 1em) !important;
+  }
+
+  /* Seitliche Punkte-Navigation (sichtbar ab 1920px in den Welten) */
+  @media (min-width: 1920px) {
+    html.welten-live-shell.welten-parent-desktop .experience-rail {
+      gap: max(14px, calc(var(--welten-shell-nav-pad-y) * 1.55)) !important;
+    }
+
+    html.welten-live-shell.welten-parent-desktop .experience-step {
+      width: max(24px, var(--welten-shell-nav-min-h)) !important;
+      height: max(24px, var(--welten-shell-nav-min-h)) !important;
+      min-width: var(--welten-shell-nav-min-h) !important;
+      min-height: var(--welten-shell-nav-min-h) !important;
+    }
+
+    html.welten-live-shell.welten-parent-desktop .experience-step::after {
+      font-size: max(var(--welten-shell-nav-font), 1em) !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.04em !important;
+      text-transform: uppercase !important;
+      right: calc(var(--welten-shell-nav-min-h) + 10px) !important;
+    }
+
+    html.welten-live-shell.welten-parent-desktop .experience-rail::before {
+      left: calc(var(--welten-shell-nav-min-h) / 2 - 0.5px) !important;
+    }
   }
 
   html.welten-live-shell.welten-parent-desktop .home-copy p,
@@ -173,11 +232,11 @@
   html.welten-live-shell.welten-parent-desktop .welten-faq p,
   html.welten-live-shell.welten-parent-desktop .glass-card p,
   html.welten-live-shell.welten-parent-desktop .card-grid p {
-    font-size: max(var(--welten-shell-nav-font), calc(1em * var(--welten-content-type, 1)), 0.98rem) !important;
+    font-size: max(var(--welten-shell-nav-font), calc(1em * var(--welten-content-type, 1)), 1em) !important;
   }
 
   html.welten-live-shell.welten-parent-desktop .home-copy .lead,
   html.welten-live-shell.welten-parent-desktop .prose > p:first-of-type {
-    font-size: max(calc(var(--welten-shell-nav-font) * 1.12), calc(1.12em * var(--welten-content-type, 1)), 1.05rem) !important;
+    font-size: max(calc(var(--welten-shell-nav-font) * 1.12), calc(1.12em * var(--welten-content-type, 1)), 1.05em) !important;
   }
 }
