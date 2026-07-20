@@ -1,5 +1,5 @@
 /**
- * Classic multi-column site footer — worlds, pages, legal (AGB)
+ * In-flow site footer — appears only after scrolling to the end of the active slide
  */
 (function () {
   "use strict";
@@ -112,6 +112,20 @@
     },
   };
 
+  var FOOTER_CHAPTERS = {
+    projects: 1,
+    leistungen: 1,
+    about: 1,
+    contact: 1,
+    offerte: 1,
+    values: 1,
+    experience: 1,
+    profile: 1,
+    workstyle: 1,
+    why: 1,
+    faq: 1,
+  };
+
   function getLang() {
     var htmlLang = (document.documentElement.getAttribute("lang") || "de").toLowerCase();
     var bodyLang = (document.body && document.body.getAttribute("data-lang")) || "";
@@ -130,11 +144,22 @@
   }
 
   function getChapter() {
-    return (
+    return String(
       (document.body && document.body.getAttribute("data-current-slide")) ||
-      (document.body && document.body.getAttribute("data-chapter")) ||
-      ""
-    );
+        (document.body && document.body.getAttribute("data-chapter")) ||
+        ""
+    ).toLowerCase();
+  }
+
+  function normalizeChapter(chapter) {
+    if (!chapter || chapter === "home") return "home";
+    if (chapter === "projects") return "projects";
+    if (chapter === "projekte") return "projects";
+    if (chapter === "services") return "leistungen";
+    if (chapter === "ueber-mich") return "about";
+    if (chapter === "kontakt") return "contact";
+    if (chapter === "offer") return "offerte";
+    return chapter;
   }
 
   function t() {
@@ -188,7 +213,7 @@
       '<div class="welten-site-footer__bar">' +
       '<span class="welten-site-footer__copy">© ' +
       YEAR +
-      ' Alex Lamberti</span>' +
+      " Alex Lamberti</span>" +
       '<span class="welten-site-footer__bar-links">' +
       '<a href="/impressum" target="_top" rel="noopener" data-footer-impressum-mini>Impressum</a>' +
       '<span aria-hidden="true">·</span>' +
@@ -201,25 +226,93 @@
     );
   }
 
-  function ensureFooter() {
-    var existing = document.querySelector(".welten-site-footer");
-    if (existing) return existing;
-
+  function createFooter() {
     var footer = document.createElement("footer");
     footer.className = "welten-site-footer";
     footer.setAttribute("role", "contentinfo");
     footer.innerHTML = buildMarkup();
-    document.body.appendChild(footer);
-    document.body.classList.add("has-welten-footer");
     return footer;
   }
 
-  function refresh() {
-    var footer = ensureFooter();
+  function getActiveSlide() {
+    return (
+      document.querySelector(".slide.active") ||
+      document.querySelector("main.slides-root .slide.is-active") ||
+      document.querySelector("#slidesRoot .slide.active")
+    );
+  }
+
+  function clearHosts() {
+    document.querySelectorAll(".slide.is-footer-host").forEach(function (slide) {
+      slide.classList.remove("is-footer-host");
+    });
+    document.querySelectorAll(".slide-inner.is-footer-fill").forEach(function (inner) {
+      inner.classList.remove("is-footer-fill");
+      inner.style.minHeight = "";
+    });
+  }
+
+  function syncFillHeight(slide, inner) {
+    if (!slide || !inner) return;
+    var h = Math.round(slide.clientHeight || slide.offsetHeight || 0);
+    if (h > 0) {
+      inner.style.minHeight = h + "px";
+    }
+  }
+
+  function mountFooter(footer, chapter) {
+    clearHosts();
+    var norm = normalizeChapter(chapter);
+    var isHome = norm === "home";
+    var allow = !isHome && !!FOOTER_CHAPTERS[norm];
+
+    /* Fallback: any non-home active slide may host the footer */
+    if (!allow && !isHome && getActiveSlide()) allow = true;
+
+    if (!allow) {
+      footer.hidden = true;
+      footer.setAttribute("aria-hidden", "true");
+      if (footer.parentNode) footer.parentNode.removeChild(footer);
+      document.body.classList.remove("has-welten-footer", "has-welten-footer-expanded");
+      return;
+    }
+
+    var slide = getActiveSlide();
+    if (!slide) {
+      document.body.appendChild(footer);
+      footer.hidden = true;
+      return;
+    }
+
+    slide.classList.add("is-footer-host");
+    var inner =
+      slide.querySelector(":scope > .slide-inner") ||
+      slide.querySelector(".slide-inner");
+    if (inner) {
+      inner.classList.add("is-footer-fill");
+      syncFillHeight(slide, inner);
+    }
+
+    if (footer.parentNode !== slide) {
+      slide.appendChild(footer);
+    } else if (inner && footer.previousElementSibling !== inner) {
+      slide.appendChild(footer);
+    }
+
+    footer.hidden = false;
+    footer.removeAttribute("aria-hidden");
+    document.body.classList.add("has-welten-footer", "has-welten-footer-expanded");
+
+    requestAnimationFrame(function () {
+      syncFillHeight(slide, inner);
+    });
+  }
+
+  function updateLabels(footer) {
     var worldKey = getWorldKey();
     var world = WORLD[worldKey];
     var labels = t();
-    var chapter = String(getChapter() || "").toLowerCase();
+    var chapter = normalizeChapter(getChapter());
 
     var brand = footer.querySelector("[data-footer-brand]");
     var worldEl = footer.querySelector("[data-footer-world]");
@@ -238,7 +331,7 @@
     footer.querySelectorAll("[data-footer-world-link]").forEach(function (a) {
       var key = a.getAttribute("data-footer-world-link");
       a.classList.toggle("is-active", key === worldKey);
-      a.setAttribute("aria-current", key === worldKey ? "page" : "false");
+      a.setAttribute("aria-current", key === worldKey ? "true" : "false");
     });
 
     var pageMap = {
@@ -256,8 +349,8 @@
       var meta = pageMap[key];
       a.textContent = meta.label;
       a.href = pageHref(worldKey, meta.path === "home" ? "home" : meta.path);
-      var activeChapter =
-        chapter === "home" || chapter === ""
+      var activePath =
+        chapter === "home"
           ? "home"
           : chapter === "projects"
             ? "projekte"
@@ -270,10 +363,10 @@
                   : chapter === "leistungen"
                     ? "leistungen"
                     : chapter;
-      var isActive =
-        (meta.path === "home" && (activeChapter === "home" || !chapter)) ||
-        meta.path === activeChapter;
-      a.classList.toggle("is-active", isActive);
+      a.classList.toggle(
+        "is-active",
+        (meta.path === "home" && activePath === "home") || meta.path === activePath
+      );
     });
 
     footer.querySelectorAll("[data-footer-impressum], [data-footer-impressum-mini]").forEach(function (el) {
@@ -287,12 +380,23 @@
     });
 
     footer.setAttribute("data-footer-world", worldKey);
+  }
 
-    var isHome = chapter === "home" || chapter === "";
-    var isEnd = chapter === "contact" || chapter === "offerte";
-    footer.classList.toggle("is-home-soft", isHome);
-    footer.classList.toggle("is-expanded", isEnd || !isHome);
-    document.body.classList.toggle("has-welten-footer-expanded", footer.classList.contains("is-expanded"));
+  function refresh() {
+    var footer = document.querySelector(".welten-site-footer") || createFooter();
+    var chapter = normalizeChapter(getChapter());
+    updateLabels(footer);
+    mountFooter(footer, chapter);
+  }
+
+  var scheduled = false;
+  function scheduleRefresh() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(function () {
+      scheduled = false;
+      refresh();
+    });
   }
 
   function apply() {
@@ -305,14 +409,14 @@
     apply();
   }
 
-  document.addEventListener("welten-chapter-change", refresh);
-  document.addEventListener("welten-lang-change", refresh);
-  document.addEventListener("welten-world-change", refresh);
+  document.addEventListener("welten-chapter-change", scheduleRefresh);
+  document.addEventListener("welten-lang-change", scheduleRefresh);
+  document.addEventListener("welten-world-change", scheduleRefresh);
+  window.addEventListener("resize", scheduleRefresh);
+  window.addEventListener("orientationchange", scheduleRefresh);
 
   if (document.body) {
-    var obs = new MutationObserver(function () {
-      refresh();
-    });
+    var obs = new MutationObserver(scheduleRefresh);
     obs.observe(document.body, {
       attributes: true,
       attributeFilter: ["data-world", "data-lang", "data-current-slide", "data-chapter"],

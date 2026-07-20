@@ -1,39 +1,42 @@
-/* Classic multi-column site footer — desktop / laptop first */
+/* In-flow footer at end of active slide — visible only after scrolling down */
 
 .welten-site-footer {
   --footer-accent: #ff59b2;
   --footer-fg: rgba(236, 242, 255, 0.92);
   --footer-muted: rgba(236, 242, 255, 0.68);
-  --footer-bg: rgba(7, 11, 20, 0.92);
+  --footer-bg: rgba(7, 11, 20, 0.96);
   --footer-line: rgba(255, 255, 255, 0.12);
 
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 8800;
-  pointer-events: none;
+  position: relative;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  z-index: 5;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 2.5rem 0 calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  pointer-events: auto;
   color: var(--footer-fg);
   font-size: 0.9rem;
   line-height: 1.45;
-  transition: opacity 0.28s ease, transform 0.28s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
-.welten-site-footer.is-home-soft {
-  opacity: 0.88;
+.welten-site-footer[hidden] {
+  display: none !important;
 }
 
 .welten-site-footer__shell {
-  pointer-events: auto;
   margin: 0 auto;
   max-width: min(1180px, calc(100% - 32px));
   border: 1px solid var(--footer-line);
-  border-bottom: 0;
-  border-radius: 18px 18px 0 0;
+  border-radius: 18px;
   background: var(--footer-bg);
   backdrop-filter: blur(16px) saturate(1.12);
   -webkit-backdrop-filter: blur(16px) saturate(1.12);
-  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
   overflow: hidden;
 }
 
@@ -109,7 +112,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px 16px;
-  padding: 12px 28px calc(12px + env(safe-area-inset-bottom, 0px));
+  padding: 12px 28px;
   border-top: 1px solid var(--footer-line);
   color: var(--footer-muted);
   font-size: 0.8rem;
@@ -126,14 +129,38 @@
   opacity: 0.85;
 }
 
-/* World accents */
+/* Active slide becomes the scrollport; content fills viewport so footer sits below the fold */
+.slide.is-footer-host {
+  display: flex !important;
+  flex-direction: column;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.slide.is-footer-host > .slide-inner.is-footer-fill,
+.slide.is-footer-host > .slide-inner {
+  flex: 0 0 auto;
+  min-height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/* Prefer dynamic viewport units when available */
+@supports (height: 100dvh) {
+  .slide.is-footer-host > .slide-inner.is-footer-fill {
+    min-height: 100%;
+  }
+}
+
 body[data-world="general"] .welten-site-footer {
   --footer-accent: #ff59b2;
 }
 
 body[data-world="nexora"] .welten-site-footer {
   --footer-accent: #8ec5ff;
-  --footer-bg: rgba(6, 14, 28, 0.94);
+  --footer-bg: rgba(6, 14, 28, 0.96);
   --footer-line: rgba(142, 197, 255, 0.2);
 }
 
@@ -141,7 +168,7 @@ body[data-world="vertex"] .welten-site-footer {
   --footer-accent: #4b5d6f;
   --footer-fg: rgba(17, 17, 17, 0.88);
   --footer-muted: rgba(17, 17, 17, 0.62);
-  --footer-bg: rgba(255, 255, 255, 0.94);
+  --footer-bg: rgba(255, 255, 255, 0.96);
   --footer-line: rgba(17, 17, 17, 0.12);
 }
 
@@ -152,55 +179,35 @@ body[data-world="vertex"] .welten-site-footer a:focus-visible {
 
 body[data-world="freiraum"] .welten-site-footer {
   --footer-accent: #ffc66f;
-  --footer-bg: rgba(28, 16, 10, 0.94);
+  --footer-bg: rgba(28, 16, 10, 0.96);
   --footer-line: rgba(255, 198, 111, 0.22);
 }
 
-/* Desktop / laptop: full multi-column footer */
 @media (min-width: 1025px) {
-  body.has-welten-footer main.slides-root,
-  body.has-welten-footer #slidesRoot {
-    padding-bottom: 5.5rem;
+  .welten-site-footer {
+    padding-top: 3rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   }
 
-  body.has-welten-footer-expanded main.slides-root,
-  body.has-welten-footer-expanded #slidesRoot {
-    padding-bottom: 15.5rem;
+  .welten-site-footer__shell {
+    max-width: min(1180px, calc(100% - 48px));
   }
 
-  /* Home: compact strip so Galaxy Walk frei bleibt */
-  .welten-site-footer.is-home-soft .welten-site-footer__col {
-    display: none;
-  }
-
-  .welten-site-footer.is-home-soft .welten-site-footer__grid {
-    grid-template-columns: 1fr;
-    padding: 14px 28px 10px;
-    gap: 0;
-  }
-
-  .welten-site-footer.is-home-soft .welten-site-footer__brand {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 8px 14px;
-  }
-
-  .welten-site-footer.is-home-soft .welten-site-footer__brand-name,
-  .welten-site-footer.is-home-soft .welten-site-footer__world {
-    margin: 0;
-  }
-
-  .welten-site-footer.is-home-soft .welten-site-footer__tag {
-    display: none;
+  /* Ensure desktop slides can scroll to the in-flow footer */
+  .slide.is-footer-host.active,
+  .slide.active.is-footer-host {
+    overflow-y: auto !important;
   }
 }
 
-/* Tablet / phone: stacked but still full footer menu */
 @media (max-width: 1024px) {
+  .welten-site-footer {
+    padding-top: 2rem;
+  }
+
   .welten-site-footer__shell {
-    max-width: calc(100% - 12px);
-    border-radius: 14px 14px 0 0;
+    max-width: calc(100% - 16px);
+    border-radius: 14px;
   }
 
   .welten-site-footer__grid {
@@ -214,12 +221,7 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .welten-site-footer__bar {
-    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-  }
-
-  body.has-welten-footer main.slides-root,
-  body.has-welten-footer #slidesRoot {
-    padding-bottom: 18rem;
+    padding: 10px 16px;
   }
 }
 
@@ -232,15 +234,10 @@ body[data-world="freiraum"] .welten-site-footer {
   .welten-site-footer__list {
     grid-template-columns: 1fr 1fr;
   }
-
-  body.has-welten-footer main.slides-root,
-  body.has-welten-footer #slidesRoot {
-    padding-bottom: 22rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .welten-site-footer {
-    transition: none;
+  .slide.is-footer-host {
+    scroll-behavior: auto;
   }
 }

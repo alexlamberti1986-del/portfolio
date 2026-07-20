@@ -234,7 +234,7 @@
     if (!isMobileContext()) return;
     document.documentElement.style.setProperty("--dock-h", "0px");
     document.querySelectorAll(
-      ".chapter-dock, #dockScene, #progressRail, .progress-rail, .welten-site-footer"
+      ".chapter-dock, #dockScene, #progressRail, .progress-rail"
     ).forEach(function (el) {
       el.remove();
     });
