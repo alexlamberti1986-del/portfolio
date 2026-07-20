@@ -32,56 +32,10 @@ body.is-home #slide-home .slide-inner--home {
   pointer-events: none !important;
 }
 
-/* ── Footer ── */
-.welten-site-footer {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9000;
-  padding: 10px 16px;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  pointer-events: none;
-}
-
+/* ── Legacy footer strip (replaced by welten-site-footer.css) ── */
 .welten-site-footer__inner {
-  pointer-events: auto;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 8px 14px;
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  opacity: 0.88;
-}
-
-.welten-site-footer a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease, opacity 0.2s ease;
-}
-
-.welten-site-footer a:hover {
-  opacity: 1;
-  border-bottom-color: currentColor;
-}
-
-.welten-site-footer__copy {
-  opacity: 0.65;
-}
-
-body[data-world="nexora"] .welten-site-footer__inner {
-  color: rgba(232, 238, 248, 0.9);
-}
-
-body[data-world="vertex"] .welten-site-footer__inner {
-  color: rgba(17, 17, 17, 0.72);
-}
-
-body[data-world="freiraum"] .welten-site-footer__inner {
-  color: rgba(255, 248, 239, 0.88);
+  /* kept only so old selectors don't break; unused by current markup */
+  display: contents;
 }
 
 /* Mobile Menü: Tel + Mail */
@@ -114,9 +68,8 @@ body[data-world="freiraum"] .welten-site-footer__inner {
   body[data-world="general"] .site-header .header-meta[href^="mailto:"]:not([data-mv-mobile-mail="1"]) {
     display: none !important;
   }
-  .welten-site-footer__inner {
-    font-size: 0.72rem;
-    gap: 6px 10px;
+  .welten-site-footer__shell {
+    font-size: 0.86rem;
   }
 }
 

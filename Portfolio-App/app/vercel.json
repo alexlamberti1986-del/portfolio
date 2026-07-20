@@ -27,6 +27,7 @@
     { "source": "/offerte", "destination": "/index.html" },
     { "source": "/impressum", "destination": "/impressum.html" },
     { "source": "/datenschutz", "destination": "/datenschutz.html" },
+    { "source": "/agb", "destination": "/agb.html" },
     { "source": "/webdesign", "destination": "/webdesign.html" },
     { "source": "/digital-marketing", "destination": "/digital-marketing.html" },
     { "source": "/digitale-strategie", "destination": "/digitale-strategie.html" },
@@ -78,7 +79,7 @@
       ]
     },
     {
-      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte|impressum|datenschutz|webdesign|digital-marketing|digitale-strategie)(.*)",
+      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte|impressum|datenschutz|agb|webdesign|digital-marketing|digitale-strategie)(.*)",
       "headers": [
         { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]
