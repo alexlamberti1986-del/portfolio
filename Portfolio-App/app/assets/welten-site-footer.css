@@ -134,6 +134,20 @@
   opacity: 0.9;
 }
 
+/* Scroll clearance so © is never clipped at the iframe/stage bottom */
+.welten-site-footer-end {
+  flex-shrink: 0;
+  width: 100%;
+  height: clamp(48px, 6vh, 80px);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+#slide-home.is-footer-host .welten-site-footer-end,
+.welten-site-footer.is-home-footer + .welten-site-footer-end {
+  height: clamp(64px, 8vh, 104px);
+}
+
 /* Active slide becomes the scrollport */
 .slide.is-footer-host {
   display: flex !important;
@@ -142,9 +156,8 @@
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
-  scroll-padding-bottom: 2rem;
-  /* Room so the full footer (inkl. ©) can scroll into view */
-  padding-bottom: 1.25rem !important;
+  scroll-padding-bottom: 4rem;
+  padding-bottom: 0 !important;
 }
 
 .slide.is-footer-host > .slide-inner.is-footer-fill,
@@ -169,13 +182,35 @@
 }
 
 .welten-site-footer.is-offerte-footer {
-  padding-top: 1rem;
-  padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  padding-top: 0.5rem;
+  padding-bottom: 1.25rem;
 }
 
 #slide-offerte .welten-site-footer {
-  padding-top: 1rem;
+  padding-top: 0.5rem;
   margin-top: 0;
+}
+
+#slide-offerte.is-footer-host.slide,
+#slide-offerte.is-footer-host.slide.active {
+  height: 100% !important;
+  min-height: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  padding-bottom: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  align-content: start !important;
+}
+
+#slide-offerte.is-footer-host .welten-leadform-wrap,
+#slide-offerte.is-footer-host .welten-offerte-form-wrap {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#slide-offerte.is-footer-host .welten-site-footer-end {
+  height: clamp(40px, 5vh, 64px);
 }
 
 body[data-world="general"] .welten-site-footer {
@@ -256,8 +291,12 @@ body[data-world="freiraum"] .welten-site-footer {
 
   .welten-site-footer.is-offerte-footer,
   #slide-offerte .welten-site-footer {
-    padding-top: 1.25rem;
-    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .welten-site-footer.is-home-footer {
+    padding-bottom: 1.5rem;
   }
 
   .welten-site-footer__shell {
@@ -265,8 +304,13 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .slide.is-footer-host {
-    scroll-padding-bottom: 3rem;
-    padding-bottom: 2rem !important;
+    scroll-padding-bottom: 5rem;
+    padding-bottom: 0 !important;
+  }
+
+  #slide-home.is-footer-host .welten-site-footer-end,
+  .welten-site-footer.is-home-footer + .welten-site-footer-end {
+    height: clamp(72px, 9vh, 120px);
   }
 
   .slide.is-footer-host > .slide-inner.is-footer-fill {
@@ -291,7 +335,8 @@ body[data-world="freiraum"] .welten-site-footer {
 
   .welten-site-footer.is-offerte-footer,
   #slide-offerte .welten-site-footer {
-    padding-top: 0.75rem;
+    padding-top: 0.4rem;
+    padding-bottom: 1rem;
   }
 
   .welten-site-footer__shell {
@@ -327,7 +372,12 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .slide.is-footer-host {
-    padding-bottom: 1.5rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  #slide-home.is-footer-host .welten-site-footer-end,
+  .welten-site-footer.is-home-footer + .welten-site-footer-end {
+    height: clamp(56px, 7vh, 96px);
   }
 }
 

@@ -1,11 +1,9 @@
 /* Offerte — Formular-Kapitel, alle Welten */
 
 #slide-offerte.slide {
-  overflow-x: clip;
-  padding-bottom: clamp(8px, 1.5vw, 16px) !important;
-  /* Kein erzwungenes Vollbild — sonst Leerraum unter dem Formular */
+  overflow-x: hidden;
+  padding-bottom: 0 !important;
   min-height: 0 !important;
-  height: auto !important;
   align-content: start !important;
 }
 
@@ -32,9 +30,9 @@
   body[data-world] #slide-offerte .slide-inner.offerte-layout,
   body.welten-desktop-subpage-hero--on #slide-offerte .slide-inner.offerte-layout {
     padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 
-  /* Desktop-Subpage-Hero: Offerte-Inhalt direkt unter Hero, kein Stretch darunter */
   body.welten-desktop-subpage-hero--on #slide-offerte.slide.active,
   body.welten-desktop-subpage-hero--on #slide-offerte.slide.active > .slide-inner.offerte-layout {
     min-height: 0 !important;
@@ -49,17 +47,19 @@
   height: auto;
   min-height: 0 !important;
   max-height: none;
-  margin: 0 0 0 0 !important;
-  overflow: visible;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
   border-radius: var(--radius-lg, 28px);
   line-height: 0;
   flex-grow: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 #slide-offerte .welten-leadform-frame {
   display: block;
   width: 100%;
-  min-height: 480px;
+  min-height: 400px;
   height: auto;
   margin: 0;
   padding: 0;
@@ -85,13 +85,13 @@
 
   #slide-offerte .welten-leadform-wrap,
   #slide-offerte .welten-offerte-form-wrap {
-    margin-bottom: 0 !important;
+    margin: 0 !important;
   }
 }
 
 @media (max-width: 640px) {
   #slide-offerte.slide {
-    padding-bottom: 8px !important;
+    padding-bottom: 0 !important;
   }
 
   #slide-offerte .slide-inner.offerte-layout {

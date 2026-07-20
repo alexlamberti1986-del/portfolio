@@ -30,7 +30,7 @@
     "assets/welten-premium-review.js?v=20260531c",
     "assets/welten-final-restore.js?v=20260606c",
     "assets/welten-contact-final.js?v=20260714offerte1",
-    "assets/welten-offerte.js?v=20260714offerte1",
+    "assets/welten-offerte.js?v=20260720footer6",
     "assets/welten-chapter-visuals.js?v=20260706mobile-pass3",
     "assets/welten-slides-fr.js?v=20260706perf-fix",
     "assets/welten-content-i18n.js?v=20260714ctaAbout1",

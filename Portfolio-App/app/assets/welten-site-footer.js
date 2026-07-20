@@ -244,6 +244,20 @@
       inner.classList.remove("is-footer-fill");
       inner.style.minHeight = "";
     });
+    document.querySelectorAll(".welten-site-footer-end").forEach(function (el) {
+      el.remove();
+    });
+  }
+
+  function ensureEndSpacer(footer) {
+    if (!footer || !footer.parentNode) return;
+    var next = footer.nextElementSibling;
+    if (next && next.classList.contains("welten-site-footer-end")) return next;
+    var spacer = document.createElement("div");
+    spacer.className = "welten-site-footer-end";
+    spacer.setAttribute("aria-hidden", "true");
+    footer.parentNode.insertBefore(spacer, footer.nextSibling);
+    return spacer;
   }
 
   function syncFillHeight(slide, inner) {
@@ -308,6 +322,7 @@
     footer.removeAttribute("aria-hidden");
     footer.classList.toggle("is-home-footer", norm === "home");
     footer.classList.toggle("is-offerte-footer", norm === "offerte");
+    ensureEndSpacer(footer);
     document.body.classList.add("has-welten-footer", "has-welten-footer-expanded");
 
     if (!skipFill) {
