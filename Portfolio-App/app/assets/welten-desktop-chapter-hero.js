@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260716galaxy15";
+  var VER = "20260720headerGap1";
   var bootTimer = null;
   var realignTimers = [];
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];

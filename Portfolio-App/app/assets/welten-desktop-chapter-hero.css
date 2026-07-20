@@ -455,18 +455,23 @@
 
   body[data-world="nexora"] .slide,
   body[data-world="vertex"] .slide,
-  body[data-world="freiraum"] .slide {
+  body[data-world="freiraum"] .slide,
+  body[data-world="general"] .slide {
     transform: none !important;
     transition: opacity 0.35s ease, visibility 0.35s ease !important;
     padding-top: 0 !important;
+    top: 0 !important;
+    margin-top: 0 !important;
   }
 
   body[data-world="nexora"] main.slides-root,
   body[data-world="vertex"] main.slides-root,
   body[data-world="freiraum"] main.slides-root,
+  body[data-world="general"] main.slides-root,
   body[data-world="nexora"] #slidesRoot,
   body[data-world="vertex"] #slidesRoot,
-  body[data-world="freiraum"] #slidesRoot {
+  body[data-world="freiraum"] #slidesRoot,
+  body[data-world="general"] #slidesRoot {
     padding-top: 0 !important;
     height: 100% !important;
     max-height: 100% !important;

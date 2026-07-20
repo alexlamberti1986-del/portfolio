@@ -29,7 +29,17 @@
         "display:none!important;visibility:hidden!important;opacity:0!important;" +
         "height:0!important;min-height:0!important;overflow:hidden!important;" +
         "pointer-events:none!important;margin:0!important;padding:0!important;" +
-        "position:absolute!important;left:-9999px!important;width:1px!important}" ;
+        "position:absolute!important;left:-9999px!important;width:1px!important}" +
+        "html.welten-live-shell,html.mv-in-shell,html:not(.welten-standalone){" +
+        "--header-h:0px;--header-air-top:0px;--header-air-bottom:0px}" +
+        "html.welten-live-shell main.slides-root,html.welten-live-shell #slidesRoot," +
+        "html.mv-in-shell main.slides-root,html.mv-in-shell #slidesRoot," +
+        "html:not(.welten-standalone) main.slides-root,html:not(.welten-standalone) #slidesRoot{" +
+        "padding-top:0!important}" +
+        "html.welten-live-shell .slide,html.welten-live-shell .slide.active," +
+        "html.mv-in-shell .slide,html.mv-in-shell .slide.active," +
+        "html:not(.welten-standalone) .slide,html:not(.welten-standalone) .slide.active{" +
+        "top:0!important;padding-top:0!important;margin-top:0!important}";
       (document.head || document.documentElement).appendChild(st);
     }
   } catch (eStyle) {}

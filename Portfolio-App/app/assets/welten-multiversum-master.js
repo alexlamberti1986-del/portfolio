@@ -74,6 +74,9 @@
   var SHELL_CHROME_CSS =
     "html.welten-live-shell .mv4-bar,html.welten-live-shell .mv4-shell-chrome,html.welten-live-shell .mv4-global-header,html.welten-live-shell #mv4ShellChrome{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}" +
     "html.welten-live-shell .site-header{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;min-height:0!important;overflow:hidden!important;pointer-events:none!important;margin:0!important;padding:0!important}" +
+    "html.welten-live-shell{--header-h:0px;--header-air-top:0px;--header-air-bottom:0px}" +
+    "html.welten-live-shell main.slides-root,html.welten-live-shell #slidesRoot{padding-top:0!important}" +
+    "html.welten-live-shell .slide,html.welten-live-shell .slide.active,html.welten-live-shell .slide.is-active{top:0!important;padding-top:0!important;margin-top:0!important}" +
     "html.welten-live-shell .welten-skip-link{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}" +
     "html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__eyebrow,html.mv-in-shell .al-world-video-hero--with-chrome .mv-static-hero__title,html.mv-in-shell .al-world-video-hero--with-chrome .al-world-video-hero__title{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;margin:0!important;pointer-events:none!important}";
   var MENU_BRIDGE_SRC = "/assets/welten-shell-menu-bridge.js?v=20260715globalHeader1";

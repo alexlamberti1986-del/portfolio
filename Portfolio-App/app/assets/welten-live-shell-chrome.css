@@ -22,6 +22,30 @@ html.welten-live-shell .site-header {
   padding: 0 !important;
 }
 
+/*
+ * Parent shell already offsets the stage under Kontakt + Welten-Leiste.
+ * Do not also reserve --header-h inside the iframe — that creates the empty
+ * horizontal bar under the world nav (all 4 worlds on desktop/laptop).
+ */
+html.welten-live-shell {
+  --header-h: 0px;
+  --header-air-top: 0px;
+  --header-air-bottom: 0px;
+}
+
+html.welten-live-shell main.slides-root,
+html.welten-live-shell #slidesRoot {
+  padding-top: 0 !important;
+}
+
+html.welten-live-shell .slide,
+html.welten-live-shell .slide.active,
+html.welten-live-shell .slide.is-active {
+  top: 0 !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
 html.welten-live-shell .welten-skip-link {
   position: absolute !important;
   width: 1px !important;
