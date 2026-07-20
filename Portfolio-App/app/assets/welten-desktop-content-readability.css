@@ -165,7 +165,9 @@
   html.welten-live-shell.welten-parent-desktop .mv-static-hero__nav-btn,
   html.welten-live-shell.welten-parent-desktop .mv-form-btn.mv-static-hero__nav-btn,
   html.welten-live-shell.welten-parent-desktop #alGalaxyHomeChrome .mv-static-hero__nav-btn,
-  html.welten-live-shell.welten-parent-desktop body[data-world="general"] .mv-static-hero__nav-btn {
+  html.welten-live-shell.welten-parent-desktop body[data-world="general"] .mv-static-hero__nav-btn,
+  html.welten-live-shell.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+  html.welten-live-shell.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__nav-btn {
     font-size: max(var(--welten-shell-nav-font), 1em) !important;
     font-weight: 700 !important;
     letter-spacing: 0.04em !important;
@@ -174,6 +176,16 @@
     padding-bottom: max(var(--welten-shell-nav-pad-y), 0.55em) !important;
     padding-left: max(var(--welten-shell-nav-pad-x), 0.85em) !important;
     padding-right: max(var(--welten-shell-nav-pad-x), 0.85em) !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag,
+  html.welten-live-shell.welten-parent-desktop body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag,
+  html.welten-live-shell.welten-parent-desktop .mv-static-hero__tag {
+    font-size: max(calc(var(--welten-shell-nav-font) * 1.15), 14px, 1em) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
   }
 
   html.welten-live-shell.welten-parent-desktop .btn,

@@ -157,11 +157,40 @@ html body[data-world="general"] #alGalaxyHomeChrome {
   html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag {
     color: rgba(232, 238, 248, 0.78) !important;
     -webkit-text-fill-color: currentColor;
-    font-size: clamp(11px, 1.35vw, 14px) !important;
-    letter-spacing: 0.12em !important;
+    font-size: clamp(12px, 1.15vw, 14px) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
     text-align: center;
     max-width: 100%;
     overflow-wrap: anywhere;
+  }
+
+  /* Desktop: Tag + Kapitel-Buttons ≥ Shell-Weltenleiste (Handy/Tablet unverändert) */
+  @media (min-width: 1025px) {
+    html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag,
+    html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag {
+      font-size: max(14px, calc(12px * var(--welten-content-type, 1.04))) !important;
+      letter-spacing: 0.06em !important;
+    }
+
+    html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+    html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+    html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+    html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn {
+      font-size: max(12px, calc(12px * var(--welten-content-type, 1.04))) !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.04em !important;
+      min-height: max(36px, calc(36px * var(--welten-content-type, 1.04))) !important;
+      padding: max(9px, calc(9px * var(--welten-content-type, 1.04))) max(14px, calc(14px * var(--welten-content-type, 1.04))) !important;
+      white-space: nowrap;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav,
+    html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyChapterNav {
+      gap: max(8px, calc(8px * var(--welten-content-type, 1.04))) !important;
+    }
   }
 
   html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag .mv-tag-blue,
@@ -187,7 +216,7 @@ html body[data-world="general"] #alGalaxyHomeChrome {
   html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn {
     min-width: 0 !important;
     max-width: 100%;
-    font-size: clamp(10px, 1.15vw, 12px) !important;
+    font-size: clamp(11px, 1.2vw, 12px) !important;
     letter-spacing: 0.04em !important;
     white-space: nowrap;
     overflow: hidden;

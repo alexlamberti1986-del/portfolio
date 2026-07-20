@@ -36,9 +36,11 @@
   object-fit: cover;
   object-position: center center;
   opacity: 0;
-  transition: opacity 180ms ease;
+  transition: opacity 140ms ease;
   transform: translateZ(0);
   backface-visibility: hidden;
+  contain: layout paint;
+  content-visibility: auto;
 }
 
 .al-world-video-hero--multiversum.al-world-video-hero--video-only .al-world-video-hero__video {

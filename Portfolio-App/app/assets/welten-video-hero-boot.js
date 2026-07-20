@@ -5,7 +5,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260710fix3";
+  var VER = "20260720perf1";
   var ENABLED = true;
   var mqNoVideo = window.matchMedia("(max-width: 1024px)");
   var prefetched = {};
@@ -123,7 +123,7 @@
 
   function prefetchVideo(worldKey) {
     if (!frameLive || !heroReadyForVideo) return;
-    if (isVideoHidden()) return;
+    if (isVideoHidden() || !isParentActiveFrame()) return;
     var src = pickVideoSrc(worldKey);
     if (!src || prefetched[src]) return;
     prefetched[src] = true;
@@ -219,7 +219,7 @@
       resetVideoEl(video);
     }
 
-    video.preload = "metadata";
+    video.preload = "auto";
     video.muted = true;
     video.volume = 0;
 
@@ -258,14 +258,15 @@
     }
 
     video.addEventListener("canplay", tryPlay, { once: true });
-    if (needsHardReset) {
+    video.addEventListener("loadeddata", tryPlay, { once: true });
+    if (needsHardReset || video.readyState < 2) {
       try {
         video.load();
       } catch (eLoad) {}
     }
     window.setTimeout(function () {
       if (!started && video.readyState >= 2) tryPlay();
-    }, 400);
+    }, 220);
   }
 
   function getMvNavItems() {
@@ -436,7 +437,7 @@
     section.innerHTML =
       (worldKey === "multiversum" ? buildMvVideoChromeHtml() : "") +
       '<div class="al-world-video-hero__media">' +
-      '<video class="al-world-video-hero__video" muted loop playsinline preload="none"' +
+      '<video class="al-world-video-hero__video" muted loop playsinline preload="metadata"' +
       ' poster="' +
       w.poster +
       '"' +
@@ -458,12 +459,24 @@
       video.setAttribute("muted", "");
       video.setAttribute("webkit-playsinline", "");
       video.playsInline = true;
+      try {
+        video.disableRemotePlayback = true;
+      } catch (eRemote) {}
       video.addEventListener(
         "playing",
         function () {
           markVideoReady(section, video);
         },
         false
+      );
+      video.addEventListener(
+        "loadeddata",
+        function () {
+          if (canPlayVideo() && video.readyState >= 2) {
+            markVideoReady(section, video);
+          }
+        },
+        { once: true }
       );
     }
 
@@ -709,6 +722,14 @@
     frameLive = false;
     frameVisible = false;
     pauseVideoHero();
+    /* Decoder entlasten: inaktive Welt-Iframes halten kein laufendes Video */
+    try {
+      var video = getVideoEl();
+      if (video && video.getAttribute("src")) {
+        video.removeAttribute("src");
+        video.load();
+      }
+    } catch (eUnload) {}
   }
 
   function boot() {
