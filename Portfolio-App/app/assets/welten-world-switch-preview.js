@@ -369,7 +369,7 @@
   }
 
   var WWS_SWITCH_MP3 = {
-    general: "/assets/audio/Multiversum sound.mp3?v=20260706mv-switch-sound",
+    general: "/assets/audio/worlds/MULTIVERSUM.mp3?v=20260719cleanup1",
   };
 
   var wwsSwitchMp3Cache = {};

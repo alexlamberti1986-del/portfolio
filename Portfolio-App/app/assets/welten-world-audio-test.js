@@ -113,7 +113,7 @@
   }
 
   function stopAllWorldTrackElements() {
-    var worldTrack = /\/worlds\/|Multiversum sound\.mp3/i;
+    var worldTrack = /\/worlds\//i;
     try {
       document.querySelectorAll("audio").forEach(function (el) {
         var src = el.currentSrc || el.src || "";
@@ -164,7 +164,7 @@
     } catch (eIdx) {}
     document.querySelectorAll(".mv4-frame").forEach(function (frame, idx) {
       try {
-        /* On switch-end: never pause the live target world — only kill Multiversum / peers */
+        /* On switch-end: never pause the live target world ï¿½ only kill Multiversum / peers */
         if (opts.onlyNonActive) {
           if (activeIdx >= 0 && idx === activeIdx) return;
           if (master && master !== "general" && frame.getAttribute("data-world") !== "general") {
@@ -406,7 +406,7 @@
     setSwitchFlag(true);
     hardStopBgm();
     stopIframeWorldBgm();
-    /* Zusätzliche Absicherung: Early-BGM-Element explizit stumm/pausiert,
+    /* Zusï¿½tzliche Absicherung: Early-BGM-Element explizit stumm/pausiert,
        auch falls hardStopBgm() es aus irgendeinem Grund nicht erfasst hat
        (z. B. durch Re-Zuweisung von window.__mvWorldAudioEarly). */
     try {
@@ -419,7 +419,7 @@
       }
     } catch (eEarlyStop) {}
     /* Beim Verlassen von Multiversum: Iframe-0-BGM nochmals hart stoppen
-       und General-Track nie mittendrin neu starten — erst onSwitchEnd. */
+       und General-Track nie mittendrin neu starten ï¿½ erst onSwitchEnd. */
     if (pendingWorld && pendingWorld !== "general") {
       stopIframeWorldBgm();
       try {
@@ -434,15 +434,15 @@
           mvWin.postMessage({ type: "mv-stop-iframe-bgm" }, "*");
         }
       } catch (eMvStop) {}
-      /* General-Track hart gehalten — kein Restart bis switch-end mit general */
+      /* General-Track hart gehalten ï¿½ kein Restart bis switch-end mit general */
       hardStopBgm();
     }
-    /* Nur Gesture-Boot für echten Erstbesuch erlauben — nach Wechsel starten wir über switch-end. */
+    /* Nur Gesture-Boot fï¿½r echten Erstbesuch erlauben ï¿½ nach Wechsel starten wir ï¿½ber switch-end. */
     initialBootDone = true;
     bootGesturePending = false;
     unhookBootGesture();
     if (pendingWorld) preloadTrack(pendingWorld);
-    /* User-Gesture: nächsten Welt-Track stumm primen, damit Unmute nach Animation zuverlässiger greift */
+    /* User-Gesture: nï¿½chsten Welt-Track stumm primen, damit Unmute nach Animation zuverlï¿½ssiger greift */
     if (pendingWorld && TRACKS[pendingWorld]) {
       primeNextWorldTrack(pendingWorld);
     }
@@ -463,7 +463,7 @@
 
     function start() {
       if (expectedSwitch !== switchGeneration) return;
-      /* Lock nicht ewig blockieren — nach Timeout trotzdem Musik starten */
+      /* Lock nicht ewig blockieren ï¿½ nach Timeout trotzdem Musik starten */
       if (isVisualAnimationLocked()) {
         waitForAnimationEnd(start);
         return;
@@ -477,7 +477,7 @@
         return;
       }
       stopIframeWorldBgm({ onlyNonActive: true });
-      /* hardStopBgm increments playToken — capture token AFTER stop so playBgm accepts it */
+      /* hardStopBgm increments playToken ï¿½ capture token AFTER stop so playBgm accepts it */
       hardStopBgm();
       var token = ++playToken;
       if (world !== "general") {

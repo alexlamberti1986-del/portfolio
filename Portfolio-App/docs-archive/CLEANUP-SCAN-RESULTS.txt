@@ -1,0 +1,521 @@
+=== Portfolio-App CLEANUP SCAN ===
+Generated: 2026-07-19 13:30:47
+Root: C:\Users\alexl\Desktop\Dateien für Cursor\Portfolio-App
+
+## 1. All files under app/ (relative paths)
+
+3-Welten-Master-iframe.html
+404.html
+assets/alex-business.webp.webp
+assets/alex-portrait-round.webp
+assets/Arbeitszeugnisse.pdf
+assets/audio/Freiraum sound.mp3
+assets/audio/Multiversum sound.mp3
+assets/audio/Nexora sound.mp3
+assets/audio/Professional sound.mp3
+assets/audio/README.txt
+assets/audio/worlds/FREIRAUM.mp3
+assets/audio/worlds/MULTIVERSUM.mp3
+assets/audio/worlds/NEXORA.mp3
+assets/audio/worlds/PROFESSIONAL.mp3
+assets/Bewerbung Alex Lamberti.pdf
+assets/DNA Strang beispiel.webp
+assets/favicon/android-chrome-192x192.png
+assets/favicon/android-chrome-512x512.png
+assets/favicon/apple-touch-icon.png
+assets/favicon/favicon.ico
+assets/favicon/favicon-16x16.png
+assets/favicon/favicon-32x32.png
+assets/favicon/favicon-source.png
+assets/freiraum-art.png.png
+assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html
+assets/images/4welten-preview/freiraum/01_FREIRAUM_01_UeberMich.webp
+assets/images/4welten-preview/freiraum/02_FREIRAUM_02_Leistungen.webp
+assets/images/4welten-preview/freiraum/03_FREIRAUM_03_Projekte.webp
+assets/images/4welten-preview/freiraum/04_FREIRAUM_04_Kontakt.webp
+assets/images/4welten-preview/freiraum/05_FREIRAUM_05_HaeufigeFragen.webp
+assets/images/4welten-preview/freiraum/06_FREIRAUM_06_KompetenzenExpertise.webp
+assets/images/4welten-preview/freiraum/07_FREIRAUM_07_ErfahrungBildung.webp
+assets/images/4welten-preview/freiraum/08_FREIRAUM_08_WerteArbeitsweise.webp
+assets/images/4welten-preview/freiraum/09_FREIRAUM_09_BereitFuerDenNaechstenSchritt.webp
+assets/images/4welten-preview/freiraum/21_html_29_freiraum_logo.webp
+assets/images/4welten-preview/freiraum/22_html_30_freiraum_qr.png
+assets/images/4welten-preview/freiraum/22_html_30_freiraum_qr.webp
+assets/images/4welten-preview/freiraum/22_html_30_freiraum_visitenkarten.png
+assets/images/4welten-preview/freiraum/23_html_31_freiraum_form.webp
+assets/images/4welten-preview/freiraum/24_html_32_freiraum_web.webp
+assets/images/4welten-preview/freiraum/25_html_33_freiraum_seo.webp
+assets/images/4welten-preview/freiraum/26_html_34_freiraum_print.webp
+assets/images/4welten-preview/freiraum/27_html_35_freiraum_layout3d.webp
+assets/images/4welten-preview/freiraum/28_html_36_freiraum_present.webp
+assets/images/4welten-preview/freiraum/FREIRAUM PROFILBILD für HOME und Kontakt(1).png
+assets/images/4welten-preview/freiraum/FREIRAUM PROFILBILD für HOME und Kontakt.png
+assets/images/4welten-preview/freiraum/profile.png
+assets/images/4welten-preview/general/01_MULTIVERSUM_01_UeberMich.webp
+assets/images/4welten-preview/general/02_MULTIVERSUM_02_KompetenzenExpertise.webp
+assets/images/4welten-preview/general/03_html_05_general_logo.webp
+assets/images/4welten-preview/general/03_MULTIVERSUM_03_Leistungen.webp
+assets/images/4welten-preview/general/04_html_06_general_qr.png
+assets/images/4welten-preview/general/04_html_06_general_qr.webp
+assets/images/4welten-preview/general/04_html_06_general_visitenkarten.png
+assets/images/4welten-preview/general/04_MULTIVERSUM_04_HaeufigeFragen.webp
+assets/images/4welten-preview/general/05_html_07_general_form.webp
+assets/images/4welten-preview/general/05_MULTIVERSUM_05_Projekte.webp
+assets/images/4welten-preview/general/06_html_08_general_web.webp
+assets/images/4welten-preview/general/06_MULTIVERSUM_06_ErfahrungBildung.webp
+assets/images/4welten-preview/general/07_html_09_general_seo.webp
+assets/images/4welten-preview/general/07_MULTIVERSUM_07_Kontakt.webp
+assets/images/4welten-preview/general/08_html_10_general_print.webp
+assets/images/4welten-preview/general/08_MULTIVERSUM_08_WerteArbeitsweise.webp
+assets/images/4welten-preview/general/09_html_11_general_layout3d.webp
+assets/images/4welten-preview/general/09_MULTIVERSUM_09_BereitFuerDenNaechstenSchritt.webp
+assets/images/4welten-preview/general/10_html_12_general_present.webp
+assets/images/4welten-preview/general/MULTIVERSUM PROFILBILD für HOME und Kontakt.png
+assets/images/4welten-preview/general/profile.png
+assets/images/4welten-preview/nexora/01_NEXORA_01_UeberMich.webp
+assets/images/4welten-preview/nexora/02_NEXORA_02_Leistungen.webp
+assets/images/4welten-preview/nexora/03_NEXORA_03_Projekte.webp
+assets/images/4welten-preview/nexora/04_NEXORA_04_Kontakt.webp
+assets/images/4welten-preview/nexora/05_NEXORA_05_HaeufigeFragen.webp
+assets/images/4welten-preview/nexora/06_NEXORA_06_KompetenzenExpertise.webp
+assets/images/4welten-preview/nexora/07_NEXORA_07_ErfahrungBildung.webp
+assets/images/4welten-preview/nexora/08_NEXORA_08_WerteArbeitsweise.webp
+assets/images/4welten-preview/nexora/09_NEXORA_09_BereitFuerDenNaechstenSchritt.webp
+assets/images/4welten-preview/nexora/11_html_13_nexora_logo.webp
+assets/images/4welten-preview/nexora/12_html_14_nexora_qr.png
+assets/images/4welten-preview/nexora/12_html_14_nexora_qr.webp
+assets/images/4welten-preview/nexora/12_html_14_nexora_visitenkarten.png
+assets/images/4welten-preview/nexora/13_html_15_nexora_form.webp
+assets/images/4welten-preview/nexora/14_html_16_nexora_web.webp
+assets/images/4welten-preview/nexora/15_html_17_nexora_seo.webp
+assets/images/4welten-preview/nexora/16_html_18_nexora_print.webp
+assets/images/4welten-preview/nexora/17_html_19_nexora_layout3d.webp
+assets/images/4welten-preview/nexora/18_html_20_nexora_present.webp
+assets/images/4welten-preview/nexora/NEXORA PROFILBILD für HOME und Kontakt.png
+assets/images/4welten-preview/nexora/profile.png
+assets/images/4welten-preview/professional/01_PROFESSIONAL_01_UeberMich.webp
+assets/images/4welten-preview/professional/02_PROFESSIONAL_02_Leistungen.webp
+assets/images/4welten-preview/professional/03_PROFESSIONAL_03_Projekte.webp
+assets/images/4welten-preview/professional/04_PROFESSIONAL_04_Kontakt.webp
+assets/images/4welten-preview/professional/05_PROFESSIONAL_05_HaeufigeFragen.webp
+assets/images/4welten-preview/professional/06_PROFESSIONAL_06_KompetenzenExpertise.webp
+assets/images/4welten-preview/professional/07_PROFESSIONAL_07_ErfahrungBildung.webp
+assets/images/4welten-preview/professional/08_PROFESSIONAL_08_WerteArbeitsweise.webp
+assets/images/4welten-preview/professional/09_PROFESSIONAL_09_BereitFuerDenNaechstenSchritt.webp
+assets/images/4welten-preview/professional/21_html_21_professional_logo.webp
+assets/images/4welten-preview/professional/22_html_22_professional_qr.png
+assets/images/4welten-preview/professional/22_html_22_professional_qr.webp
+assets/images/4welten-preview/professional/22_html_22_professional_visitenkarten.png
+assets/images/4welten-preview/professional/23_html_23_professional_form.webp
+assets/images/4welten-preview/professional/24_html_24_professional_web.webp
+assets/images/4welten-preview/professional/25_html_25_professional_seo.webp
+assets/images/4welten-preview/professional/26_html_26_professional_print.webp
+assets/images/4welten-preview/professional/27_html_27_professional_layout3d.webp
+assets/images/4welten-preview/professional/28_html_28_professional_present.webp
+assets/images/4welten-preview/professional/PROFESSIONAL PROFILBILD für HOME und Kontakt.png
+assets/images/4welten-preview/professional/profile.png
+assets/images/4welten-preview/shared/global-logo.png
+assets/images/chapters/freiraum/01-about.webp
+assets/images/chapters/freiraum/02-leistungen.webp
+assets/images/chapters/freiraum/03-projects.webp
+assets/images/chapters/freiraum/04-contact.webp
+assets/images/chapters/freiraum/05-faq.webp
+assets/images/chapters/freiraum/06-skills.webp
+assets/images/chapters/freiraum/07-experience.webp
+assets/images/chapters/freiraum/08-values.webp
+assets/images/chapters/freiraum/09-cta.webp
+assets/images/chapters/nexora/01-about.webp
+assets/images/chapters/nexora/02-leistungen.webp
+assets/images/chapters/nexora/03-projects.webp
+assets/images/chapters/nexora/04-contact.webp
+assets/images/chapters/nexora/05-faq.webp
+assets/images/chapters/nexora/06-skills.webp
+assets/images/chapters/nexora/07-experience.webp
+assets/images/chapters/nexora/08-values.webp
+assets/images/chapters/nexora/09-cta.webp
+assets/images/chapters/vertex/01-about.webp
+assets/images/chapters/vertex/02-leistungen.webp
+assets/images/chapters/vertex/03-projects.webp
+assets/images/chapters/vertex/04-contact.webp
+assets/images/chapters/vertex/05-faq.webp
+assets/images/chapters/vertex/06-skills.webp
+assets/images/chapters/vertex/07-experience.webp
+assets/images/chapters/vertex/08-values.webp
+assets/images/chapters/vertex/09-cta.webp
+assets/images/nexora-brain-bg.webp
+assets/images/nexora-home-brain.webp
+assets/images/nexora-home-brain-clean.png
+assets/images/nexora-virtual-brain.webp
+assets/images/nexora-virtual-data-bg.webp
+assets/images/world-switch/freiraum-broad-brush-reveal.png
+assets/multiversum-parallax-v4/orbs/Freiraum.png
+assets/multiversum-parallax-v4/orbs/Multiversum.png
+assets/multiversum-parallax-v4/orbs/Nexora.png
+assets/multiversum-parallax-v4/orbs/Professional_new_new.png
+assets/multiversum-v4/backgrounds/webp/background_deep_space_neutral.webp
+assets/multiversum-v4/backgrounds/webp/background_multiverse_three_worlds.webp
+assets/multiversum-v4/backgrounds/webp/background_v4_freiraum_plum_magenta.webp
+assets/multiversum-v4/backgrounds/webp/background_v4_neutral_blue_plum.webp
+assets/multiversum-v4/backgrounds/webp/background_v4_professional_silver.webp
+assets/multiversum-v4/cards/webp/cards_freiraum_creative_panels.webp
+assets/multiversum-v4/cards/webp/cards_nexora_floating_data_panels.webp
+assets/multiversum-v4/cards/webp/cards_professional_precision_panels.webp
+assets/multiversum-v4/orbits/webp/orbit_freiraum_magenta_orange.webp
+assets/multiversum-v4/orbits/webp/orbit_nexora_blue_double.webp
+assets/multiversum-v4/orbits/webp/orbit_professional_silver_double.webp
+assets/multiversum-v4/overlays/webp/overlay_freiraum_magenta_orange_glow.webp
+assets/multiversum-v4/overlays/webp/overlay_multiverse_connection_glow.webp
+assets/multiversum-v4/overlays/webp/overlay_nexora_blue_glow.webp
+assets/multiversum-v4/overlays/webp/overlay_professional_silver_glow.webp
+assets/multiversum-v4/particles/webp/particles_freiraum_magenta.webp
+assets/multiversum-v4/particles/webp/particles_multiverse_mix.webp
+assets/multiversum-v4/particles/webp/particles_nexora_network.webp
+assets/multiversum-v4/particles/webp/particles_professional_silver.webp
+assets/multiversum-v4/trails/webp/trail_freiraum_magenta_orange_flow.webp
+assets/multiversum-v4/trails/webp/trail_multiverse_connection.webp
+assets/multiversum-v4/trails/webp/trail_nexora_blue_data_flow.webp
+assets/multiversum-v4/trails/webp/trail_professional_silver_precision.webp
+assets/nexora-ai.png.png
+assets/og-image.jpg
+assets/og-image.png
+assets/og-image.webp
+assets/portfolio-images.js
+assets/preview/alx-offerte-form-v5.html
+assets/professional-alex.jpg.png
+assets/projects/leadformulare/art-reinigungen.html
+assets/projects/leadformulare/dein-umzug-deal.html
+assets/projects/leadformulare/dt-cleaning.html
+assets/projects/leadformulare/ideal-umzuege.html
+assets/projects/leadformulare/sanitrend.html
+assets/projects/leadformulare/spitex-xundheit-plus.html
+assets/projects/visitenkarten/ad-res.html
+assets/projects/visitenkarten/bodenbelaege-hajdari.html
+assets/projects/visitenkarten/burgunder-handwerk.html
+assets/projects/visitenkarten/chesa-cherma.html
+assets/projects/visitenkarten/haller-design.html
+assets/projects/visitenkarten/kita-wundersterne.html
+assets/projects-accordion.css
+assets/projects-accordion.js
+assets/shell-performance.css
+assets/videos/freiraum-hero.mp4
+assets/videos/freiraum-poster.jpg
+assets/videos/multiversum-hero.mp4
+assets/videos/multiversum-poster.jpg
+assets/videos/nexora-hero.mp4
+assets/videos/nexora-poster.jpg
+assets/videos/professional-hero.mp4
+assets/videos/professional-poster.jpg
+assets/welten-brief-content.js
+assets/welten-chapter-visuals.css
+assets/welten-chapter-visuals.js
+assets/welten-cleanup.css
+assets/welten-cleanup.js
+assets/welten-contact-final.css
+assets/welten-contact-final.js
+assets/welten-content-i18n.js
+assets/welten-desktop-chapter-hero.css
+assets/welten-desktop-chapter-hero.js
+assets/welten-desktop-contact-links.css
+assets/welten-desktop-rail-clearance.css
+assets/welten-desktop-stage.css
+assets/welten-desktop-stage.js
+assets/welten-effects-governor.js
+assets/welten-final.css
+assets/welten-final.js
+assets/welten-final-restore.css
+assets/welten-final-restore.js
+assets/welten-font-system.css
+assets/welten-form-service-images.js
+assets/welten-freiraum-home-hero-clean.css
+assets/welten-galaxy-gang-hero.css
+assets/welten-galaxy-gang-hero.js
+assets/welten-global-header.css
+assets/welten-hero-hide-desktop-titles.css
+assets/welten-i18n-refresh.js
+assets/welten-large-display.css
+assets/welten-live-shell-chrome.css
+assets/welten-live-shell-early.js
+assets/welten-live-shell-responsive.css
+assets/welten-mobile-hero.js
+assets/welten-mobile-hero-off.css
+assets/welten-mobile-home-portrait-fix.css
+assets/welten-mobile-nexora-nav.js
+assets/welten-mobile-overrides.css
+assets/welten-mobile-performance.css
+assets/welten-mobile-performance.js
+assets/welten-mobile-portraits.css
+assets/welten-mobile-shell-fixes.css
+assets/welten-mouse-paint.css
+assets/welten-mouse-paint.js
+assets/welten-multiversum-hero-boot.css
+assets/welten-multiversum-legacy-kill.css
+assets/welten-multiversum-master.css
+assets/welten-multiversum-master.js
+assets/welten-multiversum-parallax-hero.css
+assets/welten-multiversum-parallax-hero-v4.js
+assets/welten-multiversum-parallax-v4.css
+assets/welten-multiversum-parallax-v4-boot.js
+assets/welten-multiversum-perf.js
+assets/welten-multiversum-preview.css
+assets/welten-multiversum-preview-mobile.css
+assets/welten-multiversum-scene-config.js
+assets/welten-multiversum-scene-config-v4.js
+assets/welten-multiversum-theme.css
+assets/welten-multiversum-transition.js
+assets/welten-multiversum-world.css
+assets/welten-multiversum-world.js
+assets/welten-multiversum-world-collage-config-v4.js
+assets/welten-nexora-hero-clean.css
+assets/welten-nexora-laptop-hero.css
+assets/welten-nexora-mobile-fix.js
+assets/welten-nexora-portrait-fix.css
+assets/welten-nexora-touch.css
+assets/welten-offerte.css
+assets/welten-offerte.js
+assets/welten-perf-sprint3.css
+assets/welten-perf-sprint3.js
+assets/welten-perf-sprint4.css
+assets/welten-perf-sprint4.js
+assets/welten-phase2-loader.js
+assets/welten-portraits-apply.js
+assets/welten-premium-review.css
+assets/welten-premium-review.js
+assets/welten-preview-i18n.js
+assets/welten-preview-i18n-bridge.js
+assets/welten-preview-images.js
+assets/welten-preview-portraits.css
+assets/welten-projects-i18n.js
+assets/welten-projects-services.js
+assets/welten-runtime-perf.js
+assets/welten-seo.js
+assets/welten-service-pages.css
+assets/welten-shell-accessibility.css
+assets/welten-shell-i18n.js
+assets/welten-shell-menu-bridge.js
+assets/welten-shell-perf.js
+assets/welten-shell-router.js
+assets/welten-shell-seo.js
+assets/welten-shell-seo-boot.js
+assets/welten-site-ia.css
+assets/welten-site-ia.js
+assets/welten-skills-charts.css
+assets/welten-skills-charts.js
+assets/welten-slides-fr.js
+assets/welten-touch-env.js
+assets/welten-translations.js
+assets/welten-tv-desktop-parity.css
+assets/welten-unified-responsive.css
+assets/welten-ux-refine.css
+assets/welten-ux-refine.js
+assets/welten-video-hero.css
+assets/welten-video-hero-boot.js
+assets/welten-video-hero-overrides.css
+assets/welten-visual-sprint2.css
+assets/welten-visual-sprint2.js
+assets/welten-world-audio-test.js
+assets/welten-world-buttons.css
+assets/welten-world-hero-unify.css
+assets/welten-world-switch-freiraum-brush-v3.js
+assets/welten-world-switch-preview.css
+assets/welten-world-switch-preview.js
+assets/welten-world-title-colors.css
+CLEANUP-BASELINE.txt
+datenschutz.html
+DESKTOP-STAGE-SCALE-TEST.md
+digitale-strategie.html
+digital-marketing.html
+docs/AUDIT-AFTER.md
+docs/AUDIT-BEFORE.md
+docs/CONTENT-TODOS.md
+docs/IMPLEMENTATION-LOG.md
+docs/SEO-META-INVENTORY.md
+FREIRAUM.html
+impressum.html
+index.html
+LOAD-FIX-LOCAL-TEST.md
+MULTIVERSUM.html
+NEXORA.html
+PROFESSIONAL.html
+robots.txt
+sitemap.xml
+vercel.json
+webdesign.html
+
+Total files: 336
+
+## 2. Media/audio with spaces in name under app/assets/audio/*.mp3 (excl. worlds/)
+
+FILE: assets/audio/Freiraum sound.mp3
+  REFERENCES:
+  REF in assets/audio/README.txt (matched: Freiraum sound.mp3)
+
+FILE: assets/audio/Multiversum sound.mp3
+  REFERENCES:
+  REF in assets/audio/README.txt (matched: Multiversum sound.mp3)
+  REF in assets/welten-world-audio-test.js (matched: Multiversum sound)
+  REF in assets/welten-world-switch-preview.js (matched: Multiversum sound.mp3)
+
+FILE: assets/audio/Nexora sound.mp3
+  REFERENCES:
+  REF in assets/audio/README.txt (matched: Nexora sound.mp3)
+
+FILE: assets/audio/Professional sound.mp3
+  REFERENCES:
+  REF in assets/audio/README.txt (matched: Professional sound.mp3)
+
+## 3. Specific filename / string reference search
+
+TERM: og-image.png
+  FILE EXISTS: assets/og-image.png
+  REFERENCES: NONE
+
+TERM: og-image.webp
+  FILE EXISTS: assets/og-image.webp
+  REFERENCES: NONE
+
+TERM: freiraum-art.png.png
+  FILE EXISTS: assets/freiraum-art.png.png
+  REFERENCES: NONE
+
+TERM: nexora-ai.png.png
+  FILE EXISTS: assets/nexora-ai.png.png
+  REFERENCES: NONE
+
+TERM: professional-alex.jpg.png
+  FILE EXISTS: assets/professional-alex.jpg.png
+  REFERENCES: NONE
+
+TERM: alex-business.webp.webp
+  FILE EXISTS: assets/alex-business.webp.webp
+  REFERENCES: NONE
+
+TERM: DNA Strang
+  REFERENCES: NONE
+
+## 4. CSS/JS link check from HTML/JS
+
+ASSET: welten-multiversum-preview.css
+  ON DISK: assets/welten-multiversum-preview.css
+  LINKED FROM HTML/JS: NONE — orphan candidate
+
+ASSET: welten-multiversum-scene-config.js
+  ON DISK: assets/welten-multiversum-scene-config.js
+  LINKED FROM HTML/JS: NONE — orphan candidate
+
+ASSET: welten-multiversum-transition.js
+  ON DISK: assets/welten-multiversum-transition.js
+  LINKED FROM HTML/JS: NONE — orphan candidate
+
+ASSET: welten-nexora-touch.css
+  ON DISK: assets/welten-nexora-touch.css
+  LINKED FROM HTML/JS: NONE — orphan candidate
+
+ASSET: welten-live-shell-responsive.css
+  ON DISK: assets/welten-live-shell-responsive.css
+  LINKED FROM HTML/JS: NONE — orphan candidate
+
+## 5. MD5 audio hash comparisons
+
+PAIR: Multiversum
+  A: assets/audio/Multiversum sound.mp3
+  B: assets/audio/worlds/MULTIVERSUM.mp3
+  MD5 A: F35DFF773A7C4FAC533CEFB4BE034EF4
+  MD5 B: F35DFF773A7C4FAC533CEFB4BE034EF4
+  RESULT: IDENTICAL — spaced copy is duplicate of worlds/
+
+PAIR: Freiraum
+  A: assets/audio/Freiraum sound.mp3
+  B: assets/audio/worlds/FREIRAUM.mp3
+  MD5 A: E7E7597BDE6612D2AC1A24D5B5590B18
+  MD5 B: 278E73441295F3161D869E92187F193D
+  RESULT: DIFFERENT — keep both until content reviewed
+
+PAIR: Nexora
+  A: assets/audio/Nexora sound.mp3
+  B: assets/audio/worlds/NEXORA.mp3
+  MD5 A: ECDD9667D7441680ADA97AF9657357EB
+  MD5 B: 83A518E997601085C8AB917E90F37EB1
+  RESULT: DIFFERENT — keep both until content reviewed
+
+PAIR: Professional
+  A: assets/audio/Professional sound.mp3
+  B: assets/audio/worlds/PROFESSIONAL.mp3
+  MD5 A: DD5A24E81BE455CFCF13153B165F6B76
+  MD5 B: 6C98CF6871537D888A32A76CC5725D07
+  RESULT: DIFFERENT — keep both until content reviewed
+
+## 6. Contents of Portfolio-App/scripts and app/scripts
+
+DIR: scripts
+  [FILE] capture-mobile-hero-screenshots.mjs
+  [FILE] cleanup-scan.ps1
+  [FILE] extract-nexora-images.mjs
+  [FILE] extract-portfolio-images.mjs
+  [FILE] finalize-pass.mjs
+  [FILE] generate-favicons.ps1
+  [FILE] patch-projects-accordion.ps1
+  [FILE] sync-app-from-source.ps1
+  [FILE] sync-performance-pass.mjs
+
+DIR: app/scripts
+
+## 7. package.json scripts vs Portfolio-App/scripts/*.mjs
+
+Portfolio-App/scripts/*.mjs on disk:
+  capture-mobile-hero-screenshots.mjs
+  extract-nexora-images.mjs
+  extract-portfolio-images.mjs
+  finalize-pass.mjs
+  sync-performance-pass.mjs
+
+References in package.json:
+  NOT REFERENCED: capture-mobile-hero-screenshots.mjs — orphan script candidate
+  NOT REFERENCED: extract-nexora-images.mjs — orphan script candidate
+  NOT REFERENCED: extract-portfolio-images.mjs — orphan script candidate
+  NOT REFERENCED: finalize-pass.mjs — orphan script candidate
+  NOT REFERENCED: sync-performance-pass.mjs — orphan script candidate
+
+## SUMMARY: safe-to-remove candidates vs keep
+
+See detailed sections above. Heuristics applied:
+- SAFE CANDIDATE: no references found AND (duplicate MD5 of kept worlds/ copy OR orphan CSS/JS not linked)
+- KEEP: actively referenced from HTML/JS/CSS/JSON or unique audio content
+- REVIEW: double-extension image names (*.png.png) — often accidental exports; remove only if no refs
+
+=== END OF SCAN ===
+
+## VERDICT (concrete)
+
+SAFE-TO-REMOVE CANDIDATES (no code refs found; verify once more before delete):
+- assets/og-image.png
+- assets/og-image.webp
+- assets/freiraum-art.png.png
+- assets/nexora-ai.png.png
+- assets/professional-alex.jpg.png
+- assets/alex-business.webp.webp
+- assets/welten-multiversum-preview.css
+- assets/welten-multiversum-scene-config.js (non-v4)
+- assets/welten-multiversum-transition.js
+- assets/welten-nexora-touch.css
+- assets/welten-live-shell-responsive.css
+- Portfolio-App/scripts/*.mjs (none wired in package.json):
+  capture-mobile-hero-screenshots.mjs, extract-nexora-images.mjs,
+  extract-portfolio-images.mjs, finalize-pass.mjs, sync-performance-pass.mjs
+
+LIKELY DUPLICATE (identical MD5 to worlds/; still referenced by preview/test JS — update refs first):
+- assets/audio/Multiversum sound.mp3 == worlds/MULTIVERSUM.mp3
+  Referenced by: welten-world-audio-test.js, welten-world-switch-preview.js, audio/README.txt
+
+KEEP / REVIEW (different MD5 from worlds/ copies — not safe duplicates):
+- assets/audio/Freiraum sound.mp3 (only README.txt refs; content differs from worlds/FREIRAUM.mp3)
+- assets/audio/Nexora sound.mp3 (only README.txt refs; content differs from worlds/NEXORA.mp3)
+- assets/audio/Professional sound.mp3 (only README.txt refs; content differs from worlds/PROFESSIONAL.mp3)
+- assets/audio/worlds/*.mp3 (canonical world audio — keep)
+
+NO HITS:
+- "DNA Strang" — no references under app/
+
+NOTES:
+- app/scripts is empty or has no listed files
+- package.json only has electron start/dev/build scripts; no scripts/*.mjs hooks
+- Nothing was deleted by this scan

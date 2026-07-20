@@ -1,43 +1,48 @@
-# Alex Lamberti Portfolio — Desktop App
+# Alex Lamberti – Multiversum Portfolio
 
-Premium Electron desktop version of the 3-Welten portfolio (NEXORA · PROFESSIONAL · FREIRAUM).
+Static site for **[alexlamberti.ch](https://www.alexlamberti.ch)** (Multiversum shell with Nexora, Professional, and Freiraum worlds).
 
-## Quick start
+## Deploy / Vercel
+
+- **Vercel project root:** `app/`
+- **Primary entry:** `app/index.html`
+- SPA-style routes are rewritten to `/index.html` in `app/vercel.json`
+- Legacy URL `/3-Welten-Master-iframe.html` permanently redirects to `/` (file itself is a minimal client redirect)
+
+## Local preview
+
+From `Portfolio-App/`:
 
 ```bash
-cd Portfolio-App
-npm install
-npm start
+npm run serve
 ```
 
-## Build Windows executable
+Or:
 
 ```bash
-npm run build:all
+npx --yes serve app -l 4173
 ```
 
-Outputs in `dist/`:
+Then open `http://localhost:4173`.
 
-- `AlexLamberti-Portfolio-Portable.exe` — portable, no installer
-- `AlexLamberti-Portfolio-Setup.exe` — NSIS installer
+## Branch workflow
+
+- Work on feature/cleanup branches (e.g. `cleanup-live-parity`) for local parity and cleanup.
+- **Do not assume auto production deploy** from this cleanup branch — production stays on the configured production branch only after intentional merge/promote.
+- Push/deploy only when you explicitly choose to.
 
 ## Structure
 
-- `main.js` — Electron main process (window, security, GPU)
-- `preload.js` — safe bridge to renderer
-- `app/index.html` / `app/3-Welten-Master-iframe.html` — shell (world bar, iframes)
-- `app/MULTIVERSUM.html`, `NEXORA.html`, `PROFESSIONAL.html`, `FREIRAUM.html`
-- `app/assets/` — CSS/JS, media, audio
+```
+Portfolio-App/
+  app/                 # Vercel root (static HTML/CSS/JS + assets)
+    index.html         # Live entry shell
+    vercel.json        # Rewrites, redirects, headers
+    assets/            # Images, CSS, JS, audio/worlds
+    *.html             # World pages & legal/service pages
+  docs-archive/        # Audit notes, cleanup baselines, one-off scripts (not deployed)
+  package.json         # Minimal helper: npm run serve
+  README.md
+```
 
-## Development vs production
-
-- **Dev** (`npm start`, unpackaged): DevTools allowed
-- **Production build**: DevTools, reload shortcuts, and context menu disabled
-
-## Icons
-
-Add `build/icon.ico` and `build/icon.icns` (see `build/ICONS.txt`).
-
-## Audio
-
-Copy MP3 files to `app/assets/audio/` (see `app/assets/audio/README.txt`).
+Archived docs and tooling live under `docs-archive/` so they are outside the Vercel root and are not served.
