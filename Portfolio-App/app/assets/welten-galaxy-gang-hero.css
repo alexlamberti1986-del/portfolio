@@ -213,14 +213,33 @@ html body[data-world="general"] #alGalaxyHomeChrome {
     -webkit-text-fill-color: #eef3ff !important;
   }
 
-  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn {
+  /* Kapitel-Buttons: Shell-Parität (dieser Block muss NACH älteren clamp-Regeln stehen) */
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__tag,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__tag {
+    font-size: max(14px, calc(12px * var(--welten-content-type, 1.04))) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+  html.welten-live-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn,
+  html.mv-in-shell body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav-btn {
     min-width: 0 !important;
-    max-width: 100%;
-    font-size: clamp(11px, 1.2vw, 12px) !important;
+    max-width: none !important;
+    font-size: max(12px, calc(12px * var(--welten-content-type, 1.04))) !important;
+    font-weight: 700 !important;
     letter-spacing: 0.04em !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    min-height: max(36px, calc(36px * var(--welten-content-type, 1.04))) !important;
+    padding: max(9px, calc(9px * var(--welten-content-type, 1.04))) max(14px, calc(14px * var(--welten-content-type, 1.04))) !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+  }
+
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #alGalaxyHomeChrome .mv-static-hero__nav,
+  html body[data-world="general"][data-welten-galaxy-hero="1"] #slide-home #alGalaxyChapterNav {
+    gap: max(8px, calc(8px * var(--welten-content-type, 1.04))) !important;
   }
 
   /* Im Shell: kein doppelter Multiversum-Titel (wie bei Unterseiten) */
