@@ -211,12 +211,12 @@
       "</ul>" +
       "</nav>" +
       "</div>" +
-      "</div>" +
-      /* Copyright outside rounded shell so it is not clipped with the card edge */
+      /* © inside shell so it stays visible with the footer card (NEXORA/FREIRAUM/PROFESSIONAL) */
       '<div class="welten-site-footer__bar">' +
       '<span class="welten-site-footer__copy">© ' +
       YEAR +
       " Alex Lamberti</span>" +
+      "</div>" +
       "</div>"
     );
   }
@@ -264,8 +264,17 @@
       footer.parentNode.insertBefore(spacer, footer.nextSibling);
     }
     var isHome = footer.classList.contains("is-home-footer");
-    /* Home: extra clearance so © clears the desktop-stage / iframe clip edge */
-    spacer.style.height = isHome ? "160px" : "88px";
+    /* Home: extra clearance past iframe/stage clip (video-hero worlds need more than Multiversum/galaxy) */
+    var homeClear = 200;
+    try {
+      if (
+        document.body &&
+        document.body.getAttribute("data-welten-video-hero") === "1"
+      ) {
+        homeClear = 240;
+      }
+    } catch (eClear) {}
+    spacer.style.height = isHome ? homeClear + "px" : "88px";
     spacer.style.minHeight = spacer.style.height;
     return spacer;
   }
