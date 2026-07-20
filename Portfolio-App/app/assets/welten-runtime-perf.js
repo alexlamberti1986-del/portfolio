@@ -47,6 +47,20 @@
     }
   }
 
+  function pauseAnimations() {
+    global.__weltenAnimPaused = true;
+    document.documentElement.classList.add("welten-world-paused");
+    document.querySelectorAll("canvas").forEach(function (c) {
+      c.style.visibility = "hidden";
+      c.style.pointerEvents = "none";
+    });
+    document.querySelectorAll("video").forEach(function (v) {
+      try {
+        if (!v.paused) v.pause();
+      } catch (e) {}
+    });
+  }
+
   function resumeAnimations() {
     global.__portfolioWorldPaused = false;
     global.__weltenAnimPaused = false;
@@ -61,15 +75,11 @@
       c.style.pointerEvents = "";
     });
     global.dispatchEvent(new Event("resize"));
-  }
-
-  function pauseAnimations() {
-    global.__weltenAnimPaused = true;
-    document.documentElement.classList.add("welten-world-paused");
-    document.querySelectorAll("canvas").forEach(function (c) {
-      c.style.visibility = "hidden";
-      c.style.pointerEvents = "none";
-    });
+    if (global.WeltenFluidity && typeof global.WeltenFluidity.kickVisibleVideo === "function") {
+      try {
+        global.WeltenFluidity.kickVisibleVideo();
+      } catch (eKick) {}
+    }
   }
 
   /** Throttle — max 1× pro Frame */

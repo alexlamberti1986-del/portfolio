@@ -677,6 +677,11 @@
     purgeLegacyHeroes();
     document.body.setAttribute("data-welten-galaxy-hero", "1");
     ensureChapterNav();
+    try {
+      frame.style.transform = "translateZ(0)";
+      frame.style.backfaceVisibility = "hidden";
+      section.style.transform = "translateZ(0)";
+    } catch (eGpu) {}
     revealHomeContent();
     endOutboundLeave();
     signalReady();

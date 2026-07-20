@@ -65,6 +65,11 @@
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
       document.documentElement.classList.add("welten-tab-hidden");
+      document.querySelectorAll("video").forEach(function (v) {
+        try {
+          if (!v.paused) v.pause();
+        } catch (e) {}
+      });
     } else {
       document.documentElement.classList.remove("welten-tab-hidden");
     }

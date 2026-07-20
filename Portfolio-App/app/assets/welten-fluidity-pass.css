@@ -1,0 +1,97 @@
+/**
+ * Fluidity Pass — CSS: weniger Paint/Composite, Pause bei Hide, GPU-Hints.
+ * Keine Layout-Änderungen an Hero/Galaxy-Struktur.
+ */
+
+/* GPU-Layer für schwere Medien */
+#alGalaxyGangHero.is-galaxy-live,
+#alGalaxyGangFrame,
+.al-world-video-hero--video-only .al-world-video-hero__video,
+.desktop-stage {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+#alGalaxyGangHero.is-galaxy-live,
+#alGalaxyGangFrame {
+  contain: layout paint;
+}
+
+.al-world-video-hero--video-only {
+  contain: layout paint;
+  content-visibility: auto;
+  contain-intrinsic-size: 720px 480px;
+}
+
+/* Inaktive Kapitel: weniger Arbeit für den Browser */
+.slide:not(.active) {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+
+.slide.active {
+  content-visibility: visible;
+  contain: none;
+}
+
+/* Tab / Welt pausiert → CSS-Animationen stoppen */
+html.welten-tab-hidden *,
+html.welten-tab-hidden *::before,
+html.welten-tab-hidden *::after,
+html.welten-world-paused *,
+html.welten-world-paused *::before,
+html.welten-world-paused *::after,
+html.welten-page-hidden *,
+html.welten-page-hidden *::before,
+html.welten-page-hidden *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
+html.welten-tab-hidden #particle-canvas,
+html.welten-world-paused #particle-canvas,
+html.welten-page-hidden #particle-canvas,
+html.mv-effects-off #particle-canvas,
+html.welten-reduce-effects #particle-canvas,
+html.welten-fluidity-soft #particle-canvas {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Soft-Mode bei schwachem Frame-Timing: teure Filter drosseln */
+html.welten-fluidity-soft .glass-card,
+html.welten-fluidity-soft .dna-slide,
+html.welten-fluidity-soft .nexora-orbit-button {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.welten-fluidity-soft .light-beams,
+html.welten-fluidity-soft .bg-grid {
+  opacity: 0.35 !important;
+}
+
+html.welten-fluidity-soft #alGalaxyGangHero.is-galaxy-live {
+  /* Galaxy bleibt sichtbar — kein Display-none */
+  will-change: auto;
+}
+
+/* Effekte aus: keine endlosen CSS-Loops */
+html.mv-effects-off .dna-slide,
+html.mv-effects-off .nexora-orbit-button,
+html.welten-reduce-effects .dna-slide,
+html.welten-reduce-effects .nexora-orbit-button {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #alGalaxyGangHero,
+  .al-world-video-hero,
+  .dna-slide,
+  .nexora-orbit-button {
+    animation: none !important;
+    transition: none !important;
+  }
+}
