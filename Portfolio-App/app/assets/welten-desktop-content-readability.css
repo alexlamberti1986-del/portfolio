@@ -1,0 +1,103 @@
+/**
+ * Desktop-Shell: Inhaltsbreite + Lesbarkeit unterhalb von Hero/Galaxy/Video.
+ * Gilt nur in iframes (welten-live-shell + welten-parent-desktop).
+ * Hero-/Orbit-/Video-Flächen bleiben unverändert.
+ */
+
+@media (min-width: 1025px) {
+  html.welten-live-shell.welten-parent-desktop {
+    --welten-content-max: min(92vw, 1680px);
+    --welten-content-type: 1.04;
+    --hero-content-max: min(1680px, 92vw);
+    --welten-xl-content: min(1680px, 92vw);
+  }
+
+  html.welten-live-shell.welten-parent-desktop[data-parent-scale-lt1="1"] {
+    --welten-content-type: min(1.35, calc(1 / var(--parent-desktop-scale, 1)));
+  }
+
+  html.welten-live-shell.welten-parent-desktop.welten-parent-xl {
+    --welten-content-max: min(88vw, 1840px);
+    --hero-content-max: min(1840px, 88vw);
+    --welten-xl-content: min(1840px, 88vw);
+  }
+
+  /* Intro unter Hero + Kapitel-Inhalte breiter */
+  html.welten-live-shell.welten-parent-desktop #slide-home .home-main-block,
+  html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) > .slide-inner,
+  html.welten-live-shell.welten-parent-desktop #slide-contact .slide-inner.contact-layout {
+    max-width: var(--welten-content-max) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop .home-layout--intro,
+  html.welten-live-shell.welten-parent-desktop .home-layout,
+  html.welten-live-shell.welten-parent-desktop .home-copy {
+    max-width: none !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop .home-layout--intro {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 480px) !important;
+    gap: clamp(28px, 4.5vw, 72px) !important;
+    align-items: center !important;
+  }
+
+  /* Seiten-Padding: Rail behalten, seitliche Luft reduzieren */
+  html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) {
+    padding-left: clamp(20px, 2.8vw, 52px) !important;
+    padding-right: clamp(96px, 5vw, 148px) !important;
+  }
+
+  /* Typografie — nur Fliesstext & Kapitel, nicht Orbit-Labels */
+  html.welten-live-shell.welten-parent-desktop .home-copy p,
+  html.welten-live-shell.welten-parent-desktop .home-copy .lead,
+  html.welten-live-shell.welten-parent-desktop .home-copy li,
+  html.welten-live-shell.welten-parent-desktop .prose,
+  html.welten-live-shell.welten-parent-desktop .prose p,
+  html.welten-live-shell.welten-parent-desktop .prose li,
+  html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) p,
+  html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) li,
+  html.welten-live-shell.welten-parent-desktop .welten-faq p,
+  html.welten-live-shell.welten-parent-desktop .card-grid p,
+  html.welten-live-shell.welten-parent-desktop .glass-card p {
+    font-size: calc(1em * var(--welten-content-type, 1)) !important;
+    line-height: 1.68 !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop .home-copy .lead,
+  html.welten-live-shell.welten-parent-desktop .prose > p:first-of-type {
+    font-size: calc(1.12em * var(--welten-content-type, 1)) !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop h2.section-title,
+  html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) > .slide-inner > h2.section-title {
+    font-size: calc(clamp(1.95rem, 3.4vw, 2.85rem) * var(--welten-content-type, 1)) !important;
+    max-width: 28em !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop .chapter-label {
+    font-size: calc(0.82rem * var(--welten-content-type, 1)) !important;
+  }
+
+  html.welten-live-shell.welten-parent-desktop .home-copy h1 {
+    font-size: calc(clamp(2rem, 4.2vw, 3.2rem) * min(var(--welten-content-type, 1), 1.12)) !important;
+    max-width: 18ch !important;
+  }
+
+  /* Hero / Galaxy / Video / Orbits — explizit ausnehmen */
+  html.welten-live-shell.welten-parent-desktop #slide-home .home-hero-experience,
+  html.welten-live-shell.welten-parent-desktop #slide-home #mvParallaxHero,
+  html.welten-live-shell.welten-parent-desktop #slide-home .mv-scroll-story,
+  html.welten-live-shell.welten-parent-desktop #slide-home .al-world-video-hero,
+  html.welten-live-shell.welten-parent-desktop #slide-home #alWorldVideoHero,
+  html.welten-live-shell.welten-parent-desktop .welten-desktop-hero-host,
+  html.welten-live-shell.welten-parent-desktop .welten-desktop-relocated-hero,
+  html.welten-live-shell.welten-parent-desktop #dnaStage,
+  html.welten-live-shell.welten-parent-desktop #alGalaxyHomeChrome,
+  html.welten-live-shell.welten-parent-desktop .nexora-orbit-buttons,
+  html.welten-live-shell.welten-parent-desktop .dna-orbit-wrap,
+  html.welten-live-shell.welten-parent-desktop .dna-slide {
+    max-width: none !important;
+  }
+}

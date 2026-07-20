@@ -1535,6 +1535,7 @@
   function broadcastParentViewport() {
     var width = window.innerWidth || 0;
     var height = window.innerHeight || 0;
+    var scale = 1;
     try {
       if (document.documentElement.classList.contains("desktop-stage-active")) {
         var stageW = parseFloat(document.documentElement.getAttribute("data-desktop-stage-w") || "1920");
@@ -1547,12 +1548,14 @@
           ) || 960;
         width = isFinite(stageW) && stageW > 0 ? stageW : 1920;
         height = isFinite(stageH) && stageH > 0 ? stageH : 960;
+        scale = parseFloat(document.documentElement.getAttribute("data-desktop-scale") || "1") || 1;
       }
     } catch (eVp) {}
     var payload = {
       type: "mv-parent-viewport",
       width: width,
       height: height,
+      scale: scale,
     };
     frames.forEach(function (f) {
       postFrame(f, payload);

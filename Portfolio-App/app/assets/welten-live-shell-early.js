@@ -36,13 +36,27 @@
 
   if (isTop) return;
 
-  function applyParentViewportClasses(w, h) {
+  function applyParentViewportClasses(w, h, scale) {
     try {
       var root = document.documentElement;
       if (w >= 1025 && h >= 640) root.classList.add("welten-parent-desktop");
       else root.classList.remove("welten-parent-desktop");
       if (w >= 1920) root.classList.add("welten-parent-xl");
       else root.classList.remove("welten-parent-xl");
+
+      var sc = parseFloat(scale);
+      if (!isFinite(sc) || sc <= 0) sc = 1;
+      root.style.setProperty("--parent-desktop-scale", String(sc));
+      if (sc < 0.999) {
+        root.setAttribute("data-parent-scale-lt1", "1");
+        root.style.setProperty(
+          "--welten-content-type",
+          String(Math.min(1.35, Math.round((1 / sc) * 1000) / 1000))
+        );
+      } else {
+        root.removeAttribute("data-parent-scale-lt1");
+        root.style.setProperty("--welten-content-type", "1.04");
+      }
     } catch (eVp) {}
   }
 
@@ -50,22 +64,24 @@
     try {
       var pw = window.parent.innerWidth || 0;
       var ph = window.parent.innerHeight || 0;
+      var pScale = 1;
       try {
         var parentRoot = window.parent.document.documentElement;
         if (parentRoot && parentRoot.classList.contains("desktop-stage-active")) {
           var stageW = parseFloat(parentRoot.getAttribute("data-desktop-stage-w") || "1920");
           pw = isFinite(stageW) && stageW > 0 ? stageW : 1920;
           ph = 1080;
+          pScale = parseFloat(parentRoot.getAttribute("data-desktop-scale") || "1") || 1;
         }
       } catch (eStage) {}
-      if (pw > 0 && ph > 0) applyParentViewportClasses(pw, ph);
+      if (pw > 0 && ph > 0) applyParentViewportClasses(pw, ph, pScale);
     } catch (eSync) {}
   }
 
   syncParentViewport();
   window.addEventListener("message", function (e) {
     if (!e.data || e.data.type !== "mv-parent-viewport") return;
-    applyParentViewportClasses(e.data.width || 0, e.data.height || 0);
+    applyParentViewportClasses(e.data.width || 0, e.data.height || 0, e.data.scale || 1);
   });
   try {
     window.parent.addEventListener("resize", syncParentViewport);
