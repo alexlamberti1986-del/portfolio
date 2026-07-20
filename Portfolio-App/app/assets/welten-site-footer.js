@@ -113,6 +113,7 @@
   };
 
   var FOOTER_CHAPTERS = {
+    home: 1,
     projects: 1,
     leistungen: 1,
     about: 1,
@@ -214,13 +215,6 @@
       '<span class="welten-site-footer__copy">© ' +
       YEAR +
       " Alex Lamberti</span>" +
-      '<span class="welten-site-footer__bar-links">' +
-      '<a href="/impressum" target="_top" rel="noopener" data-footer-impressum-mini>Impressum</a>' +
-      '<span aria-hidden="true">·</span>' +
-      '<a href="/datenschutz" target="_top" rel="noopener" data-footer-privacy-mini>Datenschutz</a>' +
-      '<span aria-hidden="true">·</span>' +
-      '<a href="/agb" target="_top" rel="noopener" data-footer-agb-mini>AGB</a>' +
-      "</span>" +
       "</div>" +
       "</div>"
     );
@@ -244,7 +238,7 @@
 
   function clearHosts() {
     document.querySelectorAll(".slide.is-footer-host").forEach(function (slide) {
-      slide.classList.remove("is-footer-host");
+      slide.classList.remove("is-footer-host", "is-footer-natural");
     });
     document.querySelectorAll(".slide-inner.is-footer-fill").forEach(function (inner) {
       inner.classList.remove("is-footer-fill");
@@ -263,11 +257,10 @@
   function mountFooter(footer, chapter) {
     clearHosts();
     var norm = normalizeChapter(chapter);
-    var isHome = norm === "home";
-    var allow = !isHome && !!FOOTER_CHAPTERS[norm];
+    var allow = !!FOOTER_CHAPTERS[norm];
 
-    /* Fallback: any non-home active slide may host the footer */
-    if (!allow && !isHome && getActiveSlide()) allow = true;
+    /* Fallback: any active slide may host the footer */
+    if (!allow && getActiveSlide()) allow = true;
 
     if (!allow) {
       footer.hidden = true;
@@ -288,9 +281,20 @@
     var inner =
       slide.querySelector(":scope > .slide-inner") ||
       slide.querySelector(".slide-inner");
-    if (inner) {
+
+    /* Offerte already has a tall form — don't force viewport min-height (creates empty gap) */
+    var skipFill =
+      norm === "offerte" ||
+      (slide.id && String(slide.id).indexOf("offerte") !== -1) ||
+      (inner && inner.classList.contains("offerte-layout"));
+
+    if (inner && !skipFill) {
       inner.classList.add("is-footer-fill");
       syncFillHeight(slide, inner);
+    } else if (inner) {
+      inner.classList.remove("is-footer-fill");
+      inner.style.minHeight = "";
+      slide.classList.add("is-footer-natural");
     }
 
     if (footer.parentNode !== slide) {
@@ -301,11 +305,15 @@
 
     footer.hidden = false;
     footer.removeAttribute("aria-hidden");
+    footer.classList.toggle("is-home-footer", norm === "home");
+    footer.classList.toggle("is-offerte-footer", norm === "offerte");
     document.body.classList.add("has-welten-footer", "has-welten-footer-expanded");
 
-    requestAnimationFrame(function () {
-      syncFillHeight(slide, inner);
-    });
+    if (!skipFill) {
+      requestAnimationFrame(function () {
+        syncFillHeight(slide, inner);
+      });
+    }
   }
 
   function updateLabels(footer) {
@@ -369,13 +377,13 @@
       );
     });
 
-    footer.querySelectorAll("[data-footer-impressum], [data-footer-impressum-mini]").forEach(function (el) {
+    footer.querySelectorAll("[data-footer-impressum]").forEach(function (el) {
       el.textContent = labels.impressum;
     });
-    footer.querySelectorAll("[data-footer-privacy], [data-footer-privacy-mini]").forEach(function (el) {
+    footer.querySelectorAll("[data-footer-privacy]").forEach(function (el) {
       el.textContent = labels.privacy;
     });
-    footer.querySelectorAll("[data-footer-agb], [data-footer-agb-mini]").forEach(function (el) {
+    footer.querySelectorAll("[data-footer-agb]").forEach(function (el) {
       el.textContent = labels.agb;
     });
 

@@ -22,7 +22,7 @@
   width: 100%;
   max-width: min(1280px, calc(100vw - clamp(32px, 6vw, 128px))) !important;
   margin: 0 auto !important;
-  padding: 0 clamp(18px, 4vw, 64px) clamp(8px, 1.5vw, 16px) !important;
+  padding: 0 clamp(18px, 4vw, 64px) 0 !important;
   box-sizing: border-box !important;
   min-height: 0 !important;
   height: auto !important;
@@ -47,9 +47,9 @@
   min-width: 0;
   width: 100%;
   height: auto;
-  min-height: 2400px !important;
+  min-height: 0 !important;
   max-height: none;
-  margin: 0 0 clamp(4px, 1vw, 12px) 0 !important;
+  margin: 0 0 0 0 !important;
   overflow: visible;
   border-radius: var(--radius-lg, 28px);
   line-height: 0;
@@ -59,8 +59,8 @@
 #slide-offerte .welten-leadform-frame {
   display: block;
   width: 100%;
-  min-height: 2400px !important;
-  height: 2400px;
+  min-height: 480px;
+  height: auto;
   margin: 0;
   padding: 0;
   vertical-align: top;
@@ -79,13 +79,13 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 0 !important;
-    padding: 12px 14px 12px !important;
+    padding: 12px 14px 0 !important;
     max-width: min(720px, calc(100vw - 20px)) !important;
   }
 
   #slide-offerte .welten-leadform-wrap,
   #slide-offerte .welten-offerte-form-wrap {
-    margin-bottom: 8px !important;
+    margin-bottom: 0 !important;
   }
 }
 
@@ -96,6 +96,6 @@
 
   #slide-offerte .slide-inner.offerte-layout {
     gap: 0 !important;
-    padding: 10px 12px 8px !important;
+    padding: 10px 12px 0 !important;
   }
 }

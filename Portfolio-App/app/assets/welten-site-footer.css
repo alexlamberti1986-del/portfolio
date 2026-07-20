@@ -15,7 +15,7 @@
   display: block;
   width: 100%;
   margin: 0;
-  padding: 2.5rem 0 calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  padding: 1.5rem 0 calc(1.25rem + env(safe-area-inset-bottom, 0px));
   pointer-events: auto;
   color: var(--footer-fg);
   font-size: 0.9rem;
@@ -110,7 +110,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px 16px;
   padding: 12px 28px;
   border-top: 1px solid var(--footer-line);
@@ -118,11 +118,9 @@
   font-size: 0.8rem;
 }
 
+/* Duplicate legal strip removed — links live only under „Rechtliches“ */
 .welten-site-footer__bar-links {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 8px;
+  display: none !important;
 }
 
 .welten-site-footer__copy {
@@ -142,16 +140,29 @@
 .slide.is-footer-host > .slide-inner.is-footer-fill,
 .slide.is-footer-host > .slide-inner {
   flex: 0 0 auto;
-  min-height: 100%;
-  min-height: 100%;
   box-sizing: border-box;
 }
 
-/* Prefer dynamic viewport units when available */
-@supports (height: 100dvh) {
-  .slide.is-footer-host > .slide-inner.is-footer-fill {
-    min-height: 100%;
-  }
+.slide.is-footer-host > .slide-inner.is-footer-fill {
+  min-height: 100%;
+}
+
+/* Offerte / tall natural content: no forced fill, tight gap to footer */
+.slide.is-footer-host.is-footer-natural > .slide-inner,
+#slide-offerte.is-footer-host > .slide-inner {
+  min-height: 0 !important;
+  height: auto !important;
+  flex: 0 0 auto !important;
+}
+
+.welten-site-footer.is-offerte-footer {
+  padding-top: 0.75rem;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+#slide-offerte .welten-site-footer {
+  padding-top: 0.75rem;
+  margin-top: 0;
 }
 
 body[data-world="general"] .welten-site-footer {
@@ -185,24 +196,38 @@ body[data-world="freiraum"] .welten-site-footer {
 
 @media (min-width: 1025px) {
   .welten-site-footer {
-    padding-top: 3rem;
+    padding-top: 2rem;
     padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .welten-site-footer.is-offerte-footer,
+  #slide-offerte .welten-site-footer {
+    padding-top: 1rem;
   }
 
   .welten-site-footer__shell {
     max-width: min(1180px, calc(100% - 48px));
   }
 
-  /* Ensure desktop slides can scroll to the in-flow footer */
   .slide.is-footer-host.active,
   .slide.active.is-footer-host {
+    overflow-y: auto !important;
+  }
+
+  /* Home: allow scroll past hero/galaxy to footer */
+  #slide-home.is-footer-host {
     overflow-y: auto !important;
   }
 }
 
 @media (max-width: 1024px) {
   .welten-site-footer {
-    padding-top: 2rem;
+    padding-top: 1.25rem;
+  }
+
+  .welten-site-footer.is-offerte-footer,
+  #slide-offerte .welten-site-footer {
+    padding-top: 0.5rem;
   }
 
   .welten-site-footer__shell {
@@ -223,6 +248,11 @@ body[data-world="freiraum"] .welten-site-footer {
   .welten-site-footer__bar {
     padding: 10px 16px;
   }
+
+  /* On small screens keep Legal column once; never duplicate in the bar */
+  .welten-site-footer__bar-links {
+    display: none !important;
+  }
 }
 
 @media (max-width: 560px) {
@@ -233,6 +263,11 @@ body[data-world="freiraum"] .welten-site-footer {
 
   .welten-site-footer__list {
     grid-template-columns: 1fr 1fr;
+  }
+
+  /* Legal column: single column list so Impressum/AGB/Datenschutz aren't cramped duplicates */
+  .welten-site-footer__col:last-child .welten-site-footer__list {
+    grid-template-columns: 1fr;
   }
 }
 
