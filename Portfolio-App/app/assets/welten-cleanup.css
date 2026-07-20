@@ -222,7 +222,9 @@ body[data-world="freiraum"] .welten-contact-map {
   border: none;
   color: inherit;
   font: inherit;
+  font-size: 1em;
   font-weight: 600;
+  line-height: 1.5;
   text-align: left;
   cursor: pointer;
 }
@@ -240,6 +242,7 @@ body[data-world="freiraum"] .welten-contact-map {
 
 .welten-faq__panel {
   padding: 0 4px 18px;
+  font-size: 1em;
   line-height: 1.65;
   opacity: 0.9;
 }

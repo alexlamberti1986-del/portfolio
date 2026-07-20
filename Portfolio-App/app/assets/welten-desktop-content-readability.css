@@ -63,7 +63,14 @@
   html.welten-live-shell.welten-parent-desktop .prose li,
   html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) p,
   html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) li,
-  html.welten-live-shell.welten-parent-desktop .welten-faq p,
+  html.welten-live-shell.welten-parent-desktop .welten-faq__trigger,
+  html.welten-live-shell.welten-parent-desktop .welten-faq__panel,
+  html.welten-live-shell.welten-parent-desktop .faq-q,
+  html.welten-live-shell.welten-parent-desktop .faq-q-text,
+  html.welten-live-shell.welten-parent-desktop .faq-panel-inner,
+  html.welten-live-shell.welten-parent-desktop .welten-home-brief__steps li,
+  html.welten-live-shell.welten-parent-desktop .welten-home-brief__details summary,
+  html.welten-live-shell.welten-parent-desktop .welten-home-brief__details p,
   html.welten-live-shell.welten-parent-desktop .card-grid p,
   html.welten-live-shell.welten-parent-desktop .glass-card p {
     font-size: calc(1em * var(--welten-content-type, 1)) !important;
@@ -241,7 +248,14 @@
   html.welten-live-shell.welten-parent-desktop .prose li,
   html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) p,
   html.welten-live-shell.welten-parent-desktop .slide:not(#slide-home) li,
-  html.welten-live-shell.welten-parent-desktop .welten-faq p,
+  html.welten-live-shell.welten-parent-desktop .welten-faq__trigger,
+  html.welten-live-shell.welten-parent-desktop .welten-faq__panel,
+  html.welten-live-shell.welten-parent-desktop .faq-q,
+  html.welten-live-shell.welten-parent-desktop .faq-q-text,
+  html.welten-live-shell.welten-parent-desktop .faq-panel-inner,
+  html.welten-live-shell.welten-parent-desktop .welten-home-brief__steps li,
+  html.welten-live-shell.welten-parent-desktop .welten-home-brief__details summary,
+  html.welten-live-shell.welten-parent-desktop .welten-home-brief__details p,
   html.welten-live-shell.welten-parent-desktop .glass-card p,
   html.welten-live-shell.welten-parent-desktop .card-grid p {
     font-size: max(var(--welten-shell-nav-font), calc(1em * var(--welten-content-type, 1)), 1em) !important;

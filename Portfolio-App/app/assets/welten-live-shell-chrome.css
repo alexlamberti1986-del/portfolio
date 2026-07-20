@@ -10,7 +10,15 @@ html.welten-live-shell .mv4-bar {
 }
 
 /* Shell owns the site header — never show iframe .site-header in live shell */
-html.welten-live-shell .site-header {
+html.welten-live-shell .site-header,
+html.welten-live-shell body .site-header,
+html.welten-live-shell body.mv-preview-lite .site-header,
+html.welten-live-shell body[data-welten-video-hero="1"] .site-header,
+html.welten-live-shell body[data-welten-video-hero="1"].mv-preview-lite .site-header,
+html.mv-in-shell .site-header,
+html.mv-in-shell body .site-header,
+html.mv-in-shell body.mv-preview-lite .site-header,
+html.mv-in-shell body[data-welten-video-hero="1"].mv-preview-lite .site-header {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
@@ -20,6 +28,9 @@ html.welten-live-shell .site-header {
   pointer-events: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
 }
 
 /*

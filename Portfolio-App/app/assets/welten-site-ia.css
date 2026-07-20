@@ -178,8 +178,14 @@ body[data-world="freiraum"] .welten-service-pill {
 }
 
 .welten-home-brief__steps span {
-  opacity: 0.85;
-  font-size: 0.95rem;
+  opacity: 0.9;
+  font-size: 1em;
+  line-height: 1.65;
+}
+
+.welten-home-brief__steps strong {
+  font-size: 1em;
+  line-height: 1.45;
 }
 
 .welten-home-brief__faq {
@@ -198,9 +204,17 @@ body[data-world="freiraum"] .welten-service-pill {
 .welten-home-brief__details summary {
   cursor: pointer;
   font-weight: 600;
+  font-size: 1em;
+  line-height: 1.5;
   min-height: 44px;
   display: flex;
   align-items: center;
+}
+
+.welten-home-brief__details p {
+  font-size: 1em;
+  line-height: 1.65;
+  margin: 0;
 }
 
 .welten-home-brief__details[open] summary {

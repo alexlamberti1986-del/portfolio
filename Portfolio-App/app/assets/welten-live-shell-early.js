@@ -112,7 +112,6 @@
   }
 
   function stripIframeChrome() {
-    if (done) return;
     var found = false;
     try {
       document.querySelectorAll(".site-header").forEach(function (el) {
@@ -132,20 +131,8 @@
           }
         });
     } catch (e2) {}
-    if (found || document.body) {
-      var still = document.querySelector(
-        "body > .mv4-bar, body > .mv4-global-header, .mv4-shell-chrome, #mv4ShellChrome"
-      );
-      if (!still) {
-        done = true;
-        if (observer) {
-          try {
-            observer.disconnect();
-          } catch (eDisc) {}
-          observer = null;
-        }
-      }
-    }
+    if (done) return;
+    /* Observer bleibt bis Timeout aktiv — Video-Hero kann Header später wieder einblenden */
   }
 
   function scheduleStrip() {
@@ -175,5 +162,9 @@
       observer = null;
     }
     stripIframeChrome();
-  }, 3000);
+  }, 8000);
+  /* Weltwechsel / spätes Video-Hero: Header nochmals absichern */
+  [100, 400, 1200, 2500].forEach(function (ms) {
+    window.setTimeout(stripIframeChrome, ms);
+  });
 })();
