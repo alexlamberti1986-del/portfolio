@@ -7,11 +7,11 @@
 @media (min-width: 1025px) {
   html.welten-live-shell.welten-parent-desktop {
     --welten-content-max: min(92vw, 1680px);
-    --welten-content-type: 1.04;
+    --welten-content-type: 1.1;
     --hero-content-max: min(1680px, 92vw);
     --welten-xl-content: min(1680px, 92vw);
     /* Shell-Weltenleiste: .mv4-worlds [data-iframe] → 12px / 9×14px */
-    --welten-shell-nav-font: calc(12px * var(--welten-content-type, 1.04));
+    --welten-shell-nav-font: calc(12px * var(--welten-content-type, 1.1));
     --welten-shell-nav-pad-y: 9px;
     --welten-shell-nav-pad-x: 14px;
     --welten-shell-nav-min-h: 36px;

@@ -250,7 +250,8 @@
     if (!slide || !inner) return;
     var h = Math.round(slide.clientHeight || slide.offsetHeight || 0);
     if (h > 0) {
-      inner.style.minHeight = h + "px";
+      /* ~62% of viewport: footer below fold, less empty void under short pages */
+      inner.style.minHeight = Math.round(h * 0.62) + "px";
     }
   }
 

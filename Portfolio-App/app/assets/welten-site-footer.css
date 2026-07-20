@@ -1,11 +1,12 @@
-/* In-flow footer at end of active slide — visible only after scrolling down */
+/* In-flow footer at end of active slide — readable + fully scrollable on desktop */
 
 .welten-site-footer {
   --footer-accent: #ff59b2;
-  --footer-fg: rgba(236, 242, 255, 0.92);
-  --footer-muted: rgba(236, 242, 255, 0.68);
+  --footer-fg: rgba(236, 242, 255, 0.94);
+  --footer-muted: rgba(236, 242, 255, 0.74);
   --footer-bg: rgba(7, 11, 20, 0.96);
   --footer-line: rgba(255, 255, 255, 0.12);
+  --footer-type: 1;
 
   position: relative;
   left: auto;
@@ -15,11 +16,12 @@
   display: block;
   width: 100%;
   margin: 0;
-  padding: 1.5rem 0 calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  padding: 1.75rem 0 2.25rem;
+  padding-bottom: calc(2.25rem + env(safe-area-inset-bottom, 0px));
   pointer-events: auto;
   color: var(--footer-fg);
-  font-size: 0.9rem;
-  line-height: 1.45;
+  font-size: calc(1.05rem * var(--footer-type, 1));
+  line-height: 1.5;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -37,27 +39,27 @@
   backdrop-filter: blur(16px) saturate(1.12);
   -webkit-backdrop-filter: blur(16px) saturate(1.12);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .welten-site-footer__grid {
   display: grid;
-  grid-template-columns: minmax(220px, 1.4fr) repeat(3, minmax(120px, 1fr));
-  gap: 28px 32px;
-  padding: 28px 28px 18px;
+  grid-template-columns: minmax(240px, 1.45fr) repeat(3, minmax(140px, 1fr));
+  gap: 28px 36px;
+  padding: 32px 32px 22px;
 }
 
 .welten-site-footer__brand-name {
-  margin: 0 0 6px;
-  font-size: 1.05rem;
+  margin: 0 0 8px;
+  font-size: calc(1.25rem * var(--footer-type, 1));
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
 .welten-site-footer__world {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: var(--footer-accent);
-  font-size: 0.78rem;
+  font-size: calc(0.92rem * var(--footer-type, 1));
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -65,14 +67,15 @@
 
 .welten-site-footer__tag {
   margin: 0;
-  max-width: 36ch;
+  max-width: 38ch;
   color: var(--footer-muted);
-  font-size: 0.88rem;
+  font-size: calc(1.02rem * var(--footer-type, 1));
+  line-height: 1.45;
 }
 
 .welten-site-footer__heading {
-  margin: 0 0 12px;
-  font-size: 0.72rem;
+  margin: 0 0 14px;
+  font-size: calc(0.88rem * var(--footer-type, 1));
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -84,7 +87,12 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 8px;
+  gap: 10px;
+}
+
+.welten-site-footer__list a {
+  font-size: calc(1.05rem * var(--footer-type, 1));
+  line-height: 1.4;
 }
 
 .welten-site-footer a {
@@ -112,22 +120,21 @@
   align-items: center;
   justify-content: flex-start;
   gap: 8px 16px;
-  padding: 12px 28px;
+  padding: 14px 32px 16px;
   border-top: 1px solid var(--footer-line);
   color: var(--footer-muted);
-  font-size: 0.8rem;
+  font-size: calc(0.95rem * var(--footer-type, 1));
 }
 
-/* Duplicate legal strip removed — links live only under „Rechtliches“ */
 .welten-site-footer__bar-links {
   display: none !important;
 }
 
 .welten-site-footer__copy {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
-/* Active slide becomes the scrollport; content fills viewport so footer sits below the fold */
+/* Active slide becomes the scrollport */
 .slide.is-footer-host {
   display: flex !important;
   flex-direction: column;
@@ -135,6 +142,9 @@
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  scroll-padding-bottom: 2rem;
+  /* Room so the full footer (inkl. ©) can scroll into view */
+  padding-bottom: 1.25rem !important;
 }
 
 .slide.is-footer-host > .slide-inner.is-footer-fill,
@@ -143,11 +153,14 @@
   box-sizing: border-box;
 }
 
+/*
+ * Fill only enough to push footer below the first viewport —
+ * not a full extra blank page between short content and footer.
+ */
 .slide.is-footer-host > .slide-inner.is-footer-fill {
-  min-height: 100%;
+  min-height: 70%;
 }
 
-/* Offerte / tall natural content: no forced fill, tight gap to footer */
 .slide.is-footer-host.is-footer-natural > .slide-inner,
 #slide-offerte.is-footer-host > .slide-inner {
   min-height: 0 !important;
@@ -156,12 +169,12 @@
 }
 
 .welten-site-footer.is-offerte-footer {
-  padding-top: 0.75rem;
-  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  padding-top: 1rem;
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
 }
 
 #slide-offerte .welten-site-footer {
-  padding-top: 0.75rem;
+  padding-top: 1rem;
   margin-top: 0;
 }
 
@@ -177,8 +190,8 @@ body[data-world="nexora"] .welten-site-footer {
 
 body[data-world="vertex"] .welten-site-footer {
   --footer-accent: #4b5d6f;
-  --footer-fg: rgba(17, 17, 17, 0.88);
-  --footer-muted: rgba(17, 17, 17, 0.62);
+  --footer-fg: rgba(17, 17, 17, 0.9);
+  --footer-muted: rgba(17, 17, 17, 0.68);
   --footer-bg: rgba(255, 255, 255, 0.96);
   --footer-line: rgba(17, 17, 17, 0.12);
 }
@@ -195,26 +208,74 @@ body[data-world="freiraum"] .welten-site-footer {
 }
 
 @media (min-width: 1025px) {
-  .welten-site-footer {
-    padding-top: 2rem;
-    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  html.welten-live-shell.welten-parent-desktop .welten-site-footer,
+  html.welten-live-shell .welten-site-footer {
+    --footer-type: max(1.12, var(--welten-content-type, 1.08));
+    font-size: calc(1.12rem * var(--footer-type, 1.12));
+    padding-top: 2.25rem;
+    padding-bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  html.welten-live-shell.welten-parent-desktop[data-parent-scale-lt1="1"] .welten-site-footer {
+    --footer-type: min(1.45, calc(1.18 / var(--parent-desktop-scale, 1)));
+  }
+
+  .welten-site-footer__brand-name {
+    font-size: calc(1.35rem * var(--footer-type, 1.12));
+  }
+
+  .welten-site-footer__world {
+    font-size: calc(0.98rem * var(--footer-type, 1.12));
+  }
+
+  .welten-site-footer__tag {
+    font-size: calc(1.08rem * var(--footer-type, 1.12));
+  }
+
+  .welten-site-footer__heading {
+    font-size: calc(0.95rem * var(--footer-type, 1.12));
+  }
+
+  .welten-site-footer__list a {
+    font-size: calc(1.12rem * var(--footer-type, 1.12));
+  }
+
+  .welten-site-footer__list {
+    gap: 12px;
+  }
+
+  .welten-site-footer__grid {
+    gap: 32px 40px;
+    padding: 36px 36px 24px;
+  }
+
+  .welten-site-footer__bar {
+    font-size: calc(1.02rem * var(--footer-type, 1.12));
+    padding: 16px 36px 18px;
   }
 
   .welten-site-footer.is-offerte-footer,
   #slide-offerte .welten-site-footer {
-    padding-top: 1rem;
+    padding-top: 1.25rem;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
   }
 
   .welten-site-footer__shell {
     max-width: min(1180px, calc(100% - 48px));
   }
 
-  .slide.is-footer-host.active,
-  .slide.active.is-footer-host {
-    overflow-y: auto !important;
+  .slide.is-footer-host {
+    scroll-padding-bottom: 3rem;
+    padding-bottom: 2rem !important;
   }
 
-  /* Home: allow scroll past hero/galaxy to footer */
+  .slide.is-footer-host > .slide-inner.is-footer-fill {
+    /* Less empty void between short chapters and footer */
+    min-height: 62%;
+  }
+
+  .slide.is-footer-host.active,
+  .slide.active.is-footer-host,
   #slide-home.is-footer-host {
     overflow-y: auto !important;
   }
@@ -222,12 +283,15 @@ body[data-world="freiraum"] .welten-site-footer {
 
 @media (max-width: 1024px) {
   .welten-site-footer {
-    padding-top: 1.25rem;
+    --footer-type: 1.06;
+    font-size: calc(1.02rem * var(--footer-type, 1.06));
+    padding-top: 1.5rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
   }
 
   .welten-site-footer.is-offerte-footer,
   #slide-offerte .welten-site-footer {
-    padding-top: 0.5rem;
+    padding-top: 0.75rem;
   }
 
   .welten-site-footer__shell {
@@ -237,35 +301,46 @@ body[data-world="freiraum"] .welten-site-footer {
 
   .welten-site-footer__grid {
     grid-template-columns: 1fr 1fr;
-    gap: 18px 16px;
-    padding: 18px 16px 12px;
+    gap: 20px 18px;
+    padding: 22px 18px 14px;
   }
 
   .welten-site-footer__brand {
     grid-column: 1 / -1;
   }
 
-  .welten-site-footer__bar {
-    padding: 10px 16px;
+  .welten-site-footer__brand-name {
+    font-size: calc(1.2rem * var(--footer-type, 1.06));
   }
 
-  /* On small screens keep Legal column once; never duplicate in the bar */
+  .welten-site-footer__list a {
+    font-size: calc(1.05rem * var(--footer-type, 1.06));
+  }
+
+  .welten-site-footer__bar {
+    padding: 12px 18px 14px;
+    font-size: calc(0.95rem * var(--footer-type, 1.06));
+  }
+
   .welten-site-footer__bar-links {
     display: none !important;
+  }
+
+  .slide.is-footer-host {
+    padding-bottom: 1.5rem !important;
   }
 }
 
 @media (max-width: 560px) {
   .welten-site-footer__grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 18px;
   }
 
   .welten-site-footer__list {
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Legal column: single column list so Impressum/AGB/Datenschutz aren't cramped duplicates */
   .welten-site-footer__col:last-child .welten-site-footer__list {
     grid-template-columns: 1fr;
   }
