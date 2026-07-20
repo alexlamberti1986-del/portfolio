@@ -13,7 +13,7 @@
     "assets/projects-accordion.js?v=20260613a",
     "assets/welten-form-service-images.js?v=20260629vk2",
     "assets/welten-projects-services.js?v=20260629vk2",
-    "assets/welten-mobile-performance.js?v=20260715phase4",
+    "assets/welten-mobile-performance.js?v=20260720footer3",
     "assets/welten-skills-charts.js?v=20260706matrix5",
     "assets/portfolio-images.js?v=20260629-prof-portrait",
     "assets/welten-preview-images.js?v=20260629-prof-portrait",
