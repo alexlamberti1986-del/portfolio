@@ -27,9 +27,19 @@ Then open `http://localhost:4173`.
 
 ## Branch workflow
 
-- Work on feature/cleanup branches (e.g. `cleanup-live-parity`) for local parity and cleanup.
-- **Do not assume auto production deploy** from this cleanup branch — production stays on the configured production branch only after intentional merge/promote.
-- Push/deploy only when you explicitly choose to.
+See **`DEVELOPMENT-WORKFLOW.md`** and **`STABLE-REFERENCE.md`** for the stable reference (22.07.2026) and release process.
+
+- **`main`** — live production (deploy only after explicit approval)
+- **`development`** — integration branch for local testing
+- **`feature/*`** — single changes
+
+Quick local preview:
+
+```bash
+npm run serve
+```
+
+Restore instructions: **`WIEDERHERSTELLUNG.md`**
 
 ## Structure
 
