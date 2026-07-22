@@ -1,30 +1,30 @@
-/* PROFESSIONAL ← Envato Fabels
- * Kit tokens: #111111 / #F7F7F5 / #D2C7A8 / Inter — LIVE content kept */
+/* PROFESSIONAL — Fabels structure + LIVE B&W colors
+ * Content & images: live */
 
 html[data-design-test="1"] body[data-world="vertex"] {
-  --dt-bg: #f7f7f5;
+  --dt-bg: #f1f3f5;
   --dt-surface: #ffffff;
-  --dt-surface-2: #efefef;
-  --dt-surface-dark: #111111;
-  --dt-text: #797979;
-  --dt-heading: #111111;
-  --dt-accent: #111111;
-  --dt-label: #d2c7a8;
-  --dt-border: rgba(17, 17, 17, 0.1);
+  --dt-surface-2: #e8eaed;
+  --dt-surface-dark: #050505;
+  --dt-text: #6b7078;
+  --dt-heading: #050505;
+  --dt-accent: #050505;
+  --dt-label: #b8b8b8;
+  --dt-border: rgba(5, 5, 5, 0.1);
   --dt-radius-card: 28px;
   --dt-radius-btn: 999px;
   --dt-kit-hero: url("/assets/design-test/kit/professional-hero-poster.png");
-  --dt-kit-hero-opacity: 0.36;
+  --dt-kit-hero-opacity: 0.34;
   --dt-kit-hero-overlay: linear-gradient(
     180deg,
-    rgba(17, 17, 17, 0.45) 0%,
-    rgba(247, 247, 245, 0.72) 58%,
-    rgba(247, 247, 245, 0.98) 100%
+    rgba(5, 5, 5, 0.45) 0%,
+    rgba(241, 243, 245, 0.75) 58%,
+    rgba(241, 243, 245, 0.98) 100%
   );
 
   background: var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: Inter, Roboto, system-ui, sans-serif;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .section-title,
@@ -38,12 +38,11 @@ html[data-design-test="1"] body[data-world="vertex"] h3 {
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .chapter-label {
-  color: var(--dt-label) !important;
-  background: rgba(210, 199, 168, 0.22);
+  color: #050505 !important;
+  background: rgba(5, 5, 5, 0.06);
   display: inline-block;
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  letter-spacing: 0.1em;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .glass-card,
@@ -56,23 +55,27 @@ html[data-design-test="1"] body[data-world="vertex"] .welten-faq__item {
   border-radius: var(--dt-radius-card);
   border: 1px solid var(--dt-border);
   background: var(--dt-surface);
-  box-shadow: 0 18px 40px rgba(17, 17, 17, 0.05);
-  backdrop-filter: none !important;
+  box-shadow: 0 18px 40px rgba(5, 5, 5, 0.05);
 }
 
-/* Fabels: alternating dark/light advisory cards */
+/* Fabels: dark/light advisory pair */
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .dt-template-grid,
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .card-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 22px;
+}
+
 html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .glass-card:nth-child(odd),
 html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .value-card:nth-child(odd),
 html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .skill-card:nth-child(odd) {
   background: var(--dt-surface-dark);
   border-color: var(--dt-surface-dark);
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(241, 243, 245, 0.78);
+  border-radius: var(--dt-radius-card);
 }
 
 html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .glass-card:nth-child(odd) h3,
-html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .value-card:nth-child(odd) h3,
-html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .skill-card:nth-child(odd) h3,
-html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .glass-card:nth-child(odd) .section-title {
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .value-card:nth-child(odd) h3 {
   color: #fff !important;
 }
 
@@ -92,37 +95,34 @@ html[data-design-test="1"] body[data-world="vertex"] .btn-secondary {
   border-radius: var(--dt-radius-btn) !important;
 }
 
-html[data-design-test="1"] body[data-world="vertex"] #slide-home .al-world-video-hero__title,
-html[data-design-test="1"] body[data-world="vertex"] #slide-home .mv-static-hero__title,
-html[data-design-test="1"] body[data-world="vertex"] #slide-home .section-title,
-html[data-design-test="1"] body[data-world="vertex"] #slide-home h1 {
+html[data-design-test="1"] body[data-world="vertex"] #slide-home h1,
+html[data-design-test="1"] body[data-world="vertex"] #slide-home .section-title {
   color: #fff !important;
-  text-shadow: 0 10px 36px rgba(0, 0, 0, 0.4);
 }
 
-html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen,
-html[data-design-test="1"] body[data-world="vertex"] #slide-projects,
-html[data-design-test="1"] body[data-world="vertex"] #slide-about,
-html[data-design-test="1"] body[data-world="vertex"] #slide-contact,
-html[data-design-test="1"] body[data-world="vertex"] #slide-offerte {
-  background: linear-gradient(180deg, #fff 0%, var(--dt-bg) 18%, var(--dt-bg) 100%);
+html[data-design-test="1"] body[data-world="vertex"] #slide-projects .dt-template-grid,
+html[data-design-test="1"] body[data-world="vertex"] #slide-projects .card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 22px;
 }
 
-html[data-design-test="1"] body[data-world="vertex"] #slide-projects .project-card,
-html[data-design-test="1"] body[data-world="vertex"] #slide-projects .glass-card {
-  overflow: hidden;
-}
-
-html[data-design-test="1"] body[data-world="vertex"] #slide-projects .project-card img,
-html[data-design-test="1"] body[data-world="vertex"] #slide-projects .glass-card img {
+html[data-design-test="1"] body[data-world="vertex"] #slide-projects .project-card img {
   border-radius: 20px 20px 0 0;
 }
 
-html[data-design-test="1"] body[data-world="vertex"] #slide-about .prose p,
-html[data-design-test="1"] body[data-world="vertex"] #slide-about .home-copy p {
-  max-width: 62ch;
-  line-height: 1.75;
-  color: var(--dt-text);
+html[data-design-test="1"] body[data-world="vertex"] #slide-about .slide-inner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 36px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  html[data-design-test="1"] body[data-world="vertex"] #slide-about .slide-inner,
+  html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .dt-template-grid,
+  html[data-design-test="1"] body[data-world="vertex"] #slide-projects .dt-template-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 html[data-design-test="1"] body[data-world="vertex"] #slide-contact .slide-inner > *,
@@ -131,7 +131,7 @@ html[data-design-test="1"] body[data-world="vertex"] #slide-offerte .welten-lead
   background: var(--dt-surface);
   border: 1px solid var(--dt-border);
   border-radius: var(--dt-radius-card);
-  box-shadow: 0 14px 36px rgba(17, 17, 17, 0.05);
+  box-shadow: 0 14px 36px rgba(5, 5, 5, 0.05);
 }
 
 html[data-design-test="1"] body[data-world="vertex"] #slide-contact input,
@@ -139,27 +139,32 @@ html[data-design-test="1"] body[data-world="vertex"] #slide-contact textarea,
 html[data-design-test="1"] body[data-world="vertex"] #slide-offerte input,
 html[data-design-test="1"] body[data-world="vertex"] #slide-offerte textarea,
 html[data-design-test="1"] body[data-world="vertex"] #slide-offerte select {
-  background: #f7f7f5 !important;
+  background: #f1f3f5 !important;
   border: 1px solid var(--dt-border) !important;
   border-radius: 16px !important;
   color: var(--dt-heading) !important;
 }
 
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer {
-  color: var(--dt-text);
-}
-
+/* Fabels dark footer block */
 html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__shell {
-  border-radius: var(--dt-radius-card);
-  border-color: transparent;
-  background: var(--dt-surface-dark);
-  color: rgba(255, 255, 255, 0.72);
+  background: #050505;
+  border: none;
+  border-radius: 28px;
+  max-width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  color: rgba(241, 243, 245, 0.72);
 }
-
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__heading {
-  color: var(--dt-label);
+html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__grid {
+  padding-left: 36px;
+  padding-right: 36px;
 }
+html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__bar {
+  border-top-color: rgba(255, 255, 255, 0.12);
+  margin-left: 36px;
+  margin-right: 36px;
+  max-width: none;
+  width: auto;
+}
+html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__heading { color: #b8b8b8; }
 html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__brand-name,
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__list a {
-  color: #fff;
-}
+html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__list a { color: #fff; }

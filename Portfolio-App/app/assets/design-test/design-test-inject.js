@@ -1,11 +1,11 @@
 /**
- * Injects per-world design-test styles into world iframes (preview/local only).
- * Keeps LIVE world HTML content; only skins visuals + kit hero posters.
+ * Injects per-world design-test styles + template structure hints into world iframes.
+ * LIVE colors/content/images; Envato structure (preview only).
  */
 (function (root) {
   "use strict";
 
-  var VER = "20260722envato2";
+  var VER = "20260722struct1";
   var FONT_HREF =
     "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Marcellus&display=swap";
   var WORLD_CSS = {
@@ -48,6 +48,26 @@
     } catch (e) {}
   }
 
+  function structureBody(doc) {
+    try {
+      var body = doc.body;
+      if (!body) return;
+      body.classList.add("dt-template-body");
+      ["slide-home", "slide-leistungen", "slide-projects", "slide-about", "slide-contact", "slide-offerte"].forEach(function (id) {
+        var el = doc.getElementById(id);
+        if (el) el.classList.add("dt-template-section");
+      });
+      var grids = doc.querySelectorAll(
+        "#slide-leistungen .card-grid, #slide-projects .card-grid, #slide-leistungen .skills-grid, #slide-projects .projects-grid"
+      );
+      grids.forEach(function (g) {
+        g.classList.add("dt-template-grid");
+      });
+      var footer = doc.querySelector(".welten-site-footer");
+      if (footer) footer.classList.add("dt-template-footer");
+    } catch (e) {}
+  }
+
   function injectIntoFrame(frame) {
     if (!isDesignTest() || !frame) return;
     try {
@@ -71,15 +91,18 @@
       if (link.getAttribute("href") !== href) link.setAttribute("href", href);
 
       var sharedId = "welten-design-test-shared-css";
-      if (!doc.getElementById(sharedId)) {
-        var shared = doc.createElement("link");
+      var sharedHref = "/assets/design-test/design-test-shared.css?v=" + VER;
+      var shared = doc.getElementById(sharedId);
+      if (!shared) {
+        shared = doc.createElement("link");
         shared.id = sharedId;
         shared.rel = "stylesheet";
-        shared.href = "/assets/design-test/design-test-shared.css?v=" + VER;
         (doc.head || doc.documentElement).appendChild(shared);
       }
+      if (shared.getAttribute("href") !== sharedHref) shared.setAttribute("href", sharedHref);
 
       ensureKitHero(doc);
+      structureBody(doc);
     } catch (e) {}
   }
 
@@ -107,4 +130,5 @@
   } else {
     bindShell();
   }
+  root.setInterval(bindShell, 2000);
 })(typeof window !== "undefined" ? window : this);

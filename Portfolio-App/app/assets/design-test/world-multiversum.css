@@ -1,24 +1,24 @@
-/* MULTIVERSUM ← Envato Xable Dark
- * Kit tokens: #EC3737 / #020205 / Be Vietnam Pro — LIVE content kept */
+/* MULTIVERSUM — Xable structure + LIVE colors (#ff59b2 / navy)
+ * Content & images: live */
 
 html[data-design-test="1"] body[data-world="general"] {
-  --dt-bg: #020205;
-  --dt-surface: #0c0d12;
-  --dt-surface-2: #15171e;
-  --dt-text: rgba(255, 255, 255, 0.76);
+  --dt-bg: #05070d;
+  --dt-surface: #0b101c;
+  --dt-surface-2: #121826;
+  --dt-text: rgba(236, 242, 255, 0.78);
   --dt-heading: #ffffff;
-  --dt-accent: #ec3737;
-  --dt-label: #ec3737;
+  --dt-accent: #ff59b2;
+  --dt-label: #ff59b2;
   --dt-border: rgba(255, 255, 255, 0.12);
   --dt-radius-card: 4px;
   --dt-radius-btn: 4px;
   --dt-kit-hero: url("/assets/design-test/kit/multiversum-hero-poster.jpg");
-  --dt-kit-hero-opacity: 0.42;
+  --dt-kit-hero-opacity: 0.32;
   --dt-kit-hero-overlay: linear-gradient(
     180deg,
-    rgba(2, 2, 5, 0.55) 0%,
-    rgba(2, 2, 5, 0.78) 42%,
-    rgba(2, 2, 5, 0.97) 100%
+    rgba(5, 7, 13, 0.55) 0%,
+    rgba(5, 7, 13, 0.82) 45%,
+    rgba(5, 7, 13, 0.98) 100%
   );
 
   background: var(--dt-bg) !important;
@@ -39,6 +39,7 @@ html[data-design-test="1"] body[data-world="general"] .chapter-label {
   color: var(--dt-accent) !important;
 }
 
+/* Xable card language */
 html[data-design-test="1"] body[data-world="general"] .glass-card,
 html[data-design-test="1"] body[data-world="general"] .value-card,
 html[data-design-test="1"] body[data-world="general"] .project-card,
@@ -49,15 +50,26 @@ html[data-design-test="1"] body[data-world="general"] .welten-faq__item {
   border: 1px solid var(--dt-border);
   background: var(--dt-surface-2);
   box-shadow: none;
-  backdrop-filter: none !important;
 }
 
-/* Xable: accent-top service cards */
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .dt-template-grid,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .card-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px;
+}
+
+@media (max-width: 1024px) {
+  html[data-design-test="1"] body[data-world="general"] #slide-leistungen .dt-template-grid,
+  html[data-design-test="1"] body[data-world="general"] #slide-leistungen .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
 html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card,
 html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card,
 html[data-design-test="1"] body[data-world="general"] #slide-leistungen .skill-card {
   border-top: 2px solid var(--dt-accent);
-  padding-top: 1.35rem;
+  min-height: 220px;
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card:nth-child(2),
@@ -68,9 +80,8 @@ html[data-design-test="1"] body[data-world="general"] #slide-leistungen .skill-c
   color: #fff;
 }
 
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card:nth-child(2) .section-title,
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card:nth-child(2) h3,
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen .skill-card:nth-child(2) h3 {
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card:nth-child(2) h3,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card:nth-child(2) h3 {
   color: #fff !important;
 }
 
@@ -86,25 +97,15 @@ html[data-design-test="1"] body[data-world="general"] .welten-cta {
 
 html[data-design-test="1"] body[data-world="general"] .btn-secondary {
   background: transparent !important;
-  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
   color: #fff !important;
   border-radius: var(--dt-radius-btn) !important;
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-home .al-world-video-hero__title,
 html[data-design-test="1"] body[data-world="general"] #slide-home .mv-static-hero__title,
-html[data-design-test="1"] body[data-world="general"] #slide-home .section-title,
 html[data-design-test="1"] body[data-world="general"] #slide-home h1 {
   color: #fff !important;
-  text-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
-}
-
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen,
-html[data-design-test="1"] body[data-world="general"] #slide-projects,
-html[data-design-test="1"] body[data-world="general"] #slide-about,
-html[data-design-test="1"] body[data-world="general"] #slide-contact,
-html[data-design-test="1"] body[data-world="general"] #slide-offerte {
-  background: var(--dt-bg);
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-projects .project-card,
@@ -112,17 +113,30 @@ html[data-design-test="1"] body[data-world="general"] #slide-projects .glass-car
   overflow: hidden;
   background: #000;
   border: none;
+  border-radius: 0;
 }
 
-html[data-design-test="1"] body[data-world="general"] #slide-projects .project-card:hover,
-html[data-design-test="1"] body[data-world="general"] #slide-projects .glass-card:hover {
-  outline: 1px solid var(--dt-accent);
-  transform: translateY(-2px);
+html[data-design-test="1"] body[data-world="general"] #slide-projects .dt-template-grid,
+html[data-design-test="1"] body[data-world="general"] #slide-projects .card-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px;
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-about .slide-inner {
   display: grid;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 40px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  html[data-design-test="1"] body[data-world="general"] #slide-about .slide-inner {
+    grid-template-columns: 1fr;
+  }
+  html[data-design-test="1"] body[data-world="general"] #slide-projects .dt-template-grid,
+  html[data-design-test="1"] body[data-world="general"] #slide-projects .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-contact input,
@@ -136,37 +150,19 @@ html[data-design-test="1"] body[data-world="general"] #slide-offerte select {
   border-radius: 4px !important;
 }
 
-html[data-design-test="1"] body[data-world="general"] #slide-contact input:focus,
-html[data-design-test="1"] body[data-world="general"] #slide-contact textarea:focus,
-html[data-design-test="1"] body[data-world="general"] #slide-offerte input:focus,
-html[data-design-test="1"] body[data-world="general"] #slide-offerte textarea:focus,
-html[data-design-test="1"] body[data-world="general"] #slide-offerte select:focus {
-  border-color: var(--dt-accent) !important;
-  outline: none;
-}
-
 html[data-design-test="1"] body[data-world="general"] #slide-offerte .welten-offerte-form-wrap,
 html[data-design-test="1"] body[data-world="general"] #slide-offerte .welten-leadform-wrap {
-  border: 1px solid var(--dt-border);
   border-left: 3px solid var(--dt-accent);
   background: var(--dt-surface-2);
   border-radius: 4px;
-  padding: 1.25rem;
+  padding: 1.35rem;
 }
 
+/* Xable-like full footer */
 html[data-design-test="1"] body[data-world="general"] .welten-site-footer__shell {
-  border-color: var(--dt-border);
-  background: var(--dt-surface-2);
-  border-radius: 4px;
+  background: #0b101c;
+  border-color: rgba(255, 255, 255, 0.1);
 }
-
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__heading {
-  color: var(--dt-accent);
-}
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand-name {
-  color: #fff;
-  font-weight: 700;
-}
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__world {
-  color: var(--dt-accent);
-}
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__heading { color: var(--dt-accent); }
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand-name { color: #fff; font-weight: 700; }
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__world { color: var(--dt-accent); }

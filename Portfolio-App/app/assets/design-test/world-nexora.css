@@ -1,24 +1,24 @@
-/* NEXORA ← Envato Vibe
- * Kit tokens: #1B47F4 / #111111 / Inter — LIVE content kept */
+/* NEXORA — Vibe structure + LIVE colors (#8ec5ff / navy)
+ * Content & images: live */
 
 html[data-design-test="1"] body[data-world="nexora"] {
-  --dt-bg: #000000;
-  --dt-surface: #111111;
-  --dt-surface-2: #161616;
-  --dt-text: #bebebe;
+  --dt-bg: #050810;
+  --dt-surface: #081226;
+  --dt-surface-2: #101d35;
+  --dt-text: rgba(190, 210, 235, 0.82);
   --dt-heading: #ffffff;
-  --dt-accent: #1b47f4;
-  --dt-label: #1b47f4;
-  --dt-border: rgba(27, 71, 244, 0.28);
+  --dt-accent: #8ec5ff;
+  --dt-label: #8ec5ff;
+  --dt-border: rgba(142, 197, 255, 0.22);
   --dt-radius-card: 8px;
   --dt-radius-btn: 8px;
   --dt-kit-hero: url("/assets/design-test/kit/nexora-hero-poster.png");
-  --dt-kit-hero-opacity: 0.4;
+  --dt-kit-hero-opacity: 0.3;
   --dt-kit-hero-overlay: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 0.82) 48%,
-    rgba(0, 0, 0, 0.98) 100%
+    rgba(5, 8, 16, 0.5) 0%,
+    rgba(5, 8, 16, 0.84) 48%,
+    rgba(5, 8, 16, 0.98) 100%
   );
 
   background: var(--dt-bg) !important;
@@ -39,8 +39,6 @@ html[data-design-test="1"] body[data-world="nexora"] h3 {
 
 html[data-design-test="1"] body[data-world="nexora"] .chapter-label {
   color: var(--dt-accent) !important;
-  font-family: Inter, sans-serif;
-  letter-spacing: 0.12em;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .glass-card,
@@ -53,23 +51,33 @@ html[data-design-test="1"] body[data-world="nexora"] .welten-faq__item {
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: var(--dt-surface);
   box-shadow: none;
-  backdrop-filter: none !important;
 }
 
-/* Vibe: alternating solid blue service cards */
+/* Vibe 2×2 service tiles with accent fills */
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .dt-template-grid,
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .card-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 18px;
+}
+
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card,
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .value-card,
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .skill-card {
+  min-height: 200px;
+  aspect-ratio: 1.15 / 1;
+}
+
 html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card:nth-child(even),
 html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .value-card:nth-child(even),
 html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .skill-card:nth-child(even) {
   background: var(--dt-accent);
   border-color: var(--dt-accent);
-  color: #fff;
+  color: #050810;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card:nth-child(even) h3,
-html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .value-card:nth-child(even) h3,
-html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .skill-card:nth-child(even) h3,
-html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card:nth-child(even) .section-title {
-  color: #fff !important;
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .value-card:nth-child(even) h3 {
+  color: #050810 !important;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .btn-primary,
@@ -77,9 +85,8 @@ html[data-design-test="1"] body[data-world="nexora"] .cta-btn,
 html[data-design-test="1"] body[data-world="nexora"] .welten-cta {
   background: var(--dt-accent) !important;
   border: 1px solid var(--dt-accent) !important;
-  color: #fff !important;
+  color: #050810 !important;
   border-radius: var(--dt-radius-btn) !important;
-  box-shadow: none;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .btn-secondary {
@@ -89,37 +96,56 @@ html[data-design-test="1"] body[data-world="nexora"] .btn-secondary {
   border-radius: var(--dt-radius-btn) !important;
 }
 
-html[data-design-test="1"] body[data-world="nexora"] #slide-home .al-world-video-hero__title,
-html[data-design-test="1"] body[data-world="nexora"] #slide-home .mv-static-hero__title,
-html[data-design-test="1"] body[data-world="nexora"] #slide-home .section-title,
-html[data-design-test="1"] body[data-world="nexora"] #slide-home h1 {
+html[data-design-test="1"] body[data-world="nexora"] #slide-home h1,
+html[data-design-test="1"] body[data-world="nexora"] #slide-home .section-title {
   color: #fff !important;
 }
 
-html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen,
-html[data-design-test="1"] body[data-world="nexora"] #slide-projects,
-html[data-design-test="1"] body[data-world="nexora"] #slide-about,
-html[data-design-test="1"] body[data-world="nexora"] #slide-contact,
-html[data-design-test="1"] body[data-world="nexora"] #slide-offerte {
-  background: var(--dt-bg);
+/* Vibe bento-ish portfolio */
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .dt-template-grid,
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .card-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 16px;
 }
 
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card:nth-child(1),
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card:nth-child(1) {
+  grid-column: span 3;
+}
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card:nth-child(2),
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card:nth-child(2) {
+  grid-column: span 3;
+}
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card,
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card {
+  grid-column: span 2;
   overflow: hidden;
-  background: var(--dt-surface);
 }
 
-html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card img,
-html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card img {
-  filter: grayscale(0.35) contrast(1.05);
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card img {
+  filter: grayscale(0.3);
   transition: filter 0.3s ease, transform 0.3s ease;
 }
-
-html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card:hover img,
-html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card:hover img {
-  filter: grayscale(0) contrast(1);
+html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card:hover img {
+  filter: none;
   transform: scale(1.03);
+}
+
+html[data-design-test="1"] body[data-world="nexora"] #slide-about .slide-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+@media (max-width: 900px) {
+  html[data-design-test="1"] body[data-world="nexora"] #slide-about .slide-inner,
+  html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .dt-template-grid,
+  html[data-design-test="1"] body[data-world="nexora"] #slide-projects .dt-template-grid {
+    grid-template-columns: 1fr !important;
+  }
+  html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card {
+    grid-column: span 1 !important;
+  }
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-contact input,
@@ -132,34 +158,15 @@ html[data-design-test="1"] body[data-world="nexora"] #slide-offerte select {
   border-bottom: 1px solid rgba(255, 255, 255, 0.28) !important;
   border-radius: 0 !important;
   color: #fff !important;
-  padding-left: 0 !important;
-}
-
-html[data-design-test="1"] body[data-world="nexora"] #slide-contact input:focus,
-html[data-design-test="1"] body[data-world="nexora"] #slide-contact textarea:focus,
-html[data-design-test="1"] body[data-world="nexora"] #slide-offerte input:focus,
-html[data-design-test="1"] body[data-world="nexora"] #slide-offerte textarea:focus {
-  border-bottom-color: var(--dt-accent) !important;
-  outline: none;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__shell {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: var(--dt-surface);
-  border-radius: 8px;
+  background: #081226;
+  border-color: rgba(255, 255, 255, 0.08);
 }
-
 html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__heading {
   color: var(--dt-accent);
-  font-family: Inter, sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.78rem;
+  letter-spacing: 0.1em;
 }
-html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__brand-name {
-  color: #fff;
-  font-weight: 700;
-}
-html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__world {
-  color: var(--dt-accent);
-}
+html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__brand-name { color: #fff; }
+html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__world { color: var(--dt-accent); }
