@@ -5,7 +5,7 @@
 (function (root) {
   "use strict";
 
-  var VER = "20260722kit2";
+  var VER = "20260722env1";
   var WORLD_CSS = {
     general: "/assets/design-test/world-multiversum.css?v=" + VER,
     nexora: "/assets/design-test/world-nexora.css?v=" + VER,

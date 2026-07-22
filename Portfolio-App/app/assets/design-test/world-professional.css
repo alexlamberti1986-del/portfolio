@@ -1,4 +1,5 @@
-/* PROFESSIONAL — corporate editorial template + live content */
+/* PROFESSIONAL ← Envato Fabels (light financial/advisory) + Master Kit tokens
+ * Live content/images kept — skins ALL slides/subpages */
 
 html[data-design-test="1"] body[data-world="vertex"] {
   --dt-bg: #f2f2ef;
@@ -9,15 +10,10 @@ html[data-design-test="1"] body[data-world="vertex"] {
   --dt-accent: #151515;
   --dt-label: #a48e73;
   --dt-border: rgba(21, 21, 21, 0.12);
-  --dt-radius-card: 28px;
+  --dt-radius-card: 32px;
   --dt-kit-hero: url("/assets/design-test/kit/professional-hero-poster.jpg");
-  --dt-kit-hero-opacity: 0.38;
-  --dt-kit-hero-overlay: linear-gradient(
-    180deg,
-    rgba(242, 242, 239, 0.25) 0%,
-    rgba(242, 242, 239, 0.82) 55%,
-    rgba(242, 242, 239, 0.98) 100%
-  );
+  --dt-kit-hero-opacity: 0.34;
+  --dt-kit-hero-overlay: linear-gradient(180deg, rgba(242,242,239,.2), rgba(242,242,239,.86) 55%, rgba(242,242,239,.98));
 
   background: var(--dt-bg) !important;
   color: var(--dt-text);
@@ -31,7 +27,6 @@ html[data-design-test="1"] body[data-world="vertex"] h2 {
   font-family: Manrope, Inter, sans-serif;
   font-weight: 800;
   letter-spacing: -0.025em;
-  text-transform: none;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .chapter-label {
@@ -42,19 +37,14 @@ html[data-design-test="1"] body[data-world="vertex"] .glass-card,
 html[data-design-test="1"] body[data-world="vertex"] .value-card,
 html[data-design-test="1"] body[data-world="vertex"] .project-card,
 html[data-design-test="1"] body[data-world="vertex"] .skill-card,
-html[data-design-test="1"] body[data-world="vertex"] .zeugnis-row {
+html[data-design-test="1"] body[data-world="vertex"] .zeugnis-row,
+html[data-design-test="1"] body[data-world="vertex"] .faq-item,
+html[data-design-test="1"] body[data-world="vertex"] .welten-faq__item {
   border-radius: var(--dt-radius-card);
   border: 1px solid var(--dt-border);
   background: var(--dt-surface);
   box-shadow: 0 14px 36px rgba(21, 21, 21, 0.06);
-}
-
-html[data-design-test="1"] body[data-world="vertex"] .card-grid {
-  gap: 28px;
-}
-
-html[data-design-test="1"] body[data-world="vertex"] .slide:not(#slide-home) {
-  background: linear-gradient(180deg, #fff 0%, var(--dt-bg) 18%, var(--dt-bg) 100%);
+  backdrop-filter: none !important;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .btn-primary,
@@ -62,12 +52,65 @@ html[data-design-test="1"] body[data-world="vertex"] .cta-btn {
   background: var(--dt-accent);
   border: 1px solid var(--dt-accent);
   color: #fff;
+  border-radius: 999px;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .btn-secondary {
+  background: transparent;
   border: 1px solid var(--dt-accent);
   color: var(--dt-heading);
-  background: transparent;
+  border-radius: 999px;
+}
+
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen,
+html[data-design-test="1"] body[data-world="vertex"] #slide-projects,
+html[data-design-test="1"] body[data-world="vertex"] #slide-about,
+html[data-design-test="1"] body[data-world="vertex"] #slide-contact,
+html[data-design-test="1"] body[data-world="vertex"] #slide-offerte {
+  background: linear-gradient(180deg, #fff 0%, var(--dt-bg) 16%, var(--dt-bg) 100%);
+}
+
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .card-grid,
+html[data-design-test="1"] body[data-world="vertex"] #slide-projects .card-grid {
+  gap: 28px;
+}
+
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .glass-card:nth-child(even),
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .value-card:nth-child(even),
+html[data-design-test="1"] body[data-world="vertex"] #slide-leistungen .skill-card:nth-child(even) {
+  background: var(--dt-surface-2);
+}
+
+html[data-design-test="1"] body[data-world="vertex"] #slide-projects .project-card,
+html[data-design-test="1"] body[data-world="vertex"] #slide-projects .glass-card {
+  overflow: hidden;
+}
+
+html[data-design-test="1"] body[data-world="vertex"] #slide-about .prose p,
+html[data-design-test="1"] body[data-world="vertex"] #slide-about .home-copy p {
+  max-width: 62ch;
+  line-height: 1.75;
+  color: var(--dt-text);
+}
+
+html[data-design-test="1"] body[data-world="vertex"] #slide-contact .slide-inner > *,
+html[data-design-test="1"] body[data-world="vertex"] #slide-offerte .welten-offerte-form-wrap,
+html[data-design-test="1"] body[data-world="vertex"] #slide-offerte .welten-leadform-wrap {
+  background: var(--dt-surface);
+  border: 1px solid var(--dt-border);
+  border-radius: var(--dt-radius-card);
+  box-shadow: 0 14px 36px rgba(21, 21, 21, 0.05);
+}
+
+html[data-design-test="1"] body[data-world="vertex"] #slide-contact input,
+html[data-design-test="1"] body[data-world="vertex"] #slide-contact textarea,
+html[data-design-test="1"] body[data-world="vertex"] #slide-offerte input,
+html[data-design-test="1"] body[data-world="vertex"] #slide-offerte textarea,
+html[data-design-test="1"] body[data-world="vertex"] #slide-offerte select {
+  background: #f7f7f5 !important;
+  border: 1px solid var(--dt-border) !important;
+  border-radius: 14px !important;
+  color: var(--dt-heading) !important;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer {
@@ -75,36 +118,17 @@ html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer {
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__shell {
+  border-radius: var(--dt-radius-card);
   border-color: var(--dt-border);
   background: var(--dt-surface);
-  box-shadow: 0 18px 48px rgba(21, 21, 21, 0.07);
 }
 
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__heading {
-  color: var(--dt-label);
-}
-
+html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__heading { color: var(--dt-label); }
 html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__brand-name,
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__list a {
-  color: var(--dt-heading);
-}
+html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__list a { color: var(--dt-heading); }
 
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__tag,
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__bar {
-  color: var(--dt-text);
-}
-
-html[data-design-test="1"] body[data-world="vertex"] .prose p,
-html[data-design-test="1"] body[data-world="vertex"] .home-copy p {
-  color: var(--dt-text);
-  max-width: 62ch;
-  line-height: 1.75;
-}
-
-/* Light world: keep video/text readable */
 html[data-design-test="1"] body[data-world="vertex"] #slide-home .al-world-video-hero__title,
 html[data-design-test="1"] body[data-world="vertex"] #slide-home .mv-static-hero__title,
 html[data-design-test="1"] body[data-world="vertex"] #slide-home .section-title {
   color: var(--dt-heading) !important;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }

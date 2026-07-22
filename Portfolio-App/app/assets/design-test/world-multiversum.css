@@ -1,4 +1,5 @@
-/* MULTIVERSUM — cosmic template skin + live content */
+/* MULTIVERSUM ← Envato Xable (dark agency) + Master Kit tokens
+ * Live content/images kept — skins ALL slides/subpages */
 
 html[data-design-test="1"] body[data-world="general"] {
   --dt-bg: #05040b;
@@ -8,23 +9,18 @@ html[data-design-test="1"] body[data-world="general"] {
   --dt-heading: #ffffff;
   --dt-accent: #a855f7;
   --dt-label: #22d3ee;
-  --dt-border: rgba(255, 255, 255, 0.13);
-  --dt-radius-card: 28px;
+  --dt-border: rgba(255, 255, 255, 0.14);
+  --dt-radius-card: 16px;
   --dt-kit-hero: url("/assets/design-test/kit/multiversum-hero-poster.jpg");
-  --dt-kit-hero-opacity: 0.5;
-  --dt-kit-hero-overlay: linear-gradient(
-    180deg,
-    rgba(5, 4, 11, 0.35) 0%,
-    rgba(5, 4, 11, 0.72) 45%,
-    rgba(5, 4, 11, 0.94) 100%
-  );
+  --dt-kit-hero-opacity: 0.48;
+  --dt-kit-hero-overlay: linear-gradient(180deg, rgba(5,4,11,.32), rgba(5,4,11,.78) 48%, rgba(5,4,11,.96));
 
   background:
-    radial-gradient(1000px 560px at 12% -8%, rgba(168, 85, 247, 0.2), transparent 58%),
-    radial-gradient(820px 480px at 88% 0%, rgba(34, 211, 238, 0.1), transparent 52%),
+    radial-gradient(900px 500px at 70% 8%, rgba(168, 85, 247, 0.2), transparent 55%),
+    radial-gradient(700px 420px at 10% 90%, rgba(34, 211, 238, 0.08), transparent 50%),
     var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: "Space Grotesk", Inter, Manrope, system-ui, sans-serif;
+  font-family: "Space Grotesk", Inter, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="general"] .section-title,
@@ -39,14 +35,18 @@ html[data-design-test="1"] body[data-world="general"] .chapter-label {
   color: var(--dt-label) !important;
 }
 
+/* Shared card language (Xable-like panels) */
 html[data-design-test="1"] body[data-world="general"] .glass-card,
 html[data-design-test="1"] body[data-world="general"] .value-card,
 html[data-design-test="1"] body[data-world="general"] .project-card,
-html[data-design-test="1"] body[data-world="general"] .skill-card {
+html[data-design-test="1"] body[data-world="general"] .skill-card,
+html[data-design-test="1"] body[data-world="general"] .faq-item,
+html[data-design-test="1"] body[data-world="general"] .welten-faq__item {
   border-radius: var(--dt-radius-card);
   border: 1px solid var(--dt-border);
-  background: linear-gradient(160deg, var(--dt-surface-2), var(--dt-surface));
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168, 85, 247, 0.08);
+  background: linear-gradient(165deg, var(--dt-surface-2), var(--dt-surface));
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: none !important;
 }
 
 html[data-design-test="1"] body[data-world="general"] .btn-primary,
@@ -55,35 +55,96 @@ html[data-design-test="1"] body[data-world="general"] .welten-cta {
   background: var(--dt-accent);
   border: 1px solid var(--dt-accent);
   color: #fff;
-  box-shadow: 0 0 28px rgba(168, 85, 247, 0.35);
+  border-radius: 999px;
+  box-shadow: 0 0 26px rgba(168, 85, 247, 0.35);
 }
 
 html[data-design-test="1"] body[data-world="general"] .btn-secondary {
+  background: transparent;
   border: 1px solid var(--dt-accent);
   color: var(--dt-heading);
-  background: transparent;
+  border-radius: 999px;
+}
+
+/* —— Unterseiten —— */
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen,
+html[data-design-test="1"] body[data-world="general"] #slide-projects,
+html[data-design-test="1"] body[data-world="general"] #slide-about,
+html[data-design-test="1"] body[data-world="general"] #slide-contact,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte {
+  background:
+    linear-gradient(180deg, rgba(17, 16, 34, 0.55), transparent 22%),
+    var(--dt-bg);
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .card-grid,
+html[data-design-test="1"] body[data-world="general"] #slide-projects .card-grid {
+  gap: 24px;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card::before,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card::before,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .project-card::before {
+  content: "";
+  display: block;
+  height: 2px;
+  margin: -4px 0 14px;
+  background: linear-gradient(90deg, transparent, var(--dt-accent), transparent);
+  opacity: 0.85;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-projects .project-card,
+html[data-design-test="1"] body[data-world="general"] #slide-projects .glass-card {
+  overflow: hidden;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-projects .project-card:hover,
+html[data-design-test="1"] body[data-world="general"] #slide-projects .glass-card:hover {
+  border-color: rgba(168, 85, 247, 0.55);
+  transform: translateY(-3px);
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-about .slide-inner {
+  display: grid;
+  gap: 28px;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-contact input,
+html[data-design-test="1"] body[data-world="general"] #slide-contact textarea,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte input,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte textarea,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte select {
+  background: var(--dt-surface-2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: var(--dt-heading) !important;
+  border-radius: 12px !important;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-contact input:focus,
+html[data-design-test="1"] body[data-world="general"] #slide-contact textarea:focus,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte input:focus,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte textarea:focus,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte select:focus {
+  border-color: var(--dt-accent) !important;
+  outline: none;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-offerte .welten-offerte-form-wrap,
+html[data-design-test="1"] body[data-world="general"] #slide-offerte .welten-leadform-wrap {
+  border-left: 3px solid var(--dt-accent);
+  background: rgba(17, 16, 34, 0.72);
+  border-radius: 16px;
+  padding: 1rem;
 }
 
 html[data-design-test="1"] body[data-world="general"] .welten-site-footer__shell {
   border-color: var(--dt-border);
   background:
-    radial-gradient(700px 220px at 0% 0%, rgba(168, 85, 247, 0.14), transparent 60%),
+    radial-gradient(700px 220px at 0% 0%, rgba(168, 85, 247, 0.16), transparent 60%),
     var(--dt-surface);
+  border-radius: 20px;
 }
 
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__heading {
-  color: var(--dt-accent);
-}
-
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand-name {
-  color: var(--dt-heading);
-  font-weight: 800;
-}
-
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__world {
-  color: var(--dt-label);
-}
-
-html[data-design-test="1"] body[data-world="general"] .slide:not(#slide-home) {
-  background: linear-gradient(180deg, rgba(17, 16, 34, 0.35), transparent 28%);
-}
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__heading { color: var(--dt-accent); }
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand-name { color: var(--dt-heading); font-weight: 800; }
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__world { color: var(--dt-label); }
