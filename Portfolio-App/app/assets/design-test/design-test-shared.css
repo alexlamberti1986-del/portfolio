@@ -1,34 +1,98 @@
-/* Shared design-test layer — section rhythm + template-like blocks (local only) */
+/* Shared design-test — template-page rhythm with LIVE content (local/preview only) */
 
 html[data-design-test="1"] body {
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-html[data-design-test="1"] .slide-inner > .section-title,
-html[data-design-test="1"] .slide-inner > h2.section-title {
-  letter-spacing: 0.06em;
+html[data-design-test="1"] .slide.is-footer-host > .slide-inner,
+html[data-design-test="1"] .slide > .slide-inner {
+  max-width: min(1240px, calc(100% - 40px));
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: clamp(2.5rem, 6vh, 5.5rem);
+  padding-bottom: clamp(2.5rem, 5vh, 4.5rem);
+}
+
+html[data-design-test="1"] #slide-home > .slide-inner {
+  max-width: none;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+html[data-design-test="1"] .section-title,
+html[data-design-test="1"] h2.section-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+
+html[data-design-test="1"] .chapter-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
 }
 
 html[data-design-test="1"] .glass-card,
 html[data-design-test="1"] .value-card,
 html[data-design-test="1"] .project-card,
 html[data-design-test="1"] .skill-card {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-html[data-design-test="1"] .welten-site-footer__shell {
-  border-width: 2px;
-}
-
-html[data-design-test="1"] .welten-site-footer__grid {
-  align-items: start;
 }
 
 html[data-design-test="1"] .btn-primary,
 html[data-design-test="1"] .btn-secondary,
 html[data-design-test="1"] .cta-btn,
 html[data-design-test="1"] .welten-cta {
-  font-weight: 600;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.85rem 1.4rem;
+}
+
+html[data-design-test="1"] .welten-site-footer__shell {
+  border-width: 1px;
+  border-radius: 28px;
+}
+
+html[data-design-test="1"] .welten-site-footer__grid {
+  align-items: start;
+  gap: 28px 36px;
+}
+
+/* Template hero poster layer (Master Kit) — keeps live text/content on top */
+html[data-design-test="1"] #slide-home.dt-kit-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+html[data-design-test="1"] #slide-home.dt-kit-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--dt-kit-hero);
+  background-size: cover;
+  background-position: center top;
+  pointer-events: none;
+  opacity: var(--dt-kit-hero-opacity, 0.42);
+}
+
+html[data-design-test="1"] #slide-home.dt-kit-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--dt-kit-hero-overlay, linear-gradient(180deg, rgba(5, 4, 11, 0.55), rgba(5, 4, 11, 0.88)));
+  pointer-events: none;
+}
+
+html[data-design-test="1"] #slide-home.dt-kit-hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {

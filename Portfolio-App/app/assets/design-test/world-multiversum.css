@@ -1,4 +1,4 @@
-/* MULTIVERSUM — Master Kit tokens (local design-test only) */
+/* MULTIVERSUM — cosmic template skin + live content */
 
 html[data-design-test="1"] body[data-world="general"] {
   --dt-bg: #05040b;
@@ -10,36 +10,33 @@ html[data-design-test="1"] body[data-world="general"] {
   --dt-label: #22d3ee;
   --dt-border: rgba(255, 255, 255, 0.13);
   --dt-radius-card: 28px;
-  --dt-radius-pill: 999px;
+  --dt-kit-hero: url("/assets/design-test/kit/multiversum-hero-poster.jpg");
+  --dt-kit-hero-opacity: 0.5;
+  --dt-kit-hero-overlay: linear-gradient(
+    180deg,
+    rgba(5, 4, 11, 0.35) 0%,
+    rgba(5, 4, 11, 0.72) 45%,
+    rgba(5, 4, 11, 0.94) 100%
+  );
 
   background:
-    radial-gradient(1000px 560px at 12% -8%, rgba(168, 85, 247, 0.18), transparent 58%),
+    radial-gradient(1000px 560px at 12% -8%, rgba(168, 85, 247, 0.2), transparent 58%),
     radial-gradient(820px 480px at 88% 0%, rgba(34, 211, 238, 0.1), transparent 52%),
     var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: Inter, Manrope, system-ui, sans-serif;
-}
-
-html[data-design-test="1"] body[data-world="general"] .slide-inner {
-  max-width: min(1240px, calc(100% - 40px));
+  font-family: "Space Grotesk", Inter, Manrope, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="general"] .section-title,
-html[data-design-test="1"] body[data-world="general"] .chapter-label,
 html[data-design-test="1"] body[data-world="general"] h1,
 html[data-design-test="1"] body[data-world="general"] h2 {
   color: var(--dt-heading) !important;
-  font-family: Inter, Manrope, sans-serif;
+  font-family: "Space Grotesk", Inter, sans-serif;
   font-weight: 800;
-  letter-spacing: -0.02em;
 }
 
 html[data-design-test="1"] body[data-world="general"] .chapter-label {
   color: var(--dt-label) !important;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 html[data-design-test="1"] body[data-world="general"] .glass-card,
@@ -49,37 +46,33 @@ html[data-design-test="1"] body[data-world="general"] .skill-card {
   border-radius: var(--dt-radius-card);
   border: 1px solid var(--dt-border);
   background: linear-gradient(160deg, var(--dt-surface-2), var(--dt-surface));
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.4);
-  backdrop-filter: none;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(168, 85, 247, 0.08);
 }
 
 html[data-design-test="1"] body[data-world="general"] .btn-primary,
 html[data-design-test="1"] body[data-world="general"] .cta-btn,
 html[data-design-test="1"] body[data-world="general"] .welten-cta {
-  border-radius: var(--dt-radius-pill);
   background: var(--dt-accent);
   border: 1px solid var(--dt-accent);
   color: #fff;
-  font-weight: 700;
+  box-shadow: 0 0 28px rgba(168, 85, 247, 0.35);
 }
 
 html[data-design-test="1"] body[data-world="general"] .btn-secondary {
-  border-radius: var(--dt-radius-pill);
   border: 1px solid var(--dt-accent);
   color: var(--dt-heading);
   background: transparent;
 }
 
 html[data-design-test="1"] body[data-world="general"] .welten-site-footer__shell {
-  border-radius: var(--dt-radius-card);
   border-color: var(--dt-border);
-  background: var(--dt-surface);
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.5);
+  background:
+    radial-gradient(700px 220px at 0% 0%, rgba(168, 85, 247, 0.14), transparent 60%),
+    var(--dt-surface);
 }
 
 html[data-design-test="1"] body[data-world="general"] .welten-site-footer__heading {
   color: var(--dt-accent);
-  letter-spacing: 0.14em;
 }
 
 html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand-name {
@@ -89,4 +82,8 @@ html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand
 
 html[data-design-test="1"] body[data-world="general"] .welten-site-footer__world {
   color: var(--dt-label);
+}
+
+html[data-design-test="1"] body[data-world="general"] .slide:not(#slide-home) {
+  background: linear-gradient(180deg, rgba(17, 16, 34, 0.35), transparent 28%);
 }

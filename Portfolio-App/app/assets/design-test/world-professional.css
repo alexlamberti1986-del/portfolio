@@ -1,4 +1,4 @@
-/* PROFESSIONAL — Master Kit tokens (local design-test only) */
+/* PROFESSIONAL — corporate editorial template + live content */
 
 html[data-design-test="1"] body[data-world="vertex"] {
   --dt-bg: #f2f2ef;
@@ -10,34 +10,32 @@ html[data-design-test="1"] body[data-world="vertex"] {
   --dt-label: #a48e73;
   --dt-border: rgba(21, 21, 21, 0.12);
   --dt-radius-card: 28px;
-  --dt-radius-pill: 999px;
+  --dt-kit-hero: url("/assets/design-test/kit/professional-hero-poster.jpg");
+  --dt-kit-hero-opacity: 0.38;
+  --dt-kit-hero-overlay: linear-gradient(
+    180deg,
+    rgba(242, 242, 239, 0.25) 0%,
+    rgba(242, 242, 239, 0.82) 55%,
+    rgba(242, 242, 239, 0.98) 100%
+  );
 
   background: var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: Inter, Manrope, system-ui, sans-serif;
-}
-
-html[data-design-test="1"] body[data-world="vertex"] .slide-inner {
-  max-width: min(1240px, calc(100% - 48px));
+  font-family: Manrope, Inter, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .section-title,
 html[data-design-test="1"] body[data-world="vertex"] h1,
 html[data-design-test="1"] body[data-world="vertex"] h2 {
   color: var(--dt-heading) !important;
-  font-family: Inter, Manrope, sans-serif;
+  font-family: Manrope, Inter, sans-serif;
   font-weight: 800;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   text-transform: none;
-  border-bottom: none;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .chapter-label {
   color: var(--dt-label) !important;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .glass-card,
@@ -52,20 +50,21 @@ html[data-design-test="1"] body[data-world="vertex"] .zeugnis-row {
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .card-grid {
-  gap: 24px;
+  gap: 28px;
+}
+
+html[data-design-test="1"] body[data-world="vertex"] .slide:not(#slide-home) {
+  background: linear-gradient(180deg, #fff 0%, var(--dt-bg) 18%, var(--dt-bg) 100%);
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .btn-primary,
 html[data-design-test="1"] body[data-world="vertex"] .cta-btn {
-  border-radius: var(--dt-radius-pill);
   background: var(--dt-accent);
   border: 1px solid var(--dt-accent);
   color: #fff;
-  font-weight: 700;
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .btn-secondary {
-  border-radius: var(--dt-radius-pill);
   border: 1px solid var(--dt-accent);
   color: var(--dt-heading);
   background: transparent;
@@ -76,7 +75,6 @@ html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer {
 }
 
 html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__shell {
-  border-radius: var(--dt-radius-card);
   border-color: var(--dt-border);
   background: var(--dt-surface);
   box-shadow: 0 18px 48px rgba(21, 21, 21, 0.07);
@@ -96,12 +94,17 @@ html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer__bar {
   color: var(--dt-text);
 }
 
-html[data-design-test="1"] body[data-world="vertex"] .welten-site-footer a:hover {
-  color: var(--dt-heading) !important;
-}
-
 html[data-design-test="1"] body[data-world="vertex"] .prose p,
 html[data-design-test="1"] body[data-world="vertex"] .home-copy p {
   color: var(--dt-text);
   max-width: 62ch;
+  line-height: 1.75;
+}
+
+/* Light world: keep video/text readable */
+html[data-design-test="1"] body[data-world="vertex"] #slide-home .al-world-video-hero__title,
+html[data-design-test="1"] body[data-world="vertex"] #slide-home .mv-static-hero__title,
+html[data-design-test="1"] body[data-world="vertex"] #slide-home .section-title {
+  color: var(--dt-heading) !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }

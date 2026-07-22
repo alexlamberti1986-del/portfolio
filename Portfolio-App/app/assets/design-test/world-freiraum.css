@@ -1,5 +1,4 @@
-/* FREIRAUM — Master Kit tokens (local design-test only)
- * Kit: warm cream atelier (light), coral + teal accents */
+/* FREIRAUM — creative atelier template (cream) + live content */
 
 html[data-design-test="1"] body[data-world="freiraum"] {
   --dt-bg: #fff7ec;
@@ -9,39 +8,36 @@ html[data-design-test="1"] body[data-world="freiraum"] {
   --dt-heading: #2b1d1a;
   --dt-accent: #ff5d4b;
   --dt-label: #16b7d3;
-  --dt-border: rgba(255, 93, 75, 0.2);
+  --dt-border: rgba(255, 93, 75, 0.22);
   --dt-radius-card: 28px;
-  --dt-radius-pill: 999px;
+  --dt-kit-hero: url("/assets/design-test/kit/freiraum-hero-poster.jpg");
+  --dt-kit-hero-opacity: 0.4;
+  --dt-kit-hero-overlay: linear-gradient(
+    180deg,
+    rgba(255, 247, 236, 0.2) 0%,
+    rgba(255, 247, 236, 0.78) 52%,
+    rgba(255, 247, 236, 0.98) 100%
+  );
 
   background:
-    radial-gradient(900px 480px at 8% 8%, rgba(255, 93, 75, 0.08), transparent 55%),
-    radial-gradient(760px 420px at 92% 4%, rgba(22, 183, 211, 0.08), transparent 52%),
+    radial-gradient(900px 480px at 8% 8%, rgba(255, 93, 75, 0.1), transparent 55%),
+    radial-gradient(760px 420px at 92% 4%, rgba(22, 183, 211, 0.1), transparent 52%),
     var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: Inter, Manrope, system-ui, sans-serif;
-}
-
-html[data-design-test="1"] body[data-world="freiraum"] .slide-inner {
-  max-width: min(1240px, calc(100% - 40px));
+  font-family: Syne, Manrope, Inter, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .section-title,
 html[data-design-test="1"] body[data-world="freiraum"] h1,
 html[data-design-test="1"] body[data-world="freiraum"] h2 {
   color: var(--dt-heading) !important;
-  font-family: Inter, Manrope, sans-serif;
+  font-family: Syne, Manrope, sans-serif;
   font-weight: 800;
   letter-spacing: -0.02em;
-  transform: none;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .chapter-label {
   color: var(--dt-label) !important;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transform: none;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .glass-card,
@@ -52,26 +48,21 @@ html[data-design-test="1"] body[data-world="freiraum"] .skill-card {
   border: 1px solid var(--dt-border);
   background: var(--dt-surface);
   box-shadow: 0 16px 40px rgba(43, 29, 26, 0.08);
-  transform: none;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .glass-card:nth-child(even),
 html[data-design-test="1"] body[data-world="freiraum"] .project-card:nth-child(even) {
   background: var(--dt-surface-2);
-  transform: none;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .btn-primary,
 html[data-design-test="1"] body[data-world="freiraum"] .cta-btn {
-  border-radius: var(--dt-radius-pill);
   background: var(--dt-accent);
   border: 1px solid var(--dt-accent);
   color: #fff;
-  font-weight: 700;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .btn-secondary {
-  border-radius: var(--dt-radius-pill);
   border: 1px solid var(--dt-accent);
   color: var(--dt-heading);
   background: transparent;
@@ -82,7 +73,6 @@ html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer {
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__shell {
-  border-radius: var(--dt-radius-card);
   border-color: var(--dt-border);
   background: var(--dt-surface);
   box-shadow: 0 18px 48px rgba(43, 29, 26, 0.08);
@@ -109,5 +99,11 @@ html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__bar 
 html[data-design-test="1"] body[data-world="freiraum"] .home-copy p,
 html[data-design-test="1"] body[data-world="freiraum"] .prose p {
   color: var(--dt-text);
-  line-height: 1.7;
+  line-height: 1.75;
+}
+
+html[data-design-test="1"] body[data-world="freiraum"] #slide-home .al-world-video-hero__title,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-home .mv-static-hero__title,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-home .section-title {
+  color: var(--dt-heading) !important;
 }
