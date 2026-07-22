@@ -1,43 +1,46 @@
-/* NEXORA ← Envato Vibe (dark blue creative agency) + Master Kit tokens
- * Live content/images kept — skins ALL slides/subpages */
+/* NEXORA ← Envato Vibe
+ * Kit tokens: #1B47F4 / #111111 / Inter — LIVE content kept */
 
 html[data-design-test="1"] body[data-world="nexora"] {
-  --dt-bg: #020712;
-  --dt-surface: #07152b;
-  --dt-surface-2: #092144;
-  --dt-text: #a4b8d8;
-  --dt-heading: #f5fbff;
-  --dt-accent: #2d7cff;
-  --dt-label: #00e5ff;
-  --dt-border: rgba(45, 124, 255, 0.3);
-  --dt-radius-card: 14px;
-  --dt-kit-hero: url("/assets/design-test/kit/nexora-hero-poster.jpg");
-  --dt-kit-hero-opacity: 0.46;
-  --dt-kit-hero-overlay: linear-gradient(180deg, rgba(2,7,18,.38), rgba(2,7,18,.8) 50%, rgba(2,7,18,.97));
+  --dt-bg: #000000;
+  --dt-surface: #111111;
+  --dt-surface-2: #161616;
+  --dt-text: #bebebe;
+  --dt-heading: #ffffff;
+  --dt-accent: #1b47f4;
+  --dt-label: #1b47f4;
+  --dt-border: rgba(27, 71, 244, 0.28);
+  --dt-radius-card: 8px;
+  --dt-radius-btn: 8px;
+  --dt-kit-hero: url("/assets/design-test/kit/nexora-hero-poster.png");
+  --dt-kit-hero-opacity: 0.4;
+  --dt-kit-hero-overlay: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.82) 48%,
+    rgba(0, 0, 0, 0.98) 100%
+  );
 
-  background:
-    linear-gradient(rgba(45, 124, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(45, 124, 255, 0.045) 1px, transparent 1px),
-    radial-gradient(900px 500px at 88% -8%, rgba(0, 229, 255, 0.14), transparent 55%),
-    var(--dt-bg) !important;
-  background-size: 32px 32px, 32px 32px, auto, auto;
+  background: var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: Inter, Manrope, system-ui, sans-serif;
+  font-family: Inter, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .section-title,
 html[data-design-test="1"] body[data-world="nexora"] h1,
-html[data-design-test="1"] body[data-world="nexora"] h2 {
+html[data-design-test="1"] body[data-world="nexora"] h2,
+html[data-design-test="1"] body[data-world="nexora"] h3 {
   color: var(--dt-heading) !important;
-  font-family: Orbitron, Inter, sans-serif;
+  font-family: Inter, system-ui, sans-serif;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-shadow: 0 0 26px rgba(45, 124, 255, 0.28);
+  letter-spacing: -0.03em;
+  text-shadow: none;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .chapter-label {
-  color: var(--dt-label) !important;
-  font-family: Orbitron, Inter, sans-serif;
+  color: var(--dt-accent) !important;
+  font-family: Inter, sans-serif;
+  letter-spacing: 0.12em;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .glass-card,
@@ -47,37 +50,50 @@ html[data-design-test="1"] body[data-world="nexora"] .skill-card,
 html[data-design-test="1"] body[data-world="nexora"] .faq-item,
 html[data-design-test="1"] body[data-world="nexora"] .welten-faq__item {
   border-radius: var(--dt-radius-card);
-  border: 1px solid var(--dt-border);
-  background: linear-gradient(180deg, var(--dt-surface-2), var(--dt-surface));
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--dt-surface);
+  box-shadow: none;
   backdrop-filter: none !important;
-  position: relative;
 }
 
-html[data-design-test="1"] body[data-world="nexora"] .glass-card::before,
-html[data-design-test="1"] body[data-world="nexora"] .project-card::before,
-html[data-design-test="1"] body[data-world="nexora"] .value-card::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 14px; right: 14px; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--dt-label), transparent);
-  opacity: 0.7;
+/* Vibe: alternating solid blue service cards */
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card:nth-child(even),
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .value-card:nth-child(even),
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .skill-card:nth-child(even) {
+  background: var(--dt-accent);
+  border-color: var(--dt-accent);
+  color: #fff;
+}
+
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card:nth-child(even) h3,
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .value-card:nth-child(even) h3,
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .skill-card:nth-child(even) h3,
+html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card:nth-child(even) .section-title {
+  color: #fff !important;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .btn-primary,
-html[data-design-test="1"] body[data-world="nexora"] .cta-btn {
-  background: var(--dt-accent);
-  border: 1px solid var(--dt-accent);
-  color: #fff;
-  border-radius: 999px;
-  box-shadow: 0 0 22px rgba(45, 124, 255, 0.3);
+html[data-design-test="1"] body[data-world="nexora"] .cta-btn,
+html[data-design-test="1"] body[data-world="nexora"] .welten-cta {
+  background: var(--dt-accent) !important;
+  border: 1px solid var(--dt-accent) !important;
+  color: #fff !important;
+  border-radius: var(--dt-radius-btn) !important;
+  box-shadow: none;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .btn-secondary {
-  background: transparent;
-  border: 1px solid var(--dt-accent);
-  color: var(--dt-heading);
-  border-radius: 999px;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+  border-radius: var(--dt-radius-btn) !important;
+}
+
+html[data-design-test="1"] body[data-world="nexora"] #slide-home .al-world-video-hero__title,
+html[data-design-test="1"] body[data-world="nexora"] #slide-home .mv-static-hero__title,
+html[data-design-test="1"] body[data-world="nexora"] #slide-home .section-title,
+html[data-design-test="1"] body[data-world="nexora"] #slide-home h1 {
+  color: #fff !important;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen,
@@ -85,30 +101,25 @@ html[data-design-test="1"] body[data-world="nexora"] #slide-projects,
 html[data-design-test="1"] body[data-world="nexora"] #slide-about,
 html[data-design-test="1"] body[data-world="nexora"] #slide-contact,
 html[data-design-test="1"] body[data-world="nexora"] #slide-offerte {
-  background:
-    linear-gradient(180deg, rgba(7, 21, 43, 0.65), transparent 24%),
-    transparent;
-}
-
-html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .glass-card:nth-child(even),
-html[data-design-test="1"] body[data-world="nexora"] #slide-leistungen .value-card:nth-child(even) {
-  background: linear-gradient(180deg, rgba(45, 124, 255, 0.22), var(--dt-surface));
+  background: var(--dt-bg);
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card,
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card {
   overflow: hidden;
+  background: var(--dt-surface);
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card img,
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card img {
-  filter: grayscale(0.25);
-  transition: filter 0.25s ease;
+  filter: grayscale(0.35) contrast(1.05);
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .project-card:hover img,
 html[data-design-test="1"] body[data-world="nexora"] #slide-projects .glass-card:hover img {
-  filter: grayscale(0);
+  filter: grayscale(0) contrast(1);
+  transform: scale(1.03);
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-contact input,
@@ -118,30 +129,37 @@ html[data-design-test="1"] body[data-world="nexora"] #slide-offerte textarea,
 html[data-design-test="1"] body[data-world="nexora"] #slide-offerte select {
   background: transparent !important;
   border: none !important;
-  border-bottom: 1px solid rgba(45, 124, 255, 0.4) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28) !important;
   border-radius: 0 !important;
-  color: var(--dt-heading) !important;
+  color: #fff !important;
+  padding-left: 0 !important;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] #slide-contact input:focus,
 html[data-design-test="1"] body[data-world="nexora"] #slide-contact textarea:focus,
 html[data-design-test="1"] body[data-world="nexora"] #slide-offerte input:focus,
 html[data-design-test="1"] body[data-world="nexora"] #slide-offerte textarea:focus {
-  border-bottom-color: var(--dt-label) !important;
+  border-bottom-color: var(--dt-accent) !important;
   outline: none;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__shell {
-  border-color: var(--dt-border);
+  border-color: rgba(255, 255, 255, 0.1);
   background: var(--dt-surface);
-  border-radius: 14px;
-  box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.06);
+  border-radius: 8px;
 }
 
 html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__heading {
   color: var(--dt-accent);
-  font-family: Orbitron, Inter, sans-serif;
-  letter-spacing: 0.12em;
+  font-family: Inter, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
 }
-html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__brand-name { color: var(--dt-heading); font-weight: 800; }
-html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__world { color: var(--dt-label); }
+html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__brand-name {
+  color: #fff;
+  font-weight: 700;
+}
+html[data-design-test="1"] body[data-world="nexora"] .welten-site-footer__world {
+  color: var(--dt-accent);
+}

@@ -5,7 +5,9 @@
 (function (root) {
   "use strict";
 
-  var VER = "20260722env1";
+  var VER = "20260722envato2";
+  var FONT_HREF =
+    "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Marcellus&display=swap";
   var WORLD_CSS = {
     general: "/assets/design-test/world-multiversum.css?v=" + VER,
     nexora: "/assets/design-test/world-nexora.css?v=" + VER,
@@ -34,6 +36,18 @@
     } catch (e) {}
   }
 
+  function ensureFonts(doc) {
+    try {
+      var id = "welten-design-test-fonts";
+      if (doc.getElementById(id)) return;
+      var link = doc.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = FONT_HREF;
+      (doc.head || doc.documentElement).appendChild(link);
+    } catch (e) {}
+  }
+
   function injectIntoFrame(frame) {
     if (!isDesignTest() || !frame) return;
     try {
@@ -44,6 +58,7 @@
         "data-design-test-world",
         frame.getAttribute("data-world") || "general"
       );
+      ensureFonts(doc);
       var href = worldCssForFrame(frame);
       var id = "welten-design-test-world-css";
       var link = doc.getElementById(id);

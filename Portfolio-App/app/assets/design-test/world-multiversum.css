@@ -1,41 +1,44 @@
-/* MULTIVERSUM ← Envato Xable (dark agency) + Master Kit tokens
- * Live content/images kept — skins ALL slides/subpages */
+/* MULTIVERSUM ← Envato Xable Dark
+ * Kit tokens: #EC3737 / #020205 / Be Vietnam Pro — LIVE content kept */
 
 html[data-design-test="1"] body[data-world="general"] {
-  --dt-bg: #05040b;
-  --dt-surface: #111022;
-  --dt-surface-2: #18152d;
-  --dt-text: #c5c1d8;
+  --dt-bg: #020205;
+  --dt-surface: #0c0d12;
+  --dt-surface-2: #15171e;
+  --dt-text: rgba(255, 255, 255, 0.76);
   --dt-heading: #ffffff;
-  --dt-accent: #a855f7;
-  --dt-label: #22d3ee;
-  --dt-border: rgba(255, 255, 255, 0.14);
-  --dt-radius-card: 16px;
+  --dt-accent: #ec3737;
+  --dt-label: #ec3737;
+  --dt-border: rgba(255, 255, 255, 0.12);
+  --dt-radius-card: 4px;
+  --dt-radius-btn: 4px;
   --dt-kit-hero: url("/assets/design-test/kit/multiversum-hero-poster.jpg");
-  --dt-kit-hero-opacity: 0.48;
-  --dt-kit-hero-overlay: linear-gradient(180deg, rgba(5,4,11,.32), rgba(5,4,11,.78) 48%, rgba(5,4,11,.96));
+  --dt-kit-hero-opacity: 0.42;
+  --dt-kit-hero-overlay: linear-gradient(
+    180deg,
+    rgba(2, 2, 5, 0.55) 0%,
+    rgba(2, 2, 5, 0.78) 42%,
+    rgba(2, 2, 5, 0.97) 100%
+  );
 
-  background:
-    radial-gradient(900px 500px at 70% 8%, rgba(168, 85, 247, 0.2), transparent 55%),
-    radial-gradient(700px 420px at 10% 90%, rgba(34, 211, 238, 0.08), transparent 50%),
-    var(--dt-bg) !important;
+  background: var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+  font-family: "Be Vietnam Pro", Inter, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="general"] .section-title,
 html[data-design-test="1"] body[data-world="general"] h1,
-html[data-design-test="1"] body[data-world="general"] h2 {
+html[data-design-test="1"] body[data-world="general"] h2,
+html[data-design-test="1"] body[data-world="general"] h3 {
   color: var(--dt-heading) !important;
-  font-family: "Space Grotesk", Inter, sans-serif;
-  font-weight: 800;
+  font-family: "Be Vietnam Pro", Inter, sans-serif;
+  font-weight: 700;
 }
 
 html[data-design-test="1"] body[data-world="general"] .chapter-label {
-  color: var(--dt-label) !important;
+  color: var(--dt-accent) !important;
 }
 
-/* Shared card language (Xable-like panels) */
 html[data-design-test="1"] body[data-world="general"] .glass-card,
 html[data-design-test="1"] body[data-world="general"] .value-card,
 html[data-design-test="1"] body[data-world="general"] .project-card,
@@ -44,69 +47,82 @@ html[data-design-test="1"] body[data-world="general"] .faq-item,
 html[data-design-test="1"] body[data-world="general"] .welten-faq__item {
   border-radius: var(--dt-radius-card);
   border: 1px solid var(--dt-border);
-  background: linear-gradient(165deg, var(--dt-surface-2), var(--dt-surface));
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  background: var(--dt-surface-2);
+  box-shadow: none;
   backdrop-filter: none !important;
+}
+
+/* Xable: accent-top service cards */
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .skill-card {
+  border-top: 2px solid var(--dt-accent);
+  padding-top: 1.35rem;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card:nth-child(2),
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card:nth-child(2),
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .skill-card:nth-child(2) {
+  background: var(--dt-accent);
+  border-color: var(--dt-accent);
+  color: #fff;
+}
+
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card:nth-child(2) .section-title,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card:nth-child(2) h3,
+html[data-design-test="1"] body[data-world="general"] #slide-leistungen .skill-card:nth-child(2) h3 {
+  color: #fff !important;
 }
 
 html[data-design-test="1"] body[data-world="general"] .btn-primary,
 html[data-design-test="1"] body[data-world="general"] .cta-btn,
 html[data-design-test="1"] body[data-world="general"] .welten-cta {
-  background: var(--dt-accent);
-  border: 1px solid var(--dt-accent);
-  color: #fff;
-  border-radius: 999px;
-  box-shadow: 0 0 26px rgba(168, 85, 247, 0.35);
+  background: var(--dt-accent) !important;
+  border: 1px solid var(--dt-accent) !important;
+  color: #fff !important;
+  border-radius: var(--dt-radius-btn) !important;
+  box-shadow: none;
 }
 
 html[data-design-test="1"] body[data-world="general"] .btn-secondary {
-  background: transparent;
-  border: 1px solid var(--dt-accent);
-  color: var(--dt-heading);
-  border-radius: 999px;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  color: #fff !important;
+  border-radius: var(--dt-radius-btn) !important;
 }
 
-/* —— Unterseiten —— */
+html[data-design-test="1"] body[data-world="general"] #slide-home .al-world-video-hero__title,
+html[data-design-test="1"] body[data-world="general"] #slide-home .mv-static-hero__title,
+html[data-design-test="1"] body[data-world="general"] #slide-home .section-title,
+html[data-design-test="1"] body[data-world="general"] #slide-home h1 {
+  color: #fff !important;
+  text-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+}
+
 html[data-design-test="1"] body[data-world="general"] #slide-leistungen,
 html[data-design-test="1"] body[data-world="general"] #slide-projects,
 html[data-design-test="1"] body[data-world="general"] #slide-about,
 html[data-design-test="1"] body[data-world="general"] #slide-contact,
 html[data-design-test="1"] body[data-world="general"] #slide-offerte {
-  background:
-    linear-gradient(180deg, rgba(17, 16, 34, 0.55), transparent 22%),
-    var(--dt-bg);
-}
-
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen .card-grid,
-html[data-design-test="1"] body[data-world="general"] #slide-projects .card-grid {
-  gap: 24px;
-}
-
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen .glass-card::before,
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen .value-card::before,
-html[data-design-test="1"] body[data-world="general"] #slide-leistungen .project-card::before {
-  content: "";
-  display: block;
-  height: 2px;
-  margin: -4px 0 14px;
-  background: linear-gradient(90deg, transparent, var(--dt-accent), transparent);
-  opacity: 0.85;
+  background: var(--dt-bg);
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-projects .project-card,
 html[data-design-test="1"] body[data-world="general"] #slide-projects .glass-card {
   overflow: hidden;
+  background: #000;
+  border: none;
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-projects .project-card:hover,
 html[data-design-test="1"] body[data-world="general"] #slide-projects .glass-card:hover {
-  border-color: rgba(168, 85, 247, 0.55);
-  transform: translateY(-3px);
+  outline: 1px solid var(--dt-accent);
+  transform: translateY(-2px);
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-about .slide-inner {
   display: grid;
-  gap: 28px;
+  gap: 32px;
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-contact input,
@@ -114,10 +130,10 @@ html[data-design-test="1"] body[data-world="general"] #slide-contact textarea,
 html[data-design-test="1"] body[data-world="general"] #slide-offerte input,
 html[data-design-test="1"] body[data-world="general"] #slide-offerte textarea,
 html[data-design-test="1"] body[data-world="general"] #slide-offerte select {
-  background: var(--dt-surface-2) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
-  color: var(--dt-heading) !important;
-  border-radius: 12px !important;
+  background: var(--dt-surface) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
 }
 
 html[data-design-test="1"] body[data-world="general"] #slide-contact input:focus,
@@ -131,20 +147,26 @@ html[data-design-test="1"] body[data-world="general"] #slide-offerte select:focu
 
 html[data-design-test="1"] body[data-world="general"] #slide-offerte .welten-offerte-form-wrap,
 html[data-design-test="1"] body[data-world="general"] #slide-offerte .welten-leadform-wrap {
+  border: 1px solid var(--dt-border);
   border-left: 3px solid var(--dt-accent);
-  background: rgba(17, 16, 34, 0.72);
-  border-radius: 16px;
-  padding: 1rem;
+  background: var(--dt-surface-2);
+  border-radius: 4px;
+  padding: 1.25rem;
 }
 
 html[data-design-test="1"] body[data-world="general"] .welten-site-footer__shell {
   border-color: var(--dt-border);
-  background:
-    radial-gradient(700px 220px at 0% 0%, rgba(168, 85, 247, 0.16), transparent 60%),
-    var(--dt-surface);
-  border-radius: 20px;
+  background: var(--dt-surface-2);
+  border-radius: 4px;
 }
 
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__heading { color: var(--dt-accent); }
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand-name { color: var(--dt-heading); font-weight: 800; }
-html[data-design-test="1"] body[data-world="general"] .welten-site-footer__world { color: var(--dt-label); }
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__heading {
+  color: var(--dt-accent);
+}
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__brand-name {
+  color: #fff;
+  font-weight: 700;
+}
+html[data-design-test="1"] body[data-world="general"] .welten-site-footer__world {
+  color: var(--dt-accent);
+}

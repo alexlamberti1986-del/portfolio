@@ -2,27 +2,15 @@
 
 Branch: `local/world-design-test` (nicht `main` / nicht Live)
 
-## Online (Vercel Preview)
+## Online (Vercel Preview) — aktualisiert
 
-Nach dem Push erscheint eine Preview-URL in GitHub/Vercel, typischerweise:
+**Testübersicht:**  
+https://portfolio-l9356yn31-alex-lamberti-s-projects.vercel.app/design-test/
 
-`https://portfolio-….vercel.app/design-test/`
-
-Oder direkt die Welten:
-
-- `/design-test/`
-- `/design-test/multiversum`
-- `/design-test/nexora`
-- `/design-test/professional`
-- `/design-test/freiraum`
+**Welten (Template-Look + Live-Inhalte):**
+- MULTIVERSUM: https://portfolio-l9356yn31-alex-lamberti-s-projects.vercel.app/design-test/multiversum
+- NEXORA: https://portfolio-l9356yn31-alex-lamberti-s-projects.vercel.app/design-test/nexora
+- PROFESSIONAL: https://portfolio-l9356yn31-alex-lamberti-s-projects.vercel.app/design-test/professional
+- FREIRAUM: https://portfolio-l9356yn31-alex-lamberti-s-projects.vercel.app/design-test/freiraum
 
 **Wichtig:** Die Live-Domain `alexlamberti.ch` bleibt unverändert.
-
-## Lokal
-
-```bash
-cd Portfolio-App
-npm run serve
-```
-
-Dann: http://localhost:4173/design-test/

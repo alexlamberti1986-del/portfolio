@@ -1,4 +1,4 @@
-/* Shell chrome — Master Kit header personalities (local design-test) */
+/* Shell chrome — Envato kit header personalities (preview only) */
 
 html[data-design-test="1"] .design-test-banner {
   position: fixed;
@@ -11,10 +11,10 @@ html[data-design-test="1"] .design-test-banner {
   justify-content: space-between;
   gap: 12px;
   padding: 8px 16px;
-  font: 700 11px/1.35 Inter, Manrope, sans-serif;
+  font: 700 11px/1.35 Inter, system-ui, sans-serif;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  background: rgba(8, 12, 22, 0.94);
+  background: rgba(8, 8, 10, 0.95);
   color: #eef3ff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
@@ -33,91 +33,91 @@ html[data-design-test="1"] body {
   padding-top: 36px;
 }
 
-/* MULTIVERSUM shell */
+/* MULTIVERSUM / Xable */
 html[data-design-test="1"][data-master-world="general"] .mv4-global-header {
-  background: #111022;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  background: #020205;
+  border-bottom: 1px solid rgba(236, 55, 55, 0.35);
 }
 
 html[data-design-test="1"][data-master-world="general"] .mv4-bar {
-  background: #111022;
-  border-bottom: 1px solid rgba(168, 85, 247, 0.28);
+  background: #020205;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 html[data-design-test="1"][data-master-world="general"] .mv4-worlds a.is-active {
-  background: #a855f7;
+  background: #ec3737;
   color: #fff !important;
-  border-radius: 999px;
+  border-radius: 4px;
 }
 
-/* NEXORA shell */
+/* NEXORA / Vibe */
 html[data-design-test="1"][data-master-world="nexora"] .mv4-global-header {
-  background: #07152b;
-  border-bottom: 1px solid rgba(45, 124, 255, 0.35);
+  background: #000;
+  border-bottom: 1px solid rgba(27, 71, 244, 0.4);
 }
 
 html[data-design-test="1"][data-master-world="nexora"] .mv4-bar {
-  background: #07152b;
-  border-bottom: 1px solid rgba(0, 229, 255, 0.22);
+  background: #111;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 html[data-design-test="1"][data-master-world="nexora"] .mv4-worlds a.is-active {
-  background: #2d7cff;
+  background: #1b47f4;
   color: #fff !important;
-  border-radius: 999px;
+  border-radius: 8px;
 }
 
-/* PROFESSIONAL shell — light */
+/* PROFESSIONAL / Fabels */
 html[data-design-test="1"][data-master-world="vertex"] .mv4-global-header {
-  background: rgba(255, 255, 255, 0.95);
-  color: #151515;
-  border-bottom: 1px solid rgba(21, 21, 21, 0.12);
+  background: rgba(255, 255, 255, 0.96);
+  color: #111;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.1);
 }
 
 html[data-design-test="1"][data-master-world="vertex"] .mv4-global-header a,
 html[data-design-test="1"][data-master-world="vertex"] .mv4-global-header button {
-  color: #151515;
+  color: #111;
 }
 
 html[data-design-test="1"][data-master-world="vertex"] .mv4-bar {
   background: #fff;
-  border-bottom: 1px solid rgba(21, 21, 21, 0.1);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
 }
 
 html[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a {
-  color: #151515;
+  color: #111;
 }
 
 html[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a.is-active {
-  background: #151515;
+  background: #111;
   color: #fff !important;
   border-radius: 999px;
 }
 
-/* FREIRAUM shell — warm light */
+/* FREIRAUM / Portio */
 html[data-design-test="1"][data-master-world="freiraum"] .mv4-global-header {
-  background: #ffffff;
-  color: #2b1d1a;
-  border-bottom: 1px solid rgba(255, 93, 75, 0.22);
+  background: #0f0f0f;
+  color: #fff;
+  border-bottom: 1px solid rgba(196, 239, 23, 0.28);
 }
 
 html[data-design-test="1"][data-master-world="freiraum"] .mv4-global-header a,
 html[data-design-test="1"][data-master-world="freiraum"] .mv4-global-header button {
-  color: #2b1d1a;
+  color: #fff;
 }
 
 html[data-design-test="1"][data-master-world="freiraum"] .mv4-bar {
-  background: #fff7ec;
-  border-bottom: 1px solid rgba(22, 183, 211, 0.22);
+  background: #1b1c1e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 html[data-design-test="1"][data-master-world="freiraum"] .mv4-worlds a {
-  color: #2b1d1a;
+  color: #fff;
 }
 
 html[data-design-test="1"][data-master-world="freiraum"] .mv4-worlds a.is-active {
-  background: #ff5d4b;
-  color: #fff !important;
+  background: #c4ef17;
+  color: #111 !important;
   border-radius: 999px;
 }
 

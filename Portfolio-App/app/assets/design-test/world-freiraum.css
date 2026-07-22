@@ -1,39 +1,53 @@
-/* FREIRAUM ← Envato Portio (creative portfolio layout) + Master Kit cream/coral
- * Live content/images kept — skins ALL slides/subpages
- * Note: Portio kit is dark/lime; we keep cream atelier brand from Master Kit */
+/* FREIRAUM ← Envato Portio
+ * Kit tokens: #C4EF17 / #1B1C1E / Marcellus + Inter — LIVE content kept */
 
 html[data-design-test="1"] body[data-world="freiraum"] {
-  --dt-bg: #fff7ec;
-  --dt-surface: #ffffff;
-  --dt-surface-2: #ffead7;
-  --dt-text: #6b5750;
-  --dt-heading: #2b1d1a;
-  --dt-accent: #ff5d4b;
-  --dt-label: #16b7d3;
-  --dt-border: rgba(255, 93, 75, 0.22);
-  --dt-radius-card: 28px;
+  --dt-bg: #0f0f0f;
+  --dt-surface: #1b1c1e;
+  --dt-surface-2: #252628;
+  --dt-surface-lime: #c4ef17;
+  --dt-surface-lime-dark: #262f01;
+  --dt-text: #e5e5e5;
+  --dt-heading: #ffffff;
+  --dt-accent: #c4ef17;
+  --dt-label: #c4ef17;
+  --dt-border: rgba(196, 239, 23, 0.22);
+  --dt-radius-card: 18px;
+  --dt-radius-btn: 999px;
   --dt-kit-hero: url("/assets/design-test/kit/freiraum-hero-poster.jpg");
-  --dt-kit-hero-opacity: 0.38;
-  --dt-kit-hero-overlay: linear-gradient(180deg, rgba(255,247,236,.18), rgba(255,247,236,.8) 52%, rgba(255,247,236,.98));
+  --dt-kit-hero-opacity: 0.34;
+  --dt-kit-hero-overlay: linear-gradient(
+    180deg,
+    rgba(15, 15, 15, 0.45) 0%,
+    rgba(15, 15, 15, 0.82) 50%,
+    rgba(15, 15, 15, 0.98) 100%
+  );
 
   background:
-    radial-gradient(900px 480px at 8% 8%, rgba(255, 93, 75, 0.1), transparent 55%),
-    radial-gradient(760px 420px at 92% 4%, rgba(22, 183, 211, 0.1), transparent 52%),
+    radial-gradient(720px 420px at 12% 18%, rgba(196, 239, 23, 0.14), transparent 58%),
+    radial-gradient(640px 380px at 88% 8%, rgba(196, 239, 23, 0.1), transparent 55%),
     var(--dt-bg) !important;
   color: var(--dt-text);
-  font-family: Syne, Manrope, Inter, system-ui, sans-serif;
+  font-family: Inter, Jost, system-ui, sans-serif;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .section-title,
 html[data-design-test="1"] body[data-world="freiraum"] h1,
 html[data-design-test="1"] body[data-world="freiraum"] h2 {
   color: var(--dt-heading) !important;
-  font-family: Syne, Manrope, sans-serif;
-  font-weight: 800;
+  font-family: Marcellus, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+html[data-design-test="1"] body[data-world="freiraum"] h3 {
+  color: var(--dt-heading) !important;
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 600;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .chapter-label {
-  color: var(--dt-label) !important;
+  color: var(--dt-accent) !important;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .glass-card,
@@ -43,31 +57,36 @@ html[data-design-test="1"] body[data-world="freiraum"] .skill-card,
 html[data-design-test="1"] body[data-world="freiraum"] .faq-item,
 html[data-design-test="1"] body[data-world="freiraum"] .welten-faq__item {
   border-radius: var(--dt-radius-card);
-  border: 1px solid var(--dt-border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   background: var(--dt-surface);
-  box-shadow: 0 16px 40px rgba(43, 29, 26, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   backdrop-filter: none !important;
-}
-
-html[data-design-test="1"] body[data-world="freiraum"] .glass-card:nth-child(even),
-html[data-design-test="1"] body[data-world="freiraum"] .project-card:nth-child(even),
-html[data-design-test="1"] body[data-world="freiraum"] .value-card:nth-child(even) {
-  background: var(--dt-surface-2);
+  overflow: hidden;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .btn-primary,
-html[data-design-test="1"] body[data-world="freiraum"] .cta-btn {
-  background: var(--dt-accent);
-  border: 1px solid var(--dt-accent);
-  color: #fff;
-  border-radius: 999px;
+html[data-design-test="1"] body[data-world="freiraum"] .cta-btn,
+html[data-design-test="1"] body[data-world="freiraum"] .welten-cta {
+  background: var(--dt-accent) !important;
+  border: 1px solid var(--dt-accent) !important;
+  color: #111 !important;
+  border-radius: var(--dt-radius-btn) !important;
+  font-weight: 700;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] .btn-secondary {
-  background: transparent;
-  border: 1px solid var(--dt-accent);
-  color: var(--dt-heading);
-  border-radius: 999px;
+  background: transparent !important;
+  border: 1px solid rgba(196, 239, 23, 0.55) !important;
+  color: var(--dt-accent) !important;
+  border-radius: var(--dt-radius-btn) !important;
+}
+
+html[data-design-test="1"] body[data-world="freiraum"] #slide-home .al-world-video-hero__title,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-home .mv-static-hero__title,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-home .section-title,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-home h1 {
+  color: #fff !important;
+  font-family: Marcellus, serif;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] #slide-leistungen,
@@ -75,34 +94,46 @@ html[data-design-test="1"] body[data-world="freiraum"] #slide-projects,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-about,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-contact,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-offerte {
-  background: linear-gradient(180deg, #fff 0%, var(--dt-bg) 18%, var(--dt-bg) 100%);
+  background: transparent;
 }
 
-/* Portio-like skill / service cards */
+/* Portio: arched media tops on service cards */
+html[data-design-test="1"] body[data-world="freiraum"] #slide-leistungen .skill-card img,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-leistungen .value-card img,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-leistungen .glass-card img {
+  border-radius: 999px 999px 12px 12px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  width: 100%;
+}
+
 html[data-design-test="1"] body[data-world="freiraum"] #slide-leistungen .skill-card,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-leistungen .value-card {
-  border-top: 3px solid var(--dt-accent);
+  border-top: none;
 }
 
-html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .project-card,
-html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .glass-card {
-  overflow: hidden;
-  border-radius: 28px 28px 16px 16px;
+/* Portio blog-style lime title blocks on alternate project cards */
+html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .project-card:nth-child(even),
+html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .glass-card:nth-child(even) {
+  background: var(--dt-surface-lime);
+  color: #111;
+  border-color: var(--dt-surface-lime);
 }
 
-html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .project-card:nth-child(3n+1) {
-  transform: rotate(-0.4deg);
-}
-
-html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .project-card:nth-child(3n+2) {
-  transform: rotate(0.5deg);
+html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .project-card:nth-child(even) h3,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .glass-card:nth-child(even) h3,
+html[data-design-test="1"] body[data-world="freiraum"] #slide-projects .project-card:nth-child(even) .section-title {
+  color: #111 !important;
+  font-family: Marcellus, serif;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] #slide-about img,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-about .portrait,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-about .profile-photo {
-  border: 2px solid rgba(255, 93, 75, 0.35);
-  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] #slide-contact input,
@@ -110,18 +141,17 @@ html[data-design-test="1"] body[data-world="freiraum"] #slide-contact textarea,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-offerte input,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-offerte textarea,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-offerte select {
-  background: #fff !important;
-  border: none !important;
-  border-bottom: 2px solid rgba(255, 93, 75, 0.35) !important;
-  border-radius: 0 !important;
-  color: var(--dt-heading) !important;
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 10px !important;
+  color: #fff !important;
 }
 
 html[data-design-test="1"] body[data-world="freiraum"] #slide-contact input:focus,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-contact textarea:focus,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-offerte input:focus,
 html[data-design-test="1"] body[data-world="freiraum"] #slide-offerte textarea:focus {
-  border-bottom-color: var(--dt-accent) !important;
+  border-color: var(--dt-accent) !important;
   outline: none;
 }
 
@@ -131,17 +161,17 @@ html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer {
 
 html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__shell {
   border-radius: var(--dt-radius-card);
-  border-color: var(--dt-border);
+  border-color: rgba(255, 255, 255, 0.08);
   background: var(--dt-surface);
 }
 
-html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__heading { color: var(--dt-accent); }
+html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__heading {
+  color: var(--dt-accent);
+}
 html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__brand-name,
-html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__list a { color: var(--dt-heading); }
-html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__world { color: var(--dt-label); }
-
-html[data-design-test="1"] body[data-world="freiraum"] #slide-home .al-world-video-hero__title,
-html[data-design-test="1"] body[data-world="freiraum"] #slide-home .mv-static-hero__title,
-html[data-design-test="1"] body[data-world="freiraum"] #slide-home .section-title {
-  color: var(--dt-heading) !important;
+html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__list a {
+  color: #fff;
+}
+html[data-design-test="1"] body[data-world="freiraum"] .welten-site-footer__world {
+  color: var(--dt-accent);
 }
