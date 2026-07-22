@@ -139,34 +139,24 @@
   line-height: 1.45;
 }
 
-/* Scroll clearance so footer card (incl. ©) clears the iframe/stage bottom */
+/* Scroll clearance so footer card (incl. ©) clears the iframe/stage bottom —
+ * same on every chapter (match world home). */
 .welten-site-footer-end {
   flex-shrink: 0;
   width: 100%;
-  height: 88px;
-  min-height: 88px;
+  height: 200px;
+  min-height: 200px;
   pointer-events: none;
   opacity: 0;
 }
 
-#slide-home.is-footer-host .welten-site-footer-end,
-.welten-site-footer.is-home-footer + .welten-site-footer-end {
-  height: 200px;
-  min-height: 200px;
-}
-
-/* Video-hero homes (NEXORA / PROFESSIONAL / FREIRAUM): more room under © */
-body[data-welten-video-hero="1"] #slide-home.is-footer-host .welten-site-footer-end,
-body[data-welten-video-hero="1"] .welten-site-footer.is-home-footer + .welten-site-footer-end {
+/* Video-hero worlds (NEXORA / PROFESSIONAL / FREIRAUM): more room under © */
+body[data-welten-video-hero="1"] .welten-site-footer-end {
   height: 240px;
   min-height: 240px;
 }
 
-.welten-site-footer.is-home-footer {
-  padding-bottom: 1.25rem;
-}
-
-.welten-site-footer.is-home-footer .welten-site-footer__bar {
+.welten-site-footer .welten-site-footer__bar {
   padding-bottom: 18px;
 }
 
@@ -203,13 +193,7 @@ body[data-welten-video-hero="1"] .welten-site-footer.is-home-footer + .welten-si
   flex: 0 0 auto !important;
 }
 
-.welten-site-footer.is-offerte-footer {
-  padding-top: 0.5rem;
-  padding-bottom: 1.25rem;
-}
-
 #slide-offerte .welten-site-footer {
-  padding-top: 0.5rem;
   margin-top: 0;
 }
 
@@ -229,11 +213,6 @@ body[data-welten-video-hero="1"] .welten-site-footer.is-home-footer + .welten-si
 #slide-offerte.is-footer-host .welten-offerte-form-wrap {
   margin: 0 !important;
   padding: 0 !important;
-}
-
-#slide-offerte.is-footer-host .welten-site-footer-end {
-  height: 64px !important;
-  min-height: 64px !important;
 }
 
 body[data-world="general"] .welten-site-footer {
@@ -279,23 +258,23 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .welten-site-footer__brand-name {
-    font-size: calc(1.35rem * var(--footer-type, 1.12));
+    font-size: calc(1.35rem * var(--footer-type, 1.12)) !important;
   }
 
   .welten-site-footer__world {
-    font-size: calc(0.98rem * var(--footer-type, 1.12));
+    font-size: calc(0.98rem * var(--footer-type, 1.12)) !important;
   }
 
   .welten-site-footer__tag {
-    font-size: calc(1.08rem * var(--footer-type, 1.12));
+    font-size: calc(1.08rem * var(--footer-type, 1.12)) !important;
   }
 
   .welten-site-footer__heading {
-    font-size: calc(0.95rem * var(--footer-type, 1.12));
+    font-size: calc(0.95rem * var(--footer-type, 1.12)) !important;
   }
 
   .welten-site-footer__list a {
-    font-size: calc(1.12rem * var(--footer-type, 1.12));
+    font-size: calc(1.12rem * var(--footer-type, 1.12)) !important;
   }
 
   .welten-site-footer__list {
@@ -308,19 +287,9 @@ body[data-world="freiraum"] .welten-site-footer {
   }
 
   .welten-site-footer__bar {
-    font-size: calc(1.02rem * var(--footer-type, 1.12));
-    padding: 16px 36px 22px;
+    font-size: calc(1.02rem * var(--footer-type, 1.12)) !important;
+    padding: 16px 36px 18px;
     max-width: none;
-  }
-
-  .welten-site-footer.is-offerte-footer,
-  #slide-offerte .welten-site-footer {
-    padding-top: 0.5rem;
-    padding-bottom: 1.5rem;
-  }
-
-  .welten-site-footer.is-home-footer {
-    padding-bottom: 1.5rem;
   }
 
   .welten-site-footer__shell {
@@ -333,14 +302,12 @@ body[data-world="freiraum"] .welten-site-footer {
     overflow-y: scroll !important;
   }
 
-  #slide-home.is-footer-host .welten-site-footer-end,
-  .welten-site-footer.is-home-footer + .welten-site-footer-end {
+  .welten-site-footer-end {
     height: 200px !important;
     min-height: 200px !important;
   }
 
-  body[data-welten-video-hero="1"] #slide-home.is-footer-host .welten-site-footer-end,
-  body[data-welten-video-hero="1"] .welten-site-footer.is-home-footer + .welten-site-footer-end {
+  body[data-welten-video-hero="1"] .welten-site-footer-end {
     height: 240px !important;
     min-height: 240px !important;
   }
@@ -364,12 +331,6 @@ body[data-world="freiraum"] .welten-site-footer {
     font-size: calc(1.02rem * var(--footer-type, 1.06));
     padding-top: 1.5rem;
     padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-  }
-
-  .welten-site-footer.is-offerte-footer,
-  #slide-offerte .welten-site-footer {
-    padding-top: 0.4rem;
-    padding-bottom: 1rem;
   }
 
   .welten-site-footer__shell {
@@ -409,14 +370,12 @@ body[data-world="freiraum"] .welten-site-footer {
     overflow-y: scroll !important;
   }
 
-  #slide-home.is-footer-host .welten-site-footer-end,
-  .welten-site-footer.is-home-footer + .welten-site-footer-end {
+  .welten-site-footer-end {
     height: 160px !important;
     min-height: 160px !important;
   }
 
-  body[data-welten-video-hero="1"] #slide-home.is-footer-host .welten-site-footer-end,
-  body[data-welten-video-hero="1"] .welten-site-footer.is-home-footer + .welten-site-footer-end {
+  body[data-welten-video-hero="1"] .welten-site-footer-end {
     height: 180px !important;
     min-height: 180px !important;
   }

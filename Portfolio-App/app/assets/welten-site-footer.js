@@ -263,18 +263,17 @@
       spacer.setAttribute("aria-hidden", "true");
       footer.parentNode.insertBefore(spacer, footer.nextSibling);
     }
-    var isHome = footer.classList.contains("is-home-footer");
-    /* Home: extra clearance past iframe/stage clip (video-hero worlds need more than Multiversum/galaxy) */
-    var homeClear = 200;
+    var clear = 200;
     try {
       if (
         document.body &&
         document.body.getAttribute("data-welten-video-hero") === "1"
       ) {
-        homeClear = 240;
+        clear = 240;
       }
     } catch (eClear) {}
-    spacer.style.height = isHome ? homeClear + "px" : "88px";
+    /* Same clearance on every chapter — match world home */
+    spacer.style.height = clear + "px";
     spacer.style.minHeight = spacer.style.height;
     return spacer;
   }
