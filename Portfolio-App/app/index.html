@@ -39,8 +39,12 @@
       margin: -1px !important;
       overflow: hidden !important;
       clip: rect(0, 0, 0, 0) !important;
+      clip-path: inset(50%) !important;
       white-space: nowrap !important;
       border: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
     }
     .mv4-bar a { color: inherit; text-decoration: none; }
     .mv4-frame:not(.is-active) {
@@ -116,7 +120,7 @@
         } catch (err) {}
         active.addEventListener("load", releaseOnLoad, { once: true });
       });
-      setTimeout(releaseShell, 80);
+      setTimeout(releaseShell, 1600);
     })();
   </script>
   <script>
@@ -499,7 +503,7 @@
 
   <script src="/assets/welten-desktop-stage.js?v=20260719loadFix1"></script>
   <script src="/assets/welten-world-audio-test.js?v=20260718tvParity1" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260720typeHdr2" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260722load1" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="/assets/welten-world-switch-preview.js?v=20260719titleHold1s" defer></script>
 </body>

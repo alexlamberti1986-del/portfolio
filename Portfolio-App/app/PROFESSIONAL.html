@@ -21,8 +21,64 @@
 <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png" />
 <link rel="preload" href="assets/videos/professional-poster.jpg" as="image" fetchpriority="high" media="(min-width: 1025px)" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <script src="assets/welten-live-shell-early.js?v=20260720typeHdr2"></script>
-  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260720typeHdr2" />
+  <script>
+    /* Live-Shell FOUC: Klassen sofort setzen — vor early.js Netzwerk */
+    (function () {
+      try {
+        if (window.parent !== window) {
+          document.documentElement.classList.add("welten-live-shell", "mv-in-shell");
+        } else {
+          document.documentElement.classList.add("welten-standalone");
+        }
+      } catch (e) {
+        document.documentElement.classList.add("welten-live-shell", "mv-in-shell");
+      }
+    })();
+  </script>
+  <style id="mv-shell-chrome-critical">
+    html:not(.welten-standalone) .site-header,
+    html:not(.welten-standalone) .welten-skip-link,
+    html.welten-live-shell .site-header,
+    html.welten-live-shell .mv4-bar,
+    html.welten-live-shell .mv4-shell-chrome,
+    html.welten-live-shell .mv4-global-header,
+    html.welten-live-shell #mv4ShellChrome,
+    html.welten-live-shell .welten-skip-link {
+      display: none !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      clip: rect(0, 0, 0, 0) !important;
+      position: absolute !important;
+      width: 1px !important;
+    }
+    @media (max-width: 1024px) {
+      #slide-home .home-hero-experience,
+      #slide-home #dnaStage,
+      #slide-home #mvStaticHero,
+      #slide-home #mvParallaxHero,
+      #slide-home .nexora-orbit-buttons,
+      #slide-home .dna-orbit-group,
+      #slide-home .dna-unified-scene,
+      #slide-home .neuro-core {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+    }
+  </style>
+  <script src="assets/welten-live-shell-early.js?v=20260722load1"></script>
+  <link rel="stylesheet" href="assets/welten-live-shell-chrome.css?v=20260722load1" />
+  <link rel="stylesheet" href="assets/welten-mobile-hero-off.css?v=20260722load1" id="welten-mobile-hero-off-stylesheet" />
   <title>Alex Lamberti | PROFESSIONAL · Projekte &amp; Zusammenarbeit</title>
   <meta name="description" content="PROFESSIONAL von Alex Lamberti: Projekte, Referenzen, Leistungen und professionelle Zusammenarbeit." />
   <!-- Keine Webfonts nötig. Optional in WP: Schrift Manrope oder Inter per Theme/Elementor nachladen. -->
@@ -6121,7 +6177,6 @@ body[data-world="nexora"] .faq-panel-inner {
 <link rel="stylesheet" href="assets/welten-unified-responsive.css?v=20260714xlHero1" />
 <script src="assets/welten-portraits-apply.js?v=20260714livefix2" defer></script>
 <script src="assets/welten-effects-governor.js?v=20260720fluid1" defer></script>
-<link rel="stylesheet" href="assets/welten-mobile-hero-off.css?v=20260706hero-off" id="welten-mobile-hero-off-stylesheet" />
 <link rel="stylesheet" href="assets/welten-desktop-content-readability.css?v=20260720typeHdr2" />
 <link rel="stylesheet" href="assets/welten-fluidity-pass.css?v=20260720fluid1" />
 <link rel="stylesheet" href="assets/welten-site-footer.css?v=20260721copy1" />

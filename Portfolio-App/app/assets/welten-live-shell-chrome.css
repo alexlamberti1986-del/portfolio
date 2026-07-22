@@ -70,13 +70,6 @@ html.welten-live-shell .welten-skip-link {
   pointer-events: none !important;
 }
 
-html.welten-live-shell .experience-rail {
-  display: grid !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
 /* btn-menu lives inside hidden .site-header; keep rule for non-header clones if any */
 html.welten-live-shell .site-header .btn-menu {
   display: none !important;
