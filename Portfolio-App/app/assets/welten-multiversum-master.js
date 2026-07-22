@@ -9,6 +9,16 @@
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
+  try {
+    if (document.documentElement.getAttribute("data-design-test") === "1") {
+      FRAME_PAGES = [
+        "/design-test/worlds/multiversum.html?v=20260722tpl1",
+        "/design-test/worlds/nexora.html?v=20260722tpl1",
+        "/design-test/worlds/professional.html?v=20260722tpl1",
+        "/design-test/worlds/freiraum.html?v=20260722tpl1",
+      ];
+    }
+  } catch (eDtFrames) {}
   var SHELL_PAGES = ["3-Welten-Master-iframe.html", "index.html", ""];
   var Router = window.WeltenShellRouter;
   var ROUTE_CHAPTER = {

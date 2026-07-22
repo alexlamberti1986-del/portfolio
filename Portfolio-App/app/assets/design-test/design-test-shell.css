@@ -1,4 +1,4 @@
-/* Shell chrome — Envato template header/nav structure + LIVE brand colors */
+/* Shell chrome for pure Envato template worlds (preview only) */
 
 html[data-design-test="1"] .design-test-banner {
   position: fixed;
@@ -29,223 +29,77 @@ html[data-design-test="1"] body {
   padding-top: 36px;
 }
 
-/* —— Template header layout (logo | chapter nav | CTA) —— */
-html.dt-template-chrome[data-design-test="1"] .mv4-global-header__inner {
-  display: grid !important;
-  grid-template-columns: minmax(160px, 1fr) auto minmax(140px, 1fr);
-  align-items: center;
-  gap: 16px 24px;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 14px 28px;
-  width: 100%;
-}
-
-html.dt-template-chrome[data-design-test="1"] .mv4-global-header__left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-html.dt-template-chrome[data-design-test="1"] .mv4-meta {
+/* Pure templates: hide live shell header — templates bring their own */
+html.dt-pure-templates[data-design-test="1"] .mv4-global-header {
   display: none !important;
 }
 
-html.dt-template-chrome[data-design-test="1"] .mv4-menu-btn {
-  display: none !important;
-}
-
-html.dt-template-chrome[data-design-test="1"] .dt-template-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(10px, 1.6vw, 22px);
-  flex-wrap: wrap;
-}
-
-html.dt-template-chrome[data-design-test="1"] .dt-template-nav__link {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: inherit;
-  opacity: 0.78;
-  padding: 6px 2px;
-  border-bottom: 2px solid transparent;
-}
-
-html.dt-template-chrome[data-design-test="1"] .dt-template-nav__link:hover,
-html.dt-template-chrome[data-design-test="1"] .dt-template-nav__link.is-active {
-  opacity: 1;
-}
-
-html.dt-template-chrome[data-design-test="1"] .dt-template-cta {
-  justify-self: end;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.7rem 1.25rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-/* World bar becomes secondary template strip */
-html.dt-template-chrome[data-design-test="1"] .mv4-bar {
+html.dt-pure-templates[data-design-test="1"] .mv4-bar {
+  position: sticky;
+  top: 36px;
+  z-index: 90000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 8px 28px 12px;
-  width: 100%;
+  gap: 12px;
+  padding: 8px 18px;
+  background: rgba(0, 0, 0, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
 
-html.dt-template-chrome[data-design-test="1"] .mv4-worlds {
+html.dt-pure-templates[data-design-test="1"] .mv4-worlds {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-html.dt-template-chrome[data-design-test="1"] .mv4-worlds a {
+html.dt-pure-templates[data-design-test="1"] .mv4-worlds a {
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 6px 12px;
   text-decoration: none;
-  opacity: 0.7;
+  color: #fff;
+  opacity: 0.65;
+  padding: 6px 12px;
+  border-radius: 4px;
 }
 
-html.dt-template-chrome[data-design-test="1"] .mv4-worlds a.is-active {
+html.dt-pure-templates[data-design-test="1"][data-master-world="general"] .mv4-worlds a.is-active {
+  background: #ec3737;
   opacity: 1;
 }
-
-/* —— MULTIVERSUM / Xable structure + LIVE pink —— */
-html[data-design-test="1"][data-master-world="general"] .mv4-global-header,
-html[data-design-test="1"][data-master-world="general"] .mv4-bar {
-  background: #05070d;
-  color: #fff;
-  border-bottom: 1px solid rgba(255, 89, 178, 0.28);
+html.dt-pure-templates[data-design-test="1"][data-master-world="nexora"] .mv4-worlds a.is-active {
+  background: #1b47f4;
+  opacity: 1;
 }
-
-html[data-design-test="1"][data-master-world="general"] .mv4-brand,
-html[data-design-test="1"][data-master-world="general"] .dt-template-nav__link {
-  color: #fff;
-}
-
-html[data-design-test="1"][data-master-world="general"] .dt-template-nav__link.is-active {
-  border-bottom-color: #ff59b2;
-  color: #ff59b2;
-}
-
-html[data-design-test="1"][data-master-world="general"] .dt-template-cta {
-  background: #ff59b2;
-  color: #fff;
-  border-radius: 4px;
-}
-
-html[data-design-test="1"][data-master-world="general"] .mv4-worlds a.is-active {
-  background: #ff59b2;
-  color: #fff !important;
-  border-radius: 4px;
-}
-
-/* —— NEXORA / Vibe structure + LIVE ice blue —— */
-html[data-design-test="1"][data-master-world="nexora"] .mv4-global-header,
-html[data-design-test="1"][data-master-world="nexora"] .mv4-bar {
-  background: #050810;
-  color: #fff;
-  border-bottom: 1px solid rgba(142, 197, 255, 0.28);
-}
-
-html[data-design-test="1"][data-master-world="nexora"] .dt-template-nav__link.is-active {
-  border-bottom-color: #8ec5ff;
-  color: #8ec5ff;
-}
-
-html[data-design-test="1"][data-master-world="nexora"] .dt-template-cta {
-  background: #8ec5ff;
-  color: #050810;
-  border-radius: 8px;
-}
-
-html[data-design-test="1"][data-master-world="nexora"] .mv4-worlds a.is-active {
-  background: #8ec5ff;
-  color: #050810 !important;
-  border-radius: 8px;
-}
-
-/* —— PROFESSIONAL / Fabels structure + LIVE B&W —— */
-html[data-design-test="1"][data-master-world="vertex"] .mv4-global-header,
-html[data-design-test="1"][data-master-world="vertex"] .mv4-bar {
-  background: #ffffff;
+html.dt-pure-templates[data-design-test="1"][data-master-world="vertex"] .mv4-bar {
+  background: #fff;
   color: #111;
-  border-bottom: 1px solid rgba(17, 17, 17, 0.1);
+  border-bottom-color: rgba(17, 17, 17, 0.1);
 }
-
-html[data-design-test="1"][data-master-world="vertex"] .mv4-brand,
-html[data-design-test="1"][data-master-world="vertex"] .dt-template-nav__link,
-html[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a {
+html.dt-pure-templates[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a {
   color: #111;
 }
-
-html[data-design-test="1"][data-master-world="vertex"] .dt-template-nav__link.is-active {
-  border-bottom-color: #111;
-}
-
-html[data-design-test="1"][data-master-world="vertex"] .dt-template-cta {
-  background: #111;
-  color: #fff;
-  border-radius: 999px;
-}
-
-html[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a.is-active {
+html.dt-pure-templates[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a.is-active {
   background: #111;
   color: #fff !important;
+  opacity: 1;
+  border-radius: 999px;
+}
+html.dt-pure-templates[data-design-test="1"][data-master-world="freiraum"] .mv4-worlds a.is-active {
+  background: #c4ef17;
+  color: #111 !important;
+  opacity: 1;
   border-radius: 999px;
 }
 
-/* —— FREIRAUM / Portio structure + LIVE warm accents —— */
-html[data-design-test="1"][data-master-world="freiraum"] .mv4-global-header,
-html[data-design-test="1"][data-master-world="freiraum"] .mv4-bar {
-  background: #100b16;
-  color: #fff;
-  border-bottom: 1px solid rgba(255, 198, 111, 0.28);
-}
-
-html[data-design-test="1"][data-master-world="freiraum"] .dt-template-nav__link.is-active {
-  border-bottom-color: #ffc66f;
-  color: #ffc66f;
-}
-
-html[data-design-test="1"][data-master-world="freiraum"] .dt-template-cta {
-  background: #ffc66f;
-  color: #100b16;
-  border-radius: 999px;
-}
-
-html[data-design-test="1"][data-master-world="freiraum"] .mv4-worlds a.is-active {
-  background: #ff8bbd;
-  color: #100b16 !important;
-  border-radius: 999px;
+html.dt-pure-templates[data-design-test="1"] .dt-template-nav,
+html.dt-pure-templates[data-design-test="1"] .dt-template-cta {
+  display: none !important;
 }
 
 @media (max-width: 1024px) {
-  html.dt-template-chrome[data-design-test="1"] .mv4-global-header__inner {
-    grid-template-columns: 1fr auto;
-    padding: 10px 14px;
-  }
-  html.dt-template-chrome[data-design-test="1"] .dt-template-nav {
-    display: none;
-  }
-  html.dt-template-chrome[data-design-test="1"] .mv4-menu-btn {
-    display: inline-flex !important;
-  }
   html[data-design-test="1"] .design-test-banner {
     font-size: 10px;
     padding: 8px 10px;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <script src="/assets/welten-design-test-path.js?v=20260722struct1"></script>
+  <script src="/assets/welten-design-test-path.js?v=20260722tpl1"></script>
   <script>
     /* Vor erstem Paint: Zielwelt aus URL — kein Multiversum-Blitz bei /nexora etc. */
     (function () {
@@ -263,7 +263,7 @@
   <script src="/assets/welten-effects-governor.js?v=20260720fluid1" defer></script>
   <link rel="stylesheet" href="/assets/welten-fluidity-pass.css?v=20260720fluid1" />
   <script src="/assets/welten-fluidity-pass.js?v=20260720fluid1" defer></script>
-  <link rel="stylesheet" href="/assets/design-test/design-test-shell.css?v=20260722struct1" media="not all" id="design-test-shell-css" />
+  <link rel="stylesheet" href="/assets/design-test/design-test-shell.css?v=20260722tpl1" media="not all" id="design-test-shell-css" />
   <script>
     (function () {
       if (document.documentElement.getAttribute("data-design-test") === "1") {
@@ -505,15 +505,30 @@
         var frames = document.querySelectorAll(".mv4-frame");
         var links = document.querySelectorAll(".mv4-worlds [data-iframe]");
         var keys = ["general", "nexora", "vertex", "freiraum"];
+        var tplSrc = [
+          "/design-test/worlds/multiversum.html?v=20260722tpl1",
+          "/design-test/worlds/nexora.html?v=20260722tpl1",
+          "/design-test/worlds/professional.html?v=20260722tpl1",
+          "/design-test/worlds/freiraum.html?v=20260722tpl1",
+        ];
+        var useTpl = !!(info && info.isDesignTest);
+        if (useTpl) {
+          document.documentElement.classList.add("dt-pure-templates");
+        }
         frames.forEach(function (f, i) {
           var on = i === idx;
           f.classList.toggle("is-active", on);
           f.style.pointerEvents = on ? "auto" : "none";
+          if (useTpl) {
+            f.setAttribute("data-lazy-src", tplSrc[i]);
+          }
           if (on) {
             f.removeAttribute("data-mv-quarantined");
             var lazy = f.getAttribute("data-lazy-src");
             var cur = f.getAttribute("src") || "";
             if (lazy && (!cur || /about:blank/i.test(cur) || /about:blank/i.test(f.src || ""))) {
+              f.src = lazy;
+            } else if (useTpl && lazy && cur.indexOf("/design-test/worlds/") === -1) {
               f.src = lazy;
             }
           } else {
@@ -577,7 +592,7 @@
   <script src="/assets/welten-multiversum-master.js?v=20260722fluid2" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="/assets/welten-world-switch-preview.js?v=20260722fluid2" defer></script>
-  <script src="/assets/design-test/design-test-chrome.js?v=20260722struct1" defer></script>
-  <script src="/assets/design-test/design-test-inject.js?v=20260722struct1" defer></script>
+  <script src="/assets/design-test/design-test-chrome.js?v=20260722tpl1" defer></script>
+  <script src="/assets/design-test/design-test-inject.js?v=20260722tpl1" defer></script>
 </body>
 </html>
