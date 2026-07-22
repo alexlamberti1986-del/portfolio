@@ -115,3 +115,33 @@ body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero h1 {
   .tpl-nav { display: none; }
   .tpl-hero__portrait { display: none; }
 }
+
+/* Light-theme content blocks */
+.tpl-value-grid article,
+.tpl-lane-grid article,
+.tpl-project-list a {
+  background: #fff !important;
+  border-color: rgba(5, 5, 5, 0.1) !important;
+  color: #6b7078;
+}
+.tpl-value-grid h3,
+.tpl-lane-grid h3,
+.tpl-project-list strong,
+.tpl-project-cats h3 {
+  color: #050505 !important;
+}
+.tpl-bullets li::before { background: #050505; }
+.tpl-header__actions {
+  display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+}
+.tpl-phone {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #050505; color: #fff; font-size: 0.95rem;
+}
+.tpl-page-hero .eyebrow { color: #050505; }
+body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero h1 {
+  color: #050505 !important;
+}
+.tpl-contact-card strong { color: #050505; }
+

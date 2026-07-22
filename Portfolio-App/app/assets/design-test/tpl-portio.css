@@ -37,6 +37,14 @@ h3 { color: var(--heading); margin: 0.8rem 0; }
 .tpl-nav a:hover,
 .tpl-nav a.is-active { opacity: 1; color: var(--accent); }
 .tpl-btn { background: var(--accent); color: #100b16; border: none; border-radius: 999px; font-weight: 700; padding: 0.7rem 1.2rem; }
+.tpl-header__actions {
+  display: flex; justify-content: flex-end; align-items: center; gap: 10px; justify-self: end;
+}
+.tpl-phone {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--accent-2, var(--accent)); color: #100b16; font-size: 0.95rem;
+}
 body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero {
   background: rgba(255, 198, 111, 0.06);
   border-bottom-color: rgba(255, 198, 111, 0.2);
