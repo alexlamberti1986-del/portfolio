@@ -49,6 +49,54 @@
     return p;
   }
 
+  function isLocalDev() {
+    try {
+      if (
+        root.WeltenDesignTestPath &&
+        typeof root.WeltenDesignTestPath.isDesignTestAllowed === "function"
+      ) {
+        return root.WeltenDesignTestPath.isDesignTestAllowed();
+      }
+      var h = String(
+        root.location && root.location.hostname ? root.location.hostname : ""
+      ).toLowerCase();
+      if (
+        h === "alexlamberti.ch" ||
+        h === "www.alexlamberti.ch" ||
+        h.slice(-16) === ".alexlamberti.ch"
+      ) {
+        return false;
+      }
+      return (
+        h === "localhost" ||
+        h === "127.0.0.1" ||
+        h === "[::1]" ||
+        h === "" ||
+        h.indexOf(".vercel.app") !== -1
+      );
+    } catch (e) {
+      return false;
+    }
+  }
+
+  var DESIGN_TEST_PREFIX = "/design-test";
+
+  function stripDesignTestPrefix(pathname) {
+    var p = normalizePath(pathname);
+    if (!isLocalDev()) return { path: p, isDesignTest: false, isHub: false };
+    if (p === DESIGN_TEST_PREFIX) {
+      return { path: "/", isDesignTest: true, isHub: true };
+    }
+    if (p.indexOf(DESIGN_TEST_PREFIX + "/") === 0) {
+      return {
+        path: normalizePath(p.slice(DESIGN_TEST_PREFIX.length) || "/"),
+        isDesignTest: true,
+        isHub: false,
+      };
+    }
+    return { path: p, isDesignTest: false, isHub: false };
+  }
+
   function worldIdxFromKey(key) {
     var idx = KEY_TO_IDX[String(key || "").toLowerCase()];
     return typeof idx === "number" ? idx : 0;
@@ -66,24 +114,38 @@
     return CHAPTER_PATH[chapter] || "";
   }
 
-  function buildPath(worldIdxOrKey, chapter) {
+  function buildPath(worldIdxOrKey, chapter, opts) {
+    opts = opts || {};
     var idx =
       typeof worldIdxOrKey === "number" ? worldIdxOrKey : worldIdxFromKey(worldIdxOrKey);
     if (idx < 0 || idx > 3) idx = 0;
     chapter = CHAPTERS.indexOf(chapter) >= 0 ? chapter : "home";
     var slug = worldSlugFromIdx(idx);
     var ch = chapterPath(chapter);
-    if (!slug && !ch) return "/";
-    if (!slug) return ch || "/";
-    if (!ch) return "/" + slug;
-    return "/" + slug + ch;
+    var out;
+    if (!slug && !ch) out = "/";
+    else if (!slug) out = ch || "/";
+    else if (!ch) out = "/" + slug;
+    else out = "/" + slug + ch;
+    if (opts.designTest && isLocalDev()) {
+      out = out === "/" ? DESIGN_TEST_PREFIX : DESIGN_TEST_PREFIX + out;
+    }
+    return out;
   }
 
   function parsePath(pathname) {
-    var p = normalizePath(pathname);
+    var dt = stripDesignTestPrefix(pathname);
+    var p = dt.path;
 
     if (p === "/multiversum") {
-      return { worldIdx: 0, worldKey: "general", chapter: "home", known: true };
+      return {
+        worldIdx: 0,
+        worldKey: "general",
+        chapter: "home",
+        known: true,
+        isDesignTest: dt.isDesignTest,
+        isDesignTestHub: dt.isHub,
+      };
     }
 
     var parts = p === "/" ? [] : p.replace(/^\//, "").split("/");
@@ -100,9 +162,18 @@
           worldKey: worldKeyFromIdx(idx),
           chapter: chapter,
           known: true,
+          isDesignTest: dt.isDesignTest,
+          isDesignTestHub: dt.isHub,
         };
       }
-      return { worldIdx: idx, worldKey: worldKeyFromIdx(idx), chapter: "home", known: false };
+      return {
+        worldIdx: idx,
+        worldKey: worldKeyFromIdx(idx),
+        chapter: "home",
+        known: false,
+        isDesignTest: dt.isDesignTest,
+        isDesignTestHub: dt.isHub,
+      };
     }
 
     if (PATH_CHAPTER[p]) {
@@ -111,13 +182,24 @@
         worldKey: "general",
         chapter: PATH_CHAPTER[p],
         known: true,
+        isDesignTest: dt.isDesignTest,
+        isDesignTestHub: dt.isHub,
       };
     }
 
-    return { worldIdx: 0, worldKey: "general", chapter: "home", known: false };
+    return {
+      worldIdx: 0,
+      worldKey: "general",
+      chapter: "home",
+      known: false,
+      isDesignTest: dt.isDesignTest,
+      isDesignTestHub: dt.isHub,
+    };
   }
 
   function isKnownRoute(pathname) {
+    var dt = stripDesignTestPrefix(pathname);
+    if (dt.isHub) return isLocalDev();
     var parsed = parsePath(pathname);
     if (!parsed.known) return false;
     var p = normalizePath(pathname);
@@ -136,10 +218,15 @@
     CHAPTERS: CHAPTERS,
     CHAPTER_PATH: CHAPTER_PATH,
     PATH_CHAPTER: PATH_CHAPTER,
+    DESIGN_TEST_PREFIX: DESIGN_TEST_PREFIX,
     normalizePath: normalizePath,
     buildPath: buildPath,
     parsePath: parsePath,
     isKnownRoute: isKnownRoute,
+    isLocalDev: isLocalDev,
+    isDesignTestPath: function (pathname) {
+      return stripDesignTestPrefix(pathname).isDesignTest;
+    },
     worldIdxFromKey: worldIdxFromKey,
     worldKeyFromIdx: worldKeyFromIdx,
     worldSlugFromIdx: worldSlugFromIdx,

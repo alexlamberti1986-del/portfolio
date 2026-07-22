@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Alex Lamberti – World Design Test (lokal)</title>
+  <link rel="icon" href="/assets/favicon/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Syne:wght@600;700;800&display=swap" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b14;
+      --fg: #eef3ff;
+      --muted: #aab5cf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Manrope, system-ui, sans-serif;
+      background:
+        radial-gradient(900px 480px at 10% -5%, rgba(94, 196, 255, 0.12), transparent 55%),
+        radial-gradient(800px 420px at 90% 0%, rgba(255, 89, 178, 0.1), transparent 52%),
+        var(--bg);
+      color: var(--fg);
+      padding: 32px 20px 48px;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    .badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #9fd4ff;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: Syne, Manrope, sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+      margin: 0 0 12px;
+    }
+    .lead {
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      margin: 0 0 28px;
+    }
+    .notice {
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 198, 111, 0.25);
+      background: rgba(255, 198, 111, 0.08);
+      color: #ffe9c2;
+      margin-bottom: 28px;
+      font-size: 0.95rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 14, 24, 0.88);
+      min-height: 220px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0,0,0,0.35); }
+    .card h2 { margin: 0; font-family: Syne, sans-serif; font-size: 1.35rem; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.55; flex: 1; }
+    .card .cta {
+      align-self: flex-start;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .mv { border-color: rgba(168, 85, 247, 0.4); background: #111022; }
+    .mv .cta { background: #a855f7; color: #fff; border-radius: 999px; }
+    .nx { border-color: rgba(45, 124, 255, 0.4); background: #07152b; }
+    .nx .cta { background: #2d7cff; color: #fff; border-radius: 999px; }
+    .pro { border-color: rgba(21, 21, 21, 0.14); background: #fff; color: #151515; }
+    .pro p { color: #626262; }
+    .pro .cta { background: #151515; color: #fff; border-radius: 999px; }
+    .fr { border-color: rgba(255, 93, 75, 0.3); background: #fff7ec; color: #2b1d1a; }
+    .fr p { color: #6b5750; }
+    .fr .cta { background: #ff5d4b; color: #fff; border-radius: 999px; }
+    .meta {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+    .meta code { color: #dff7ff; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">Nur lokale Testversion</div>
+    <h1>Alex Lamberti – World Design Test</h1>
+    <p class="lead">
+      Vier eigenständige Template-Ansichten für MULTIVERSUM, NEXORA, PROFESSIONAL und FREIRAUM.
+      Inhalte, Navigation, Musik, Sprache und Weltenwechsel bleiben erhalten — nur die visuelle Darstellung ist für den lokalen Test erweitert.
+    </p>
+    <div class="notice">
+      Die Live-Webseite <strong>alexlamberti.ch</strong> wurde nicht verändert. Dieser Bereich ist nur lokal unter <code>/design-test</code> verfügbar.
+    </div>
+
+    <div class="grid">
+      <a class="card mv" href="/design-test/multiversum">
+        <h2>MULTIVERSUM</h2>
+        <p>Kosmischer Portal-Charakter — Galaxie, Spektrum, immersive Eingangswelt.</p>
+        <span class="cta">Testwelt öffnen</span>
+      </a>
+      <a class="card nx" href="/design-test/nexora">
+        <h2>NEXORA</h2>
+        <p>Futuristisches Tech-Template — Raster, Neon, Interface-Panels, präzise Typografie.</p>
+        <span class="cta">Testwelt öffnen</span>
+      </a>
+      <a class="card pro" href="/design-test/professional">
+        <h2>PROFESSIONAL</h2>
+        <p>Editorial Business-Portfolio — hell, klar, seriös, strukturierte Leistungen &amp; Projekte.</p>
+        <span class="cta">Testwelt öffnen</span>
+      </a>
+      <a class="card fr" href="/design-test/freiraum">
+        <h2>FREIRAUM</h2>
+        <p>Kreatives Atelier — organisch, warm, persönlich, asymmetrische Flächen.</p>
+        <span class="cta">Testwelt öffnen</span>
+      </a>
+    </div>
+
+    <div class="meta">
+      <p>Vergleich zur produktiven lokalen Route: <a href="/">/</a> · Branch: <code>local/world-design-test</code></p>
+      <p id="viewportInfo"></p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var el = document.getElementById("viewportInfo");
+      if (!el) return;
+      function upd() {
+        el.textContent =
+          "Viewport: " +
+          window.innerWidth +
+          " × " +
+          window.innerHeight +
+          " CSS-Pixel" +
+          (window.devicePixelRatio ? " · DPR " + window.devicePixelRatio : "");
+      }
+      upd();
+      window.addEventListener("resize", upd);
+    })();
+  </script>
+</body>
+</html>

@@ -135,6 +135,13 @@
           });
         } catch (eStrip) {}
       }
+      if (
+        document.documentElement.getAttribute("data-design-test") === "1" &&
+        window.WeltenDesignTestInject &&
+        typeof window.WeltenDesignTestInject.injectIntoFrame === "function"
+      ) {
+        window.WeltenDesignTestInject.injectIntoFrame(f);
+      }
     } catch (e) {}
   }
 
@@ -613,7 +620,9 @@
 
   function buildShellPath(worldIdx, chapter) {
     if (Router && typeof Router.buildPath === "function") {
-      return Router.buildPath(worldIdx, chapter);
+      var designTest =
+        document.documentElement.getAttribute("data-design-test") === "1";
+      return Router.buildPath(worldIdx, chapter, { designTest: designTest });
     }
     var chapterPaths = {
       home: "/",

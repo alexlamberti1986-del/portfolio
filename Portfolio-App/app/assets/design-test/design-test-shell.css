@@ -1,0 +1,129 @@
+/* Shell chrome — Master Kit header personalities (local design-test) */
+
+html[data-design-test="1"] .design-test-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  font: 700 11px/1.35 Inter, Manrope, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(8, 12, 22, 0.94);
+  color: #eef3ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+html[data-design-test="1"] .design-test-banner a {
+  color: #9fd4ff;
+  text-decoration: none;
+}
+
+html[data-design-test="1"] .design-test-banner a:hover {
+  text-decoration: underline;
+}
+
+html[data-design-test="1"] body {
+  padding-top: 36px;
+}
+
+/* MULTIVERSUM shell */
+html[data-design-test="1"][data-master-world="general"] .mv4-global-header {
+  background: #111022;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+}
+
+html[data-design-test="1"][data-master-world="general"] .mv4-bar {
+  background: #111022;
+  border-bottom: 1px solid rgba(168, 85, 247, 0.28);
+}
+
+html[data-design-test="1"][data-master-world="general"] .mv4-worlds a.is-active {
+  background: #a855f7;
+  color: #fff !important;
+  border-radius: 999px;
+}
+
+/* NEXORA shell */
+html[data-design-test="1"][data-master-world="nexora"] .mv4-global-header {
+  background: #07152b;
+  border-bottom: 1px solid rgba(45, 124, 255, 0.35);
+}
+
+html[data-design-test="1"][data-master-world="nexora"] .mv4-bar {
+  background: #07152b;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.22);
+}
+
+html[data-design-test="1"][data-master-world="nexora"] .mv4-worlds a.is-active {
+  background: #2d7cff;
+  color: #fff !important;
+  border-radius: 999px;
+}
+
+/* PROFESSIONAL shell — light */
+html[data-design-test="1"][data-master-world="vertex"] .mv4-global-header {
+  background: rgba(255, 255, 255, 0.95);
+  color: #151515;
+  border-bottom: 1px solid rgba(21, 21, 21, 0.12);
+}
+
+html[data-design-test="1"][data-master-world="vertex"] .mv4-global-header a,
+html[data-design-test="1"][data-master-world="vertex"] .mv4-global-header button {
+  color: #151515;
+}
+
+html[data-design-test="1"][data-master-world="vertex"] .mv4-bar {
+  background: #fff;
+  border-bottom: 1px solid rgba(21, 21, 21, 0.1);
+}
+
+html[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a {
+  color: #151515;
+}
+
+html[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a.is-active {
+  background: #151515;
+  color: #fff !important;
+  border-radius: 999px;
+}
+
+/* FREIRAUM shell — warm light */
+html[data-design-test="1"][data-master-world="freiraum"] .mv4-global-header {
+  background: #ffffff;
+  color: #2b1d1a;
+  border-bottom: 1px solid rgba(255, 93, 75, 0.22);
+}
+
+html[data-design-test="1"][data-master-world="freiraum"] .mv4-global-header a,
+html[data-design-test="1"][data-master-world="freiraum"] .mv4-global-header button {
+  color: #2b1d1a;
+}
+
+html[data-design-test="1"][data-master-world="freiraum"] .mv4-bar {
+  background: #fff7ec;
+  border-bottom: 1px solid rgba(22, 183, 211, 0.22);
+}
+
+html[data-design-test="1"][data-master-world="freiraum"] .mv4-worlds a {
+  color: #2b1d1a;
+}
+
+html[data-design-test="1"][data-master-world="freiraum"] .mv4-worlds a.is-active {
+  background: #ff5d4b;
+  color: #fff !important;
+  border-radius: 999px;
+}
+
+@media (max-width: 1024px) {
+  html[data-design-test="1"] .design-test-banner {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+}

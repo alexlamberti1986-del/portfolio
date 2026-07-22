@@ -4,6 +4,7 @@
   "private": true,
   "description": "Alex Lamberti – Multiversum Website (static, Vercel root: app/)",
   "scripts": {
-    "serve": "npx --yes serve app -l 4173"
+    "serve": "npx --yes serve app -l 4173 -s",
+    "serve:design-test": "npx --yes serve app -l 4173 -s"
   }
 }
