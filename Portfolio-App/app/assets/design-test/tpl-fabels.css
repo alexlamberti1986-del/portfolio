@@ -1,11 +1,11 @@
-/* Fabels — light advisory kit */
+/* Fabels structure + LIVE Professional B&W */
 :root {
-  --bg: #f7f7f5;
+  --bg: #f1f3f5;
   --surface: #fff;
-  --text: #797979;
-  --heading: #111;
-  --accent: #111;
-  --gold: #d2c7a8;
+  --text: #6b7078;
+  --heading: #050505;
+  --accent: #050505;
+  --gold: #b8b8b8;
 }
 body { background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; }
 h1,h2,h3,h4 { color: var(--heading); margin: 0 0 0.75rem; font-weight: 700; letter-spacing: -0.03em; }
@@ -29,7 +29,15 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); max-width: 18ch; line-height: 1.15; 
 .tpl-logo { font-weight: 800; font-size: 1.25rem; color: #111; }
 .tpl-nav { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
 .tpl-nav a { font-size: .78rem; color: #111; opacity: .75; }
-.tpl-nav a:hover { opacity: 1; }
+.tpl-nav a:hover,
+.tpl-nav a.is-active { opacity: 1; }
+body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero {
+  background: #fff;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.08);
+}
+body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero h1 {
+  color: #050505 !important;
+}
 .tpl-header .tpl-btn { justify-self: end; }
 .tpl-btn { background: #111; color: #fff; border-radius: 999px; border: none; }
 .tpl-btn-light { background: #fff; color: #111; border-radius: 999px; border: none; }

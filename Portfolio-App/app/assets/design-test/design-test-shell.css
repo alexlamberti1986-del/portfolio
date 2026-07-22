@@ -65,12 +65,14 @@ html.dt-pure-templates[data-design-test="1"] .mv4-worlds a {
   border-radius: 4px;
 }
 
+/* Live brand accents on world switcher */
 html.dt-pure-templates[data-design-test="1"][data-master-world="general"] .mv4-worlds a.is-active {
-  background: #ec3737;
+  background: #ff59b2;
   opacity: 1;
 }
 html.dt-pure-templates[data-design-test="1"][data-master-world="nexora"] .mv4-worlds a.is-active {
-  background: #1b47f4;
+  background: #8ec5ff;
+  color: #050810 !important;
   opacity: 1;
 }
 html.dt-pure-templates[data-design-test="1"][data-master-world="vertex"] .mv4-bar {
@@ -82,14 +84,14 @@ html.dt-pure-templates[data-design-test="1"][data-master-world="vertex"] .mv4-wo
   color: #111;
 }
 html.dt-pure-templates[data-design-test="1"][data-master-world="vertex"] .mv4-worlds a.is-active {
-  background: #111;
+  background: #050505;
   color: #fff !important;
   opacity: 1;
   border-radius: 999px;
 }
 html.dt-pure-templates[data-design-test="1"][data-master-world="freiraum"] .mv4-worlds a.is-active {
-  background: #c4ef17;
-  color: #111 !important;
+  background: #ffc66f;
+  color: #100b16 !important;
   opacity: 1;
   border-radius: 999px;
 }
@@ -97,6 +99,23 @@ html.dt-pure-templates[data-design-test="1"][data-master-world="freiraum"] .mv4-
 html.dt-pure-templates[data-design-test="1"] .dt-template-nav,
 html.dt-pure-templates[data-design-test="1"] .dt-template-cta {
   display: none !important;
+}
+
+/* —— Scrollable template iframes (desktop stage normally clips) —— */
+html.dt-pure-templates[data-design-test="1"].desktop-stage-active .desktop-stage .mv4-frame.is-active {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
+}
+
+html.dt-pure-templates[data-design-test="1"]:not(.desktop-stage-active) .mv4-frame.is-active {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  pointer-events: auto !important;
 }
 
 @media (max-width: 1024px) {

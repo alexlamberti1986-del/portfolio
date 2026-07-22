@@ -2,10 +2,18 @@
 *,
 *::before,
 *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: 100%;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: visible;
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
@@ -43,6 +51,34 @@ button, input, textarea { font: inherit; }
 .grid-2 { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px; align-items: center; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+
+/* Subpage banner (template inner pages) */
+.tpl-page-hero {
+  display: none;
+  padding: clamp(4rem, 10vh, 6.5rem) 0 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero {
+  display: block;
+}
+body[data-chapter]:not([data-chapter="home"]) .tpl-home-only {
+  display: none !important;
+}
+body[data-chapter="home"] .tpl-page-only {
+  display: none !important;
+}
+body[data-chapter]:not([data-chapter="home"]) main > .section:not(.is-chapter-active) {
+  display: none !important;
+}
+body[data-chapter]:not([data-chapter="home"]) main > .section.is-chapter-active {
+  display: block !important;
+  padding-top: clamp(2.5rem, 5vh, 4rem);
+}
+
+.tpl-nav a.is-active {
+  opacity: 1 !important;
+}
+
 @media (max-width: 900px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
 }

@@ -1,10 +1,10 @@
-/* Vibe — kit tokens #1B47F4 / #111 / Inter */
+/* Vibe structure + LIVE Nexora colors (#8ec5ff) */
 :root {
-  --bg: #000;
-  --surface: #111;
-  --text: #bebebe;
+  --bg: #050810;
+  --surface: #081226;
+  --text: rgba(190, 210, 235, 0.82);
   --heading: #fff;
-  --accent: #1b47f4;
+  --accent: #8ec5ff;
 }
 body { background: var(--bg); color: var(--text); font-family: Inter, system-ui, sans-serif; }
 h1,h2,h3,h4 { color: var(--heading); margin: 0 0 0.8rem; font-weight: 700; letter-spacing: -0.03em; }
@@ -25,9 +25,11 @@ h2 { font-size: clamp(2rem, 4vw, 3.4rem); max-width: 14ch; line-height: 1.05; }
 .tpl-logo span { color: var(--accent); }
 .tpl-nav { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
 .tpl-nav a { font-size: 0.78rem; color: #fff; opacity: .75; }
-.tpl-nav a:hover { opacity: 1; color: var(--accent); }
-.tpl-social { display: flex; gap: 8px; justify-content: flex-end; }
-.tpl-social span { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); opacity: .85; }
+.tpl-nav a:hover,
+.tpl-nav a.is-active { opacity: 1; color: var(--accent); }
+.tpl-bento article.is-accent { background: var(--accent); color: #050810; }
+.tpl-bento article.is-accent h3 { color: #050810; }
+.tpl-btn { background: var(--accent); color: #050810; border-radius: 8px; border: none; font-weight: 700; }
 
 .tpl-hero { padding: 5rem 0 2rem; }
 .tpl-hero__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; }
@@ -52,8 +54,6 @@ h2 { font-size: clamp(2rem, 4vw, 3.4rem); max-width: 14ch; line-height: 1.05; }
   min-height: 180px; background: var(--surface); padding: 1.5rem;
   display: grid; align-content: end; border-radius: 8px;
 }
-.tpl-bento article.is-accent { background: var(--accent); color: #fff; }
-.tpl-bento article.is-accent h3 { color: #fff; }
 
 .tpl-stats__grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;
@@ -77,9 +77,8 @@ h2 { font-size: clamp(2rem, 4vw, 3.4rem); max-width: 14ch; line-height: 1.05; }
   background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,.28);
   color: #fff; padding: 0.85rem 0; border-radius: 0;
 }
-.tpl-btn { background: var(--accent); color: #fff; border-radius: 8px; border: none; }
 
-.tpl-footer { background: #111; padding: 4rem 0 1.5rem; margin-top: 2rem; }
+.tpl-footer { background: #081226; padding: 4rem 0 1.5rem; margin-top: 2rem; }
 .tpl-footer__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 2rem; }
 .tpl-footer h4 { font-size: 0.78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
 .tpl-footer a { display: block; margin: 0.4rem 0; color: var(--text); }

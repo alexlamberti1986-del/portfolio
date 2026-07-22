@@ -1,11 +1,12 @@
-/* Portio — dark + lime kit tokens */
+/* Portio structure + LIVE Freiraum colors (#ffc66f / #ff8bbd) */
 :root {
-  --bg: #0f0f0f;
-  --surface: #1b1c1e;
-  --text: #e5e5e5;
+  --bg: #100b16;
+  --surface: #171021;
+  --text: rgba(255, 236, 220, 0.78);
   --heading: #fff;
-  --accent: #c4ef17;
-  --muted: #cecece;
+  --accent: #ffc66f;
+  --muted: rgba(255, 236, 220, 0.65);
+  --accent-2: #ff8bbd;
 }
 body {
   background:
@@ -33,10 +34,12 @@ h3 { color: var(--heading); margin: 0.8rem 0; }
 .tpl-logo span { color: var(--accent); }
 .tpl-nav { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
 .tpl-nav a { font-size: .78rem; color: #fff; opacity: .75; }
-.tpl-nav a:hover { opacity: 1; color: var(--accent); }
-.tpl-search {
-  justify-self: end; width: 40px; height: 40px; border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; cursor: pointer;
+.tpl-nav a:hover,
+.tpl-nav a.is-active { opacity: 1; color: var(--accent); }
+.tpl-btn { background: var(--accent); color: #100b16; border: none; border-radius: 999px; font-weight: 700; padding: 0.7rem 1.2rem; }
+body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero {
+  background: rgba(255, 198, 111, 0.06);
+  border-bottom-color: rgba(255, 198, 111, 0.2);
 }
 
 .tpl-hero { padding: 4.5rem 0 2rem; }
@@ -88,7 +91,8 @@ h3 { color: var(--heading); margin: 0.8rem 0; }
   position: absolute; left: 0; right: 0; bottom: 0; padding: 1rem 1.1rem;
   background: rgba(15,15,15,.78); color: #fff; font-weight: 600;
 }
-.tpl-featured a.is-lime span { background: var(--accent); color: #111; }
+.tpl-featured a.is-lime span { background: var(--accent); color: #100b16; }
+.tpl-specs button { background: var(--accent); color: #100b16; }
 
 .tpl-contact-meta {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 1.5rem 0 2rem;

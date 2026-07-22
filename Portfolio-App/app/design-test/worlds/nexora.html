@@ -4,44 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>NEXORA · Vibe Template</title>
+  <title>NEXORA · Design Test</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="/assets/design-test/tpl-base.css?v=20260722tpl1" />
-  <link rel="stylesheet" href="/assets/design-test/tpl-vibe.css?v=20260722tpl1" />
+  <link rel="stylesheet" href="/assets/design-test/tpl-base.css?v=20260722tpl2" />
+  <link rel="stylesheet" href="/assets/design-test/tpl-vibe.css?v=20260722tpl2" />
 </head>
-<body>
+<body data-chapter="home">
   <header class="tpl-header">
     <div class="wrap tpl-header__inner">
-      <a class="tpl-logo" href="#home">Nexora<span>.</span></a>
+      <a class="tpl-logo" href="/design-test/nexora" target="_top">Nexora<span>.</span></a>
       <nav class="tpl-nav">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#leistungen">Services</a>
-        <a href="#projekte">Portfolio</a>
-        <a href="#kontakt">Contact</a>
+        <a href="/design-test/nexora" target="_top" data-chapter="home">Home</a>
+        <a href="/design-test/nexora/projekte" target="_top" data-chapter="projekte">Projekte</a>
+        <a href="/design-test/nexora/leistungen" target="_top" data-chapter="leistungen">Leistungen</a>
+        <a href="/design-test/nexora/ueber-mich" target="_top" data-chapter="about">Über mich</a>
+        <a href="/design-test/nexora/kontakt" target="_top" data-chapter="kontakt">Kontakt</a>
       </nav>
-      <div class="tpl-social" aria-label="Social">
-        <span></span><span></span><span></span>
-      </div>
+      <a class="btn tpl-btn" href="/design-test/nexora/offerte" target="_top" data-chapter="offerte">Offerte</a>
     </div>
   </header>
 
+  <div class="tpl-page-hero">
+    <div class="wrap">
+      <p class="eyebrow">NEXORA</p>
+      <h1 data-page-title>Home</h1>
+      <p class="lead">Strategie wird sichtbar. Technologie wird menschlich. Marketing wird wirksam.</p>
+    </div>
+  </div>
+
   <main>
-    <section class="tpl-hero" id="home">
+    <section class="tpl-hero tpl-home-only" id="home">
       <div class="wrap tpl-hero__grid">
         <div>
-          <p class="eyebrow">Creative Agency</p>
+          <p class="eyebrow">NEXORA · Virtuell · AI · Zukunft</p>
           <h1>Infinite Ideas</h1>
           <p class="lead">Digital Marketing zwischen Strategie, Technologie und Zukunft.</p>
+          <a class="btn tpl-btn" href="/design-test/nexora/offerte" target="_top">Offerte</a>
         </div>
         <figure>
           <img src="/assets/images/nexora-home-brain-clean.png" alt="NEXORA Visual" />
         </figure>
       </div>
-      <div class="wrap tpl-hero-bar">
-        <a href="#about">Digital Hub Agency</a>
-        <a href="#leistungen">Creative Solution Provider</a>
-        <a href="#kontakt">Contact Us</a>
+      <div class="wrap tpl-hero-bar tpl-home-only">
+        <a href="/design-test/nexora/ueber-mich" target="_top">Über mich</a>
+        <a href="/design-test/nexora/leistungen" target="_top">Leistungen</a>
+        <a href="/design-test/nexora/kontakt" target="_top">Kontakt</a>
       </div>
     </section>
 
@@ -51,7 +58,7 @@
         <div>
           <p class="lead">Strategie wird sichtbar. Technologie wird menschlich. Marketing wird wirksam.</p>
           <p class="eyebrow">NEXORA · Virtuell · AI · Zukunft</p>
-          <a class="link-arrow" href="#about">About Us →</a>
+          <a class="link-arrow" href="/design-test/nexora/kontakt" target="_top">Kontakt →</a>
         </div>
       </div>
     </section>
@@ -59,8 +66,8 @@
     <section class="section tpl-services" id="leistungen">
       <div class="wrap">
         <div class="tpl-services__head">
-          <h2>Your Creative Hub</h2>
-          <p>Leistungen für Systeme, Visionen und neue Konzepte.</p>
+          <h2>Leistungen</h2>
+          <p>Systeme, Visionen und neue Konzepte.</p>
         </div>
         <div class="tpl-bento">
           <article><h3>Strategie &amp; Struktur</h3></article>
@@ -71,17 +78,17 @@
       </div>
     </section>
 
-    <section class="section tpl-stats">
+    <section class="section tpl-stats tpl-home-only">
       <div class="wrap tpl-stats__grid">
-        <div><strong>126+</strong><span>Successful Projects</span></div>
-        <div><strong>108+</strong><span>Global Clients</span></div>
-        <div><strong>52+</strong><span>Creative Concepts</span></div>
+        <div><strong>126+</strong><span>Projekte</span></div>
+        <div><strong>108+</strong><span>Kunden</span></div>
+        <div><strong>52+</strong><span>Konzepte</span></div>
       </div>
     </section>
 
     <section class="section" id="projekte">
       <div class="wrap">
-        <h2>Dive into Our Portfolio.</h2>
+        <h2>Projekte</h2>
         <div class="tpl-masonry">
           <a href="https://genialbau.ch/" target="_blank" rel="noopener">
             <img src="/assets/images/chapters/nexora/03-projects.webp" alt="" />
@@ -102,15 +109,30 @@
     <section class="section" id="kontakt">
       <div class="wrap grid-2">
         <div>
-          <h2>Connecting Creativity</h2>
+          <h2>Kontakt</h2>
           <p>alex.lamberti@hotmail.ch<br />079 667 82 11</p>
         </div>
-        <form class="tpl-form" id="offerte">
+        <form class="tpl-form">
           <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="text" placeholder="Subject" />
-          <textarea rows="4" placeholder="Message"></textarea>
-          <button class="btn tpl-btn" type="button">Send Message</button>
+          <input type="email" placeholder="E-Mail" />
+          <input type="text" placeholder="Betreff" />
+          <textarea rows="4" placeholder="Nachricht"></textarea>
+          <button class="btn tpl-btn" type="button">Nachricht senden</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" id="offerte">
+      <div class="wrap grid-2">
+        <div>
+          <h2>Offerte</h2>
+          <p class="lead">Unverbindlich anfragen — klarer nächster Schritt.</p>
+        </div>
+        <form class="tpl-form">
+          <input type="text" placeholder="Name" />
+          <input type="email" placeholder="E-Mail" />
+          <textarea rows="4" placeholder="Projektbeschreibung"></textarea>
+          <button class="btn tpl-btn" type="button">Offerte anfragen</button>
         </form>
       </div>
     </section>
@@ -121,13 +143,13 @@
       <p class="tpl-logo">Nexora<span>.</span></p>
       <p class="lead">Zukunftsraum für Systeme, Visionen und neue Konzepte.</p>
       <div class="tpl-footer__cols">
-        <div><h4>Contact Us</h4><a href="mailto:alex.lamberti@hotmail.ch">E-Mail</a><a href="tel:+41796678211">Telefon</a></div>
-        <div><h4>Our Services</h4><a href="#leistungen">Leistungen</a><a href="#projekte">Projekte</a></div>
-        <div><h4>About Us</h4><a href="#about">Über mich</a><a href="/impressum" target="_top">Impressum</a></div>
+        <div><h4>Kontakt</h4><a href="mailto:alex.lamberti@hotmail.ch">E-Mail</a><a href="tel:+41796678211">Telefon</a></div>
+        <div><h4>Leistungen</h4><a href="/design-test/nexora/leistungen" target="_top">Leistungen</a><a href="/design-test/nexora/projekte" target="_top">Projekte</a></div>
+        <div><h4>Über mich</h4><a href="/design-test/nexora/ueber-mich" target="_top">Über mich</a><a href="/impressum" target="_top">Impressum</a></div>
       </div>
-      <p class="tpl-copy">© 2026 Alex Lamberti · NEXORA / Vibe Preview</p>
+      <p class="tpl-copy">© 2026 Alex Lamberti · NEXORA Preview</p>
     </div>
   </footer>
-  <script src="/assets/design-test/tpl-chapter-sync.js?v=20260722tpl1"></script>
+  <script src="/assets/design-test/tpl-chapter-sync.js?v=20260722tpl2"></script>
 </body>
 </html>

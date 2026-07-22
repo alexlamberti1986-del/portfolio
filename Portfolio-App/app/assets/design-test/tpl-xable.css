@@ -1,11 +1,11 @@
-/* Xable Dark — exact kit tokens */
+/* Xable structure + LIVE Multiversum colors (#ff59b2) */
 :root {
-  --bg: #020205;
-  --surface: #15171e;
-  --text: rgba(255, 255, 255, 0.76);
+  --bg: #05070d;
+  --surface: #121826;
+  --text: rgba(236, 242, 255, 0.78);
   --heading: #fff;
-  --accent: #ec3737;
-  --muted: rgba(255, 255, 255, 0.55);
+  --accent: #ff59b2;
+  --muted: rgba(236, 242, 255, 0.58);
 }
 body {
   background: var(--bg);
@@ -21,8 +21,8 @@ h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.15; max-width: 18ch; 
 
 .tpl-header {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(2, 2, 5, 0.92);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(5, 7, 13, 0.92);
+  border-bottom: 1px solid rgba(255,89,178,0.22);
   backdrop-filter: blur(12px);
 }
 .tpl-header__inner {
@@ -39,7 +39,9 @@ h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.15; max-width: 18ch; 
   font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
   text-transform: uppercase; color: #fff; opacity: 0.75;
 }
-.tpl-nav a:hover { opacity: 1; color: var(--accent); }
+.tpl-nav a:hover,
+.tpl-nav a.is-active { opacity: 1; color: var(--accent); border-bottom-color: var(--accent); }
+.tpl-nav a { border-bottom: 2px solid transparent; padding-bottom: 4px; }
 .tpl-header__actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
 .tpl-phone {
   width: 42px; height: 42px; border-radius: 50%;
@@ -59,6 +61,10 @@ h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.15; max-width: 18ch; 
   background:
     linear-gradient(180deg, rgba(2,2,5,.55), rgba(2,2,5,.92)),
     url("/assets/design-test/kit/multiversum-hero-poster.jpg") center top / cover no-repeat;
+}
+body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero {
+  background: linear-gradient(180deg, rgba(255,89,178,.08), transparent);
+  border-bottom-color: rgba(255,89,178,.2);
 }
 .tpl-hero__content { position: relative; z-index: 1; }
 .tpl-hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1.5rem; }
