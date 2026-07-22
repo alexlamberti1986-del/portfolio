@@ -430,6 +430,69 @@
     var chapter = normalizeChapter(getChapter());
     updateLabels(footer);
     mountFooter(footer, chapter);
+    bindShellNav(footer);
+  }
+
+  function bindShellNav(footer) {
+    if (!footer || footer.getAttribute("data-shell-nav") === "1") return;
+    footer.setAttribute("data-shell-nav", "1");
+    footer.addEventListener(
+      "click",
+      function (e) {
+        var a = e.target && e.target.closest
+          ? e.target.closest(
+              "a[data-footer-world-link], a[data-footer-page]"
+            )
+          : null;
+        if (!a) return;
+        /* Nur in der Live-Shell: ohne Full-Reload wechseln (kein Multiversum-Blitz) */
+        var inShell = false;
+        try {
+          inShell =
+            window.parent &&
+            window.parent !== window &&
+            document.documentElement.classList.contains("welten-live-shell");
+        } catch (eShell) {
+          inShell = false;
+        }
+        if (!inShell) return;
+
+        var worldKey = a.getAttribute("data-footer-world-link");
+        var pageKey = a.getAttribute("data-footer-page");
+        var go = "home";
+        if (pageKey) {
+          var pageToChapter = {
+            home: "home",
+            projects: "projects",
+            services: "leistungen",
+            about: "about",
+            contact: "contact",
+            offer: "offerte",
+          };
+          go = pageToChapter[pageKey] || "home";
+          worldKey = getWorldKey();
+        }
+        if (!worldKey) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+        try {
+          window.parent.postMessage(
+            {
+              type: "alex:switch-world",
+              world: worldKey,
+              go: go,
+            },
+            "*"
+          );
+        } catch (eMsg) {
+          try {
+            window.top.location.href = a.href;
+          } catch (eLoc) {}
+        }
+      },
+      true
+    );
   }
 
   var scheduled = false;

@@ -3,6 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script>
+    /* Vor erstem Paint: Zielwelt aus URL — kein Multiversum-Blitz bei /nexora etc. */
+    (function () {
+      try {
+        var p = (location.pathname || "/").replace(/\/$/, "") || "/";
+        var key = "general";
+        if (p.indexOf("/nexora") === 0) key = "nexora";
+        else if (p.indexOf("/professional") === 0) key = "vertex";
+        else if (p.indexOf("/freiraum") === 0) key = "freiraum";
+        document.documentElement.setAttribute("data-master-world", key);
+        window.__MV_BOOT_WORLD__ = key;
+      } catch (e) {}
+    })();
+  </script>
   <style id="shell-fouc-critical">
     /* Sofort: kein SEO-/Skip-Flash vor externem CSS */
     html, body { margin: 0; background: #02030b; color: #e8eef8; }
@@ -20,6 +34,9 @@
       pointer-events: auto !important;
       transition: opacity .16s ease-out;
     }
+    /* html + body: Master-Welt schon im <head> gesetzt — Multiversum nie flashen */
+    html:not([data-master-world="general"]) .mv4-frame[data-world="general"],
+    html:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"],
     body:not([data-master-world="general"]) .mv4-frame[data-world="general"],
     body:not([data-master-world="general"]) .mv4-frame[src*="MULTIVERSUM.html"],
     .mv4-frame[data-mv-quarantined="1"] {
@@ -29,6 +46,21 @@
       clip-path: inset(100%) !important;
       transform: translate3d(-200%, 0, 0) !important;
       z-index: 0 !important;
+    }
+    html[data-master-world="nexora"] .mv4-frame:not([data-world="nexora"]),
+    html[data-master-world="vertex"] .mv4-frame:not([data-world="vertex"]),
+    html[data-master-world="freiraum"] .mv4-frame:not([data-world="freiraum"]),
+    html[data-master-world="general"] .mv4-frame:not([data-world="general"]) {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    html:not(.welten-world-switch-lock)[data-master-world="nexora"] .mv4-frame[data-world="nexora"],
+    html:not(.welten-world-switch-lock)[data-master-world="vertex"] .mv4-frame[data-world="vertex"],
+    html:not(.welten-world-switch-lock)[data-master-world="freiraum"] .mv4-frame[data-world="freiraum"],
+    html:not(.welten-world-switch-lock)[data-master-world="general"] .mv4-frame[data-world="general"] {
+      opacity: 1 !important;
+      visibility: visible !important;
     }
     .mv-shell-seo,
     .welten-skip-link {
@@ -463,6 +495,7 @@
           else a.removeAttribute("aria-current");
         });
         document.body.setAttribute("data-master-world", keys[idx] || "general");
+        document.documentElement.setAttribute("data-master-world", keys[idx] || "general");
       } catch (e) {}
     })();
   </script>
@@ -503,7 +536,7 @@
 
   <script src="/assets/welten-desktop-stage.js?v=20260719loadFix1"></script>
   <script src="/assets/welten-world-audio-test.js?v=20260718tvParity1" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260722load1" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260722nav1" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="/assets/welten-world-switch-preview.js?v=20260719titleHold1s" defer></script>
 </body>

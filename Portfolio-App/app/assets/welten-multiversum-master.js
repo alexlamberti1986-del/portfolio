@@ -1036,6 +1036,9 @@
     var curIdx = WORLD_KEYS.indexOf(mw);
     if (!switching && pendingSwitchTarget < 0 && i === 0 && curIdx > 0) return false;
     document.body.setAttribute("data-master-world", masterKey(i));
+    try {
+      document.documentElement.setAttribute("data-master-world", masterKey(i));
+    } catch (eHtmlMw) {}
     updateWorldLinkState(i);
     updateFlags();
     if (!switching && !document.documentElement.classList.contains("welten-world-switch-lock")) {
