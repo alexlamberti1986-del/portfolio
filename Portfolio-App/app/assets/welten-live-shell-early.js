@@ -162,9 +162,9 @@
       observer = null;
     }
     stripIframeChrome();
-  }, 8000);
-  /* Weltwechsel / spätes Video-Hero: Header nochmals absichern */
-  [100, 400, 1200, 2500].forEach(function (ms) {
+  }, 1500);
+  /* Kurze Nachsicherungen für späte Header-Inserts */
+  [100, 400, 1200].forEach(function (ms) {
     window.setTimeout(stripIframeChrome, ms);
   });
 })();

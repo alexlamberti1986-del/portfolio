@@ -555,11 +555,15 @@
     var shellBar = getBar();
     var locked = document.documentElement.classList.contains("welten-world-switch-lock");
     var staleOverlay = document.querySelector(".welten-world-switch.is-entering, .welten-world-switch.is-exiting");
+    var overlayLive =
+      !!document.querySelector(".welten-world-switch") || !!window.__wwsPreviewRunning;
+    /* Overlay-Übergänge (Titel-Hold bis ~3s) nicht nach 1.4s abwürgen */
+    var staleMs = overlayLive ? 4800 : 2400;
     if (staleOverlay && !locked && !switching) {
       purgeSwitchOverlays(false);
     }
-    /* Nie dauerhaft re-locken — bei hängendem Switch nach kurzer Zeit freigeben */
-    if (switching && locked && switchLockSince && Date.now() - switchLockSince > 1400) {
+    /* Nie dauerhaft re-locken — bei wirklich hängendem Switch freigeben */
+    if (switching && locked && switchLockSince && Date.now() - switchLockSince > staleMs) {
       pendingSwitchTarget = -1;
       enforceFrameExclusivity();
       purgeSwitchOverlays(false);
@@ -567,13 +571,13 @@
       forceRevealActiveFrame();
       return;
     }
-    if (switching && !locked && switchLockSince && Date.now() - switchLockSince > 1400) {
+    if (switching && !locked && switchLockSince && Date.now() - switchLockSince > staleMs) {
       pendingSwitchTarget = -1;
       unlockShell();
       forceRevealActiveFrame();
       return;
     }
-    if (locked && !switching) {
+    if (locked && !switching && !overlayLive) {
       pendingSwitchTarget = -1;
       enforceFrameExclusivity();
       purgeSwitchOverlays(false);
@@ -1246,13 +1250,9 @@
     return new Promise(function (resolve) {
       var f = frames[i];
       if (!f) return resolve();
-      if (loaded[i] && frameHasSrc(f)) return resolve();
+      if (loaded[i] && frameHasSrc(f) && frameIsReady(f)) return resolve();
       var lazy = f.getAttribute("data-lazy-src");
       if (!lazy) {
-        loaded[i] = true;
-        return resolve();
-      }
-      if (frameHasSrc(f)) {
         loaded[i] = true;
         return resolve();
       }
@@ -1264,14 +1264,23 @@
         } catch (eLoad) {}
         resolve();
       }
+      if (frameHasSrc(f)) {
+        if (frameIsReady(f)) {
+          loaded[i] = true;
+          return resolve();
+        }
+        f.addEventListener("load", finish, { once: true });
+        setTimeout(finish, 1600);
+        return;
+      }
       f.addEventListener("load", finish, { once: true });
       f.src = lazy;
-      setTimeout(finish, 8000);
+      setTimeout(finish, 2200);
     });
   }
 
   function preloadFrame(i) {
-    if (i === defaultWorld || loaded[i]) return;
+    if (loaded[i]) return;
     var f = frames[i];
     if (!f) return;
     var lazy = f.getAttribute("data-lazy-src");
@@ -1287,6 +1296,48 @@
       { once: true }
     );
     f.src = lazy;
+  }
+
+  function scheduleIdleWorldPrefetch() {
+    try {
+      var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (conn) {
+        if (conn.saveData) return;
+        var et = String(conn.effectiveType || "");
+        if (et.indexOf("2g") >= 0) return;
+      }
+    } catch (eConn) {}
+    var cur = activeIdx();
+    if (cur < 0) cur = defaultWorld;
+    var order = [];
+    if (cur > 0) order.push(cur - 1);
+    if (cur < 3) order.push(cur + 1);
+    for (var k = 0; k < 4; k++) {
+      if (k !== cur && order.indexOf(k) < 0) order.push(k);
+    }
+    var ri = 0;
+    function next() {
+      if (ri >= order.length) return;
+      if (switching || document.documentElement.classList.contains("welten-world-switch-lock")) {
+        setTimeout(next, 900);
+        return;
+      }
+      var i = order[ri++];
+      /* Multiversum nur vorwärmen wenn schon Master oder Rückkehr wahrscheinlich */
+      if (i === 0 && cur !== 0 && !loaded[0]) {
+        /* trotzdem vorwärmen — quarantiniert unsichtbar */
+      }
+      try {
+        preloadFrame(i);
+      } catch (ePre) {}
+      setTimeout(next, 900);
+    }
+    var ric = window.requestIdleCallback || function (cb) {
+      return setTimeout(cb, 700);
+    };
+    ric(function () {
+      setTimeout(next, 350);
+    }, { timeout: 2800 });
   }
 
   function switchToWorldIndex(i, opts) {
@@ -1872,6 +1923,7 @@
       primeActiveFrame();
       ensureSingleChrome();
       unlockShell();
+      scheduleIdleWorldPrefetch();
       setTimeout(ensureSingleChrome, 300);
       setTimeout(function () {
         if (bootGen !== switchGeneration) return;
@@ -1890,7 +1942,7 @@
     primeActiveFrame();
   }
 
-  /* Kein Idle-Prefetch anderer Welten — nur Tap/Focus in bindWorldButtons */
+  /* Idle: Nachbar-Welten nacheinander vorwärmen (ein Frame gleichzeitig) */
   requestAnimationFrame(function () {
     forceEnableWorldButtons();
   });

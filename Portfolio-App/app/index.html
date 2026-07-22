@@ -152,7 +152,7 @@
         } catch (err) {}
         active.addEventListener("load", releaseOnLoad, { once: true });
       });
-      setTimeout(releaseShell, 1600);
+      setTimeout(releaseShell, 900);
     })();
   </script>
   <script>
@@ -224,13 +224,15 @@
   <script>
 (function () {
   var p = (location.pathname || "/").replace(/\/$/, "") || "/";
-  if (!(p === "/" || p.indexOf("/multiversum") === 0)) return;
+  var href = "/MULTIVERSUM.html?v=20260718tvParity1";
+  if (p.indexOf("/nexora") === 0) href = "/NEXORA.html";
+  else if (p.indexOf("/professional") === 0) href = "/PROFESSIONAL.html";
+  else if (p.indexOf("/freiraum") === 0) href = "/FREIRAUM.html";
+  else if (!(p === "/" || p.indexOf("/multiversum") === 0)) return;
   var l = document.createElement("link");
-  l.rel = "preload";
-  l.as = "fetch";
-  l.href = "/MULTIVERSUM.html?v=20260718tvParity1";
-  l.crossOrigin = "anonymous";
-  l.fetchPriority = "high";
+  l.rel = "prefetch";
+  l.href = href;
+  l.as = "document";
   document.head.appendChild(l);
 })();
 </script>
@@ -536,8 +538,8 @@
 
   <script src="/assets/welten-desktop-stage.js?v=20260719loadFix1"></script>
   <script src="/assets/welten-world-audio-test.js?v=20260718tvParity1" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260722nav1" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260722fluid2" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
-  <script src="/assets/welten-world-switch-preview.js?v=20260719titleHold1s" defer></script>
+  <script src="/assets/welten-world-switch-preview.js?v=20260722fluid2" defer></script>
 </body>
 </html>

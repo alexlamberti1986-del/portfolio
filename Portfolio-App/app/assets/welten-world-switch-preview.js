@@ -36,19 +36,19 @@
       });
     } else if (worldKey === "nexora") {
       timing = Object.assign(timing, {
-        /* Titel vor Cover-Ende; Hold +1s zum Lesen der Schriftzüge */
+        /* Titel vor Cover-Ende — kürzerer Hold für flüssigeren Wechsel */
         TITLE_REVEAL_AT: Math.round(WWS_TIMING.EFFECT_MS * 0.85),
-        TITLE_HOLD: 1680,
+        TITLE_HOLD: 980,
       });
     } else if (worldKey === "freiraum") {
       timing = Object.assign(timing, {
-        WORLD_TRANSITION_DURATION: 3100,
-        EFFECT_MS: 1100,
-        TITLE_REVEAL_AT: 860,
+        WORLD_TRANSITION_DURATION: 2400,
+        EFFECT_MS: 1000,
+        TITLE_REVEAL_AT: 780,
         TITLE_FADE_IN: 100,
-        TITLE_HOLD: 1680,
+        TITLE_HOLD: 980,
         TITLE_FADE_OUT: 180,
-        COVER_MS: 560,
+        COVER_MS: 520,
       });
     } else if (worldKey === "vertex") {
       timing = Object.assign(timing, {
@@ -116,6 +116,7 @@
   }
 
   var running = false;
+  window.__wwsPreviewRunning = false;
   var activeOverlay = null;
   var activeTimers = [];
   var activeRaf = 0;
@@ -181,6 +182,7 @@
       } catch (eRm) {}
     });
     running = false;
+    window.__wwsPreviewRunning = false;
     window.__wwsPreviewOwnsSound = false;
     if (!skipEnd) wwsCallTransitionEnd();
     /* Lock ownership: master finishTransition / recoverStuckSwitch.
@@ -1723,6 +1725,7 @@
     }
 
     running = true;
+    window.__wwsPreviewRunning = true;
     wwsClearTimers();
 
     var timing = getTimingForWorld(worldKey);
@@ -1807,6 +1810,7 @@
       if (!activeOverlay) {
         wwsCallTransitionEnd();
         running = false;
+    window.__wwsPreviewRunning = false;
         window.__wwsPreviewOwnsSound = false;
         wwsClearTimers();
         return;
@@ -1848,7 +1852,7 @@
         var dropTries = 0;
         function dropCover() {
           dropTries += 1;
-          if (!coverSafeToDrop() && dropTries < 40) {
+          if (!coverSafeToDrop() && dropTries < 12) {
             wwsLater(dropCover, 40);
             return;
           }
@@ -1858,26 +1862,29 @@
           }
           /* Master owns welten-world-switch-lock removal */
           running = false;
+          window.__wwsPreviewRunning = false;
           window.__wwsPreviewOwnsSound = false;
           wwsClearTimers();
         }
         wwsLater(dropCover, Math.max(140, Math.min(exitMs + 80, 280)));
       }
 
-      /* Sicherheitsnetz: erst aufdecken, wenn die Zielwelt wirklich aktiv ist —
-         sonst nochmal versuchen, statt mit der falschen Welt sichtbar zu werden. */
-      if (activeFrameIndex() !== targetIdx && typeof window.preloadWorldIndex === "function") {
-        Promise.resolve(window.preloadWorldIndex(targetIdx)).then(doExit, doExit);
-        return;
+      /* Sicherheitsnetz: Zielwelt aktivieren (nicht nur preload), dann Cover droppen */
+      if (activeFrameIndex() !== targetIdx) {
+        var commitFn = window.switchToWorldIndex || window.preloadWorldIndex;
+        if (typeof commitFn === "function") {
+          Promise.resolve(commitFn(targetIdx, { force: true, commitIntent: true })).then(doExit, doExit);
+          return;
+        }
       }
       doExit();
     }
 
     wwsLater(function () {
-      var switchFn = window.preloadWorldIndex;
+      var warmFn = window.preloadWorldIndex;
       frameReady
         .then(function () {
-          return typeof switchFn === "function" ? Promise.resolve(switchFn(targetIdx)) : Promise.resolve();
+          return typeof warmFn === "function" ? Promise.resolve(warmFn(targetIdx)) : Promise.resolve();
         })
         .then(function () {
           overlay._wwsSwitchDone = true;
@@ -1914,20 +1921,25 @@
         });
         activeOverlay = null;
         running = false;
+        window.__wwsPreviewRunning = false;
         window.__wwsPreviewOwnsSound = false;
         wwsCallTransitionEnd();
         /* Master owns lock removal */
       }
-      /* Failsafe griff, bevor der Zielwelt-Wechsel bestätigt wurde — noch
-         einmal versuchen, damit wir nicht mit dem Cover verschwinden, während
-         die falsche Welt aktiv bleibt. */
-      if (!doneAlready && typeof window.preloadWorldIndex === "function") {
-        try {
-          Promise.resolve(window.preloadWorldIndex(targetIdx)).then(cleanupFailsafe, cleanupFailsafe);
-        } catch (eFailsafeSwitch) {
-          cleanupFailsafe();
+      /* Failsafe: Zielwelt committen, dann Cleanup */
+      if (!doneAlready) {
+        var failCommit = window.switchToWorldIndex || window.preloadWorldIndex;
+        if (typeof failCommit === "function") {
+          try {
+            Promise.resolve(failCommit(targetIdx, { force: true, commitIntent: true })).then(
+              cleanupFailsafe,
+              cleanupFailsafe
+            );
+          } catch (eFailsafeSwitch) {
+            cleanupFailsafe();
+          }
+          return;
         }
-        return;
       }
       cleanupFailsafe();
     }, getTransitionFailsafeMs(timing));
