@@ -1,6 +1,6 @@
 /**
- * Chapter sync: live DE menu paths → page mode + scroll.
- * Subpages = template inner-page mode; Home = full scroll landing.
+ * Chapter sync — one panel at a time (live-site behavior).
+ * Home → only #home; Projekte → only #projekte; Offerte → form; etc.
  */
 (function () {
   "use strict";
@@ -50,6 +50,10 @@
     }
   }
 
+  function panels() {
+    return document.querySelectorAll("main > #home, main > .section[id]");
+  }
+
   function apply() {
     var chapter = chapterFromParent();
     if (chapter === last && document.body.getAttribute("data-chapter") === chapter) {
@@ -57,15 +61,19 @@
     }
     last = chapter;
     document.body.setAttribute("data-chapter", chapter);
+    document.documentElement.setAttribute("data-chapter", chapter);
 
-    document.querySelectorAll("main > .section[id]").forEach(function (sec) {
-      sec.classList.toggle("is-chapter-active", sec.id === chapter);
+    panels().forEach(function (sec) {
+      var on = sec.id === chapter;
+      sec.classList.toggle("is-chapter-active", on);
+      sec.hidden = !on;
+      sec.setAttribute("aria-hidden", on ? "false" : "true");
     });
 
     var title = document.querySelector("[data-page-title]");
     if (title) title.textContent = TITLES[chapter] || chapter;
 
-    document.querySelectorAll(".tpl-nav a[data-chapter]").forEach(function (a) {
+    document.querySelectorAll(".tpl-nav a[data-chapter], .tpl-btn[data-chapter], a.tpl-btn[data-chapter]").forEach(function (a) {
       a.classList.toggle("is-active", a.getAttribute("data-chapter") === chapter);
     });
 
@@ -74,32 +82,30 @@
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
     } catch (e2) {}
-
-    /* Home: optional soft-scroll to hash if present */
-    if (chapter === "home" && location.hash) {
-      var el = document.querySelector(location.hash);
-      if (el) {
-        setTimeout(function () {
-          try {
-            el.scrollIntoView({ behavior: "smooth", block: "start" });
-          } catch (e3) {}
-        }, 40);
-      }
-    }
   }
 
   function bindNav() {
-    document.querySelectorAll(".tpl-nav a[data-chapter], .tpl-btn[data-chapter], a[data-chapter]").forEach(function (a) {
+    document.querySelectorAll("a[data-chapter]").forEach(function (a) {
       if (a.__dtBound) return;
       a.__dtBound = true;
       a.addEventListener("click", function () {
-        setTimeout(apply, 30);
+        setTimeout(apply, 40);
       });
     });
   }
 
   function boot() {
     bindNav();
+    apply();
+    /* ensure home visible on first paint before parent path resolves */
+    if (!document.body.getAttribute("data-chapter")) {
+      document.body.setAttribute("data-chapter", "home");
+      var home = document.getElementById("home");
+      if (home) {
+        home.classList.add("is-chapter-active");
+        home.hidden = false;
+      }
+    }
     apply();
   }
 
@@ -109,5 +115,8 @@
     boot();
   }
   window.addEventListener("hashchange", apply);
-  setInterval(apply, 700);
+  try {
+    parent.addEventListener("popstate", apply);
+  } catch (e3) {}
+  setInterval(apply, 500);
 })();

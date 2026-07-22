@@ -6,9 +6,13 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>MULTIVERSUM · Design Test</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" />
-  <link rel="stylesheet" href="/assets/design-test/tpl-base.css?v=20260722tpl3" />
-  <link rel="stylesheet" href="/assets/design-test/tpl-content.css?v=20260722tpl3" />
-  <link rel="stylesheet" href="/assets/design-test/tpl-xable.css?v=20260722tpl3" />
+  <link rel="stylesheet" href="/assets/design-test/tpl-base.css?v=20260722tpl4" />
+  <link rel="stylesheet" href="/assets/design-test/tpl-content.css?v=20260722tpl4" />
+  <link rel="stylesheet" href="/assets/design-test/tpl-xable.css?v=20260722tpl4" />
+  <style>
+    main > #home, main > .section[id] { display: none !important; }
+    main > #home.is-chapter-active, main > .section[id].is-chapter-active { display: block !important; }
+  </style>
 </head>
 <body data-chapter="home">
   <header class="tpl-header">
@@ -37,7 +41,7 @@
 
   <main>
     <!-- HOME -->
-    <section class="tpl-hero tpl-home-only" id="home">
+    <section class="tpl-hero is-chapter-active" id="home">
       <div class="tpl-hero__media" aria-hidden="true"></div>
       <div class="wrap tpl-hero__content">
         <p class="eyebrow">Vier Welten. Ein Ziel. Deine Vision.</p>
@@ -283,6 +287,6 @@
     </div>
     <p class="tpl-copy">© 2026 Alex Lamberti · MULTIVERSUM Preview</p>
   </footer>
-  <script src="/assets/design-test/tpl-chapter-sync.js?v=20260722tpl3"></script>
+  <script src="/assets/design-test/tpl-chapter-sync.js?v=20260722tpl4"></script>
 </body>
 </html>

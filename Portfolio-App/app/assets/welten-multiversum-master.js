@@ -12,10 +12,10 @@
   try {
     if (document.documentElement.getAttribute("data-design-test") === "1") {
       FRAME_PAGES = [
-        "/design-test/worlds/multiversum.html?v=20260722tpl3",
-        "/design-test/worlds/nexora.html?v=20260722tpl3",
-        "/design-test/worlds/professional.html?v=20260722tpl3",
-        "/design-test/worlds/freiraum.html?v=20260722tpl3",
+        "/design-test/worlds/multiversum.html?v=20260722tpl4",
+        "/design-test/worlds/nexora.html?v=20260722tpl4",
+        "/design-test/worlds/professional.html?v=20260722tpl4",
+        "/design-test/worlds/freiraum.html?v=20260722tpl4",
       ];
     }
   } catch (eDtFrames) {}

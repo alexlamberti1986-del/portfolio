@@ -52,31 +52,44 @@ button, input, textarea { font: inherit; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 
-/* Subpage banner (template inner pages) */
+/* —— One chapter at a time (like live slides) —— */
+main > #home,
+main > .section[id] {
+  display: none !important;
+}
+main > #home.is-chapter-active,
+main > .section[id].is-chapter-active {
+  display: block !important;
+}
+main > .section[id].is-chapter-active {
+  padding-top: clamp(2.5rem, 6vh, 4.5rem);
+  padding-bottom: clamp(3rem, 7vh, 5.5rem);
+  min-height: 60vh;
+}
+
+/* Subpage banner — only off-home */
 .tpl-page-hero {
   display: none;
-  padding: clamp(4rem, 10vh, 6.5rem) 0 3rem;
+  padding: clamp(3.5rem, 9vh, 5.5rem) 0 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 body[data-chapter]:not([data-chapter="home"]) .tpl-page-hero {
   display: block;
 }
-body[data-chapter]:not([data-chapter="home"]) .tpl-home-only {
+body[data-chapter="home"] .tpl-page-hero {
   display: none !important;
-}
-body[data-chapter="home"] .tpl-page-only {
-  display: none !important;
-}
-body[data-chapter]:not([data-chapter="home"]) main > .section:not(.is-chapter-active) {
-  display: none !important;
-}
-body[data-chapter]:not([data-chapter="home"]) main > .section.is-chapter-active {
-  display: block !important;
-  padding-top: clamp(2.5rem, 5vh, 4rem);
 }
 
 .tpl-nav a.is-active {
   opacity: 1 !important;
+}
+
+/* Offerte: give the live form room */
+body[data-chapter="offerte"] main > #offerte.is-chapter-active {
+  padding-top: 1.5rem;
+}
+body[data-chapter="offerte"] .tpl-offerte-frame {
+  min-height: min(85vh, 1100px);
 }
 
 @media (max-width: 900px) {
