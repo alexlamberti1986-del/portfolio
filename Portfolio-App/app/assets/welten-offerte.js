@@ -6,7 +6,7 @@
 
   var VERSION = "7";
   var FORM_SRC = "assets/preview/alx-offerte-form-v5.html";
-  var FORM_CACHE = "20260720footer6";
+  var FORM_CACHE = "20260722offerte1";
   var FORM_TYPO_STYLE_ID = "welten-offerte-typo-fix";
   var DEFAULT_FRAME_HEIGHT = 1200;
   var heightWatchTimer = 0;
