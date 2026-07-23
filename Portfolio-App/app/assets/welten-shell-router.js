@@ -52,6 +52,13 @@
   function isLocalDev() {
     try {
       if (
+        root.WeltenDesignTestV2Path &&
+        typeof root.WeltenDesignTestV2Path.isDesignTestV2Allowed === "function" &&
+        root.WeltenDesignTestV2Path.isDesignTestV2Allowed()
+      ) {
+        /* preview hosts also allow design-test-v2 routing helpers */
+      }
+      if (
         root.WeltenDesignTestPath &&
         typeof root.WeltenDesignTestPath.isDesignTestAllowed === "function"
       ) {
@@ -80,21 +87,56 @@
   }
 
   var DESIGN_TEST_PREFIX = "/design-test";
+  var DESIGN_TEST_V2_PREFIX = "/design-test-v2";
 
   function stripDesignTestPrefix(pathname) {
     var p = normalizePath(pathname);
-    if (!isLocalDev()) return { path: p, isDesignTest: false, isHub: false };
+    if (!isLocalDev()) {
+      return {
+        path: p,
+        isDesignTest: false,
+        isDesignTestV2: false,
+        isHub: false,
+      };
+    }
+    if (p === DESIGN_TEST_V2_PREFIX) {
+      return {
+        path: "/",
+        isDesignTest: false,
+        isDesignTestV2: true,
+        isHub: true,
+      };
+    }
+    if (p.indexOf(DESIGN_TEST_V2_PREFIX + "/") === 0) {
+      return {
+        path: normalizePath(p.slice(DESIGN_TEST_V2_PREFIX.length) || "/"),
+        isDesignTest: false,
+        isDesignTestV2: true,
+        isHub: false,
+      };
+    }
     if (p === DESIGN_TEST_PREFIX) {
-      return { path: "/", isDesignTest: true, isHub: true };
+      return {
+        path: "/",
+        isDesignTest: true,
+        isDesignTestV2: false,
+        isHub: true,
+      };
     }
     if (p.indexOf(DESIGN_TEST_PREFIX + "/") === 0) {
       return {
         path: normalizePath(p.slice(DESIGN_TEST_PREFIX.length) || "/"),
         isDesignTest: true,
+        isDesignTestV2: false,
         isHub: false,
       };
     }
-    return { path: p, isDesignTest: false, isHub: false };
+    return {
+      path: p,
+      isDesignTest: false,
+      isDesignTestV2: false,
+      isHub: false,
+    };
   }
 
   function worldIdxFromKey(key) {
@@ -127,7 +169,10 @@
     else if (!slug) out = ch || "/";
     else if (!ch) out = "/" + slug;
     else out = "/" + slug + ch;
-    if (opts.designTest && isLocalDev()) {
+    if (opts.designTestV2 && isLocalDev()) {
+      out =
+        out === "/" ? DESIGN_TEST_V2_PREFIX : DESIGN_TEST_V2_PREFIX + out;
+    } else if (opts.designTest && isLocalDev()) {
       out = out === "/" ? DESIGN_TEST_PREFIX : DESIGN_TEST_PREFIX + out;
     }
     return out;
@@ -144,6 +189,7 @@
         chapter: "home",
         known: true,
         isDesignTest: dt.isDesignTest,
+        isDesignTestV2: !!dt.isDesignTestV2,
         isDesignTestHub: dt.isHub,
       };
     }
@@ -163,6 +209,7 @@
           chapter: chapter,
           known: true,
           isDesignTest: dt.isDesignTest,
+          isDesignTestV2: !!dt.isDesignTestV2,
           isDesignTestHub: dt.isHub,
         };
       }
@@ -172,6 +219,7 @@
         chapter: "home",
         known: false,
         isDesignTest: dt.isDesignTest,
+        isDesignTestV2: !!dt.isDesignTestV2,
         isDesignTestHub: dt.isHub,
       };
     }
@@ -183,6 +231,7 @@
         chapter: PATH_CHAPTER[p],
         known: true,
         isDesignTest: dt.isDesignTest,
+        isDesignTestV2: !!dt.isDesignTestV2,
         isDesignTestHub: dt.isHub,
       };
     }
@@ -193,6 +242,7 @@
       chapter: "home",
       known: false,
       isDesignTest: dt.isDesignTest,
+      isDesignTestV2: !!dt.isDesignTestV2,
       isDesignTestHub: dt.isHub,
     };
   }
@@ -219,6 +269,7 @@
     CHAPTER_PATH: CHAPTER_PATH,
     PATH_CHAPTER: PATH_CHAPTER,
     DESIGN_TEST_PREFIX: DESIGN_TEST_PREFIX,
+    DESIGN_TEST_V2_PREFIX: DESIGN_TEST_V2_PREFIX,
     normalizePath: normalizePath,
     buildPath: buildPath,
     parsePath: parsePath,
@@ -226,6 +277,9 @@
     isLocalDev: isLocalDev,
     isDesignTestPath: function (pathname) {
       return stripDesignTestPrefix(pathname).isDesignTest;
+    },
+    isDesignTestV2Path: function (pathname) {
+      return !!stripDesignTestPrefix(pathname).isDesignTestV2;
     },
     worldIdxFromKey: worldIdxFromKey,
     worldKeyFromIdx: worldKeyFromIdx,

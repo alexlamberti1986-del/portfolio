@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de-CH" data-design-test-v2="1" data-world="multiversum">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="MULTIVERSUM — Digitale Welten. Ein Portfolio. Unendliche Möglichkeiten. Alex Lamberti." />
+  <title>MULTIVERSUM · Alex Lamberti · Design Test V2</title>
+  <link rel="icon" href="/assets/favicon/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/design-test-v2/worlds/multiversum/multiversum.css?v=20260723v2" />
+</head>
+<body>
+  <a class="mv-skip" href="#main">Zum Inhalt</a>
+
+  <div class="mv-cosmos" aria-hidden="true">
+    <div class="mv-cosmos__nebula mv-cosmos__nebula--a"></div>
+    <div class="mv-cosmos__nebula mv-cosmos__nebula--b"></div>
+    <div class="mv-cosmos__stars"></div>
+    <div class="mv-cosmos__depth" data-parallax-layer="0.15"></div>
+  </div>
+
+  <header class="mv-header" data-mv-header>
+    <div class="mv-header__inner">
+      <nav class="mv-header__nav mv-header__nav--left" aria-label="Seitennavigation">
+        <a href="/design-test-v2/multiversum#welten" target="_top">Welten</a>
+        <a href="/design-test-v2/multiversum#galaxy" target="_top">Galaxy Walk</a>
+        <a href="/design-test-v2/multiversum#werke" target="_top">Werke</a>
+      </nav>
+      <a class="mv-header__brand" href="/design-test-v2/multiversum" target="_top">
+        <span class="mv-header__brand-mark">MULTIVERSUM</span>
+        <span class="mv-header__brand-sub">Alex Lamberti</span>
+      </a>
+      <div class="mv-header__right">
+        <nav class="mv-header__nav mv-header__nav--right" aria-label="Weitere Bereiche">
+          <a href="/design-test-v2/multiversum#alex" target="_top">Über Alex</a>
+          <a href="/design-test-v2/multiversum#kontakt" target="_top">Kontakt</a>
+        </nav>
+        <div class="mv-controls" role="group" aria-label="Steuerung">
+          <button type="button" class="mv-controls__btn" data-v2-lang title="Sprache">DE</button>
+          <button type="button" class="mv-controls__btn" data-v2-music title="Musik" aria-pressed="false">♪</button>
+          <button type="button" class="mv-controls__btn" data-v2-effects title="Effekte" aria-pressed="true">✦</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- 1. Cosmic hero + world picker -->
+    <section class="mv-hero" id="home" aria-labelledby="hero-title">
+      <div class="mv-hero__stage" aria-hidden="true">
+        <div class="mv-hero__plane mv-hero__plane--far" data-parallax-layer="0.08" style="--hero-img:url('/assets/images/4welten-preview/general/01_MULTIVERSUM_01_UeberMich.webp')"></div>
+        <div class="mv-hero__plane mv-hero__plane--mid" data-parallax-layer="0.18" style="--hero-img:url('/assets/images/4welten-preview/general/09_html_11_general_layout3d.webp')"></div>
+        <div class="mv-hero__glow"></div>
+        <div class="mv-hero__vignette"></div>
+      </div>
+
+      <div class="mv-hero__content">
+        <p class="mv-kicker">MULTIVERSUM · Mix · Strategie · Begeisterung</p>
+        <h1 id="hero-title" class="mv-hero__title">
+          Digitale Welten. Ein Portfolio.<br />
+          <em>Unendliche</em> Möglichkeiten.
+        </h1>
+        <p class="mv-hero__lead">Vier Welten. Ein Auftritt. Die passende Wirkung für jedes Vorhaben.</p>
+        <div class="mv-hero__actions">
+          <a class="mv-btn mv-btn--primary" href="/design-test-v2/multiversum#welten" target="_top">Welten entdecken</a>
+          <a class="mv-btn mv-btn--ghost" href="/design-test-v2/multiversum#werke" target="_top">Ausgewählte Werke</a>
+        </div>
+
+        <div class="mv-world-picker" role="navigation" aria-label="Welt wechseln">
+          <a class="mv-world-picker__item is-active" href="/design-test-v2/multiversum" target="_top" aria-current="page">
+            <span class="mv-world-picker__dot" style="--dot:#ff59b2"></span>
+            Multiversum
+          </a>
+          <a class="mv-world-picker__item" href="/design-test-v2/nexora" target="_top">
+            <span class="mv-world-picker__dot" style="--dot:#8ec5ff"></span>
+            Nexora
+          </a>
+          <a class="mv-world-picker__item" href="/design-test-v2/professional" target="_top">
+            <span class="mv-world-picker__dot" style="--dot:#e8e4dc"></span>
+            Professional
+          </a>
+          <a class="mv-world-picker__item" href="/design-test-v2/freiraum" target="_top">
+            <span class="mv-world-picker__dot" style="--dot:#c4ef17"></span>
+            Freiraum
+          </a>
+        </div>
+      </div>
+
+      <a class="mv-hero__scroll" href="/design-test-v2/multiversum#welten" target="_top" aria-label="Weiter scrollen">
+        <span></span>
+      </a>
+    </section>
+
+    <!-- 2. Interactive four-world selection -->
+    <section class="mv-section mv-worlds" id="welten" aria-labelledby="welten-title">
+      <div class="mv-wrap">
+        <header class="mv-section__head">
+          <p class="mv-kicker">Vier Perspektiven</p>
+          <h2 id="welten-title">Wähle die Welt, die zu deinem Vorhaben passt.</h2>
+          <p class="mv-lead">Hinter MULTIVERSUM stehen vier Welten mit eigener Haltung. Gemeinsam bilden sie ein System, das Marken nicht nur zeigen, sondern verständlich führen und Wirkung erzeugen soll.</p>
+        </header>
+
+        <div class="mv-worlds__grid" data-world-grid>
+          <a class="mv-world-card is-current" href="/design-test-v2/multiversum" target="_top" data-world-card="multiversum" aria-current="page">
+            <div class="mv-world-card__media" style="--card-img:url('/assets/images/4welten-preview/general/05_MULTIVERSUM_05_Projekte.webp')"></div>
+            <div class="mv-world-card__body">
+              <span class="mv-world-card__tag" style="--tag:#ff59b2">Aktuell</span>
+              <h3>MULTIVERSUM</h3>
+              <p>Der übergeordnete Rahmen: Strategie, Technologie, Design und Umsetzung unter einem Dach.</p>
+              <span class="mv-world-card__cta">Im Multiversum bleiben</span>
+            </div>
+          </a>
+
+          <a class="mv-world-card" href="/design-test-v2/nexora" target="_top" data-world-card="nexora">
+            <div class="mv-world-card__media" style="--card-img:url('/assets/images/4welten-preview/nexora/03_NEXORA_03_Projekte.webp')"></div>
+            <div class="mv-world-card__body">
+              <span class="mv-world-card__tag" style="--tag:#8ec5ff">Virtuell · AI · Zukunft</span>
+              <h3>NEXORA</h3>
+              <p>Digital Marketing zwischen Strategie, Technologie und Zukunft — Systeme denken, Wirkung messen.</p>
+              <span class="mv-world-card__cta">Nexora öffnen</span>
+            </div>
+          </a>
+
+          <a class="mv-world-card" href="/design-test-v2/professional" target="_top" data-world-card="professional">
+            <div class="mv-world-card__media" style="--card-img:url('/assets/images/4welten-preview/professional/03_PROFESSIONAL_03_Projekte.webp')"></div>
+            <div class="mv-world-card__body">
+              <span class="mv-world-card__tag" style="--tag:#c8c2b6">Klar · Strategisch · Wirkungsvoll</span>
+              <h3>PROFESSIONAL</h3>
+              <p>Marketing mit Klarheit, Struktur und messbarer Wirkung — verlässlich und präzise.</p>
+              <span class="mv-world-card__cta">Professional öffnen</span>
+            </div>
+          </a>
+
+          <a class="mv-world-card" href="/design-test-v2/freiraum" target="_top" data-world-card="freiraum">
+            <div class="mv-world-card__media" style="--card-img:url('/assets/images/4welten-preview/freiraum/03_FREIRAUM_03_Projekte.webp')"></div>
+            <div class="mv-world-card__body">
+              <span class="mv-world-card__tag" style="--tag:#c4ef17">Kreativ · Emotional · Nahbar</span>
+              <h3>FREIRAUM</h3>
+              <p>Marketing mit Herz, Ideen und echter Begeisterung — Atmosphäre, Storytelling, Charakter.</p>
+              <span class="mv-world-card__cta">Freiraum öffnen</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Galaxy Walk teaser -->
+    <section class="mv-section mv-galaxy" id="galaxy" aria-labelledby="galaxy-title">
+      <div class="mv-wrap mv-galaxy__layout">
+        <div class="mv-galaxy__copy">
+          <p class="mv-kicker">Spezialmodul</p>
+          <h2 id="galaxy-title">Galaxy Walk — der immersive Einstieg.</h2>
+          <p class="mv-lead">Auf der Live-Seite ist Galaxy Walk der räumliche Einstieg ins Multiversum: eine begehbare Galaxie, darunter klar strukturierte Inhalte zu Projekten, Leistungen und Kontakt.</p>
+          <p class="mv-prose">In diesem Design-Test liegt das Modul als Teaser bereit. Du kannst die originale Galaxy-Gang-Datei öffnen oder später als iframe einbinden.</p>
+          <div class="mv-galaxy__actions">
+            <a class="mv-btn mv-btn--primary" href="/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html" target="_blank" rel="noopener noreferrer">Galaxy Walk öffnen</a>
+            <a class="mv-btn mv-btn--ghost" href="/design-test-v2/multiversum" target="_top">Zurück zur Übersicht</a>
+          </div>
+          <p class="mv-galaxy__note"><code>assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html</code></p>
+        </div>
+        <figure class="mv-galaxy__frame">
+          <img
+            src="/assets/images/4welten-preview/general/09_html_11_general_layout3d.webp"
+            alt="Räumliche Multiversum-Visualisierung als Galaxy-Walk-Teaser"
+            width="960"
+            height="720"
+            loading="lazy"
+          />
+          <figcaption>Teaser · Live-Modul: Galaxy Walk</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 4. Short Alex presentation -->
+    <section class="mv-section mv-alex" id="alex" aria-labelledby="alex-title">
+      <div class="mv-wrap mv-alex__layout">
+        <figure class="mv-alex__portrait">
+          <img
+            src="/assets/images/4welten-preview/general/MULTIVERSUM%20PROFILBILD%20f%C3%BCr%20HOME%20und%20Kontakt.png"
+            alt="Alex Lamberti"
+            width="640"
+            height="800"
+            loading="lazy"
+          />
+        </figure>
+        <div class="mv-alex__copy">
+          <p class="mv-kicker">Über Alex</p>
+          <h2 id="alex-title">Ich verbinde Markenverständnis, digitale Präzision und echte Umsetzungskraft.</h2>
+          <p class="mv-prose">MULTIVERSUM vereint die Stärken aller Welten: die technologische Klarheit von NEXORA, die professionelle Präzision von PROFESSIONAL und die kreative Energie von FREIRAUM — abgestimmt auf Ihr Projekt.</p>
+          <p class="mv-prose">So entsteht ein Auftritt, der nicht nur visuell überzeugt, sondern inhaltlich passt: strategisch fundiert, menschlich verständlich und mit echter Umsetzungskraft.</p>
+          <p class="mv-prose">Seit 2024 arbeite ich als Key-Account- und Marketing-Spezialist. Mein Hintergrund im Visual Merchandising prägt den Blick für Wirkung, Atmosphäre und klare Botschaften.</p>
+          <ul class="mv-alex__pillars">
+            <li>
+              <strong>Strategie &amp; Struktur</strong>
+              <span>Digitale Projekte vom Ziel her denken — klar aufgebaut, verständlich geführt.</span>
+            </li>
+            <li>
+              <strong>Technologie &amp; Tools</strong>
+              <span>Offen für moderne Tools, KI-Unterstützung und Automatisierung.</span>
+            </li>
+            <li>
+              <strong>Sichtbarkeit &amp; Wirkung</strong>
+              <span>SEO, Content und Conversion — damit Marketing gefunden wird und handelt.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Selected works -->
+    <section class="mv-section mv-works" id="werke" aria-labelledby="werke-title">
+      <div class="mv-wrap">
+        <header class="mv-section__head">
+          <p class="mv-kicker">Ausgewählte Werke</p>
+          <h2 id="werke-title">Projekte mit klarer Handschrift — aus allen Welten.</h2>
+          <p class="mv-lead">Websites, Leadformulare und digitale Visitenkarten. Echte Auftritte, echte Kunden.</p>
+        </header>
+
+        <div class="mv-works__rail" data-works-rail>
+          <a class="mv-work" href="https://genialbau.ch/" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/05_MULTIVERSUM_05_Projekte.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Website</span>
+              <strong>genialbau.ch</strong>
+              <p>Hochwertiger Webauftritt mit Fokus auf Vertrauen, starke Bild- und Videowelt sowie klare Leistungsdarstellung.</p>
+            </div>
+          </a>
+          <a class="mv-work" href="https://gallace-all-in-maler.ch/" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/06_html_08_general_web.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Website</span>
+              <strong>gallace-all-in-maler.ch</strong>
+              <p>Klar strukturierter Auftritt für ein lokales KMU mit Fokus auf Dienstleistungen und Kontaktaufnahme.</p>
+            </div>
+          </a>
+          <a class="mv-work" href="https://awarillo.ch/" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/07_html_09_general_seo.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Website</span>
+              <strong>awarillo.ch</strong>
+              <p>Digitaler Markenauftritt mit reduzierter visueller Linie und klarer Wiedererkennung.</p>
+            </div>
+          </a>
+          <a class="mv-work" href="https://chesa-cherma.ch/" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/08_html_10_general_print.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Website</span>
+              <strong>chesa-cherma.ch</strong>
+              <p>Atmosphärischer Auftritt mit starker Bildsprache rund um Erlebnis und Aufenthalt.</p>
+            </div>
+          </a>
+          <a class="mv-work" href="https://lbmm.ch/" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/10_html_12_general_present.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Website</span>
+              <strong>lbmm.ch</strong>
+              <p>Klare Struktur, modernes Design und hochwertige Gesamtwirkung.</p>
+            </div>
+          </a>
+          <a class="mv-work" href="https://360clean.ch/offertenformular/" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/05_html_07_general_form.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Formular</span>
+              <strong>360clean.ch</strong>
+              <p>Mehrstufiges Offertenformular mit geführtem Anfrageprozess.</p>
+            </div>
+          </a>
+          <a class="mv-work" href="/assets/projects/leadformulare/sanitrend.html" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/03_MULTIVERSUM_03_Leistungen.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Leadformular</span>
+              <strong>Sanitrend</strong>
+              <p>Mehrstufiges Leadformular für Sanitär und Sanierung — conversion-orientiert.</p>
+            </div>
+          </a>
+          <a class="mv-work" href="/assets/projects/leadformulare/dein-umzug-deal.html" target="_blank" rel="noopener noreferrer">
+            <img src="/assets/images/4welten-preview/general/02_MULTIVERSUM_02_KompetenzenExpertise.webp" alt="" loading="lazy" width="640" height="400" />
+            <div class="mv-work__meta">
+              <span class="mv-work__world">Leadformular</span>
+              <strong>Dein Umzug Deal</strong>
+              <p>Geführtes Umzugsformular mit klarer Schrittfolge und Vertrauenselementen.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Visual connection between worlds -->
+    <section class="mv-section mv-nexus" id="nexus" aria-labelledby="nexus-title">
+      <div class="mv-wrap">
+        <header class="mv-section__head mv-section__head--center">
+          <p class="mv-kicker">Verbindung</p>
+          <h2 id="nexus-title">Vier Welten. Ein System.</h2>
+          <p class="mv-lead">Ob Website, Leadformular, SEO, Branding oder Präsentation — ich denke ganzheitlich: Positionierung, Nutzerführung, Gestaltung und Technik greifen ineinander.</p>
+        </header>
+
+        <div class="mv-nexus__orbit" data-nexus-orbit aria-hidden="true">
+          <div class="mv-nexus__core">
+            <img src="/assets/images/4welten-preview/general/01_MULTIVERSUM_01_UeberMich.webp" alt="" loading="lazy" width="320" height="320" />
+            <span>MULTIVERSUM</span>
+          </div>
+          <a class="mv-nexus__node mv-nexus__node--nx" href="/design-test-v2/nexora" target="_top">NEXORA</a>
+          <a class="mv-nexus__node mv-nexus__node--pro" href="/design-test-v2/professional" target="_top">PROFESSIONAL</a>
+          <a class="mv-nexus__node mv-nexus__node--fr" href="/design-test-v2/freiraum" target="_top">FREIRAUM</a>
+          <a class="mv-nexus__node mv-nexus__node--mv" href="/design-test-v2/multiversum" target="_top">MIX</a>
+        </div>
+
+        <ul class="mv-nexus__list">
+          <li>Vier Welten unter einem gemeinsamen Portfolio-Dach</li>
+          <li>Strategie, Design und Umsetzung als zusammenhängendes System</li>
+          <li>Websites und digitale Auftritte mit klarer Nutzerführung</li>
+          <li>Inhalte und Struktur, die Orientierung und Vertrauen schaffen</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Central contact -->
+    <section class="mv-section mv-contact" id="kontakt" aria-labelledby="kontakt-title">
+      <div class="mv-wrap mv-contact__layout">
+        <div class="mv-contact__copy">
+          <p class="mv-kicker">Kontakt</p>
+          <h2 id="kontakt-title">Bereit für den nächsten Schritt.</h2>
+          <p class="mv-lead"><strong>Lassen Sie uns ins Gespräch kommen.</strong></p>
+          <p class="mv-prose">Ich freue mich auf den Austausch zu Website, Markenauftritt oder Sichtbarkeit — schnell, verbindlich und unkompliziert.</p>
+
+          <dl class="mv-contact__facts">
+            <div>
+              <dt>E-Mail</dt>
+              <dd><a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a></dd>
+            </div>
+            <div>
+              <dt>Telefon</dt>
+              <dd><a href="tel:+41796678211">079 667 82 11</a></dd>
+            </div>
+            <div>
+              <dt>Adresse</dt>
+              <dd>Schulweg 603, 5324 Full-Reuenthal, Schweiz</dd>
+            </div>
+          </dl>
+
+          <div class="mv-contact__actions">
+            <a class="mv-btn mv-btn--primary" href="mailto:alex.lamberti@hotmail.ch">E-Mail schreiben</a>
+            <a class="mv-btn mv-btn--ghost" href="tel:+41796678211">Anrufen</a>
+          </div>
+        </div>
+        <figure class="mv-contact__visual">
+          <img
+            src="/assets/images/4welten-preview/general/07_MULTIVERSUM_07_Kontakt.webp"
+            alt="Kontakt — Multiversum"
+            width="720"
+            height="900"
+            loading="lazy"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <!-- 8. Cosmic closing -->
+    <section class="mv-closing" id="closing" aria-labelledby="closing-title">
+      <div class="mv-wrap mv-closing__inner">
+        <p class="mv-kicker">Weiterreisen</p>
+        <h2 id="closing-title">Die Reise endet nicht hier.</h2>
+        <p class="mv-lead">Wechsle die Welt — oder bleib im Multiversum und starte das Gespräch.</p>
+        <div class="mv-closing__worlds">
+          <a href="/design-test-v2/multiversum" target="_top">Multiversum</a>
+          <a href="/design-test-v2/nexora" target="_top">Nexora</a>
+          <a href="/design-test-v2/professional" target="_top">Professional</a>
+          <a href="/design-test-v2/freiraum" target="_top">Freiraum</a>
+        </div>
+        <img
+          class="mv-closing__art"
+          src="/assets/images/4welten-preview/general/09_MULTIVERSUM_09_BereitFuerDenNaechstenSchritt.webp"
+          alt=""
+          width="1200"
+          height="480"
+          loading="lazy"
+        />
+      </div>
+    </section>
+  </main>
+
+  <footer class="mv-footer">
+    <div class="mv-wrap mv-footer__grid">
+      <div class="mv-footer__brand">
+        <p class="mv-footer__logo">Alex <span>Lamberti</span></p>
+        <p>Vier Welten. Eine klare digitale Sprache. Das Multiversum als atmosphärischer Abschluss der Reise.</p>
+      </div>
+      <div>
+        <h3>Kontakt</h3>
+        <a href="tel:+41796678211">079 667 82 11</a>
+        <a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a>
+        <p>Schulweg 603<br />5324 Full-Reuenthal<br />Schweiz</p>
+      </div>
+      <div>
+        <h3>Welten</h3>
+        <a href="/design-test-v2/multiversum" target="_top">Multiversum</a>
+        <a href="/design-test-v2/nexora" target="_top">Nexora</a>
+        <a href="/design-test-v2/professional" target="_top">Professional</a>
+        <a href="/design-test-v2/freiraum" target="_top">Freiraum</a>
+      </div>
+      <div>
+        <h3>Seiten</h3>
+        <a href="/design-test-v2/multiversum#welten" target="_top">Welten</a>
+        <a href="/design-test-v2/multiversum#werke" target="_top">Werke</a>
+        <a href="/design-test-v2/multiversum#kontakt" target="_top">Kontakt</a>
+        <a href="/impressum" target="_top">Impressum</a>
+        <a href="/datenschutz" target="_top">Datenschutz</a>
+      </div>
+    </div>
+    <div class="mv-wrap mv-footer__copy">
+      <p>© <span data-v2-year>2026</span> Alex Lamberti · MULTIVERSUM · Design Test V2</p>
+      <p class="mv-footer__hint">Preview · noindex</p>
+    </div>
+  </footer>
+
+  <script src="/assets/design-test-v2/shared/v2-bridge.js?v=20260723v2" defer></script>
+  <script src="/assets/design-test-v2/worlds/multiversum/multiversum.js?v=20260723v2" defer></script>
+</body>
+</html>

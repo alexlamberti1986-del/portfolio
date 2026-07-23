@@ -10,7 +10,14 @@
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
   try {
-    if (document.documentElement.getAttribute("data-design-test") === "1") {
+    if (document.documentElement.getAttribute("data-design-test-v2") === "1") {
+      FRAME_PAGES = [
+        "/design-test-v2/worlds/multiversum/index.html?v=20260723v2",
+        "/design-test-v2/worlds/nexora/index.html?v=20260723v2",
+        "/design-test-v2/worlds/professional/index.html?v=20260723v2",
+        "/design-test-v2/worlds/freiraum/index.html?v=20260723v2",
+      ];
+    } else if (document.documentElement.getAttribute("data-design-test") === "1") {
       FRAME_PAGES = [
         "/design-test/worlds/multiversum.html?v=20260722tpl4",
         "/design-test/worlds/nexora.html?v=20260722tpl4",
@@ -630,9 +637,15 @@
 
   function buildShellPath(worldIdx, chapter) {
     if (Router && typeof Router.buildPath === "function") {
+      var designTestV2 =
+        document.documentElement.getAttribute("data-design-test-v2") === "1";
       var designTest =
+        !designTestV2 &&
         document.documentElement.getAttribute("data-design-test") === "1";
-      return Router.buildPath(worldIdx, chapter, { designTest: designTest });
+      return Router.buildPath(worldIdx, chapter, {
+        designTest: designTest,
+        designTestV2: designTestV2,
+      });
     }
     var chapterPaths = {
       home: "/",

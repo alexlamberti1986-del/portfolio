@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Alex Lamberti – World Design Test V2 (Preview)</title>
+  <link rel="icon" href="/assets/favicon/favicon.ico" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Be+Vietnam+Pro:wght@600;700&family=Marcellus&family=Inter:wght@400;600&display=swap" />
+  <style>
+    :root { color-scheme: dark; --bg:#05060c; --fg:#eef3ff; --muted:#aab5cf; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh;
+      font-family: Inter, system-ui, sans-serif;
+      background:
+        radial-gradient(900px 480px at 8% -8%, rgba(255,89,178,.14), transparent 55%),
+        radial-gradient(800px 420px at 92% 0%, rgba(142,197,255,.12), transparent 52%),
+        radial-gradient(700px 380px at 50% 100%, rgba(255,198,111,.08), transparent 50%),
+        var(--bg);
+      color: var(--fg); padding: 32px 20px 48px;
+    }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    .badge {
+      display: inline-block; padding: 6px 12px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14); font-size: 12px;
+      letter-spacing: .08em; text-transform: uppercase; color: #9fd4ff; margin-bottom: 16px;
+    }
+    h1 { font-family: Outfit, sans-serif; font-size: clamp(2rem,4vw,3.1rem); line-height: 1.05; margin: 0 0 12px; }
+    .lead { max-width: 70ch; color: var(--muted); font-size: 1.05rem; line-height: 1.65; margin: 0 0 20px; }
+    .notice {
+      padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255,89,178,.28);
+      background: rgba(255,89,178,.08); color: #ffd6ec; margin-bottom: 28px; font-size: .95rem;
+    }
+    .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+    .card {
+      display: flex; flex-direction: column; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12); min-height: 300px;
+      text-decoration: none; color: inherit; transition: transform .2s ease;
+      background: #0a0e18;
+    }
+    .card:hover { transform: translateY(-4px); }
+    .card .thumb { height: 132px; background-size: cover; background-position: center; }
+    .card .body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .card h2 { margin: 0; font-size: 1.35rem; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.55; flex: 1; font-size: .94rem; }
+    .card .cta { align-self: flex-start; padding: 10px 14px; font-weight: 700; font-size: .88rem; }
+    .mv { border-radius: 28px 8px 28px 8px; }
+    .mv h2 { font-family: Outfit, sans-serif; }
+    .mv .thumb { background-image: url("/assets/images/4welten-preview/general/05_MULTIVERSUM_05_Projekte.webp"); }
+    .mv .cta { background: #ff59b2; color: #12010a; border-radius: 999px; }
+    .nx { border-radius: 4px; border-color: rgba(142,197,255,.35); }
+    .nx h2 { font-family: "Be Vietnam Pro", sans-serif; letter-spacing: .04em; text-transform: uppercase; font-size: 1.1rem; }
+    .nx .thumb { background-image: url("/assets/images/4welten-preview/nexora/03_NEXORA_03_Projekte.webp"); clip-path: polygon(0 0,100% 0,100% 88%,0 100%); }
+    .nx .cta { background: #8ec5ff; color: #041018; border-radius: 2px; font-family: ui-monospace, monospace; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+    .pro { background: #f7f7f5; color: #111; border-color: rgba(17,17,17,.12); border-radius: 0; }
+    .pro h2 { font-family: Inter, sans-serif; font-weight: 600; letter-spacing: -.02em; }
+    .pro .thumb { background-image: url("/assets/images/4welten-preview/professional/03_PROFESSIONAL_03_Projekte.webp"); height: 160px; }
+    .pro p { color: #6a6a6a; }
+    .pro .cta { background: #111; color: #fff; border-radius: 0; }
+    .fr { background: #16131a; border-radius: 40% 8px 28px 12px / 18% 28px 12px 40%; border-color: rgba(255,198,111,.35); }
+    .fr h2 { font-family: Marcellus, serif; font-weight: 400; font-size: 1.55rem; }
+    .fr .thumb { background-image: url("/assets/images/4welten-preview/freiraum/03_FREIRAUM_03_Projekte.webp"); border-radius: 0 40px 0 0; }
+    .fr p { color: #cecece; }
+    .fr .cta { background: #ffc66f; color: #1a1208; border-radius: 999px 4px 999px 4px; }
+    .meta { margin-top: 28px; color: var(--muted); font-size: .92rem; line-height: 1.6; }
+    .meta a { color: #9fd4ff; }
+    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="badge">Preview V2 · nicht Live</div>
+    <h1>World Design Test Version 2</h1>
+    <p class="lead">
+      Vier vollständig eigenständige Welten mit eigener Struktur, Typografie und Inszenierung —
+      Template-Mapping neu: MULTIVERSUM ← Vibe · NEXORA ← Xable · PROFESSIONAL ← Fabels · FREIRAUM ← Portio.
+    </p>
+    <div class="notice">
+      /design-test (V1) bleibt unverändert zum Vergleich.<br />
+      Live-Domain <strong>alexlamberti.ch</strong> wird nicht angefasst. Feature-Flag: nur Preview/Local.
+    </div>
+
+    <div class="grid">
+      <a class="card mv" href="/design-test-v2/multiversum">
+        <div class="thumb" role="presentation"></div>
+        <div class="body">
+          <h2>MULTIVERSUM</h2>
+          <p>Vibe + kosmische Galaxy-Inszenierung · immersiver Eingang.</p>
+          <span class="cta">Universum öffnen</span>
+        </div>
+      </a>
+      <a class="card nx" href="/design-test-v2/nexora">
+        <div class="thumb" role="presentation"></div>
+        <div class="body">
+          <h2>NEXORA</h2>
+          <p>Xable-Struktur · NEXORA Cyan/Blau · System-Interface.</p>
+          <span class="cta">System booten</span>
+        </div>
+      </a>
+      <a class="card pro" href="/design-test-v2/professional">
+        <div class="thumb" role="presentation"></div>
+        <div class="body">
+          <h2>PROFESSIONAL</h2>
+          <p>Fabels · hell, editorial, grosszügige Bildflächen.</p>
+          <span class="cta">Studio öffnen</span>
+        </div>
+      </a>
+      <a class="card fr" href="/design-test-v2/freiraum">
+        <div class="thumb" role="presentation"></div>
+        <div class="body">
+          <h2>FREIRAUM</h2>
+          <p>Portio · asymmetrisch, persönlich, Collage.</p>
+          <span class="cta">Atelier betreten</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="meta">
+      <p>Branch: <code>feature/world-design-v2</code> · Vergleich V1: <a href="/design-test/">/design-test</a></p>
+    </div>
+  </div>
+</body>
+</html>

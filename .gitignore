@@ -45,3 +45,9 @@ Portfolio-App/app/assets/multiversum/
 Portfolio-App/app/assets/flight-test/
 Portfolio-App/app/assets/world-images/
 _tmp*/
+artifacts/world-design-v2/.chrome-profile/
+artifacts/world-design-v2/.pw/
+.tools/
+_commit_search.json
+_footer_all.txt
+_s6help_out.txt
