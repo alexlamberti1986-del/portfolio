@@ -9,13 +9,26 @@
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
+  var isDesignTestV2 = false;
+  var V2_WORLD_SLUGS = ["multiversum", "nexora", "professional", "freiraum"];
+  var V2_FRAME_VER = "20260726live1";
   try {
-    if (document.documentElement.getAttribute("data-design-test-v2") === "1") {
+    isDesignTestV2 = document.documentElement.getAttribute("data-design-test-v2") === "1";
+    if (
+      !isDesignTestV2 &&
+      (document.documentElement.getAttribute("data-world-default-v2") === "1" ||
+        window.__WORLD_DEFAULT_V2 === true)
+    ) {
+      isDesignTestV2 = true;
+      document.documentElement.setAttribute("data-design-test-v2", "1");
+      document.documentElement.classList.add("dt-v2-pure-templates");
+    }
+    if (isDesignTestV2) {
       FRAME_PAGES = [
-        "/design-test-v2/worlds/multiversum/index.html?v=20260723v2",
-        "/design-test-v2/worlds/nexora/index.html?v=20260723v2",
-        "/design-test-v2/worlds/professional/index.html?v=20260723v2",
-        "/design-test-v2/worlds/freiraum/index.html?v=20260723v2",
+        "/design-test-v2/worlds/multiversum/index.html?v=" + V2_FRAME_VER,
+        "/design-test-v2/worlds/nexora/index.html?v=" + V2_FRAME_VER,
+        "/design-test-v2/worlds/professional/index.html?v=" + V2_FRAME_VER,
+        "/design-test-v2/worlds/freiraum/index.html?v=" + V2_FRAME_VER,
       ];
     } else if (document.documentElement.getAttribute("data-design-test") === "1") {
       FRAME_PAGES = [
@@ -28,6 +41,49 @@
   } catch (eDtFrames) {}
   var SHELL_PAGES = ["3-Welten-Master-iframe.html", "index.html", ""];
   var Router = window.WeltenShellRouter;
+
+  function v2FrameSrc(i, chapter) {
+    var slug = V2_WORLD_SLUGS[i] || "multiversum";
+    /* Offerte is an in-page section — always load the world one-pager */
+    return "/design-test-v2/worlds/" + slug + "/index.html?v=" + V2_FRAME_VER;
+  }
+
+  function v2ChapterHash(chapter, worldKey) {
+    var w = String(worldKey || "").toLowerCase();
+    if (w === "general" || w === "multiversum" || !w) {
+      if (chapter === "projects") return "werke";
+      if (chapter === "contact") return "kontakt";
+      if (chapter === "about") return "alex";
+      if (chapter === "leistungen") return "leistungen";
+      if (chapter === "offerte") return "offerte";
+      return "";
+    }
+    if (w === "nexora") {
+      if (chapter === "projects") return "projects";
+      if (chapter === "contact") return "kontakt";
+      if (chapter === "about") return "experience";
+      if (chapter === "leistungen") return "services";
+      if (chapter === "offerte") return "offerte";
+      return "";
+    }
+    if (w === "professional" || w === "vertex") {
+      if (chapter === "projects") return "projects";
+      if (chapter === "contact") return "kontakt";
+      if (chapter === "about") return "values";
+      if (chapter === "leistungen") return "services";
+      if (chapter === "offerte") return "offerte";
+      return "";
+    }
+    if (w === "freiraum") {
+      if (chapter === "projects") return "collage";
+      if (chapter === "contact") return "kontakt";
+      if (chapter === "about") return "about";
+      if (chapter === "leistungen") return "skills";
+      if (chapter === "offerte") return "offerte";
+      return "";
+    }
+    return "";
+  }
   var ROUTE_CHAPTER = {
     "/": "home",
     "/projekte": "projects",
@@ -35,6 +91,22 @@
     "/ueber-mich": "about",
     "/kontakt": "contact",
     "/offerte": "offerte",
+    "/werke": "projects",
+    "/cases": "projects",
+    "/referenzen": "projects",
+    "/collage": "projects",
+    "/nexus": "leistungen",
+    "/module": "leistungen",
+    "/mandate": "leistungen",
+    "/disziplinen": "leistungen",
+    "/profil": "about",
+    "/core": "about",
+    "/haltung": "about",
+    "/portrait": "about",
+    "/signal": "contact",
+    "/uplink": "contact",
+    "/gespraech": "contact",
+    "/impuls": "contact",
   };
   var WORLD_BTN_SEL = "[data-iframe]";
   var suppressingHistory = false;
@@ -382,7 +454,17 @@
     try {
       var loc = f.contentWindow.location;
       var path = loc.pathname || "";
+      var pathLower = String(path).toLowerCase();
       var file = normalizeFramePage(framePageName(path));
+      /* V2 world pages live at .../worlds/{world}/index.html|offerte.html */
+      if (isDesignTestV2 && pathLower.indexOf("/design-test-v2/worlds/") >= 0) {
+        var slug = V2_WORLD_SLUGS[i] || "multiversum";
+        if (pathLower.indexOf("/design-test-v2/worlds/" + slug + "/") < 0) return true;
+        /* Offerte lives inside index.html — migrate leftover offerte.html frames */
+        if (file === "offerte.html") return true;
+        if (file === "index.html") return false;
+        return true;
+      }
       /* Nested shell (/ oder index) — immer hart zurücksetzen */
       if (!file || file === "index.html" || file === "3-welten-master-iframe.html") {
         return true;
@@ -408,7 +490,27 @@
     resetAttempts[i] = (resetAttempts[i] || 0) + 1;
     if (resetAttempts[i] > 3) return;
     var lazy = f.getAttribute("data-lazy-src");
-    f.src = lazy || FRAME_PAGES[i];
+    if (isDesignTestV2) {
+      var src = v2FrameSrc(i, sharedChapter || "home");
+      var curSrc = "";
+      try {
+        curSrc = (f.contentWindow && f.contentWindow.location && f.contentWindow.location.href) || "";
+      } catch (eCur) {
+        curSrc = f.getAttribute("src") || f.src || "";
+      }
+      /* Never re-assign the same V2 world page — that caused Multiversum reload flicker */
+      if (v2SrcPageKey(curSrc) === v2SrcPageKey(src) || v2SrcPageKey(f.getAttribute("src") || "") === v2SrcPageKey(src)) {
+        if (frameIsReady(f) && !frameNeedsReset(f, i)) {
+          resetAttempts[i] = 0;
+          loaded[i] = true;
+          return;
+        }
+      }
+      f.setAttribute("data-lazy-src", src);
+      f.src = src;
+    } else {
+      f.src = lazy || FRAME_PAGES[i];
+    }
     loaded[i] = false;
   }
 
@@ -1104,6 +1206,10 @@
   function applyChapter(f, id) {
     var ch = CHAPTERS.indexOf(id) >= 0 ? id : "home";
     if (!f) return;
+    if (isDesignTestV2) {
+      applyChapterV2(f, ch);
+      return;
+    }
     postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
     var tries = 0;
     function tryApply() {
@@ -1127,6 +1233,74 @@
       if (++tries < 14) setTimeout(tryApply, 40);
     }
     tryApply();
+  }
+
+  function v2SrcPageKey(u) {
+    var s = String(u || "").toLowerCase();
+    var m = s.match(/\/design-test-v2\/worlds\/[^/?#]+\/(index|offerte)\.html/);
+    return m ? m[0].replace(/offerte\.html$/, "index.html") : "";
+  }
+
+  function applyChapterV2(f, ch) {
+    var idx = -1;
+    for (var i = 0; i < frames.length; i++) {
+      if (frames[i] === f) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx < 0) idx = activeIdx();
+    if (idx < 0) idx = 0;
+    var want = v2FrameSrc(idx, ch);
+    var wantKey = v2SrcPageKey(want);
+    var cur = "";
+    try {
+      cur = (f.contentWindow && f.contentWindow.location && f.contentWindow.location.href) || "";
+    } catch (eCur) {
+      cur = "";
+    }
+    var srcAttr = f.getAttribute("src") || f.src || "";
+    var lazyAttr = f.getAttribute("data-lazy-src") || "";
+    var curKey = v2SrcPageKey(cur) || v2SrcPageKey(srcAttr) || v2SrcPageKey(lazyAttr);
+    function postChapter() {
+      var worldKey = WORLD_KEYS[idx] || "general";
+      postFrame(f, { type: "portfolio-go-chapter", chapter: ch });
+      postFrame(f, {
+        type: "alex:scroll-to-section",
+        go: ch,
+        targetHash: v2ChapterHash(ch, worldKey),
+      });
+    }
+    /* Already on world index — scroll only (never reassign src → avoids reload flicker) */
+    if (wantKey && curKey === wantKey) {
+      if (!loaded[idx] && frameIsReady(f)) loaded[idx] = true;
+      postChapter();
+      return;
+    }
+    /* Same target already queued — wait for load, do not thrash f.src */
+    if (wantKey && (v2SrcPageKey(srcAttr) === wantKey || v2SrcPageKey(lazyAttr) === wantKey)) {
+      f.setAttribute("data-lazy-src", want);
+      f.addEventListener(
+        "load",
+        function () {
+          loaded[idx] = true;
+          postChapter();
+        },
+        { once: true }
+      );
+      return;
+    }
+    f.setAttribute("data-lazy-src", want);
+    loaded[idx] = false;
+    f.addEventListener(
+      "load",
+      function () {
+        loaded[idx] = true;
+        postChapter();
+      },
+      { once: true }
+    );
+    f.src = want;
   }
 
   function revealActiveFrame(i) {
@@ -1172,20 +1346,11 @@
   function signalFrameReady(f, j) {
     if (!f) return;
     try {
-      var file = normalizeFramePage(framePageName(f.contentWindow.location.pathname));
-      if (!file || file === "index.html" || file === "3-welten-master-iframe.html") {
+      /* V2 worlds are .../worlds/{slug}/index.html — must NOT treat as nested shell */
+      if (frameNeedsReset(f, j)) {
         resetFrame(j);
         return;
       }
-      try {
-        if (
-          f.contentDocument &&
-          f.contentDocument.querySelector("body > .mv4-shell-chrome, body > #mv4ShellChrome, body > .mv4-frame[data-world]")
-        ) {
-          resetFrame(j);
-          return;
-        }
-      } catch (eNest) {}
       resetAttempts[j] = 0;
     } catch (e) {}
     ensureSingleChrome();
@@ -1917,11 +2082,17 @@
   if (isLiveShell) {
     var bootRoute = parseShellRoute();
     if (typeof bootRoute.worldIdx === "number") defaultWorld = bootRoute.worldIdx;
-    /* Unterseiten-Refresh → saubere Welt-Home (kein Kapitel-Restore-Glitch / doppelte Bars) */
-    sharedChapter = "home";
-    lockRouteFromUrl(1800);
-    if (bootRoute.chapter && bootRoute.chapter !== "home") {
-      syncShellUrl(defaultWorld, "home", "replace");
+    if (isDesignTestV2) {
+      /* V2 one-pagers: Kapitel aus URL behalten (Offerte/Kontakt/Projekte) */
+      sharedChapter = bootRoute.chapter || "home";
+      lockRouteFromUrl(1800);
+    } else {
+      /* Unterseiten-Refresh → saubere Welt-Home (kein Kapitel-Restore-Glitch / doppelte Bars) */
+      sharedChapter = "home";
+      lockRouteFromUrl(1800);
+      if (bootRoute.chapter && bootRoute.chapter !== "home") {
+        syncShellUrl(defaultWorld, "home", "replace");
+      }
     }
   }
 
@@ -1950,7 +2121,7 @@
       var masterBoot = document.body.getAttribute("data-master-world") || "";
       if (masterBoot && masterBoot !== masterKey(defaultWorld)) return;
       clearSwitchLock();
-      applyShellRoute({ forceHome: true, forceWorld: false });
+      applyShellRoute({ forceHome: !isDesignTestV2, forceWorld: false });
       forceRevealActiveFrame();
       primeActiveFrame();
       ensureSingleChrome();

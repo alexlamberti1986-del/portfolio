@@ -1,0 +1,93 @@
+/* Full-bleed in-page Offerte form for design-test-v2 worlds */
+
+.v2-offerte {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(1.5rem, 4vw, 2.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.08));
+  scroll-margin-top: 5.5rem;
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+
+.v2-offerte__inner {
+  width: min(1600px, calc(100% - 1.5rem));
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.v2-offerte__head {
+  margin: 0 0 1.25rem;
+  max-width: 52rem;
+}
+
+.v2-offerte__kicker {
+  margin: 0 0 0.45rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.v2-offerte__head h2 {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.65rem, 2.6vw, 2.35rem);
+  line-height: 1.15;
+}
+
+.v2-offerte__lead {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  opacity: 0.82;
+  max-width: 48rem;
+}
+
+.v2-offerte__shell {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 480px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  overflow: hidden;
+  overflow-x: clip;
+  background: #0b1220;
+  box-sizing: border-box;
+}
+
+.v2-offerte__shell.is-loading::after {
+  content: "Formular wird geladen …";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(7, 10, 18, 0.92);
+  color: rgba(200, 210, 230, 0.85);
+  font-size: 1rem;
+  z-index: 2;
+}
+
+.v2-offerte__frame {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 480px;
+  height: 480px;
+  border: 0;
+  background: #fff;
+  vertical-align: top;
+}
+
+.v2-offerte__hint {
+  margin: 0.9rem 0 0;
+  font-size: 0.92rem;
+  opacity: 0.75;
+}
+
+.v2-offerte__hint a {
+  color: inherit;
+}

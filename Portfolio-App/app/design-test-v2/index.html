@@ -3,122 +3,648 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Alex Lamberti – World Design Test V2 (Preview)</title>
+  <meta name="robots" content="index, follow" />
+  <title>Willkommen · Alex Lamberti · Vier Welten</title>
   <link rel="icon" href="/assets/favicon/favicon.ico" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Be+Vietnam+Pro:wght@600;700&family=Marcellus&family=Inter:wght@400;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Be+Vietnam+Pro:wght@600;700&family=Marcellus&family=Source+Sans+3:wght@400;600;700&display=swap" />
   <style>
-    :root { color-scheme: dark; --bg:#05060c; --fg:#eef3ff; --muted:#aab5cf; }
+    :root {
+      color-scheme: dark;
+      --bg: #06070f;
+      --fg: #f2f5ff;
+      --muted: #a8b3cc;
+      --line: rgba(255, 255, 255, 0.12);
+      --pink: #ff59b2;
+      --cyan: #8ec5ff;
+      --gold: #ffc66f;
+    }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      margin: 0; min-height: 100vh;
-      font-family: Inter, system-ui, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.55;
+      color: var(--fg);
+      background: #05060c;
+    }
+
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .page-bg__img {
+      position: absolute;
+      inset: -6%;
       background:
-        radial-gradient(900px 480px at 8% -8%, rgba(255,89,178,.14), transparent 55%),
-        radial-gradient(800px 420px at 92% 0%, rgba(142,197,255,.12), transparent 52%),
-        radial-gradient(700px 380px at 50% 100%, rgba(255,198,111,.08), transparent 50%),
-        var(--bg);
-      color: var(--fg); padding: 32px 20px 48px;
+        url("/assets/design-test-v2/welcome-galaxy.jpg")
+        center 42% / cover no-repeat;
+      transform: scale(1.06);
+      animation: bg-drift 36s ease-in-out infinite alternate;
+      filter: saturate(1.12) contrast(1.06);
     }
-    .wrap { max-width: 1120px; margin: 0 auto; }
-    .badge {
-      display: inline-block; padding: 6px 12px; border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14); font-size: 12px;
-      letter-spacing: .08em; text-transform: uppercase; color: #9fd4ff; margin-bottom: 16px;
+    .page-bg__veil {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(105deg, rgba(4, 5, 14, 0.82) 0%, rgba(4, 5, 14, 0.48) 46%, rgba(4, 5, 14, 0.72) 100%),
+        linear-gradient(180deg, rgba(6, 8, 18, 0.28) 0%, rgba(5, 6, 14, 0.42) 42%, rgba(5, 6, 12, 0.9) 100%),
+        radial-gradient(900px 480px at 18% 12%, rgba(255, 89, 178, 0.16), transparent 58%),
+        radial-gradient(700px 420px at 88% 18%, rgba(110, 184, 255, 0.14), transparent 55%);
     }
-    h1 { font-family: Outfit, sans-serif; font-size: clamp(2rem,4vw,3.1rem); line-height: 1.05; margin: 0 0 12px; }
-    .lead { max-width: 70ch; color: var(--muted); font-size: 1.05rem; line-height: 1.65; margin: 0 0 20px; }
-    .notice {
-      padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255,89,178,.28);
-      background: rgba(255,89,178,.08); color: #ffd6ec; margin-bottom: 28px; font-size: .95rem;
+    @keyframes bg-drift {
+      from { transform: scale(1.06) translate3d(0, 0, 0); }
+      to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); }
     }
-    .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+    @media (prefers-reduced-motion: reduce) {
+      .page-bg__img { animation: none; }
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: min(1120px, calc(100% - 2.5rem));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 3.5rem 0 1rem;
+      position: relative;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 8% -8% auto auto;
+      width: min(48vw, 520px);
+      height: min(48vw, 520px);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 89, 178, 0.14), transparent 68%);
+      pointer-events: none;
+      filter: blur(8px);
+      animation: glow-pulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes glow-pulse {
+      from { opacity: 0.55; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.08); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before { animation: none; }
+    }
+    .brand {
+      font-family: Outfit, sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.1rem, 5.8vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin: 0 0 1rem;
+      max-width: 18ch;
+    }
+    /* Verlauf mit allen drei Weltfarben: Pink (Multiversum) · Blau (Nexora) · Gelb (Freiraum) */
+    .brand span,
+    .welcome-footer__brand strong {
+      background: linear-gradient(
+        100deg,
+        var(--pink) 0%,
+        #ff8ac9 16%,
+        #c9a8ff 34%,
+        var(--cyan) 54%,
+        #bfe0c9 72%,
+        var(--gold) 92%,
+        #ffe0a8 100%
+      );
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: brand-flow 14s ease-in-out infinite alternate;
+    }
+    @keyframes brand-flow {
+      from { background-position: 0% 50%; }
+      to { background-position: 100% 50%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .brand span,
+      .welcome-footer__brand strong { animation: none; }
+    }
+    .hero h1 {
+      font-family: Outfit, sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.35rem, 2.8vw, 1.9rem);
+      line-height: 1.25;
+      margin: 0 0 1rem;
+      max-width: 22ch;
+      color: #e8eefc;
+    }
+    .hero-lead {
+      margin: 0 0 0.35rem;
+      max-width: 42ch;
+      color: var(--muted);
+      font-size: clamp(1.02rem, 1.6vw, 1.15rem);
+      line-height: 1.65;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.35rem;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--pink);
+      color: #14010a;
+      box-shadow: 0 0 28px rgba(255, 89, 178, 0.32);
+    }
+    .btn-ghost {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .section { padding: 0.75rem 0 3.5rem; }
+    .section-head { margin-bottom: 1.35rem; max-width: 56ch; }
+    .section-head h2 {
+      font-family: Outfit, sans-serif;
+      font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+      margin: 0 0 0.55rem;
+    }
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 1.02rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.1rem;
+    }
     .card {
-      display: flex; flex-direction: column; overflow: hidden;
-      border: 1px solid rgba(255,255,255,.12); min-height: 300px;
-      text-decoration: none; color: inherit; transition: transform .2s ease;
-      background: #0a0e18;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      min-height: 270px;
+      text-decoration: none;
+      color: inherit;
+      background: rgba(10, 14, 24, 0.82);
+      backdrop-filter: blur(10px);
+      transition: transform 0.22s ease, border-color 0.22s ease;
     }
     .card:hover { transform: translateY(-4px); }
-    .card .thumb { height: 132px; background-size: cover; background-position: center; }
-    .card .body { padding: 18px 20px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .card h2 { margin: 0; font-size: 1.35rem; }
-    .card p { margin: 0; color: var(--muted); line-height: 1.55; flex: 1; font-size: .94rem; }
-    .card .cta { align-self: flex-start; padding: 10px 14px; font-weight: 700; font-size: .88rem; }
+    .card .thumb {
+      height: 118px;
+      background-size: cover;
+      background-position: center;
+    }
+    .card .body {
+      padding: 1.1rem 1.2rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      flex: 1;
+    }
+    .card h3 { margin: 0; font-size: 1.2rem; }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: 1;
+      font-size: 0.94rem;
+    }
+    .card .cta {
+      align-self: flex-start;
+      padding: 0.55rem 0.9rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
     .mv { border-radius: 28px 8px 28px 8px; }
-    .mv h2 { font-family: Outfit, sans-serif; }
+    .mv h3 { font-family: Outfit, sans-serif; }
     .mv .thumb { background-image: url("/assets/images/4welten-preview/general/05_MULTIVERSUM_05_Projekte.webp"); }
-    .mv .cta { background: #ff59b2; color: #12010a; border-radius: 999px; }
-    .nx { border-radius: 4px; border-color: rgba(142,197,255,.35); }
-    .nx h2 { font-family: "Be Vietnam Pro", sans-serif; letter-spacing: .04em; text-transform: uppercase; font-size: 1.1rem; }
-    .nx .thumb { background-image: url("/assets/images/4welten-preview/nexora/03_NEXORA_03_Projekte.webp"); clip-path: polygon(0 0,100% 0,100% 88%,0 100%); }
-    .nx .cta { background: #8ec5ff; color: #041018; border-radius: 2px; font-family: ui-monospace, monospace; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
-    .pro { background: #f7f7f5; color: #111; border-color: rgba(17,17,17,.12); border-radius: 0; }
-    .pro h2 { font-family: Inter, sans-serif; font-weight: 600; letter-spacing: -.02em; }
-    .pro .thumb { background-image: url("/assets/images/4welten-preview/professional/03_PROFESSIONAL_03_Projekte.webp"); height: 160px; }
-    .pro p { color: #6a6a6a; }
+    .mv .cta { background: var(--pink); color: #12010a; border-radius: 999px; }
+    .mv:hover { border-color: rgba(255, 89, 178, 0.45); }
+    .nx { border-radius: 4px; border-color: rgba(142, 197, 255, 0.28); }
+    .nx h3 {
+      font-family: "Be Vietnam Pro", sans-serif;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 1rem;
+    }
+    .nx .thumb {
+      background-image: url("/assets/images/4welten-preview/nexora/03_NEXORA_03_Projekte.webp");
+      clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+    }
+    .nx .cta {
+      background: var(--cyan);
+      color: #041018;
+      border-radius: 2px;
+      font-family: ui-monospace, monospace;
+      font-size: 0.8125rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nx:hover { border-color: rgba(142, 197, 255, 0.55); }
+    .pro { background: #f4f4f1; color: #111; border-color: rgba(17, 17, 17, 0.12); border-radius: 0; }
+    .pro h3 { font-family: "Source Sans 3", sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+    .pro .thumb {
+      background-image: url("/assets/images/4welten-preview/professional/03_PROFESSIONAL_03_Projekte.webp");
+      height: 132px;
+    }
+    .pro p { color: #5f5f5f; }
     .pro .cta { background: #111; color: #fff; border-radius: 0; }
-    .fr { background: #16131a; border-radius: 40% 8px 28px 12px / 18% 28px 12px 40%; border-color: rgba(255,198,111,.35); }
-    .fr h2 { font-family: Marcellus, serif; font-weight: 400; font-size: 1.55rem; }
-    .fr .thumb { background-image: url("/assets/images/4welten-preview/freiraum/03_FREIRAUM_03_Projekte.webp"); border-radius: 0 40px 0 0; }
+    .pro:hover { border-color: rgba(17, 17, 17, 0.35); }
+    .fr {
+      background: #16131a;
+      border-radius: 40% 8px 28px 12px / 18% 28px 12px 40%;
+      border-color: rgba(255, 198, 111, 0.32);
+    }
+    .fr h3 { font-family: Marcellus, serif; font-weight: 400; font-size: 1.4rem; }
+    .fr .thumb {
+      background-image: url("/assets/images/4welten-preview/freiraum/03_FREIRAUM_03_Projekte.webp");
+      border-radius: 0 40px 0 0;
+    }
     .fr p { color: #cecece; }
-    .fr .cta { background: #ffc66f; color: #1a1208; border-radius: 999px 4px 999px 4px; }
-    .meta { margin-top: 28px; color: var(--muted); font-size: .92rem; line-height: 1.6; }
-    .meta a { color: #9fd4ff; }
-    @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+    .fr .cta {
+      background: var(--gold);
+      color: #1a1208;
+      border-radius: 999px 4px 999px 4px;
+    }
+    .fr:hover { border-color: rgba(255, 198, 111, 0.55); }
+
+    .galaxy {
+      margin-top: 1.75rem;
+      padding: 1.4rem 1.35rem 1.5rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 89, 178, 0.32);
+      background:
+        linear-gradient(135deg, rgba(255, 89, 178, 0.12), transparent 55%),
+        rgba(8, 10, 20, 0.88);
+    }
+    .galaxy h2 {
+      font-family: Outfit, sans-serif;
+      font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+      margin: 0 0 0.45rem;
+    }
+    .galaxy p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 58ch;
+    }
+    .galaxy-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+    .more {
+      margin-top: 2.75rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .more-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.95rem;
+      margin-top: 1rem;
+    }
+    .more a {
+      display: block;
+      padding: 1rem 1.05rem;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      color: inherit;
+      background: rgba(255, 255, 255, 0.03);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .more a:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .more a strong { display: block; margin-bottom: 0.35rem; }
+    .more a span { color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+
+    .welcome-audio {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 20;
+    }
+    .welcome-audio__btn {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(6, 8, 18, 0.72);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+    .welcome-audio__btn:hover {
+      border-color: rgba(255, 89, 178, 0.55);
+      background: rgba(255, 89, 178, 0.16);
+      transform: translateY(-1px);
+    }
+    .welcome-audio__btn svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: currentColor;
+    }
+    .welcome-audio__btn[aria-pressed="false"] .icon-on { display: none; }
+    .welcome-audio__btn[aria-pressed="true"] .icon-off { display: none; }
+
+    .welcome-footer {
+      margin-top: 3.5rem;
+      padding: 2.4rem 0 1.4rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      background:
+        linear-gradient(180deg, rgba(255, 89, 178, 0.06), transparent 40%),
+        rgba(4, 5, 12, 0.55);
+    }
+    .welcome-footer__grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .welcome-footer h3 {
+      margin: 0 0 0.7rem;
+      font-family: Outfit, sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ff9fd0;
+    }
+    .welcome-footer a,
+    .welcome-footer p {
+      display: block;
+      margin: 0 0 0.45rem;
+      color: var(--muted);
+      text-decoration: none;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    .welcome-footer a:hover { color: #fff; }
+    .welcome-footer__brand strong {
+      display: block;
+      font-family: Outfit, sans-serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.45rem;
+    }
+    .welcome-footer__copy {
+      margin-top: 1.6rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(168, 179, 204, 0.8);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 860px) {
+      .grid, .more-grid, .welcome-footer__grid { grid-template-columns: 1fr; }
+      .hero { min-height: auto; padding: 2.75rem 0 0.75rem; }
+      .welcome-audio { top: 0.75rem; right: 0.75rem; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="badge">Preview V2 · nicht Live</div>
-    <h1>World Design Test Version 2</h1>
-    <p class="lead">
-      Vier vollständig eigenständige Welten mit eigener Struktur, Typografie und Inszenierung —
-      Template-Mapping neu: MULTIVERSUM ← Vibe · NEXORA ← Xable · PROFESSIONAL ← Fabels · FREIRAUM ← Portio.
-    </p>
-    <div class="notice">
-      /design-test (V1) bleibt unverändert zum Vergleich.<br />
-      Live-Domain <strong>alexlamberti.ch</strong> wird nicht angefasst. Feature-Flag: nur Preview/Local.
-    </div>
-
-    <div class="grid">
-      <a class="card mv" href="/design-test-v2/multiversum">
-        <div class="thumb" role="presentation"></div>
-        <div class="body">
-          <h2>MULTIVERSUM</h2>
-          <p>Vibe + kosmische Galaxy-Inszenierung · immersiver Eingang.</p>
-          <span class="cta">Universum öffnen</span>
-        </div>
-      </a>
-      <a class="card nx" href="/design-test-v2/nexora">
-        <div class="thumb" role="presentation"></div>
-        <div class="body">
-          <h2>NEXORA</h2>
-          <p>Xable-Struktur · NEXORA Cyan/Blau · System-Interface.</p>
-          <span class="cta">System booten</span>
-        </div>
-      </a>
-      <a class="card pro" href="/design-test-v2/professional">
-        <div class="thumb" role="presentation"></div>
-        <div class="body">
-          <h2>PROFESSIONAL</h2>
-          <p>Fabels · hell, editorial, grosszügige Bildflächen.</p>
-          <span class="cta">Studio öffnen</span>
-        </div>
-      </a>
-      <a class="card fr" href="/design-test-v2/freiraum">
-        <div class="thumb" role="presentation"></div>
-        <div class="body">
-          <h2>FREIRAUM</h2>
-          <p>Portio · asymmetrisch, persönlich, Collage.</p>
-          <span class="cta">Atelier betreten</span>
-        </div>
-      </a>
-    </div>
-
-    <div class="meta">
-      <p>Branch: <code>feature/world-design-v2</code> · Vergleich V1: <a href="/design-test/">/design-test</a></p>
-    </div>
+  <div class="page-bg" aria-hidden="true">
+    <div class="page-bg__img"></div>
+    <div class="page-bg__veil"></div>
   </div>
+
+  <div class="welcome-audio">
+    <audio id="welcomeAudio" src="/assets/design-test-v2/audio/welcome-lounge.mp3" loop preload="none"></audio>
+    <button
+      type="button"
+      class="welcome-audio__btn"
+      id="welcomeAudioBtn"
+      aria-pressed="false"
+      aria-label="Hintergrundmusik einschalten"
+      title="Sound ein / aus"
+    >
+      <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h3l5 4V5L7 9H4zm11.5 3a3.5 3.5 0 0 0-1.5-2.9v5.8a3.5 3.5 0 0 0 1.5-2.9zm-1.5-7.2v2.1a5.5 5.5 0 0 1 0 10.2v2.1a7.5 7.5 0 0 0 0-14.4z"/></svg>
+      <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 12a3.5 3.5 0 0 0-1.5-2.9v2.2l1.5 1.5V12zm3-7.2-1.4 1.4A7.45 7.45 0 0 1 20 12a7.45 7.45 0 0 1-1.9 5l1.4 1.4A9.4 9.4 0 0 0 22 12c0-2.5-.9-4.8-2.5-6.6zM4.3 3 3 4.3 7.7 9H4v6h3l5 4v-6.7l4.7 4.7 1.3-1.3L4.3 3zM14 5.2l-2.1 2.1L14 9.4V5.2z"/></svg>
+    </button>
+  </div>
+
+  <div class="wrap">
+    <header class="hero">
+      <p class="brand"><span>Portfolio von Alex Lamberti</span></p>
+      <h1>Willkommen in den vier digitalen Welten.</h1>
+      <p class="hero-lead">
+        Schön, dass du da bist. Hier kannst du vier eigenständige Auftritte entdecken —
+        jeweils mit eigenem Stil, Aufbau und Atmosphäre.
+      </p>
+    </header>
+
+    <section class="section" id="welten" aria-labelledby="welten-title">
+      <div class="section-head">
+        <h2 id="welten-title">Wähle deinen Einstieg</h2>
+        <p>Vier Welten, eine klare digitale Sprache. Starte dort, wo es für dich am besten passt.</p>
+      </div>
+
+      <div class="grid">
+        <a class="card mv" href="/multiversum">
+          <div class="thumb" role="presentation"></div>
+          <div class="body">
+            <h3>MULTIVERSUM</h3>
+            <p>Immersiver Einstieg · Welten verbinden · Galaxy Walk.</p>
+            <span class="cta">Universum öffnen</span>
+          </div>
+        </a>
+        <a class="card nx" href="/nexora">
+          <div class="thumb" role="presentation"></div>
+          <div class="body">
+            <h3>NEXORA</h3>
+            <p>Strategie, Technologie und Systeme im Interface-Stil.</p>
+            <span class="cta">System booten</span>
+          </div>
+        </a>
+        <a class="card pro" href="/professional">
+          <div class="thumb" role="presentation"></div>
+          <div class="body">
+            <h3>PROFESSIONAL</h3>
+            <p>Klarheit, Vertrauen und redaktionelle Ruhe.</p>
+            <span class="cta">Studio öffnen</span>
+          </div>
+        </a>
+        <a class="card fr" href="/freiraum">
+          <div class="thumb" role="presentation"></div>
+          <div class="body">
+            <h3>FREIRAUM</h3>
+            <p>Persönlich, kreativ, mit Collage und Atmosphäre.</p>
+            <span class="cta">Atelier betreten</span>
+          </div>
+        </a>
+      </div>
+
+      <section class="galaxy" aria-labelledby="galaxy-cta-title">
+        <h2 id="galaxy-cta-title">Galaxy Walk</h2>
+        <p>
+          Der räumliche Einstieg ins Multiversum — ideal als erster Schritt,
+          bevor du die einzelnen Welten erkundest.
+        </p>
+        <div class="galaxy-actions">
+          <a class="btn btn-primary" href="/multiversum#galaxy">Zum Galaxy Walk in Multiversum</a>
+          <a class="btn btn-ghost" href="/multiversum">Multiversum öffnen</a>
+        </div>
+      </section>
+
+      <div class="more" aria-labelledby="more-title">
+        <div class="section-head">
+          <h2 id="more-title">Direkt weiter</h2>
+          <p>Werke ansehen, Signal senden oder eine Offerte anfragen.</p>
+        </div>
+        <div class="more-grid">
+          <a href="/multiversum/werke">
+            <strong>Werke</strong>
+            <span>Websites, Leadformulare und Visitenkarten mit direkter Vorschau.</span>
+          </a>
+          <a href="/multiversum/signal">
+            <strong>Signal</strong>
+            <span>Zum Gespräch — schnell und unkompliziert.</span>
+          </a>
+          <a href="/multiversum/offerte">
+            <strong>Offerte</strong>
+            <span>Zum Formular — Projektanfrage klar und strukturiert.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="welcome-footer">
+    <div class="wrap welcome-footer__grid">
+      <div class="welcome-footer__brand">
+        <strong>Portfolio von Alex Lamberti</strong>
+        <p>Vier Welten. Eine klare digitale Sprache — Multiversum, Nexora, Professional und Freiraum.</p>
+      </div>
+      <div>
+        <h3>Welten</h3>
+        <a href="/multiversum">Multiversum</a>
+        <a href="/nexora">Nexora</a>
+        <a href="/professional">Professional</a>
+        <a href="/freiraum">Freiraum</a>
+      </div>
+      <div>
+        <h3>Direkt</h3>
+        <a href="/multiversum/werke">Werke</a>
+        <a href="/multiversum/signal">Signal</a>
+        <a href="/multiversum/offerte">Offerte</a>
+      </div>
+      <div>
+        <h3>Rechtliches</h3>
+        <a href="/impressum">Impressum</a>
+        <a href="/datenschutz">Datenschutz</a>
+        <a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a>
+        <a href="tel:+41796678211">079 667 82 11</a>
+      </div>
+    </div>
+    <div class="wrap welcome-footer__copy">
+      <p>© <span id="welcomeYear">2026</span> Alex Lamberti · Willkommensseite</p>
+    </div>
+  </footer>
+
+  <script>
+    /* Weltwechsel ankündigen: die Shell spielt danach Intro-Animation + Welt-Musik */
+    (function () {
+      var WORLD_RE = /^\/(?:design-test-v2\/)?(multiversum|nexora|professional|freiraum)(?:\/|#|$)/;
+
+      function remember(href) {
+        var url;
+        try {
+          url = new URL(href, location.href);
+        } catch (e) {
+          return;
+        }
+        if (url.origin !== location.origin) return;
+        if (!WORLD_RE.test(url.pathname)) return;
+        try {
+          sessionStorage.setItem("v2-world-enter", "1");
+          sessionStorage.setItem("v2-world-hash", url.hash || "");
+        } catch (e2) {}
+      }
+
+      document.addEventListener(
+        "click",
+        function (ev) {
+          var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
+          if (!a) return;
+          remember(a.getAttribute("href"));
+        },
+        true
+      );
+    })();
+
+    (function () {
+      var audio = document.getElementById("welcomeAudio");
+      var btn = document.getElementById("welcomeAudioBtn");
+      var year = document.getElementById("welcomeYear");
+      if (year) year.textContent = String(new Date().getFullYear());
+      if (!audio || !btn) return;
+
+      var KEY = "v2-welcome-audio-on";
+      var wantOn = false;
+      try { wantOn = localStorage.getItem(KEY) === "1"; } catch (e) {}
+
+      function setUi(on) {
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        btn.setAttribute("aria-label", on ? "Hintergrundmusik ausschalten" : "Hintergrundmusik einschalten");
+      }
+
+      function play() {
+        var p = audio.play();
+        if (p && typeof p.then === "function") {
+          p.then(function () {
+            setUi(true);
+            try { localStorage.setItem(KEY, "1"); } catch (e1) {}
+          }).catch(function () {
+            setUi(false);
+          });
+        } else {
+          setUi(true);
+        }
+      }
+
+      function pause() {
+        try { audio.pause(); } catch (e2) {}
+        setUi(false);
+        try { localStorage.setItem(KEY, "0"); } catch (e3) {}
+      }
+
+      btn.addEventListener("click", function () {
+        if (audio.paused) play();
+        else pause();
+      });
+
+      /* Autoplay often blocked — restore preference only after first gesture if needed */
+      if (wantOn) {
+        play();
+        document.addEventListener(
+          "pointerdown",
+          function once() {
+            if (audio.paused && localStorage.getItem(KEY) === "1") play();
+            document.removeEventListener("pointerdown", once, true);
+          },
+          true
+        );
+      } else {
+        setUi(false);
+      }
+    })();
+  </script>
 </body>
 </html>

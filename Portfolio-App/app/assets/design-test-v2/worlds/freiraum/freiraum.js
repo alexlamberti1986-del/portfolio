@@ -144,19 +144,6 @@
     });
   }
 
-  /* —— Lang UI active state (bridge posts the change) —— */
-  function bindLangUi() {
-    qsa("[data-v2-lang]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        qsa("[data-v2-lang]").forEach(function (b) {
-          var on = b === btn;
-          b.classList.toggle("is-active", on);
-          b.setAttribute("aria-pressed", on ? "true" : "false");
-        });
-      });
-    });
-  }
-
   /* —— Header shrink on scroll —— */
   function bindHeaderScroll() {
     var header = qs("[data-v2-header]");
@@ -201,7 +188,6 @@
     bindMenu();
     bindAnchors();
     bindReveals();
-    bindLangUi();
     bindHeaderScroll();
     bindParallax();
     watchEffects();

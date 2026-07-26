@@ -24,6 +24,59 @@
     "/ueber-mich": "about",
     "/kontakt": "contact",
     "/offerte": "offerte",
+    /* Design-Test V2 themed menu slugs (aliases) */
+    "/werke": "projects",
+    "/cases": "projects",
+    "/referenzen": "projects",
+    "/collage": "projects",
+    "/nexus": "leistungen",
+    "/module": "leistungen",
+    "/mandate": "leistungen",
+    "/disziplinen": "leistungen",
+    "/profil": "about",
+    "/core": "about",
+    "/haltung": "about",
+    "/portrait": "about",
+    "/signal": "contact",
+    "/uplink": "contact",
+    "/gespraech": "contact",
+    "/gespräch": "contact",
+    "/impuls": "contact",
+  };
+
+  var V2_CHAPTER_PATH = {
+    multiversum: {
+      home: "",
+      projects: "/werke",
+      leistungen: "/nexus",
+      about: "/profil",
+      contact: "/signal",
+      offerte: "/offerte",
+    },
+    nexora: {
+      home: "",
+      projects: "/cases",
+      leistungen: "/module",
+      about: "/core",
+      contact: "/uplink",
+      offerte: "/offerte",
+    },
+    professional: {
+      home: "",
+      projects: "/referenzen",
+      leistungen: "/mandate",
+      about: "/haltung",
+      contact: "/gespraech",
+      offerte: "/offerte",
+    },
+    freiraum: {
+      home: "",
+      projects: "/collage",
+      leistungen: "/disziplinen",
+      about: "/portrait",
+      contact: "/impuls",
+      offerte: "/offerte",
+    },
   };
 
   var SLUG_TO_IDX = {
@@ -152,7 +205,19 @@
     return WORLD_SLUGS[idx] || "";
   }
 
-  function chapterPath(chapter) {
+  function chapterPath(chapter, worldSlug) {
+    if (arguments.length > 1 && worldSlug != null) {
+      var key =
+        worldSlug === "" || worldSlug === "multiversum" || worldSlug === "general"
+          ? "multiversum"
+          : worldSlug === "vertex"
+            ? "professional"
+            : worldSlug;
+      var themed = V2_CHAPTER_PATH[key];
+      if (themed && Object.prototype.hasOwnProperty.call(themed, chapter)) {
+        return themed[chapter];
+      }
+    }
     return CHAPTER_PATH[chapter] || "";
   }
 
@@ -163,15 +228,43 @@
     if (idx < 0 || idx > 3) idx = 0;
     chapter = CHAPTERS.indexOf(chapter) >= 0 ? chapter : "home";
     var slug = worldSlugFromIdx(idx);
-    var ch = chapterPath(chapter);
+    var useV2Theme = !!(opts.designTestV2 && isLocalDev());
+    var liveDefaultV2 = false;
+    try {
+      liveDefaultV2 =
+        !!(root.WeltenDesignTestV2Path &&
+          typeof root.WeltenDesignTestV2Path.isLiveDefaultV2 === "function" &&
+          root.WeltenDesignTestV2Path.isLiveDefaultV2()) ||
+        (root.document &&
+          root.document.documentElement &&
+          root.document.documentElement.getAttribute("data-world-default-v2") === "1");
+    } catch (eLive) {}
+    if (opts.designTestV2 && liveDefaultV2) useV2Theme = true;
+    var ch = useV2Theme ? chapterPath(chapter, slug || "multiversum") : chapterPath(chapter);
     var out;
     if (!slug && !ch) out = "/";
     else if (!slug) out = ch || "/";
     else if (!ch) out = "/" + slug;
     else out = "/" + slug + ch;
-    if (opts.designTestV2 && isLocalDev()) {
-      out =
-        out === "/" ? DESIGN_TEST_V2_PREFIX : DESIGN_TEST_V2_PREFIX + out;
+    if (useV2Theme) {
+      /* Live default: public URLs without /design-test-v2 prefix */
+      if (!slug) {
+        out = "/multiversum" + (ch || "");
+      }
+      var prefix = "";
+      try {
+        if (
+          root.WeltenDesignTestV2Path &&
+          typeof root.WeltenDesignTestV2Path.publicPrefix === "function"
+        ) {
+          prefix = root.WeltenDesignTestV2Path.publicPrefix() || "";
+        } else if (!liveDefaultV2) {
+          prefix = DESIGN_TEST_V2_PREFIX;
+        }
+      } catch (ePref) {
+        prefix = liveDefaultV2 ? "" : DESIGN_TEST_V2_PREFIX;
+      }
+      if (prefix) out = prefix + out;
     } else if (opts.designTest && isLocalDev()) {
       out = out === "/" ? DESIGN_TEST_PREFIX : DESIGN_TEST_PREFIX + out;
     }

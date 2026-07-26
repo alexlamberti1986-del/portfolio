@@ -1,0 +1,133 @@
+/* Shared readable type scale for design-test-v2 worlds
+ * Goal: laptop (~1280–1440) text stays at common web standards (~15–18px body/UI)
+ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Mid screens / laptops: slightly larger root so rem-based UI stays legible */
+@media (min-width: 900px) and (max-width: 1500px) {
+  html {
+    font-size: 106.25%; /* ~17px if browser default is 16px */
+  }
+}
+
+@media (min-width: 1501px) and (max-width: 1800px) {
+  html {
+    font-size: 103.125%;
+  }
+}
+
+/* —— Readable floors (kickers / nav / buttons) —— */
+.mv-kicker,
+.nx-kicker,
+.fr-eyebrow,
+.pro-eyebrow,
+.v2-offerte__kicker {
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+}
+
+.mv-header__nav a,
+.nx-hud__nav a,
+.pro-nav a,
+.fr-nav a {
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.mv-btn,
+.nx-btn,
+.pro-btn,
+.fr-btn,
+.nx-hud__cta {
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.nx-hud__cta {
+  min-height: 2.5rem;
+  padding: 0.55rem 0.95rem;
+  white-space: nowrap;
+}
+
+.mv-btn,
+.nx-btn,
+.pro-btn,
+.fr-btn {
+  min-height: 2.85rem;
+  padding-block: 0.8rem;
+  padding-inline: 1.35rem;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.fr-btn--compact {
+  min-height: 2.4rem;
+  font-size: 0.875rem;
+  padding: 0.55rem 1rem;
+}
+
+.mv-lead,
+.nx-lead,
+.fr-lead,
+.pro-lead,
+.v2-offerte__lead {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.mv-header__brand-sub,
+.nx-brand__sys,
+.pro-worlds a,
+.fr-worlds a,
+.nx-pill,
+.nx-mono {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+.mv-footer__col a,
+.mv-footer__col p,
+.nx-term a,
+.pro-footer a,
+.fr-footer__col a,
+.fr-footer__col p,
+.fr-footer__bottom,
+.mv-footer__bottom {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.v2-projects-acc__trigger {
+  font-size: 0.9375rem;
+  padding: 1.05rem 1.2rem;
+}
+
+.v2-project-card h3 {
+  font-size: 1.05rem;
+}
+
+.v2-project-card p {
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* Prevent clipped / overlapping nav on denser laptop widths */
+.mv-header__nav,
+.nx-hud__nav,
+.pro-nav,
+.fr-nav {
+  row-gap: 0.45rem;
+  column-gap: 0.85rem;
+}
+
+.mv-header__nav a,
+.nx-hud__nav a,
+.pro-nav a,
+.fr-nav a {
+  white-space: nowrap;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Weiterleitung · Offerte</title>
+  <script>
+    (function () {
+      var worlds = ["multiversum", "nexora", "professional", "freiraum"];
+      var path = (location.pathname || "").toLowerCase();
+      var world = "multiversum";
+      worlds.forEach(function (w) {
+        if (path.indexOf("/" + w) !== -1) world = w;
+      });
+      var target = "/" + world + "/offerte";
+      try {
+        if (window.top && window.top !== window) {
+          window.top.location.replace(target);
+          return;
+        }
+      } catch (e) {}
+      location.replace(target);
+    })();
+  </script>
+</head>
+<body>
+  <p>Weiterleitung zur Offerte …</p>
+</body>
+</html>

@@ -4,7 +4,7 @@ $Root = (Resolve-Path (Join-Path $PSScriptRoot "app")).Path
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://127.0.0.1:$Port/")
 $listener.Start()
-Write-Output "Serving $Root at http://127.0.0.1:$Port/"
+Write-Output "Serving $Root at http://127.0.0.1:$Port/ (V2 live default)"
 
 $mime = @{
   ".html"="text/html; charset=utf-8"
@@ -23,26 +23,53 @@ $mime = @{
   ".mp4"="video/mp4"
 }
 
+function Resolve-V2Path([string]$path) {
+  if ($path -eq "/" -or $path -eq "") {
+    return (Join-Path $Root "design-test-v2\index.html")
+  }
+  if ($path -eq "/impressum" -or $path -eq "/impressum/") {
+    return (Join-Path $Root "design-test-v2\impressum.html")
+  }
+  if ($path -eq "/datenschutz" -or $path -eq "/datenschutz/") {
+    return (Join-Path $Root "design-test-v2\datenschutz.html")
+  }
+  if ($path -match "^/(multiversum|nexora|professional|freiraum)(/|$)") {
+    return (Join-Path $Root "index.html")
+  }
+  if ($path -match "^/(projekte|leistungen|ueber-mich|kontakt|offerte|werke|nexus|profil|signal|cases|module|core|uplink|referenzen|mandate|haltung|gespraech|collage|disziplinen|portrait|impuls)(/|$)") {
+    return (Join-Path $Root "index.html")
+  }
+  if ($path -match "^/design-test-v2/(multiversum|nexora|professional|freiraum)(/|$)") {
+    return (Join-Path $Root "index.html")
+  }
+  if ($path -match "^/design-test-v2/(projekte|leistungen|ueber-mich|kontakt|offerte)(/|$)") {
+    return (Join-Path $Root "index.html")
+  }
+  if ($path -match "^/design-test/(multiversum|nexora|professional|freiraum)(/|$)") {
+    return (Join-Path $Root "index.html")
+  }
+  return $null
+}
+
 while ($listener.IsListening) {
   $ctx = $listener.GetContext()
   $req = $ctx.Request
   $res = $ctx.Response
   try {
     $path = [Uri]::UnescapeDataString($req.Url.AbsolutePath)
-    if ($path -eq "/") { $path = "/index.html" }
     $rel = $path.TrimStart("/").Replace("/", [IO.Path]::DirectorySeparatorChar)
-    $file = Join-Path $Root $rel
-    if (Test-Path $file -PathType Container) {
+    $file = if ($rel) { Join-Path $Root $rel } else { $null }
+
+    if ($file -and (Test-Path $file -PathType Container)) {
       $file = Join-Path $file "index.html"
     }
-    if (-not (Test-Path $file -PathType Leaf)) {
-      if ($path -match "^/design-test-v2/(multiversum|nexora|professional|freiraum)") {
-        $file = Join-Path $Root "index.html"
-      } elseif ($path -match "^/design-test/(multiversum|nexora|professional|freiraum)") {
-        $file = Join-Path $Root "index.html"
-      }
+
+    if (-not $file -or -not (Test-Path $file -PathType Leaf)) {
+      $mapped = Resolve-V2Path $path
+      if ($mapped) { $file = $mapped }
     }
-    if (-not (Test-Path $file -PathType Leaf)) {
+
+    if (-not $file -or -not (Test-Path $file -PathType Leaf)) {
       $res.StatusCode = 404
       $bytes = [Text.Encoding]::UTF8.GetBytes("404 Not Found: $path")
       $res.ContentType = "text/plain; charset=utf-8"
