@@ -34,19 +34,19 @@ function Resolve-V2Path([string]$path) {
     return (Join-Path $Root "design-test-v2\datenschutz.html")
   }
   if ($path -match "^/(multiversum|nexora|professional|freiraum)(/|$)") {
-    return (Join-Path $Root "index.html")
+    return (Join-Path $Root "shell.html")
   }
   if ($path -match "^/(projekte|leistungen|ueber-mich|kontakt|offerte|werke|nexus|profil|signal|cases|module|core|uplink|referenzen|mandate|haltung|gespraech|collage|disziplinen|portrait|impuls)(/|$)") {
-    return (Join-Path $Root "index.html")
+    return (Join-Path $Root "shell.html")
   }
   if ($path -match "^/design-test-v2/(multiversum|nexora|professional|freiraum)(/|$)") {
-    return (Join-Path $Root "index.html")
+    return (Join-Path $Root "shell.html")
   }
   if ($path -match "^/design-test-v2/(projekte|leistungen|ueber-mich|kontakt|offerte)(/|$)") {
-    return (Join-Path $Root "index.html")
+    return (Join-Path $Root "shell.html")
   }
   if ($path -match "^/design-test/(multiversum|nexora|professional|freiraum)(/|$)") {
-    return (Join-Path $Root "index.html")
+    return (Join-Path $Root "shell.html")
   }
   return $null
 }
