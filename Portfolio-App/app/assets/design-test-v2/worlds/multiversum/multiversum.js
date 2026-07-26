@@ -239,6 +239,12 @@
       var done = function () {
         overlay.hidden = true;
         overlay.removeEventListener("transitionend", done);
+        /* Schweres Galaxy-Iframe entladen — speichert RAM/CPU auf Desktop */
+        try {
+          iframe.removeAttribute("src");
+          iframe.src = "about:blank";
+          bootedVisible = false;
+        } catch (eUnload) {}
       };
       if (reduced) {
         done();

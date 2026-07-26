@@ -10,6 +10,8 @@
   scroll-margin-top: 5.5rem;
   overflow-x: clip;
   box-sizing: border-box;
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
 }
 
 .v2-offerte__inner {
@@ -46,17 +48,65 @@
   max-width: 48rem;
 }
 
+.v2-offerte__gate {
+  display: grid;
+  place-items: center;
+  gap: 0.65rem;
+  min-height: 180px;
+  padding: 1.5rem 1rem;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  background: rgba(8, 12, 22, 0.55);
+  text-align: center;
+}
+
+.v2-offerte__gate[hidden] {
+  display: none !important;
+}
+
+.v2-offerte__load-btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  min-height: 2.85rem;
+  padding: 0.75rem 1.4rem;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  color: #0a0e18;
+  background: #e8eef8;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.v2-offerte__load-btn:hover,
+.v2-offerte__load-btn:focus-visible {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.v2-offerte__gate-note {
+  margin: 0;
+  font-size: 0.88rem;
+  opacity: 0.7;
+  max-width: 28rem;
+}
+
 .v2-offerte__shell {
   position: relative;
   width: 100%;
   max-width: 100%;
-  min-height: 480px;
+  min-height: 420px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
   overflow: hidden;
   overflow-x: clip;
   background: #0b1220;
   box-sizing: border-box;
+}
+
+.v2-offerte__shell[hidden] {
+  display: none !important;
 }
 
 .v2-offerte__shell.is-loading::after {
@@ -75,8 +125,8 @@
   display: block;
   width: 100%;
   max-width: 100%;
-  min-height: 480px;
-  height: 480px;
+  min-height: 420px;
+  height: 420px;
   border: 0;
   background: #fff;
   vertical-align: top;
@@ -90,4 +140,44 @@
 
 .v2-offerte__hint a {
   color: inherit;
+}
+
+@media (max-width: 900px) {
+  .v2-offerte {
+    padding: 2rem 0 1.25rem;
+    scroll-margin-top: 4.5rem;
+  }
+
+  .v2-offerte__inner {
+    width: calc(100% - 1.25rem);
+  }
+
+  .v2-offerte__head h2 {
+    font-size: clamp(1.45rem, 6vw, 1.9rem);
+  }
+
+  .v2-offerte__lead {
+    font-size: 0.98rem;
+  }
+
+  .v2-offerte__shell,
+  .v2-offerte__frame {
+    min-height: 360px;
+    border-radius: 12px;
+  }
+
+  .v2-offerte__frame {
+    height: 360px;
+  }
+
+  .v2-offerte__load-btn {
+    width: min(100%, 280px);
+  }
+}
+
+@media (max-width: 520px) {
+  .v2-offerte__gate {
+    min-height: 150px;
+    padding: 1.15rem 0.85rem;
+  }
 }

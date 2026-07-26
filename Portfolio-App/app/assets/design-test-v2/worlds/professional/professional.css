@@ -1016,11 +1016,21 @@ h3 {
   .pro-hero__media {
     width: min(100%, 340px);
     justify-self: center;
-    min-height: clamp(260px, 55vw, 360px);
+    min-height: clamp(220px, 48vw, 300px);
   }
 
   .pro-hero__media img {
-    min-height: clamp(260px, 55vw, 360px);
+    min-height: clamp(220px, 48vw, 300px);
+  }
+
+  .pro-hero {
+    padding-top: calc(var(--pro-header-h) + 1.25rem);
+    padding-bottom: 2.25rem;
+  }
+
+  .pro-hero__copy h1 {
+    font-size: clamp(1.9rem, 7vw, 2.6rem);
+    line-height: 1.15;
   }
 
   .pro-trust,
@@ -1035,6 +1045,36 @@ h3 {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --pro-header-h: 56px;
+    --pro-wrap: calc(100% - 1.25rem);
+  }
+
+  .pro-header__inner {
+    min-height: 56px;
+    gap: 0.45rem;
+  }
+
+  .pro-header__cta,
+  .pro-hero__actions .pro-btn {
+    min-height: 2.5rem;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  .pro-hero {
+    padding-top: calc(var(--pro-header-h) + 0.85rem);
+    padding-bottom: 1.75rem;
+  }
+
+  .pro-hero__media {
+    min-height: 200px;
+  }
+
+  .pro-hero__media img {
+    min-height: 200px;
+  }
+
   .pro-mobile-nav .pro-ctrl-row {
     display: flex;
     flex-wrap: wrap;

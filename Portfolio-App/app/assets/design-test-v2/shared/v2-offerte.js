@@ -1,12 +1,13 @@
 /**
  * In-page Offerte form embed for design-test-v2 worlds.
- * Loads the live form iframe once (lazy) into [data-v2-offerte].
+ * Loads the live form iframe lazily — on mobile only after tap (heavy ~13MB form).
  */
 (function (root) {
   "use strict";
 
   /* Form expects these exact keys (not shell aliases general/vertex) */
   var FORM_WORLDS = ["multiversum", "nexora", "professional", "freiraum"];
+  var FORM_VER = "20260726offerteFast1";
 
   function detectWorld(host) {
     var candidates = [
@@ -37,6 +38,14 @@
     }
   }
 
+  function isNarrow() {
+    try {
+      return !!(root.matchMedia && root.matchMedia("(max-width: 900px)").matches);
+    } catch (e) {
+      return false;
+    }
+  }
+
   function ensureMarkup(host) {
     if (host.querySelector(".v2-offerte__shell")) return;
     host.classList.add("v2-offerte");
@@ -47,7 +56,13 @@
       '<h2 data-i18n-v2="offerte.title">Kostenlose Projektanfrage</h2>' +
       '<p class="v2-offerte__lead" data-i18n-v2="offerte.lead">Marketing, Website und Wachstum sauber planen — klare Offerte in wenigen Schritten.</p>' +
       "</div>" +
-      '<div class="v2-offerte__shell is-loading" data-v2-offerte-shell>' +
+      '<div class="v2-offerte__gate" data-v2-offerte-gate>' +
+      '<button type="button" class="v2-offerte__load-btn" data-v2-offerte-load>' +
+      "Formular laden" +
+      "</button>" +
+      '<p class="v2-offerte__gate-note">Lädt nur bei Bedarf — schneller auf Handy &amp; Tablet.</p>' +
+      "</div>" +
+      '<div class="v2-offerte__shell is-loading" data-v2-offerte-shell hidden>' +
       '<iframe id="offerteFrame" class="v2-offerte__frame" title="Offerte" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="about:blank"></iframe>' +
       "</div>" +
       '<p class="v2-offerte__hint"><a href="#kontakt" data-i18n-v2="offerte.contact">Lieber zuerst Kontakt?</a></p>' +
@@ -57,7 +72,13 @@
   function loadFrame(host) {
     var frame = host.querySelector("#offerteFrame");
     var shell = host.querySelector("[data-v2-offerte-shell]");
+    var gate = host.querySelector("[data-v2-offerte-gate]");
     if (!frame || frame.dataset.v2OfferteSrc) return;
+    if (shell) {
+      shell.hidden = false;
+      shell.classList.add("is-loading");
+    }
+    if (gate) gate.hidden = true;
     var world = detectWorld(host);
     try {
       /* Prefer current world over a previously saved form world */
@@ -68,7 +89,8 @@
       encodeURIComponent(world) +
       "&lang=" +
       encodeURIComponent(lang()) +
-      "&v=20260725offerte9";
+      "&v=" +
+      FORM_VER;
     frame.dataset.v2OfferteSrc = src;
     frame.dataset.v2OfferteWorld = world;
     frame.addEventListener(
@@ -142,7 +164,31 @@
       loadFrame(host);
     }
 
-    if ("IntersectionObserver" in root) {
+    var loadBtn = host.querySelector("[data-v2-offerte-load]");
+    if (loadBtn) {
+      loadBtn.addEventListener("click", function () {
+        kick();
+      });
+    }
+
+    var forceRoute =
+      (root.location.hash || "").replace(/^#/, "") === "offerte" ||
+      /\/offerte\/?$/i.test(root.location.pathname || "");
+
+    /* Desktop: Gate ausblenden, Shell bereit — Laden erst bei Sichtbarkeit.
+       Mobile/tablet: Gate sichtbar bis Tap (oder Deep-Link /offerte). */
+    if (!isNarrow()) {
+      var gateEl = host.querySelector("[data-v2-offerte-gate]");
+      var shellEl = host.querySelector("[data-v2-offerte-shell]");
+      if (gateEl) gateEl.hidden = true;
+      if (shellEl) shellEl.hidden = false;
+    }
+
+    if (forceRoute) {
+      kick();
+    } else if (isNarrow()) {
+      /* keep gate visible — user taps to load */
+    } else if ("IntersectionObserver" in root) {
       var io = new root.IntersectionObserver(
         function (entries) {
           entries.forEach(function (en) {
@@ -152,7 +198,7 @@
             }
           });
         },
-        { rootMargin: "240px 0px" }
+        { rootMargin: "0px 0px" }
       );
       io.observe(host);
     } else {
@@ -167,9 +213,6 @@
     root.addEventListener("hashchange", function () {
       if ((root.location.hash || "").replace(/^#/, "") === "offerte") kick();
     });
-
-    if ((root.location.hash || "").replace(/^#/, "") === "offerte") kick();
-    if (/\/offerte\/?$/i.test(root.location.pathname || "")) kick();
 
     root.WeltenV2Offerte = {
       load: kick,
