@@ -2008,3 +2008,76 @@ html[data-reduced-motion="1"] [data-reveal] {
     grid-column: 1 / -1;
   }
 }
+
+/* Handy / Tablet: stabiles 2×3-Menü mit identischen Buttons */
+@media (max-width: 1024px) {
+  .nx-menu-hero {
+    padding: clamp(1.25rem, 4vw, 2rem) 0;
+  }
+
+  .nx-menu-hero__stage {
+    width: min(100% - 1.5rem, 760px);
+    height: auto;
+    min-height: 0;
+    perspective: none;
+    cursor: default;
+    touch-action: auto;
+  }
+
+  .nx-menu-hero__stage::before,
+  .nx-menu-hero__brain,
+  .nx-menu-hero__controls,
+  .nx-menu-hero__glow {
+    display: none;
+  }
+
+  .nx-menu-hero__ring {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    transform: none !important;
+    pointer-events: auto;
+  }
+
+  .nx-menu-hero__btn,
+  .nx-menu-hero__btn:first-child,
+  .nx-menu-hero__btn.is-front,
+  .nx-menu-hero__btn:hover,
+  .nx-menu-hero__btn:focus-visible {
+    position: relative;
+    left: auto;
+    top: auto;
+    grid-column: auto;
+    width: 100%;
+    min-width: 0;
+    height: 3.5rem;
+    padding: 0.7rem;
+    border-radius: 18px;
+    opacity: 1;
+    filter: none;
+    transform: none !important;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .nx-menu-hero__stage {
+    width: calc(100% - 1rem);
+  }
+
+  .nx-menu-hero__ring {
+    gap: 0.6rem;
+  }
+
+  .nx-menu-hero__btn,
+  .nx-menu-hero__btn:first-child {
+    height: 3.25rem;
+    padding-inline: 0.4rem;
+    font-size: 0.78rem;
+  }
+}
