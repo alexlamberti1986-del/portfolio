@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 4-Welten Master — Preview + Live (alexlamberti.ch)
  */
 (function () {
@@ -9,7 +9,7 @@
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var V2_WORLD_SLUGS = ["multiversum", "nexora", "professional", "freiraum"];
-  var V2_FRAME_VER = "20260727galaxy3";
+  var V2_FRAME_VER = "20260727galaxy4";
   var FRAME_PAGES = [
     "/design-test-v2/worlds/multiversum/index.html?v=" + V2_FRAME_VER,
     "/design-test-v2/worlds/nexora/index.html?v=" + V2_FRAME_VER,

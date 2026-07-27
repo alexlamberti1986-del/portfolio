@@ -1,4 +1,4 @@
-/**
+﻿/**
  * MULTIVERSUM — Design Test V2
  * Cosmic page behavior: year, controls → parent, parallax, reveal, reduced motion.
  */
@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260727galaxy3";
+      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260727galaxy4";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");
