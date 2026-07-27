@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Marcellus&display=swap" />
-  <link rel="stylesheet" href="/assets/design-test-v2/worlds/freiraum/freiraum.css?v=20260727pinMenu1" />
+  <link rel="stylesheet" href="/assets/design-test-v2/worlds/freiraum/freiraum.css?v=20260727pinHero1" />
   <link rel="stylesheet" href="/assets/design-test-v2/shared/v2-type.css?v=20260727btnForm1" />
   <link rel="stylesheet" href="/assets/design-test-v2/shared/v2-projects.css?v=20260724v2q" />
   <link rel="stylesheet" href="/assets/design-test-v2/shared/v2-offerte.css?v=20260727fluid1" />
@@ -74,7 +74,7 @@
   </header>
 
   <main id="main">
-    <!-- Menu hero (Live-Freiraum scattered cards, adapted for V2 anchors) -->
+    <!-- Menu hero: Desktop = Pinboard; Handy/Tablet = Karten (unverändert) -->
     <section class="fr-menu-hero" id="menue" aria-label="Freiraum Menü">
       <div class="fr-menu-hero__wash" aria-hidden="true"></div>
       <div class="fr-menu-hero__dots" aria-hidden="true"></div>
@@ -87,6 +87,41 @@
           <a class="fr-menu-hero__card fr-menu-hero__card--4" href="#kontakt" style="--free-r:7deg" data-i18n-v2="menu.contact">Impuls</a>
           <a class="fr-menu-hero__card fr-menu-hero__card--5" href="#offerte" style="--free-r:-3deg" data-i18n-v2="menu.offer">Offerte</a>
           <a class="fr-menu-hero__card fr-menu-hero__card--home" href="#hero" style="--free-r:2deg" data-i18n-v2="menu.home">Atelier</a>
+        </nav>
+        <nav class="fr-menu-hero__pinboard fr-pinboard" aria-label="Freiraum Menü">
+          <a class="fr-pin fr-pin--a" href="#hero" aria-label="Zum Atelier">
+            <img src="/assets/images/chapters/freiraum/08-values.webp" alt="" width="640" height="480" loading="eager" />
+            <span class="fr-pin__label" data-i18n-v2="menu.home">Atelier</span>
+          </a>
+          <a class="fr-pin fr-pin--b" href="#skills" aria-label="Zu Disziplinen">
+            <img src="/assets/images/chapters/freiraum/06-skills.webp" alt="" width="480" height="360" loading="eager" />
+            <span class="fr-pin__label" data-i18n-v2="menu.services">Disziplinen</span>
+          </a>
+          <a class="fr-pin fr-pin--c" href="#collage" aria-label="Zur Collage">
+            <img src="/assets/images/chapters/freiraum/03-projects.webp" alt="" width="640" height="480" loading="eager" />
+            <span class="fr-pin__label" data-i18n-v2="menu.projects">Collage</span>
+          </a>
+          <a class="fr-pin fr-pin--d" href="#about" aria-label="Zum Portrait">
+            <img src="/assets/images/chapters/freiraum/07-experience.webp" alt="" width="560" height="420" loading="eager" />
+            <span class="fr-pin__label" data-i18n-v2="menu.about">Portrait</span>
+          </a>
+          <a class="fr-pin fr-pin--e" href="#kontakt" aria-label="Zum Impuls">
+            <img src="/assets/images/4welten-preview/freiraum/04_FREIRAUM_04_Kontakt.webp" alt="" width="560" height="420" loading="eager" />
+            <span class="fr-pin__label" data-i18n-v2="menu.contact">Impuls</span>
+          </a>
+          <a class="fr-pin fr-pin--f" href="#offerte" aria-label="Zur Offerte">
+            <img src="/assets/images/chapters/freiraum/09-cta.webp" alt="" width="480" height="360" loading="eager" />
+            <span class="fr-pin__label" data-i18n-v2="menu.offer">Offerte</span>
+          </a>
+          <a
+            class="fr-pin fr-pin--note"
+            href="/"
+            target="_top"
+            aria-label="Zur Willkommensseite"
+          >
+            <span class="fr-pin__note-title">Ideen brauchen Raum.</span>
+            <span class="fr-pin__note-sub">→ Willkommensseite</span>
+          </a>
         </nav>
       </div>
     </section>
