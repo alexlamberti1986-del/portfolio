@@ -11,7 +11,7 @@
   var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
   var isDesignTestV2 = false;
   var V2_WORLD_SLUGS = ["multiversum", "nexora", "professional", "freiraum"];
-  var V2_FRAME_VER = "20260726menu2";
+  var V2_FRAME_VER = "20260727btnForm1";
   try {
     isDesignTestV2 = document.documentElement.getAttribute("data-design-test-v2") === "1";
     if (

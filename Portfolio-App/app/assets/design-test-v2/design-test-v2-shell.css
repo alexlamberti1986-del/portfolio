@@ -75,18 +75,27 @@ html.dt-v2-pure-templates[data-design-test-v2="1"] .mv4-worlds a {
   color: #fff;
   opacity: 0.65;
   padding: 6px 12px;
-  border-radius: 4px;
+  /* Default: Multiversum-Pill wie Willkommensseite */
+  border-radius: 999px;
 }
 
+html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="general"] .mv4-worlds a {
+  border-radius: 999px;
+}
 html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="general"] .mv4-worlds a.is-active {
   background: #ff59b2;
   opacity: 1;
+}
+
+html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="nexora"] .mv4-worlds a {
+  border-radius: 2px;
 }
 html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="nexora"] .mv4-worlds a.is-active {
   background: #8ec5ff;
   color: #050810 !important;
   opacity: 1;
 }
+
 html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="vertex"] .mv4-bar {
   background: #fff;
   color: #111;
@@ -94,18 +103,21 @@ html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="vertex"] .
 }
 html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="vertex"] .mv4-worlds a {
   color: #111;
+  border-radius: 0;
 }
 html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="vertex"] .mv4-worlds a.is-active {
   background: #050505;
   color: #fff !important;
   opacity: 1;
-  border-radius: 999px;
+}
+
+html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="freiraum"] .mv4-worlds a {
+  border-radius: 999px 4px 999px 4px;
 }
 html.dt-v2-pure-templates[data-design-test-v2="1"][data-master-world="freiraum"] .mv4-worlds a.is-active {
   background: #ffc66f;
   color: #100b16 !important;
   opacity: 1;
-  border-radius: 999px;
 }
 
 html.dt-v2-pure-templates[data-design-test-v2="1"].desktop-stage-active .desktop-stage .mv4-frame.is-active {

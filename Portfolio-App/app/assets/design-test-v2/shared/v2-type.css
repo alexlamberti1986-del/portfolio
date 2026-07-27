@@ -65,6 +65,26 @@ html {
   white-space: nowrap;
 }
 
+/* Button-Formen wie Willkommensseite (pro Welt konsistent) */
+.mv-btn,
+.mv-header__cta {
+  border-radius: 999px !important;
+}
+
+.nx-btn,
+.nx-hud__cta {
+  border-radius: 2px !important;
+}
+
+.pro-btn,
+.pro-header__cta {
+  border-radius: 0 !important;
+}
+
+.fr-btn {
+  border-radius: 999px 4px 999px 4px !important;
+}
+
 .fr-btn--compact {
   min-height: 2.4rem;
   font-size: 0.875rem;

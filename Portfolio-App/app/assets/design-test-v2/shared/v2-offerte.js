@@ -7,7 +7,7 @@
 
   /* Form expects these exact keys (not shell aliases general/vertex) */
   var FORM_WORLDS = ["multiversum", "nexora", "professional", "freiraum"];
-  var FORM_VER = "20260726offerteFast1";
+  var FORM_VER = "20260727formFit1";
 
   function detectWorld(host) {
     var candidates = [
@@ -115,13 +115,18 @@
 
   function applyEmbedHeight(frame, height) {
     if (!frame || !(height > 200)) return;
-    var h = Math.min(Math.max(Math.ceil(height) + 4, 360), 12000);
+    var h = Math.min(Math.max(Math.ceil(height) + 8, 240), 12000);
+    var prev = Number(frame.dataset.v2OfferteH || 0);
+    /* Ignore tiny jitter; allow shrink so no empty gap under form */
+    if (prev && Math.abs(prev - h) < 12) return;
+    frame.dataset.v2OfferteH = String(h);
     frame.style.height = h + "px";
-    frame.style.minHeight = h + "px";
+    frame.style.minHeight = "0";
     var shell = frame.closest("[data-v2-offerte-shell]") || frame.parentElement;
     if (shell) {
-      shell.style.minHeight = h + "px";
+      shell.style.minHeight = "0";
       shell.style.height = "auto";
+      shell.classList.remove("is-loading");
     }
   }
 

@@ -1649,6 +1649,18 @@ html[data-embed="1"] .radio-row{
     flex:1 1 calc(50% - 8px);
   }
 }
+@media (max-width:900px){
+  html[data-embed="1"] .dp-wrap{padding:6px}
+  html[data-embed="1"] .dp-shell{border-radius:14px}
+  html[data-embed="1"] .dp-top{padding:10px}
+  html[data-embed="1"] .hero,
+  html[data-embed="1"] .dp-content{padding:10px;gap:10px}
+  html[data-embed="1"] .hero-card,
+  html[data-embed="1"] .main{padding:14px;border-radius:16px}
+  html[data-embed="1"] .side{position:static;padding:14px}
+  html[data-embed="1"] .actions{gap:8px}
+  html[data-embed="1"] .btn{min-width:0;flex:1 1 auto}
+}
 </style>
 
 <script>
@@ -1656,9 +1668,17 @@ html[data-embed="1"] .radio-row{
   try{
     var params=new URLSearchParams(location.search||"");
     if(params.get("embed")==="1"){
-      document.documentElement.setAttribute("data-embed","1");`r`n      try{var w=(new URLSearchParams(location.search||"""")).get("world"); if(w){ document.documentElement.setAttribute("data-world", w); if(document.body) document.body.setAttribute("data-world", w);} }catch(eW){}
+      document.documentElement.setAttribute("data-embed","1");
+      try{
+        var w=params.get("world");
+        if(w){
+          document.documentElement.setAttribute("data-world", w);
+          if(document.body) document.body.setAttribute("data-world", w);
+        }
+      }catch(eW){}
     }
   }catch(e){}
+  var lastPosted=0;
   function postHeight(){
     try{
       if(document.documentElement.getAttribute("data-embed")!=="1") return;
@@ -1667,16 +1687,17 @@ html[data-embed="1"] .radio-row{
         wrap?wrap.scrollHeight:0,
         wrap?wrap.offsetHeight:0
       ));
-      if(h>120){
+      if(h>120 && Math.abs(h-lastPosted)>8){
+        lastPosted=h;
         parent.postMessage({type:"alx-offerte-embed-height",height:h},"*");
       }
     }catch(err){}
   }
   function kick(){
     postHeight();
-    setTimeout(postHeight,120);
-    setTimeout(postHeight,500);
-    setTimeout(postHeight,1200);
+    setTimeout(postHeight,80);
+    setTimeout(postHeight,320);
+    setTimeout(postHeight,900);
   }
   if(document.readyState==="loading"){
     document.addEventListener("DOMContentLoaded",kick);
@@ -1684,10 +1705,11 @@ html[data-embed="1"] .radio-row{
     kick();
   }
   window.addEventListener("load",kick);
-  window.addEventListener("resize",postHeight);
+  window.addEventListener("resize",function(){ setTimeout(postHeight,60); });
   if("ResizeObserver" in window){
     try{
-      new ResizeObserver(postHeight).observe(document.documentElement);
+      var target=document.querySelector('.dp-shell')||document.body;
+      new ResizeObserver(function(){ postHeight(); }).observe(target);
     }catch(e2){}
   }
   document.addEventListener("click",function(){ setTimeout(postHeight,80); },true);
