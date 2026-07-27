@@ -8,10 +8,15 @@
   var FX_KEY = "mv-effects-on";
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
-  var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
-  var isDesignTestV2 = false;
   var V2_WORLD_SLUGS = ["multiversum", "nexora", "professional", "freiraum"];
-  var V2_FRAME_VER = "20260727pinHero2";
+  var V2_FRAME_VER = "20260727clean1";
+  var FRAME_PAGES = [
+    "/design-test-v2/worlds/multiversum/index.html?v=" + V2_FRAME_VER,
+    "/design-test-v2/worlds/nexora/index.html?v=" + V2_FRAME_VER,
+    "/design-test-v2/worlds/professional/index.html?v=" + V2_FRAME_VER,
+    "/design-test-v2/worlds/freiraum/index.html?v=" + V2_FRAME_VER,
+  ];
+  var isDesignTestV2 = false;
   try {
     isDesignTestV2 = document.documentElement.getAttribute("data-design-test-v2") === "1";
     if (
@@ -23,20 +28,11 @@
       document.documentElement.setAttribute("data-design-test-v2", "1");
       document.documentElement.classList.add("dt-v2-pure-templates");
     }
-    if (isDesignTestV2) {
-      FRAME_PAGES = [
-        "/design-test-v2/worlds/multiversum/index.html?v=" + V2_FRAME_VER,
-        "/design-test-v2/worlds/nexora/index.html?v=" + V2_FRAME_VER,
-        "/design-test-v2/worlds/professional/index.html?v=" + V2_FRAME_VER,
-        "/design-test-v2/worlds/freiraum/index.html?v=" + V2_FRAME_VER,
-      ];
-    } else if (document.documentElement.getAttribute("data-design-test") === "1") {
-      FRAME_PAGES = [
-        "/design-test/worlds/multiversum.html?v=20260722tpl4",
-        "/design-test/worlds/nexora.html?v=20260722tpl4",
-        "/design-test/worlds/professional.html?v=20260722tpl4",
-        "/design-test/worlds/freiraum.html?v=20260722tpl4",
-      ];
+    /* V2-only frames: force flag if shell somehow omitted attributes */
+    if (!isDesignTestV2) {
+      isDesignTestV2 = true;
+      document.documentElement.setAttribute("data-design-test-v2", "1");
+      document.documentElement.classList.add("dt-v2-pure-templates");
     }
   } catch (eDtFrames) {}
   var SHELL_PAGES = ["3-Welten-Master-iframe.html", "index.html", ""];

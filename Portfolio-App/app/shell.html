@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <script src="/assets/welten-design-test-path.js?v=20260722tpl1"></script>
   <script src="/assets/welten-design-test-v2-path.js?v=20260726mobile1"></script>
   <script>
     /* Vor erstem Paint: Zielwelt aus URL — kein Multiversum-Blitz bei /nexora etc. */
@@ -43,9 +42,6 @@
         var infoV2 =
           window.WeltenDesignTestV2Path &&
           window.WeltenDesignTestV2Path.parse(location.pathname);
-        var info =
-          window.WeltenDesignTestPath &&
-          window.WeltenDesignTestPath.parse(location.pathname);
         var p = "/";
         var liveV2 = !!(infoV2 && infoV2.isLiveDefault);
         if (liveV2) {
@@ -61,9 +57,6 @@
           document.documentElement.classList.add("dt-v2-pure-templates");
           window.__ENABLE_WORLD_DESIGN_V2 = true;
           p = (infoV2 && infoV2.routePath) || location.pathname;
-        } else if (info && info.isDesignTest) {
-          document.documentElement.setAttribute("data-design-test", "1");
-          p = info.routePath;
         } else {
           p = (location.pathname || "/").replace(/\/$/, "") || "/";
         }
@@ -289,13 +282,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <script>
 (function () {
-  /* Prefetch aktuelle V2-Welt (nicht Legacy V1) — schnellerer Kaltstart */
-  var liveV2 =
-    document.documentElement.getAttribute("data-world-default-v2") === "1" ||
-    document.documentElement.getAttribute("data-design-test-v2") === "1";
+  /* Prefetch aktuelle V2-Welt - schnellerer Kaltstart */
   var info =
-    (window.WeltenDesignTestV2Path && window.WeltenDesignTestV2Path.parse(location.pathname)) ||
-    (window.WeltenDesignTestPath && window.WeltenDesignTestPath.parse(location.pathname));
+    window.WeltenDesignTestV2Path && window.WeltenDesignTestV2Path.parse(location.pathname);
   var p = info && info.routePath
     ? info.routePath
     : (location.pathname || "/").replace(/\/$/, "") || "/";
@@ -304,13 +293,9 @@
   else if (p.indexOf("/professional") === 0) slug = "professional";
   else if (p.indexOf("/freiraum") === 0) slug = "freiraum";
   else if (!(p === "/" || p.indexOf("/multiversum") === 0)) return;
-  if (p === "/") return; /* Willkommensseite: kein Shell-Prefetch */
+  if (p === "/") return;
   var ver = "20260727enter1";
-  var href = liveV2
-    ? "/design-test-v2/worlds/" + slug + "/index.html?v=" + ver
-    : "/" + slug.toUpperCase() + ".html";
-  if (!liveV2 && slug === "multiversum") href = "/MULTIVERSUM.html?v=20260718tvParity1";
-  else if (!liveV2 && slug === "professional") href = "/PROFESSIONAL.html";
+  var href = "/design-test-v2/worlds/" + slug + "/index.html?v=" + ver;
   var l = document.createElement("link");
   l.rel = "prefetch";
   l.href = href;
@@ -337,23 +322,17 @@
   <script src="/assets/welten-effects-governor.js?v=20260720fluid1" defer></script>
   <link rel="stylesheet" href="/assets/welten-fluidity-pass.css?v=20260720fluid1" />
   <script src="/assets/welten-fluidity-pass.js?v=20260720fluid1" defer></script>
-  <link rel="stylesheet" href="/assets/design-test/design-test-shell.css?v=20260722tpl4" media="not all" id="design-test-shell-css" />
   <link rel="stylesheet" href="/assets/design-test-v2/design-test-v2-shell.css?v=20260727btnForm1" media="not all" id="design-test-v2-shell-css" />
   <script>
     (function () {
-      var isV1 = document.documentElement.getAttribute("data-design-test") === "1";
       var isV2 = document.documentElement.getAttribute("data-design-test-v2") === "1";
       var liveV2 = document.documentElement.getAttribute("data-world-default-v2") === "1";
-      if (isV1) {
-        var l = document.getElementById("design-test-shell-css");
-        if (l) l.media = "all";
-      }
       if (isV2 || liveV2) {
         var l2 = document.getElementById("design-test-v2-shell-css");
         if (l2) l2.media = "all";
       }
       /* Preview-only surfaces stay noindex; live V2 is indexed */
-      if (isV1 || (isV2 && !liveV2)) {
+      if (isV2 && !liveV2) {
         var m = document.createElement("meta");
         m.name = "robots";
         m.content = "noindex, nofollow";
@@ -361,22 +340,15 @@
       }
     })();
   </script>
+  </script>
 </head>
 <body data-master-world="general" data-live-shell="1" data-live-default="0" data-world-default-v2="1" data-splash-boot="0" data-world-audio-test="1">
-  <div class="design-test-banner" hidden id="designTestBanner">
-    <span>Lokale Design-Testversion — Live unverändert</span>
-    <a href="/design-test/">Testübersicht</a>
-  </div>
   <div class="design-test-v2-banner" hidden id="designTestV2Banner">
     <span>Alex Lamberti · Vier Welten</span>
     <a href="/">← Zurück zur Willkommensseite</a>
   </div>
   <script>
     (function () {
-      if (document.documentElement.getAttribute("data-design-test") === "1") {
-        var b = document.getElementById("designTestBanner");
-        if (b) b.hidden = false;
-      }
       /* Banner only on preview subpath — not when V2 is the live site */
       var liveV2 = document.documentElement.getAttribute("data-world-default-v2") === "1";
       if (document.documentElement.getAttribute("data-design-test-v2") === "1" && !liveV2) {
@@ -583,33 +555,27 @@
   </div>
 
   <iframe class="mv4-frame is-active" data-world="general" title="MULTIVERSUM"
-  data-lazy-src="/MULTIVERSUM.html?v=20260718tvParity1" src="about:blank"></iframe>
-  <iframe class="mv4-frame" data-world="nexora" title="NEXORA" data-lazy-src="/NEXORA.html" src="about:blank"></iframe>
-  <iframe class="mv4-frame" data-world="vertex" title="PROFESSIONAL" data-lazy-src="/PROFESSIONAL.html" src="about:blank"></iframe>
-  <iframe class="mv4-frame" data-world="freiraum" title="FREIRAUM" data-lazy-src="/FREIRAUM.html" src="about:blank"></iframe>
+  data-lazy-src="/design-test-v2/worlds/multiversum/index.html?v=20260727clean1" src="about:blank"></iframe>
+  <iframe class="mv4-frame" data-world="nexora" title="NEXORA" data-lazy-src="/design-test-v2/worlds/nexora/index.html?v=20260727clean1" src="about:blank"></iframe>
+  <iframe class="mv4-frame" data-world="vertex" title="PROFESSIONAL" data-lazy-src="/design-test-v2/worlds/professional/index.html?v=20260727clean1" src="about:blank"></iframe>
+  <iframe class="mv4-frame" data-world="freiraum" title="FREIRAUM" data-lazy-src="/design-test-v2/worlds/freiraum/index.html?v=20260727clean1" src="about:blank"></iframe>
   <script>
     (function () {
       try {
         var infoV2 =
           window.WeltenDesignTestV2Path &&
           window.WeltenDesignTestV2Path.parse(location.pathname);
-        var info =
-          window.WeltenDesignTestPath &&
-          window.WeltenDesignTestPath.parse(location.pathname);
         var liveV2 = !!(infoV2 && infoV2.isLiveDefault);
-        var useV2 = !!(infoV2 && infoV2.isDesignTestV2) || liveV2;
+        var useV2 = true;
         /* Welcome hub (/) is static — if this shell somehow loads, still prefer V2 frames */
         if (liveV2) {
           document.documentElement.setAttribute("data-world-default-v2", "1");
           document.documentElement.setAttribute("data-design-test-v2", "1");
           useV2 = true;
         }
-        var useTpl = !!(info && info.isDesignTest) && !useV2;
-        var p = useV2 && infoV2
+        var p = infoV2
           ? infoV2.routePath
-          : info
-            ? info.routePath
-            : (location.pathname || "/").replace(/\/$/, "") || "/";
+          : (location.pathname || "/").replace(/\/$/, "") || "/";
         var idx = 0;
         if (p.indexOf("/nexora") === 0) idx = 1;
         else if (p.indexOf("/professional") === 0) idx = 2;
@@ -618,42 +584,26 @@
         var frames = document.querySelectorAll(".mv4-frame");
         var links = document.querySelectorAll(".mv4-worlds [data-iframe]");
         var keys = ["general", "nexora", "vertex", "freiraum"];
-        var tplSrc = [
-          "/design-test/worlds/multiversum.html?v=20260722tpl4",
-          "/design-test/worlds/nexora.html?v=20260722tpl4",
-          "/design-test/worlds/professional.html?v=20260722tpl4",
-          "/design-test/worlds/freiraum.html?v=20260722tpl4",
-        ];
-        var V2_VER = "20260727pinHero2";
+        var V2_VER = "20260727clean1";
         var tplSrcV2 = [
           "/design-test-v2/worlds/multiversum/index.html?v=" + V2_VER,
           "/design-test-v2/worlds/nexora/index.html?v=" + V2_VER,
           "/design-test-v2/worlds/professional/index.html?v=" + V2_VER,
           "/design-test-v2/worlds/freiraum/index.html?v=" + V2_VER,
         ];
-        if (useV2) {
-          document.documentElement.classList.add("dt-v2-pure-templates");
-        } else if (useTpl) {
-          document.documentElement.classList.add("dt-pure-templates");
-        }
+        document.documentElement.classList.add("dt-v2-pure-templates");
         frames.forEach(function (f, i) {
           var on = i === idx;
           f.classList.toggle("is-active", on);
           f.style.pointerEvents = on ? "auto" : "none";
-          if (useV2) {
-            f.setAttribute("data-lazy-src", tplSrcV2[i]);
-          } else if (useTpl) {
-            f.setAttribute("data-lazy-src", tplSrc[i]);
-          }
+          f.setAttribute("data-lazy-src", tplSrcV2[i]);
           if (on) {
             f.removeAttribute("data-mv-quarantined");
             var lazy = f.getAttribute("data-lazy-src");
             var cur = f.getAttribute("src") || "";
             if (lazy && (!cur || /about:blank/i.test(cur) || /about:blank/i.test(f.src || ""))) {
               f.src = lazy;
-            } else if (useV2 && lazy && cur.indexOf("/design-test-v2/worlds/") === -1) {
-              f.src = lazy;
-            } else if (useTpl && lazy && cur.indexOf("/design-test/worlds/") === -1) {
+            } else if (lazy && cur.indexOf("/design-test-v2/worlds/") === -1) {
               f.src = lazy;
             }
           } else {
@@ -714,11 +664,9 @@
 
   <script src="/assets/welten-desktop-stage.js?v=20260719loadFix1"></script>
   <script src="/assets/welten-world-audio-test.js?v=20260718tvParity1" defer></script>
-  <script src="/assets/welten-multiversum-master.js?v=20260727pinHero2" defer></script>
+  <script src="/assets/welten-multiversum-master.js?v=20260727clean1" defer></script>
   <script src="/assets/welten-world-switch-freiraum-brush-v3.js?v=20260706fr-smooth" defer></script>
   <script src="/assets/welten-world-switch-preview.js?v=20260727fluid1" defer></script>
-  <script src="/assets/design-test/design-test-chrome.js?v=20260722tpl4" defer></script>
-  <script src="/assets/design-test/design-test-inject.js?v=20260722tpl4" defer></script>
   <script src="/assets/design-test-v2/shared/v2-parent.js?v=20260727enter1" defer></script>
 </body>
 </html>
