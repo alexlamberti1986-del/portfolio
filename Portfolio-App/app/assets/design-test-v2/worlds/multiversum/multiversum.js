@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260727galaxy2";
+      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260727galaxy3";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");
@@ -195,7 +195,14 @@
     function nudgeResize() {
       try {
         var win = iframe.contentWindow;
-        if (win) win.dispatchEvent(new Event("resize"));
+        if (!win) return;
+        /* Avoid spam-resize on large TVs (causes canvas rebuild / flicker) */
+        if (nudgeResize._busy) return;
+        nudgeResize._busy = true;
+        win.dispatchEvent(new Event("resize"));
+        window.setTimeout(function () {
+          nudgeResize._busy = false;
+        }, 400);
       } catch (e) {}
     }
 
@@ -219,12 +226,13 @@
       overlay.classList.add("is-open");
       document.documentElement.classList.add("mv-galaxy-open");
       document.body.classList.add("mv-galaxy-open");
-      window.setTimeout(nudgeResize, 80);
+      window.setTimeout(nudgeResize, 160);
       window.setTimeout(postLangToGalaxy, 120);
       window.setTimeout(postLangToGalaxy, 500);
       window.setTimeout(function () {
+        /* Only hard-reload if canvas never sized — avoid double-load flicker on TV */
         if (galaxyNeedsReload()) loadGalaxy(true);
-      }, 900);
+      }, 1200);
       if (closeBtn) {
         try {
           closeBtn.focus();

@@ -338,19 +338,19 @@
       "    left: calc(var(--world-x) + clamp(150px, 16vw, 500px)) !important;",
       "    top: calc(var(--world-y) + clamp(106px, 15.5vh, 370px)) !important;",
       "  }",
-      "  /* Pro/FR: Textbox links → linke Karten etwas näher am Globus */",
+      "  /* Pro/FR: Haltung/Portrait + Referenzen/Collage leicht nach links */
       "  html body .world-panel[data-world='professional'] .subpage-1,",
       "  html body .world-panel[data-world='freiraum'] .subpage-1,",
       "  html body .world-panel[data-world='professional'] .subpage-3,",
       "  html body .world-panel[data-world='freiraum'] .subpage-3 {",
-      "    left: calc(var(--world-x) - clamp(140px, 14vw, 420px)) !important;",
+      "    left: calc(var(--world-x) - clamp(210px, 22vw, 660px)) !important;",
       "  }",
-      "  /* MV/NX: Textbox rechts → rechte Karten etwas näher am Globus */",
+      "  /* MV/NX: Nexus/Module + Signal/Uplink leicht nach rechts */",
       "  html body .world-panel[data-world='multiversum'] .subpage-2,",
       "  html body .world-panel[data-world='nexora'] .subpage-2,",
       "  html body .world-panel[data-world='multiversum'] .subpage-4,",
       "  html body .world-panel[data-world='nexora'] .subpage-4 {",
-      "    left: calc(var(--world-x) + clamp(130px, 13vw, 400px)) !important;",
+      "    left: calc(var(--world-x) + clamp(200px, 21vw, 640px)) !important;",
       "  }",
       "",
       "  /* Bild-Crop: zentriert, Portraits etwas nach oben */",
@@ -447,8 +447,78 @@
       "  html body .subpage-3,",
       "  html body .subpage-4 { top: calc(var(--world-y) + 18vh) !important; }",
       "}",
+      "",
+      "/* TV / Ultrawide: Layout zentrierter, weniger Flackern */",
+      "@media (min-width: 1600px), (min-aspect-ratio: 21/9) and (min-width: 1400px) {",
+      "  html body .overview-card[data-world='nexora'] { left: 26% !important; top: 24% !important; }",
+      "  html body .overview-card[data-world='professional'] { left: 74% !important; top: 24% !important; }",
+      "  html body .overview-card[data-world='multiversum'] { left: 26% !important; top: 76% !important; }",
+      "  html body .overview-card[data-world='freiraum'] { left: 74% !important; top: 76% !important; }",
+      "  html body .world-panel[data-world='multiversum'],",
+      "  html body .world-panel[data-world='nexora'] {",
+      "    --world-x: 34% !important;",
+      "    --box-x: 72% !important;",
+      "  }",
+      "  html body .world-panel[data-world='professional'],",
+      "  html body .world-panel[data-world='freiraum'] {",
+      "    --world-x: 66% !important;",
+      "    --box-x: 26% !important;",
+      "  }",
+      "  html body .overview-intro-box {",
+      "    width: min(360px, 22vw) !important;",
+      "    max-width: min(360px, 22vw) !important;",
+      "  }",
+      "  html body .live-textbox,",
+      "  html body .final-textbox {",
+      "    width: min(18vw, 300px) !important;",
+      "    max-width: min(18vw, 300px) !important;",
+      "  }",
+      "  /* Wash nicht mehr jeden Frame drehen → weniger TV-Flackern */",
+      "  html body .galaxy-wash {",
+      "    transform: none !important;",
+      "    filter: blur(16px) !important;",
+      "    opacity: 0.48 !important;",
+      "    animation: none !important;",
+      "    will-change: auto !important;",
+      "  }",
+      "  html body .galaxy-vignette {",
+      "    background:",
+      "      radial-gradient(circle at 50% 50%, transparent 0 42%, rgba(0,0,0,.18) 70%, rgba(0,0,0,.78) 100%),",
+      "      linear-gradient(90deg, rgba(0,0,0,.45), transparent 10% 90%, rgba(0,0,0,.45)) !important;",
+      "  }",
+      "  html body .overview-layer,",
+      "  html body .world-panel,",
+      "  html body .final-layer {",
+      "    transition: none !important;",
+      "  }",
+      "  html body #galaxyCanvas {",
+      "    image-rendering: auto !important;",
+      "    transform: translateZ(0);",
+      "    backface-visibility: hidden;",
+      "  }",
+      "}",
     ].join("\n");
     document.head.appendChild(style);
+  }
+
+  /** TV/Desktop: Background-RAF/Style dämpfen */
+  function stabilizeLargeScreens() {
+    try {
+      var wide =
+        window.matchMedia("(min-width: 1600px)").matches ||
+        window.matchMedia("(min-aspect-ratio: 21/9) and (min-width: 1400px)").matches;
+      if (!wide) return;
+    } catch (eMq) {
+      return;
+    }
+
+    document.addEventListener("visibilitychange", function () {
+      try {
+        if (document.hidden) {
+          document.documentElement.style.setProperty("--progress", "0");
+        }
+      } catch (eVis) {}
+    });
   }
 
   /**
@@ -539,6 +609,7 @@
 
   function run() {
     injectLayoutCss();
+    stabilizeLargeScreens();
     applyLabelsAndLinks();
     bindV2Clicks();
     bindLangSync();
