@@ -11,7 +11,7 @@
   var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
   var isDesignTestV2 = false;
   var V2_WORLD_SLUGS = ["multiversum", "nexora", "professional", "freiraum"];
-  var V2_FRAME_VER = "20260727galaxy2";
+  var V2_FRAME_VER = "20260727fluid1";
   try {
     isDesignTestV2 = document.documentElement.getAttribute("data-design-test-v2") === "1";
     if (
@@ -1506,11 +1506,18 @@
     } catch (eConn) {}
     var cur = activeIdx();
     if (cur < 0) cur = defaultWorld;
+    /* Handy/Tablet: nur Nachbarwelten vorwärmen — spart RAM/CPU */
+    var narrow = false;
+    try {
+      narrow = window.matchMedia("(max-width: 1024px)").matches;
+    } catch (eMq) {}
     var order = [];
     if (cur > 0) order.push(cur - 1);
     if (cur < 3) order.push(cur + 1);
-    for (var k = 0; k < 4; k++) {
-      if (k !== cur && order.indexOf(k) < 0) order.push(k);
+    if (!narrow) {
+      for (var k = 0; k < 4; k++) {
+        if (k !== cur && order.indexOf(k) < 0) order.push(k);
+      }
     }
     var ri = 0;
     function next() {
@@ -1520,20 +1527,16 @@
         return;
       }
       var i = order[ri++];
-      /* Multiversum nur vorwärmen wenn schon Master oder Rückkehr wahrscheinlich */
-      if (i === 0 && cur !== 0 && !loaded[0]) {
-        /* trotzdem vorwärmen — quarantiniert unsichtbar */
-      }
       try {
         preloadFrame(i);
       } catch (ePre) {}
-      setTimeout(next, 900);
+      setTimeout(next, narrow ? 1400 : 900);
     }
     var ric = window.requestIdleCallback || function (cb) {
       return setTimeout(cb, 700);
     };
     ric(function () {
-      setTimeout(next, 350);
+      setTimeout(next, narrow ? 700 : 350);
     }, { timeout: 2800 });
   }
 

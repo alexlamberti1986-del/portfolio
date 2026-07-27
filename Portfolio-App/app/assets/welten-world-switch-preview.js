@@ -57,7 +57,8 @@
     }
 
     if (mobile) {
-      var mobileScale = 700 / WWS_TIMING.EFFECT_MS;
+      /* Flüssigerer Wechsel auf Handy/Tablet (~0.62× statt ~0.78×) */
+      var mobileScale = 560 / WWS_TIMING.EFFECT_MS;
       timing = Object.assign({}, timing, {
         WORLD_TRANSITION_DURATION: Math.round(timing.WORLD_TRANSITION_DURATION * mobileScale),
         EFFECT_MS: Math.round(timing.EFFECT_MS * mobileScale),

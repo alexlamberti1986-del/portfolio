@@ -337,6 +337,18 @@
     window.addEventListener("message", function (ev) {
       var data = ev && ev.data;
       if (!data) return;
+      /* Shell: Weltwechsel → Galaxy sofort entladen (GPU/CPU frei) */
+      if (data.type === "mv-galaxy-hard-hide") {
+        if (overlay.classList.contains("is-open") || !overlay.hidden) close();
+        else {
+          try {
+            iframe.removeAttribute("src");
+            iframe.src = "about:blank";
+            bootedVisible = false;
+          } catch (eHard) {}
+        }
+        return;
+      }
       if (data.type === "galaxy-ready" && data.source === "design-test-v2") {
         postLangToGalaxy();
         return;

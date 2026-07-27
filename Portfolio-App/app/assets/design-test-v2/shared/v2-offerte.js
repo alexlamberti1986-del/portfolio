@@ -7,7 +7,7 @@
 
   /* Form expects these exact keys (not shell aliases general/vertex) */
   var FORM_WORLDS = ["multiversum", "nexora", "professional", "freiraum"];
-  var FORM_VER = "20260727formFit1";
+  var FORM_VER = "20260727fluid1";
 
   function detectWorld(host) {
     var candidates = [
@@ -119,15 +119,24 @@
     var prev = Number(frame.dataset.v2OfferteH || 0);
     /* Ignore tiny jitter; allow shrink so no empty gap under form */
     if (prev && Math.abs(prev - h) < 12) return;
-    frame.dataset.v2OfferteH = String(h);
-    frame.style.height = h + "px";
-    frame.style.minHeight = "0";
-    var shell = frame.closest("[data-v2-offerte-shell]") || frame.parentElement;
-    if (shell) {
-      shell.style.minHeight = "0";
-      shell.style.height = "auto";
-      shell.classList.remove("is-loading");
-    }
+    frame.dataset.v2OffertePendingH = String(h);
+    if (frame.__v2OfferteRaf) return;
+    frame.__v2OfferteRaf = root.requestAnimationFrame(function () {
+      frame.__v2OfferteRaf = 0;
+      var next = Number(frame.dataset.v2OffertePendingH || 0);
+      if (!(next > 200)) return;
+      var cur = Number(frame.dataset.v2OfferteH || 0);
+      if (cur && Math.abs(cur - next) < 12) return;
+      frame.dataset.v2OfferteH = String(next);
+      frame.style.height = next + "px";
+      frame.style.minHeight = "0";
+      var shell = frame.closest("[data-v2-offerte-shell]") || frame.parentElement;
+      if (shell) {
+        shell.style.minHeight = "0";
+        shell.style.height = "auto";
+        shell.classList.remove("is-loading");
+      }
+    });
   }
 
   function bindEmbedResize() {

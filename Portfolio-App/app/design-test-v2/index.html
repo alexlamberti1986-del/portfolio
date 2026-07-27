@@ -562,6 +562,8 @@
     /* Weltwechsel ankündigen: die Shell spielt danach Intro-Animation + Welt-Musik */
     (function () {
       var WORLD_RE = /^\/(?:design-test-v2\/)?(multiversum|nexora|professional|freiraum)(?:\/|#|$)/;
+      var FRAME_VER = "20260727fluid1";
+      var prefetched = {};
 
       function remember(href) {
         var url;
@@ -578,12 +580,55 @@
         } catch (e2) {}
       }
 
+      function worldSlug(pathname) {
+        var m = String(pathname || "").match(WORLD_RE);
+        return m ? m[1] : "";
+      }
+
+      function prefetchWorld(href) {
+        var url;
+        try {
+          url = new URL(href, location.href);
+        } catch (e) {
+          return;
+        }
+        if (url.origin !== location.origin) return;
+        var slug = worldSlug(url.pathname);
+        if (!slug || prefetched[slug]) return;
+        prefetched[slug] = true;
+        var l = document.createElement("link");
+        l.rel = "prefetch";
+        l.as = "document";
+        l.href = "/design-test-v2/worlds/" + slug + "/index.html?v=" + FRAME_VER;
+        document.head.appendChild(l);
+      }
+
       document.addEventListener(
         "click",
         function (ev) {
           var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
           if (!a) return;
           remember(a.getAttribute("href"));
+        },
+        true
+      );
+
+      /* Intent-Prefetch: Welt schon laden bevor der Klick navigiert */
+      document.addEventListener(
+        "pointerdown",
+        function (ev) {
+          var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
+          if (!a) return;
+          prefetchWorld(a.getAttribute("href"));
+        },
+        { capture: true, passive: true }
+      );
+      document.addEventListener(
+        "focusin",
+        function (ev) {
+          var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
+          if (!a) return;
+          prefetchWorld(a.getAttribute("href"));
         },
         true
       );

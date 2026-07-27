@@ -945,7 +945,7 @@ body.mv-galaxy-open [data-parallax-layer] {
   }
 }
 
-/* Phone / tablet: Galaxy Walk vollständig entfernt */
+/* Phone / tablet: Galaxy Walk ohne Link — nur dekoratives Zentrum-Bild */
 @media (max-width: 1024px), (max-height: 639px) {
   .mv-galaxy,
   .mv-galaxy-overlay,
@@ -961,14 +961,39 @@ body.mv-galaxy-open [data-parallax-layer] {
     display: inline;
   }
 
-  /* Orbit → kompaktes 2×2-Menü ohne Galaxy-Kern */
+  /* Orbit wie Desktop: Bild in der Mitte, Menüpunkte drumherum */
   .mv-menu-orbit__ring {
-    aspect-ratio: auto;
-    width: min(520px, 100%);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    padding: 0.25rem 0 0;
+    position: relative;
+    aspect-ratio: 1;
+    width: min(520px, 92vw);
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .mv-menu-orbit__core-deco {
+    display: grid !important;
+    position: absolute;
+    inset: 26%;
+    z-index: 1;
+    pointer-events: none;
+    cursor: default;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1.5px solid rgba(255, 89, 178, 0.55);
+    background: rgba(8, 14, 28, 0.92);
+    box-shadow:
+      0 0 48px rgba(255, 89, 178, 0.2),
+      inset 0 0 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .mv-menu-orbit__core-deco img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.78;
   }
 
   .mv-menu-orbit__node,
@@ -976,16 +1001,47 @@ body.mv-galaxy-open [data-parallax-layer] {
   .mv-menu-orbit__node--right,
   .mv-menu-orbit__node--bottom,
   .mv-menu-orbit__node--left {
-    position: static;
+    position: absolute;
     inset: auto;
-    width: auto;
-    height: auto;
-    min-height: 3.4rem;
+    width: clamp(5.25rem, 20vw, 7.25rem);
+    height: clamp(5.25rem, 20vw, 7.25rem);
+    min-height: 0;
     margin: 0;
-    border-radius: 999px;
-    font-size: 0.88rem;
-    letter-spacing: 0.08em;
-    animation: none !important;
+    padding: 0.5rem 0.4rem;
+    border-radius: 32%;
+    font-size: clamp(0.72rem, 2.8vw, 0.88rem);
+    letter-spacing: 0.07em;
+    animation: mv-orbit-float 8s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  .mv-menu-orbit__node--top {
+    top: 0;
+    left: 50%;
+    margin-left: calc(clamp(5.25rem, 20vw, 7.25rem) / -2);
+    animation-delay: 0s;
+  }
+
+  .mv-menu-orbit__node--right {
+    top: 50%;
+    right: 0;
+    left: auto;
+    margin-top: calc(clamp(5.25rem, 20vw, 7.25rem) / -2);
+    animation-delay: -2s;
+  }
+
+  .mv-menu-orbit__node--bottom {
+    bottom: 0;
+    left: 50%;
+    margin-left: calc(clamp(5.25rem, 20vw, 7.25rem) / -2);
+    animation-delay: -4s;
+  }
+
+  .mv-menu-orbit__node--left {
+    top: 50%;
+    left: 0;
+    margin-top: calc(clamp(5.25rem, 20vw, 7.25rem) / -2);
+    animation-delay: -6s;
   }
 }
 
@@ -1205,6 +1261,11 @@ body.mv-galaxy-open [data-parallax-layer] {
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
 }
 
+/* Nur Desktop: dekoratives Zentrum-Bild (Tablet/Handy) ausblenden */
+.mv-menu-orbit__core-deco {
+  display: none;
+}
+
 .mv-menu-orbit__node {
   position: absolute;
   display: grid;
@@ -1285,7 +1346,7 @@ body.mv-galaxy-open [data-parallax-layer] {
   }
 }
 
-/* Desktop-only orbit sizing (Handy/Tablet nutzt 2×2-Grid oben) */
+/* Desktop-only orbit sizing */
 @media (min-width: 1025px) and (max-width: 1280px) {
   .mv-menu-orbit__ring {
     width: min(880px, 86vw);
