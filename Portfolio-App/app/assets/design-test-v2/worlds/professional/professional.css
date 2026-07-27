@@ -334,9 +334,14 @@ h3 {
 
 .pro-mobile-nav {
   display: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
   border-top: 1px solid var(--pro-line);
   background: var(--pro-bg);
-  padding: 1rem var(--pro-wrap) 1.25rem;
+  /* Wie Nexora/Freiraum: normales Seitenpadding — nie --pro-wrap als Padding */
+  padding: 1rem 1.15rem 1.25rem;
 }
 
 .pro-mobile-nav.is-open {
