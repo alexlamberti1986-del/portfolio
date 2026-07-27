@@ -1817,19 +1817,19 @@ html[data-reduced-motion="1"] [data-reveal] {
   position: absolute;
   left: 50%;
   top: 48%;
-  width: min(68%, 580px);
+  width: min(82%, 720px);
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 1;
-  filter: drop-shadow(0 0 34px rgba(60, 190, 255, 0.5));
+  filter: drop-shadow(0 0 38px rgba(60, 190, 255, 0.55));
 }
 
 @media (min-width: 1280px) {
   .nx-menu-hero__brain {
-    width: min(72%, 640px);
+    width: min(86%, 820px);
   }
   .nx-menu-hero__stage {
-    height: clamp(460px, 52vw, 620px);
+    height: clamp(500px, 56vw, 680px);
   }
 }
 

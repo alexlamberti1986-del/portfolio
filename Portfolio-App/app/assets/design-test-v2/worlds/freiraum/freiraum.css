@@ -1655,12 +1655,14 @@ h3 {
   .fr-menu-hero {
     min-height: clamp(520px, 68vh, 760px);
     padding: clamp(2rem, 4vw, 3.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+    /* Nur Pinboard — ohne Punkte/Glitch-Schrift */
+    background: linear-gradient(165deg, #120c18 0%, #1a1224 48%, #0e1018 100%);
   }
 
+  .fr-menu-hero__wash,
+  .fr-menu-hero__dots,
   .fr-menu-hero__glitch {
-    opacity: 0.42;
-    max-width: 38vw;
-    font-size: clamp(1.4rem, 3.6vw, 3.6rem);
+    display: none !important;
   }
 
   .fr-menu-hero__stage {
