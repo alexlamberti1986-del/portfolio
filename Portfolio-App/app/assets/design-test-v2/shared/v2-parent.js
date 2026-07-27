@@ -249,6 +249,9 @@
       if (finished) return;
       finished = true;
       try {
+        root.__v2WelcomeEntryActive = false;
+      } catch (eFlag) {}
+      try {
         root.document.documentElement.classList.remove("welten-world-switch-lock");
       } catch (e) {}
       if (onDone) onDone();
@@ -258,7 +261,7 @@
       attempts += 1;
       var preview = root.WeltenWorldSwitchPreview;
       if (!preview || typeof preview.playSwitch !== "function") {
-        if (attempts < 40) {
+        if (attempts < 60) {
           root.setTimeout(tryPlay, 50);
           return;
         }
@@ -268,6 +271,7 @@
 
       /* Cover immediately so the destination world never flashes under the intro. */
       try {
+        root.__v2WelcomeEntryActive = true;
         root.document.documentElement.classList.add("welten-world-switch-lock");
       } catch (eLock) {}
 
@@ -276,14 +280,22 @@
         finish();
       };
 
-      try {
-        preview.playSwitch(worldKey, idx);
-      } catch (e) {
-        finish();
-        return;
-      }
+      /* Zielwelt vorwärmen, dann volle Switch-Animation wie zwischen Welten */
+      var warm =
+        typeof root.preloadWorldIndex === "function"
+          ? root.preloadWorldIndex(idx)
+          : Promise.resolve();
+      Promise.resolve(warm)
+        .catch(function () {})
+        .then(function () {
+          try {
+            preview.playSwitch(worldKey, idx);
+          } catch (e) {
+            finish();
+          }
+        });
 
-      root.setTimeout(finish, 9000);
+      root.setTimeout(finish, 10000);
     }
 
     tryPlay();
@@ -327,16 +339,23 @@
     var idx = activeWorldIdx();
 
     function afterAnimation() {
+      try {
+        root.__v2WelcomeEntryActive = false;
+      } catch (eClear) {}
       requestWorldAudio(worldKey);
       hookAudioGestureFallback(worldKey);
       if (intent.hash) root.setTimeout(function () { scrollFrameToHash(intent.hash); }, 250);
     }
 
     if (intent.enter) {
-      /* Slight delay so master shell + preview module are mounted. */
+      try {
+        root.__v2WelcomeEntryActive = true;
+        root.document.documentElement.classList.add("welten-world-switch-lock");
+      } catch (eEarly) {}
+      /* Kurz warten bis Master + Preview-Modul stehen, dann volle Animation */
       root.setTimeout(function () {
         playEntryAnimation(worldKey, idx, afterAnimation);
-      }, 120);
+      }, 180);
     } else {
       afterAnimation();
     }

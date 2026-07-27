@@ -11,7 +11,7 @@
   var FRAME_PAGES = ["/MULTIVERSUM.html", "/NEXORA.html", "/PROFESSIONAL.html", "/FREIRAUM.html"];
   var isDesignTestV2 = false;
   var V2_WORLD_SLUGS = ["multiversum", "nexora", "professional", "freiraum"];
-  var V2_FRAME_VER = "20260727fluid1";
+  var V2_FRAME_VER = "20260727enter1";
   try {
     isDesignTestV2 = document.documentElement.getAttribute("data-design-test-v2") === "1";
     if (
@@ -668,6 +668,12 @@
   }
 
   function clearSwitchLock() {
+    /* Willkommens-Intro läuft — nicht abbrechen (sonst nur kurzer Sound) */
+    if (window.__v2WelcomeEntryActive) {
+      switchLockSince = 0;
+      pendingSwitchTarget = -1;
+      return;
+    }
     purgeSwitchOverlays(false);
     switchLockSince = 0;
     pendingSwitchTarget = -1;
@@ -678,6 +684,8 @@
   }
 
   function recoverStuckSwitch() {
+    /* Willkommens-Intro: nicht als „hängend“ behandeln */
+    if (window.__v2WelcomeEntryActive || window.__wwsPreviewRunning) return;
     var shellBar = getBar();
     var locked = document.documentElement.classList.contains("welten-world-switch-lock");
     var staleOverlay = document.querySelector(".welten-world-switch.is-entering, .welten-world-switch.is-exiting");
@@ -2073,8 +2081,17 @@
   });
 
   ensureSingleChrome();
-  clearSwitchLock();
-  forceRevealActiveFrame();
+  if (!window.__v2WelcomeEntryActive) {
+    clearSwitchLock();
+    forceRevealActiveFrame();
+  } else {
+    /* Willkommen-Intro: Cover behalten, nur State aufräumen */
+    switchLockSince = 0;
+    pendingSwitchTarget = -1;
+    try {
+      document.documentElement.classList.add("welten-world-switch-lock");
+    } catch (eLockBoot) {}
+  }
   recoverStuckSwitch();
   forceEnableWorldButtons();
 
@@ -2123,6 +2140,13 @@
       if (switching || pendingSwitchTarget >= 0) return;
       var masterBoot = document.body.getAttribute("data-master-world") || "";
       if (masterBoot && masterBoot !== masterKey(defaultWorld)) return;
+      /* Welcome-page intro owns the cover — don't abort / force-reveal */
+      if (window.__v2WelcomeEntryActive) {
+        applyShellRoute({ forceHome: !isDesignTestV2, forceWorld: false });
+        ensureSingleChrome();
+        scheduleIdleWorldPrefetch();
+        return;
+      }
       clearSwitchLock();
       applyShellRoute({ forceHome: !isDesignTestV2, forceWorld: false });
       forceRevealActiveFrame();
@@ -2134,6 +2158,7 @@
       setTimeout(function () {
         if (bootGen !== switchGeneration) return;
         if (switching || pendingSwitchTarget >= 0) return;
+        if (window.__v2WelcomeEntryActive) return;
         var mwLater = document.body.getAttribute("data-master-world") || "";
         if (mwLater && mwLater !== masterKey(defaultWorld)) return;
         forceRevealActiveFrame();
