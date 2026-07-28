@@ -7,6 +7,38 @@
 
   if (!/\bv2=1\b/.test(String(location.search || ""))) return;
 
+  /* Seed themed routes early so canonical-links picks them up */
+  window.ALEX_GALAXY_ROUTE_OVERRIDE = {
+    multiversum: {
+      home: "/multiversum",
+      "ueber-mich": "/multiversum/profil",
+      leistungen: "/multiversum/dimensionen",
+      projekte: "/multiversum/werke",
+      kontakt: "/multiversum/signal",
+    },
+    nexora: {
+      home: "/nexora",
+      "ueber-mich": "/nexora/core",
+      leistungen: "/nexora/module",
+      projekte: "/nexora/cases",
+      kontakt: "/nexora/uplink",
+    },
+    professional: {
+      home: "/professional",
+      "ueber-mich": "/professional/haltung",
+      leistungen: "/professional/mandate",
+      projekte: "/professional/referenzen",
+      kontakt: "/professional/gespraech",
+    },
+    freiraum: {
+      home: "/freiraum",
+      "ueber-mich": "/freiraum/portrait",
+      leistungen: "/freiraum/disziplinen",
+      projekte: "/freiraum/collage",
+      kontakt: "/freiraum/impuls",
+    },
+  };
+
   var LABELS_I18N = {
     de: {
       multiversum: { "ueber-mich": "Profil", leistungen: "Dimensionen", projekte: "Werke", kontakt: "Signal" },
@@ -91,6 +123,99 @@
     },
   };
 
+  /** Themed chapter path slugs (matches shell router / live menus). */
+  var V2_CHAPTER = {
+    multiversum: {
+      home: "",
+      "ueber-mich": "/profil",
+      leistungen: "/dimensionen",
+      projekte: "/werke",
+      kontakt: "/signal",
+    },
+    nexora: {
+      home: "",
+      "ueber-mich": "/core",
+      leistungen: "/module",
+      projekte: "/cases",
+      kontakt: "/uplink",
+    },
+    professional: {
+      home: "",
+      "ueber-mich": "/haltung",
+      leistungen: "/mandate",
+      projekte: "/referenzen",
+      kontakt: "/gespraech",
+    },
+    freiraum: {
+      home: "",
+      "ueber-mich": "/portrait",
+      leistungen: "/disziplinen",
+      projekte: "/collage",
+      kontakt: "/impuls",
+    },
+  };
+
+  var PAGE_GO = {
+    home: "home",
+    "ueber-mich": "about",
+    leistungen: "leistungen",
+    projekte: "projects",
+    kontakt: "contact",
+  };
+
+  var CHAPTER_SLUG_PAGE = {
+    profil: "ueber-mich",
+    core: "ueber-mich",
+    haltung: "ueber-mich",
+    portrait: "ueber-mich",
+    "ueber-mich": "ueber-mich",
+    dimensionen: "leistungen",
+    module: "leistungen",
+    mandate: "leistungen",
+    disziplinen: "leistungen",
+    leistungen: "leistungen",
+    nexus: "leistungen",
+    werke: "projekte",
+    cases: "projekte",
+    referenzen: "projekte",
+    collage: "projekte",
+    projekte: "projekte",
+    signal: "kontakt",
+    uplink: "kontakt",
+    gespraech: "kontakt",
+    impuls: "kontakt",
+    kontakt: "kontakt",
+  };
+
+  var SMALL_I18N = {
+    de: {
+      multiversum: {
+        "ueber-mich": "Persönlichkeit und Hintergrund",
+        leistungen: "Digitale Dimensionen",
+        projekte: "Werke und Referenzen",
+        kontakt: "Direkter Einstieg",
+      },
+      nexora: {
+        "ueber-mich": "Systemkern und Haltung",
+        leistungen: "Vernetzte Module",
+        projekte: "Cases und Wirkung",
+        kontakt: "Uplink starten",
+      },
+      professional: {
+        "ueber-mich": "Haltung und Anspruch",
+        leistungen: "Digitale Mandate",
+        projekte: "Referenzen und Cases",
+        kontakt: "Gespräch anfragen",
+      },
+      freiraum: {
+        "ueber-mich": "Portrait und Nähe",
+        leistungen: "Kreative Disziplinen",
+        projekte: "Collage und Arbeiten",
+        kontakt: "Impuls senden",
+      },
+    },
+  };
+
   var WORLDS = ["multiversum", "nexora", "professional", "freiraum"];
   var PAGES = ["ueber-mich", "leistungen", "projekte", "kontakt"];
 
@@ -112,41 +237,9 @@
     page = page || "home";
     var slug = world === "multiversum" ? "multiversum" : world;
     var base = (publicPrefix() || "") + "/" + slug;
-    var hash = (V2_HASH[world] && V2_HASH[world][page]) || "";
-    return hash ? base + "#" + hash : base;
+    var chapter = (V2_CHAPTER[world] && V2_CHAPTER[world][page]) || "";
+    return chapter ? base + chapter : base;
   }
-
-  /* Canonical route map used by digitalplus-v35-canonical-links if it re-runs */
-  window.ALEX_GALAXY_ROUTE_OVERRIDE = {
-    multiversum: {
-      home: v2Href("multiversum", "home"),
-      "ueber-mich": v2Href("multiversum", "ueber-mich"),
-      leistungen: v2Href("multiversum", "leistungen"),
-      projekte: v2Href("multiversum", "projekte"),
-      kontakt: v2Href("multiversum", "kontakt"),
-    },
-    nexora: {
-      home: v2Href("nexora", "home"),
-      "ueber-mich": v2Href("nexora", "ueber-mich"),
-      leistungen: v2Href("nexora", "leistungen"),
-      projekte: v2Href("nexora", "projekte"),
-      kontakt: v2Href("nexora", "kontakt"),
-    },
-    professional: {
-      home: v2Href("professional", "home"),
-      "ueber-mich": v2Href("professional", "ueber-mich"),
-      leistungen: v2Href("professional", "leistungen"),
-      projekte: v2Href("professional", "projekte"),
-      kontakt: v2Href("professional", "kontakt"),
-    },
-    freiraum: {
-      home: v2Href("freiraum", "home"),
-      "ueber-mich": v2Href("freiraum", "ueber-mich"),
-      leistungen: v2Href("freiraum", "leistungen"),
-      projekte: v2Href("freiraum", "projekte"),
-      kontakt: v2Href("freiraum", "kontakt"),
-    },
-  };
 
   function setText(el, text) {
     if (!el || !text) return;
@@ -155,8 +248,10 @@
 
   function applyLabelsAndLinks() {
     LABELS = labelsFor(currentLang());
+    var smalls = SMALL_I18N.de;
     WORLDS.forEach(function (world) {
       var labels = LABELS[world];
+      var worldSmall = (smalls && smalls[world]) || {};
       PAGES.forEach(function (page) {
         var cls = PAGE_CLASS[page];
         var href = v2Href(world, page);
@@ -165,11 +260,16 @@
           .querySelectorAll('.world-panel[data-world="' + world + '"] a.' + cls)
           .forEach(function (a) {
             a.setAttribute("href", href);
+            a.setAttribute("target", "_top");
+            a.setAttribute("rel", "noopener noreferrer");
             a.setAttribute("data-alex-route", world + "." + page);
             a.setAttribute("data-v2-page", page);
+            a.setAttribute("data-v2-world", world);
             a.setAttribute("aria-label", world.toUpperCase() + " – " + label);
             var span = a.querySelector("span");
             setText(span, label);
+            var small = a.querySelector("small");
+            if (small && worldSmall[page]) setText(small, worldSmall[page]);
             var img = a.querySelector("img");
             if (img) img.setAttribute("alt", world.toUpperCase() + " " + label);
           });
@@ -187,7 +287,11 @@
         )
         .forEach(function (a) {
           a.setAttribute("href", v2Href(world, "home"));
+          a.setAttribute("target", "_top");
+          a.setAttribute("rel", "noopener noreferrer");
           a.setAttribute("data-alex-route", world + ".home");
+          a.setAttribute("data-v2-world", world);
+          a.setAttribute("data-v2-page", "home");
         });
     });
 
@@ -196,7 +300,11 @@
       var world = WORLDS[index];
       if (!world) return;
       a.setAttribute("href", v2Href(world, "home"));
+      a.setAttribute("target", "_top");
+      a.setAttribute("rel", "noopener noreferrer");
       a.setAttribute("data-alex-route", world + ".home");
+      a.setAttribute("data-v2-world", world);
+      a.setAttribute("data-v2-page", "home");
     });
 
     /* Last four Multiversum chapter buttons */
@@ -206,14 +314,49 @@
       if (!page) return;
       var label = LABELS.multiversum[page];
       a.setAttribute("href", v2Href("multiversum", page));
+      a.setAttribute("target", "_top");
+      a.setAttribute("rel", "noopener noreferrer");
       a.setAttribute("data-alex-route", "multiversum." + page);
       a.setAttribute("data-v2-page", page);
+      a.setAttribute("data-v2-world", "multiversum");
       a.setAttribute("aria-label", "MULTIVERSUM – " + label);
       var strong = a.querySelector("strong");
       setText(strong, label);
       var img = a.querySelector("img");
       if (img) img.setAttribute("alt", "Multiversum " + label);
     });
+
+    /* Keep override map in sync for canonical-links re-runs */
+    window.ALEX_GALAXY_ROUTE_OVERRIDE = {
+      multiversum: {
+        home: v2Href("multiversum", "home"),
+        "ueber-mich": v2Href("multiversum", "ueber-mich"),
+        leistungen: v2Href("multiversum", "leistungen"),
+        projekte: v2Href("multiversum", "projekte"),
+        kontakt: v2Href("multiversum", "kontakt"),
+      },
+      nexora: {
+        home: v2Href("nexora", "home"),
+        "ueber-mich": v2Href("nexora", "ueber-mich"),
+        leistungen: v2Href("nexora", "leistungen"),
+        projekte: v2Href("nexora", "projekte"),
+        kontakt: v2Href("nexora", "kontakt"),
+      },
+      professional: {
+        home: v2Href("professional", "home"),
+        "ueber-mich": v2Href("professional", "ueber-mich"),
+        leistungen: v2Href("professional", "leistungen"),
+        projekte: v2Href("professional", "projekte"),
+        kontakt: v2Href("professional", "kontakt"),
+      },
+      freiraum: {
+        home: v2Href("freiraum", "home"),
+        "ueber-mich": v2Href("freiraum", "ueber-mich"),
+        leistungen: v2Href("freiraum", "leistungen"),
+        projekte: v2Href("freiraum", "projekte"),
+        kontakt: v2Href("freiraum", "kontakt"),
+      },
+    };
   }
 
   function injectLayoutCss() {
@@ -281,9 +424,9 @@
       "  html body .final-textbox {",
       "    z-index: 4 !important;",
       "    min-width: 0 !important;",
-      "    width: min(18vw, 236px) !important;",
-      "    max-width: min(18vw, 236px) !important;",
-      "    padding: 10px 12px !important;",
+      "    width: min(14.5vw, 196px) !important;",
+      "    max-width: min(14.5vw, 196px) !important;",
+      "    padding: 8px 9px !important;",
       "    box-sizing: border-box !important;",
       "  }",
       "  html body .world-panel .live-textbox {",
@@ -350,7 +493,7 @@
       "  html body .world-panel[data-world='freiraum'] .subpage-3 {",
       "    left: calc(var(--world-x) - clamp(210px, 22vw, 660px)) !important;",
       "  }",
-      "  /* MV/NX: Nexus/Module + Signal/Uplink leicht nach rechts */",
+      "  /* MV/NX: Dimensionen/Module + Signal/Uplink leicht nach rechts */",
       "  html body .world-panel[data-world='multiversum'] .subpage-2,",
       "  html body .world-panel[data-world='nexora'] .subpage-2,",
       "  html body .world-panel[data-world='multiversum'] .subpage-4,",
@@ -420,9 +563,9 @@
       "  }",
       "  html body .live-textbox,",
       "  html body .final-textbox {",
-      "    width: min(17vw, 210px) !important;",
-      "    max-width: min(17vw, 210px) !important;",
-      "    padding: 9px 10px !important;",
+      "    width: min(13.5vw, 176px) !important;",
+      "    max-width: min(13.5vw, 176px) !important;",
+      "    padding: 7px 8px !important;",
       "  }",
       "  html body .live-textbox p { -webkit-line-clamp: 3 !important; }",
       "  html body .subpage-card { width: clamp(96px, 11vw, 160px) !important; }",
@@ -440,8 +583,8 @@
       "    padding: 9px 10px !important;",
       "  }",
       "  html body .live-textbox {",
-      "    width: min(16vw, 200px) !important;",
-      "    max-width: min(16vw, 200px) !important;",
+      "    width: min(12.5vw, 166px) !important;",
+      "    max-width: min(12.5vw, 166px) !important;",
       "  }",
       "  html body .live-textbox h2 { font-size: clamp(13px, 1.6vh, 18px) !important; }",
       "  html body .live-textbox p {",
@@ -476,8 +619,8 @@
       "  }",
       "  html body .live-textbox,",
       "  html body .final-textbox {",
-      "    width: min(15vw, 250px) !important;",
-      "    max-width: min(15vw, 250px) !important;",
+      "    width: min(12vw, 200px) !important;",
+      "    max-width: min(12vw, 200px) !important;",
       "  }",
       "  /* Wash nicht mehr jeden Frame drehen → weniger TV-Flackern */",
       "  html body .galaxy-wash {",
@@ -528,7 +671,7 @@
   }
 
   /**
-   * V2 click bridge: post galaxy-navigate with design-test hashes,
+   * V2 click bridge: post galaxy-navigate with themed chapter paths,
    * or top-navigate when opened standalone.
    */
   function bindV2Clicks() {
@@ -538,36 +681,50 @@
         var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
         if (!a) return;
         var href = a.getAttribute("href") || "";
+        var world =
+          a.getAttribute("data-v2-world") ||
+          (a.closest && a.closest("[data-world]")
+            ? a.closest("[data-world]").getAttribute("data-world")
+            : "") ||
+          "";
+        var page = a.getAttribute("data-v2-page") || "";
         var m = href.match(
-          /^\/(?:design-test-v2\/)?(multiversum|nexora|professional|freiraum)(?:#(.*))?$/i
+          /^\/(?:design-test-v2\/)?(multiversum|nexora|professional|freiraum)(?:\/([^/?#]+))?(?:#(.*))?$/i
         );
-        if (!m) return;
+        if (!m && !world) return;
+        if (m) {
+          world = String(m[1] || world).toLowerCase();
+          if (!page && m[2]) page = CHAPTER_SLUG_PAGE[String(m[2]).toLowerCase()] || "";
+          if (!page && m[3]) {
+            var hashPage = CHAPTER_SLUG_PAGE[String(m[3]).toLowerCase()];
+            if (hashPage) page = hashPage;
+            else if (V2_HASH[world]) {
+              Object.keys(V2_HASH[world]).some(function (key) {
+                if (V2_HASH[world][key] === String(m[3]).toLowerCase()) {
+                  page = key;
+                  return true;
+                }
+                return false;
+              });
+            }
+          }
+        }
+        if (!world || WORLDS.indexOf(world) < 0) return;
+        if (!page) page = "home";
+
         e.preventDefault();
         e.stopPropagation();
         if (typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
 
-        var world = m[1].toLowerCase();
-        var hash = m[2] || "";
-        var goMap = {
-          alex: "about",
-          experience: "about",
-          values: "about",
-          about: "about",
-          leistungen: "leistungen",
-          services: "leistungen",
-          skills: "leistungen",
-          werke: "projects",
-          projects: "projects",
-          collage: "projects",
-          kontakt: "contact",
-        };
-        var go = hash ? goMap[hash] || "home" : "home";
+        var go = PAGE_GO[page] || "home";
+        var hash = (V2_HASH[world] && V2_HASH[world][page]) || "";
+        var finalHref = href || v2Href(world, page);
         var payload = {
           type: "galaxy-navigate",
           source: "design-test-v2",
           world: world,
           go: go,
-          href: href,
+          href: finalHref,
           targetHash: hash,
         };
         try {
@@ -577,7 +734,7 @@
           }
         } catch (err2) {}
         try {
-          window.location.assign(href);
+          window.location.assign(finalHref);
         } catch (err3) {}
       },
       true
@@ -614,14 +771,17 @@
   }
 
   function run() {
+    /* Seed override before canonical-links can re-apply legacy paths */
+    applyLabelsAndLinks();
     injectLayoutCss();
     stabilizeLargeScreens();
-    applyLabelsAndLinks();
     bindV2Clicks();
     bindLangSync();
     /* Re-apply after canonical-links script (runs on DOMContentLoaded too) */
     window.setTimeout(applyLabelsAndLinks, 0);
     window.setTimeout(applyLabelsAndLinks, 120);
+    window.setTimeout(applyLabelsAndLinks, 400);
+    window.setTimeout(applyLabelsAndLinks, 900);
   }
 
   if (document.readyState === "loading") {
