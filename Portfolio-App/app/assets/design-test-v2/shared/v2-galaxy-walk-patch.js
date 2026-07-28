@@ -9,25 +9,25 @@
 
   var LABELS_I18N = {
     de: {
-      multiversum: { "ueber-mich": "Profil", leistungen: "Nexus", projekte: "Werke", kontakt: "Signal" },
+      multiversum: { "ueber-mich": "Profil", leistungen: "Dimensionen", projekte: "Werke", kontakt: "Signal" },
       nexora: { "ueber-mich": "Core", leistungen: "Module", projekte: "Cases", kontakt: "Uplink" },
       professional: { "ueber-mich": "Haltung", leistungen: "Mandate", projekte: "Referenzen", kontakt: "Gespräch" },
       freiraum: { "ueber-mich": "Portrait", leistungen: "Disziplinen", projekte: "Collage", kontakt: "Impuls" },
     },
     en: {
-      multiversum: { "ueber-mich": "Profile", leistungen: "Nexus", projekte: "Works", kontakt: "Signal" },
+      multiversum: { "ueber-mich": "Profile", leistungen: "Dimensions", projekte: "Works", kontakt: "Signal" },
       nexora: { "ueber-mich": "Core", leistungen: "Modules", projekte: "Cases", kontakt: "Uplink" },
       professional: { "ueber-mich": "Stance", leistungen: "Mandates", projekte: "References", kontakt: "Talk" },
       freiraum: { "ueber-mich": "Portrait", leistungen: "Disciplines", projekte: "Collage", kontakt: "Impulse" },
     },
     fr: {
-      multiversum: { "ueber-mich": "Profil", leistungen: "Nexus", projekte: "Œuvres", kontakt: "Signal" },
+      multiversum: { "ueber-mich": "Profil", leistungen: "Dimensions", projekte: "Œuvres", kontakt: "Signal" },
       nexora: { "ueber-mich": "Core", leistungen: "Modules", projekte: "Cases", kontakt: "Uplink" },
       professional: { "ueber-mich": "Posture", leistungen: "Mandats", projekte: "Références", kontakt: "Échange" },
       freiraum: { "ueber-mich": "Portrait", leistungen: "Disciplines", projekte: "Collage", kontakt: "Impulsion" },
     },
     it: {
-      multiversum: { "ueber-mich": "Profilo", leistungen: "Nexus", projekte: "Opere", kontakt: "Segnale" },
+      multiversum: { "ueber-mich": "Profilo", leistungen: "Dimensioni", projekte: "Opere", kontakt: "Segnale" },
       nexora: { "ueber-mich": "Core", leistungen: "Moduli", projekte: "Cases", kontakt: "Uplink" },
       professional: { "ueber-mich": "Atteggiamento", leistungen: "Mandati", projekte: "Referenze", kontakt: "Colloquio" },
       freiraum: { "ueber-mich": "Ritratto", leistungen: "Discipline", projekte: "Collage", kontakt: "Impulso" },

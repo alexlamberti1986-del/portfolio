@@ -83,7 +83,7 @@
 
   function bindReveal() {
     var targets = document.querySelectorAll(
-      ".mv-section__head, .mv-world-card, .mv-galaxy__copy, .mv-galaxy__frame, .mv-alex__portrait, .mv-alex__copy, .mv-work, .mv-nexus__orbit, .mv-nexus__list, .mv-contact__copy, .mv-contact__visual, .mv-closing__inner"
+      ".mv-section__head, .mv-world-card, .mv-galaxy__copy, .mv-galaxy__frame, .mv-alex__portrait, .mv-alex__copy, .mv-work, .mv-dim, .mv-dimensions__lanes, .mv-contact__copy, .mv-contact__visual, .mv-closing__inner"
     );
 
     targets.forEach(function (el) {
@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260727galaxy4";
+      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260728dim2";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");

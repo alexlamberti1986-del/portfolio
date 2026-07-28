@@ -99,7 +99,7 @@
         "hero.title": "Digitale Welten. Ein Portfolio.<br /><em>Unendliche</em> Möglichkeiten.",
         "hero.lead": "Vier Welten. Ein Auftritt. Die passende Wirkung für jedes Vorhaben.",
         "menu.home": "Universum",
-        "menu.services": "Nexus",
+        "menu.services": "Dimensionen",
         "menu.projects": "Werke",
         "menu.about": "Profil",
         "menu.contact": "Signal",
@@ -114,7 +114,7 @@
         "hero.title": "Digital worlds. One portfolio.<br /><em>Endless</em> possibilities.",
         "hero.lead": "Four worlds. One presence. The right impact for every project.",
         "menu.home": "Universe",
-        "menu.services": "Nexus",
+        "menu.services": "Dimensions",
         "menu.projects": "Works",
         "menu.about": "Profile",
         "menu.contact": "Signal",
@@ -129,7 +129,7 @@
         "hero.title": "Mondes numériques. Un portfolio.<br /><em>Des possibilités</em> infinies.",
         "hero.lead": "Quatre mondes. Une présence. L'effet juste pour chaque projet.",
         "menu.home": "Univers",
-        "menu.services": "Nexus",
+        "menu.services": "Dimensions",
         "menu.projects": "Œuvres",
         "menu.about": "Profil",
         "menu.contact": "Signal",
@@ -144,7 +144,7 @@
         "hero.title": "Mondi digitali. Un portfolio.<br /><em>Infinite</em> possibilità.",
         "hero.lead": "Quattro mondi. Una presenza. L'impatto giusto per ogni progetto.",
         "menu.home": "Universo",
-        "menu.services": "Nexus",
+        "menu.services": "Dimensioni",
         "menu.projects": "Opere",
         "menu.about": "Profilo",
         "menu.contact": "Segnale",
@@ -478,7 +478,7 @@
       if (/\/offerte\/?$/.test(p)) return "offerte";
       if (/\/(kontakt|contact|signal|uplink|gespraech|gespräch|impuls)\/?$/.test(p)) return "contact";
       if (/\/(projekte|projects|werke|cases|referenzen|collage)\/?$/.test(p)) return "projects";
-      if (/\/(leistungen|nexus|module|mandate|disziplinen)\/?$/.test(p)) return "leistungen";
+      if (/\/(leistungen|nexus|module|mandate|disziplinen|dimensionen)\/?$/.test(p)) return "leistungen";
       if (/\/(ueber-mich|about|profil|core|haltung|portrait)\/?$/.test(p)) return "about";
     } catch (e) {}
     return "";
@@ -616,7 +616,7 @@
     if (!id || id === "hero" || id === "main") return "home";
     if (id === "offerte") return "offerte";
     if (id === "werke" || id === "projects" || id === "collage" || id === "projekte") return "projects";
-    if (id === "leistungen" || id === "services" || id === "skills" || id === "nexus") return "leistungen";
+    if (id === "leistungen" || id === "services" || id === "skills" || id === "nexus" || id === "dimensionen") return "leistungen";
     if (id === "alex" || id === "about" || id === "experience" || id === "values" || id === "ueber-mich") return "about";
     if (id === "kontakt" || id === "contact") return "contact";
     return "";

@@ -16,6 +16,7 @@
     { "source": "/offerte", "destination": "/shell.html" },
     { "source": "/werke", "destination": "/shell.html" },
     { "source": "/nexus", "destination": "/shell.html" },
+    { "source": "/dimensionen", "destination": "/shell.html" },
     { "source": "/profil", "destination": "/shell.html" },
     { "source": "/signal", "destination": "/shell.html" },
     { "source": "/cases", "destination": "/shell.html" },
@@ -56,7 +57,8 @@
     { "source": "/design-test-v2/freiraum", "destination": "/freiraum", "permanent": true },
     { "source": "/design-test-v2/freiraum/:path*", "destination": "/freiraum/:path*", "permanent": true },
     { "source": "/design-test-v2/projekte", "destination": "/multiversum/werke", "permanent": true },
-    { "source": "/design-test-v2/leistungen", "destination": "/multiversum/nexus", "permanent": true },
+    { "source": "/design-test-v2/leistungen", "destination": "/multiversum/dimensionen", "permanent": true },
+    { "source": "/multiversum/nexus", "destination": "/multiversum/dimensionen", "permanent": true },
     { "source": "/design-test-v2/ueber-mich", "destination": "/multiversum/profil", "permanent": true },
     { "source": "/design-test-v2/kontakt", "destination": "/multiversum/signal", "permanent": true },
     { "source": "/design-test-v2/offerte", "destination": "/multiversum/offerte", "permanent": true },
@@ -67,8 +69,8 @@
     { "source": "/profile", "destination": "/multiversum/profil", "permanent": true },
     { "source": "/werte", "destination": "/multiversum/profil", "permanent": true },
     { "source": "/values", "destination": "/multiversum/profil", "permanent": true },
-    { "source": "/staerken", "destination": "/multiversum/nexus", "permanent": true },
-    { "source": "/strengths", "destination": "/multiversum/nexus", "permanent": true },
+    { "source": "/staerken", "destination": "/multiversum/dimensionen", "permanent": true },
+    { "source": "/strengths", "destination": "/multiversum/dimensionen", "permanent": true },
     { "source": "/erfahrung", "destination": "/multiversum/profil", "permanent": true },
     { "source": "/experience", "destination": "/multiversum/profil", "permanent": true },
     { "source": "/arbeitsweise", "destination": "/multiversum/profil", "permanent": true },
@@ -98,7 +100,7 @@
       ]
     },
     {
-      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte|werke|nexus|profil|signal|impressum|datenschutz|agb|webdesign|digital-marketing|digitale-strategie)(.*)",
+      "source": "/(multiversum|nexora|professional|freiraum|projekte|leistungen|ueber-mich|kontakt|offerte|werke|nexus|dimensionen|profil|signal|impressum|datenschutz|agb|webdesign|digital-marketing|digitale-strategie)(.*)",
       "headers": [
         { "key": "Content-Type", "value": "text/html; charset=utf-8" }
       ]

@@ -30,6 +30,7 @@
     "/referenzen": "projects",
     "/collage": "projects",
     "/nexus": "leistungen",
+    "/dimensionen": "leistungen",
     "/module": "leistungen",
     "/mandate": "leistungen",
     "/disziplinen": "leistungen",
@@ -48,7 +49,7 @@
     multiversum: {
       home: "",
       projects: "/werke",
-      leistungen: "/nexus",
+      leistungen: "/dimensionen",
       about: "/profil",
       contact: "/signal",
       offerte: "/offerte",

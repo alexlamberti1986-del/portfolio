@@ -23,6 +23,7 @@
     "/referenzen": "projects",
     "/collage": "projects",
     "/nexus": "leistungen",
+    "/dimensionen": "leistungen",
     "/module": "leistungen",
     "/mandate": "leistungen",
     "/disziplinen": "leistungen",
