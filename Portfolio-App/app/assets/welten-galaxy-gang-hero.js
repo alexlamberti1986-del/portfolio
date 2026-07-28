@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260718galaxyStage2";
+  var VER = "20260728galaxyTextbox2";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
