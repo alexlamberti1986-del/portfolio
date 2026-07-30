@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260730cine1";
+  var VER = "20260730cine2";
   var BASE = "/assets/videos/profil/";
 
   var WORLD_SRC = {
@@ -79,9 +79,13 @@
     video.setAttribute("preload", "auto");
     video.setAttribute("aria-hidden", "true");
     video.muted = true;
+    video.defaultMuted = true;
     video.loop = true;
     video.playsInline = true;
     video.disablePictureInPicture = true;
+    try {
+      video.disableRemotePlayback = true;
+    } catch (e0) {}
     video.tabIndex = -1;
     if (img.currentSrc || img.src) video.setAttribute("poster", img.currentSrc || img.src);
     video.src = src;
@@ -111,6 +115,17 @@
       }
     }
 
+    /* Soft loop restart — vermeidet kurzen Ruckler am Clip-Ende */
+    video.addEventListener("timeupdate", function () {
+      try {
+        if (!video.duration || !isFinite(video.duration)) return;
+        if (video.duration - video.currentTime < 0.08) {
+          video.currentTime = 0.001;
+          safePlay(video);
+        }
+      } catch (e1) {}
+    });
+
     video.addEventListener("loadeddata", function () {
       figure.classList.add("is-ready");
       sync();
@@ -118,6 +133,9 @@
     video.addEventListener("canplay", function () {
       figure.classList.add("is-ready");
       sync();
+    });
+    video.addEventListener("playing", function () {
+      figure.classList.add("is-playing", "is-ready");
     });
 
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {

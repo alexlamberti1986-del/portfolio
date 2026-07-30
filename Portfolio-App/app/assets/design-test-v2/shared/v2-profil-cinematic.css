@@ -10,6 +10,11 @@
 .v2-profil-cine > img {
   position: relative;
   z-index: 0;
+  transition: opacity 0.45s ease;
+}
+
+.v2-profil-cine.is-playing > img {
+  opacity: 0;
 }
 
 .v2-profil-cine__video {
@@ -23,11 +28,13 @@
   object-fit: cover;
   object-position: center top;
   opacity: 0;
-  transform: scale(1.001);
+  transform: translateZ(0) scale(1.001);
+  backface-visibility: hidden;
+  will-change: opacity, transform;
   transition:
-    opacity 0.7s ease,
-    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.55s ease;
+    opacity 0.45s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.45s ease;
   pointer-events: none;
   background: transparent;
 }
@@ -42,17 +49,21 @@
 
 .v2-profil-cine.is-hover .v2-profil-cine__video,
 .v2-profil-cine:hover .v2-profil-cine__video {
-  transform: scale(1.045);
-  filter: brightness(1.04) saturate(1.06);
+  transform: translateZ(0) scale(1.025);
+  filter: brightness(1.03) saturate(1.04);
 }
 
 /* Keep captions / tags above the video layer */
 .v2-profil-cine > figcaption,
-.v2-profil-cine .fr-hero__tag,
 .v2-profil-cine .pro-hero__caption,
 .v2-profil-cine .nx-mono {
   position: relative;
   z-index: 2;
+}
+
+/* Freiraum: kein Tag-Balken mehr auf dem Portrait */
+.fr-hero__figure .fr-hero__tag {
+  display: none !important;
 }
 
 /* World-specific filters to match still portraits */
@@ -62,13 +73,29 @@
 
 .nx-hero__portrait.v2-profil-cine.is-hover .v2-profil-cine__video,
 .nx-hero__portrait.v2-profil-cine:hover .v2-profil-cine__video {
-  filter: contrast(1.06) saturate(0.95) brightness(1.04);
+  filter: contrast(1.06) saturate(0.95) brightness(1.03);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .v2-profil-cine__video {
     display: none !important;
   }
+
+  .v2-profil-cine.is-playing > img {
+    opacity: 1 !important;
+  }
+}
+
+html[data-reduced-motion="1"] .v2-profil-cine__video,
+html[data-effects="off"] .v2-profil-cine__video,
+body[data-v2-effects="off"] .v2-profil-cine__video {
+  display: none !important;
+}
+
+html[data-reduced-motion="1"] .v2-profil-cine.is-playing > img,
+html[data-effects="off"] .v2-profil-cine.is-playing > img,
+body[data-v2-effects="off"] .v2-profil-cine.is-playing > img {
+  opacity: 1 !important;
 }
 
 /* Multiversum Profil-Sektion: Video an Bildrahmen koppeln */
