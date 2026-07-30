@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260730gw6";
+      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260730gw7";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");
