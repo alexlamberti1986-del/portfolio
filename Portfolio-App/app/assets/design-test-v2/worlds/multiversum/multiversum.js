@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260730gw1";
+      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260730gw2";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");
@@ -253,23 +253,35 @@
       }
     }
 
+    function warmGalaxy() {
+      if (!syncGalaxyGateClass()) return;
+      try {
+        var current = iframe.getAttribute("src") || "";
+        if (!current || current === "about:blank") {
+          /* Prefetch while overlay stays hidden + pointer-events:none */
+          iframe.setAttribute("aria-hidden", "true");
+          loadGalaxy(true);
+        }
+      } catch (eWarm) {}
+    }
+
     function open() {
       if (!syncGalaxyGateClass()) return;
       lastFocus = document.activeElement;
+      /* Overlay sofort sichtbar machen — danach Galaxy nachladen/auffrischen */
       overlay.hidden = false;
-      void overlay.offsetHeight;
       overlay.classList.add("is-open");
       document.documentElement.classList.add("mv-galaxy-open");
       document.body.classList.add("mv-galaxy-open");
+      void overlay.offsetHeight;
       loadGalaxy(!bootedVisible);
-      window.setTimeout(nudgeResize, 80);
-      window.setTimeout(nudgeResize, 240);
-      window.setTimeout(postLangToGalaxy, 80);
-      window.setTimeout(postLangToGalaxy, 400);
+      window.setTimeout(nudgeResize, 60);
+      window.setTimeout(nudgeResize, 200);
+      window.setTimeout(postLangToGalaxy, 60);
+      window.setTimeout(postLangToGalaxy, 350);
       window.setTimeout(function () {
-        /* Only hard-reload if canvas never sized — avoid double-load flicker on TV */
         if (galaxyNeedsReload()) loadGalaxy(true);
-      }, 900);
+      }, 700);
       if (closeBtn) {
         try {
           closeBtn.focus();
@@ -306,18 +318,6 @@
           lastFocus.focus();
         } catch (eBack) {}
       }
-    }
-
-    function warmGalaxy() {
-      if (!syncGalaxyGateClass()) return;
-      try {
-        var current = iframe.getAttribute("src") || "";
-        if (!current || current === "about:blank") {
-          /* Prefetch off-screen so open() is instant */
-          iframe.setAttribute("aria-hidden", "true");
-          loadGalaxy(true);
-        }
-      } catch (eWarm) {}
     }
 
     function scrollToLocalHash(hash) {

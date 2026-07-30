@@ -810,17 +810,20 @@ h3 {
   flex-direction: column;
   background: rgba(3, 4, 10, 0.97);
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.22s ease;
   contain: layout paint style;
   will-change: opacity;
 }
 
 .mv-galaxy-overlay[hidden] {
-  display: none;
+  display: none !important;
+  pointer-events: none !important;
 }
 
 .mv-galaxy-overlay.is-open {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .mv-galaxy-overlay__bar {
@@ -955,15 +958,7 @@ body.mv-galaxy-ok .mv-galaxy__desktop-hint {
   display: none;
 }
 
-html.mv-galaxy-ok .mv-galaxy,
-html.mv-galaxy-ok .mv-galaxy-overlay,
-html.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start],
-body.mv-galaxy-ok .mv-galaxy,
-body.mv-galaxy-ok .mv-galaxy-overlay,
-body.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start] {
-  display: revert;
-}
-
+/* Parent-Viewport ok: Orbit-Button sichtbar halten (Shell-Höhe kann <640px sein) */
 html.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start],
 body.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start] {
   display: grid !important;
