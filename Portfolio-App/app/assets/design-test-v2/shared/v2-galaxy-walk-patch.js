@@ -216,6 +216,40 @@
     },
   };
 
+  /** Short copy for the 5 main textboxes (overview + 4 worlds) — fits narrow width. */
+  var BOX_COPY = {
+    overview: {
+      eyebrow: "Reisebeginn",
+      title: "Reise durchs Multiversum",
+      text: "Scrollen startet den Flug.",
+      small: "Vier Welten, klar getrennt.",
+    },
+    multiversum: {
+      eyebrow: "ZENTRUM",
+      title: "Alle Ebenen.",
+      text: "Persönlichkeit, Vision und Wirkung treffen sich hier.",
+      cta: "Zur Übersicht",
+    },
+    nexora: {
+      eyebrow: "TECH · KI",
+      title: "Systeme mit Zukunft.",
+      text: "KI, Automationen und digitale Systeme.",
+      cta: "Nexora öffnen",
+    },
+    professional: {
+      eyebrow: "KLAR · EDEL",
+      title: "Struktur & Wirkung.",
+      text: "Strategie, Positionierung, seriöser Auftritt.",
+      cta: "Ansehen",
+    },
+    freiraum: {
+      eyebrow: "KREATIV · FREI",
+      title: "Raum für Ideen.",
+      text: "Warm, mutig, künstlerisch — frei denken.",
+      cta: "Entdecken",
+    },
+  };
+
   var WORLDS = ["multiversum", "nexora", "professional", "freiraum"];
   var PAGES = ["ueber-mich", "leistungen", "projekte", "kontakt"];
 
@@ -244,6 +278,28 @@
   function setText(el, text) {
     if (!el || !text) return;
     el.textContent = text;
+  }
+
+  /** Shrink overview + world live-textbox copy to fit narrow boxes. */
+  function applyBoxCopy() {
+    var intro = document.querySelector(".overview-intro-box");
+    if (intro && BOX_COPY.overview) {
+      setText(intro.querySelector(".overview-intro-eyebrow"), BOX_COPY.overview.eyebrow);
+      setText(intro.querySelector("h2"), BOX_COPY.overview.title);
+      setText(intro.querySelector("p"), BOX_COPY.overview.text);
+      setText(intro.querySelector("small"), BOX_COPY.overview.small);
+    }
+    WORLDS.forEach(function (world) {
+      var copy = BOX_COPY[world];
+      if (!copy) return;
+      var box = document.querySelector('.world-panel[data-world="' + world + '"] .live-textbox');
+      if (!box) return;
+      setText(box.querySelector(".world-eyebrow"), copy.eyebrow);
+      setText(box.querySelector("h2"), copy.title);
+      var paras = box.querySelectorAll("p:not(.world-eyebrow)");
+      if (paras.length) setText(paras[0], copy.text);
+      setText(box.querySelector("a.world-cta"), copy.cta);
+    });
   }
 
   function applyLabelsAndLinks() {
@@ -295,6 +351,7 @@
         });
     });
 
+    applyBoxCopy();
     /* Final world pills */
     document.querySelectorAll(".final-buttons a").forEach(function (a, index) {
       var world = WORLDS[index];
@@ -368,9 +425,9 @@
       "@media (min-width: 1025px) and (min-height: 640px) {",
       "  /* —— Overview (4 Welten): Intro-Box schmaler, Orbs frei —— */",
       "  html body .overview-intro-box {",
-      "    width: min(230px, 17.5vw) !important;",
-      "    max-width: min(230px, 17.5vw) !important;",
-      "    padding: 8px 9px !important;",
+      "    width: min(188px, 14.5vw) !important;",
+      "    max-width: min(188px, 14.5vw) !important;",
+      "    padding: 7px 8px !important;",
       "    z-index: 2 !important;",
       "    left: 50% !important;",
       "    top: 50% !important;",
@@ -378,13 +435,13 @@
       "    box-sizing: border-box !important;",
       "  }",
       "  html body .overview-intro-box h2 {",
-      "    font-size: clamp(20px, 2vw, 28px) !important;",
-      "    margin-bottom: 6px !important;",
+      "    font-size: clamp(16px, 1.55vw, 22px) !important;",
+      "    margin-bottom: 5px !important;",
       "  }",
       "  html body .overview-intro-box p,",
       "  html body .overview-intro-box small {",
-      "    font-size: clamp(11px, 0.95vw, 14px) !important;",
-      "    line-height: 1.35 !important;",
+      "    font-size: clamp(10px, 0.85vw, 12px) !important;",
+      "    line-height: 1.3 !important;",
       "  }",
       "  html body .overview-card {",
       "    z-index: 5 !important;",
@@ -424,8 +481,8 @@
       "  html body .final-textbox {",
       "    z-index: 4 !important;",
       "    min-width: 0 !important;",
-      "    width: min(9.4vw, 128px) !important;",
-      "    max-width: min(9.4vw, 128px) !important;",
+      "    width: min(8vw, 112px) !important;",
+      "    max-width: min(8vw, 112px) !important;",
       "    padding: 5px 5px !important;",
       "    box-sizing: border-box !important;",
       "  }",
@@ -438,19 +495,27 @@
       "  html body .world-panel.is-active .live-textbox a.world-cta {",
       "    pointer-events: auto !important;",
       "  }",
+      "  html body .live-textbox .world-eyebrow,",
+      "  html body .final-textbox .world-eyebrow {",
+      "    font-size: clamp(8px, 0.7vw, 10px) !important;",
+      "    letter-spacing: 0.08em !important;",
+      "    margin-bottom: 4px !important;",
+      "  }",
       "  html body .live-textbox h2 {",
-      "    font-size: clamp(13px, 1.35vw, 18px) !important;",
+      "    font-size: clamp(12px, 1.15vw, 16px) !important;",
       "    overflow-wrap: anywhere !important;",
       "    word-break: break-word !important;",
-      "    line-height: 1.15 !important;",
+      "    line-height: 1.12 !important;",
+      "    margin-bottom: 4px !important;",
       "  }",
-      "  html body .live-textbox p {",
+      "  html body .live-textbox p:not(.world-eyebrow) {",
       "    display: -webkit-box !important;",
-      "    -webkit-line-clamp: 3 !important;",
+      "    -webkit-line-clamp: 2 !important;",
       "    -webkit-box-orient: vertical !important;",
       "    overflow: hidden !important;",
-      "    font-size: clamp(10px, 0.95vw, 12px) !important;",
-      "    line-height: 1.3 !important;",
+      "    font-size: clamp(9px, 0.85vw, 11px) !important;",
+      "    line-height: 1.28 !important;",
+      "    margin-bottom: 6px !important;",
       "  }",
       "  html body .live-textbox .world-cta,",
       "  html body .live-textbox a.world-cta {",
@@ -458,8 +523,8 @@
       "    max-width: 100% !important;",
       "    overflow: hidden !important;",
       "    text-overflow: ellipsis !important;",
-      "    font-size: clamp(10px, 0.9vw, 12px) !important;",
-      "    padding-inline: 0.5rem !important;",
+      "    font-size: clamp(9px, 0.8vw, 11px) !important;",
+      "    padding-inline: 0.45rem !important;",
       "  }",
       "",
       "  /* Menü-Karten um Globus — Abstand zur Textbox */",
@@ -568,17 +633,17 @@
       "/* Mittlere Desktop-Breiten (Laptop) */",
       "@media (min-width: 1025px) and (max-width: 1360px) and (min-height: 640px) {",
       "  html body .overview-intro-box {",
-      "    width: min(220px, 17.5vw) !important;",
-      "    max-width: min(220px, 17.5vw) !important;",
-      "    padding: 7px 8px !important;",
+      "    width: min(176px, 14vw) !important;",
+      "    max-width: min(176px, 14vw) !important;",
+      "    padding: 6px 7px !important;",
       "  }",
       "  html body .live-textbox,",
       "  html body .final-textbox {",
-      "    width: min(8.6vw, 116px) !important;",
-      "    max-width: min(8.6vw, 116px) !important;",
+      "    width: min(7.4vw, 102px) !important;",
+      "    max-width: min(7.4vw, 102px) !important;",
       "    padding: 4px 4px !important;",
       "  }",
-      "  html body .live-textbox p { -webkit-line-clamp: 3 !important; }",
+      "  html body .live-textbox p:not(.world-eyebrow) { -webkit-line-clamp: 2 !important; }",
       "  html body .subpage-card { width: clamp(96px, 11vw, 160px) !important; }",
       "  html body .world-panel[data-world='professional'] { --box-x: 18% !important; }",
       "  html body .world-panel[data-world='freiraum'] { --box-x: 18% !important; }",
@@ -589,18 +654,18 @@
       "/* Flache Desktop-Fenster */",
       "@media (min-width: 1025px) and (max-height: 760px) {",
       "  html body .overview-intro-box {",
-      "    width: min(204px, 17vw) !important;",
-      "    max-width: min(204px, 17vw) !important;",
-      "    padding: 6px 7px !important;",
+      "    width: min(164px, 13.5vw) !important;",
+      "    max-width: min(164px, 13.5vw) !important;",
+      "    padding: 5px 6px !important;",
       "  }",
       "  html body .live-textbox {",
-      "    width: min(8.2vw, 110px) !important;",
-      "    max-width: min(8.2vw, 110px) !important;",
+      "    width: min(7vw, 96px) !important;",
+      "    max-width: min(7vw, 96px) !important;",
       "  }",
-      "  html body .live-textbox h2 { font-size: clamp(13px, 1.6vh, 18px) !important; }",
-      "  html body .live-textbox p {",
-      "    font-size: clamp(10px, 1.3vh, 12px) !important;",
-      "    -webkit-line-clamp: 3 !important;",
+      "  html body .live-textbox h2 { font-size: clamp(11px, 1.4vh, 15px) !important; }",
+      "  html body .live-textbox p:not(.world-eyebrow) {",
+      "    font-size: clamp(9px, 1.15vh, 10px) !important;",
+      "    -webkit-line-clamp: 2 !important;",
       "  }",
       "  html body .subpage-1,",
       "  html body .subpage-2 { top: calc(var(--world-y) - 18vh) !important; }",
@@ -625,13 +690,13 @@
       "    --box-x: 26% !important;",
       "  }",
       "  html body .overview-intro-box {",
-      "    width: min(250px, 14.5vw) !important;",
-      "    max-width: min(250px, 14.5vw) !important;",
+      "    width: min(210px, 12.5vw) !important;",
+      "    max-width: min(210px, 12.5vw) !important;",
       "  }",
       "  html body .live-textbox,",
       "  html body .final-textbox {",
-      "    width: min(8vw, 132px) !important;",
-      "    max-width: min(8vw, 132px) !important;",
+      "    width: min(7vw, 118px) !important;",
+      "    max-width: min(7vw, 118px) !important;",
       "  }",
       "  /* Wash nicht mehr jeden Frame drehen → weniger TV-Flackern */",
       "  html body .galaxy-wash {",
@@ -793,6 +858,7 @@
     window.setTimeout(applyLabelsAndLinks, 120);
     window.setTimeout(applyLabelsAndLinks, 400);
     window.setTimeout(applyLabelsAndLinks, 900);
+    window.setTimeout(applyBoxCopy, 1500);
   }
 
   if (document.readyState === "loading") {
