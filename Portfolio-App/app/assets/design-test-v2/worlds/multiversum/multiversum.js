@@ -136,12 +136,13 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260728galaxyTextbox2";
+      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260730gw1";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");
     var lastFocus = null;
     var bootedVisible = false;
+    var keepWarm = true;
     var MV_HASH = {
       about: "alex",
       projects: "werke",
@@ -170,12 +171,47 @@
       } catch (e) {}
     }
 
+    /** Shell iframe is shorter than the parent — use parent size when available. */
+    function parentViewportSize() {
+      try {
+        if (!window.parent || window.parent === window) return null;
+        var root = window.parent.document && window.parent.document.documentElement;
+        if (root && root.classList.contains("desktop-stage-active")) {
+          var stageW = parseFloat(root.getAttribute("data-desktop-stage-w") || "1920");
+          return {
+            w: isFinite(stageW) && stageW > 0 ? stageW : 1920,
+            h: 1080,
+          };
+        }
+        return {
+          w: window.parent.innerWidth || 0,
+          h: window.parent.innerHeight || 0,
+        };
+      } catch (e) {
+        return null;
+      }
+    }
+
     function canStart() {
       try {
-        return mq ? !!mq.matches : window.innerWidth >= 1025 && window.innerHeight >= 640;
+        var parentSize = parentViewportSize();
+        if (parentSize) {
+          if (parentSize.w >= 1025 && parentSize.h >= 640) return true;
+          if (parentSize.w > 0 && parentSize.h > 0) return false;
+        }
+        /* Own frame: shell already subtracts header — allow slightly shorter */
+        if (window.innerWidth >= 1025 && window.innerHeight >= 520) return true;
+        return mq ? !!mq.matches : false;
       } catch (e) {
-        return false;
+        return window.innerWidth >= 1025 && window.innerHeight >= 520;
       }
+    }
+
+    function syncGalaxyGateClass() {
+      var ok = canStart();
+      document.documentElement.classList.toggle("mv-galaxy-ok", ok);
+      document.body.classList.toggle("mv-galaxy-ok", ok);
+      return ok;
     }
 
     function galaxyNeedsReload() {
@@ -218,21 +254,22 @@
     }
 
     function open() {
-      if (!canStart()) return;
+      if (!syncGalaxyGateClass()) return;
       lastFocus = document.activeElement;
       overlay.hidden = false;
       void overlay.offsetHeight;
-      loadGalaxy(!bootedVisible);
       overlay.classList.add("is-open");
       document.documentElement.classList.add("mv-galaxy-open");
       document.body.classList.add("mv-galaxy-open");
-      window.setTimeout(nudgeResize, 160);
-      window.setTimeout(postLangToGalaxy, 120);
-      window.setTimeout(postLangToGalaxy, 500);
+      loadGalaxy(!bootedVisible);
+      window.setTimeout(nudgeResize, 80);
+      window.setTimeout(nudgeResize, 240);
+      window.setTimeout(postLangToGalaxy, 80);
+      window.setTimeout(postLangToGalaxy, 400);
       window.setTimeout(function () {
         /* Only hard-reload if canvas never sized — avoid double-load flicker on TV */
         if (galaxyNeedsReload()) loadGalaxy(true);
-      }, 1200);
+      }, 900);
       if (closeBtn) {
         try {
           closeBtn.focus();
@@ -247,12 +284,14 @@
       var done = function () {
         overlay.hidden = true;
         overlay.removeEventListener("transitionend", done);
-        /* Schweres Galaxy-Iframe entladen — speichert RAM/CPU auf Desktop */
-        try {
-          iframe.removeAttribute("src");
-          iframe.src = "about:blank";
-          bootedVisible = false;
-        } catch (eUnload) {}
+        /* Warm halten für sofortigen Re-Start; nur bei hard-hide entladen */
+        if (!keepWarm) {
+          try {
+            iframe.removeAttribute("src");
+            iframe.src = "about:blank";
+            bootedVisible = false;
+          } catch (eUnload) {}
+        }
       };
       if (reduced) {
         done();
@@ -267,6 +306,18 @@
           lastFocus.focus();
         } catch (eBack) {}
       }
+    }
+
+    function warmGalaxy() {
+      if (!syncGalaxyGateClass()) return;
+      try {
+        var current = iframe.getAttribute("src") || "";
+        if (!current || current === "about:blank") {
+          /* Prefetch off-screen so open() is instant */
+          iframe.setAttribute("aria-hidden", "true");
+          loadGalaxy(true);
+        }
+      } catch (eWarm) {}
     }
 
     function scrollToLocalHash(hash) {
@@ -347,6 +398,7 @@
       if (!data) return;
       /* Shell: Weltwechsel → Galaxy sofort entladen (GPU/CPU frei) */
       if (data.type === "mv-galaxy-hard-hide") {
+        keepWarm = false;
         if (overlay.classList.contains("is-open") || !overlay.hidden) close();
         else {
           try {
@@ -355,6 +407,7 @@
             bootedVisible = false;
           } catch (eHard) {}
         }
+        keepWarm = true;
         return;
       }
       if (data.type === "galaxy-ready" && data.source === "design-test-v2") {
@@ -377,7 +430,10 @@
     });
 
     starters.forEach(function (btn) {
-      btn.addEventListener("click", open);
+      btn.addEventListener("click", function (ev) {
+        if (ev && typeof ev.preventDefault === "function") ev.preventDefault();
+        open();
+      });
     });
     if (closeBtn) closeBtn.addEventListener("click", close);
 
@@ -390,6 +446,25 @@
         close();
       }
     });
+
+    syncGalaxyGateClass();
+    if (mq && typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", syncGalaxyGateClass);
+    } else if (mq && typeof mq.addListener === "function") {
+      mq.addListener(syncGalaxyGateClass);
+    }
+    window.addEventListener("resize", function () {
+      syncGalaxyGateClass();
+    });
+
+    /* Prefetch immediately on desktop so the first click starts instantly */
+    if (canStart()) {
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(warmGalaxy, { timeout: 900 });
+      } else {
+        window.setTimeout(warmGalaxy, 280);
+      }
+    }
 
     if (/galaxy-start/i.test(location.hash || "") || /[?&]galaxyStart=1/i.test(location.search || "")) {
       if (canStart()) open();

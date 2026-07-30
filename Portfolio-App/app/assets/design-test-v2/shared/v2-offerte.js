@@ -1,13 +1,13 @@
 /**
  * In-page Offerte form embed for design-test-v2 worlds.
- * Loads the live form iframe lazily — on mobile only after tap (heavy ~13MB form).
+ * Loads the live form iframe immediately on desktop; mobile keeps tap-to-load.
  */
 (function (root) {
   "use strict";
 
   /* Form expects these exact keys (not shell aliases general/vertex) */
   var FORM_WORLDS = ["multiversum", "nexora", "professional", "freiraum"];
-  var FORM_VER = "20260727fluid1";
+  var FORM_VER = "20260730form1";
 
   function detectWorld(host) {
     var candidates = [
@@ -63,7 +63,7 @@
       '<p class="v2-offerte__gate-note">Lädt nur bei Bedarf — schneller auf Handy &amp; Tablet.</p>' +
       "</div>" +
       '<div class="v2-offerte__shell is-loading" data-v2-offerte-shell hidden>' +
-      '<iframe id="offerteFrame" class="v2-offerte__frame" title="Offerte" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="about:blank"></iframe>' +
+      '<iframe id="offerteFrame" class="v2-offerte__frame" title="Offerte" loading="eager" referrerpolicy="no-referrer-when-downgrade" src="about:blank"></iframe>' +
       "</div>" +
       '<p class="v2-offerte__hint"><a href="#kontakt" data-i18n-v2="offerte.contact">Lieber zuerst Kontakt?</a></p>' +
       "</div>";
@@ -202,20 +202,8 @@
       kick();
     } else if (isNarrow()) {
       /* keep gate visible — user taps to load */
-    } else if ("IntersectionObserver" in root) {
-      var io = new root.IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (en) {
-            if (en.isIntersecting) {
-              kick();
-              io.disconnect();
-            }
-          });
-        },
-        { rootMargin: "0px 0px" }
-      );
-      io.observe(host);
     } else {
+      /* Desktop: sofort laden (kein Warten auf Scroll/Intersection) */
       kick();
     }
 

@@ -935,7 +935,7 @@ body.mv-galaxy-open [data-parallax-layer] {
   color: var(--mv-muted);
 }
 
-@media (min-width: 1025px) and (min-height: 640px) {
+@media (min-width: 1025px) and (min-height: 520px) {
   .mv-galaxy__start {
     display: inline-flex;
   }
@@ -945,8 +945,48 @@ body.mv-galaxy-open [data-parallax-layer] {
   }
 }
 
-/* Phone / tablet: Galaxy Walk ohne Link — nur dekoratives Zentrum-Bild */
-@media (max-width: 1024px), (max-height: 639px) {
+html.mv-galaxy-ok .mv-galaxy__start,
+body.mv-galaxy-ok .mv-galaxy__start {
+  display: inline-flex;
+}
+
+html.mv-galaxy-ok .mv-galaxy__desktop-hint,
+body.mv-galaxy-ok .mv-galaxy__desktop-hint {
+  display: none;
+}
+
+html.mv-galaxy-ok .mv-galaxy,
+html.mv-galaxy-ok .mv-galaxy-overlay,
+html.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start],
+body.mv-galaxy-ok .mv-galaxy,
+body.mv-galaxy-ok .mv-galaxy-overlay,
+body.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start] {
+  display: revert;
+}
+
+html.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start],
+body.mv-galaxy-ok .mv-menu-orbit__core[data-mv-galaxy-start] {
+  display: grid !important;
+}
+
+html.mv-galaxy-ok .mv-menu-orbit__core-deco,
+body.mv-galaxy-ok .mv-menu-orbit__core-deco {
+  display: none !important;
+}
+
+html.mv-galaxy-ok .mv-menu-orbit__lead-galaxy,
+body.mv-galaxy-ok .mv-menu-orbit__lead-galaxy {
+  display: inline;
+}
+
+html.mv-galaxy-ok .mv-menu-orbit__lead-compact,
+body.mv-galaxy-ok .mv-menu-orbit__lead-compact {
+  display: none;
+}
+
+/* Phone / tablet: Galaxy Walk ohne Link — nur dekoratives Zentrum-Bild.
+   Shell-Iframe kann unter 640px hoch sein; Parent-Gate setzt .mv-galaxy-ok. */
+@media (max-width: 1024px) {
   .mv-galaxy,
   .mv-galaxy-overlay,
   .mv-menu-orbit__core[data-mv-galaxy-start] {
@@ -1183,7 +1223,8 @@ body.mv-galaxy-open [data-parallax-layer] {
 .mv-menu-orbit {
   position: relative;
   z-index: 2;
-  padding: clamp(2rem, 5vw, 3.5rem) 0 clamp(2.5rem, 6vw, 4.5rem);
+  /* Extra top space so title/lead clear sticky shell + world header */
+  padding: calc(var(--mv-header-h) + clamp(1.75rem, 4.5vw, 3.25rem)) 0 clamp(2.5rem, 6vw, 4.5rem);
 }
 
 .mv-menu-orbit__lead-compact {
