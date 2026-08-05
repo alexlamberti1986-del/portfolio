@@ -7,6 +7,7 @@
   <title>Willkommen · Alex Lamberti · Vier Welten</title>
   <link rel="icon" href="/assets/favicon/favicon.ico" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Be+Vietnam+Pro:wght@600;700&family=Marcellus&family=Source+Sans+3:wght@400;600;700&display=swap" />
+  <link rel="stylesheet" href="/assets/design-test-v2/welcome-imagevideo.css?v=20260805film1" />
   <style>
     :root {
       color-scheme: dark;
@@ -420,6 +421,59 @@
   </style>
 </head>
 <body>
+  <section
+    class="welcome-film"
+    id="welcomeFilm"
+    aria-label="Alex Lamberti Imagevideo"
+  >
+    <video
+      class="welcome-film__video"
+      id="welcomeFilmVideo"
+      muted
+      playsinline
+      preload="metadata"
+      poster="/assets/design-test-v2/welcome-galaxy.jpg"
+      aria-label="Imagevideo über Alex Lamberti, seine vier Welten und Leistungen"
+    >
+      <source
+        src="/assets/videos/welcome/alex-lamberti-imagevideo-4-welten.mp4?v=20260805film1"
+        type="video/mp4"
+      />
+    </video>
+    <div class="welcome-film__chrome">
+      <div class="welcome-film__top">
+        <p class="welcome-film__label">Alex Lamberti · Vier Welten</p>
+      </div>
+      <div class="welcome-film__bottom">
+        <div class="welcome-film__actions">
+          <button
+            class="welcome-film__button welcome-film__button--primary welcome-film__replay"
+            id="welcomeFilmReplay"
+            type="button"
+          >
+            Erneut abspielen
+          </button>
+          <button
+            class="welcome-film__button welcome-film__sound"
+            id="welcomeFilmSound"
+            type="button"
+            aria-pressed="false"
+          >
+            Ton einschalten
+          </button>
+          <button
+            class="welcome-film__button"
+            id="welcomeFilmSkip"
+            type="button"
+          >
+            Seite entdecken
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="welcome-film__progress" aria-hidden="true"><span></span></div>
+  </section>
+
   <div class="page-bg" aria-hidden="true">
     <div class="page-bg__img"></div>
     <div class="page-bg__veil"></div>
@@ -440,7 +494,7 @@
     </button>
   </div>
 
-  <div class="wrap">
+  <div class="wrap" id="welcomeContent">
     <header class="hero">
       <p class="brand"><span>Portfolio von Alex Lamberti</span></p>
       <h1>Willkommen in den vier digitalen Welten.</h1>
@@ -691,5 +745,6 @@
       }
     })();
   </script>
+  <script src="/assets/design-test-v2/welcome-imagevideo.js?v=20260805film1" defer></script>
 </body>
 </html>
