@@ -159,29 +159,40 @@
 
 @media (max-width: 720px) {
   .welcome-film {
-    min-height: clamp(360px, 72svh, 680px);
+    min-height: max(220px, 56.25vw);
+    max-height: none;
+    aspect-ratio: 16 / 9;
+    background-color: #03040c;
   }
 
   .welcome-film__video {
-    object-fit: cover;
+    object-fit: contain;
   }
 
-  .welcome-film__top {
-    align-items: flex-start;
+  .welcome-film__chrome {
+    padding: 0.65rem;
   }
 
-  .welcome-film__bottom {
-    align-items: flex-end;
+  .welcome-film__label {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
   }
 
   .welcome-film__actions {
-    max-width: 15rem;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    gap: 0.35rem;
   }
 
   .welcome-film__button {
-    min-height: 2.5rem;
-    padding-inline: 0.85rem;
-    font-size: 0.78rem;
+    min-height: 2.1rem;
+    padding: 0.5rem 0.68rem;
+    font-size: 0.68rem;
+  }
+
+  .welcome-film.is-ended .welcome-film__actions,
+  .welcome-film.is-paused .welcome-film__actions {
+    flex-wrap: wrap;
   }
 }
 
