@@ -7,39 +7,12 @@
 
   var root = document.getElementById("welcomeFilm");
   var video = document.getElementById("welcomeFilmVideo");
-  var sound = document.getElementById("welcomeFilmSound");
-  var replay = document.getElementById("welcomeFilmReplay");
-  var skip = document.getElementById("welcomeFilmSkip");
   if (!root || !video) return;
 
   var reduced = false;
   try {
     reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   } catch (e) {}
-
-  function updateSound() {
-    if (!sound) return;
-    sound.textContent = video.muted ? "Ton einschalten" : "Ton ausschalten";
-    sound.setAttribute("aria-pressed", video.muted ? "false" : "true");
-    sound.setAttribute(
-      "aria-label",
-      video.muted ? "Ton des Imagevideos einschalten" : "Ton des Imagevideos ausschalten"
-    );
-  }
-
-  function stopBackgroundMusic() {
-    var backgroundAudio = document.getElementById("welcomeAudio");
-    var backgroundButton = document.getElementById("welcomeAudioBtn");
-    if (backgroundAudio && !backgroundAudio.paused) {
-      try {
-        backgroundAudio.pause();
-      } catch (e) {}
-    }
-    if (backgroundButton) {
-      backgroundButton.setAttribute("aria-pressed", "false");
-      backgroundButton.setAttribute("aria-label", "Hintergrundmusik einschalten");
-    }
-  }
 
   function play() {
     root.classList.remove("is-ended", "is-paused");
@@ -73,33 +46,6 @@
     root.style.setProperty("--film-progress", String(video.currentTime / video.duration));
   });
 
-  if (sound) {
-    sound.addEventListener("click", function () {
-      video.muted = !video.muted;
-      if (!video.muted) stopBackgroundMusic();
-      updateSound();
-      if (video.paused) play();
-    });
-  }
-
-  if (replay) {
-    replay.addEventListener("click", function () {
-      try {
-        video.currentTime = 0;
-      } catch (e) {}
-      play();
-    });
-  }
-
-  if (skip) {
-    skip.addEventListener("click", function () {
-      var target = document.getElementById("welcomeContent");
-      if (!target) return;
-      target.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
-    });
-  }
-
-  updateSound();
   if (reduced) {
     root.classList.add("is-paused");
     return;
