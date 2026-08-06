@@ -1,6 +1,5 @@
 /**
- * Welcome image video controls.
- * The page remains usable immediately; playback never blocks the content.
+ * Welcome image video — muted autoplay loop, non-blocking.
  */
 (function () {
   "use strict";
@@ -37,13 +36,16 @@
   video.addEventListener("pause", function () {
     if (!video.ended) root.classList.add("is-paused");
   });
-  video.addEventListener("ended", function () {
-    root.classList.add("is-ended");
-    root.style.setProperty("--film-progress", "1");
-  });
   video.addEventListener("timeupdate", function () {
     if (!video.duration || !isFinite(video.duration)) return;
     root.style.setProperty("--film-progress", String(video.currentTime / video.duration));
+    /* Soft loop restart — vermeidet kurzen Ruckler am Clip-Ende */
+    try {
+      if (video.duration - video.currentTime < 0.08) {
+        video.currentTime = 0.001;
+        play();
+      }
+    } catch (e1) {}
   });
 
   if (reduced) {
@@ -51,8 +53,9 @@
     return;
   }
 
-  /* Muted + playsinline permits autoplay on modern desktop and mobile browsers. */
+  /* Muted + playsinline + loop: continuous autoplay on desktop/mobile */
   video.muted = true;
   video.defaultMuted = true;
+  video.loop = true;
   play();
 })();
