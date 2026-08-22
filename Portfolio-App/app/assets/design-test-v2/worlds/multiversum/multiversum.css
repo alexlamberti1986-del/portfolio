@@ -1656,7 +1656,7 @@ body.mv-galaxy-ok .mv-menu-orbit__lead-compact {
   position: relative;
   z-index: 2;
   margin-top: 1rem;
-  padding: 4.5rem 0 2rem;
+  padding: 4.5rem 0 calc(2.75rem + env(safe-area-inset-bottom, 0px));
   background:
     radial-gradient(800px 280px at 50% 0%, rgba(255, 89, 178, 0.12), transparent 60%),
     linear-gradient(180deg, rgba(5, 8, 18, 0.2), #010208 40%);

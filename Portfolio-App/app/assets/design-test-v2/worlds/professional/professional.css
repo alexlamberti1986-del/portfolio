@@ -890,7 +890,7 @@ h3 {
 .pro-footer {
   background: #111111;
   color: rgba(255, 255, 255, 0.68);
-  padding: clamp(3rem, 6vw, 4.5rem) 0 1.5rem;
+  padding: clamp(3rem, 6vw, 4.5rem) 0 calc(2.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 .pro-footer__grid {

@@ -1265,7 +1265,7 @@ h3 {
   position: relative;
   padding: 3rem 0 1.75rem;
   border-top: 1px solid var(--fr-border-soft);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .fr-footer__wash {

@@ -1,0 +1,80 @@
+/**
+ * V2 world footers — prevent bottom clip inside shell iframes (phone / tablet / desktop / TV).
+ */
+html[data-design-test-v2="1"] {
+  scroll-padding-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-design-test-v2="1"] body {
+  padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-design-test-v2="1"] body::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: calc(1rem + env(safe-area-inset-bottom, 0px));
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+html[data-design-test-v2="1"] .mv-footer,
+html[data-design-test-v2="1"] .nx-term,
+html[data-design-test-v2="1"] .pro-footer,
+html[data-design-test-v2="1"] .fr-footer {
+  overflow: visible;
+  margin-bottom: 0;
+  padding-bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-design-test-v2="1"] .mv-footer__copy,
+html[data-design-test-v2="1"] .nx-term__end,
+html[data-design-test-v2="1"] .pro-footer__bottom,
+html[data-design-test-v2="1"] .fr-footer__bottom {
+  padding-bottom: calc(0.85rem + env(safe-area-inset-bottom, 0px));
+}
+
+html[data-design-test-v2="1"] .mv-footer__copy p,
+html[data-design-test-v2="1"] .nx-term__end p,
+html[data-design-test-v2="1"] .pro-footer__bottom p,
+html[data-design-test-v2="1"] .fr-footer__bottom p,
+html[data-design-test-v2="1"] .pro-footer__bottom a,
+html[data-design-test-v2="1"] .fr-footer__bottom a {
+  line-height: 1.5;
+}
+
+@media (min-width: 1025px) {
+  html[data-design-test-v2="1"] {
+    scroll-padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  html[data-design-test-v2="1"] body {
+    padding-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  html[data-design-test-v2="1"] .mv-footer,
+  html[data-design-test-v2="1"] .nx-term,
+  html[data-design-test-v2="1"] .pro-footer,
+  html[data-design-test-v2="1"] .fr-footer {
+    padding-bottom: calc(3.25rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (min-width: 1600px) {
+  html[data-design-test-v2="1"] body {
+    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  html[data-design-test-v2="1"] .mv-footer,
+  html[data-design-test-v2="1"] .nx-term,
+  html[data-design-test-v2="1"] .pro-footer,
+  html[data-design-test-v2="1"] .fr-footer {
+    padding-bottom: calc(3.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 1024px) {
+  html[data-design-test-v2="1"] body {
+    padding-bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}

@@ -1454,7 +1454,7 @@ a.nx-port:hover {
 
 /* —— Terminal footer —— */
 .nx-term {
-  padding: 2.5rem 0 2rem;
+  padding: 2.5rem 0 calc(2.75rem + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--nx-border);
   background:
     linear-gradient(180deg, rgba(4, 10, 22, 0.4), #030812 40%);
