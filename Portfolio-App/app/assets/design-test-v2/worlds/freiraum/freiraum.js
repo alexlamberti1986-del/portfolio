@@ -184,6 +184,20 @@
     );
   }
 
+  function refreshRevealInViewport() {
+    if (reduced()) {
+      revealAll();
+      return;
+    }
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    qsa("[data-v2-reveal]:not(.is-in)").forEach(function (n) {
+      var r = n.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) n.classList.add("is-in");
+    });
+  }
+
+  window.addEventListener("v2-world-visible", refreshRevealInViewport);
+
   function boot() {
     bindMenu();
     bindAnchors();

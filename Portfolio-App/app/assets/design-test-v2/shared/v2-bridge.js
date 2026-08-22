@@ -713,6 +713,44 @@
     } catch (e) {}
   }
 
+  function refreshWorldVisibility() {
+    var doc = root.document;
+    var vh = root.innerHeight || doc.documentElement.clientHeight || 0;
+
+    function inViewport(el) {
+      var r = el.getBoundingClientRect();
+      return r.top < vh * 1.08 && r.bottom > -vh * 0.08;
+    }
+
+    doc
+      .querySelectorAll(
+        "[data-reveal]:not(.is-in), [data-v2-reveal]:not(.is-in), .pro-reveal:not(.is-in), .mv-reveal:not(.is-visible)"
+      )
+      .forEach(function (el) {
+        if (inViewport(el)) {
+          el.classList.add("is-in", "is-visible");
+        }
+      });
+
+    try {
+      root.dispatchEvent(new Event("resize"));
+      root.dispatchEvent(new CustomEvent("v2-world-visible", { detail: { ts: Date.now() } }));
+    } catch (e0) {}
+
+    if (typeof root.__v2ProfilCineRefresh === "function") {
+      try {
+        root.__v2ProfilCineRefresh();
+      } catch (e1) {}
+    }
+  }
+
+  function scheduleWorldRefresh() {
+    refreshWorldVisibility();
+    root.setTimeout(refreshWorldVisibility, 120);
+    root.setTimeout(refreshWorldVisibility, 380);
+    root.setTimeout(refreshWorldVisibility, 760);
+  }
+
   function onMessage(ev) {
     var data = ev && ev.data;
     if (!data) return;
@@ -748,6 +786,13 @@
       try {
         root.document.body.setAttribute("data-v2-effects", on ? "on" : "off");
       } catch (e4) {}
+      if (on) scheduleWorldRefresh();
+    }
+    if (data.type === "portfolio-world-enter" || data.type === "portfolio-world-reveal") {
+      scheduleWorldRefresh();
+    }
+    if (data.type === "portfolio-world-pause" && data.paused === false) {
+      scheduleWorldRefresh();
     }
   }
 
@@ -771,6 +816,7 @@
     fixLinks: fixLinks,
     getLang: getLang,
     goChapter: goChapter,
+    refreshWorldVisibility: refreshWorldVisibility,
   };
 
   root.addEventListener("message", onMessage);

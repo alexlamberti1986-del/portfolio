@@ -482,4 +482,23 @@
       if (overlay._wwsRaf) cancelAnimationFrame(overlay._wwsRaf);
     };
   }
+
+  function preloadRevealImage() {
+    if (REVEAL_IMG_READY || REVEAL_IMG) return;
+    ensureRevealImage(function () {});
+  }
+
+  function scheduleBrushPreload() {
+    if (window.requestIdleCallback) {
+      window.requestIdleCallback(preloadRevealImage, { timeout: 2200 });
+    } else {
+      window.setTimeout(preloadRevealImage, 700);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scheduleBrushPreload, { once: true });
+  } else {
+    scheduleBrushPreload();
+  }
 })();

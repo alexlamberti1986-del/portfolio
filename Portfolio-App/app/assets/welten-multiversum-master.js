@@ -9,7 +9,7 @@
   var CHAPTERS = ["home", "projects", "leistungen", "about", "contact", "offerte"];
   var WORLD_KEYS = ["general", "nexora", "vertex", "freiraum"];
   var V2_WORLD_SLUGS = ["multiversum", "nexora", "professional", "freiraum"];
-  var V2_FRAME_VER = "20260822cine1";
+  var V2_FRAME_VER = "20260822fluid1";
   var FRAME_PAGES = [
     "/design-test-v2/worlds/multiversum/index.html?v=" + V2_FRAME_VER,
     "/design-test-v2/worlds/nexora/index.html?v=" + V2_FRAME_VER,
@@ -1645,6 +1645,26 @@
     var transitionDone = false;
     var frameReady = loadFrame(i);
 
+    function pulseV2FrameRefresh(f, j, gen) {
+      if (!f) return;
+      var w = soundKey(j);
+      postFrame(f, { type: "portfolio-world-pause", paused: false });
+      postFrame(f, { type: "portfolio-effects", on: effectsOn });
+      postFrame(f, { type: "portfolio-world-enter", world: w });
+      postFrame(f, { type: "portfolio-world-reveal", world: w });
+      revealActiveFrame(j);
+      [100, 280, 550].forEach(function (delay) {
+        setTimeout(function () {
+          if (gen !== switchGeneration) return;
+          if (masterIdx() !== j) return;
+          postFrame(f, { type: "portfolio-world-reveal", world: w });
+          try {
+            if (f.contentWindow) f.contentWindow.dispatchEvent(new Event("resize"));
+          } catch (ePulse) {}
+        }, delay);
+      });
+    }
+
     function finishRevealSignals() {
       if (myGen !== switchGeneration) return;
       frames.forEach(function (f, j) {
@@ -1661,7 +1681,6 @@
       var fActive = frames[i];
       if (fActive) {
         fActive.removeAttribute("data-mv-world-live");
-        postFrame(fActive, { type: "portfolio-world-enter", world: soundKey(i) });
         applyChapter(fActive, sharedChapter);
         if (frameIsReady(fActive)) injectProfiles(fActive, i);
         else
@@ -1672,18 +1691,8 @@
             },
             { once: true }
           );
+        pulseV2FrameRefresh(fActive, i, myGen);
       }
-      revealActiveFrame(i);
-      try {
-        var fReveal = frames[i];
-        if (fReveal) {
-          setTimeout(function () {
-            if (myGen !== switchGeneration) return;
-            if (masterIdx() !== i) return;
-            postFrame(fReveal, { type: "portfolio-world-reveal", world: soundKey(i) });
-          }, 80);
-        }
-      } catch (eReveal) {}
       requestAnimationFrame(setBarHeight);
       enforceFrameExclusivity();
       if (opts.afterReveal && typeof opts.afterReveal === "function") {

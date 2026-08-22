@@ -1758,40 +1758,55 @@
     var exitMs = reduced ? 60 : timing.EXIT_MS;
     var start = Date.now();
 
-    activeRaf = requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        overlay.classList.add("is-entering");
-        startCanvas(overlay, worldKey);
-        if (reduced) {
-          wwsLater(function () {
-            revealStagedTitle(overlay);
-          }, 200);
-        } else if (!isCanvasDrivenWorld(worldKey)) {
-          wwsLater(function () {
-            revealStagedTitle(overlay);
-          }, timing.TITLE_REVEAL_AT);
-        } else if (worldKey === "nexora" || worldKey === "general") {
-          /* Canvas-gesteuerte Titel-Enthüllung (NEXORA / MULTIVERSUM) */
-        } else if (worldKey === "freiraum") {
-          /* FREIRAUM: Titel einfach einblenden wie PROFESSIONAL */
-          wwsLater(function () {
-            revealStagedTitle(overlay);
-          }, timing.TITLE_REVEAL_AT);
-        } else {
-          wwsLater(function () {
-            revealStagedTitle(overlay);
-          }, timing.TITLE_REVEAL_AT + 180);
-        }
-        if (worldKey === "vertex" && !reduced) {
-          wwsLater(function () {
-            overlay.classList.add("wws--pro-white-bg");
-          }, Math.round(timing.EFFECT_MS * 0.37));
-          wwsLater(function () {
-            overlay.classList.remove("wws--pro-white-bg");
-            overlay.classList.add("wws--pro-black-bg", "wws--dark-text");
-          }, Math.round(timing.EFFECT_MS * 0.76));
-        }
+    function beginEnterAnimation() {
+      if (!running || activeOverlay !== overlay || overlay._wwsEnterStarted) return;
+      overlay._wwsEnterStarted = true;
+      start = Date.now();
+      activeRaf = requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (!running || activeOverlay !== overlay) return;
+          overlay.classList.add("is-entering");
+          startCanvas(overlay, worldKey);
+          if (reduced) {
+            wwsLater(function () {
+              revealStagedTitle(overlay);
+            }, 200);
+          } else if (!isCanvasDrivenWorld(worldKey)) {
+            wwsLater(function () {
+              revealStagedTitle(overlay);
+            }, timing.TITLE_REVEAL_AT);
+          } else if (worldKey === "nexora" || worldKey === "general") {
+            /* Canvas-gesteuerte Titel-Enthüllung (NEXORA / MULTIVERSUM) */
+          } else if (worldKey === "freiraum") {
+            wwsLater(function () {
+              revealStagedTitle(overlay);
+            }, timing.TITLE_REVEAL_AT);
+          } else {
+            wwsLater(function () {
+              revealStagedTitle(overlay);
+            }, timing.TITLE_REVEAL_AT + 180);
+          }
+          if (worldKey === "vertex" && !reduced) {
+            wwsLater(function () {
+              overlay.classList.add("wws--pro-white-bg");
+            }, Math.round(timing.EFFECT_MS * 0.37));
+            wwsLater(function () {
+              overlay.classList.remove("wws--pro-white-bg");
+              overlay.classList.add("wws--pro-black-bg", "wws--dark-text");
+            }, Math.round(timing.EFFECT_MS * 0.76));
+          }
+        });
       });
+    }
+
+    var enterCapMs = isCoarseMobileShell() ? 380 : 260;
+    Promise.race([
+      frameReady,
+      new Promise(function (resolve) {
+        setTimeout(resolve, enterCapMs);
+      }),
+    ]).then(function () {
+      beginEnterAnimation();
     });
 
     function scheduleExitAfterTitle() {

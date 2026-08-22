@@ -471,6 +471,16 @@
     }
   }
 
+  function refreshRevealInViewport() {
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    document.querySelectorAll(".mv-reveal:not(.is-visible)").forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) el.classList.add("is-visible");
+    });
+  }
+
+  window.addEventListener("v2-world-visible", refreshRevealInViewport);
+
   function boot() {
     setYear();
     bindHeader();

@@ -110,6 +110,16 @@
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-effects"] });
   }
 
+  function refreshRevealInViewport() {
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    qsa(".pro-reveal:not(.is-in)").forEach(function (n) {
+      var r = n.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) n.classList.add("is-in");
+    });
+  }
+
+  window.addEventListener("v2-world-visible", refreshRevealInViewport);
+
   function init() {
     initMobileNav();
     initSmoothAnchors();

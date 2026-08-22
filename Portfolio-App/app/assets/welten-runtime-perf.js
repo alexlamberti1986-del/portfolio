@@ -134,6 +134,9 @@
     if (e.data.type === "portfolio-world-enter") {
       resumeAnimations();
     }
+    if (e.data.type === "portfolio-world-reveal") {
+      resumeAnimations();
+    }
   });
 
   global.WeltenRuntimePerf = {

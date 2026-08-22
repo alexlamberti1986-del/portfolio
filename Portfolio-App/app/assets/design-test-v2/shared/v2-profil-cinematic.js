@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260822cine1";
+  var VER = "20260822fluid1";
   var BASE = "/assets/videos/profil/";
 
   var WORLD_SRC = {
@@ -190,6 +190,23 @@
       });
     });
   }
+
+  function refreshAll() {
+    document.querySelectorAll(".v2-profil-cine").forEach(function (figure) {
+      var video = figure.querySelector(".v2-profil-cine__video");
+      if (!video) return;
+      figure.classList.add("is-ready");
+      var r = figure.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+      if (r.top < vh && r.bottom > 0) {
+        safePlay(video);
+        figure.classList.add("is-playing");
+      }
+    });
+  }
+
+  window.__v2ProfilCineRefresh = refreshAll;
+  window.addEventListener("v2-world-visible", refreshAll);
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", run, { once: true });
