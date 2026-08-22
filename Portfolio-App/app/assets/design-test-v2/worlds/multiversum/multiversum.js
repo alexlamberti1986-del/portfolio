@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-walk-v45-deepflight.html?v=20260822gw45";
+      "/assets/galaxy-gang/alexlamberti-galaxy-walk-v45-deepflight.html?v=20260822gw46";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");

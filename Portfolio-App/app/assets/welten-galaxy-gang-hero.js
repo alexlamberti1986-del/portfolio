@@ -6,7 +6,7 @@
 (function () {
   "use strict";
 
-  var VER = "20260822gw45";
+  var VER = "20260822gw46";
   var SRC =
     "/assets/galaxy-gang/alexlamberti-galaxy-walk-v45-deepflight.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
