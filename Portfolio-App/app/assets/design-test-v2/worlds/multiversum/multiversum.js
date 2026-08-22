@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-gang-v37-responsive-optimized-self-contained.html?v2=1&v=20260730gw7";
+      "/assets/galaxy-gang/alexlamberti-galaxy-walk-v45-deepflight.html?v=20260822gw45";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");
@@ -219,6 +219,12 @@
         var doc = iframe.contentDocument;
         var win = iframe.contentWindow;
         if (!doc || !win) return true;
+        var build =
+          (doc.documentElement && doc.documentElement.getAttribute("data-alex-build")) || "";
+        if (build.indexOf("v45-galaxy-walk") >= 0) {
+          var gl = doc.getElementById("gl");
+          return !gl || gl.width <= 300 || gl.height <= 150;
+        }
         if (typeof win.ALEX_GALAXY_ASSETS === "undefined") return true;
         var canvas = doc.getElementById("galaxyCanvas");
         if (!canvas) return true;
@@ -226,6 +232,17 @@
       } catch (e) {
         return true;
       }
+    }
+
+    function resetGalaxyScroll() {
+      try {
+        var doc = iframe.contentDocument;
+        var win = iframe.contentWindow;
+        if (!doc || !win) return;
+        win.scrollTo(0, 0);
+        if (doc.documentElement) doc.documentElement.scrollTop = 0;
+        if (doc.body) doc.body.scrollTop = 0;
+      } catch (eReset) {}
     }
 
     function nudgeResize() {
@@ -275,6 +292,8 @@
       document.body.classList.add("mv-galaxy-open");
       void overlay.offsetHeight;
       loadGalaxy(!bootedVisible);
+      window.setTimeout(resetGalaxyScroll, 80);
+      window.setTimeout(resetGalaxyScroll, 320);
       window.setTimeout(nudgeResize, 60);
       window.setTimeout(nudgeResize, 200);
       window.setTimeout(postLangToGalaxy, 60);
