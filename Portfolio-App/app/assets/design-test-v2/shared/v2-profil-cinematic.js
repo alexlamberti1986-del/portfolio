@@ -6,12 +6,12 @@
 (function () {
   "use strict";
 
-  var VER = "20260730cine2";
+  var VER = "20260822cine1";
   var BASE = "/assets/videos/profil/";
 
   var WORLD_SRC = {
-    multiversum: BASE + "multiversum-profil.mp4?v=" + VER,
-    nexora: BASE + "nexora-profil.mp4?v=" + VER,
+    multiversum: BASE + "multiversum-profil.webm?v=" + VER,
+    nexora: BASE + "nexora-profil.webm?v=" + VER,
     professional: BASE + "professional-profil.mp4?v=" + VER,
     freiraum: BASE + "freiraum-profil.mp4?v=" + VER,
   };
