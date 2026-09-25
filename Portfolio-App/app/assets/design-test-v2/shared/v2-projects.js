@@ -6,7 +6,7 @@
   "use strict";
 
   var WEBSITES = [
-    { title: "genialbau.ch", href: "https://genialbau.ch/", blurb: "Hochwertiger Webauftritt mit Fokus auf Vertrauen, starke Bild- und Videowelt sowie klare Leistungsdarstellung." },
+    { title: "inniger-reinigungen.ch", href: "https://inniger-reinigungen.ch/", blurb: "Klarer Webauftritt für Reinigung und Hauswartung — vertrauenswürdig, modern und anfrageorientiert." },
     { title: "gallace-all-in-maler.ch", href: "https://gallace-all-in-maler.ch/", blurb: "Klar strukturierter Auftritt für ein lokales KMU mit Fokus auf Dienstleistungen und Kontaktaufnahme." },
     { title: "awarillo.ch", href: "https://awarillo.ch/", blurb: "Digitaler Markenauftritt mit reduzierter visueller Linie und klarer Wiedererkennung." },
     { title: "chesa-cherma.ch", href: "https://chesa-cherma.ch/", blurb: "Atmosphärischer Auftritt mit starker Bildsprache rund um Erlebnis und Aufenthalt." },
@@ -20,7 +20,7 @@
     { title: "ART Reinigungen", href: "/assets/projects/leadformulare/art-reinigungen.html", blurb: "Anfrageformular für Reinigung und Hauswartung — übersichtlich und vertrauenswürdig." },
     { title: "iDEAL Umzüge", href: "/assets/projects/leadformulare/ideal-umzuege.html", blurb: "Leadformular für Umzugsanfragen." },
     { title: "DT-Cleaning", href: "/assets/projects/leadformulare/dt-cleaning.html", blurb: "Anfrageprozess für Reinigungsleistungen." },
-    { title: "Spitex Xundheit Plus", href: "/assets/projects/leadformulare/spitex-xundheit-plus.html", blurb: "Leadformular mit klarer Nutzerführung." },
+    { title: "Inniger Reinigungen", href: "/assets/projects/leadformulare/inniger-reinigungen.html", blurb: "Mehrstufiges Anfrageformular für Reinigung — klar geführt und conversion-stark." },
   ];
 
   var CARDS = [
@@ -104,7 +104,7 @@
     var link = root.document.createElement("link");
     link.id = "v2-projects-css";
     link.rel = "stylesheet";
-    link.href = "/assets/design-test-v2/shared/v2-projects.css?v=20260724v2h";
+    link.href = "/assets/design-test-v2/shared/v2-projects.css?v=20260925proj1";
     root.document.head.appendChild(link);
   }
 

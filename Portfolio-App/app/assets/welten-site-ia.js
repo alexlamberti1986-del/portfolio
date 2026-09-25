@@ -33,7 +33,7 @@
   };
 
   var HIGHLIGHTS = [
-    { kicker: "Webseite", title: "genialbau.ch", cat: "Branding & Web", go: "projects" },
+    { kicker: "Webseite", title: "inniger-reinigungen.ch", cat: "Branding & Web", go: "projects" },
     { kicker: "Leadformular", title: "360clean.ch", cat: "Conversion", go: "projects" },
     { kicker: "Visitenkarte", title: "AD-RES", cat: "Digital Brand", go: "projects" },
     { kicker: "Webseite", title: "chesa-cherma.ch", cat: "Hospitality", go: "projects" },

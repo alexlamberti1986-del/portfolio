@@ -7,7 +7,7 @@
   var PRECONNECT = [
     "https://www.google.com",
     "https://maps.google.com",
-    "https://genialbau.ch",
+    "https://inniger-reinigungen.ch",
     "https://gallace-all-in-maler.ch",
   ];
 

@@ -19,21 +19,21 @@
   }
 
   var PROJECTS = {
-    "genialbau.ch": {
+    "inniger-reinigungen.ch": {
       de: {
-        desc: "Hochwertiger Webauftritt mit Fokus auf Vertrauen, starke Bild- und Videowelt sowie klare Leistungsdarstellung.",
-        highlight: "Professionelle Kommunikation, starke Bildwelt und klare Nutzerführung.",
-        skill: "Markenwirkung, Inhaltsstruktur, Web-Konzeption.",
+        desc: "Klarer Webauftritt für Reinigung und Hauswartung — vertrauenswürdig, modern und anfrageorientiert.",
+        highlight: "Saubere Struktur, starke Vertrauenssignale und direkter Weg zur Anfrage.",
+        skill: "KMU-Webdesign, Dienstleistungsdarstellung, Conversion.",
       },
       en: {
-        desc: "High-quality web presence focused on trust, strong imagery and video, and clear service presentation.",
-        highlight: "Professional communication, strong visuals and clear user guidance.",
-        skill: "Brand impact, content structure, web conception.",
+        desc: "Clear web presence for cleaning and property care — trustworthy, modern and enquiry-focused.",
+        highlight: "Clean structure, strong trust signals and a direct path to enquiry.",
+        skill: "SME web design, service presentation, conversion.",
       },
       it: {
-        desc: "Presenza web di alta qualità con focus su fiducia, immagini e video forti e presentazione chiara dei servizi.",
-        highlight: "Comunicazione professionale, immagini forti e guida utente chiara.",
-        skill: "Impatto del brand, struttura dei contenuti, concezione web.",
+        desc: "Presenza web chiara per pulizie e manutenzione — affidabile, moderna e orientata alle richieste.",
+        highlight: "Struttura pulita, segnali di fiducia forti e percorso diretto alla richiesta.",
+        skill: "Web design PMI, presentazione servizi, conversione.",
       },
     },
     "gallace-all-in-maler.ch": {
@@ -131,7 +131,7 @@
       en: { desc: "Guided moving form with clear steps, trust elements and structured quote request." },
       it: { desc: "Modulo trasloco guidato con passi chiari, elementi di fiducia e richiesta preventivo strutturata." },
     },
-    "ART Reinigungen & Hauswartungen": {
+    "ART Reinigungen": {
       de: { desc: "Anfrageformular für Reinigung und Hauswartung · professionell, übersichtlich und vertrauenswürdig aufgebaut." },
       en: { desc: "Enquiry form for cleaning and property care · professional, clear and trustworthy." },
       it: { desc: "Modulo richiesta per pulizie e manutenzione · professionale, chiaro e affidabile." },
@@ -146,10 +146,10 @@
       en: { desc: "Lead form for car care and vehicle cleaning · structured, mobile-optimised and conversion-strong." },
       it: { desc: "Modulo lead per cura auto e pulizia veicoli · strutturato, mobile e orientato alla conversione." },
     },
-    "Spitex Xundheit Plus": {
-      de: { desc: "Pflege- und Spitex-Anfrageformular mit empathischer Führung, klarer Struktur und Vertrauensaufbau." },
-      en: { desc: "Care and home nursing enquiry form with empathetic guidance, clear structure and trust building." },
-      it: { desc: "Modulo richiesta assistenza domiciliare con guida empatica, struttura chiara e costruzione fiducia." },
+    "Inniger Reinigungen": {
+      de: { desc: "Mehrstufiges Anfrageformular für Reinigung — klar geführt, übersichtlich und conversion-stark." },
+      en: { desc: "Multi-step enquiry form for cleaning — clearly guided, clear and conversion-strong." },
+      it: { desc: "Modulo richiesta multi-step per pulizie — guidato, chiaro e orientato alla conversione." },
     },
     "ad-res": {
       de: { desc: "Digitale Visitenkarte mit klarem Markenauftritt und schnellem Kontaktzugang." },
@@ -184,10 +184,10 @@
   };
 
   var FR_PROJECTS = {
-    "genialbau.ch": {
-      desc: "Présence web haut de gamme axée sur la confiance, une forte imagerie et vidéo, et une présentation claire des services.",
-      highlight: "Communication professionnelle, visuels forts et parcours utilisateur clair.",
-      skill: "Impact de marque, structure de contenu, conception web.",
+    "inniger-reinigungen.ch": {
+      desc: "Présence web claire pour nettoyage et entretien — fiable, moderne et orientée demande.",
+      highlight: "Structure propre, signaux de confiance forts et chemin direct vers la demande.",
+      skill: "Web design PME, présentation de services, conversion.",
     },
     "gallace-all-in-maler.ch": {
       desc: "Présence clairement structurée pour une PME locale, centrée sur les services, la confiance et un contact simple.",
@@ -216,10 +216,10 @@
     },
     Sanitrend: { desc: "Formulaire lead multi-étapes pour sanitaire, rénovation de salle de bain et assainissement · guidé et orienté conversion." },
     "Dein Umzug Deal": { desc: "Formulaire de déménagement guidé avec étapes claires, éléments de confiance et demande de devis structurée." },
-    "ART Reinigungen & Hauswartungen": { desc: "Formulaire de demande pour nettoyage et entretien immobilier · professionnel, clair et fiable." },
+    "ART Reinigungen": { desc: "Formulaire de demande pour nettoyage et entretien immobilier · professionnel, clair et fiable." },
     "iDEAL Umzüge": { desc: "Formulaire lead déménagement avec UI moderne, guidance claire et demande de devis ciblée." },
     "DT-Cleaning": { desc: "Formulaire lead pour entretien auto et nettoyage véhicules · structuré, mobile et orienté conversion." },
-    "Spitex Xundheit Plus": { desc: "Formulaire de demande soins et Spitex avec guidance empathique, structure claire et construction de confiance." },
+    "Inniger Reinigungen": { desc: "Formulaire de demande multi-étapes pour nettoyage — guidé, clair et orienté conversion." },
     "ad-res": { desc: "Carte de visite digitale avec présence de marque claire et accès contact rapide." },
     "bodenbelaege-hajdari": { desc: "Présence compacte pour revêtements de sol avec focus services et joignabilité directe." },
     "burgunder-handwerk": { desc: "Carte digitale artisanale avec confiance et logique de contact claire." },
