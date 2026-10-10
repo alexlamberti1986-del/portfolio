@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-walk-v45-deepflight.html?v=20260822gw46";
+      "/assets/galaxy-gang/alexlamberti-galaxy-walk-v46-deepflight.html?v=20261010gw46";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");
@@ -148,6 +148,7 @@
       projects: "werke",
       leistungen: "leistungen",
       contact: "kontakt",
+      offerte: "offerte",
       home: "",
     };
 
@@ -221,7 +222,7 @@
         if (!doc || !win) return true;
         var build =
           (doc.documentElement && doc.documentElement.getAttribute("data-alex-build")) || "";
-        if (build.indexOf("v45-galaxy-walk") >= 0) {
+        if (/v4[56]-galaxy-walk/.test(build)) {
           var gl = doc.getElementById("gl");
           return !gl || gl.width <= 300 || gl.height <= 150;
         }
@@ -369,7 +370,10 @@
         return;
       }
       if (!overlay.classList.contains("is-open") && overlay.hidden) return;
+      handleGalaxyNavigate(data);
+    }
 
+    function handleGalaxyNavigate(data) {
       var world = String(data.world || "multiversum").toLowerCase();
       var go = String(data.go || "home").toLowerCase();
       var hash = String(data.targetHash || "").replace(/^#/, "");
@@ -410,6 +414,59 @@
         } catch (eGo) {}
       }
     }
+
+    var GALAXY_LINK_RE =
+      /^(?:https?:\/\/(?:www\.)?alexlamberti\.ch)?\/(?:design-test-v2\/)?(multiversum|nexora|professional|freiraum)(?:\/([^\/?#]+))?\/?(?:#(.*))?$/i;
+    var GALAXY_SLUG_GO = {
+      profil: "about",
+      core: "about",
+      haltung: "about",
+      portrait: "about",
+      dimensionen: "leistungen",
+      module: "leistungen",
+      mandate: "leistungen",
+      disziplinen: "leistungen",
+      werke: "projects",
+      cases: "projects",
+      referenzen: "projects",
+      collage: "projects",
+      signal: "contact",
+      uplink: "contact",
+      gespraech: "contact",
+      impuls: "contact",
+      offerte: "offerte",
+    };
+
+    /** Galaxy links target _top and would reload the shell without switch animation + music. */
+    function bindGalaxyLinks() {
+      var doc;
+      try {
+        doc = iframe.contentDocument;
+      } catch (eDoc) {
+        return;
+      }
+      if (!doc || doc.__alexGalaxyLinksBound) return;
+      doc.__alexGalaxyLinksBound = true;
+      doc.addEventListener(
+        "click",
+        function (ev) {
+          if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+          var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
+          if (!a) return;
+          var m = GALAXY_LINK_RE.exec(a.getAttribute("href") || "");
+          if (!m) return;
+          var slug = String(m[2] || "").toLowerCase();
+          var go = slug ? GALAXY_SLUG_GO[slug] : "home";
+          if (!go) return;
+          ev.preventDefault();
+          handleGalaxyNavigate({ world: m[1], go: go, targetHash: m[3] || "", href: a.href });
+        },
+        true
+      );
+    }
+
+    iframe.addEventListener("load", bindGalaxyLinks);
+    bindGalaxyLinks();
 
     window.addEventListener("message", onGalaxyNavigate);
     window.addEventListener("message", function (ev) {

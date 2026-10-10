@@ -751,6 +751,72 @@
     root.setTimeout(refreshWorldVisibility, 760);
   }
 
+  var WORLD_LINK_RE =
+    /^(?:https?:\/\/(?:www\.)?alexlamberti\.ch)?\/(?:design-test-v2\/)?(multiversum|nexora|professional|freiraum)(?:\/([^\/?#]+))?\/?(?:\?[^#]*)?(?:#(.*))?$/i;
+
+  function chapterFromSlug(slug) {
+    slug = String(slug || "").toLowerCase();
+    if (!slug) return "home";
+    if (slug === "offerte") return "offerte";
+    if (/^(kontakt|contact|signal|uplink|gespraech|gespräch|impuls)$/.test(slug)) return "contact";
+    if (/^(projekte|projects|werke|cases|referenzen|collage)$/.test(slug)) return "projects";
+    if (/^(leistungen|nexus|module|mandate|disziplinen|dimensionen)$/.test(slug)) return "leistungen";
+    if (/^(ueber-mich|about|profil|core|haltung|portrait)$/.test(slug)) return "about";
+    return "";
+  }
+
+  function shellCanSwitchWorld() {
+    try {
+      return !!(root.parent && root.parent !== root && typeof root.parent.mv4SwitchWorld === "function");
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function scrollToSection(hash) {
+    var id = String(hash || "").replace(/^#/, "");
+    if (!id) return false;
+    var el =
+      root.document.getElementById(id) ||
+      root.document.querySelector('[data-v2-section="' + id + '"]');
+    if (!el || !el.scrollIntoView) return false;
+    try {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (e) {
+      el.scrollIntoView(true);
+    }
+    return true;
+  }
+
+  /** Plain world links would reload the whole shell and skip the switch animation + world music. */
+  function onWorldLinkClick(ev) {
+    if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
+    if (!a || a.hasAttribute("download")) return;
+    var m = WORLD_LINK_RE.exec(a.getAttribute("href") || "");
+    if (!m || !shellCanSwitchWorld()) return;
+    var go = chapterFromSlug(m[2]);
+    if (!go) return;
+    var world = m[1].toLowerCase();
+    var hash = m[3] ? "#" + m[3] : "";
+    ev.preventDefault();
+    if (world === worldKey()) {
+      if (!scrollToSection(hash)) goChapter(go);
+      return;
+    }
+    root.parent.postMessage(
+      {
+        type: "alex:switch-world",
+        source: "design-test-v2",
+        world: world,
+        go: go,
+        href: a.href,
+        targetHash: hash,
+      },
+      "*"
+    );
+  }
+
   function onMessage(ev) {
     var data = ev && ev.data;
     if (!data) return;
@@ -820,6 +886,7 @@
   };
 
   root.addEventListener("message", onMessage);
+  root.document.addEventListener("click", onWorldLinkClick, true);
   if (root.document.readyState === "loading") {
     root.document.addEventListener("DOMContentLoaded", init);
   } else {

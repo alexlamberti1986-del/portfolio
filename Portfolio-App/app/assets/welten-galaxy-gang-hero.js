@@ -6,9 +6,9 @@
 (function () {
   "use strict";
 
-  var VER = "20260822gw46";
+  var VER = "20261010gw46";
   var SRC =
-    "/assets/galaxy-gang/alexlamberti-galaxy-walk-v45-deepflight.html?v=" + VER;
+    "/assets/galaxy-gang/alexlamberti-galaxy-walk-v46-deepflight.html?v=" + VER;
   /* ~13″ Laptop+; Phone/Tablet ≤1024px Breite bleiben aus (auch Landscape). */
   var GALAXY_MQ = "(min-width: 1025px) and (min-height: 640px)";
   var mqGalaxy = window.matchMedia ? window.matchMedia(GALAXY_MQ) : null;

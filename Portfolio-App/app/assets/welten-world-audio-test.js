@@ -72,6 +72,11 @@
     return !!window.__mvInWorldSwitch || isVisualAnimationLocked();
   }
 
+  function bootWorld() {
+    var w = activeWorld();
+    return TRACKS[w] ? w : "";
+  }
+
   function activeWorld() {
     return document.body.getAttribute("data-master-world") || "";
   }
@@ -320,7 +325,7 @@
         setSwitchFlag(false);
         window.__mvWorldAudioPlaying = true;
         pendingWorld = "";
-        if (world === "general") {
+        if (TRACKS[world]) {
           initialBootDone = true;
           bootGesturePending = false;
           unhookBootGesture();
@@ -540,9 +545,9 @@
       resumeAudioCtx();
       if (window.__mvWorldAudioPlaying || initialBootDone) {
         playBgm(world, playToken, isTouchMobile() ? 160 : SWITCH_END_FADE_MS, switchGeneration);
-      } else if (world === "general") {
+      } else if (TRACKS[world]) {
         bootGesturePending = false;
-        playGeneralBgmNow();
+        playBootBgmNow();
       }
     }
     ["pointerdown", "touchstart"].forEach(function (type) {
@@ -558,16 +563,23 @@
   function needsStartGesture() {
     return (
       effectsEnabled() &&
-      activeWorld() === "general" &&
+      !!bootWorld() &&
       !initialBootDone &&
       !window.__mvWorldAudioPlaying &&
       !isEarlyBootBlocked()
     );
   }
 
+  var WORLD_LINK_RE =
+    /^(?:https?:\/\/(?:www\.)?alexlamberti\.ch)?\/(?:design-test-v2\/)?(multiversum|nexora|professional|freiraum)(?:[\/?#]|$)/i;
+  var LINK_WORLD_KEY = { multiversum: "general", nexora: "nexora", professional: "vertex", freiraum: "freiraum" };
+
   function isWorldSwitchTarget(target) {
     if (!target || !target.closest) return false;
-    return !!target.closest(".mv4-worlds [data-iframe], .world-bar [data-iframe]");
+    if (target.closest(".mv4-worlds [data-iframe], .world-bar [data-iframe]")) return true;
+    var a = target.closest("a[href]");
+    var m = a && WORLD_LINK_RE.exec(a.getAttribute("href") || "");
+    return !!(m && LINK_WORLD_KEY[m[1].toLowerCase()] !== activeWorld());
   }
 
   function isExcludedBootTarget(target) {
@@ -590,10 +602,11 @@
     bootGestureListeners.push({ target: target, type: type, fn: fn, opts: opts });
   }
 
-  function preloadGeneralTrack() {
-    preloadTrack("general");
+  function preloadBootTrack() {
+    var world = bootWorld() || "general";
+    preloadTrack(world);
     var el = ensureBgm();
-    var src = TRACKS.general;
+    var src = TRACKS[world];
     var pathOnly = src.split("?")[0];
     if (!el.src || el.src.indexOf(pathOnly) < 0) {
       el.src = src;
@@ -603,14 +616,15 @@
     }
   }
 
-  function playGeneralBgmNow() {
+  function playBootBgmNow() {
     if (!needsStartGesture()) {
       bootGesturePending = false;
       return false;
     }
     var token = playToken;
+    var world = bootWorld();
     var el = ensureBgm();
-    var src = TRACKS.general;
+    var src = TRACKS[world];
     var pathOnly = src.split("?")[0];
     if (!el.src || el.src.indexOf(pathOnly) < 0) {
       el.src = src;
@@ -624,7 +638,7 @@
 
     function markPlaying() {
       if (token !== playToken) return;
-      if (!effectsEnabled() || activeWorld() !== "general") {
+      if (!effectsEnabled() || activeWorld() !== world) {
         try {
           el.pause();
           el.volume = 0;
@@ -684,13 +698,13 @@
       unhookBootGesture();
       return;
     }
-    if (activeWorld() !== "general") return;
+    if (!bootWorld()) return;
     if (e && isExcludedBootTarget(e.target)) return;
     if (!effectsEnabled()) return;
     if (bootGesturePending) return;
     bootGesturePending = true;
     resumeAudioCtx();
-    playGeneralBgmNow();
+    playBootBgmNow();
   }
 
   function tryBootFromGesture(e) {
@@ -750,7 +764,7 @@
   }
 
   function hookIframeGestures() {
-    var frame = isTouchMobile() ? getActiveFrame() : getMultiversumFrame();
+    var frame = bootWorld() === "general" && !isTouchMobile() ? getMultiversumFrame() : getActiveFrame();
     if (!frame) return;
     function tryAttach() {
       if (initialBootDone || window.__mvWorldAudioPlaying) return;
@@ -774,7 +788,7 @@
       "pointerdown",
       function (e) {
         if (initialBootDone || window.__mvWorldAudioPlaying) return;
-        if (activeWorld() !== "general") return;
+        if (!bootWorld()) return;
         var currentlyOn = effectsEnabled();
         if (!currentlyOn) {
           /* Effekte werden gerade eingeschaltet ? danach Musik starten */
@@ -800,7 +814,7 @@
 
   function hookBootGesture() {
     if (bootGestureHooked) return;
-    if (initialBootDone || activeWorld() !== "general") return;
+    if (initialBootDone || !bootWorld()) return;
     bootGestureHooked = true;
 
     hookFxButtonForAudio();
@@ -870,18 +884,18 @@
         return Promise.resolve();
       };
     }
-    if (activeWorld() === "general") preloadGeneralTrack();
+    if (bootWorld()) preloadBootTrack();
     if (!effectsEnabled()) {
       hardStopBgm();
       setSwitchFlag(false);
     }
-    if (!initialBootDone && activeWorld() === "general") {
+    if (!initialBootDone && bootWorld()) {
       hookBootGesture();
     }
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    if (!initialBootDone && activeWorld() === "general") hookBootGesture();
+    if (!initialBootDone && bootWorld()) hookBootGesture();
   });
 
   document.addEventListener("welten-audio-switch-start", function (e) {
@@ -921,7 +935,7 @@
       unhookBootGesture();
       return;
     }
-    if (activeWorld() === "general" && !initialBootDone) hookBootGesture();
+    if (bootWorld() && !initialBootDone) hookBootGesture();
   });
 
   if (document.readyState === "loading") {
@@ -932,8 +946,8 @@
 
   window.addEventListener("pageshow", function () {
     if (isEarlyBootBlocked()) return;
-    if (!initialBootDone && activeWorld() === "general") {
-      preloadGeneralTrack();
+    if (!initialBootDone && bootWorld()) {
+      preloadBootTrack();
       hookBootGesture();
     }
   });

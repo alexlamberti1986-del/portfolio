@@ -98,5 +98,16 @@
       <p class="page-footer__copy">© 2026 Alex Lamberti</p>
     </div>
   </footer>
+  <script>
+    /* Weltwechsel ankündigen: die Shell spielt danach Intro-Animation + Welt-Musik */
+    document.addEventListener("click", function (ev) {
+      var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
+      if (!a || !/^\/(multiversum|nexora|professional|freiraum)(?:[\/#]|$)/.test(a.getAttribute("href") || "")) return;
+      try {
+        sessionStorage.setItem("v2-world-enter", "1");
+        sessionStorage.setItem("v2-world-hash", a.hash || "");
+      } catch (e) {}
+    }, true);
+  </script>
 </body>
 </html>
