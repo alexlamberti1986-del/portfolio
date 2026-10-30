@@ -872,7 +872,8 @@ body[data-world="freiraum"] .world-btn.active,body[data-world="freiraum"] .btn-p
   function buildHeaderTools(){ const topTools=$('.top-tools'); if(!topTools||$('.alex-world-switcher')) return; const outer=document.createElement('div'); outer.className='alex-header-tools'; const switcher=document.createElement('div'); switcher.className='alex-world-switcher'; ['multiversum','nexora','professional','freiraum'].forEach(w=>{const b=document.createElement('button'); b.type='button'; b.className='world-btn'; b.dataset.world=w; b.textContent=WORLD[w].label; b.addEventListener('click',()=>applyWorld(w)); switcher.appendChild(b);}); topTools.parentNode.insertBefore(outer, topTools); outer.appendChild(switcher); outer.appendChild(topTools); }
   function setHero(){ const eyebrow=$('.hero .eyebrow'); if(eyebrow) eyebrow.textContent='Weltenbasierte Projektanfrage'; const h1=$('.hero h1'); if(h1) h1.textContent='Digitale Lösungen im Stil Ihrer gewählten Welt.'; const p=$('.hero p'); if(p){ p.textContent=''; p.hidden=true; p.style.display='none'; } const pts=$$('.hero-point'); if(pts[0]) pts[0].innerHTML='<strong>4</strong><span>Design-Welten</span>'; if(pts[1]) pts[1].innerHTML='<strong>9</strong><span>Dienstleistungsbereiche</span>'; if(pts[2]) pts[2].innerHTML='<strong>1</strong><span>Klare Angebotsstruktur</span>'; const vis=$('.hero-visual'); if(vis) vis.innerHTML='<div class="alex-hero-wrap"><div class="alex-hero-stage"><img id="alexHeroImage" src="'+WORLD[currentWorld].hero+'" alt="Alex Lamberti Welt"><div class="alex-hero-badge" id="alexHeroBadge">'+WORLD[currentWorld].stageTitle+'</div></div><div class="alex-hero-note"><h3 id="alexHeroNoteTitle">'+WORLD[currentWorld].label+'</h3><p id="alexHeroNoteText">'+WORLD[currentWorld].note+'</p></div></div>'; }
   function updateHeroWorld(){ const img=$('#alexHeroImage'); if(img) img.src=WORLD[currentWorld].hero; const b=$('#alexHeroBadge'); if(b) b.textContent=WORLD[currentWorld].stageTitle; const t=$('#alexHeroNoteTitle'); if(t) t.textContent=WORLD[currentWorld].label; const p=$('#alexHeroNoteText'); if(p) p.textContent=WORLD[currentWorld].note; }
-  function updateCardImages(){ $$('#categoryArea [data-cat]').forEach(card=>{ const img=$('img',card); if(img) img.src=getCatImg(card.dataset.cat); const mini=$('.mini',card); if(mini) mini.textContent=WORLD[currentWorld].mini; }); $$('#serviceArea [data-service]').forEach(card=>{ const img=$('img',card); if(img) img.src=getServiceImg(card.dataset.service);}); }
+  function setImgSrc(img,src){ if(img&&src&&img.getAttribute('src')!==src) img.setAttribute('src',src); }
+  function updateCardImages(){ $$('#categoryArea [data-cat]').forEach(card=>{ setImgSrc($('img',card),getCatImg(card.dataset.cat)); const mini=$('.mini',card); const m=WORLD[currentWorld].mini; if(mini&&mini.textContent!==m) mini.textContent=m; }); $$('#serviceArea [data-service]').forEach(card=>{ setImgSrc($('img',card),getServiceImg(card.dataset.service)); }); }
   function applyWorld(world){
     if(!WORLD[world])world='multiversum';
     currentWorld=world;
@@ -883,7 +884,7 @@ body[data-world="freiraum"] .world-btn.active,body[data-world="freiraum"] .btn-p
     try{localStorage.setItem('alex-lamberti-world',world)}catch(_){}
     updateHeroWorld();updateCardImages();
   }
-  function watchAreas(){ ['#categoryArea','#serviceArea'].forEach(sel=>{ const el=$(sel); if(!el) return; new MutationObserver(()=>setTimeout(updateCardImages,0)).observe(el,{childList:true,subtree:true}); }); }
+  function watchAreas(){ ['#categoryArea','#serviceArea'].forEach(sel=>{ const el=$(sel); if(!el) return; new MutationObserver(updateCardImages).observe(el,{childList:true,subtree:true}); }); }
   function resolveStartWorld(){
     try{
       const params=new URLSearchParams(location.search||'');
@@ -897,6 +898,7 @@ body[data-world="freiraum"] .world-btn.active,body[data-world="freiraum"] .btn-p
     return 'multiversum';
   }
   function init(){
+    currentWorld=resolveStartWorld();document.body.setAttribute('data-world',currentWorld);
     setBrand();buildHeaderTools();setHero();watchAreas();
     applyWorld(resolveStartWorld());
     try{
