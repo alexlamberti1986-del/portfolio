@@ -2090,3 +2090,93 @@ html[data-reduced-motion="1"] [data-reveal] {
     font-size: 0.78rem;
   }
 }
+
+/* —— Werdegang: stats, badges, skill chips, base education —— */
+.nx-exp-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+.nx-exp-stats > div {
+  padding: 0.95rem 1.05rem;
+  border: 1px solid var(--nx-border);
+  border-radius: var(--nx-radius);
+  background: linear-gradient(160deg, rgba(61, 139, 255, 0.14), rgba(8, 18, 40, 0.6));
+}
+.nx-exp-stats dt {
+  font-family: var(--nx-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nx-muted);
+}
+.nx-exp-stats dd {
+  margin: 0.3rem 0 0;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--nx-heading);
+}
+.nx-exp-stats dd.nx-status-ok { font-size: clamp(1.05rem, 1.8vw, 1.35rem); padding-top: 0.35rem; }
+
+.nx-exp-block--wide { grid-column: 1 / -1; }
+.nx-exp-intro { margin: 0 0 1rem; font-size: 0.92rem; color: var(--nx-muted); max-width: 70ch; }
+
+.nx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 0.5rem;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid var(--nx-border-strong);
+  border-radius: var(--nx-radius);
+  font-family: var(--nx-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--nx-cyan);
+  vertical-align: 1px;
+}
+.nx-badge--live { border-color: rgba(93, 255, 194, 0.5); color: var(--nx-ok); }
+.nx-badge--live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nx-ok);
+  box-shadow: 0 0 8px var(--nx-ok);
+  animation: nx-pulse 1.8s ease-in-out infinite;
+}
+.nx-timeline li.nx-tl--live { border-left-color: rgba(93, 255, 194, 0.6); }
+
+.nx-skillsets { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.5rem; }
+.nx-skillsets > div > .nx-mono { display: block; margin-bottom: 0.55rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--nx-cyan); }
+.nx-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; }
+.nx-chips li {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--nx-border);
+  border-radius: var(--nx-radius);
+  background: rgba(142, 197, 255, 0.06);
+  font-size: 0.85rem;
+  color: var(--nx-text);
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.nx-chips li:hover { border-color: var(--nx-border-strong); background: rgba(142, 197, 255, 0.14); color: var(--nx-heading); }
+
+.nx-base { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin: 0; padding: 0; }
+.nx-base li { padding: 0.85rem 0.95rem; border: 1px solid var(--nx-border); border-radius: var(--nx-radius); background: rgba(142, 197, 255, 0.04); }
+.nx-base time { display: block; font-family: var(--nx-mono); font-size: 0.78rem; letter-spacing: 0.1em; color: var(--nx-cyan); margin-bottom: 0.25rem; }
+.nx-base strong { display: block; color: var(--nx-heading); font-size: 0.95rem; margin-bottom: 0.25rem; }
+.nx-base p { margin: 0; font-size: 0.88rem; color: var(--nx-muted); }
+
+@media (max-width: 1100px) {
+  .nx-exp-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .nx-skillsets,
+  .nx-base { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nx-badge--live::before { animation: none; }
+}

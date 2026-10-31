@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MULTIVERSUM — Design Test V2
  * Cosmic page behavior: year, controls → parent, parallax, reveal, reduced motion.
  */
@@ -136,7 +136,7 @@
     if (!starters.length || !overlay || !iframe) return;
 
     var SRC =
-      "/assets/galaxy-gang/alexlamberti-galaxy-walk-v46-deepflight.html?v=20261011faces1";
+      "/assets/galaxy-gang/alexlamberti-galaxy-walk-v46-deepflight.html?v=20261031legal1";
     var mq =
       window.matchMedia &&
       window.matchMedia("(min-width: 1025px) and (min-height: 640px)");

@@ -1,113 +1,186 @@
 <!DOCTYPE html>
-<html lang="de-CH">
+<html lang="de-CH" data-welt="welcome">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="index, follow" />
   <title>Impressum | Alex Lamberti</title>
-  <meta name="description" content="Impressum und Anbieterkennzeichnung für Alex Lamberti." />
-  <style>
-    :root { color-scheme: dark; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      font-family: "Segoe UI", system-ui, sans-serif;
-      background: linear-gradient(165deg, #070b14 0%, #10182a 55%, #0a1220 100%);
-      color: #e8eef8;
-      line-height: 1.55;
-    }
-    main {
-      flex: 1 0 auto;
-      max-width: 42rem;
-      width: 100%;
-      margin: 0 auto;
-      padding: clamp(1.5rem, 4vw, 3rem);
-      box-sizing: border-box;
-    }
-    a { color: #8ec5ff; }
-    h1 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; }
-    .muted { color: rgba(232, 238, 248, 0.72); font-size: 0.95rem; }
-    .back { display: inline-block; margin-bottom: 1.5rem; }
-    .page-footer {
-      flex-shrink: 0;
-      border-top: 1px solid rgba(142, 197, 255, 0.18);
-      background: rgba(6, 14, 28, 0.55);
-      padding: 1.25rem clamp(1.5rem, 4vw, 3rem);
-      padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
-    }
-    .page-footer__inner {
-      max-width: 56rem;
-      margin: 0 auto;
-      display: grid;
-      gap: 1rem 1.5rem;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      font-size: 0.9rem;
-      color: rgba(232, 238, 248, 0.82);
-    }
-    .page-footer a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; }
-    .page-footer a:hover { border-bottom-color: currentColor; }
-    .page-footer__world { color: #7ec8ff; font-weight: 700; letter-spacing: 0.06em; font-size: 0.78rem; }
-    .page-footer h2 { margin: 0 0 0.5rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8ec5ff; }
-    .page-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
-    .page-footer__copy { grid-column: 1 / -1; opacity: 0.65; margin-top: 0.25rem; }
-  </style>
+  <meta name="description" content="Impressum, Anbieterkennzeichnung sowie Urheber- und Nutzungsrechte der Website von Alex Lamberti." />
+  <link rel="canonical" href="https://www.alexlamberti.ch/impressum" />
+  <link rel="icon" href="/assets/favicon/favicon.ico" />
+  <script>
+    (function () {
+      var W = ["multiversum", "nexora", "professional", "freiraum"], w = "", ref = null;
+      try { w = (new URLSearchParams(location.search).get("welt") || "").toLowerCase(); } catch (e) {}
+      if (W.indexOf(w) < 0) {
+        try { ref = document.referrer ? new URL(document.referrer) : null; } catch (e) {}
+        if (ref && ref.origin === location.origin) {
+          var m = ref.pathname.match(/(multiversum|nexora|professional|freiraum)/);
+          w = m ? m[1] : (/(impressum|datenschutz)/.test(ref.pathname) ? "" : "welcome");
+        }
+      }
+      if (W.indexOf(w) < 0 && w !== "welcome") { try { w = sessionStorage.getItem("lg-welt") || ""; } catch (e) {} }
+      if (W.indexOf(w) < 0) w = "welcome";
+      document.documentElement.setAttribute("data-welt", w);
+    })();
+  </script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&family=Marcellus&family=Libre+Baskerville:ital@1&display=swap" />
+  <link rel="stylesheet" href="/assets/design-test-v2/legal/legal.css?v=20261031legal1" />
 </head>
 <body>
-  <main>
-    <a class="back" href="/">← Zurück zur Willkommensseite</a>
-    <h1>Impressum</h1>
-    <p><strong>Alex Lamberti</strong></p>
-    <p>
-      E-Mail:
-      <a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a>
-    </p>
-    <p>
-      Telefon:
-      <a href="tel:+41796678211">079 667 82 11</a>
-    </p>
-    <p>Schulweg 603<br />5324 Full-Reuenthal<br />Schweiz</p>
-    <p class="muted">
-      Postadresse und weitere gesetzliche Angaben entsprechen der Anbieterkennzeichnung von Alex Lamberti.
-    </p>
-    <p><a href="/datenschutz">Datenschutz</a></p>
+  <a class="lg-skip" href="#inhalt">Zum Inhalt</a>
+
+  <header class="lg-top">
+    <a class="lg-back" href="/" data-lg-back><span aria-hidden="true">←</span> <span data-lg-back-label>Zur Willkommensseite</span></a>
+    <nav class="lg-worlds" aria-label="Darstellung im Stil einer Welt">
+      <button type="button" data-set-welt="multiversum" aria-pressed="false" style="--dot:#ff59b2">Multiversum</button>
+      <button type="button" data-set-welt="nexora" aria-pressed="false" style="--dot:#8ec5ff">Nexora</button>
+      <button type="button" data-set-welt="professional" aria-pressed="false" style="--dot:#c8c2b6">Professional</button>
+      <button type="button" data-set-welt="freiraum" aria-pressed="false" style="--dot:#ffc66f">Freiraum</button>
+    </nav>
+  </header>
+
+  <main class="lg-main" id="inhalt">
+    <section class="lg-hero" aria-labelledby="lg-title">
+      <p class="lg-kicker"><span data-lg-world-name>Alex Lamberti</span> · Rechtliches</p>
+      <h1 id="lg-title">Impressum</h1>
+      <p class="lg-lead">Anbieterkennzeichnung, Kontakt sowie Urheber- und Nutzungsrechte für sämtliche Inhalte von alexlamberti.ch und den vier Welten MULTIVERSUM, NEXORA, PROFESSIONAL und FREIRAUM.</p>
+      <ul class="lg-meta">
+        <li>Stand: Oktober 2026</li>
+        <li>Schweizer Recht</li>
+        <li>Alle Rechte vorbehalten</li>
+      </ul>
+    </section>
+
+    <div class="lg-layout">
+      <nav class="lg-toc" aria-label="Inhaltsverzeichnis">
+        <p>Inhalt</p>
+        <ol>
+          <li><a href="#anbieter">Anbieter</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#urheberrecht">Urheberrecht &amp; Schutz der Inhalte</a></li>
+          <li><a href="#bildrechte">Bild- und Persönlichkeitsrechte</a></li>
+          <li><a href="#referenzen">Referenzen &amp; Marken Dritter</a></li>
+          <li><a href="#nutzung">Erlaubte Nutzung &amp; Anfragen</a></li>
+          <li><a href="#haftung">Haftungsausschluss</a></li>
+          <li><a href="#links">Links &amp; Vorschauen</a></li>
+          <li><a href="#recht">Anwendbares Recht</a></li>
+        </ol>
+      </nav>
+
+      <div class="lg-content">
+        <section class="lg-sec" id="anbieter">
+          <h2><span class="lg-num">01</span>Anbieter</h2>
+          <p>Verantwortlich für Inhalt, Gestaltung und Betrieb dieser Website:</p>
+          <dl class="lg-facts">
+            <div><dt>Name</dt><dd>Alex Lamberti</dd></div>
+            <div><dt>Adresse</dt><dd>Schulweg 603<br />5324 Full-Reuenthal<br />Schweiz</dd></div>
+            <div><dt>Tätigkeit</dt><dd>Digital Marketing, Webdesign &amp; digitale Auftritte</dd></div>
+          </dl>
+        </section>
+
+        <section class="lg-sec" id="kontakt">
+          <h2><span class="lg-num">02</span>Kontakt</h2>
+          <dl class="lg-facts">
+            <div><dt>E-Mail</dt><dd><a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a></dd></div>
+            <div><dt>Telefon</dt><dd><a href="tel:+41796678211">079 667 82 11</a></dd></div>
+            <div><dt>Website</dt><dd><a href="https://www.alexlamberti.ch">www.alexlamberti.ch</a></dd></div>
+          </dl>
+        </section>
+
+        <section class="lg-sec" id="urheberrecht">
+          <h2><span class="lg-num">03</span>Urheberrecht &amp; Schutz der Inhalte</h2>
+          <p>Sämtliche Inhalte dieser Website sind urheberrechtlich geschützt und stehen im Eigentum von Alex Lamberti oder der jeweils genannten Rechteinhaber. Geschützt sind insbesondere:</p>
+          <ul class="lg-tags">
+            <li>Texte &amp; Slogans</li>
+            <li>Portraits &amp; Fotografien</li>
+            <li>Profil-Videos &amp; Animationen</li>
+            <li>Grafiken &amp; Illustrationen</li>
+            <li>Logos &amp; Wortmarken</li>
+            <li>Design &amp; Layouts</li>
+            <li>Konzept der vier Welten</li>
+            <li>Galaxy Walk</li>
+            <li>Formulare &amp; Offertenrechner</li>
+            <li>Programmcode</li>
+            <li>Auswahl &amp; Anordnung</li>
+          </ul>
+          <p>Jede Verwendung, die über das reine Betrachten im Browser hinausgeht, ist ohne vorgängige <strong>schriftliche Zustimmung</strong> von Alex Lamberti untersagt. Dazu gehören namentlich das Kopieren, Herunterladen, Vervielfältigen, Bearbeiten, Übersetzen, Nachahmen, Verbreiten oder öffentliche Zugänglichmachen der Inhalte, deren Übernahme in andere Websites, Präsentationen oder Druckerzeugnisse, das automatisierte Auslesen (Scraping) sowie die Verwendung zum Training oder Betrieb von Systemen der künstlichen Intelligenz.</p>
+          <div class="lg-alert">
+            <strong>Hinweis zu Rechtsverletzungen</strong>
+            Wer Inhalte dieser Website unbefugt verwendet, verletzt das Bundesgesetz über das Urheberrecht und verwandte Schutzrechte (URG). Dies kann zivilrechtliche Ansprüche auf Unterlassung, Beseitigung, Schadenersatz und Gewinnherausgabe nach sich ziehen und ist nach Art. 67 ff. URG strafbar. Gewerbsmässige Verletzungen werden von Amtes wegen verfolgt. Alex Lamberti behält sich vor, Verstösse konsequent rechtlich zu verfolgen und zur Anzeige zu bringen.
+          </div>
+        </section>
+
+        <section class="lg-sec" id="bildrechte">
+          <h2><span class="lg-num">04</span>Bild- und Persönlichkeitsrechte</h2>
+          <p>Die Portraits, Profilbilder und Profil-Videos zeigen Alex Lamberti. Sie sind zusätzlich durch das Recht am eigenen Bild und den Persönlichkeitsschutz (Art. 28 ZGB) geschützt. Ihre Verwendung – auch in bearbeiteter, verfremdeter oder mittels KI erzeugter Form – ist ohne ausdrückliche Einwilligung nicht gestattet.</p>
+        </section>
+
+        <section class="lg-sec" id="referenzen">
+          <h2><span class="lg-num">05</span>Referenzen &amp; Marken Dritter</h2>
+          <p>Die gezeigten Websites, Leadformulare und digitalen Visitenkarten sind Arbeiten von Alex Lamberti für seine Kundinnen und Kunden und dienen als Referenzen. Namen, Logos und Marken der jeweiligen Unternehmen sind Eigentum der jeweiligen Inhaber; ihre Nennung begründet keine Rechte Dritter an diesen Kennzeichen.</p>
+        </section>
+
+        <section class="lg-sec" id="nutzung">
+          <h2><span class="lg-num">06</span>Erlaubte Nutzung &amp; Anfragen</h2>
+          <p>Das Setzen eines Links auf alexlamberti.ch ist erwünscht. Nicht gestattet ist das Einbetten der Website oder einzelner Inhalte in fremde Seiten (z.&nbsp;B. per Frame), sodass der Eindruck eigener Inhalte entsteht.</p>
+          <p>Für Medienanfragen, Zitate oder die Nutzung einzelner Inhalte genügt eine kurze Anfrage an <a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a>. Eine Zustimmung gilt nur, wenn sie schriftlich erteilt wurde.</p>
+        </section>
+
+        <section class="lg-sec" id="haftung">
+          <h2><span class="lg-num">07</span>Haftungsausschluss</h2>
+          <p>Die Inhalte dieser Website werden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Informationen wird jedoch keine Gewähr übernommen. Haftungsansprüche wegen Schäden materieller oder immaterieller Art, die aus dem Zugriff auf, der Nutzung oder Nichtnutzung der veröffentlichten Informationen entstehen, sind ausgeschlossen, soweit gesetzlich zulässig.</p>
+          <p>Im Offertenformular berechnete Preise sind <strong>unverbindliche Richtwerte</strong>. Verbindlich ist ausschliesslich eine schriftliche Offerte von Alex Lamberti.</p>
+          <p>Alle Angebote sind unverbindlich. Inhalte können jederzeit ohne Ankündigung ganz oder teilweise geändert, ergänzt oder entfernt werden.</p>
+        </section>
+
+        <section class="lg-sec" id="links">
+          <h2><span class="lg-num">08</span>Links &amp; Vorschauen</h2>
+          <p>Diese Website enthält Links und Live-Vorschauen von Websites Dritter. Diese liegen ausserhalb des Verantwortungsbereichs von Alex Lamberti. Für deren Inhalte sind ausschliesslich die jeweiligen Betreiber verantwortlich. Der Zugriff und die Nutzung erfolgen auf eigene Gefahr.</p>
+        </section>
+
+        <section class="lg-sec" id="recht">
+          <h2><span class="lg-num">09</span>Anwendbares Recht &amp; Gerichtsstand</h2>
+          <p>Es gilt ausschliesslich schweizerisches Recht. Gerichtsstand ist, soweit gesetzlich zulässig, der Wohnsitz von Alex Lamberti.</p>
+          <p>Hinweise zum Umgang mit Personendaten finden sich in der <a href="/datenschutz" data-lg-legal>Datenschutzerklärung</a>.</p>
+        </section>
+      </div>
+    </div>
   </main>
-  <footer class="page-footer" role="contentinfo">
-    <div class="page-footer__inner">
-      <div>
-        <p class="page-footer__world">ALEX LAMBERTI</p>
-        <p>Alex Lamberti</p>
+
+  <footer class="lg-foot">
+    <div class="lg-foot__inner">
+      <div class="lg-foot__brand">
+        <strong>Alex Lamberti</strong>
+        <p>Vier Welten. Eine klare digitale Sprache.</p>
       </div>
       <div>
         <h2>Welten</h2>
         <ul>
-          <li><a href="/multiversum">MULTIVERSUM</a></li>
-          <li><a href="/nexora">NEXORA</a></li>
-          <li><a href="/professional">PROFESSIONAL</a></li>
-          <li><a href="/freiraum">FREIRAUM</a></li>
+          <li><a href="/multiversum">Multiversum</a></li>
+          <li><a href="/nexora">Nexora</a></li>
+          <li><a href="/professional">Professional</a></li>
+          <li><a href="/freiraum">Freiraum</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kontakt</h2>
+        <ul>
+          <li><a href="mailto:alex.lamberti@hotmail.ch">E-Mail</a></li>
+          <li><a href="tel:+41796678211">079 667 82 11</a></li>
+          <li><a href="/multiversum/offerte">Offerte</a></li>
         </ul>
       </div>
       <div>
         <h2>Rechtliches</h2>
         <ul>
-          <li><a href="/impressum" aria-current="page">Impressum</a></li>
-          <li><a href="/datenschutz">Datenschutz</a></li>
+          <li><a href="/impressum" data-lg-legal aria-current="page">Impressum</a></li>
+          <li><a href="/datenschutz" data-lg-legal>Datenschutz</a></li>
         </ul>
       </div>
-      <p class="page-footer__copy">© 2026 Alex Lamberti</p>
+      <p class="lg-foot__copy">© <span data-lg-year>2026</span> Alex Lamberti · Alle Rechte vorbehalten. Kopieren und Weiterverwenden der Inhalte nur mit schriftlicher Zustimmung.</p>
     </div>
   </footer>
-  <script>
-    /* Weltwechsel ankündigen: die Shell spielt danach Intro-Animation + Welt-Musik */
-    document.addEventListener("click", function (ev) {
-      var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
-      if (!a || !/^\/(multiversum|nexora|professional|freiraum)(?:[\/#]|$)/.test(a.getAttribute("href") || "")) return;
-      try {
-        sessionStorage.setItem("v2-world-enter", "1");
-        sessionStorage.setItem("v2-world-hash", a.hash || "");
-      } catch (e) {}
-    }, true);
-  </script>
+  <script src="/assets/design-test-v2/legal/legal.js?v=20261031legal1" defer></script>
 </body>
 </html>

@@ -1,128 +1,221 @@
 <!DOCTYPE html>
-<html lang="de-CH">
+<html lang="de-CH" data-welt="welcome">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="index, follow" />
-  <title>Datenschutz | Alex Lamberti</title>
-  <meta name="description" content="Datenschutzhinweise für die Website von Alex Lamberti." />
-  <style>
-    :root { color-scheme: dark; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      font-family: "Segoe UI", system-ui, sans-serif;
-      background: linear-gradient(165deg, #070b14 0%, #10182a 55%, #0a1220 100%);
-      color: #e8eef8;
-      line-height: 1.55;
-    }
-    main {
-      flex: 1 0 auto;
-      max-width: 42rem;
-      width: 100%;
-      margin: 0 auto;
-      padding: clamp(1.5rem, 4vw, 3rem);
-      box-sizing: border-box;
-    }
-    a { color: #8ec5ff; }
-    h1 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; }
-    h2 { font-size: 1.1rem; margin-top: 1.75rem; }
-    .muted { color: rgba(232, 238, 248, 0.72); font-size: 0.95rem; }
-    .back { display: inline-block; margin-bottom: 1.5rem; }
-    .page-footer {
-      flex-shrink: 0;
-      border-top: 1px solid rgba(142, 197, 255, 0.18);
-      background: rgba(6, 14, 28, 0.55);
-      padding: 1.25rem clamp(1.5rem, 4vw, 3rem);
-      padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
-    }
-    .page-footer__inner {
-      max-width: 56rem;
-      margin: 0 auto;
-      display: grid;
-      gap: 1rem 1.5rem;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      font-size: 0.9rem;
-      color: rgba(232, 238, 248, 0.82);
-    }
-    .page-footer a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; }
-    .page-footer a:hover { border-bottom-color: currentColor; }
-    .page-footer__world { color: #7ec8ff; font-weight: 700; letter-spacing: 0.06em; font-size: 0.78rem; }
-    .page-footer h2 { margin: 0 0 0.5rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8ec5ff; }
-    .page-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
-    .page-footer__copy { grid-column: 1 / -1; opacity: 0.65; margin-top: 0.25rem; }
-  </style>
+  <title>Datenschutzerklärung | Alex Lamberti</title>
+  <meta name="description" content="Datenschutzerklärung der Website von Alex Lamberti nach dem Schweizer Datenschutzgesetz (revDSG) und, soweit anwendbar, der DSGVO." />
+  <link rel="canonical" href="https://www.alexlamberti.ch/datenschutz" />
+  <link rel="icon" href="/assets/favicon/favicon.ico" />
+  <script>
+    (function () {
+      var W = ["multiversum", "nexora", "professional", "freiraum"], w = "", ref = null;
+      try { w = (new URLSearchParams(location.search).get("welt") || "").toLowerCase(); } catch (e) {}
+      if (W.indexOf(w) < 0) {
+        try { ref = document.referrer ? new URL(document.referrer) : null; } catch (e) {}
+        if (ref && ref.origin === location.origin) {
+          var m = ref.pathname.match(/(multiversum|nexora|professional|freiraum)/);
+          w = m ? m[1] : (/(impressum|datenschutz)/.test(ref.pathname) ? "" : "welcome");
+        }
+      }
+      if (W.indexOf(w) < 0 && w !== "welcome") { try { w = sessionStorage.getItem("lg-welt") || ""; } catch (e) {} }
+      if (W.indexOf(w) < 0) w = "welcome";
+      document.documentElement.setAttribute("data-welt", w);
+    })();
+  </script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Be+Vietnam+Pro:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&family=Marcellus&family=Libre+Baskerville:ital@1&display=swap" />
+  <link rel="stylesheet" href="/assets/design-test-v2/legal/legal.css?v=20261031legal1" />
 </head>
 <body>
-  <main>
-    <a class="back" href="/">← Zurück zur Willkommensseite</a>
-    <h1>Datenschutz</h1>
-    <p class="muted">Kurzversion — wird ergänzt, sobald Tracking und Formularversand final festgelegt sind.</p>
+  <a class="lg-skip" href="#inhalt">Zum Inhalt</a>
 
-    <h2>Verantwortlich</h2>
-    <p>
-      Alex Lamberti ·
-      <a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a>
-    </p>
+  <header class="lg-top">
+    <a class="lg-back" href="/" data-lg-back><span aria-hidden="true">←</span> <span data-lg-back-label>Zur Willkommensseite</span></a>
+    <nav class="lg-worlds" aria-label="Darstellung im Stil einer Welt">
+      <button type="button" data-set-welt="multiversum" aria-pressed="false" style="--dot:#ff59b2">Multiversum</button>
+      <button type="button" data-set-welt="nexora" aria-pressed="false" style="--dot:#8ec5ff">Nexora</button>
+      <button type="button" data-set-welt="professional" aria-pressed="false" style="--dot:#c8c2b6">Professional</button>
+      <button type="button" data-set-welt="freiraum" aria-pressed="false" style="--dot:#ffc66f">Freiraum</button>
+    </nav>
+  </header>
 
-    <h2>Welche Daten anfallen</h2>
-    <p>
-      Beim Besuch dieser Website verarbeitet der Hosting-Anbieter übliche Server-Logdaten
-      (z.&nbsp;B. IP-Adresse, Zeitpunkt, User-Agent). Es sind derzeit keine Analyse- oder
-      Marketing-Cookies von Drittanbietern eingebunden.
-    </p>
+  <main class="lg-main" id="inhalt">
+    <section class="lg-hero" aria-labelledby="lg-title">
+      <p class="lg-kicker"><span data-lg-world-name>Alex Lamberti</span> · Rechtliches</p>
+      <h1 id="lg-title">Datenschutz</h1>
+      <p class="lg-lead">Der Schutz Ihrer Personendaten ist mir wichtig. Diese Erklärung zeigt transparent, welche Daten beim Besuch von alexlamberti.ch anfallen, wofür sie verwendet werden und welche Rechte Sie haben.</p>
+      <ul class="lg-meta">
+        <li>Stand: Oktober 2026</li>
+        <li>Schweizer DSG (revDSG)</li>
+        <li>Kein Tracking · keine Werbe-Cookies</li>
+      </ul>
+    </section>
 
-    <h2>Kontaktaufnahme</h2>
-    <p>
-      Wenn du per E-Mail oder über ein Formular Kontakt aufnimmst, werden die von dir
-      mitgeteilten Angaben zur Bearbeitung der Anfrage verwendet.
-    </p>
+    <div class="lg-layout">
+      <nav class="lg-toc" aria-label="Inhaltsverzeichnis">
+        <p>Inhalt</p>
+        <ol>
+          <li><a href="#verantwortlich">Verantwortliche Stelle</a></li>
+          <li><a href="#grundsaetze">Grundsätze</a></li>
+          <li><a href="#hosting">Hosting &amp; Server-Logs</a></li>
+          <li><a href="#schriften">Schriftarten</a></li>
+          <li><a href="#speicher">Browser-Speicher &amp; Cookies</a></li>
+          <li><a href="#tracking">Keine Analyse- &amp; Werbetools</a></li>
+          <li><a href="#kontakt">Kontaktaufnahme</a></li>
+          <li><a href="#offerte">Offertenformular</a></li>
+          <li><a href="#vorschauen">Projektvorschauen &amp; Links</a></li>
+          <li><a href="#weitergabe">Weitergabe &amp; Ausland</a></li>
+          <li><a href="#dauer">Aufbewahrung</a></li>
+          <li><a href="#sicherheit">Datensicherheit</a></li>
+          <li><a href="#rechte">Ihre Rechte</a></li>
+          <li><a href="#aenderungen">Änderungen</a></li>
+        </ol>
+      </nav>
 
-    <h2>Deine Rechte</h2>
-    <p>
-      Nach dem schweizerischen Datenschutzrecht kannst du Auskunft, Berichtigung oder Löschung
-      deiner personenbezogenen Daten verlangen — soweit anwendbar.
-    </p>
+      <div class="lg-content">
+        <section class="lg-sec" id="verantwortlich">
+          <h2><span class="lg-num">01</span>Verantwortliche Stelle</h2>
+          <p>Verantwortlich für die Bearbeitung von Personendaten auf dieser Website ist:</p>
+          <dl class="lg-facts">
+            <div><dt>Name</dt><dd>Alex Lamberti</dd></div>
+            <div><dt>Adresse</dt><dd>Schulweg 603<br />5324 Full-Reuenthal<br />Schweiz</dd></div>
+            <div><dt>Kontakt Datenschutz</dt><dd><a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a><br /><a href="tel:+41796678211">079 667 82 11</a></dd></div>
+          </dl>
+        </section>
 
-    <p><a href="/impressum">Impressum</a></p>
+        <section class="lg-sec" id="grundsaetze">
+          <h2><span class="lg-num">02</span>Grundsätze</h2>
+          <p>Personendaten werden nach dem Bundesgesetz über den Datenschutz (DSG) der Schweiz und, soweit anwendbar, nach der Datenschutz-Grundverordnung der EU (DSGVO) bearbeitet. Es werden nur so viele Daten bearbeitet, wie für den jeweiligen Zweck nötig sind – rechtmässig, transparent und verhältnismässig.</p>
+          <p>Ihre Daten werden nicht verkauft und nicht zu Werbezwecken an Dritte weitergegeben.</p>
+        </section>
+
+        <section class="lg-sec" id="hosting">
+          <h2><span class="lg-num">03</span>Hosting &amp; Server-Logdaten</h2>
+          <p>Die Website wird bei <strong>Vercel Inc.</strong> (USA) gehostet. Beim Aufruf jeder Seite werden technisch notwendige Daten automatisch in Server-Logdateien erfasst:</p>
+          <ul>
+            <li>IP-Adresse des anfragenden Geräts</li>
+            <li>Datum und Uhrzeit des Zugriffs</li>
+            <li>aufgerufene Seite bzw. Datei und übertragene Datenmenge</li>
+            <li>Referrer-URL (zuvor besuchte Seite)</li>
+            <li>Browsertyp, Betriebssystem und Gerätetyp</li>
+          </ul>
+          <p>Diese Daten dienen ausschliesslich dazu, die Website stabil, schnell und sicher auszuliefern sowie Missbrauch abzuwehren. Sie werden nicht mit anderen Daten zusammengeführt und nach kurzer Zeit automatisch gelöscht. Grundlage ist das berechtigte Interesse an einem sicheren Betrieb.</p>
+        </section>
+
+        <section class="lg-sec" id="schriften">
+          <h2><span class="lg-num">04</span>Schriftarten (Google Fonts)</h2>
+          <p>Für eine einheitliche Darstellung werden Schriftarten über den Dienst Google Fonts von Google LLC (USA) bzw. Google Ireland Ltd. geladen. Dabei stellt Ihr Browser eine Verbindung zu Servern von Google her, wodurch Google insbesondere Ihre IP-Adresse erfährt. Es werden dabei keine Cookies gesetzt. Weitere Informationen: <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Datenschutzerklärung von Google</a>.</p>
+        </section>
+
+        <section class="lg-sec" id="speicher">
+          <h2><span class="lg-num">05</span>Browser-Speicher &amp; Cookies</h2>
+          <p>Diese Website setzt <strong>keine Tracking- oder Werbe-Cookies</strong>. Für den Komfort werden lediglich einige Einstellungen lokal in Ihrem Browser gespeichert (Local Storage bzw. Session Storage), zum Beispiel:</p>
+          <ul class="lg-tags">
+            <li>gewählte Sprache</li>
+            <li>zuletzt besuchte Welt</li>
+            <li>Musik ein / aus</li>
+            <li>Effekte &amp; Animationen</li>
+            <li>Übergang beim Weltwechsel</li>
+          </ul>
+          <p>Diese Angaben verlassen Ihr Gerät nicht und werden nicht an Alex Lamberti oder Dritte übermittelt. Sie können sie jederzeit über die Einstellungen Ihres Browsers löschen.</p>
+        </section>
+
+        <section class="lg-sec" id="tracking">
+          <h2><span class="lg-num">06</span>Keine Analyse- und Werbetools</h2>
+          <p>Es werden keine Analyse-, Statistik-, Remarketing- oder Social-Media-Tracking-Dienste eingesetzt (z.&nbsp;B. Google Analytics, Meta Pixel). Ihr Surfverhalten wird nicht ausgewertet und es werden keine Nutzerprofile erstellt. Sollte sich dies ändern, wird diese Erklärung vorgängig angepasst.</p>
+        </section>
+
+        <section class="lg-sec" id="kontakt">
+          <h2><span class="lg-num">07</span>Kontaktaufnahme</h2>
+          <p>Wenn Sie per E-Mail oder Telefon Kontakt aufnehmen, werden die von Ihnen mitgeteilten Angaben (z.&nbsp;B. Name, E-Mail-Adresse, Telefonnummer, Inhalt der Anfrage) ausschliesslich zur Bearbeitung Ihres Anliegens, für Rückfragen und eine allfällige Zusammenarbeit verwendet.</p>
+          <p>Für den E-Mail-Verkehr wird der Dienst Outlook.com der Microsoft Corporation genutzt; E-Mails werden daher auch auf Servern von Microsoft verarbeitet.</p>
+        </section>
+
+        <section class="lg-sec" id="offerte">
+          <h2><span class="lg-num">08</span>Offertenformular</h2>
+          <p>Im Offertenformular erfasste Angaben – etwa gewünschte Leistungen, Projektangaben sowie Kontaktdaten wie Name, Geburtsdatum, E-Mail, Telefon und Adresse – werden zunächst nur in Ihrem Browser verarbeitet. Sie werden erst dann an Alex Lamberti übermittelt, wenn Sie die Anfrage aktiv absenden.</p>
+          <p>Übermittelte Angaben werden ausschliesslich zur Prüfung Ihrer Anfrage, zur Erstellung einer Offerte und zur Durchführung eines allfälligen Auftrags verwendet. Pflichtfelder sind gekennzeichnet; ohne diese Angaben kann keine Offerte erstellt werden.</p>
+        </section>
+
+        <section class="lg-sec" id="vorschauen">
+          <h2><span class="lg-num">09</span>Projektvorschauen &amp; externe Links</h2>
+          <p>In den Bereichen Werke, Cases, Referenzen und Collage können Live-Vorschauen von Referenz-Websites geöffnet werden. Diese Vorschauen werden erst geladen, wenn Sie eine Kategorie aktiv öffnen. Dabei stellt Ihr Browser eine direkte Verbindung zu den Servern der jeweiligen Website her, die dadurch insbesondere Ihre IP-Adresse erhalten.</p>
+          <p>Für die Datenbearbeitung auf diesen Websites sowie auf anderen verlinkten Seiten sind ausschliesslich deren Betreiber verantwortlich. Es gelten deren Datenschutzerklärungen.</p>
+        </section>
+
+        <section class="lg-sec" id="weitergabe">
+          <h2><span class="lg-num">10</span>Weitergabe &amp; Bekanntgabe ins Ausland</h2>
+          <p>Personendaten werden nur weitergegeben, soweit dies für den Betrieb der Website oder die Bearbeitung Ihrer Anfrage nötig ist – an sorgfältig ausgewählte Dienstleister (Hosting, Schriftarten, E-Mail) oder wenn eine gesetzliche Pflicht besteht.</p>
+          <p>Einige dieser Dienstleister haben ihren Sitz in den USA. Die Bekanntgabe erfolgt auf Grundlage geeigneter Garantien, insbesondere des Swiss-U.S. Data Privacy Framework bzw. von Standardvertragsklauseln, die vom Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) anerkannt sind.</p>
+        </section>
+
+        <section class="lg-sec" id="dauer">
+          <h2><span class="lg-num">11</span>Aufbewahrung</h2>
+          <p>Personendaten werden nur so lange aufbewahrt, wie es für den jeweiligen Zweck erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen (z.&nbsp;B. geschäftliche Korrespondenz und Buchhaltungsunterlagen bis zu zehn Jahre). Anschliessend werden sie gelöscht oder anonymisiert.</p>
+        </section>
+
+        <section class="lg-sec" id="sicherheit">
+          <h2><span class="lg-num">12</span>Datensicherheit</h2>
+          <p>Die Website wird ausschliesslich verschlüsselt über HTTPS (TLS) ausgeliefert. Es werden angemessene technische und organisatorische Massnahmen getroffen, um Ihre Daten vor Verlust, Missbrauch und unbefugtem Zugriff zu schützen. Eine vollständig sichere Übertragung über das Internet, etwa per unverschlüsselter E-Mail, kann jedoch nicht garantiert werden.</p>
+        </section>
+
+        <section class="lg-sec" id="rechte">
+          <h2><span class="lg-num">13</span>Ihre Rechte</h2>
+          <p>Im Rahmen des anwendbaren Datenschutzrechts haben Sie insbesondere folgende Rechte:</p>
+          <ul>
+            <li><strong>Auskunft</strong> darüber, ob und welche Personendaten über Sie bearbeitet werden</li>
+            <li><strong>Berichtigung</strong> unrichtiger oder unvollständiger Daten</li>
+            <li><strong>Löschung</strong> bzw. Einschränkung der Bearbeitung</li>
+            <li><strong>Herausgabe oder Übertragung</strong> Ihrer Daten in einem gängigen Format</li>
+            <li><strong>Widerspruch</strong> gegen bestimmte Bearbeitungen und <strong>Widerruf</strong> einer erteilten Einwilligung</li>
+          </ul>
+          <p>Für die Ausübung Ihrer Rechte genügt eine E-Mail an <a href="mailto:alex.lamberti@hotmail.ch">alex.lamberti@hotmail.ch</a>. Zur Identifikation kann ein Nachweis verlangt werden.</p>
+          <p>Sie haben zudem das Recht, sich bei der zuständigen Aufsichtsbehörde zu beschweren – in der Schweiz beim <a href="https://www.edoeb.admin.ch" rel="noopener" target="_blank">Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB)</a>, in der EU bei der Datenschutzbehörde Ihres Aufenthaltsstaates.</p>
+        </section>
+
+        <section class="lg-sec" id="aenderungen">
+          <h2><span class="lg-num">14</span>Änderungen</h2>
+          <p>Diese Datenschutzerklärung kann angepasst werden, wenn sich die Website, die eingesetzten Dienste oder die rechtlichen Grundlagen ändern. Es gilt die jeweils hier veröffentlichte Fassung.</p>
+          <p>Angaben zum Anbieter und zu den Urheberrechten finden sich im <a href="/impressum" data-lg-legal>Impressum</a>.</p>
+        </section>
+      </div>
+    </div>
   </main>
-  <footer class="page-footer" role="contentinfo">
-    <div class="page-footer__inner">
-      <div>
-        <p class="page-footer__world">ALEX LAMBERTI</p>
-        <p>Alex Lamberti</p>
+
+  <footer class="lg-foot">
+    <div class="lg-foot__inner">
+      <div class="lg-foot__brand">
+        <strong>Alex Lamberti</strong>
+        <p>Vier Welten. Eine klare digitale Sprache.</p>
       </div>
       <div>
         <h2>Welten</h2>
         <ul>
-          <li><a href="/multiversum">MULTIVERSUM</a></li>
-          <li><a href="/nexora">NEXORA</a></li>
-          <li><a href="/professional">PROFESSIONAL</a></li>
-          <li><a href="/freiraum">FREIRAUM</a></li>
+          <li><a href="/multiversum">Multiversum</a></li>
+          <li><a href="/nexora">Nexora</a></li>
+          <li><a href="/professional">Professional</a></li>
+          <li><a href="/freiraum">Freiraum</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Kontakt</h2>
+        <ul>
+          <li><a href="mailto:alex.lamberti@hotmail.ch">E-Mail</a></li>
+          <li><a href="tel:+41796678211">079 667 82 11</a></li>
+          <li><a href="/multiversum/offerte">Offerte</a></li>
         </ul>
       </div>
       <div>
         <h2>Rechtliches</h2>
         <ul>
-          <li><a href="/impressum">Impressum</a></li>
-          <li><a href="/datenschutz" aria-current="page">Datenschutz</a></li>
+          <li><a href="/impressum" data-lg-legal>Impressum</a></li>
+          <li><a href="/datenschutz" data-lg-legal aria-current="page">Datenschutz</a></li>
         </ul>
       </div>
-      <p class="page-footer__copy">© 2026 Alex Lamberti</p>
+      <p class="lg-foot__copy">© <span data-lg-year>2026</span> Alex Lamberti · Alle Rechte vorbehalten. Kopieren und Weiterverwenden der Inhalte nur mit schriftlicher Zustimmung.</p>
     </div>
   </footer>
-  <script>
-    /* Weltwechsel ankündigen: die Shell spielt danach Intro-Animation + Welt-Musik */
-    document.addEventListener("click", function (ev) {
-      var a = ev.target && ev.target.closest ? ev.target.closest("a[href]") : null;
-      if (!a || !/^\/(multiversum|nexora|professional|freiraum)(?:[\/#]|$)/.test(a.getAttribute("href") || "")) return;
-      try {
-        sessionStorage.setItem("v2-world-enter", "1");
-        sessionStorage.setItem("v2-world-hash", a.hash || "");
-      } catch (e) {}
-    }, true);
-  </script>
+  <script src="/assets/design-test-v2/legal/legal.js?v=20261031legal1" defer></script>
 </body>
 </html>
