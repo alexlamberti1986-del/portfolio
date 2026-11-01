@@ -16,6 +16,9 @@
 .cv-note { margin: 0.25rem 0 0; font-size: 0.88rem; font-style: italic; }
 .cv-points { margin: 0.65rem 0 0; padding-left: 1.05rem; font-size: 0.9rem; }
 .cv-points li { margin: 0.2rem 0; }
+.cv-desc { margin: 0.6rem 0 0; font-size: 0.93rem; line-height: 1.55; }
+.cv-proof { margin: 0.8rem 0 0; font-size: 0.8rem; letter-spacing: 0.04em; }
+.cv-proof::before { content: "✓ "; font-weight: 700; }
 .cv-skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.85rem; }
 .cv-skill h4 { margin: 0 0 0.7rem; font-size: 1rem; }
 .cv-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; }
@@ -72,6 +75,9 @@
 .cv--multiversum .cv-note,
 .cv--multiversum .cv-points { color: var(--mv-muted, rgba(170, 184, 220, 0.7)); }
 .cv--multiversum .cv-points li::marker { color: #ff59b2; }
+.cv--multiversum .cv-desc { color: var(--mv-text, rgba(220, 228, 255, 0.82)); }
+.cv--multiversum .cv-proof { color: #ffc66f; }
+.cv--multiversum .cv-block--work .cv-list { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
 .cv--multiversum .cv-skill { padding: 1.15rem 1.2rem; border: 1px solid rgba(110, 184, 255, 0.16); background: rgba(10, 16, 32, 0.72); }
 .cv--multiversum .cv-skill h4 { color: #6eb8ff; }
 .cv--multiversum .cv-chips li { border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); color: var(--mv-text, #dce4ff); border-radius: 999px; }
@@ -104,6 +110,9 @@
 .cv--professional .cv-points { list-style: none; padding: 0; }
 .cv--professional .cv-points li { position: relative; padding-left: 1.1rem; }
 .cv--professional .cv-points li::before { content: "—"; position: absolute; left: 0; color: #8a7e6b; }
+.cv--professional .cv-desc { max-width: 68ch; color: var(--pro-ink, #111); opacity: 0.82; }
+.cv--professional .cv-proof { font-family: "Libre Baskerville", Georgia, serif; font-style: italic; letter-spacing: 0; color: #8a7e6b; }
+.cv--professional .cv-proof::before { content: "— "; font-weight: 400; }
 .cv--professional .cv-skills { grid-template-columns: 1fr; gap: 0; }
 .cv--professional .cv-skill {
   display: grid;
@@ -169,6 +178,10 @@
 .cv--freiraum .cv-note,
 .cv--freiraum .cv-points { color: var(--fr-muted, rgba(255, 236, 220, 0.62)); }
 .cv--freiraum .cv-points li::marker { content: "✦  "; color: #ff8bbd; }
+.cv--freiraum .cv-desc { color: var(--fr-text, rgba(255, 236, 220, 0.84)); }
+.cv--freiraum .cv-proof { display: inline-block; padding: 0.25rem 0.65rem; border-radius: 999px 8px 999px 8px; background: rgba(127, 214, 194, 0.14); color: #7fd6c2; transform: rotate(-1deg); }
+.cv--freiraum .cv-proof::before { content: "★ "; }
+.cv--freiraum .cv-block--work .cv-list { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
 .cv--freiraum .cv-skill {
   padding: 1.3rem 1.25rem;
   background: rgba(255, 198, 111, 0.06);
@@ -185,6 +198,10 @@
 .nxcv-points { list-style: none; display: grid; gap: 0.25rem; margin: 0.5rem 0 0; padding: 0; }
 .nxcv-points li { position: relative; padding-left: 0.9rem; font-size: 0.84rem; color: var(--nx-text, rgba(214, 228, 248, 0.88)); }
 .nxcv-points li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 4px; height: 4px; background: var(--nx-cyan, #8ec5ff); }
+.nx-timeline .nxcv-role { color: var(--nx-text, rgba(214, 228, 248, 0.88)); margin-bottom: 0.35rem; }
+.nx-timeline .nxcv-role + p { margin-top: 0.2rem; }
+.nxcv-proof { margin-top: 0.55rem !important; font-family: var(--nx-mono, monospace); font-size: 0.74rem !important; letter-spacing: 0.08em; color: var(--nx-ok, #5dffc2) !important; }
+.nxcv-proof::before { content: "> "; }
 .nxcv-skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.1rem 1.5rem; }
 .nxcv-skills > div > .nx-mono { display: block; margin-bottom: 0.55rem; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--nx-cyan, #8ec5ff); }
 

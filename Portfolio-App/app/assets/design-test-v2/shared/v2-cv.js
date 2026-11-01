@@ -8,11 +8,78 @@
 
   var CV = {
     work: [
-      { when: "07/2024 – Heute", org: "DIGITAL PLUS GmbH, Dietikon", role: "Marketing & Key Account Mitarbeiter (80 %)", current: true },
-      { when: "09/2011 – 12/2023", org: "Ledergerber Mode, Baden & Zürich", role: "Polydesigner 3D / Visual Merchandising Coordinator" },
-      { when: "11/2010 – 08/2011", org: "Tommy Hilfiger, Schweiz & Österreich", role: "Visual Merchandising Coordinator Retail" },
-      { when: "08/2007 – 11/2010", org: "Hennes & Mauritz", role: "Polydesigner 3D / Visual Merchandising Coordinator" },
-      { when: "08/2002 – 08/2004", org: "Boutique Clochard, Zug", role: "Mitarbeiter Detailhandel" },
+      {
+        when: "07/2024 – Heute",
+        org: "DIGITAL PLUS GmbH, Dietikon",
+        role: "Marketing & Key Account Mitarbeiter (80 %)",
+        current: true,
+        desc: "Schnittstelle von Kundenmanagement, Marketing und Kommunikation: eigenständige Betreuung der Key Accounts und ganzheitliche Steuerung von Kundenprojekten – von der Analyse über die Konzeption bis zur Umsetzung.",
+        points: [
+          "Strategische Beratung von Bestandskunden, Neukundenakquise und Upselling",
+          "Konzeption, Design und Umsetzung von Websites (Struktur, Funktionen, Content)",
+          "Branding & Rebranding sowie digitale und klassische Marketingmaterialien",
+          "Suchmaschinenoptimierung (SEO) und Optimierung der Online-Präsenz",
+          "Netzwerk- und Kundenevents, Mailings und Kundenkommunikation",
+          "Mitarbeit an internen Leitfäden, Projektstrukturen sowie Onboarding- und Kundenprozessen",
+        ],
+        proof: "Zwischenzeugnis 03/2026: «stets sehr zufrieden»",
+      },
+      {
+        when: "09/2011 – 12/2023",
+        org: "Ledergerber Mode, Baden & Zürich",
+        role: "Polydesigner 3D / Visual Merchandising Coordinator",
+        desc: "Verantwortung für das Visual Merchandising aller Geschäfte – zuerst im Zweierteam, ab 2017 in alleiniger Verantwortung, abgestimmt mit Einkauf und Werbeplanung.",
+        points: [
+          "Planung und Umsetzung der VM-Konzepte in allen Filialen, innen und in den Schaufenstern",
+          "Themenorientierte Inszenierung der Kollektionen am POS, Aktionsflächen anhand von Abverkaufsanalysen",
+          "Umstellplanung mit den Verkaufsteams, Lagerverkäufe sowie Schliessungen und Wiedereröffnungen von Filialen",
+          "Kostenoptimierte Materialbeschaffung, VM-Lager und Kontaktpflege zu Lieferanten und Labels",
+          "Plotten von Preisen, Labels und Sujets; Gestaltung mit Photoshop, InDesign und Office",
+          "Mitbetreuung der Polydesign-3D-Lernenden",
+        ],
+        proof: "Zeugnis: verantwortungsbewusst, lösungsorientiert, flexibel",
+      },
+      {
+        when: "11/2010 – 08/2011",
+        org: "Tommy Hilfiger, Schweiz & Österreich",
+        role: "Visual Merchandising Coordinator Retail",
+        desc: "Verantwortung für die Umsetzung der Corporate Identity und der Visual-Merchandising-Standards in den Stores in der Schweiz und Österreich.",
+        points: [
+          "Umsetzung von Visual-Merchandising-Updates und der gesamten Warenpräsentation",
+          "Einhaltung der VM-Guidelines in allen Stores",
+          "Mithilfe bei Organisation und Durchführung von Store Openings und Refits",
+          "Training der Mitarbeitenden für eine eigenständige Umsetzung der Guidelines",
+          "Materialbestellung",
+        ],
+        proof: "Zeugnis: «stets zu unserer vollen Zufriedenheit»",
+      },
+      {
+        when: "08/2007 – 11/2010",
+        org: "Hennes & Mauritz",
+        role: "Polydesigner 3D / Visual Merchandising Coordinator",
+        desc: "Visual Merchandiser in den Stores Luzern, Emmen und Zug. Zuvor seit 2004 als Sales Advisor und ab 2005 als Department Manager bei H&M tätig.",
+        points: [
+          "Warenpräsentation und -promotion auf der Verkaufsfläche und in den Schaufenstern",
+          "Koordination zwischen Visual Team und Verkaufsabteilungen",
+          "Innendekoration mit Preisbeschriftungen, Büsten und Postern",
+          "Ausbildung der Sales Advisors in der Warenpräsentation",
+          "Als Department Manager: Preisreduktionen, Lager- und Sortimentskontrolle, Meetings und Kassenrapport",
+        ],
+        proof: "Zeugnis: «zu unserer vollen Zufriedenheit»",
+      },
+      {
+        when: "08/2002 – 08/2004",
+        org: "Boutique Clochard, Zug",
+        role: "Mitarbeiter Detailhandel",
+        desc: "Zweijährige Lehre als Mode-Verkäufer in der Boutique Clochard (Putt AG) – Grundstein für Kundenorientierung, Stilgefühl und Sortimentskenntnis.",
+        points: [
+          "Beratung und Verkauf im geprüften Bereich Damenoberbekleidung",
+          "Fundierte Kenntnisse im Herren-Sportswear-Bereich",
+          "Überblick über das gesamte Sortiment einer grossen Boutique",
+          "Zuverlässige, selbstständige Mitarbeit im Team und im Kundenkontakt",
+        ],
+        proof: "Lehrabschluss mit Note 5.0",
+      },
     ],
     education: [
       {
@@ -109,7 +176,11 @@
         return (
           "<li" + (w.current ? ' class="nx-tl--live"' : "") + "><time>" + esc(w.when) +
           (w.current ? ' <span class="nx-badge nx-badge--live">AKTIV</span>' : "") +
-          "</time><strong>" + esc(w.org) + "</strong><p>" + esc(w.role) + "</p></li>"
+          "</time><strong>" + esc(w.org) + "</strong><p class=\"nxcv-role\">" + esc(w.role) + "</p>" +
+          (w.desc ? "<p>" + esc(w.desc) + "</p>" : "") +
+          (w.points ? '<ul class="nxcv-points">' + list(w.points, function (p) { return "<li>" + esc(p) + "</li>"; }) + "</ul>" : "") +
+          (w.proof ? '<p class="nxcv-proof">' + esc(w.proof) + "</p>" : "") +
+          "</li>"
         );
       }) +
       "</ol></div>" +
@@ -144,14 +215,16 @@
     var rv = world === "professional" ? ' class="pro-reveal"' : world === "freiraum" ? " data-v2-reveal" : "";
     var rvCls = world === "professional" ? " pro-reveal" : "";
     var rvAttr = world === "freiraum" ? " data-v2-reveal" : "";
-    function item(cls, when, head, sub, note, points, badge, i) {
+    function item(o, i) {
       return (
-        '<li class="cv-item' + cls + rvCls + '"' + rvAttr + ' style="--i:' + i + '">' +
-        '<p class="cv-when">' + esc(when) + (badge ? ' <span class="cv-badge">' + esc(badge) + "</span>" : "") + "</p>" +
-        '<div class="cv-body"><h4>' + esc(head) + "</h4>" +
-        (sub ? '<p class="cv-sub">' + esc(sub) + "</p>" : "") +
-        (note ? '<p class="cv-note">' + esc(note) + "</p>" : "") +
-        (points ? '<ul class="cv-points">' + list(points, function (p) { return "<li>" + esc(p) + "</li>"; }) + "</ul>" : "") +
+        '<li class="cv-item' + (o.current ? " is-current" : "") + rvCls + '"' + rvAttr + ' style="--i:' + i + '">' +
+        '<p class="cv-when">' + esc(o.when) + (o.badge ? ' <span class="cv-badge">' + esc(o.badge) + "</span>" : "") + "</p>" +
+        '<div class="cv-body"><h4>' + esc(o.head) + "</h4>" +
+        (o.sub ? '<p class="cv-sub">' + esc(o.sub) + "</p>" : "") +
+        (o.desc ? '<p class="cv-desc">' + esc(o.desc) + "</p>" : "") +
+        (o.note ? '<p class="cv-note">' + esc(o.note) + "</p>" : "") +
+        (o.points ? '<ul class="cv-points">' + list(o.points, function (p) { return "<li>" + esc(p) + "</li>"; }) + "</ul>" : "") +
+        (o.proof ? '<p class="cv-proof">' + esc(o.proof) + "</p>" : "") +
         "</div></li>"
       );
     }
@@ -166,14 +239,17 @@
       '<h3 class="cv-title"><span class="cv-title__n">01</span>Berufserfahrung</h3>' +
       '<ol class="cv-list">' +
       list(CV.work, function (w, i) {
-        return item(w.current ? " is-current" : "", w.when, w.org, w.role, "", null, w.current ? "Aktuell" : "", i);
+        return item(
+          { current: w.current, when: w.when, head: w.org, sub: w.role, desc: w.desc, points: w.points, proof: w.proof, badge: w.current ? "Aktuell" : "" },
+          i
+        );
       }) +
       "</ol></section>" +
       '<section class="cv-block cv-block--edu" aria-label="Bildungsweg und Weiterbildungen">' +
       '<h3 class="cv-title"><span class="cv-title__n">02</span>Bildungsweg &amp; Weiterbildungen</h3>' +
       '<ol class="cv-list">' +
       list(CV.education, function (e, i) {
-        return item(e.live ? " is-current" : "", e.when, e.title, e.org, e.note || "", e.points || null, e.live ? "Laufend" : "", i);
+        return item({ current: e.live, when: e.when, head: e.title, sub: e.org, note: e.note, points: e.points, badge: e.live ? "Laufend" : "" }, i);
       }) +
       "</ol></section>" +
       '<section class="cv-block cv-block--skills" aria-label="Zusätzliche Fachkompetenzen">' +
