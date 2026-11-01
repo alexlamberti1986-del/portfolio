@@ -236,7 +236,8 @@
 .nxcv-points li { position: relative; padding-left: 0.9rem; font-size: 0.84rem; color: var(--nx-text, rgba(214, 228, 248, 0.88)); }
 .nxcv-points li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 4px; height: 4px; background: var(--nx-cyan, #8ec5ff); }
 .nxcv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 2rem; }
-.nxcv-grid--work > li:first-child { grid-column: 1 / -1; }
+.nxcv-twocol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 2rem; align-items: start; }
+.nxcv-twocol > .nx-timeline { gap: 1.4rem; }
 .nx-timeline .nxcv-role { color: var(--nx-text, rgba(214, 228, 248, 0.88)); margin-bottom: 0.35rem; }
 .nx-timeline .nxcv-role + p { margin-top: 0.2rem; }
 .nxcv-proof { margin-top: 0.55rem !important; font-family: var(--nx-mono, monospace); font-size: 0.74rem !important; letter-spacing: 0.08em; color: var(--nx-ok, #5dffc2) !important; }
@@ -270,6 +271,10 @@
   .cv--professional .cv-item,
   .cv--professional .cv-skill { grid-template-columns: 1fr; gap: 0.4rem; }
   .nxcv-grid { grid-template-columns: 1fr; }
+  /* One column: merge both lists back into chronological order */
+  .nxcv-twocol { display: flex; flex-direction: column; gap: 1.4rem; }
+  .nxcv-twocol > .nx-timeline { display: contents; }
+  .nxcv-twocol > .nx-timeline > li { order: var(--o, 0); }
   /* Multiversum: single-sided orbit on the left */
   .cv--multiversum .cv-list::before { left: 7px; transform: none; }
   .cv--multiversum .cv-item,
