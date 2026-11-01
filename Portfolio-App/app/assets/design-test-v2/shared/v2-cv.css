@@ -1,0 +1,204 @@
+/* Werdegang — skins per world. Markup from v2-cv.js. */
+
+/* —— Shared structure —— */
+.cv { display: grid; gap: clamp(2rem, 5vw, 3.5rem); }
+.cv-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.85rem; margin: 0; }
+.cv-stats div { display: flex; flex-direction: column; gap: 0.3rem; }
+.cv-stats dd { margin: 0; line-height: 1; }
+.cv-stats dt { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.cv-title { display: flex; align-items: baseline; gap: 0.75rem; margin: 0 0 1.25rem; }
+.cv-list { list-style: none; margin: 0; padding: 0; }
+.cv-item { position: relative; }
+.cv-when { margin: 0 0 0.35rem; font-size: 0.82rem; letter-spacing: 0.08em; }
+.cv-badge { display: inline-block; margin-left: 0.45rem; padding: 0.1rem 0.5rem; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; vertical-align: 1px; }
+.cv-body h4 { margin: 0 0 0.3rem; font-size: 1.08rem; line-height: 1.3; }
+.cv-sub { margin: 0; font-size: 0.95rem; }
+.cv-note { margin: 0.25rem 0 0; font-size: 0.88rem; font-style: italic; }
+.cv-points { margin: 0.65rem 0 0; padding-left: 1.05rem; font-size: 0.9rem; }
+.cv-points li { margin: 0.2rem 0; }
+.cv-skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.85rem; }
+.cv-skill h4 { margin: 0 0 0.7rem; font-size: 1rem; }
+.cv-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; }
+.cv-chips li { padding: 0.3rem 0.65rem; font-size: 0.84rem; line-height: 1.3; }
+
+/* ============ MULTIVERSUM — orbit of stations ============ */
+.cv--multiversum .cv-stats div {
+  padding: 1.1rem 1.2rem;
+  border: 1px solid rgba(255, 89, 178, 0.18);
+  background: linear-gradient(135deg, rgba(255, 89, 178, 0.1), transparent 55%), rgba(12, 18, 36, 0.72);
+}
+.cv--multiversum .cv-stats dd {
+  font-family: var(--mv-display, "Outfit", sans-serif);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  background: linear-gradient(100deg, #fff 20%, #ff9fd0 60%, #6eb8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.cv--multiversum .cv-stats dt { color: var(--mv-muted, rgba(170, 184, 220, 0.7)); font-size: 0.74rem; }
+.cv--multiversum .cv-title { font-family: var(--mv-display, "Outfit", sans-serif); font-size: clamp(1.35rem, 2.4vw, 1.75rem); color: var(--mv-heading, #f5f7ff); }
+.cv--multiversum .cv-title__n { font-size: 0.85rem; letter-spacing: 0.16em; color: #ff59b2; text-shadow: 0 0 12px rgba(255, 89, 178, 0.7); }
+.cv--multiversum .cv-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.9rem;
+  padding-left: 1.6rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+.cv--multiversum .cv-list::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #ff59b2, #6eb8ff 55%, #ffc66f);
+  box-shadow: 0 0 14px rgba(255, 89, 178, 0.55);
+}
+.cv--multiversum .cv-item {
+  padding: 1.15rem 1.25rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 16, 32, 0.74);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.cv--multiversum .cv-item:hover { border-color: rgba(255, 89, 178, 0.45); transform: translateY(-3px); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4), 0 0 26px rgba(255, 89, 178, 0.14); }
+.cv--multiversum .cv-item.is-current { border-color: rgba(255, 89, 178, 0.4); background: linear-gradient(135deg, rgba(255, 89, 178, 0.14), transparent 60%), rgba(10, 16, 32, 0.8); }
+.cv--multiversum .cv-when { color: #6eb8ff; font-weight: 700; }
+.cv--multiversum .cv-badge { border-radius: 999px; background: rgba(255, 89, 178, 0.16); color: #ff9fd0; border: 1px solid rgba(255, 89, 178, 0.45); }
+.cv--multiversum .cv-body h4 { color: var(--mv-heading, #f5f7ff); font-family: var(--mv-display, "Outfit", sans-serif); }
+.cv--multiversum .cv-sub { color: var(--mv-text, rgba(220, 228, 255, 0.82)); }
+.cv--multiversum .cv-note,
+.cv--multiversum .cv-points { color: var(--mv-muted, rgba(170, 184, 220, 0.7)); }
+.cv--multiversum .cv-points li::marker { color: #ff59b2; }
+.cv--multiversum .cv-skill { padding: 1.15rem 1.2rem; border: 1px solid rgba(110, 184, 255, 0.16); background: rgba(10, 16, 32, 0.72); }
+.cv--multiversum .cv-skill h4 { color: #6eb8ff; }
+.cv--multiversum .cv-chips li { border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); color: var(--mv-text, #dce4ff); border-radius: 999px; }
+.cv--multiversum .cv-skill:nth-child(2) h4 { color: #ff59b2; }
+.cv--multiversum .cv-skill:nth-child(3) h4 { color: #ffc66f; }
+.cv--multiversum .cv-skill:nth-child(4) h4 { color: #e8e4dc; }
+
+/* ============ PROFESSIONAL — editorial CV ============ */
+.cv--professional .cv-stats { gap: 0; border-top: 1px solid var(--pro-ink, #111); border-bottom: 1px solid var(--pro-line, rgba(17, 17, 17, 0.1)); }
+.cv--professional .cv-stats div { padding: 1.4rem 1.2rem 1.3rem 0; }
+.cv--professional .cv-stats div + div { padding-left: 1.2rem; border-left: 1px solid var(--pro-line, rgba(17, 17, 17, 0.1)); }
+.cv--professional .cv-stats dd { font-size: clamp(2.2rem, 4.5vw, 3.2rem); font-weight: 600; letter-spacing: -0.04em; color: var(--pro-heading, #0a0a0a); }
+.cv--professional .cv-stats dt { color: var(--pro-muted, #5c5c58); font-size: 0.72rem; }
+.cv--professional .cv-title { font-size: clamp(1.4rem, 2.4vw, 1.85rem); color: var(--pro-heading, #0a0a0a); letter-spacing: -0.02em; }
+.cv--professional .cv-title__n { font-family: "Libre Baskerville", Georgia, serif; font-style: italic; font-weight: 400; font-size: 1rem; color: #8a7e6b; }
+.cv--professional .cv-item {
+  display: grid;
+  grid-template-columns: minmax(150px, 13rem) minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--pro-line, rgba(17, 17, 17, 0.1));
+}
+.cv--professional .cv-item:last-child { border-bottom: 1px solid var(--pro-line, rgba(17, 17, 17, 0.1)); }
+.cv--professional .cv-when { margin: 0.15rem 0 0; font-family: "Libre Baskerville", Georgia, serif; font-style: italic; font-size: 0.95rem; letter-spacing: 0; color: var(--pro-muted, #5c5c58); }
+.cv--professional .cv-badge { display: block; width: max-content; margin: 0.5rem 0 0; background: var(--pro-ink, #111); color: #fff; font-family: var(--pro-sans, Inter, sans-serif); font-style: normal; }
+.cv--professional .cv-body h4 { font-size: 1.12rem; color: var(--pro-heading, #0a0a0a); }
+.cv--professional .cv-sub { color: var(--pro-ink, #111); opacity: 0.78; }
+.cv--professional .cv-note,
+.cv--professional .cv-points { color: var(--pro-muted, #5c5c58); }
+.cv--professional .cv-points { list-style: none; padding: 0; }
+.cv--professional .cv-points li { position: relative; padding-left: 1.1rem; }
+.cv--professional .cv-points li::before { content: "—"; position: absolute; left: 0; color: #8a7e6b; }
+.cv--professional .cv-skills { grid-template-columns: 1fr; gap: 0; }
+.cv--professional .cv-skill {
+  display: grid;
+  grid-template-columns: minmax(150px, 13rem) minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--pro-line, rgba(17, 17, 17, 0.1));
+}
+.cv--professional .cv-skill:last-child { border-bottom: 1px solid var(--pro-line, rgba(17, 17, 17, 0.1)); }
+.cv--professional .cv-skill h4 { margin: 0.1rem 0 0; font-size: 0.95rem; }
+.cv--professional .cv-chips li { padding: 0.28rem 0.65rem; background: var(--pro-warm, #f0ebe3); color: var(--pro-ink, #111); }
+
+/* ============ FREIRAUM — notes on the studio wall ============ */
+.fr-cv { padding: clamp(3.5rem, 8vw, 6.5rem) 0; position: relative; }
+.cv--freiraum .cv-stats div {
+  padding: 1.1rem 1.2rem;
+  background: var(--fr-bg-2, #1e1a24);
+  border: 1px solid var(--fr-border-soft, rgba(255, 255, 255, 0.08));
+  border-radius: 26px 12px 28px 14px;
+  transform: rotate(var(--r, -1deg));
+}
+.cv--freiraum .cv-stats div:nth-child(2) { --r: 1.2deg; }
+.cv--freiraum .cv-stats div:nth-child(3) { --r: -0.6deg; }
+.cv--freiraum .cv-stats div:nth-child(4) { --r: 1.6deg; }
+.cv--freiraum .cv-stats dd { font-family: var(--fr-font-display, "Marcellus", serif); font-size: clamp(2.2rem, 4.5vw, 3.2rem); color: #ffc66f; }
+.cv--freiraum .cv-stats div:nth-child(2) dd { color: #ff8bbd; }
+.cv--freiraum .cv-stats div:nth-child(3) dd { color: #7fd6c2; }
+.cv--freiraum .cv-stats div:nth-child(4) dd { color: #c4a0ff; }
+.cv--freiraum .cv-stats dt { color: var(--fr-muted, rgba(255, 236, 220, 0.62)); font-size: 0.74rem; }
+.cv--freiraum .cv-title { font-family: var(--fr-font-display, "Marcellus", serif); font-weight: 400; font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--fr-heading, #fff8f0); }
+.cv--freiraum .cv-title__n { font-family: var(--fr-font-display, "Marcellus", serif); font-size: 2.4rem; color: rgba(255, 198, 111, 0.45); }
+.cv--freiraum .cv-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem 1.1rem; padding-top: 0.6rem; align-items: start; }
+.cv--freiraum .cv-item {
+  padding: 1.5rem 1.3rem 1.3rem;
+  background: var(--fr-bg-2, #1e1a24);
+  border: 1px solid var(--fr-border-soft, rgba(255, 255, 255, 0.08));
+  border-radius: 24px 10px 26px 12px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+  transform: rotate(var(--tilt, -0.8deg));
+  transition: transform 0.4s var(--fr-ease, ease), border-color 0.3s ease;
+}
+.cv--freiraum .cv-item:nth-child(3n + 2) { --tilt: 0.9deg; }
+.cv--freiraum .cv-item:nth-child(3n) { --tilt: -0.3deg; }
+.cv--freiraum .cv-item:hover { transform: rotate(0deg) translateY(-4px); border-color: var(--fr-border, rgba(255, 198, 111, 0.22)); }
+/* Strip of tape holding the note */
+.cv--freiraum .cv-item::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 74px;
+  height: 20px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(255, 198, 111, 0.32);
+  border-radius: 3px;
+}
+.cv--freiraum .cv-item:nth-child(even)::before { background: rgba(255, 139, 189, 0.3); transform: translateX(-50%) rotate(2deg); }
+.cv--freiraum .cv-item.is-current { border-color: rgba(255, 198, 111, 0.45); }
+.cv--freiraum .cv-when { color: #ffc66f; font-weight: 600; }
+.cv--freiraum .cv-badge { border-radius: 999px 6px 999px 6px; background: #ff8bbd; color: #16131a; font-weight: 700; transform: rotate(-3deg); }
+.cv--freiraum .cv-body h4 { font-family: var(--fr-font-display, "Marcellus", serif); font-weight: 400; font-size: 1.25rem; color: var(--fr-heading, #fff8f0); }
+.cv--freiraum .cv-sub { color: var(--fr-text, rgba(255, 236, 220, 0.84)); }
+.cv--freiraum .cv-note,
+.cv--freiraum .cv-points { color: var(--fr-muted, rgba(255, 236, 220, 0.62)); }
+.cv--freiraum .cv-points li::marker { content: "✦  "; color: #ff8bbd; }
+.cv--freiraum .cv-skill {
+  padding: 1.3rem 1.25rem;
+  background: rgba(255, 198, 111, 0.06);
+  border: 1px dashed rgba(255, 198, 111, 0.3);
+  border-radius: 28px 14px 32px 18px;
+}
+.cv--freiraum .cv-skill h4 { font-family: var(--fr-font-display, "Marcellus", serif); font-weight: 400; font-size: 1.15rem; color: #ffc66f; }
+.cv--freiraum .cv-chips li { border-radius: 999px; font-weight: 600; color: #16131a; background: #ffc66f; transform: rotate(var(--cr, -1.5deg)); }
+.cv--freiraum .cv-chips li:nth-child(4n + 2) { background: #ff8bbd; --cr: 1.5deg; }
+.cv--freiraum .cv-chips li:nth-child(4n + 3) { background: #7fd6c2; --cr: -0.5deg; }
+.cv--freiraum .cv-chips li:nth-child(4n) { background: #c4a0ff; --cr: 2deg; }
+
+/* ============ NEXORA additions (base styles live in nexora.css) ============ */
+.nxcv-points { list-style: none; display: grid; gap: 0.25rem; margin: 0.5rem 0 0; padding: 0; }
+.nxcv-points li { position: relative; padding-left: 0.9rem; font-size: 0.84rem; color: var(--nx-text, rgba(214, 228, 248, 0.88)); }
+.nxcv-points li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 4px; height: 4px; background: var(--nx-cyan, #8ec5ff); }
+.nxcv-skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.1rem 1.5rem; }
+.nxcv-skills > div > .nx-mono { display: block; margin-bottom: 0.55rem; font-size: 0.74rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--nx-cyan, #8ec5ff); }
+
+/* —— Responsive —— */
+@media (max-width: 900px) {
+  .cv-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cv--professional .cv-stats div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .cv--professional .cv-stats div:nth-child(n + 3) { border-top: 1px solid var(--pro-line, rgba(17, 17, 17, 0.1)); }
+  .cv--professional .cv-item,
+  .cv--professional .cv-skill { grid-template-columns: 1fr; gap: 0.4rem; }
+  .cv--multiversum .cv-list { padding-left: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cv--freiraum .cv-item,
+  .cv--freiraum .cv-stats div,
+  .cv--freiraum .cv-chips li { transform: none !important; }
+}
