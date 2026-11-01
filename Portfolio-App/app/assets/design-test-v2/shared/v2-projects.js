@@ -6,7 +6,7 @@
   "use strict";
 
   var WEBSITES = [
-    { title: "inniger-reinigungen.ch", href: "https://inniger-reinigungen.ch/", blurb: "Klarer Webauftritt für Reinigung und Hauswartung — vertrauenswürdig, modern und anfrageorientiert." },
+    { title: "inniger-reinigungen.ch", href: "https://inniger-reinigungen.ch/", blurb: "Klarer Webauftritt für Reinigung und Hauswartung. Modern, vertrauenswürdig und auf Anfragen ausgelegt." },
     { title: "gallace-all-in-maler.ch", href: "https://gallace-all-in-maler.ch/", blurb: "Klar strukturierter Auftritt für ein lokales KMU mit Fokus auf Dienstleistungen und Kontaktaufnahme." },
     { title: "awarillo.ch", href: "https://awarillo.ch/", blurb: "Digitaler Markenauftritt mit reduzierter visueller Linie und klarer Wiedererkennung." },
     { title: "chesa-cherma.ch", href: "https://chesa-cherma.ch/", blurb: "Atmosphärischer Auftritt mit starker Bildsprache rund um Erlebnis und Aufenthalt." },
@@ -15,12 +15,12 @@
   ];
 
   var LEADS = [
-    { title: "Sanitrend", href: "/assets/projects/leadformulare/sanitrend.html", blurb: "Mehrstufiges Leadformular für Sanitär und Sanierung — conversion-orientiert." },
+    { title: "Sanitrend", href: "/assets/projects/leadformulare/sanitrend.html", blurb: "Mehrstufiges Leadformular für Sanitär und Sanierung, gebaut für mehr Anfragen." },
     { title: "Dein Umzug Deal", href: "/assets/projects/leadformulare/dein-umzug-deal.html", blurb: "Geführtes Umzugsformular mit klarer Schrittfolge und Vertrauenselementen." },
-    { title: "ART Reinigungen", href: "/assets/projects/leadformulare/art-reinigungen.html", blurb: "Anfrageformular für Reinigung und Hauswartung — übersichtlich und vertrauenswürdig." },
+    { title: "ART Reinigungen", href: "/assets/projects/leadformulare/art-reinigungen.html", blurb: "Anfrageformular für Reinigung und Hauswartung, übersichtlich und vertrauenswürdig." },
     { title: "iDEAL Umzüge", href: "/assets/projects/leadformulare/ideal-umzuege.html", blurb: "Leadformular für Umzugsanfragen." },
     { title: "DT-Cleaning", href: "/assets/projects/leadformulare/dt-cleaning.html", blurb: "Anfrageprozess für Reinigungsleistungen." },
-    { title: "Inniger Reinigungen", href: "/assets/projects/leadformulare/inniger-reinigungen.html", blurb: "Mehrstufiges Anfrageformular für Reinigung — klar geführt und conversion-stark." },
+    { title: "Inniger Reinigungen", href: "/assets/projects/leadformulare/inniger-reinigungen.html", blurb: "Mehrstufiges Anfrageformular für Reinigung. Führt klar durch alle Schritte und bringt mehr Anfragen." },
   ];
 
   var CARDS = [

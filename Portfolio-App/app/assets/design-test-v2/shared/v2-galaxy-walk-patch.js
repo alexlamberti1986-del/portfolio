@@ -233,7 +233,7 @@
     nexora: {
       eyebrow: "TECH · KI · SYSTEME",
       title: "Systeme mit Zukunft.",
-      text: "Technologie, KI und Automationen — präzise und elektrisch.",
+      text: "Technologie, KI und Automationen. Präzise und elektrisch.",
       cta: "Nexora öffnen",
     },
     professional: {
@@ -245,7 +245,7 @@
     freiraum: {
       eyebrow: "KREATIV · FREI",
       title: "Raum für Ideen.",
-      text: "Warm, mutig und künstlerisch — Freiheit, Dinge anders zu sehen.",
+      text: "Warm, mutig und künstlerisch, mit der Freiheit, Dinge anders zu sehen.",
       cta: "Freiraum entdecken",
     },
   };
@@ -321,7 +321,7 @@
             a.setAttribute("data-alex-route", world + "." + page);
             a.setAttribute("data-v2-page", page);
             a.setAttribute("data-v2-world", world);
-            a.setAttribute("aria-label", world.toUpperCase() + " – " + label);
+            a.setAttribute("aria-label", world.toUpperCase() + ": " + label);
             var span = a.querySelector("span");
             setText(span, label);
             var small = a.querySelector("small");
@@ -376,7 +376,7 @@
       a.setAttribute("data-alex-route", "multiversum." + page);
       a.setAttribute("data-v2-page", page);
       a.setAttribute("data-v2-world", "multiversum");
-      a.setAttribute("aria-label", "MULTIVERSUM – " + label);
+      a.setAttribute("aria-label", "MULTIVERSUM: " + label);
       var strong = a.querySelector("strong");
       setText(strong, label);
       var img = a.querySelector("img");

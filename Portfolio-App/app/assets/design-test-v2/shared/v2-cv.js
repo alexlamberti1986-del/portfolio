@@ -13,7 +13,7 @@
         org: "DIGITAL PLUS GmbH, Dietikon",
         role: "Marketing & Key Account Mitarbeiter (80 %)",
         current: true,
-        desc: "Schnittstelle von Kundenmanagement, Marketing und Kommunikation: eigenständige Betreuung der Key Accounts und ganzheitliche Steuerung von Kundenprojekten – von der Analyse über die Konzeption bis zur Umsetzung.",
+        desc: "Schnittstelle von Kundenmanagement, Marketing und Kommunikation. Selbstständige Betreuung der Key Accounts und Begleitung von Kundenprojekten von der Analyse über das Konzept bis zur Umsetzung.",
         points: [
           "Strategische Beratung von Bestandskunden, Neukundenakquise und Upselling",
           "Konzeption, Design und Umsetzung von Websites (Struktur, Funktionen, Content)",
@@ -28,7 +28,7 @@
         when: "09/2011 – 12/2023",
         org: "Ledergerber Mode, Baden & Zürich",
         role: "Polydesigner 3D / Visual Merchandising Coordinator",
-        desc: "Verantwortung für das Visual Merchandising aller Geschäfte – zuerst im Zweierteam, ab 2017 in alleiniger Verantwortung, abgestimmt mit Einkauf und Werbeplanung.",
+        desc: "Verantwortung für das Visual Merchandising aller Geschäfte. Zuerst im Zweierteam, ab 2017 allein verantwortlich und immer abgestimmt mit Einkauf und Werbeplanung.",
         points: [
           "Planung und Umsetzung der VM-Konzepte in allen Filialen, innen und in den Schaufenstern",
           "Themenorientierte Inszenierung der Kollektionen am POS, Aktionsflächen anhand von Abverkaufsanalysen",
@@ -71,7 +71,7 @@
         when: "08/2002 – 08/2004",
         org: "Boutique Clochard, Zug",
         role: "Mitarbeiter Detailhandel",
-        desc: "Zweijährige Lehre als Mode-Verkäufer in der Boutique Clochard (Putt AG) – Grundstein für Kundenorientierung, Stilgefühl und Sortimentskenntnis.",
+        desc: "Zweijährige Lehre als Mode-Verkäufer in der Boutique Clochard (Putt AG). Hier hat alles angefangen: Kundenkontakt, Stilgefühl und Sortimentskenntnis.",
         points: [
           "Beratung und Verkauf im geprüften Bereich Damenoberbekleidung",
           "Fundierte Kenntnisse im Herren-Sportswear-Bereich",

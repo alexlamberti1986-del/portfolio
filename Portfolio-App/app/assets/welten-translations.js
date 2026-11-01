@@ -58,7 +58,7 @@
       shellMain: {
         h1: "Alex Lamberti · Multiversum für digitale Welten",
         intro:
-          "Digitale Auftritte, die Ideen in Wirkung verwandeln. Webdesign, digitales Marketing und Strategie — im Multiversum mit NEXORA, PROFESSIONAL und FREIRAUM.",
+          "Digitale Auftritte, die Ideen in Wirkung verwandeln. Webdesign, digitales Marketing und Strategie im Multiversum mit NEXORA, PROFESSIONAL und FREIRAUM.",
         navAria: "Welten und Kapitel",
         navMultiversum: "MULTIVERSUM — Start",
         navProjects: "Projekte",

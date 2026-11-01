@@ -8,7 +8,7 @@
 
   /* Form expects these exact keys (not shell aliases general/vertex) */
   var FORM_WORLDS = ["multiversum", "nexora", "professional", "freiraum"];
-  var FORM_VER = "20261030form2";
+  var FORM_VER = "20261101tx1";
 
   function detectWorld(host) {
     var candidates = [
@@ -55,7 +55,7 @@
       '<div class="v2-offerte__head">' +
       '<p class="v2-offerte__kicker" data-i18n-v2="offerte.kicker">Offerte</p>' +
       '<h2 data-i18n-v2="offerte.title">Kostenlose Projektanfrage</h2>' +
-      '<p class="v2-offerte__lead" data-i18n-v2="offerte.lead">Marketing, Website und Wachstum sauber planen — klare Offerte in wenigen Schritten.</p>' +
+      '<p class="v2-offerte__lead" data-i18n-v2="offerte.lead">Marketing, Website und Wachstum sauber planen. Die Offerte steht in wenigen Schritten.</p>' +
       "</div>" +
       '<div class="v2-offerte__shell is-loading" data-v2-offerte-shell>' +
       '<iframe id="offerteFrame" class="v2-offerte__frame" title="Offerte" loading="eager" referrerpolicy="no-referrer-when-downgrade" src="about:blank"></iframe>' +
