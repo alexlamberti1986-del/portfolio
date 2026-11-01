@@ -122,7 +122,10 @@
 
   /* —— Timeline —— */
   fx.all(".nx-timeline").forEach(function (list) {
-    fx.all("li", list).forEach(function (li, i) {
+    /* Direct entries only — nested bullet lists animate with their entry */
+    Array.prototype.filter.call(list.children, function (n) {
+      return n.tagName === "LI";
+    }).forEach(function (li, i) {
       li.classList.add("nxfx-log");
       li.style.setProperty("--i", i);
       fx.reveal(li);

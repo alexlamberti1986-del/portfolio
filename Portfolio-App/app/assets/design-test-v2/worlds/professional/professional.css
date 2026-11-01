@@ -1300,3 +1300,15 @@ h3 {
     letter-spacing: 0.075em;
   }
 }
+
+/* Laptop / large tablet: keep the header on one line without overflow */
+@media (min-width: 981px) and (max-width: 1240px) {
+  .pro-header__inner { gap: 0.6rem; }
+  .pro-logo { white-space: nowrap; }
+  .pro-nav { gap: 0.8rem; }
+  .pro-nav a { font-size: 0.88rem; }
+  .pro-worlds { margin-right: 0.15rem; padding-right: 0.35rem; }
+  .pro-header__tools .pro-btn { padding-inline: 1rem; }
+}@media (min-width: 981px) and (max-width: 1100px) {
+  .pro-header__tools .pro-worlds { display: none; }
+}

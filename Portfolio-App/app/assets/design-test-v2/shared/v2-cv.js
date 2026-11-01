@@ -170,8 +170,8 @@
       }) +
       "</dl>" +
       '<div class="nx-exp-grid">' +
-      '<div class="nx-exp-block" data-reveal><header><span class="nx-mono">LOG.A</span><h3>Berufserfahrung</h3></header>' +
-      '<ol class="nx-timeline">' +
+      '<div class="nx-exp-block nx-exp-block--wide" data-reveal><header><span class="nx-mono">LOG.A</span><h3>Berufserfahrung</h3></header>' +
+      '<ol class="nx-timeline nxcv-grid nxcv-grid--work">' +
       list(CV.work, function (w) {
         return (
           "<li" + (w.current ? ' class="nx-tl--live"' : "") + "><time>" + esc(w.when) +
@@ -184,8 +184,8 @@
         );
       }) +
       "</ol></div>" +
-      '<div class="nx-exp-block" data-reveal><header><span class="nx-mono">LOG.B</span><h3>Bildungsweg &amp; Weiterbildungen</h3></header>' +
-      '<ol class="nx-timeline">' +
+      '<div class="nx-exp-block nx-exp-block--wide" data-reveal><header><span class="nx-mono">LOG.B</span><h3>Bildungsweg &amp; Weiterbildungen</h3></header>' +
+      '<ol class="nx-timeline nxcv-grid">' +
       list(CV.education, function (e) {
         return (
           "<li" + (e.live ? ' class="nx-tl--live"' : "") + "><time>" + esc(e.when) +
