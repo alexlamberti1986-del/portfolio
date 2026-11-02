@@ -60,6 +60,33 @@
   background: #0a0e18;
 }
 
+.v2-project-card__thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.v2-project-card__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+}
+
+.v2-project-card:hover .v2-project-card__thumb img {
+  transform: scale(1.03);
+}
+
+.v2-projects-acc__note {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0.72;
+}
+
 .v2-project-card__preview iframe {
   width: 100%;
   height: 100%;

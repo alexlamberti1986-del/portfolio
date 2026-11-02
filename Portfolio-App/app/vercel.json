@@ -88,9 +88,21 @@
       ]
     },
     {
-      "source": "/(.*).html",
+      "source": "/((?!assets/projects/websites/villa-lucea).*).html",
       "headers": [
         { "key": "Content-Type", "value": "text/html; charset=utf-8" }
+      ]
+    },
+    {
+      "source": "/assets/projects/websites/villa-lucea.html",
+      "headers": [
+        { "key": "Content-Type", "value": "text/html; charset=windows-1252" }
+      ]
+    },
+    {
+      "source": "/assets/projects/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex" }
       ]
     },
     {

@@ -5,38 +5,45 @@
 (function (root) {
   "use strict";
 
+  var P = "/assets/projects/";
+  var T = P + "thumbs/";
+
   var WEBSITES = [
-    { title: "inniger-reinigungen.ch", href: "https://inniger-reinigungen.ch/", blurb: "Klarer Webauftritt für Reinigung und Hauswartung. Modern, vertrauenswürdig und auf Anfragen ausgelegt." },
-    { title: "gallace-all-in-maler.ch", href: "https://gallace-all-in-maler.ch/", blurb: "Klar strukturierter Auftritt für ein lokales KMU mit Fokus auf Dienstleistungen und Kontaktaufnahme." },
-    { title: "awarillo.ch", href: "https://awarillo.ch/", blurb: "Digitaler Markenauftritt mit reduzierter visueller Linie und klarer Wiedererkennung." },
-    { title: "chesa-cherma.ch", href: "https://chesa-cherma.ch/", blurb: "Atmosphärischer Auftritt mit starker Bildsprache rund um Erlebnis und Aufenthalt." },
-    { title: "lbmm.ch", href: "https://lbmm.ch/", blurb: "Klare Struktur, modernes Design und hochwertige Gesamtwirkung." },
-    { title: "360clean.ch / Offertenformular", href: "https://360clean.ch/offertenformular/", blurb: "Mehrstufiges Offertenformular mit geführtem Anfrageprozess." },
+    { title: "Undina Sanitär", href: P + "websites/undina-sanitaer.html", thumb: T + "web-undina-sanitaer.webp", blurb: "Scroll-Website für einen Sanitärbetrieb. Wasser-Look, Videos und ein Badumbau im Vorher-Nachher-Vergleich." },
+    { title: "ARDEN Architekten", href: P + "websites/arden-architekten.html", thumb: T + "web-arden-architekten.webp", blurb: "Beim Scrollen betritt man das Haus und sieht, wie es vom Plan bis zum Dach entsteht." },
+    { title: "AURON 01", href: P + "websites/auron-01.html", thumb: T + "web-auron-01.webp", blurb: "Produktfilm zum Scrollen: vom Orbit über Zürich in den Showroom und bis ins Cockpit." },
+    { title: "Villa Lucea", href: P + "websites/villa-lucea.html", thumb: T + "web-villa-lucea.webp", blurb: "Immobilien-Auftritt für eine Villa am See mit Filmsequenzen, Grundriss und Galerie." },
+    { title: "Kinetic Labs", href: P + "websites/kinetic-labs.html", thumb: T + "web-kinetic-labs.webp", blurb: "Agentur-Website mit 3D-Szene. Die Kamera fliegt beim Scrollen von Modul zu Modul." },
+    { title: "Dielenhaus", href: P + "websites/dielenhaus.html", thumb: T + "web-dielenhaus.webp", blurb: "Bodenleger-Seite mit 3D-Bodenplatte, die sich beim Scrollen in ihre Schichten zerlegt." },
+    { title: "Maison Elva", href: P + "websites/maison-elva.html", thumb: T + "web-maison-elva.webp", blurb: "Coiffeur- und Colour-Studio mit ruhiger Bildsprache und Online-Termin." },
+    { title: "Krafthalle", href: P + "websites/krafthalle.html", thumb: T + "web-krafthalle.webp", blurb: "Fitness-Konzept mit Imagefilm, der Bild für Bild mit dem Scrollen läuft." },
+    { title: "Studio Olmo", href: P + "websites/studio-olmo.html", thumb: T + "web-studio-olmo.webp", blurb: "Innenarchitektur als Scrollfilm. Ein leerer Raum richtet sich Wisch für Wisch selbst ein." },
+    { title: "Soda Zero", href: P + "websites/soda-zero.html", thumb: T + "web-soda-zero.webp", blurb: "Produkt- und Shop-Seite mit schwebender 3D-Dose, die je nach Sorte die Farbe wechselt." },
   ];
 
   var LEADS = [
-    { title: "Sanitrend", href: "/assets/projects/leadformulare/sanitrend.html", blurb: "Mehrstufiges Leadformular für Sanitär und Sanierung, gebaut für mehr Anfragen." },
-    { title: "Dein Umzug Deal", href: "/assets/projects/leadformulare/dein-umzug-deal.html", blurb: "Geführtes Umzugsformular mit klarer Schrittfolge und Vertrauenselementen." },
-    { title: "ART Reinigungen", href: "/assets/projects/leadformulare/art-reinigungen.html", blurb: "Anfrageformular für Reinigung und Hauswartung, übersichtlich und vertrauenswürdig." },
-    { title: "iDEAL Umzüge", href: "/assets/projects/leadformulare/ideal-umzuege.html", blurb: "Leadformular für Umzugsanfragen." },
-    { title: "DT-Cleaning", href: "/assets/projects/leadformulare/dt-cleaning.html", blurb: "Anfrageprozess für Reinigungsleistungen." },
-    { title: "Inniger Reinigungen", href: "/assets/projects/leadformulare/inniger-reinigungen.html", blurb: "Mehrstufiges Anfrageformular für Reinigung. Führt klar durch alle Schritte und bringt mehr Anfragen." },
+    { title: "Undina Sanitär", href: P + "leadformulare/undina-sanitaer.html", thumb: T + "lead-undina-sanitaer.webp", blurb: "Mehrstufiges Anfrageformular für Badumbau, Sanitär und Service." },
+    { title: "Movelia Umzüge", href: P + "leadformulare/movelia-umzuege.html", thumb: T + "lead-movelia-umzuege.webp", blurb: "Umzugsformular mit Maskottchen, Live-Richtpreis und Auftragsübersicht." },
+    { title: "Klarwerk Reinigungen", href: P + "leadformulare/klarwerk-reinigungen.html", thumb: T + "lead-klarwerk-reinigungen.webp", blurb: "Anfrageformular für Reinigung und Hauswartung, Schritt für Schritt geführt." },
+    { title: "NOVA Umzüge", href: P + "leadformulare/nova-umzuege.html", thumb: T + "lead-nova-umzuege.webp", blurb: "Kurzes Offertenformular in drei Schritten, ohne doppelte Angaben." },
+    { title: "Glanzwerk Autopflege", href: P + "leadformulare/glanzwerk-autopflege.html", thumb: T + "lead-glanzwerk-autopflege.webp", blurb: "Autopflege-Anfrage mit Paketen, Standortwahl und Richtpreis." },
+    { title: "Sauberhof Reinigungen", href: P + "leadformulare/sauberhof-reinigungen.html", thumb: T + "lead-sauberhof-reinigungen.webp", blurb: "Formular für Reinigung, Wäsche und Alltagshilfe mit Terminwunsch." },
   ];
 
   var CARDS = [
-    { title: "ad-res", href: "/assets/projects/visitenkarten/ad-res.html", blurb: "Digitale Visitenkarte mit klarem Markenauftritt und schnellem Kontaktzugang." },
-    { title: "haller-design", href: "/assets/projects/visitenkarten/haller-design.html", blurb: "Design-orientierte digitale Karte mit klarer visueller Linie." },
-    { title: "kita-wundersterne", href: "/assets/projects/visitenkarten/kita-wundersterne.html", blurb: "Warme, vertrauensvolle Visitenkarte mit klaren Infos für Eltern." },
-    { title: "bodenbelaege-hajdari", href: "/assets/projects/visitenkarten/bodenbelaege-hajdari.html", blurb: "Digitale Visitenkarte für Bodenbeläge." },
-    { title: "burgunder-handwerk", href: "/assets/projects/visitenkarten/burgunder-handwerk.html", blurb: "Digitale Visitenkarte mit handwerklichem Auftritt." },
-    { title: "chesa-cherma", href: "/assets/projects/visitenkarten/chesa-cherma.html", blurb: "Digitale Visitenkarte zur Marke Chesa Cherma." },
+    { title: "ARDEN Architekten", href: P + "visitenkarten/arden-architekten.html", thumb: T + "card-arden-architekten.webp", blurb: "Hochformat mit Blueprint-Linien, ruhig und präzise." },
+    { title: "Studio Olmo", href: P + "visitenkarten/studio-olmo.html", thumb: T + "card-studio-olmo.webp", blurb: "Dunkel und warm, mit Bronze und einer Ringleuchte als Motiv." },
+    { title: "Kita Sonnenfalter", href: P + "visitenkarten/kita-sonnenfalter.html", thumb: T + "card-kita-sonnenfalter.webp", blurb: "Fröhlich und klar, mit Sonne, Falter und bunten Punkten." },
+    { title: "Dielenhaus", href: P + "visitenkarten/dielenhaus.html", thumb: T + "card-dielenhaus.webp", blurb: "Querformat in Eichen-Optik, auf der Rückseite liegen Dielen." },
+    { title: "Maison Elva", href: P + "visitenkarten/maison-elva.html", thumb: T + "card-maison-elva.webp", blurb: "Elegant mit Roségold und einem Bogen als Rahmen." },
+    { title: "Villa Lucea", href: P + "visitenkarten/villa-lucea.html", thumb: T + "card-villa-lucea.webp", blurb: "Kraftpapier-Look mit einer Linienzeichnung vom Haus am See." },
   ];
 
   var LABELS = {
-    de: { websites: "Websites", leads: "Leadformulare", cards: "Digitale Visitenkarten", open: "Öffnen", preview: "Vorschau" },
-    en: { websites: "Websites", leads: "Lead forms", cards: "Digital business cards", open: "Open", preview: "Preview" },
-    fr: { websites: "Sites web", leads: "Formulaires lead", cards: "Cartes de visite numériques", open: "Ouvrir", preview: "Aperçu" },
-    it: { websites: "Siti web", leads: "Moduli lead", cards: "Biglietti da visita digitali", open: "Apri", preview: "Anteprima" },
+    de: { websites: "Websites", leads: "Leadformulare", cards: "Digitale Visitenkarten", open: "Öffnen", preview: "Vorschau", note: "Alle Projekte sind fiktive Demo-Varianten. Namen, Logos und Kontaktdaten sind frei erfunden." },
+    en: { websites: "Websites", leads: "Lead forms", cards: "Digital business cards", open: "Open", preview: "Preview", note: "All projects are fictional demos. Names, logos and contact details are made up." },
+    fr: { websites: "Sites web", leads: "Formulaires lead", cards: "Cartes de visite numériques", open: "Ouvrir", preview: "Aperçu", note: "Tous les projets sont des démos fictives. Noms, logos et coordonnées sont inventés." },
+    it: { websites: "Siti web", leads: "Moduli lead", cards: "Biglietti da visita digitali", open: "Apri", preview: "Anteprima", note: "Tutti i progetti sono demo fittizie. Nomi, loghi e contatti sono inventati." },
   };
 
   function lang() {
@@ -57,15 +64,15 @@
 
   function cardHtml(item, external) {
     var src = item.href;
-    var isExt = /^https?:/i.test(src);
+    var name = item.title.replace(/"/g, "");
+    var preview = item.thumb
+      ? '<a class="v2-project-card__thumb" href="' + src + '" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">' +
+        '<img src="' + item.thumb + '" alt="' + labels().preview + ": " + name + '" width="960" height="600" loading="lazy" decoding="async"></a>'
+      : '<iframe title="' + name + '" loading="lazy" data-v2-lazy-src="' + src + '" src="about:blank"></iframe>';
     return (
       '<article class="v2-project-card">' +
       '<div class="v2-project-card__preview">' +
-      '<iframe title="' +
-      item.title.replace(/"/g, "") +
-      '" loading="lazy" data-v2-lazy-src="' +
-      src +
-      '" src="about:blank"></iframe>' +
+      preview +
       "</div>" +
       "<h3>" +
       item.title +
@@ -104,7 +111,7 @@
     var link = root.document.createElement("link");
     link.id = "v2-projects-css";
     link.rel = "stylesheet";
-    link.href = "/assets/design-test-v2/shared/v2-projects.css?v=20260925proj1";
+    link.href = "/assets/design-test-v2/shared/v2-projects.css?v=20261102demo1";
     root.document.head.appendChild(link);
   }
 
@@ -146,6 +153,7 @@
     var L = labels();
     el.innerHTML =
       '<div class="v2-projects-acc" data-v2-projects-acc>' +
+      '<p class="v2-projects-acc__note">' + L.note + "</p>" +
       categoryHtml("websites", L.websites, WEBSITES) +
       categoryHtml("leads", L.leads, LEADS) +
       categoryHtml("cards", L.cards, CARDS) +

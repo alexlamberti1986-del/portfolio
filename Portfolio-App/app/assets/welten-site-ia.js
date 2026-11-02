@@ -33,10 +33,10 @@
   };
 
   var HIGHLIGHTS = [
-    { kicker: "Webseite", title: "inniger-reinigungen.ch", cat: "Branding & Web", go: "projects" },
-    { kicker: "Leadformular", title: "360clean.ch", cat: "Conversion", go: "projects" },
-    { kicker: "Visitenkarte", title: "AD-RES", cat: "Digital Brand", go: "projects" },
-    { kicker: "Webseite", title: "chesa-cherma.ch", cat: "Hospitality", go: "projects" },
+    { kicker: "Webseite", title: "Undina SanitÃ¤r", cat: "Branding & Web", go: "projects" },
+    { kicker: "Leadformular", title: "Movelia UmzÃ¼ge", cat: "Conversion", go: "projects" },
+    { kicker: "Visitenkarte", title: "ARDEN Architekten", cat: "Digital Brand", go: "projects" },
+    { kicker: "Webseite", title: "Villa Lucea", cat: "Hospitality", go: "projects" },
   ];
 
   var SERVICES = [

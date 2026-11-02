@@ -19,7 +19,7 @@
   }
 
   var PROJECTS = {
-    "inniger-reinigungen.ch": {
+    "undina-sanitaer": {
       de: {
         desc: "Klarer Webauftritt für Reinigung und Hauswartung — vertrauenswürdig, modern und anfrageorientiert.",
         highlight: "Saubere Struktur, starke Vertrauenssignale und direkter Weg zur Anfrage.",
@@ -36,7 +36,7 @@
         skill: "Web design PMI, presentazione servizi, conversione.",
       },
     },
-    "gallace-all-in-maler.ch": {
+    "arden-architekten": {
       de: {
         desc: "Klar strukturierter Auftritt für ein lokales KMU mit Fokus auf Dienstleistungen, Vertrauen und einfache Kontaktaufnahme.",
         highlight: "Direkter Weg vom Interesse zur Anfrage.",
@@ -53,7 +53,7 @@
         skill: "Web design PMI, struttura offerte, gestione richieste.",
       },
     },
-    "360clean.ch / Offertenformular": {
+    "auron-01": {
       de: {
         desc: "Mehrstufiges Offertenformular mit geführtem Anfrageprozess und klarer Nutzerführung.",
         highlight: "Schritt-für-Schritt-Erlebnis, bessere Orientierung und eine niedrigere Hürde für Anfragen.",
@@ -70,7 +70,7 @@
         skill: "Processo richieste, guida utente, ottimizzazione conversione.",
       },
     },
-    "awarillo.ch": {
+    "villa-lucea": {
       de: {
         desc: "Digitaler Markenauftritt mit reduzierter visueller Linie und klarer Wiedererkennung.",
         highlight: "Konsistenter Look, moderne Präsentation und klare Positionierung.",
@@ -87,7 +87,7 @@
         skill: "Gestione brand, comunicazione digitale, design uniforme.",
       },
     },
-    "chesa-cherma.ch": {
+    "kinetic-labs": {
       de: {
         desc: "Atmosphärischer Auftritt mit starker Bildsprache und klarer Story rund um Erlebnis und Aufenthalt.",
         highlight: "Atmosphäre und Premium-Eindruck in Bild und Story, ergänzt durch eine direkte Terminbuchung über den Kalendereintrag.",
@@ -104,7 +104,7 @@
         skill: "Experience design, guida visiva, percezione premium e logica di prenotazione.",
       },
     },
-    "lbmm.ch": {
+    "dielenhaus": {
       de: {
         desc: "Diese Website überzeugt durch klare Struktur, modernes Design und eine hochwertige Gesamtwirkung.",
         highlight: "Übersichtliche Darstellung der Dienstleistungen und ein ruhiger, professioneller Aufbau.",
@@ -121,62 +121,62 @@
         skill: "Presentazione offerte strutturata, web design moderno, flusso informativo chiaro.",
       },
     },
-    Sanitrend: {
+    "Undina SanitÃ¤r": {
       de: { desc: "Mehrstufiges Leadformular für Sanitär, Badumbau und Sanierung · klar geführt und conversion-orientiert." },
       en: { desc: "Multi-step lead form for plumbing, bathroom renovation and refurbishment · clearly guided and conversion-oriented." },
       it: { desc: "Modulo lead multi-step per idraulica, ristrutturazione bagno e sanitaria · guidato e orientato alla conversione." },
     },
-    "Dein Umzug Deal": {
+    "Movelia Umzüge": {
       de: { desc: "Geführtes Umzugsformular mit klarer Schrittfolge, Vertrauenselementen und strukturierter Offertenanfrage." },
       en: { desc: "Guided moving form with clear steps, trust elements and structured quote request." },
       it: { desc: "Modulo trasloco guidato con passi chiari, elementi di fiducia e richiesta preventivo strutturata." },
     },
-    "ART Reinigungen": {
+    "Klarwerk Reinigungen": {
       de: { desc: "Anfrageformular für Reinigung und Hauswartung · professionell, übersichtlich und vertrauenswürdig aufgebaut." },
       en: { desc: "Enquiry form for cleaning and property care · professional, clear and trustworthy." },
       it: { desc: "Modulo richiesta per pulizie e manutenzione · professionale, chiaro e affidabile." },
     },
-    "iDEAL Umzüge": {
+    "NOVA Umzüge": {
       de: { desc: "Umzugs-Leadformular mit moderner UI, klarer Nutzerführung und fokussierter Offertenanfrage." },
       en: { desc: "Moving lead form with modern UI, clear user guidance and focused quote request." },
       it: { desc: "Modulo lead trasloco con UI moderna, guida utente chiara e richiesta preventivo mirata." },
     },
-    "DT-Cleaning": {
+    "Glanzwerk Autopflege": {
       de: { desc: "Leadformular für Autopflege und Fahrzeugreinigung · strukturiert, mobil optimiert und conversion-stark." },
       en: { desc: "Lead form for car care and vehicle cleaning · structured, mobile-optimised and conversion-strong." },
       it: { desc: "Modulo lead per cura auto e pulizia veicoli · strutturato, mobile e orientato alla conversione." },
     },
-    "Inniger Reinigungen": {
+    "Sauberhof Reinigungen": {
       de: { desc: "Mehrstufiges Anfrageformular für Reinigung — klar geführt, übersichtlich und conversion-stark." },
       en: { desc: "Multi-step enquiry form for cleaning — clearly guided, clear and conversion-strong." },
       it: { desc: "Modulo richiesta multi-step per pulizie — guidato, chiaro e orientato alla conversione." },
     },
-    "ad-res": {
+    "arden-karte": {
       de: { desc: "Digitale Visitenkarte mit klarem Markenauftritt und schnellem Kontaktzugang." },
       en: { desc: "Digital business card with clear brand presence and fast contact access." },
       it: { desc: "Biglietto da visita digitale con presenza di marca chiara e accesso rapido al contatto." },
     },
-    "bodenbelaege-hajdari": {
+    "dielenhaus-karte": {
       de: { desc: "Kompakter Auftritt für Bodenbeläge mit Leistungsfokus und direkter Erreichbarkeit." },
       en: { desc: "Compact presence for flooring with service focus and direct reachability." },
       it: { desc: "Presenza compatta per pavimenti con focus sui servizi e raggiungibilità diretta." },
     },
-    "burgunder-handwerk": {
+    "maison-elva-karte": {
       de: { desc: "Handwerklich geprägte digitale Karte mit Vertrauen und klarer Kontaktlogik." },
       en: { desc: "Craftsman-style digital card with trust and clear contact logic." },
       it: { desc: "Scheda digitale artigianale con fiducia e logica di contatto chiara." },
     },
-    "chesa-cherma": {
+    "villa-lucea-karte": {
       de: { desc: "Atmosphärische Visitenkarte mit Premium-Charakter und Buchungsbezug." },
       en: { desc: "Atmospheric business card with premium character and booking link." },
       it: { desc: "Biglietto da visita atmosferico con carattere premium e collegamento prenotazione." },
     },
-    "haller-design": {
+    "studio-olmo-karte": {
       de: { desc: "Design-orientierte digitale Karte mit klarer visueller Linie." },
       en: { desc: "Design-oriented digital card with a clear visual line." },
       it: { desc: "Scheda digitale orientata al design con linea visiva chiara." },
     },
-    "kita-wundersterne": {
+    "kita-sonnenfalter": {
       de: { desc: "Warme, vertrauensvolle Visitenkarte für eine Kita mit klaren Infos für Eltern." },
       en: { desc: "Warm, trustworthy business card for a daycare with clear info for parents." },
       it: { desc: "Biglietto da visita caldo e affidabile per un asilo con info chiare per i genitori." },
@@ -184,48 +184,48 @@
   };
 
   var FR_PROJECTS = {
-    "inniger-reinigungen.ch": {
+    "undina-sanitaer": {
       desc: "Présence web claire pour nettoyage et entretien — fiable, moderne et orientée demande.",
       highlight: "Structure propre, signaux de confiance forts et chemin direct vers la demande.",
       skill: "Web design PME, présentation de services, conversion.",
     },
-    "gallace-all-in-maler.ch": {
+    "arden-architekten": {
       desc: "Présence clairement structurée pour une PME locale, centrée sur les services, la confiance et un contact simple.",
       highlight: "Chemin direct de l'intérêt à la demande.",
       skill: "Web design PME, structure d'offre, parcours de demande.",
     },
-    "360clean.ch / Offertenformular": {
+    "auron-01": {
       desc: "Formulaire de devis multi-étapes avec processus guidé et parcours utilisateur clair.",
       highlight: "Expérience pas à pas, meilleure orientation et barrière d'entrée plus basse.",
       skill: "Processus de demande, guidance utilisateur, optimisation du taux de demande.",
     },
-    "awarillo.ch": {
+    "villa-lucea": {
       desc: "Présence de marque digitale avec une ligne visuelle réduite et une reconnaissance claire.",
       highlight: "Look cohérent, présentation moderne et positionnement clair.",
       skill: "Pilotage de marque, communication digitale, design unifié.",
     },
-    "chesa-cherma.ch": {
+    "kinetic-labs": {
       desc: "Présence atmosphérique avec une imagerie forte et une histoire claire autour de l'expérience et du séjour.",
       highlight: "Atmosphère et impression premium en image et récit, avec réservation directe.",
       skill: "Experience design, guidance visuelle, perception premium et logique de réservation.",
     },
-    "lbmm.ch": {
+    "dielenhaus": {
       desc: "Ce site convainc par une structure claire, un design moderne et une impression globale de qualité.",
       highlight: "Présentation claire des services et une mise en page calme et professionnelle.",
       skill: "Présentation d'offre structurée, web design moderne, flux d'information clair.",
     },
-    Sanitrend: { desc: "Formulaire lead multi-étapes pour sanitaire, rénovation de salle de bain et assainissement · guidé et orienté conversion." },
-    "Dein Umzug Deal": { desc: "Formulaire de déménagement guidé avec étapes claires, éléments de confiance et demande de devis structurée." },
-    "ART Reinigungen": { desc: "Formulaire de demande pour nettoyage et entretien immobilier · professionnel, clair et fiable." },
-    "iDEAL Umzüge": { desc: "Formulaire lead déménagement avec UI moderne, guidance claire et demande de devis ciblée." },
-    "DT-Cleaning": { desc: "Formulaire lead pour entretien auto et nettoyage véhicules · structuré, mobile et orienté conversion." },
-    "Inniger Reinigungen": { desc: "Formulaire de demande multi-étapes pour nettoyage — guidé, clair et orienté conversion." },
-    "ad-res": { desc: "Carte de visite digitale avec présence de marque claire et accès contact rapide." },
-    "bodenbelaege-hajdari": { desc: "Présence compacte pour revêtements de sol avec focus services et joignabilité directe." },
-    "burgunder-handwerk": { desc: "Carte digitale artisanale avec confiance et logique de contact claire." },
-    "chesa-cherma": { desc: "Carte de visite atmosphérique au caractère premium avec lien de réservation." },
-    "haller-design": { desc: "Carte digitale orientée design avec une ligne visuelle claire." },
-    "kita-wundersterne": { desc: "Carte de visite chaleureuse et fiable pour une crèche avec infos claires pour les parents." },
+    "Undina SanitÃ¤r": { desc: "Formulaire lead multi-étapes pour sanitaire, rénovation de salle de bain et assainissement · guidé et orienté conversion." },
+    "Movelia Umzüge": { desc: "Formulaire de déménagement guidé avec étapes claires, éléments de confiance et demande de devis structurée." },
+    "Klarwerk Reinigungen": { desc: "Formulaire de demande pour nettoyage et entretien immobilier · professionnel, clair et fiable." },
+    "NOVA Umzüge": { desc: "Formulaire lead déménagement avec UI moderne, guidance claire et demande de devis ciblée." },
+    "Glanzwerk Autopflege": { desc: "Formulaire lead pour entretien auto et nettoyage véhicules · structuré, mobile et orienté conversion." },
+    "Sauberhof Reinigungen": { desc: "Formulaire de demande multi-étapes pour nettoyage — guidé, clair et orienté conversion." },
+    "arden-karte": { desc: "Carte de visite digitale avec présence de marque claire et accès contact rapide." },
+    "dielenhaus-karte": { desc: "Présence compacte pour revêtements de sol avec focus services et joignabilité directe." },
+    "maison-elva-karte": { desc: "Carte digitale artisanale avec confiance et logique de contact claire." },
+    "villa-lucea-karte": { desc: "Carte de visite atmosphérique au caractère premium avec lien de réservation." },
+    "studio-olmo-karte": { desc: "Carte digitale orientée design avec une ligne visuelle claire." },
+    "kita-sonnenfalter": { desc: "Carte de visite chaleureuse et fiable pour une crèche avec infos claires pour les parents." },
   };
 
   Object.keys(PROJECTS).forEach(function (key) {

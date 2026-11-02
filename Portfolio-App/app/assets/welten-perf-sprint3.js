@@ -7,8 +7,6 @@
   var PRECONNECT = [
     "https://www.google.com",
     "https://maps.google.com",
-    "https://inniger-reinigungen.ch",
-    "https://gallace-all-in-maler.ch",
   ];
 
   function addPreconnect() {

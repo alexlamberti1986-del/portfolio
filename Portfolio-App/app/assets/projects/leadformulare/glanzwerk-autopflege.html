@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+<meta name="robots" content="noindex">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DT-Cleaning – Autopflege anfragen</title>
+<title>Glanzwerk Autopflege · Anfrage (Demo)</title>
 <style>
 :root{
   --primary:#0588E0;--primary-dark:#0361B2;--primary-soft:#EAF7FF;--accent:#85C242;--navy:#0F2745;--navy-dark:#071B31;--bg:#F5FAFF;--line:#DCE8F2;--muted:#667085;--text:#101827;--white:#fff;--shadow:0 26px 70px rgba(15,23,42,.10);--shadow-sm:0 12px 32px rgba(15,23,42,.08);--radius-xl:28px;--radius-lg:22px;--radius-md:16px;
@@ -38,7 +39,7 @@
 @media (max-width:1350px){.wrap{grid-template-columns:1fr}.side{display:none}.mobile-summary{display:block;margin-top:18px}.summary-price{background:rgba(21,131,220,.12)}.line-item{background:#fff;border:1px solid var(--line)}.line-item small{color:var(--muted)}.line-item strong{color:var(--navy)}}@media (max-width:1180px){.grid,.chip-grid,.fields,.location-cards,.payment-grid{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}}@media (max-width:780px){.payment-grid,.card-form{grid-template-columns:1fr}.wrap{padding:12px 8px 26px}.main{padding:16px;border-radius:22px}.card{padding:16px;min-height:auto}.grid,.chip-grid,.fields,.location-cards,.vehicle-row{grid-template-columns:1fr}.steps{grid-template-columns:repeat(3,minmax(0,1fr))}.steps:before{display:none}.progress{padding:18px}.actions{flex-direction:column}.actions .btn{width:100%}.hero-img{height:160px}.chip label{display:block}.chip-img{width:100%;height:130px}.chip-body{padding:15px}}
 
 /* =========================================================
-   DT-Cleaning Formular Schutz CSS
+   Glanzwerk Formular Schutz CSS
    Wichtig für Einbau auf jeder Webseite:
    schützt das Formular vor fremdem Theme-, Builder- oder globalem CSS.
    ========================================================= */
@@ -465,7 +466,7 @@
 
 
 
-/* === Digital Plus – Mobile & Tablet Optimierung (nur Darstellung) === */
+/* === Demo – Mobile & Tablet Optimierung (nur Darstellung) === */
 @media (max-width:1180px){
   .wrap{grid-template-columns:1fr!important;padding:18px 12px 34px!important;gap:18px!important;}
   .side{display:none!important;}
@@ -534,7 +535,7 @@
 }
 
 
-/* DT-Cleaning Anpassungen 2026: Logo, Markenfarben, Datenschutz, Honeypots */
+/* Glanzwerk Anpassungen 2026: Logo, Markenfarben, Datenschutz, Honeypots */
 #dtLeadApp .logo-card{height:92px!important;min-width:340px!important;max-width:420px!important;width:auto!important;padding:10px 16px!important;font-size:0!important;line-height:0!important;overflow:hidden!important;}
 #dtLeadApp .logo-card img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important;}
 #dtLeadApp .badge .dot{background:var(--accent)!important;box-shadow:0 0 0 5px rgba(133,194,66,.18)!important;}
@@ -681,7 +682,7 @@
 <div id="dtLeadApp"></div>
 <script>
 const CONFIG={
-  companyName:'DT-Cleaning',clientId:'dt-cleaning',demoSubmitDisabledUrl:'',successText:'Projekt-/Demo-Version ohne Mailfunktion: Es wurden keine Daten übertragen und keine E-Mails versendet.',subjectPrefix:'Neue DT-Cleaning Anfrage',
+  companyName:'Glanzwerk',clientId:'glanzwerk-autopflege',demoSubmitDisabledUrl:'',successText:'Projekt-/Demo-Version ohne Mailfunktion: Es wurden keine Daten übertragen und keine E-Mails versendet.',subjectPrefix:'Neue Glanzwerk Anfrage',
   stepLabels:{1:'Kundentyp',2:'Reinigung',3:'Paket & Preis',4:'Extras',5:'Standort & Termin',6:'Kontakt',7:'Zahlung'},
   heroImg:'data:image/webp;base64,'+
 'UklGRrqoAABXRUJQVlA4IK6oAACwzwKdASrQAhwCPnk2lkkkoqesppSb+ZAPCWltees6O8V2unnfvPLoz/6Hdsnulv8P56PkwyEXbbwmOPo/3ovlacnfceFB136Zf+n7x9ADweeam0m/p3+z6LbrNPvIZkX/nqt9nv13HK/FWHjM08g/rP+l4b+cn4T/D/uj/lveBz19q//L/qvU7+afnn+N/kfTv/t/7Dyb+cX+z/n/YO/Of7B/sfuX+Nn8n/veAZtv++/7v+u9gv3C+yf7r/F/6T/1f6b4evtP/H/ofWH+C/0f/Y/yvwBfrV/uPuk9tH/p+SD+R/5f/p/5PwCf0f/A/+L/N/6v9xfp1/xP/r/rfSX+lf6r/2f6z/Y/It/OP7z/2P8l7c//496P7e//D3Zv3O/+x4CDTdsCvEq+Nnf40MvYkYjDxSTO/5FgkjTm0XHybDmyvZ+DPbuCYKwkC0irsDhNdMvpaiPvnn7tcFtMp/Ep9M66tzjjZZGrePGgeJ87pXV1Fc2qBLgTw86eARwnSdo4gf3RSnj/tCtVjZjpbWwmJdktBnvGaWM08fL0symb8f9WR+/sToO9Y5ylt5CijmQ/Cd+iv4TdqXbK6vjH9Ge+3pUxQKF2LU/vxVI3hVWsYjkgG4sJQ6S0fx1TNN0gQjHetRH4EIdmx3c1Ksyzf22zndm5rg58feQiyjBrfzQQl5E4OixCyRUU8aekoZwxa9S7LY8mRIRBwqL45fZM/PegNU2xOTa71+CUXysn99bZ9p93pmlUrLEpQctz34Aj08qkHVmovtQi6JUE6t/J6anHIAuXiPQMMv4FV5rBO3Z3OWP6MtTc360prc+2v/suHRslhvd53E0WeJHTrNscsUQImbkqZ28+QjQ9jx68wfNS'+
@@ -1961,10 +1962,10 @@ const CONFIG={
 'AMEbosPkTKKvByIh3gHIqzXvgQ31GodHsxK6HO1y9xB2v+gcEQ8Mox5hQ3z76f9BOVxKvQF/DHQb9g21U4ChPJiOxOWaKD7GnnKlPSGqNwaoQ1dYslvBrY6/UfBblLRYsH64Zmi6X2+FkCt3kh6m7QDY9rVEmwRH6wyMDEFh5sxjOjChY9dbIlV4U2mjxuTTLIjQOiWc779FK4tFUdHBCLZ7NjNj2p/QWv8+zxPpqN+R1s88cucy7xoRbG7+y2Da3YdADuP+NW2ZFpynJHdswhhAAA=='}
   ],
   locations:[
-    {id:'ebikon',value:'Ebikon – Mall of Switzerland',title:'Mall of Switzerland, Ebikon',sub:'Ideal für Standard-, Exklusiv- und ausgewählte Premium-Reinigungen während Einkauf oder Aufenthalt.',address:'Ebisquare-Strasse 1, 6030 Ebikon',phone:'079 955 29 41',email:'mall@dt-cleaning.ch',bookingUrl:'',role:'Carwash / Premium Handwäsche'},
-    {id:'perlen',value:'Perlen – Elsihof 1',title:'Elsihof 1, Perlen',sub:'Sinnvoll für kompakte Standard- und Exklusiv-Reinigungen sowie Motorradpflege.',address:'Elsihof 1, 6035 Perlen',phone:'041 520 60 94 / 077 525 86 93',email:'info@dt-cleaning.ch',bookingUrl:'',role:'Carwash / schnelle Reinigung'},
-    {id:'rothenburg',value:'Rothenburg – Premium Detailing Center',title:'Premium Detailing Center, Rothenburg',sub:'Empfohlen für Intensivpflege, Politur, Keramikversiegelung, Platinum und umfangreiche Detailing-Arbeiten.',address:'Buzibachring 1, 6023 Rothenburg',phone:'041 521 60 94 / 077 525 86 93',email:'info@dt-cleaning.ch',bookingUrl:'',role:'Premium Detailing Center'},
-    {id:'offen',value:'Noch offen / Beratung gewünscht',title:'Noch offen / Beratung gewünscht',sub:'DT-Cleaning prüft die Auswahl und empfiehlt den passenden Standort.',address:'Standort nach Absprache',phone:'',email:'info@dt-cleaning.ch',bookingUrl:'',role:'Beratung'}
+    {id:'nord',value:'Luzern Nord · Einkaufszentrum',title:'Einkaufszentrum, Luzern Nord',sub:'Ideal für Standard-, Exklusiv- und ausgewählte Premium-Reinigungen während Einkauf oder Aufenthalt.',address:'Musterstrasse 1, 6000 Luzern',phone:'079 000 00 00',email:'nord@glanzwerk-demo.ch',bookingUrl:'',role:'Carwash / Premium Handwäsche'},
+    {id:'kriens',value:'Kriens · Werkhof',title:'Werkhof, Kriens',sub:'Sinnvoll für kompakte Standard- und Exklusiv-Reinigungen sowie Motorradpflege.',address:'Musterweg 3, 6010 Kriens',phone:'041 000 00 00',email:'info@glanzwerk-demo.ch',bookingUrl:'',role:'Carwash / schnelle Reinigung'},
+    {id:'emmen',value:'Emmen · Premium Detailing Center',title:'Premium Detailing Center, Emmen',sub:'Empfohlen für Intensivpflege, Politur, Keramikversiegelung, Platinum und umfangreiche Detailing-Arbeiten.',address:'Musterring 2, 6020 Emmen',phone:'041 000 00 01',email:'info@glanzwerk-demo.ch',bookingUrl:'',role:'Premium Detailing Center'},
+    {id:'offen',value:'Noch offen / Beratung gewünscht',title:'Noch offen / Beratung gewünscht',sub:'Glanzwerk prüft die Auswahl und empfiehlt den passenden Standort.',address:'Standort nach Absprache',phone:'',email:'info@glanzwerk-demo.ch',bookingUrl:'',role:'Beratung'}
   ]
 };
 (function(){
@@ -2007,16 +2008,16 @@ const CONFIG={
     keep.forEach(id=>{const input=q(`#extra_${id}`);if(input)input.checked=true;});
   }
   const LOCATION_HOURS={
-    ebikon:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
-    perlen:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
-    rothenburg:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
+    nord:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
+    kriens:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
+    emmen:{label:'Mo–Fr 09:00–19:00 Uhr · Sa 08:00–17:00 Uhr · Sonntag geschlossen',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}},
     offen:{label:'Termin nach Absprache · Sonntag nicht verfügbar',days:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[8,17]}}
   };
   const selectedHours=()=>LOCATION_HOURS[selectedLocation()?.id]||null;
   function updateHoursNote(){const note=q('#timeHoursNote');if(note)note.textContent=selectedHours()?.label||'Bitte zuerst Standort wählen. Sonntag ist nicht verfügbar.';}
 
-  app.innerHTML=`<div class="wrap"><div class="main"><div class="brand"><div class="brand-left"><div class="logo-card"><img src="data:image/webp;base64,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" alt="DT-Cleaning Logo"></div><div class="badge"><span class="dot"></span>Premium Autopflege · Offerte & Termin</div></div></div><div class="head"><h1>Premium Autopflege unverbindlich anfragen</h1><p class="sub">Wählen Sie Reinigungsart, Paket, Zusatzleistungen, passenden Standort und einen Wunsch-Termin. Der Richtpreis wird live anhand der DT-Cleaning Preise berechnet.</p></div><form id="dtForm" novalidate><input class="hp-field" type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><input class="hp-field" type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="progress"><div class="progress-top"><strong id="stepText">Schritt 1 von 7</strong><span id="stepLabel">Kundentyp wählen</span></div><div class="steps">${Array.from({length:7},(_,i)=>`<div class="step ${i===0?'active available':''}" data-step-node="${i+1}"><button type="button" class="step-btn" data-step-target="${i+1}"><div class="circle">${i+1}</div><div class="label">${CONFIG.stepLabels[i+1]}</div></button></div>`).join('')}</div></div><div class="card">
-  <section class="panel active" data-step="1"><span class="kicker">Schritt 01</span><h2>Sind Sie Privatkunde oder Geschäftskunde?</h2><p class="desc">So kann DT-Cleaning Ihre Anfrage direkt richtig einordnen.</p><div class="divider"></div><div class="grid grid2">${customerCard('leadPrivat','Privatkunde','Privatkunde','Für Einzelanfragen, Empfehlungen und Offerten rund um Ihr Fahrzeug.','data:image/webp;base64,'+
+  app.innerHTML=`<div class="wrap"><div class="main"><div class="brand"><div class="brand-left"><div class="logo-card"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgMjAwIiB3aWR0aD0iNjQwIiBoZWlnaHQ9IjIwMCI+CiAgPHJlY3Qgd2lkdGg9IjY0MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmZmZmZmYiLz4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMzOGJkZjgiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMxZTNhOGEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KICA8cGF0aCBkPSJNMjQgMTI2IEMzNCA5NCA2MiA4MiA5MCA4MiBIMTE4IEwxNDIgMTA0IEgxNTIgQzE2MiAxMDQgMTY4IDExMiAxNjggMTIwIFYxMzIgSDI0WiIgZmlsbD0idXJsKCNnKSIvPgogIDxjaXJjbGUgY3g9IjU2IiBjeT0iMTM0IiByPSIxNSIgZmlsbD0iIzBmMTcyYSIvPjxjaXJjbGUgY3g9IjEzNiIgY3k9IjEzNCIgcj0iMTUiIGZpbGw9IiMwZjE3MmEiLz4KICA8cGF0aCBkPSJNMTEwIDQwIGw1IDEyIDEyIDUgLTEyIDUgLTUgMTIgLTUgLTEyIC0xMiAtNSAxMiAtNXoiIGZpbGw9IiMyMmM1NWUiLz4KICA8dGV4dCB4PSIxODgiIHk9IjExMCIgZm9udC1mYW1pbHk9IidTZWdvZSBVSScsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiIGZvbnQtc2l6ZT0iNjAiIGZpbGw9IiMwZjJhNWMiPkdMQU5aV0VSSzwvdGV4dD4KICA8dGV4dCB4PSIxOTAiIHk9IjE0NiIgZm9udC1mYW1pbHk9IidTZWdvZSBVSScsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMyMmEzNWEiPkF1dG9wZmxlZ2Ugdm9uIEhhbmQ8L3RleHQ+Cjwvc3ZnPgo=" alt="Glanzwerk Logo"></div><div class="badge"><span class="dot"></span>Premium Autopflege · Offerte & Termin</div></div></div><div class="head"><h1>Premium Autopflege unverbindlich anfragen</h1><p class="sub">Wählen Sie Reinigungsart, Paket, Zusatzleistungen, passenden Standort und einen Wunsch-Termin. Der Richtpreis wird live anhand der Glanzwerk Preise berechnet.</p></div><form id="dtForm" novalidate><input class="hp-field" type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><input class="hp-field" type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="progress"><div class="progress-top"><strong id="stepText">Schritt 1 von 7</strong><span id="stepLabel">Kundentyp wählen</span></div><div class="steps">${Array.from({length:7},(_,i)=>`<div class="step ${i===0?'active available':''}" data-step-node="${i+1}"><button type="button" class="step-btn" data-step-target="${i+1}"><div class="circle">${i+1}</div><div class="label">${CONFIG.stepLabels[i+1]}</div></button></div>`).join('')}</div></div><div class="card">
+  <section class="panel active" data-step="1"><span class="kicker">Schritt 01</span><h2>Sind Sie Privatkunde oder Geschäftskunde?</h2><p class="desc">So kann Glanzwerk Ihre Anfrage direkt richtig einordnen.</p><div class="divider"></div><div class="grid grid2">${customerCard('leadPrivat','Privatkunde','Privatkunde','Für Einzelanfragen, Empfehlungen und Offerten rund um Ihr Fahrzeug.','data:image/webp;base64,'+
 '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'+
@@ -2162,8 +2163,8 @@ const CONFIG={
   <section class="panel" data-step="3"><span class="kicker">Schritt 03</span><h2>Paket auswählen und Preis berechnen</h2><p class="desc">Wählen Sie zuerst den Fahrzeugtyp. Die Paketpreise werden direkt angezeigt und in der Übersicht mitgeführt.</p><div class="divider"></div><div class="vehicle-row"><div class="vehicle-card"><input type="radio" id="veh_pkw" name="fahrzeugtyp" value="pkw" checked><label for="veh_pkw">PKW</label></div><div class="vehicle-card"><input type="radio" id="veh_suv" name="fahrzeugtyp" value="suv"><label for="veh_suv">SUV</label></div></div><div class="grid" id="packageGrid"></div><div class="error" data-error-step="3"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter</button></div></section>
   <section class="panel" data-step="4"><span class="kicker">Schritt 04</span><h2>Zusatzleistungen auswählen</h2><p class="desc">Je nach gewählter Reinigungsart werden nur passende Zusatzleistungen angezeigt. Nicht passende Extras werden automatisch ausgeblendet.</p><div class="divider"></div><div class="chip-grid" id="extrasGrid"></div><div class="error" data-error-step="4"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter</button></div></section>
   <section class="panel" data-step="5"><span class="kicker">Schritt 05</span><h2>Standort und Wunsch-Termin</h2><p class="desc">Die Standortauswahl wird automatisch nach Reinigungsart, Paket und Zusatzleistungen gefiltert. Kundinnen und Kunden sehen nur Standorte, die für die gewählte Leistung sinnvoll sind. Die Termin- und Anfrageabwicklung läuft direkt über dieses Formular.</p><div class="divider"></div><div class="location-cards" id="locationCards"></div><div class="calendar-box"><div class="fields"><div class="field full"><label for="standort">Bevorzugter Standort <span class="req">*</span></label><select id="standort" class="select"><option value="">Bitte wählen</option></select><div class="calendar-note" id="locationReason">Bitte zuerst Reinigungsart und Paket wählen.</div><div class="booking-hint" id="bookingHint">Nach der Standortwahl erscheinen hier die passenden Standort- und Kontaktinformationen.</div></div><div class="field"><label for="appointmentDate">Wunschtermin <span class="req">*</span></label><input id="appointmentDate" class="input" type="date"></div><div class="field"><label for="appointmentTime">Wunschuhrzeit <span class="req">*</span></label><select id="appointmentTime" class="select"><option value="">Bitte Datum wählen</option></select><div class="calendar-note" id="timeHoursNote">Bitte zuerst Standort und Datum wählen. Sonntag ist nicht verfügbar.</div></div><div class="field full"><label for="vehicleModel">Fahrzeug / Modell</label><input id="vehicleModel" class="input" type="text" autocomplete="off" placeholder="z. B. BMW X5 / Audi A4 / Tesla Model Y"></div></div></div><div class="error" data-error-step="5"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter</button></div></section>
-  <section class="panel" data-step="6"><span class="kicker">Schritt 06</span><h2>Kontaktdaten</h2><p class="desc">Wir melden uns mit einer passenden Rückmeldung, Bestätigung oder Offerte bei Ihnen.</p><div class="divider"></div><div class="fields"><div class="field" id="companyWrap"><label for="company">Firma <span class="req">*</span></label><input id="company" class="input" type="text" autocomplete="organization" placeholder="Firma"></div><div class="field"><label for="first">Vorname <span class="req">*</span></label><input id="first" class="input" type="text" autocomplete="given-name" placeholder="Vorname"></div><div class="field"><label for="last">Nachname <span class="req">*</span></label><input id="last" class="input" type="text" autocomplete="family-name" placeholder="Nachname"></div><div class="field"><label for="mail">E-Mail <span class="req">*</span></label><input id="mail" class="input" type="email" autocomplete="email" inputmode="email" placeholder="E-Mail-Adresse"></div><div class="field"><label for="phone">Telefon <span class="req">*</span></label><input id="phone" class="input" type="tel" autocomplete="tel" inputmode="tel" placeholder="Telefonnummer"></div><div class="field"><label for="street">Strasse / Nr.</label><input id="street" class="input" type="text" autocomplete="street-address" placeholder="Strasse und Hausnummer"></div><div class="field"><label for="city">PLZ / Ort</label><input id="city" class="input" type="text" autocomplete="postal-code" placeholder="PLZ / Ort"></div><div class="field full"><label for="msg">Nachricht / Wunsch</label><textarea id="msg" class="textarea" autocomplete="off" placeholder="Beschreiben Sie Ihr Anliegen, Ihre Wünsche oder besondere Anforderungen."></textarea></div><div class="field full"><label class="privacy-check"><input id="privacy" type="checkbox" value="Akzeptiert"><span>Ich akzeptiere die Datenschutzerklärung und bin damit einverstanden, dass DT-Cleaning meine Angaben zur Bearbeitung der Anfrage verwendet. <span class="req">*</span></span></label></div><div class="field full"><div class="info-box"><strong>Hinweis:</strong> Der angezeigte Preis ist ein Richtpreis ab gewähltem Paket und Extras. Die finale Bestätigung erfolgt durch DT-Cleaning.</div></div></div><div class="error" data-error-step="6"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter zur Zahlung</button></div></section>
-  <section class="panel" data-step="7"><span class="kicker">Schritt 07</span><h2>Zahlung und Abschluss</h2><p class="desc">Die Zahlungsfunktion ist als Stripe-Testansicht vorbereitet. Später kann hier die echte Stripe-Anbindung aktiviert werden.</p><div class="divider"></div><div class="payment-badge">🔒 Sichere Zahlung · Stripe Testansicht</div><div class="payment-grid"><div class="payment-option"><input type="radio" id="pay_card" name="payment_method" value="Kreditkarte" checked><label for="pay_card"><div class="payment-card"><span class="payment-mark"></span><div><div class="payment-title">Kreditkarte</div><div class="payment-sub">Für Privatkunden standardmässig aktiv. Visa, Mastercard und weitere Karten können später via Stripe angebunden werden.</div></div></div></label></div><div class="payment-option business-only" id="invoicePaymentOption"><input type="radio" id="pay_invoice" name="payment_method" value="Rechnung"><label for="pay_invoice"><div class="payment-card"><span class="payment-mark"></span><div><div class="payment-title">Auf Rechnung</div><div class="payment-sub">Nur für Geschäftskunden sichtbar. Ideal für Flotten, wiederkehrende Reinigungen und Firmenaufträge.</div></div></div></label></div></div><div class="card-preview" id="cardPreview"><div class="payment-title">Kartenzahlung vorbereiten</div><div class="payment-sub">Demo-Felder für die Kundenpräsentation – es wird noch keine echte Belastung ausgelöst.</div><div class="fields card-form"><div class="field"><label for="cardNumber">Kartennummer</label><input id="cardNumber" class="input" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242"></div><div class="field"><label for="cardExpiry">MM/JJ</label><input id="cardExpiry" class="input" type="text" placeholder="12/28"></div><div class="field"><label for="cardCvc">CVC</label><input id="cardCvc" class="input" type="text" inputmode="numeric" placeholder="123"></div><div class="field full"><label for="cardName">Name auf Karte</label><input id="cardName" class="input" type="text" placeholder="Vorname Nachname"></div></div><div class="demo-stripe"><span><strong>Testmodus:</strong> Stripe-Layout vorbereitet, echte Zahlung folgt später.</span><span id="paymentAmount">Betrag: ab CHF 0.–</span></div></div><div class="invoice-box business-only hidden" id="invoiceInfo"><strong>Zahlung auf Rechnung</strong><br>Die Rechnung wird nach Prüfung und Bestätigung durch DT-Cleaning erstellt. Diese Option ist nur für Geschäftskunden vorgesehen.</div><div class="error" data-error-step="7"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="submit" class="btn dark" id="submitBtn">Anfrage senden</button></div></section>
+  <section class="panel" data-step="6"><span class="kicker">Schritt 06</span><h2>Kontaktdaten</h2><p class="desc">Wir melden uns mit einer passenden Rückmeldung, Bestätigung oder Offerte bei Ihnen.</p><div class="divider"></div><div class="fields"><div class="field" id="companyWrap"><label for="company">Firma <span class="req">*</span></label><input id="company" class="input" type="text" autocomplete="organization" placeholder="Firma"></div><div class="field"><label for="first">Vorname <span class="req">*</span></label><input id="first" class="input" type="text" autocomplete="given-name" placeholder="Vorname"></div><div class="field"><label for="last">Nachname <span class="req">*</span></label><input id="last" class="input" type="text" autocomplete="family-name" placeholder="Nachname"></div><div class="field"><label for="mail">E-Mail <span class="req">*</span></label><input id="mail" class="input" type="email" autocomplete="email" inputmode="email" placeholder="E-Mail-Adresse"></div><div class="field"><label for="phone">Telefon <span class="req">*</span></label><input id="phone" class="input" type="tel" autocomplete="tel" inputmode="tel" placeholder="Telefonnummer"></div><div class="field"><label for="street">Strasse / Nr.</label><input id="street" class="input" type="text" autocomplete="street-address" placeholder="Strasse und Hausnummer"></div><div class="field"><label for="city">PLZ / Ort</label><input id="city" class="input" type="text" autocomplete="postal-code" placeholder="PLZ / Ort"></div><div class="field full"><label for="msg">Nachricht / Wunsch</label><textarea id="msg" class="textarea" autocomplete="off" placeholder="Beschreiben Sie Ihr Anliegen, Ihre Wünsche oder besondere Anforderungen."></textarea></div><div class="field full"><label class="privacy-check"><input id="privacy" type="checkbox" value="Akzeptiert"><span>Ich akzeptiere die Datenschutzerklärung und bin damit einverstanden, dass Glanzwerk meine Angaben zur Bearbeitung der Anfrage verwendet. <span class="req">*</span></span></label></div><div class="field full"><div class="info-box"><strong>Hinweis:</strong> Der angezeigte Preis ist ein Richtpreis ab gewähltem Paket und Extras. Die finale Bestätigung erfolgt durch Glanzwerk.</div></div></div><div class="error" data-error-step="6"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="button" class="btn primary" data-next>Weiter zur Zahlung</button></div></section>
+  <section class="panel" data-step="7"><span class="kicker">Schritt 07</span><h2>Zahlung und Abschluss</h2><p class="desc">Die Zahlungsfunktion ist als Stripe-Testansicht vorbereitet. Später kann hier die echte Stripe-Anbindung aktiviert werden.</p><div class="divider"></div><div class="payment-badge">🔒 Sichere Zahlung · Stripe Testansicht</div><div class="payment-grid"><div class="payment-option"><input type="radio" id="pay_card" name="payment_method" value="Kreditkarte" checked><label for="pay_card"><div class="payment-card"><span class="payment-mark"></span><div><div class="payment-title">Kreditkarte</div><div class="payment-sub">Für Privatkunden standardmässig aktiv. Visa, Mastercard und weitere Karten können später via Stripe angebunden werden.</div></div></div></label></div><div class="payment-option business-only" id="invoicePaymentOption"><input type="radio" id="pay_invoice" name="payment_method" value="Rechnung"><label for="pay_invoice"><div class="payment-card"><span class="payment-mark"></span><div><div class="payment-title">Auf Rechnung</div><div class="payment-sub">Nur für Geschäftskunden sichtbar. Ideal für Flotten, wiederkehrende Reinigungen und Firmenaufträge.</div></div></div></label></div></div><div class="card-preview" id="cardPreview"><div class="payment-title">Kartenzahlung vorbereiten</div><div class="payment-sub">Demo-Felder für die Kundenpräsentation – es wird noch keine echte Belastung ausgelöst.</div><div class="fields card-form"><div class="field"><label for="cardNumber">Kartennummer</label><input id="cardNumber" class="input" type="text" inputmode="numeric" placeholder="4242 4242 4242 4242"></div><div class="field"><label for="cardExpiry">MM/JJ</label><input id="cardExpiry" class="input" type="text" placeholder="12/28"></div><div class="field"><label for="cardCvc">CVC</label><input id="cardCvc" class="input" type="text" inputmode="numeric" placeholder="123"></div><div class="field full"><label for="cardName">Name auf Karte</label><input id="cardName" class="input" type="text" placeholder="Vorname Nachname"></div></div><div class="demo-stripe"><span><strong>Testmodus:</strong> Stripe-Layout vorbereitet, echte Zahlung folgt später.</span><span id="paymentAmount">Betrag: ab CHF 0.–</span></div></div><div class="invoice-box business-only hidden" id="invoiceInfo"><strong>Zahlung auf Rechnung</strong><br>Die Rechnung wird nach Prüfung und Bestätigung durch Glanzwerk erstellt. Diese Option ist nur für Geschäftskunden vorgesehen.</div><div class="error" data-error-step="7"></div><div class="actions"><button type="button" class="btn secondary" data-prev>Zurück</button><button type="submit" class="btn dark" id="submitBtn">Anfrage senden</button></div></section>
   </div></form><div class="mobile-summary"></div></div><aside class="side"><h3 class="summary-title">Ihre Übersicht</h3><p class="summary-sub">Alle Angaben und der Richtpreis werden live zusammengefasst.</p><div class="summary-box"><div class="summary-row"><div class="summary-label">Kundentyp</div><div class="summary-value" id="sumCustomer">Noch keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Reinigung & Paket</div><div class="summary-value" id="sumService">Noch keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Extras</div><div class="summary-value" id="sumExtras">Keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Standort & Termin</div><div class="summary-value" id="sumLocation">Noch keine Auswahl</div></div><div class="summary-row"><div class="summary-label">Fahrzeug</div><div class="summary-value" id="sumVehicle">Noch keine Angabe</div></div><div class="summary-row"><div class="summary-label">Kontakt</div><div class="summary-value" id="sumContact">Noch keine Angaben</div></div><div class="summary-row"><div class="summary-label">Zahlung</div><div class="summary-value" id="sumPayment">Kreditkarte</div></div></div><div class="summary-price"><div class="summary-label">Gesamt-Richtpreis</div><strong id="sumPrice">ab CHF 0.–</strong><div class="line-items" id="lineItems"></div></div></aside></div><div class="modal" id="successModal"><div class="modal-card"><div class="modal-icon">✓</div><h3>Vielen Dank für Ihre Anfrage</h3><p>Projekt-/Demo-Version ohne Mailfunktion: Es wurden keine Daten übertragen und keine E-Mails versendet. Sie erhalten in Kürze eine Bestätigung per E-Mail.</p><div style="margin-top:22px"><button type="button" class="btn primary" id="closeModal">Schliessen</button></div></div></div>`;
   function renderPackages(){const s=serviceId();const row=q('.vehicle-row');if(row)row.classList.toggle('hidden',isMotoSelected());const box=q('#packageGrid');box.innerHTML=(CONFIG.packages[s]||[]).map(renderPkgCard).join('')||'<div class="info-box">Bitte zuerst eine Reinigungsart wählen.</div>';}
   function setError(step,msg){const b=q(`[data-error-step="${step}"]`);if(!b)return;b.textContent=msg;b.classList.add('show');}
@@ -2172,12 +2173,12 @@ const CONFIG={
   function estimatePrice(){const p=pkg();const vehicle=radio('fahrzeugtyp')||'pkw';let sub=0;const items=[];if(p){const amount=p.fixed||p[vehicle]||0;sub+=amount;items.push({title:p.title,detail:p.fixed?'Paketpreis ab':'Fahrzeugtyp '+vehicle.toUpperCase(),amount});}selectedExtras().forEach(e=>{const amount=e.price||0;sub+=amount;items.push({title:e.title,detail:e.variable?'Richtwert / ab Preis':'Zusatzleistung',amount,variable:e.variable});});return {subTotal:sub,total:sub,items};}
   function selectedLocation(){return CONFIG.locations.find(l=>l.value===val('#standort'))||null;}
   function packageLevel(){const p=pkg();const id=(p?.id||'').toLowerCase();const title=(p?.title||'').toLowerCase();if(id.includes('platinum')||title.includes('platinum'))return 'platinum';if(id.includes('brilliant')||title.includes('brilliant'))return 'brilliant';if(id.includes('superior')||title.includes('superior'))return 'superior';if(id.includes('intensiv')||title.includes('intensiv'))return 'intensiv';if(id.includes('exklusiv')||title.includes('exklusiv'))return 'exklusiv';if(id.includes('standard')||title.includes('standard'))return 'standard';return '';}
-  function locationLogic(){const sid=serviceId();const p=pkg();const level=packageLevel();const extraIds=checkedExtraIds();const premiumExtra=selectedExtras().some(e=>e.premium)||['keramik','politur','polymer'].some(id=>extraIds.includes(id));let ids=['ebikon','perlen','rothenburg'];let rule='Bitte Auswahl vervollständigen';let reason='Sobald Reinigungsart, Paket und Extras gewählt sind, wird die passende Standortauswahl automatisch eingeschränkt.';if(!sid||!p){ids=['ebikon','perlen','rothenburg'];}
-    else if(extraIds.includes('keramik')){ids=['rothenburg'];rule='Keramikversiegelung / Premium-Aufbereitung';reason='Die Keramikversiegelung ist eine hochwertige Premium-Leistung. Deshalb wird klar das Premium Detailing Center Rothenburg angezeigt.';}
-    else if(sid==='moto'){ids=['ebikon','perlen'];rule='Motorradreinigung & Pflege';reason='Motorradreinigung wird als kompakte Handpflege an den passenden Carwash-Standorten Ebikon und Perlen angezeigt.';}
-    else if(level==='intensiv'){ids=['ebikon','rothenburg'];rule='Intensiv-Paket';reason='Intensivpakete benötigen mehr Zeit und Aufbereitungstiefe. Deshalb werden Ebikon und Rothenburg angezeigt, Perlen wird ausgeblendet.';}
-    else if(premiumExtra){ids=['ebikon','rothenburg'];rule='Premium-Zusatzleistung gewählt';reason='Extras wie Maschinenpolitur oder Langzeit-Polymer benötigen einen Premium-geeigneten Standort. Deshalb werden Ebikon und Rothenburg angezeigt.';}
-    else if(['standard','exklusiv'].includes(level)&&['innen','aussen','komplett'].includes(sid)){ids=['ebikon','perlen'];rule='Standard-/Exklusiv-Reinigung';reason='Für Standard- und Exklusivpakete sind Ebikon und Perlen die logischsten Standorte. Rothenburg bleibt für Intensiv- und Premium-Leistungen reserviert.';}
+  function locationLogic(){const sid=serviceId();const p=pkg();const level=packageLevel();const extraIds=checkedExtraIds();const premiumExtra=selectedExtras().some(e=>e.premium)||['keramik','politur','polymer'].some(id=>extraIds.includes(id));let ids=['nord','kriens','emmen'];let rule='Bitte Auswahl vervollständigen';let reason='Sobald Reinigungsart, Paket und Extras gewählt sind, wird die passende Standortauswahl automatisch eingeschränkt.';if(!sid||!p){ids=['nord','kriens','emmen'];}
+    else if(extraIds.includes('keramik')){ids=['emmen'];rule='Keramikversiegelung / Premium-Aufbereitung';reason='Die Keramikversiegelung ist eine hochwertige Premium-Leistung. Deshalb wird klar das Premium Detailing Center Emmen angezeigt.';}
+    else if(sid==='moto'){ids=['nord','kriens'];rule='Motorradreinigung & Pflege';reason='Motorradreinigung wird als kompakte Handpflege an den passenden Carwash-Standorten Luzern Nord und Kriens angezeigt.';}
+    else if(level==='intensiv'){ids=['nord','emmen'];rule='Intensiv-Paket';reason='Intensivpakete benötigen mehr Zeit und Aufbereitungstiefe. Deshalb werden Luzern Nord und Emmen angezeigt, Kriens wird ausgeblendet.';}
+    else if(premiumExtra){ids=['nord','emmen'];rule='Premium-Zusatzleistung gewählt';reason='Extras wie Maschinenpolitur oder Langzeit-Polymer benötigen einen Premium-geeigneten Standort. Deshalb werden Luzern Nord und Emmen angezeigt.';}
+    else if(['standard','exklusiv'].includes(level)&&['innen','aussen','komplett'].includes(sid)){ids=['nord','kriens'];rule='Standard-/Exklusiv-Reinigung';reason='Für Standard- und Exklusivpakete sind Luzern Nord und Kriens die logischsten Standorte. Emmen bleibt für Intensiv- und Premium-Leistungen reserviert.';}
     ids=[...new Set([...ids,'offen'])];return {ids,rule,reason};}
   function renderLocations(){const select=q('#standort');const cards=q('#locationCards');const {ids,rule,reason}=locationLogic();const currentVal=select.value;const allowed=ids.map(id=>byId(CONFIG.locations,id)).filter(Boolean);select.innerHTML='<option value="">Bitte wählen</option>'+allowed.map(l=>`<option value="${esc(l.value)}">${esc(l.title)}</option>`).join('');if(allowed.some(l=>l.value===currentVal))select.value=currentVal;else select.value='';cards.innerHTML=allowed.map((l,idx)=>`<div class="location-card show ${idx===0&&l.id!=='offen'?'recommended':''}"><span class="location-badge">${idx===0&&l.id!=='offen'?'Empfohlen':'Möglich'}</span><strong>${esc(l.title)}</strong><span>${esc(l.address)}</span><span>${esc(l.role||'')}</span><span>${esc(l.sub)}</span>${l.phone?`<span>Telefon: ${esc(l.phone)}</span>`:''}${l.email?`<span>E-Mail: ${esc(l.email)}</span>`:''}</div>`).join('');const reasonBox=q('#locationReason');if(reasonBox)reasonBox.innerHTML=`<strong>${esc(rule)}</strong><br>${esc(reason)}`;updateBookingHint();}
   function updateBookingHint(){const box=q('#bookingHint');if(!box)return;const l=selectedLocation();if(!l){box.textContent='Nach der Standortwahl erscheinen hier die passenden Standort- und Kontaktinformationen.';return;}const parts=[`Gewählt: ${l.title}`,l.address,l.phone?`Telefon: ${l.phone}`:'',l.email?`E-Mail: ${l.email}`:''].filter(Boolean);box.innerHTML=esc(parts.join(' · '))+(l.bookingUrl?`<br><a href="${esc(l.bookingUrl)}" target="_blank" rel="noopener">Passenden Online-Buchungslink öffnen</a>`:'');}
@@ -2254,7 +2255,7 @@ const CONFIG={
       client_id:CONFIG.clientId,
       form_type:'dt_cleaning_lead_v4_google_sheet_mail',
       company_name:CONFIG.companyName,
-      formular_typ:'DT-Cleaning Leadformular mit Standortlogik und Zahlungsdemo',
+      formular_typ:'Glanzwerk Leadformular mit Standortlogik und Zahlungsdemo',
 
       customer_type:radio('kundentyp'),
       kundentyp:radio('kundentyp'),
@@ -2324,7 +2325,7 @@ const CONFIG={
     };
 
     try{
-      await sendDigitalPlusLead(payload, CONFIG);
+      await sendDemoFormLead(payload, CONFIG);
 
       const modal=q('#successModal');
       if(modal)modal.classList.add('show');
@@ -2339,7 +2340,7 @@ const CONFIG={
       updateSummary();
       setStep(1);
     }catch(error){
-      setError(7,'Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie DT-Cleaning direkt.');
+      setError(7,'Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie Glanzwerk direkt.');
     }finally{
       submitting=false;
       if(btn){
@@ -2357,12 +2358,12 @@ const CONFIG={
 
 
 /* =========================================================
-   Digital Plus Mail-Reihenfolge – sauber & formularnah
+   Demo Mail-Reihenfolge – sauber & formularnah
    - erzeugt demo_order_local_json automatisch
    - verhindert doppelte Alias-Felder wie service/dienstleistung/reinigung
    - Labels bleiben deutsch
 ========================================================= */
-function buildDigitalPlusMailOrderJson(payload){
+function buildDemoFormMailOrderJson(payload){
   const data = payload || {};
   const clientId = String(data.client_id || data.clientId || (typeof CONFIG !== 'undefined' && CONFIG.clientId ? CONFIG.clientId : '') || '').toLowerCase();
 
@@ -2404,7 +2405,7 @@ function buildDigitalPlusMailOrderJson(payload){
   };
 
   const profiles = {
-    'protec-facilities-gmbh': [
+    'demo-vorlage-1': [
       {section:'Schritt 1 – Dienstleistung', keys:['service','dienstleistung','reinigung']},
       {section:'Schritt 2 – Projektart', keys:['projektart','paket','package','details']},
       {section:'Schritt 3 – Objekt', keys:['objektart','groesse','grösse','objekt_standort','standort','location','strasse_nr','plz_ort']},
@@ -2412,7 +2413,7 @@ function buildDigitalPlusMailOrderJson(payload){
       {section:'Schritt 5 – Details', keys:['extras','kontaktwunsch','bilderlink','bild_link','file_link','nachricht','message','datenschutz']},
       {section:'Schritt 6 – Kontaktangaben', keys:['firma','company','vorname','first_name','nachname','last_name','telefon','phone','email']}
     ],
-    'rexhuser-gmbh': [
+    'demo-vorlage-2': [
       {section:'Schritt 1 – Bereich', keys:['service','dienstleistung']},
       {section:'Schritt 2 – Leistung', keys:['heizung_leistung','paket','package','details']},
       {section:'Schritt 3 – Objekt', keys:['objektart','standort','location','strasse_nr','street','plz_ort','city']},
@@ -2421,7 +2422,7 @@ function buildDigitalPlusMailOrderJson(payload){
       {section:'Schritt 6 – Details', keys:['extras','kontaktwunsch','bild_link','dateien_ausgewaehlt','nachricht','message','bemerkungen']},
       {section:'Schritt 7 – Kontaktangaben', keys:['firma','company','vorname','first_name','nachname','last_name','telefon','phone','email']}
     ],
-    'toka-gebaeudereinigung': [
+    'demo-vorlage-3': [
       {section:'Schritt 1 – Dienstleistung', keys:['service','reinigung','services']},
       {section:'Schritt 2 – Reinigungsart', keys:['paket','package','details']},
       {section:'Schritt 3 – Objekt', keys:['kundentyp','customer_type','objektart','standort','location','strasse_nr','street','plz_ort','city']},
@@ -2430,7 +2431,7 @@ function buildDigitalPlusMailOrderJson(payload){
       {section:'Schritt 6 – Informationen', keys:['etage','lift','parkplatz','schluessel_code','arbeitszeiten','wuensche','extras','bild_link','dateien_ausgewaehlt','nachricht','message']},
       {section:'Schritt 7 – Kontaktangaben', keys:['firma','company','vorname','first_name','nachname','last_name','telefon','phone','email']}
     ],
-    'spitex-xundheit-plus': [
+    'demo-vorlage-4': [
       {section:'Schritt 1 – Dienstleistung', keys:['service','pflege','services']},
       {section:'Schritt 2 – Pflegebereich', keys:['paket','package','details']},
       {section:'Schritt 3 – Situation', keys:['kundentyp','customer_type']},
@@ -2439,7 +2440,7 @@ function buildDigitalPlusMailOrderJson(payload){
       {section:'Schritt 6 – Bedarf', keys:['pflegestufe','etage','lift','parkplatz','schluessel_code','arbeitszeiten','wuensche','extras','bild_link','dateien_ausgewaehlt','nachricht','message']},
       {section:'Schritt 7 – Kontaktangaben', keys:['firma','company','vorname','first_name','nachname','last_name','strasse_nr','street','plz_ort','city','standort','location','telefon','phone','email']}
     ],
-    'dt-cleaning': [
+    'glanzwerk-autopflege': [
       {section:'Schritt 1 – Kundentyp', keys:['kundentyp','customer_type']},
       {section:'Schritt 2 – Reinigung', keys:['service','reinigung','dienstleistung']},
       {section:'Schritt 3 – Paket & Preis', keys:['paket','package','details','subtotal','estimated_total','price_items']},
@@ -2448,7 +2449,7 @@ function buildDigitalPlusMailOrderJson(payload){
       {section:'Schritt 6 – Kontaktangaben', keys:['firma','company','vorname','first_name','nachname','last_name','email','telefon','phone','nachricht','message']},
       {section:'Schritt 7 – Zahlung', keys:['payment_method','zahlungsart','payment','stripe_demo']}
     ],
-    'dein-umzug-deal': [
+    'demo-vorlage-5': [
       {section:'Schritt 1 – Auftrag', keys:['kundentyp','customer_type','job_type']},
       {section:'Schritt 2 – Dienstleistung', keys:['service','services','reinigung']},
       {section:'Schritt 3 – Transportdetails', keys:['details','transport_details','transport_notes','vehicle','fahrzeug']},
@@ -2457,14 +2458,14 @@ function buildDigitalPlusMailOrderJson(payload){
       {section:'Schritt 6 – Zahlung', keys:['payment','payment_method','zahlungsart']},
       {section:'Schritt 7 – Abschluss', keys:['zusammenfassung']}
     ],
-    'basic-prototyp': [
+    'demo-vorlage-6': [
       {section:'Schritt 1 – Leistung', keys:['service','dienstleistung','reinigung']},
       {section:'Schritt 2 – Details', keys:['details','paket','package','extras']},
       {section:'Schritt 3 – Rahmen', keys:['timeframe','object_type','priority','standort','location','plz_ort','address','file_link']},
       {section:'Schritt 4 – Kontaktangaben', keys:['firma','company','vorname','first_name','nachname','last_name','email','telefon','phone']},
       {section:'Schritt 5 – Absenden', keys:['nachricht','message']}
     ],
-    'ideal-umzuege': [
+    'demo-vorlage-7': [
       {section:'Schritt 1 – Kundentyp', keys:['kundentyp','customer_type']},
       {section:'Schritt 2 – Dienstleistung', keys:['service','services','reinigung']},
       {section:'Schritt 3 – Details & Umfang', keys:['paket','package','details','extras','objektgroesse','privat_stockwerk_auszug','privat_stockwerk_einzug','privat_lift_auszug','privat_lift_einzug','firmenumzug_branche','firmenumzug_arbeitsplaetze','firmenumzug_inventar','reinigung_badezimmer','reinigung_fenster','reinigung_balkon','reinigung_abnahmegarantie','raeumung_art','raeumung_umfang','raeumung_schwere_gegenstaende','raeumung_sondermuell','montage_moebel','montage_art','montage_zusatz','moebellift_moebel','verpackung_bereich','verpackung_material']},
@@ -2565,7 +2566,7 @@ function buildDigitalPlusMailOrderJson(payload){
   );
 }
 
-function shouldSkipDigitalPlusSubmitKey(key, data){
+function shouldSkipDemoFormSubmitKey(key, data){
   data = data || {};
   if(!key) return true;
   const value = data[key];
@@ -2592,26 +2593,26 @@ function shouldSkipDigitalPlusSubmitKey(key, data){
 }
 
 
-/* Digital Plus Server-API Submit Helper
+/* Demo Server-API Submit Helper
    Standard: keine Google Script URL im HTML, echte Dateien via DemoLocalData. */
-function getDigitalPlusSubmitConfig(preferredConfig){
+function getDemoFormSubmitConfig(preferredConfig){
   if(preferredConfig) return preferredConfig;
   if(typeof CONFIG !== 'undefined') return CONFIG;
   if(typeof FORM_CONFIG !== 'undefined') return FORM_CONFIG;
   return {clientId:'',demoSubmitDisabledUrl:''};
 }
 
-function buildDigitalPlusDemoLocalData(payload, preferredConfig){
-  const cfg = getDigitalPlusSubmitConfig(preferredConfig);
+function buildDemoFormDemoLocalData(payload, preferredConfig){
+  const cfg = getDemoFormSubmitConfig(preferredConfig);
   const body = new DemoLocalData();
   const data = Object.assign({}, payload || {});
 
-  if(!data.demo_order_local_json && typeof buildDigitalPlusMailOrderJson === 'function'){
-    data.demo_order_local_json = buildDigitalPlusMailOrderJson(data);
+  if(!data.demo_order_local_json && typeof buildDemoFormMailOrderJson === 'function'){
+    data.demo_order_local_json = buildDemoFormMailOrderJson(data);
   }
 
   Object.keys(data).forEach(key => {
-    if(typeof shouldSkipDigitalPlusSubmitKey === 'function' && shouldSkipDigitalPlusSubmitKey(key, data)) return;
+    if(typeof shouldSkipDemoFormSubmitKey === 'function' && shouldSkipDemoFormSubmitKey(key, data)) return;
     body.append(key, data[key] == null ? '' : String(data[key]));
   });
 
@@ -2631,8 +2632,8 @@ function buildDigitalPlusDemoLocalData(payload, preferredConfig){
   return body;
 }
 
-async function sendDigitalPlusLead(payload, preferredConfig){
-  const cfg = getDigitalPlusSubmitConfig(preferredConfig);
+async function sendDemoFormLead(payload, preferredConfig){
+  const cfg = getDemoFormSubmitConfig(preferredConfig);
   const demoSubmitDisabledUrl = cfg && cfg.demoSubmitDisabledUrl;
 
   if(!demoSubmitDisabledUrl){
@@ -2641,7 +2642,7 @@ async function sendDigitalPlusLead(payload, preferredConfig){
 
   const response = await dpDemoSubmitDisabled(demoSubmitDisabledUrl, {
     method: 'POST',
-    body: buildDigitalPlusDemoLocalData(payload, cfg)
+    body: buildDemoFormDemoLocalData(payload, cfg)
   });
 
   let result = null;
