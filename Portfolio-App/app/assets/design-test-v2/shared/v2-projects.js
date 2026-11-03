@@ -62,8 +62,10 @@
     return LABELS[lang()] || LABELS.de;
   }
 
+  var DEMO_VER = "20261103fix1";
+
   function cardHtml(item, external) {
-    var src = item.href;
+    var src = item.href + "?v=" + DEMO_VER;
     var name = item.title.replace(/"/g, "");
     var preview = item.thumb
       ? '<a class="v2-project-card__thumb" href="' + src + '" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">' +
