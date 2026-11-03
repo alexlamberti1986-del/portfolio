@@ -207,8 +207,8 @@ img{display:block}
 @media (max-width:1023px){.tl{overflow-x:clip;--copy-min-size:17px;--head-min:6.6667cqw;--head-w-min:82cqw;--year-min:30px;--copy-min-w:200px;--rail-top:calc(11.7361cqw + var(--top-pad-extra,0px))}
   .tl-head{align-items:center;text-align:center;right:50%;transform:translateX(50%)}.tl-head .l{justify-content:center}}
 @media (min-width:640px) and (max-width:1023px){.tl{--top-pad-extra:16cqw;--head-top:10.4167cqw}}
-@media (min-width:640px){.tl{--copy-max-w:26.9444cqw}}
-@media (max-width:639px){
+@media (min-width:1024px){.tl{--copy-max-w:26.9444cqw}}
+@media (max-width:1023px){
   .tl{--head-min:40px;--top-pad-extra:15cqw;--copy-min-w:320px;--gutter-min:24px}
   .rail{display:none}
   .tl-head{left:var(--gutter);right:auto;transform:none;flex-direction:row;gap:.28em;align-items:baseline;text-align:left}
@@ -1147,7 +1147,7 @@ function strandsSVG({ w = 710, h = 462, n = 46, seed = 1, color = "#fff", op = 0
       ${e.lead ? `<div class="cp-layer"><p class="tcopy" style="--cw:${px(e.cw)}"><b>${e.lead}</b> ${e.rest}</p></div>` : ""}`;
     rows.appendChild(row);
     const plL = $(".pl-layer", row), yrL = $(".yr-layer", row), cpL = $(".cp-layer", row), slot = $(".slot", row);
-    const phone = matchMedia("(max-width: 639px)");
+    const phone = matchMedia("(max-width: 1023px)");
     scrollTrigger(row, "top_bottom", "bottom_top", (p) => {
       if (phone.matches) { plL.style.top = yrL.style.top = ""; if (cpL) cpL.style.top = ""; return; }
       const tr = PL[e.frame], v = tr - 2 * tr * p;
@@ -1159,7 +1159,7 @@ function strandsSVG({ w = 710, h = 462, n = 46, seed = 1, color = "#fff", op = 0
     inView(row, () => {
       yr.play(0);
       if (e.frame === "centre") setTimeout(() => new Spring(1, CFG.SETTLE, (v) => ($(".year", row).style.opacity = v)).set(0.4), 2200 + 120);
-      const cp = $(".tcopy", row); if (cp) { const sp = new Spring(0, CFG.COPY, (p) => { cp.style.opacity = p; cp.style.transform = matchMedia("(max-width: 639px)").matches ? `translateY(${(1 - p) * 0.75}rem)` : `translateY(calc(-50% + ${(1 - p) * 0.75}rem))`; }); sp.onChange(0); sp.set(1, 220); }
+      const cp = $(".tcopy", row); if (cp) { const sp = new Spring(0, CFG.COPY, (p) => { cp.style.opacity = p; cp.style.transform = matchMedia("(max-width: 1023px)").matches ? `translateY(${(1 - p) * 0.75}rem)` : `translateY(calc(-50% + ${(1 - p) * 0.75}rem))`; }); sp.onChange(0); sp.set(1, 220); }
     }, "0% 0% -25% 0%");
   });
   // Kopf
